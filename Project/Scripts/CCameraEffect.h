@@ -7,12 +7,15 @@ private:
     bool m_bShake;
     float m_fShakeTimer;
     float m_fShakeDuration;
-    Vec2 m_vShakeIntensity;
+    Vec2 m_vShakePosIntensity;
+    Vec3 m_vShakeRotationIntensity;
 
     float m_fShakeFrequencyTimer;
     float m_fShakeFrequency;
     Vec3 m_vStartPos;
     Vec3 m_vTargetPos;
+    Vec3 m_vStartRotation;
+    Vec3 m_vTargetRotation;
 
 private:
     void Shaking();
