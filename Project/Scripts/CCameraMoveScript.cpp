@@ -1,8 +1,8 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CCameraMoveScript.h"
 
 CCameraMoveScript::CCameraMoveScript()
-	: CScript((UINT)SCRIPT_TYPE::TIMEMGRSCRIPT)
+	: CScript((UINT)SCRIPT_TYPE::CAMERAMOVESCRIPT)
 	, m_CamSpeed(500.f)
 {
 }
@@ -34,6 +34,7 @@ void CCameraMoveScript::tick()
 	{
 		MovePerspective();
 	}
+
 }
 
 void CCameraMoveScript::MoveOrthographic()
