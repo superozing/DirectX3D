@@ -4,6 +4,9 @@ class CCameraEffect :
     public CScript
 {
 private:
+    Vec3 m_vOriginPos;
+    Vec3 m_vOriginRot;
+
     bool m_bShake;
     float m_fShakeTimer;
     float m_fShakeDuration;

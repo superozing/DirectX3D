@@ -31,6 +31,8 @@ void CCameraEffect::Shaking()
 		m_fShakeTimer = 0.f;
 		m_fShakeFrequencyTimer = 0.f;
 
+		Transform()->SetRelativePos(m_vOriginPos);
+		Transform()->SetRelativeRotation(m_vOriginRot);
 		return;
 	}
 
@@ -69,6 +71,9 @@ void CCameraEffect::Shake(float _duration, Vec2 _scale)
 	m_fShakeTimer = _duration;
 	m_vShakePosIntensity = _scale;
 	m_fShakeFrequencyTimer = 0;
+
+	m_vOriginPos = Transform()->GetRelativePos();
+	m_vOriginRot = Transform()->GetRelativeRotation();
 }
 
 void CCameraEffect::RegistInitial()
