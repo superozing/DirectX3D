@@ -7,6 +7,10 @@ private:
     Vec3 m_vOriginPos;
     Vec3 m_vOriginRot;
 
+    bool m_bRelease;
+    float m_fReleaseTimer;
+    float m_fReleaseDuration;
+
     bool m_bShake;
     float m_fShakeTimer;
     float m_fShakeDuration;
@@ -25,9 +29,10 @@ private:
 
 private:
     void Shaking();
+    void Releasing();
 
 public:
-    void Shake(float _duration, Vec2 _scale);
+    void Shake(float _duration, Vec2 _scale, float _releaseTime);
     void RegistInitial();
     void RegistInitial(Vec3 _pos, Vec3 _rot);
     void SendToInitial();

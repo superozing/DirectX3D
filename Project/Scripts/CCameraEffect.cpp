@@ -9,9 +9,14 @@ CCameraEffect::CCameraEffect()
 	, m_vShakePosIntensity(10.f, 10.f)
 	, m_vShakeRotationIntensity(0.f, 0.f, 10.f)
 	, m_fShakeFrequency(6.f)
+	, m_fReleaseDuration(0.2f)
 {
 	AppendScriptParam("ShakeDuration", SCRIPT_PARAM::FLOAT, &m_fShakeDuration, 0);
 	AppendScriptParam("ShakeTimer", SCRIPT_PARAM::FLOAT, &m_fShakeTimer, 0, 0, true);
+
+	AppendScriptParam("ReleaseDuration", SCRIPT_PARAM::FLOAT, &m_fReleaseDuration, 0);
+	AppendScriptParam("ReleaseTimer", SCRIPT_PARAM::FLOAT, &m_fReleaseTimer, 0, 0, true);
+
 	AppendScriptParam("ShakePosIntensity", SCRIPT_PARAM::VEC2, &m_vShakePosIntensity, 0);
 	AppendScriptParam("ShakeRotationIntensity", SCRIPT_PARAM::VEC3, &m_vShakeRotationIntensity, 0);
 
@@ -28,11 +33,14 @@ void CCameraEffect::Shaking()
 	if (m_fShakeTimer <= 0)
 	{
 		m_bShake = false;
+		m_bRelease = true;
+
+		m_vStartPos = Transform()->GetRelativePos();
+		m_vStartRotation = Transform()->GetRelativeRotation();
+
 		m_fShakeTimer = 0.f;
 		m_fShakeFrequencyTimer = 0.f;
-
-		Transform()->SetRelativePos(m_vOriginPos);
-		Transform()->SetRelativeRotation(m_vOriginRot);
+		
 		return;
 	}
 
@@ -64,9 +72,31 @@ void CCameraEffect::Shaking()
 	m_fShakeFrequencyTimer -= DT;
 }
 
-void CCameraEffect::Shake(float _duration, Vec2 _scale)
+void CCameraEffect::Releasing()
+{
+	if (m_fReleaseTimer <= 0.f) {
+		m_bRelease = false;
+
+		m_fReleaseTimer = 0.f;
+
+		return;
+	}
+
+	Vec3 vNewPos = RoRMath::Lerp(m_vOriginPos, m_vStartPos, m_fReleaseTimer / m_fReleaseDuration);
+	Vec3 vNewRot = RoRMath::Lerp(m_vOriginRot, m_vStartRotation, m_fReleaseTimer / m_fReleaseDuration);
+
+	Transform()->SetRelativePos(vNewPos);
+	Transform()->SetRelativeRotation(vNewRot);
+
+	m_fReleaseTimer -= DT;
+}
+
+void CCameraEffect::Shake(float _duration, Vec2 _scale, float _releaseTime)
 {
 	m_bShake = true;
+	m_bRelease = false;
+
+	m_fReleaseTimer = _releaseTime;
 
 	m_fShakeTimer = _duration;
 	m_vShakePosIntensity = _scale;
@@ -99,7 +129,7 @@ void CCameraEffect::tick()
 	// 테스트용 코드
 	if (KEY_TAP(T)) 
 	{
-		Shake(m_fShakeDuration, m_vShakePosIntensity);
+		Shake(m_fShakeDuration, m_vShakePosIntensity, m_fReleaseDuration);
 	}
 	if (KEY_TAP(I)) {
 		SendToInitial();
@@ -110,6 +140,9 @@ void CCameraEffect::tick()
 	if (m_bShake) 
 	{
 		Shaking();
+	}
+	else if (m_bRelease) {
+		Releasing();
 	}
 }
 
