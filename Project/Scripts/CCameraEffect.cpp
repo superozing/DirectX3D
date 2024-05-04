@@ -6,7 +6,7 @@
 CCameraEffect::CCameraEffect()
 	: CScript((UINT)SCRIPT_TYPE::CAMERAEFFECT)
 	, m_fShakeDuration(1.f)
-	, m_vShakePosIntensity(10.f, 10.f)
+	, m_vShakePosIntensity(10.f, 10.f, 10.f)
 	, m_vShakeRotationIntensity(0.f, 0.f, 10.f)
 	, m_fShakeFrequency(6.f)
 	, m_fReleaseDuration(0.2f)
@@ -17,7 +17,7 @@ CCameraEffect::CCameraEffect()
 	AppendScriptParam("ReleaseDuration", SCRIPT_PARAM::FLOAT, &m_fReleaseDuration, 0);
 	AppendScriptParam("ReleaseTimer", SCRIPT_PARAM::FLOAT, &m_fReleaseTimer, 0, 0, true);
 
-	AppendScriptParam("ShakePosIntensity", SCRIPT_PARAM::VEC2, &m_vShakePosIntensity, 0);
+	AppendScriptParam("ShakePosIntensity", SCRIPT_PARAM::VEC3, &m_vShakePosIntensity, 0);
 	AppendScriptParam("ShakeRotationIntensity", SCRIPT_PARAM::VEC3, &m_vShakeRotationIntensity, 0);
 
 	AppendScriptParam("ShakeFrequnecy", SCRIPT_PARAM::FLOAT, &m_fShakeFrequency, 0);
@@ -49,18 +49,19 @@ void CCameraEffect::Shaking()
 
 		// Pos 선택
 		m_vStartPos = Transform()->GetRelativePos();
-		m_vTargetPos = m_vStartPos;
+		m_vTargetPos = m_vOriginPos;
 
-		m_vTargetPos.x += CRandomMgr::GetInst()->GetRandomFloat() * m_vShakePosIntensity.x;
-		m_vTargetPos.y += CRandomMgr::GetInst()->GetRandomFloat() * m_vShakePosIntensity.y;
+		m_vTargetPos += CRandomMgr::GetInst()->GetRandomFloat() * Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_vShakePosIntensity.z;
+		m_vTargetPos += CRandomMgr::GetInst()->GetRandomFloat() * Transform()->GetWorldDir(DIR_TYPE::RIGHT) * m_vShakePosIntensity.x;
+		m_vTargetPos += CRandomMgr::GetInst()->GetRandomFloat() * Transform()->GetWorldDir(DIR_TYPE::UP) * m_vShakePosIntensity.y;
 
 		// 회전 선택
 		m_vStartRotation = Transform()->GetRelativeRotation();
-		m_vTargetRotation = m_vStartRotation;
+		m_vTargetRotation = m_vOriginRot;
 
-		m_vTargetRotation.x = CRandomMgr::GetInst()->GetRandomFloat() * XMConvertToRadians(m_vShakeRotationIntensity.x);
-		m_vTargetRotation.y = CRandomMgr::GetInst()->GetRandomFloat() * XMConvertToRadians(m_vShakeRotationIntensity.y);
-		m_vTargetRotation.z = CRandomMgr::GetInst()->GetRandomFloat() * XMConvertToRadians(m_vShakeRotationIntensity.z);
+		m_vTargetRotation.x += CRandomMgr::GetInst()->GetRandomFloat() * XMConvertToRadians(m_vShakeRotationIntensity.x);
+		m_vTargetRotation.y += CRandomMgr::GetInst()->GetRandomFloat() * XMConvertToRadians(m_vShakeRotationIntensity.y);
+		m_vTargetRotation.z += CRandomMgr::GetInst()->GetRandomFloat() * XMConvertToRadians(m_vShakeRotationIntensity.z);
 	}
 	Vec3 vNewPos = RoRMath::Lerp(m_vTargetPos, m_vStartPos, m_fShakeFrequencyTimer * m_fShakeFrequency);
 	Vec3 vNewRot = RoRMath::Lerp(m_vTargetRotation, m_vStartRotation, m_fShakeFrequencyTimer * m_fShakeFrequency);
@@ -91,7 +92,7 @@ void CCameraEffect::Releasing()
 	m_fReleaseTimer -= DT;
 }
 
-void CCameraEffect::Shake(float _duration, Vec2 _scale, float _releaseTime)
+void CCameraEffect::Shake(float _duration, Vec3 _scale, float _releaseTime)
 {
 	m_bShake = true;
 	m_bRelease = false;
