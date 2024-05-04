@@ -71,6 +71,23 @@ void CCameraEffect::Shake(float _duration, Vec2 _scale)
 	m_fShakeFrequencyTimer = 0;
 }
 
+void CCameraEffect::RegistInitial()
+{
+	m_vInitialPos = Transform()->GetRelativePos();
+	m_vInitialRotation = Transform()->GetRelativeRotation();
+}
+
+void CCameraEffect::RegistInitial(Vec3 _pos, Vec3 _rot)
+{
+	m_vInitialPos = _pos;
+	m_vInitialRotation = _rot;
+}
+
+void CCameraEffect::SendToInitial()
+{
+	Transform()->SetRelativePos(m_vInitialPos);
+	Transform()->SetRelativeRotation(m_vInitialRotation);
+}
 
 void CCameraEffect::tick()
 {
@@ -79,10 +96,19 @@ void CCameraEffect::tick()
 	{
 		Shake(m_fShakeDuration, m_vShakePosIntensity);
 	}
+	if (KEY_TAP(I)) {
+		SendToInitial();
+	}
+
 
 	// 카메라 쉐이킹
 	if (m_bShake) 
 	{
 		Shaking();
 	}
+}
+
+void CCameraEffect::begin()
+{
+	RegistInitial();
 }

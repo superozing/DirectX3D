@@ -17,14 +17,21 @@ private:
     Vec3 m_vStartRotation;
     Vec3 m_vTargetRotation;
 
+    Vec3 m_vInitialPos;
+    Vec3 m_vInitialRotation;
+
 private:
     void Shaking();
 
 public:
     void Shake(float _duration, Vec2 _scale);
+    void RegistInitial();
+    void RegistInitial(Vec3 _pos, Vec3 _rot);
+    void SendToInitial();
 
 public:
     virtual void tick() override;
+    virtual void begin() override;
 
 public:
     CLONE(CCameraEffect);
