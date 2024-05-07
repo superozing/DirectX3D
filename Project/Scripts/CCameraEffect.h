@@ -27,6 +27,11 @@ private:
     Vec3 m_vInitialPos;
     Vec3 m_vInitialRotation;
 
+    float m_fZoomSpeed;
+    float m_fDoubleClickDuration;
+    float m_fDoubleClickDurationTimer;
+    bool m_bDoubleClickCheck;
+
 private:
     void Shaking();
     void Releasing();
