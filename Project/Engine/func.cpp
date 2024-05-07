@@ -112,6 +112,27 @@ void GamePlayStatic::DrawDebugSphere(Vec3 _vWorldPos, float _fRadius, Vec3 _Colo
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
 
+void GamePlayStatic::DrawDebugCone(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, bool _bDepthTest, float _Duration)
+{
+	tDebugShapeInfo info = {};
+	info.eShape = DEBUG_SHAPE::CONE;
+
+	info.vWorldPos = _vWorldPos;
+	info.vWorldScale = _vWorldScale;
+	info.vWorldRot = _vWorldRot;
+
+	info.matWorld = XMMatrixScaling(info.vWorldScale.x, info.vWorldScale.y, info.vWorldScale.z)
+		* XMMatrixRotationX(info.vWorldRot.x) * XMMatrixRotationY(info.vWorldRot.y)
+		* XMMatrixRotationZ(info.vWorldRot.z) * XMMatrixTranslation(info.vWorldPos.x, info.vWorldPos.y, info.vWorldPos.z);
+
+	info.vColor = _Color;
+	info.bDepthTest = _bDepthTest;
+	info.fDuration = _Duration;
+
+	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
+}
+
+
 void GamePlayStatic::DrawDebugCircle(const Matrix& _WorldMat, Vec3 _Color, bool _bDepthTest, float _Duration)
 {
 	tDebugShapeInfo info = {};

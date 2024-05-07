@@ -28,7 +28,10 @@ void CLight3D::finaltick()
 	if (m_Info.LightType == (int)LIGHT_TYPE::POINT)
 	{
 		GamePlayStatic::DrawDebugSphere(m_Info.vWorldPos, m_Info.fRadius, Vec3(0.f, 1.f, 0.1f), true);
-		//GamePlayStatic::DrawDebugCube(m_Info.vWorldPos, Vec3(m_Info.fRadius, m_Info.fRadius, m_Info.fRadius), Vec3(0.f, 0.f, 0.f),   Vec3(0.f, 1.f, 0.1f), true);
+	}
+	else if (m_Info.LightType == (int)LIGHT_TYPE::SPOT)
+	{
+		GamePlayStatic::DrawDebugCone(m_Info.vWorldPos, Vec3(m_Info.fRadius, m_Info.fRadius, m_Info.fRadius), Vec3(0.f, 0.f, 0.f), Vec3(0.f, 1.f, 0.1f), true);
 	}
 }
 

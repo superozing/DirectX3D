@@ -119,6 +119,8 @@ void CRenderMgr::render_debug()
 		case DEBUG_SHAPE::SPHERE:
 			m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
 			break;
+		case DEBUG_SHAPE::CONE:
+			m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"ConeMesh"));
 		default:
 			break;
 		}
