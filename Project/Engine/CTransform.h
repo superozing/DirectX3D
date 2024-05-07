@@ -13,6 +13,7 @@ private:
     Vec3    m_arrWorldDir[3]; // Right, Up, Front
 
     Matrix  m_matWorld; // 상태행렬
+    Matrix  m_matWorldInv;  // 월드 역행렬
     bool    m_bAbsolute;
 
 public:
@@ -38,6 +39,7 @@ public:
     bool IsAbsolute() const { return m_bAbsolute; }
 
     const Matrix& GetWorldMat() { return m_matWorld; }
+    const Matrix& GetWorldInvMat() { return m_matWorldInv; }
 
     Vec3 GetLocalDir(DIR_TYPE _type) const { return m_arrLocalDir[(UINT)_type]; }
     Vec3 GetWorldDir(DIR_TYPE _type) const { return m_arrWorldDir[(UINT)_type]; }
