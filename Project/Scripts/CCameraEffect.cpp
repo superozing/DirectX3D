@@ -22,6 +22,8 @@ CCameraEffect::CCameraEffect()
 
 	AppendScriptParam("ShakeFrequnecy", SCRIPT_PARAM::FLOAT, &m_fShakeFrequency, 0);
 	AppendScriptParam("ShakeFreqTimer", SCRIPT_PARAM::FLOAT, &m_fShakeFrequencyTimer, 0, 0, true);
+
+	RegistInitial();
 }
 
 CCameraEffect::~CCameraEffect()
@@ -109,6 +111,7 @@ void CCameraEffect::Shake(float _duration, Vec3 _scale, float _releaseTime)
 
 void CCameraEffect::RegistInitial()
 {
+	if (!GetOwner() || !Transform()) return;
 	m_vInitialPos = Transform()->GetRelativePos();
 	m_vInitialRotation = Transform()->GetRelativeRotation();
 }
@@ -121,6 +124,7 @@ void CCameraEffect::RegistInitial(Vec3 _pos, Vec3 _rot)
 
 void CCameraEffect::SendToInitial()
 {
+	if (!GetOwner() || !Transform()) return;
 	Transform()->SetRelativePos(m_vInitialPos);
 	Transform()->SetRelativeRotation(m_vInitialRotation);
 }
@@ -136,6 +140,14 @@ void CCameraEffect::tick()
 		SendToInitial();
 	}
 
+	if (WHEEL_CHECK(WHEEL_UP)) {
+	}
+
+	if (WHEEL_CHECK(WHEEL_DOWN)) {
+	}
+
+	if (KEY_TAP(MBTN)) {
+	}
 
 	// 카메라 쉐이킹
 	if (m_bShake) 
