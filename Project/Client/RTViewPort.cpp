@@ -21,18 +21,13 @@ RTViewPort::~RTViewPort()
 {
 }
 
-void RTViewPort::CopyRTTex()
-{
-      CRenderMgr::GetInst()->CopyRTTex(m_ViewPortTexture);
-}
-
 void RTViewPort::tick()
 {
 }
 
 void RTViewPort::render_update()
 {
-	CopyRTTex();
+	CRenderMgr::GetInst()->CopyRTTex(m_ViewPortTexture);
 
     ImGui::GetWindowDrawList()->AddImage(
         m_ViewPortTexture->GetSRV().Get(),

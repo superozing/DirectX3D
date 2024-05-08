@@ -11,7 +11,6 @@ private:
     Ptr<CTexture>       m_ViewPortTexture;
 
 public: 
-    void CopyRTTex();
     Ptr<CTexture> GetViewportTexture() { return m_ViewPortTexture; }
 
 public:
