@@ -32,7 +32,6 @@ private:
 
     int                     m_CameraPriority;
 
-
     // 물체 분류
     vector<CGameObject*>    m_vecDeferred;
     vector<CGameObject*>    m_vecOpaque;
@@ -67,6 +66,14 @@ public:
 
     int GetCameraPriority() { return m_CameraPriority; }
 
+private:
+    shared_ptr<class CCameraShake> m_pShake;
+
+public:
+    void SetShake();
+    void SetShake(float _duration, Vec3 _posScale, Vec3 _rotScale, float _frequency, float _releaseTime);
+    void SetShake(shared_ptr<class CCameraShake> _shake);
+    void Shake();
 
 public:
     virtual void begin() override;

@@ -15,6 +15,7 @@
 
 #include "CAssetMgr.h"
 
+#include "CCameraShake.h"
 
 CCamera::CCamera()
 	: CComponent(COMPONENT_TYPE::CAMERA)
@@ -51,14 +52,42 @@ struct CmpDescending
 	}
 };
 
+void CCamera::SetShake()
+{
+	m_pShake = make_shared<CCameraShake>(GetOwner()); 
+}
+
+void CCamera::SetShake(float _duration, Vec3 _posScale, Vec3 _rotScale, float _frequency, float _releaseTime)
+{
+	m_pShake = make_shared<CCameraShake>(GetOwner(), _duration, _posScale, _rotScale, _frequency, _releaseTime);
+}
+
+void CCamera::SetShake(shared_ptr<class CCameraShake> _shake)
+{
+	if (!_shake) return;
+
+	m_pShake = _shake;
+	m_pShake->RegistCamera(GetOwner());
+}
+
+void CCamera::Shake()
+{
+	m_pShake->Shake();
+}
+
 void CCamera::begin()
 {
 	// 카메라를 우선순위값에 맞게 RenderMgr 에 등록시킴
 	CRenderMgr::GetInst()->RegisterCamera(this, m_CameraPriority);
+	SetShake();
 }
 
 void CCamera::finaltick()
 {
+	if(m_pShake.get())
+		m_pShake->finaltick();
+
+
 	// 뷰 행렬을 계산한다.
 	// 카메라를 원점으로 이동시키는 이동 행렬
 	Vec3 vCamPos = Transform()->GetRelativePos();
@@ -92,8 +121,6 @@ void CCamera::finaltick()
 		// 원근투영
 		m_matProj = XMMatrixPerspectiveFovLH(m_FOV, m_AspectRatio, 1.f, m_Far);
 	}
-
-	
 }
 
 void CCamera::SetCameraPriority(int _Priority)
