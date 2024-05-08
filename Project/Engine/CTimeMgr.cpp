@@ -1,4 +1,4 @@
-#include "pch.h"
+Ôªø#include "pch.h"
 #include "CTimeMgr.h"
 
 #include "CEngine.h"
@@ -23,7 +23,7 @@ CTimeMgr::~CTimeMgr()
 
 void CTimeMgr::init()
 {
-	// √ ¥Á ∫Ûµµ
+	// Ï¥àÎãπ ÎπàÎèÑ
 	QueryPerformanceFrequency(&m_Frequency);
 
 	QueryPerformanceCounter(&m_PrevCount);
@@ -46,11 +46,11 @@ void CTimeMgr::tick()
 
 	m_PrevCount = m_CurCount;
 
-	// DT ∫∏¡§
+	// DT Î≥¥Ï†ï
 	if ((1.f / 60.f) < m_DeltaTime)
 		m_DeltaTime = (1. / 60.);
 
-	// Ω√∞£ ¥©¿˚ ==> 1√ ∏∂¥Ÿ if ±∏πÆ Ω««‡
+	// ÏãúÍ∞Ñ ÎàÑÏ†Å ==> 1Ï¥àÎßàÎã§ if Íµ¨Î¨∏ Ïã§Ìñâ
 	m_Time += m_EngineDeltaTime;
 	m_szText[70] = {};
 	if (1.f <= m_Time)
@@ -64,8 +64,16 @@ void CTimeMgr::tick()
 	g_global.g_time += (float)m_DeltaTime;	
 }
 
+void CTimeMgr::enter()
+{
+	// Ï¥àÎãπ ÎπàÎèÑ
+	QueryPerformanceFrequency(&m_Frequency);
+
+	QueryPerformanceCounter(&m_PrevCount);
+}
+
 void CTimeMgr::render()
 {
-	// ∆˘∆Æ √‚∑¬
+	// Ìè∞Ìä∏ Ï∂úÎ†•
 	CFontMgr::GetInst()->DrawFont(m_szText, 10.f, 30.f, 16, FONT_RGBA(255, 30, 30, 255));
 }

@@ -37,7 +37,7 @@ public:
 public:
 	virtual void init() override;
 	virtual void tick() override;
-	virtual void enter() override {}
+	virtual void enter() override;
 	void render();
 };
 
