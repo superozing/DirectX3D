@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "ScriptUI.h"
 
 #include <Scripts/CScriptMgr.h>
@@ -29,11 +29,11 @@ void ScriptUI::render_update()
 {
 	ComponentUI::render_update();
 
-	const std::unordered_map<string, tScriptParam>& umParam = m_TargetScript->GetScriptParam();
+	const auto& vParam = m_TargetScript->GetScriptParam();
 
-	auto iter = umParam.begin();
+	auto iter = vParam.begin();
 
-	for (; iter != umParam.end(); ++iter)
+	for (; iter != vParam.end(); ++iter)
 	{
 		switch (iter->second.Type)
 		{

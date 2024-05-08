@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "CComponent.h"
 
 #include "CTimeMgr.h"
@@ -32,30 +32,30 @@ class CScript :
 {
 private:
     const UINT              m_iScriptType;
-    std::unordered_map<string, tScriptParam>    m_umScriptParam;
+    vector<std::pair<string, tScriptParam>>    m_vScriptParam;
 
 public:
     UINT GetScriptType() { return m_iScriptType; }
-    const auto& GetScriptParam() { return m_umScriptParam; }
+    const auto& GetScriptParam() { return m_vScriptParam; }
 
 
 protected:
     void Instantiate(Ptr<CPrefab> _Prefab, Vec3 _vWorldPos, int _LayerIdx);
     void AppendScriptParam(const string& _Key, SCRIPT_PARAM _Param, void* _Data, float _min = 0.f, float _Max = 0.f, bool _View = false, const string& _Tooltip = {})
     {
-        m_umScriptParam[_Key] = tScriptParam{ _Param, _Data, _min, _Max, _View, _Tooltip};
+        m_vScriptParam.push_back({_Key, tScriptParam{_Param, _Data, _min, _Max, _View, _Tooltip} });
     }
 
     void AppendStaticFunction(const string& _Key, SCRIPT_PARAM _Param, string _Desc, StaticFuncPtr _StaticFuncPtr)
     {
         // 새로운 스크립트 파라미터 생성 후 맵에 추가
-        m_umScriptParam[_Key] = tScriptParam{ _Param, nullptr , 0.f, 0.f, false, _Desc ,_StaticFuncPtr };
+        m_vScriptParam.push_back({ _Key, tScriptParam{ _Param, nullptr , 0.f, 0.f, false, _Desc ,_StaticFuncPtr } });
     }
 
     void AppendMemberFunction(const string& _Key, SCRIPT_PARAM _Param, string _Desc, std::function<void()> _MemberFunc)
     {
         // 새로운 스크립트 파라미터 생성 후 맵에 추가
-        m_umScriptParam[_Key] = tScriptParam{ _Param, nullptr , 0.f, 0.f, false, _Desc ,nullptr, _MemberFunc };
+        m_vScriptParam.push_back({ _Key, tScriptParam{ _Param, nullptr , 0.f, 0.f, false, _Desc ,nullptr, _MemberFunc } });
     }
 
 public:
