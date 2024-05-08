@@ -248,6 +248,7 @@ enum class DEBUG_SHAPE
 
 	CUBE,
 	SPHERE,
+	CONE,
 };
 
 enum class LIGHT_TYPE
