@@ -29,6 +29,8 @@ private:
 public:
     virtual void init() override;
     virtual void enter() override {}
+    virtual void exit() override;
+
 private:
     void InitSound();
     void CreateDefaultMesh();

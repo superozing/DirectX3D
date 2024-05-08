@@ -50,7 +50,6 @@ private:
 
 public:
 	virtual void tick() override;
-	
 	virtual void enter() override {}
 
 	void AddTask(const tTask& _Task) { m_vecTask.push_back(_Task); }

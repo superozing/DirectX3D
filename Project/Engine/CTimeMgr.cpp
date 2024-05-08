@@ -64,7 +64,7 @@ void CTimeMgr::tick()
 	g_global.g_time += (float)m_DeltaTime;	
 }
 
-void CTimeMgr::enter()
+void CTimeMgr::exit()
 {
 	// 초당 빈도
 	QueryPerformanceFrequency(&m_Frequency);

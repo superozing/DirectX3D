@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <Engine\singleton.h>
 
 class CGameObjectEx;
@@ -15,6 +15,7 @@ private:
 public:
     void init();
     void progress();    
+    
     CGameObjectEx* GetEditorCam() { return m_EditorCam; }
 };
 

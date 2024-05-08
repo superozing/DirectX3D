@@ -81,6 +81,7 @@ public:
     virtual void init() override;
     virtual void tick() override;
     virtual void enter() override {}
+    virtual void exit() override;
 
 private:
     void CreateMRT();

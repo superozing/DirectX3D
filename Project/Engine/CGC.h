@@ -13,6 +13,7 @@ private:
 public:
     virtual void tick() override;
     virtual void enter() override {}
+    virtual void exit() override;
 
     void Add(CEntity* _Entity)
     {

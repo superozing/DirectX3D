@@ -1,13 +1,16 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 
 #include "CTaskMgr.h"
 #include "CLevelMgr.h"
+#include "CAssetMgr.h"
+#include "CRenderMgr.h"
+#include "CTimeMgr.h"
+#include "CCollisionMgr.h"
+#include "CGC.h"
+
 #include "CLevel.h"
 #include "CGameObject.h"
 #include "CComponent.h"
-
-#include "CAssetMgr.h"
-#include "CRenderMgr.h"
 
 CTaskMgr::CTaskMgr()
 	: m_bCreateObject(false)
@@ -53,7 +56,7 @@ void CTaskMgr::tick()
 			list<CGameObject*> queue;
 			queue.push_back(pDeadObj);
 
-			// ·¹ÀÌ¾î¿¡ ÀÔ·ÂµÇ´Â ¿ÀºêÁ§Æ® Æ÷ÇÔ, ±× ¹Ø¿¡ ´Þ¸° ÀÚ½Äµé±îÁö ¸ðµÎ È®ÀÎ
+			// ë ˆì´ì–´ì— ìž…ë ¥ë˜ëŠ” ì˜¤ë¸Œì íŠ¸ í¬í•¨, ê·¸ ë°‘ì— ë‹¬ë¦° ìžì‹ë“¤ê¹Œì§€ ëª¨ë‘ í™•ì¸
 			while (!queue.empty())
 			{
 				CGameObject* pObject = queue.front();
@@ -109,7 +112,12 @@ void CTaskMgr::tick()
 			CLevel* pNextLevel = (CLevel*)m_vecTask[i].Param_1;
 			LEVEL_STATE State = (LEVEL_STATE)m_vecTask[i].Param_2;
 
-			CRenderMgr::GetInst()->ClearCamera();
+			CRenderMgr::GetInst()->exit();
+			CTimeMgr::GetInst()->exit();
+			CAssetMgr::GetInst()->exit();
+			CCollisionMgr::GetInst()->exit();
+			CGC::GetInst()->exit();
+
 			CLevelMgr::GetInst()->ChangeLevel_Task(pNextLevel, State);
 
 			m_bCreateObject = true;
@@ -133,7 +141,7 @@ void CTaskMgr::Clear()
 {
 	m_bCreateObject = false;
 	
-	// ¾ïÁö
+	// ì–µì§€
 	if (1 == m_DeleteFrameCount)
 	{
 		++m_DeleteFrameCount;

@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CAssetMgr.h"
 
 #include "CMesh.h"
@@ -17,6 +17,22 @@ CAssetMgr::~CAssetMgr()
 	
 }
 
+void CAssetMgr::exit()
+{
+	for (UINT i = 0; i < (UINT)ASSET_TYPE::END; ++i)
+	{
+		for (auto it = m_mapAsset[i].begin(); it != m_mapAsset[i].end(); )
+		{
+			// ì—”ì§„ ì—ì…‹ì´ ì•„ë‹Œ ì—ì…‹ì„ ë§µì—ì„œ ì œê±°
+			if (!it->second->IsEngineAsset())
+				it = m_mapAsset[i].erase(it);
+			else
+				++it;
+		}
+	}
+
+}
+
 void CAssetMgr::AddAsset(const wstring& _strKey, CAsset* _Asset)
 {
 	ASSET_TYPE Type = _Asset->GetType();
@@ -33,7 +49,7 @@ Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey
 									 , UINT _Width, UINT _Height, DXGI_FORMAT _Format
 									 , UINT _Flag, D3D11_USAGE _Usage)
 {
-	// »ı¼ºÇÏ·Á´Â ÅØ½ºÃÄ¿Í µ¿ÀÏÇÑ Å°ÀÇ ÅØ½ºÃÄ°¡ ÀÌ¹Ì AssetMgr ¿¡ ÀÖ´Ù¸é
+	// ìƒì„±í•˜ë ¤ëŠ” í…ìŠ¤ì³ì™€ ë™ì¼í•œ í‚¤ì˜ í…ìŠ¤ì³ê°€ ì´ë¯¸ AssetMgr ì— ìˆë‹¤ë©´
 	Ptr<CTexture> pTex = FindAsset<CTexture>(_strKey);	
 	assert(!pTex.Get());
 
@@ -41,7 +57,7 @@ Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey
 
 	if (FAILED(pTex->Create(_Width, _Height, _Format, _Flag, _Usage)))
 	{
-		MessageBox(nullptr, L"ÅØ½ºÃÄ »ı¼º ½ÇÆĞ", L"¸®¼Ò½º »ı¼º ½ÇÆĞ", MB_OK);
+		MessageBox(nullptr, L"í…ìŠ¤ì³ ìƒì„± ì‹¤íŒ¨", L"ë¦¬ì†ŒìŠ¤ ìƒì„± ì‹¤íŒ¨", MB_OK);
 		return nullptr;
 	}
 
@@ -52,7 +68,7 @@ Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey
 
 Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, ComPtr<ID3D11Texture2D> _tex2D)
 {
-	// »ı¼ºÇÏ·Á´Â ÅØ½ºÃÄ¿Í µ¿ÀÏÇÑ Å°ÀÇ ÅØ½ºÃÄ°¡ ÀÌ¹Ì AssetMgr ¿¡ ÀÖ´Ù¸é
+	// ìƒì„±í•˜ë ¤ëŠ” í…ìŠ¤ì³ì™€ ë™ì¼í•œ í‚¤ì˜ í…ìŠ¤ì³ê°€ ì´ë¯¸ AssetMgr ì— ìˆë‹¤ë©´
 	Ptr<CTexture> pTex = FindAsset<CTexture>(_strKey);
 	assert(!pTex.Get());
 
@@ -60,7 +76,7 @@ Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, ComPtr<ID3D11Text
 
 	if (FAILED(pTex->Create(_tex2D)))
 	{
-		MessageBox(nullptr, L"ÅØ½ºÃÄ »ı¼º ½ÇÆĞ", L"¸®¼Ò½º »ı¼º ½ÇÆĞ", MB_OK);
+		MessageBox(nullptr, L"í…ìŠ¤ì³ ìƒì„± ì‹¤íŒ¨", L"ë¦¬ì†ŒìŠ¤ ìƒì„± ì‹¤íŒ¨", MB_OK);
 		return nullptr;
 	}
 
