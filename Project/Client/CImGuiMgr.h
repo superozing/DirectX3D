@@ -37,6 +37,7 @@ public: // Callback
 
 public: // Viewport
     void CopyRTTex();
+    Ptr<CTexture> GetViewportTexture() { return m_ViewPortTexture; }
 
 private:
     void tick();

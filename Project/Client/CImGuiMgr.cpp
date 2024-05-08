@@ -20,6 +20,7 @@
 #include "Outliner.h"
 #include "MenuUI.h"
 #include "ListUI.h"
+#include "RTViewPort.h"
 
 #include "ParamUI.h"
 
@@ -76,6 +77,7 @@ void CImGuiMgr::init(HWND _hMainWnd, ComPtr<ID3D11Device> _Device
     {
         style.WindowRounding = 0.0f;
         style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+
     }
 
     // Setup Platform/Renderer backends
@@ -259,6 +261,10 @@ void CImGuiMgr::create_ui()
 
     // List
     pUI = new ListUI;
+    AddUI(pUI->GetID(), pUI);
+
+    // Viewport
+    pUI = new RTViewPort;
     AddUI(pUI->GetID(), pUI);
 }
 
