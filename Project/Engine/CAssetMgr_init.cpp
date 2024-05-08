@@ -602,6 +602,20 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
 	AddAsset(L"PointLightShader", pShader.Get());
 
+	// =================
+	// PointLight Shader
+	// =================
+	pShader = new CGraphicsShader;
+	pShader->CreateVertexShader(L"shader\\light.fx", "VS_SpotLight");
+	pShader->CreatePixelShader(L"shader\\light.fx", "PS_SpotLight");
+
+	pShader->SetRSType(RS_TYPE::CULL_BACK);
+	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+	pShader->SetBSType(BS_TYPE::ONE_ONE);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_LIGHTING);
+
+	AddAsset(L"SpotLightShader", pShader.Get());
+
 	// ============
 	// Merge Shader
 	// ============
@@ -766,6 +780,13 @@ void CAssetMgr::CreateDefaultMaterial()
 	pMtrl->SetTexParam(TEX_PARAM::TEX_0, FindAsset<CTexture>(L"PositionTargetTex"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_1, FindAsset<CTexture>(L"NormalTargetTex"));
 	AddAsset<CMaterial>(L"PointLightMtrl", pMtrl);
+
+	// SpotLightMtrl
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"SpotLightShader"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_0, FindAsset<CTexture>(L"PositionTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_1, FindAsset<CTexture>(L"NormalTargetTex"));
+	AddAsset<CMaterial>(L"SpotLightMtrl", pMtrl);
 
 	// MergeMtrl
 	pMtrl = new CMaterial(true);

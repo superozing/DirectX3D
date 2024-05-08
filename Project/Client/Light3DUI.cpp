@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "Light3DUI.h"
 
 #include <Engine\CLight3D.h>
@@ -24,11 +24,10 @@ void Light3DUI::render_update()
 	int LightType = (int)info.LightType;
 	Vec3 vColor = info.vColor;
 	Vec3 vAmbient = info.vAmbient;
-	Vec3 vWorldDir = info.vWorldDir;
 	float fRadius = info.fRadius;
 	float fAngle = info.fAngle;
-
-
+	Vec3 vWorldDir = info.vWorldDir;
+	vWorldDir.ToDegree();
 
 	ImGui::Text("Light Type");
 	ImGui::SameLine(0, 20); ImGui::PushItemWidth(150);
@@ -48,7 +47,7 @@ void Light3DUI::render_update()
 
 		ImGui::Text("Radius");
 		ImGui::SameLine(0, 48); ImGui::PushItemWidth(200);
-		ImGui::DragFloat("##LightRadius", &fRadius);
+		ImGui::DragFloat("##LightRadius", &fRadius, 0.1f, 0.f, 0.f, "%.1f");
 	}
 	else
 	{
@@ -58,20 +57,23 @@ void Light3DUI::render_update()
 
 		ImGui::Text("Radius");
 		ImGui::SameLine(0, 48); ImGui::PushItemWidth(200);
-		ImGui::DragFloat("##LightRadius", &fRadius);
+		ImGui::DragFloat("##LightRadius", &fRadius, 0.1f, 0.f, 0.f, "%.1f");
 
 		ImGui::Text("LightDir");
 		ImGui::SameLine(0, 34); ImGui::PushItemWidth(200);
-		ImGui::DragFloat3("##LightDir", vWorldDir);
+		ImGui::DragFloat3("##LightDir", vWorldDir, 0.1f, 0.f, 0.f, "%.1f");
 
 		ImGui::Text("Angle");
 		ImGui::SameLine(0, 55); ImGui::PushItemWidth(200);
-		ImGui::SliderAngle("##LightAngle", &fAngle, 0.f, 360.f);
+		ImGui::SliderAngle("##LightAngle", &fAngle, 0.f, 179.f);
+	
+		vWorldDir.ToRadian();
 	}
 
 	GetTargetObject()->Light3D()->SetLightType((LIGHT_TYPE)LightType);
 	GetTargetObject()->Light3D()->SetLightColor(vColor);
 	GetTargetObject()->Light3D()->SetAmbient(vAmbient);
 	GetTargetObject()->Light3D()->SetRadius(fRadius);
+	GetTargetObject()->Light3D()->SetDir(vWorldDir);
 	GetTargetObject()->Light3D()->SetAngle(fAngle);
 }

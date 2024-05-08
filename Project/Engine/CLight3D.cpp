@@ -18,11 +18,19 @@ CLight3D::~CLight3D()
 
 void CLight3D::finaltick()
 {
-	m_Info.vWorldDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+	if (LIGHT_TYPE::SPOT != (LIGHT_TYPE)m_Info.LightType)
+		m_Info.vWorldDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+	
 	m_Info.vWorldPos = Transform()->GetWorldPos();
 
 	if (LIGHT_TYPE::POINT == (LIGHT_TYPE)m_Info.LightType)
 		Transform()->SetRelativeScale(Vec3(m_Info.fRadius * 2.f, m_Info.fRadius * 2.f, m_Info.fRadius * 2.f));
+	else if (LIGHT_TYPE::SPOT == (LIGHT_TYPE)m_Info.LightType)
+	{
+		float fHalfAngle = m_Info.fAngle / 2.f;
+		float fRange = m_Info.fRadius * tanf(fHalfAngle);
+		Transform()->SetRelativeScale(Vec3(fRange * 2.f, fRange * 2.f, m_Info.fRadius));
+	}
 
 	// 광원을 등록하면서 자신이 구조화 버퍼에서 속한 인덱스 값 가져오기
 	m_LightIdx = CRenderMgr::GetInst()->RegisterLight3D(this);
@@ -34,7 +42,9 @@ void CLight3D::finaltick()
 	}
 	else if (m_Info.LightType == (int)LIGHT_TYPE::SPOT)
 	{
-		GamePlayStatic::DrawDebugCone(m_Info.vWorldPos, Vec3(m_Info.fRadius, m_Info.fRadius, m_Info.fRadius), Vec3(0.f, 0.f, 0.f), Vec3(0.f, 1.f, 0.1f), true);
+		float fHalfAngle = m_Info.fAngle / 2.f;
+		float fRange = m_Info.fRadius * tanf(fHalfAngle);
+		GamePlayStatic::DrawDebugCone(m_Info.vWorldPos, Vec3(fRange * 2.f, fRange * 2.f, m_Info.fRadius), m_Info.vWorldDir, Vec3(0.f, 1.f, 0.1f), true);
 	}
 }
 

@@ -147,6 +147,11 @@ void CRenderMgr::render_debug()
 			m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 			m_pDebugObj->MeshRender()->GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, 1); // Sphere Mesh임을 쉐이더 코드에 알림
 		}
+		else if (DEBUG_SHAPE::CONE == (*iter).eShape)
+		{
+			m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+			m_pDebugObj->MeshRender()->GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, 2); // Cone Mesh임을 쉐이더 코드에 알림
+		}
 		else
 		{
 			m_pDebugObj->MeshRender()->GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, 0);
