@@ -26,7 +26,6 @@ CameraUI::~CameraUI()
 {
 }
 
-
 void CameraUI::render_update()
 {
 
@@ -212,4 +211,15 @@ void CameraUI::render_update()
     }
     pCamera->SetLayerCheck(LayerCheckNext);
     ImGui::EndChild();
+
+    ShakeUI();
+}
+#include <Engine/CCameraShake.h>
+
+void CameraUI::ShakeUI()
+{
+    CGameObject* pTarget = GetTargetObject();
+
+    auto shake = pTarget->Camera()->GetShake();
+
 }

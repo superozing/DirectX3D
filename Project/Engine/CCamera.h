@@ -75,6 +75,8 @@ public:
     void SetShake(shared_ptr<class CCameraShake> _shake);
     void Shake();
 
+    shared_ptr<CCameraShake> GetShake() { return m_pShake; }
+
 public:
     virtual void begin() override;
     virtual void finaltick() override;
