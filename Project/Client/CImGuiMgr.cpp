@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CImGuiMgr.h"
 
 #include <Engine/CEngine.h>
@@ -8,6 +8,7 @@
 #include <Engine/CLevel.h>
 #include <Engine/CGameObject.h>
 
+#include <Engine\CRenderMgr.h>
 #include <Engine/CPathMgr.h>
 
 #include "imgui.h"
@@ -169,13 +170,19 @@ FOCUS_STATE CImGuiMgr::GetFocus_release()
     }
 }
 
+void CImGuiMgr::CopyRTTex()
+{
+    m_ViewPortTexture = CRenderMgr::GetInst()->CopyRTTex();
+}
+
 void CImGuiMgr::tick()
 {
     ImGui_ImplDX11_NewFrame();
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
 
-    
+    ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+
     if (m_bDemoUI)
     {
         ImGui::ShowDemoWindow(&m_bDemoUI);
@@ -191,6 +198,8 @@ void CImGuiMgr::tick()
 
 void CImGuiMgr::render()
 {
+    this->CopyRTTex();
+
     for (const auto& pair : m_mapUI)
     {
         pair.second->render();

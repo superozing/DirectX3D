@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <Engine/singleton.h>
 
 class UI;
@@ -25,6 +25,8 @@ private:
 
     static bool         isViewportFocused;
 
+    Ptr<CTexture>       m_ViewPortTexture;
+
 public:
     void init(HWND _hMainWnd, ComPtr<ID3D11Device> _Device, ComPtr <ID3D11DeviceContext> _Context);
     void progress();
@@ -33,11 +35,15 @@ public: // Callback
     static FOCUS_STATE GetFocus_debug();
     static FOCUS_STATE GetFocus_release();
 
+public: // Viewport
+    void CopyRTTex();
+
 private:
     void tick();
     void render();
     void create_ui();
     void observe_content();
+
 
 public:
     UI* FindUI(const string& _strUIName);   
