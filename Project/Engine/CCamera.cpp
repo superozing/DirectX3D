@@ -30,6 +30,7 @@ CCamera::CCamera()
 {
 	Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
 	m_AspectRatio = vResol.x / vResol.y;
+	SetShake();
 }
 
 CCamera::~CCamera()
@@ -287,6 +288,7 @@ void CCamera::SaveToFile(FILE* _File)
 #define TagFar "[Far]"
 #define TagLayerCheck "[LayerCheck]"
 #define TagPriority "[Priority]"
+#define TagShake "[Shake]"
 
 void CCamera::SaveToFile(ofstream& fout)
 {
@@ -314,6 +316,15 @@ void CCamera::SaveToFile(ofstream& fout)
 
 	fout << TagPriority << endl;
 	fout << m_CameraPriority << endl;
+
+	fout << TagShake << endl;
+	if (m_pShake.get()) {
+		fout << 1 << endl;
+		fout << *m_pShake.get() << endl;
+	}
+	else {
+		fout << (int)0 << endl;
+	}
 }
 
 void CCamera::LoadFromFile(FILE* _File)
@@ -355,4 +366,12 @@ void CCamera::LoadFromFile(ifstream& fin)
 
 	Utils::GetLineUntilString(fin, TagPriority);
 	fin >> m_CameraPriority;
+
+	int exist;
+	Utils::GetLineUntilString(fin, TagShake);
+	fin >> exist;
+	if (exist) {
+		fin >> *m_pShake.get();
+		m_pShake->RegistCamera(GetOwner());
+	}
 }

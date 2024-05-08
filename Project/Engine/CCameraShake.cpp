@@ -140,3 +140,49 @@ void CCameraShake::finaltick()
 		Releasing();
 	}
 }
+
+#define TagShakeDuration "[ShakeDuration]"
+#define TagShakePosIntens "[PosIntensity]"
+#define TagShakeRotIntens "[RotIntensity]"
+#define TagShakeFrequency "[Frequency]"
+#define TagShakeRelease "[ReleaseDuration]"
+
+ofstream& operator<<(ofstream& fout, const CCameraShake& _shake)
+{
+	fout << TagShakeDuration << endl;
+	fout << _shake.m_fShakeDuration << endl;
+
+	fout << TagShakePosIntens << endl;
+	fout << _shake.m_vShakePosIntensity << endl;
+
+	fout << TagShakeRotIntens << endl;
+	fout << _shake.m_vShakeRotationIntensity << endl;
+
+	fout << TagShakeFrequency << endl;
+	fout << _shake.m_fShakeFrequency<< endl;
+
+	fout << TagShakeRelease<< endl;
+	fout << _shake.m_fReleaseDuration<< endl;
+
+	return fout;
+}
+
+ifstream& operator>>(ifstream& fin, CCameraShake& _shake)
+{
+	Utils::GetLineUntilString(fin, TagShakeDuration);
+	fin >> _shake.m_fShakeDuration;
+
+	Utils::GetLineUntilString(fin, TagShakePosIntens);
+	fin >> _shake.m_vShakePosIntensity;
+
+	Utils::GetLineUntilString(fin, TagShakeRotIntens);
+	fin >> _shake.m_vShakeRotationIntensity;
+
+	Utils::GetLineUntilString(fin, TagShakeFrequency);
+	fin >> _shake.m_fShakeFrequency;
+
+	Utils::GetLineUntilString(fin, TagShakeRelease);
+	fin >> _shake.m_fShakeDuration;
+
+	return fin;
+}

@@ -40,5 +40,8 @@ public:
     CCameraShake(CGameObject* _target);
     CCameraShake(CGameObject* _target, float _duration, Vec3 _posScale, Vec3 _rotScale, float _frequency , float _releaseTime);
     ~CCameraShake();
+
+    friend ofstream& operator<<(ofstream& fout, const CCameraShake& _shake);
+    friend ifstream& operator>>(ifstream& fin, CCameraShake& _shake);
 };
 
