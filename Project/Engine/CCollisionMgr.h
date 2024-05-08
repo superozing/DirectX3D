@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 class CCollider2D;
 
@@ -15,12 +15,12 @@ union CollisionID
 
 
 class CCollisionMgr
-	: public CSingleton<CCollisionMgr>
+	: public CManager<CCollisionMgr>
 {
 	SINGLE(CCollisionMgr);
 private:
 	UINT					m_matrix[(UINT)LAYER::LAYER_MAX];
-	map<UINT_PTR, bool>		m_mapPrevInfo;		// ÀÌÀü ÇÁ·¹ÀÓ¿¡ µÎ Ãæµ¹Ã¼ÀÇ Ãæµ¹¿©ºÎ
+	map<UINT_PTR, bool>		m_mapPrevInfo;		// ì´ì „ í”„ë ˆì„ì— ë‘ ì¶©ëŒì²´ì˜ ì¶©ëŒì—¬ë¶€
 
 public:
 	void LayerCheck(UINT _left, UINT _right);
@@ -35,11 +35,11 @@ public:
 	}
 
 public:
-	void tick();
+	virtual void tick() override;
 
 private:
 	void CollisionBtwLayer(UINT _left, UINT _right);
-	bool CollisionBtwCollider(CCollider2D* _pLeft, CCollider2D* _pRight);		// »ç°¢Çü Ãæµ¹Ã¼³¢¸® Ãæµ¹ °Ë»ç
-	bool CollisionBtwCirCleCollider(CCollider2D* _pLeft, CCollider2D* _pRight);	// ¿øÇü Ãæµ¹Ã¼³¢¸® Ãæµ¹ °Ë»ç
+	bool CollisionBtwCollider(CCollider2D* _pLeft, CCollider2D* _pRight);		// ì‚¬ê°í˜• ì¶©ëŒì²´ë¼ë¦¬ ì¶©ëŒ ê²€ì‚¬
+	bool CollisionBtwCirCleCollider(CCollider2D* _pLeft, CCollider2D* _pRight);	// ì›í˜• ì¶©ëŒì²´ë¼ë¦¬ ì¶©ëŒ ê²€ì‚¬
 };
 

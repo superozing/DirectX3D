@@ -12,7 +12,7 @@ class CMRT;
 
 
 class CRenderMgr :
-    public CSingleton<CRenderMgr>
+    public CManager<CRenderMgr>
 {
     SINGLE(CRenderMgr);
 private:
@@ -78,8 +78,8 @@ public:
     void SetClearColor(const Vec4& _ClearColor) { m_vClearColor = _ClearColor; }
     Vec4 GetClearColor() { return m_vClearColor;}
 public:
-    void init();
-    void tick();
+    virtual void init() override;
+    virtual void tick() override;
 
 private:
     void CreateMRT();

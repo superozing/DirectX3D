@@ -178,6 +178,9 @@
     <ClInclude Include="CRandomMgr.h">
       <Filter>04. Manager\RandomMgr</Filter>
     </ClInclude>
+    <ClInclude Include="CManager.h">
+      <Filter>04. Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -350,6 +353,9 @@
     </ClCompile>
     <ClCompile Include="SimpleMath.cpp">
       <Filter>01. Header</Filter>
+    </ClCompile>
+    <ClCompile Include="CManager.cpp">
+      <Filter>04. Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

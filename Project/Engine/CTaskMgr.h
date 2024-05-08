@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 enum class TASK_TYPE
 {
@@ -36,7 +36,7 @@ struct tTask
 
 
 class CTaskMgr
-	: public CSingleton<CTaskMgr>
+	: public CManager<CTaskMgr>
 {
 	SINGLE(CTaskMgr);
 
@@ -49,7 +49,7 @@ private:
 	int				m_DeleteFrameCount;
 
 public:
-	void tick();
+	virtual void tick() override;
 	void AddTask(const tTask& _Task) { m_vecTask.push_back(_Task); }
 	bool GetObjectEvent() { return m_bCreateObject || m_bDeleteObject; }
 	bool GetAssetEvent() { return m_bAssetChange; }

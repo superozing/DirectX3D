@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 // Key Value
 enum KEY
@@ -39,7 +39,7 @@ struct FKeyData
 typedef FOCUS_STATE(*FOCUS_CALLBACK)(void);
 
 class CKeyMgr
-	: public CSingleton<CKeyMgr>
+	: public CManager<CKeyMgr>
 {
 	SINGLE(CKeyMgr);
 private:
@@ -63,7 +63,7 @@ public:
 	FOCUS_STATE GetFocusState() const { return m_FocusState; }
 
 public:
-	void init();
-	void tick();
+	virtual void init() override;
+	virtual void tick() override;
 };
 
