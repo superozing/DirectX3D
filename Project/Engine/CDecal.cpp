@@ -27,7 +27,7 @@ void CDecal::UpdateData()
 
 void CDecal::render()
 {
-	if (nullptr == GetMesh() && nullptr == GetMaterial())
+	if (nullptr == GetMesh() || nullptr == GetMaterial())
 		return;
 
 	UpdateData();
