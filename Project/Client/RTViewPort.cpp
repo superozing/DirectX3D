@@ -1,15 +1,29 @@
 ﻿#include "pch.h"
 #include "RTViewPort.h"
 
+#include <Engine\CRenderMgr.h>
+#include <Engine\CDevice.h>
 #include "CImGuiMgr.h"
 
 RTViewPort::RTViewPort()
 	: UI("Viewport", "##Viewport")
 {
+	
+	m_ViewPortTexture = CAssetMgr::GetInst()->CreateTexture(L"CopyRTtex",
+			CDevice::GetInst()->GetRenderResolution().x,
+			CDevice::GetInst()->GetRenderResolution().y,
+			DXGI_FORMAT_R8G8B8A8_UNORM,
+			D3D11_BIND_SHADER_RESOURCE);
+	
 }
 
 RTViewPort::~RTViewPort()
 {
+}
+
+void RTViewPort::CopyRTTex()
+{
+      CRenderMgr::GetInst()->CopyRTTex(m_ViewPortTexture);
 }
 
 void RTViewPort::tick()
@@ -18,8 +32,10 @@ void RTViewPort::tick()
 
 void RTViewPort::render_update()
 {
+	CopyRTTex();
+
     ImGui::GetWindowDrawList()->AddImage(
-        CImGuiMgr::GetInst()->GetViewportTexture()->GetSRV().Get(),
+        m_ViewPortTexture->GetSRV().Get(),
         ImGui::GetCursorScreenPos(),
         ImGui::GetWindowPos() + ImGui::GetWindowSize(),
         ImVec2(0, 0), ImVec2(1, 1));

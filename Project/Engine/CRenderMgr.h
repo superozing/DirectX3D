@@ -60,7 +60,7 @@ public:
     void CopyRenderTargetToPostProcessTarget();
     Ptr<CTexture> GetPostProcessTex() { return m_PostProcessTex; }
 
-    Ptr<CTexture> CopyRTTex();
+    Ptr<CTexture> CopyRTTex(Ptr<CTexture> pTexture);
 
     void RegisterEditorCamera(CCamera* _Cam) { m_EditorCam = _Cam; }
     void ClearCamera() { m_vecCam.clear(); }

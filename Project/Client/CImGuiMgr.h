@@ -25,21 +25,16 @@ private:
 
     static bool         isViewportFocused;
 
-    Ptr<CTexture>       m_ViewPortTexture;
-
 public:
     void init(HWND _hMainWnd, ComPtr<ID3D11Device> _Device, ComPtr <ID3D11DeviceContext> _Context);
     void progress();
+
+    bool& GetbViewportFocused() { return isViewportFocused; }
 
 public: // Callback
     static FOCUS_STATE GetFocus_debug();
     static FOCUS_STATE GetFocus_release();
 
-public: // Viewport
-    void CopyRTTex();
-    Ptr<CTexture> GetViewportTexture() { return m_ViewPortTexture; }
-
-    bool& GetbViewportFocused() { return isViewportFocused; }
 private:
     void tick();
     void render();
