@@ -97,5 +97,7 @@ public:
     CLONE(CCamera);
     CCamera();
     ~CCamera();
+
+    friend class CameraUI;
 };
 

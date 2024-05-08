@@ -43,5 +43,7 @@ public:
 
     friend ofstream& operator<<(ofstream& fout, const CCameraShake& _shake);
     friend ifstream& operator>>(ifstream& fin, CCameraShake& _shake);
+
+    friend class CameraUI;
 };
 

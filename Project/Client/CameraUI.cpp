@@ -220,6 +220,13 @@ void CameraUI::ShakeUI()
 {
     CGameObject* pTarget = GetTargetObject();
 
-    auto shake = pTarget->Camera()->GetShake();
+    auto shake = pTarget->Camera()->m_pShake;
 
+    if (!TitleCollapse("CameraShake")) return;
+
+    ImGui::Text("ShakeDuration"); ImGui::SameLine(); ImGui::DragFloat("##ShakeDuration", &shake->m_fShakeDuration, 0.1f, 0.1f);
+    ImGui::Text("ShakePos"); ImGui::SameLine(); ImGui::DragFloat3("##ShakePos", shake->m_vShakePosIntensity, 0.1f, 0.1f);
+    ImGui::Text("ShakeRot"); ImGui::SameLine(); ImGui::DragFloat3("##ShakeRot", shake->m_vShakeRotationIntensity, 0.1f, 0.1f);
+    ImGui::Text("ShakeFrequency"); ImGui::SameLine(); ImGui::DragFloat("##ShakeFrequency", &shake->m_fShakeFrequency, 0.1f, 0.1f);
+    ImGui::Text("ReleaseDuration"); ImGui::SameLine(); ImGui::DragFloat("##ReleaseDuration", &shake->m_fReleaseDuration, 0.1f, 0.1f);
 }
