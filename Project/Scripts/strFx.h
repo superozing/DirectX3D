@@ -1,6 +1,7 @@
 #pragma once
 
 #define FXdebug L"shader\\debug.fx"
+#define FXdecal L"shader\\decal.fx"
 #define FXfunc L"shader\\func.fx"
 #define FXlight L"shader\\light.fx"
 #define FXmerge L"shader\\merge.fx"

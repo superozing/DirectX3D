@@ -266,9 +266,9 @@ enum class LIGHT_TYPE
 enum class SHADER_DOMAIN
 {
 	// Deferred
-	DOMAIN_DEFERRED,
-	DOMAIN_DECAL,
-	DOMAIN_LIGHTING,
+	DOMAIN_DEFERRED,	// 자연 렌더링
+	DOMAIN_DECAL,		// 데칼 (문신)
+	DOMAIN_LIGHTING,	// 광원 연산
 
 	// Merge
 	DOMAIN_MERGE, // Deferred 정보를 SwapChain 타겟으로 이동
@@ -316,6 +316,7 @@ enum class MRT_TYPE
 {
 	SWAPCHAIN,		// RT 1, DS 1
 	DEFERRED,		// RT 5, DS 0
+	DECAL,			// RT 2, DS 0
 	LIGHT,			// RT 2, DS 0
 	SHADOW_DEPTH,	// RT 1, DS 1
 

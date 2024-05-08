@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CImGuiMgr.h"
 
 #include <Engine/CEngine.h>
@@ -25,7 +25,7 @@
 bool CImGuiMgr::isViewportFocused;
 
 CImGuiMgr::CImGuiMgr()
-    : m_bDemoUI(true)
+    : m_bDemoUI(false)
     , m_hNotify(nullptr)
 {
 
