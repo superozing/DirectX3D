@@ -133,21 +133,23 @@ void CRenderMgr::CopyRenderTargetToPostProcessTarget()
 	CONTEXT->CopyResource(m_PostProcessTex->GetTex2D().Get(), pRTTex->GetTex2D().Get());
 }
 
-void CRenderMgr::CopyRTTex()
+Ptr<CTexture> CRenderMgr::CopyRTTex()
 {
 	Ptr<CTexture> pRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
 
-	m_CopyRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"CopyRTtex");
+	Ptr<CTexture> CopyTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"CopyRTtex");
 
-	if (m_CopyRTTex == nullptr)
+	if (CopyTex == nullptr)
 	{
-		m_CopyRTTex = CAssetMgr::GetInst()->CreateTexture(L"CopyRTtex",
+		CopyTex = CAssetMgr::GetInst()->CreateTexture(L"CopyRTtex",
 			CDevice::GetInst()->GetRenderResolution().x,
 			CDevice::GetInst()->GetRenderResolution().y,
 			DXGI_FORMAT_R8G8B8A8_UNORM,
 			D3D11_BIND_SHADER_RESOURCE);
 	}
 
-	CONTEXT->CopyResource(m_CopyRTTex->GetTex2D().Get(), pRTTex->GetTex2D().Get());
+	CONTEXT->CopyResource(CopyTex->GetTex2D().Get(), pRTTex->GetTex2D().Get());
+
+	return CopyTex;
 }
 
