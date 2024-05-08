@@ -11,7 +11,6 @@ CCameraEffect::CCameraEffect()
 	, m_fShakeFrequency(6.f)
 	, m_fReleaseDuration(0.2f)
 	, m_fZoomSpeed(10.f)
-	, m_fDoubleClickDuration(0.32f)
 {
 	AppendScriptParam("ShakeDuration", SCRIPT_PARAM::FLOAT, &m_fShakeDuration, 0);
 	AppendScriptParam("ShakeTimer", SCRIPT_PARAM::FLOAT, &m_fShakeTimer, 0, 0, true);
@@ -150,24 +149,11 @@ void CCameraEffect::tick()
 		Camera()->SetFOV(Camera()->GetFOV() + m_fZoomSpeed * DT);
 	}
 
-	if (m_bDoubleClickCheck) {
-		m_fDoubleClickDurationTimer -= DT;
-
-		if (KEY_TAP(MBTN)) {
-			RegistInitial();
-			m_bDoubleClickCheck = false;
-			m_fDoubleClickDurationTimer = 0.f;
-		}
-		else if (m_fDoubleClickDurationTimer <= 0.f) {
-			m_fDoubleClickDurationTimer = 0.f;
-			m_bDoubleClickCheck = false;
-			SendToInitial();
-		}
+	if (KEY_TAP(MBTN) && KEY_PRESSED(KEY::LCTRL)) {
+		RegistInitial();
 	}
-
-	if (KEY_TAP(MBTN)) {
-		m_bDoubleClickCheck = true;
-		m_fDoubleClickDurationTimer = m_fDoubleClickDuration;
+	else if (KEY_TAP(MBTN)) {
+		SendToInitial();
 	}
 
 	// 카메라 쉐이킹
@@ -175,7 +161,8 @@ void CCameraEffect::tick()
 	{
 		Shaking();
 	}
-	else if (m_bRelease) {
+	else if (m_bRelease) 
+	{
 		Releasing();
 	}
 }
