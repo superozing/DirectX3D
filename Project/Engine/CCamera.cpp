@@ -78,6 +78,7 @@ void CCamera::finaltick()
 
 	// 이동 x 회전 = view 행렬
 	m_matView = matTrans * matRotate;
+	m_matViewInv = XMMatrixInverse(nullptr, m_matView);
 
 
 	// 투영 방식에 따른 투영 행렬을 계산한다.
@@ -95,7 +96,7 @@ void CCamera::finaltick()
 		m_matProj = XMMatrixPerspectiveFovLH(m_FOV, m_AspectRatio, 1.f, m_Far);
 	}
 
-	
+	m_matProjInv = XMMatrixInverse(nullptr, m_matProj);
 }
 
 void CCamera::SetCameraPriority(int _Priority)
@@ -188,7 +189,9 @@ void CCamera::render()
 {
 	// 계산한 view 행렬과 proj 행렬을 전역변수에 담아둔다.
 	g_Transform.matView = m_matView;
+	g_Transform.matViewInv = m_matViewInv;
 	g_Transform.matProj = m_matProj;
+	g_Transform.matProjInv = m_matProjInv;
 
 	// Domain 순서대로 렌더링
 

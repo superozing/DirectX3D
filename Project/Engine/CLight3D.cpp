@@ -21,6 +21,9 @@ void CLight3D::finaltick()
 	m_Info.vWorldDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
 	m_Info.vWorldPos = Transform()->GetWorldPos();
 
+	if (LIGHT_TYPE::POINT == (LIGHT_TYPE)m_Info.LightType)
+		Transform()->SetRelativeScale(Vec3(m_Info.fRadius * 2.f, m_Info.fRadius * 2.f, m_Info.fRadius * 2.f));
+
 	// 광원을 등록하면서 자신이 구조화 버퍼에서 속한 인덱스 값 가져오기
 	m_LightIdx = CRenderMgr::GetInst()->RegisterLight3D(this);
 
@@ -37,22 +40,17 @@ void CLight3D::finaltick()
 
 void CLight3D::render()
 {
-	if (LIGHT_TYPE::DIRECTIONAL == (LIGHT_TYPE)m_Info.LightType)
+	m_LightMtrl->SetScalarParam(SCALAR_PARAM::INT_0, m_LightIdx);
+
+	if (LIGHT_TYPE::DIRECTIONAL != (LIGHT_TYPE)m_Info.LightType)
 	{
-		m_LightMtrl->SetScalarParam(SCALAR_PARAM::INT_0, m_LightIdx);
-		m_LightMtrl->UpdateData();
-		m_VolumeMesh->render();
+		Matrix matVWInv = g_Transform.matViewInv * Transform()->GetWorldInvMat();
+		m_LightMtrl->SetScalarParam(SCALAR_PARAM::MAT_0, matVWInv);
 	}
-
-	else if (LIGHT_TYPE::POINT == (LIGHT_TYPE)m_Info.LightType)
-	{
-
-	}
-
-	else if (LIGHT_TYPE::SPOT == (LIGHT_TYPE)m_Info.LightType)
-	{
-
-	}
+	// 
+	Transform()->UpdateData();
+	m_LightMtrl->UpdateData();
+	m_VolumeMesh->render();
 }
 
 void CLight3D::SetLightType(LIGHT_TYPE _type)

@@ -225,9 +225,20 @@ enum class SCRIPT_PARAM
 	VEC4,
 	OBJECT,
 	COLOR,
+	FUNC_STATIC,
+	FUNC_MEMBER,
 };
 
+enum class FUNC_PARAM
+{
+	INT,
+	FLOAT,
+	VEC2,
+	VEC3,
+	VEC4,
 
+	END,
+};
 
 enum class DEBUG_SHAPE
 {

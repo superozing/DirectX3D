@@ -26,7 +26,10 @@ private:
     
     // 변환 행렬
     Matrix                  m_matView;
+    Matrix                  m_matViewInv;
+
     Matrix                  m_matProj;
+    Matrix                  m_matProjInv;
 
     UINT                    m_LayerCheck;
 
@@ -54,7 +57,10 @@ public:
     float GetFar() { return m_Far; }
 
     const Matrix& GetViewMat() { return m_matView; }
+    const Matrix& GetViewInvMat() { return m_matViewInv; }
+
     const Matrix& GetProjMat() { return m_matProj; }
+    const Matrix& GetProjInvMat() { return m_matProjInv; }
 
     void SetCameraPriority(int _Priority);
     void LayerCheck(UINT _LayerIdx, bool _bCheck);

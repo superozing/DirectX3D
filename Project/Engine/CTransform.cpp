@@ -76,6 +76,9 @@ void CTransform::finaltick()
 			m_arrWorldDir[i].Normalize();
 		}
 	}
+
+	// 역행렬 구하기
+	m_matWorldInv = XMMatrixInverse(nullptr, m_matWorld);
 }
 
 void CTransform::UpdateData()
