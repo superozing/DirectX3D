@@ -120,7 +120,7 @@ void CImGuiMgr::progress()
 
 FOCUS_STATE CImGuiMgr::GetFocus_debug()
 {
-    if (ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
+  /*  if (ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
     {
         return FOCUS_STATE::OTHER;
     }
@@ -131,14 +131,14 @@ FOCUS_STATE CImGuiMgr::GetFocus_debug()
     else
     {
         return FOCUS_STATE::NONE;
-    }
+    }*/
 
     // 뷰포트 부착 시: 
     // 1. 아래 코드 주석 해제 
     // 2. 위 쪽 분기 코드 제거
     // 3. 뷰포트를 그리는 함수 마지막에 다음 구문 추가: /*CImGuiMgr::isViewportFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_None);*/
 
-    /*
+    
     // 현재 포커싱 된 창이 없을 경우
     if (GetFocus() == nullptr)
     {
@@ -157,7 +157,7 @@ FOCUS_STATE CImGuiMgr::GetFocus_debug()
     {
         return FOCUS_STATE::OTHER;
     }
-    */
+    
 }
 
 FOCUS_STATE CImGuiMgr::GetFocus_release()

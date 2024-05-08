@@ -23,4 +23,6 @@ void RTViewPort::render_update()
         ImGui::GetCursorScreenPos(),
         ImGui::GetWindowPos() + ImGui::GetWindowSize(),
         ImVec2(0, 0), ImVec2(1, 1));
+
+    CImGuiMgr::GetInst()->GetbViewportFocused() = ImGui::IsWindowFocused(ImGuiFocusedFlags_None);
 }

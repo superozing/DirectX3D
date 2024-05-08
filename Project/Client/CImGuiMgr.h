@@ -39,6 +39,7 @@ public: // Viewport
     void CopyRTTex();
     Ptr<CTexture> GetViewportTexture() { return m_ViewPortTexture; }
 
+    bool& GetbViewportFocused() { return isViewportFocused; }
 private:
     void tick();
     void render();
