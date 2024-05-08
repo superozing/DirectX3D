@@ -36,6 +36,7 @@ public:
 
 public:
 	virtual void tick() override;
+	virtual void enter() override {}
 
 private:
 	void CollisionBtwLayer(UINT _left, UINT _right);

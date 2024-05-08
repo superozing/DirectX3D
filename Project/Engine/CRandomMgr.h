@@ -19,6 +19,8 @@ public:
     /// </summary>
     virtual void init() override;
 
+    virtual void enter() override {}
+
     /// <summary>
     /// 랜덤한 값을 추출합니다
     /// </summary>

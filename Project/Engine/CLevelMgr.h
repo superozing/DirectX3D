@@ -13,6 +13,7 @@ private:
 public:
     virtual void init() override;
     virtual void tick() override;
+    virtual void enter() override {}
 
 public:
     void ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextStartState);

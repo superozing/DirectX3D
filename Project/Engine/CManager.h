@@ -7,7 +7,7 @@ class CManager :
 {
 public:
     virtual void init() {}
-    virtual void enter() {}
     virtual void tick() {}
+    virtual void enter() = 0;
 };
 

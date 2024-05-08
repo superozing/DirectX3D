@@ -12,6 +12,7 @@ private:
 
 public:
     virtual void tick() override;
+    virtual void enter() override {}
 
     void Add(CEntity* _Entity)
     {
