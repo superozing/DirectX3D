@@ -26,6 +26,8 @@ private:
 
     Vec3 m_vInitialPos;
     Vec3 m_vInitialRotation;
+    float m_fInitialFOV;
+    float m_fInitialScale;
 
     float m_fZoomSpeed;
 
@@ -36,7 +38,6 @@ private:
 public:
     void Shake(float _duration, Vec3 _scale, float _releaseTime);
     void RegistInitial();
-    void RegistInitial(Vec3 _pos, Vec3 _rot);
     void SendToInitial();
 
 public:

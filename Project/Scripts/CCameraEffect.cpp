@@ -24,6 +24,8 @@ CCameraEffect::CCameraEffect()
 	AppendScriptParam("ShakeFrequnecy", SCRIPT_PARAM::FLOAT, &m_fShakeFrequency, 0);
 	AppendScriptParam("ShakeFreqTimer", SCRIPT_PARAM::FLOAT, &m_fShakeFrequencyTimer, 0, 0, true);
 
+	AppendScriptParam("ZoomSpeed", SCRIPT_PARAM::FLOAT, &m_fZoomSpeed, 0);
+
 	RegistInitial();
 }
 
@@ -112,15 +114,11 @@ void CCameraEffect::Shake(float _duration, Vec3 _scale, float _releaseTime)
 
 void CCameraEffect::RegistInitial()
 {
-	if (!GetOwner() || !Transform()) return;
+	if (!GetOwner() || !Transform() || !Camera()) return;
 	m_vInitialPos = Transform()->GetRelativePos();
 	m_vInitialRotation = Transform()->GetRelativeRotation();
-}
-
-void CCameraEffect::RegistInitial(Vec3 _pos, Vec3 _rot)
-{
-	m_vInitialPos = _pos;
-	m_vInitialRotation = _rot;
+	m_fInitialFOV = Camera()->GetFOV();
+	m_fInitialScale = Camera()->GetScale();
 }
 
 void CCameraEffect::SendToInitial()
@@ -128,6 +126,8 @@ void CCameraEffect::SendToInitial()
 	if (!GetOwner() || !Transform()) return;
 	Transform()->SetRelativePos(m_vInitialPos);
 	Transform()->SetRelativeRotation(m_vInitialRotation);
+	Camera()->SetFOV(m_fInitialFOV);
+	Camera()->SetScale(m_fInitialScale);
 }
 
 void CCameraEffect::tick()
@@ -141,6 +141,7 @@ void CCameraEffect::tick()
 		SendToInitial();
 	}
 
+	// 줌 인, 줌 아웃
 	if (WHEEL_CHECK(WHEEL_UP)) {
 		Camera()->SetFOV(Camera()->GetFOV() - m_fZoomSpeed * DT);
 	}
@@ -149,6 +150,7 @@ void CCameraEffect::tick()
 		Camera()->SetFOV(Camera()->GetFOV() + m_fZoomSpeed * DT);
 	}
 
+	// 상태 세이브, 로드
 	if (KEY_TAP(MBTN) && KEY_PRESSED(KEY::LCTRL)) {
 		RegistInitial();
 	}
