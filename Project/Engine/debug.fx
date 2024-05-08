@@ -36,7 +36,8 @@ VS_OUT VS_DebugShape(VS_IN _in)
     // 현재 렌더링하는 메쉬가 Cone 메쉬일 때,
     else if (2 == g_int_0)
     {
-        
+        output.vViewPos = mul(float4(_in.vPos, 1.f), g_matWV).xyz;
+        output.vViewNormal = normalize(mul(float4(_in.vNormal, 0.f), g_matWV).xyz);
     }
     
     return output;
@@ -63,7 +64,8 @@ float4 PS_DebugShape(VS_OUT _in) : SV_Target
     }
     else if (2 == g_int_0)
     {
-        
+        float3 vEye = normalize(_in.vViewPos);
+        vOutColor.a = 1.f - pow(saturate(abs(dot(-vEye, _in.vViewNormal))), 0.1f);
     }
 
     return vOutColor;

@@ -30,6 +30,7 @@ void CLight3D::finaltick()
 		float fHalfAngle = m_Info.fAngle / 2.f;
 		float fRange = m_Info.fRadius * tanf(fHalfAngle);
 		Transform()->SetRelativeScale(Vec3(fRange * 2.f, fRange * 2.f, m_Info.fRadius));
+		Transform()->SetRelativeRotation(m_Info.vWorldDir);
 	}
 
 	// 광원을 등록하면서 자신이 구조화 버퍼에서 속한 인덱스 값 가져오기
@@ -57,7 +58,7 @@ void CLight3D::render()
 		Matrix matVWInv = g_Transform.matViewInv * Transform()->GetWorldInvMat();
 		m_LightMtrl->SetScalarParam(SCALAR_PARAM::MAT_0, matVWInv);
 	}
-	// 
+	
 	Transform()->UpdateData();
 	m_LightMtrl->UpdateData();
 	m_VolumeMesh->render();

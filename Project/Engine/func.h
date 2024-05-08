@@ -20,6 +20,8 @@ namespace RoRMath
 	int	  ClampInt(int _input, int _min, int _max = INT_MAX);
 	float ClampFloat(float _input, float _min);
 	float ClampFloat(float _input, float _min, float _max);
+
+	Vec3 Cross(Vec3 A, Vec3 B);
 }
 
 namespace GamePlayStatic

@@ -481,7 +481,7 @@ void CAssetMgr::CreateDefaultMesh()
 	vecVtx.push_back(v);
 
 	// Body
-	iSliceCount = 40; // 원뿔의 세로 분할 개수
+	iSliceCount = 80; // 원뿔의 세로 분할 개수
 
 	fSliceAngle = XM_2PI / iSliceCount;
 
@@ -492,7 +492,10 @@ void CAssetMgr::CreateDefaultMesh()
 	{
 		float theta = i * fSliceAngle;
 
-		v.vPos = Vec3(fRadius * cosf(theta), fRadius * sinf(theta), fHeight);
+		float x = fRadius * cosf(theta);
+		float y = fRadius * sinf(theta);
+
+		v.vPos = Vec3(x, y, fHeight);
 		v.vUV = Vec2(fUVXStep * i, fUVYStep);
 		v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
 		v.vNormal = Vec3(0.f, 0.f, 1.f);
@@ -508,6 +511,40 @@ void CAssetMgr::CreateDefaultMesh()
 			vecIdx.push_back(i + 1);
 		}
 
+		// 정점의 법선 벡터 다시 계산
+		if (i > 0)
+		{
+			size_t lastVtxIdx = vecVtx.size() - 1;
+
+			Vec3& vtx1 = vecVtx[lastVtxIdx - 1].vPos; // 가장 마지막 바로 전 VtxIdx
+			Vec3& vtx2 = vecVtx[lastVtxIdx].vPos;     // 가장 마지막에 추가된 VtxIdx
+
+			// 아랫면의 한 정점을 기준으로 연결된 두 벡터를 외적하여 노말 벡터를 재계산
+			Vec3 vNormal = RoRMath::Cross(vtx1 - vecVtx[0].vPos, vtx2 - vecVtx[0].vPos).Normalize();
+
+			vecVtx[lastVtxIdx - 1].vNormal = vNormal;
+			vecVtx[lastVtxIdx].vNormal = vNormal;
+		}
+	}
+
+	// 아래면의 정점 추가
+	for (UINT i = 0; i <= iSliceCount; ++i)
+	{
+		float theta = i * fSliceAngle;
+
+		v.vPos = Vec3(fRadius * cosf(theta), fRadius * sinf(theta), fHeight);
+		v.vUV = Vec2(fUVXStep * i, fUVYStep);
+		v.vNormal = Vec3(0.f, 0.f, 1.f);
+		v.vTangent = Vec3(1.f, 0.f, 0.f);
+		v.vBinormal = Vec3(0.f, 1.f, 0.f);
+		vecVtx.push_back(v);
+
+		if (i < iSliceCount)
+		{
+			vecIdx.push_back(iSliceCount + 2); // 아랫면 중심점 인덱스
+			vecIdx.push_back(i + 1 + iSliceCount + 1);
+			vecIdx.push_back(i + 2 + iSliceCount + 1);
+		}
 	}
 
 	pMesh = new CMesh(true);
@@ -603,13 +640,13 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	AddAsset(L"PointLightShader", pShader.Get());
 
 	// =================
-	// PointLight Shader
+	// SpotLight Shader
 	// =================
 	pShader = new CGraphicsShader;
 	pShader->CreateVertexShader(L"shader\\light.fx", "VS_SpotLight");
 	pShader->CreatePixelShader(L"shader\\light.fx", "PS_SpotLight");
 
-	pShader->SetRSType(RS_TYPE::CULL_BACK);
+	pShader->SetRSType(RS_TYPE::CULL_FRONT);
 	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
 	pShader->SetBSType(BS_TYPE::ONE_ONE);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_LIGHTING);
