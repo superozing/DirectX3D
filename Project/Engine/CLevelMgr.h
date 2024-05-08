@@ -10,10 +10,13 @@ class CLevelMgr :
 private:
     CLevel*         m_CurLevel;
 
+    CGameObject*    m_EditorCam;
+
 public:
     virtual void init() override;
     virtual void tick() override;
-    virtual void enter() override {}
+    virtual void enter() override;
+    virtual void exit() override;
 
 public:
     void ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextStartState);

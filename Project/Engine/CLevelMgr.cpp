@@ -1,13 +1,16 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CLevelMgr.h"
 
 #include "CRenderMgr.h"
 #include "CLevel.h"
 #include "CLayer.h"
+#include "CGameObject.h"
 
 #include "CDevice.h"
 #include "CAssetMgr.h"
 #include "CCollisionMgr.h"
+#include "CTimeMgr.h"
+#include "CGC.h"
 
 #include "CTaskMgr.h"
 
@@ -34,10 +37,10 @@ void CLevelMgr::tick()
 	if (nullptr == m_CurLevel)
 		return;
 
-	// ÀÌÀü ÇÁ·¹ÀÓ¿¡ µî·ÏµÈ ¿ÀºêÁ§Æ®µé clear
+	// ì´ì „ í”„ë ˆì„ì— ë“±ë¡ëœ ì˜¤ë¸Œì íŠ¸ë“¤ clear
 	m_CurLevel->clear();
 
-	// ·¹º§ÀÌ Play »óÅÂÀÏ °æ¿ì¿¡¸¸ tick() È£Ãâ
+	// ë ˆë²¨ì´ Play ìƒíƒœì¼ ê²½ìš°ì—ë§Œ tick() í˜¸ì¶œ
 	if (m_CurLevel->GetState() == LEVEL_STATE::PLAY)
 	{
 		m_CurLevel->tick();
@@ -45,11 +48,28 @@ void CLevelMgr::tick()
 	
 	m_CurLevel->finaltick();
 
-	// Ãæµ¹ Ã³¸®
+	// ì¶©ëŒ ì²˜ë¦¬
 	CCollisionMgr::GetInst()->tick();
 
 	// Render
 	CRenderMgr::GetInst()->tick();
+}
+
+void CLevelMgr::enter()
+{
+	// ì—ë””í„° ì¹´ë©”ë¼ë¥¼ ë ˆë²¨ì— ì¶”ê°€
+	if (m_EditorCam && m_CurLevel)
+		m_CurLevel->AddObject(m_EditorCam, 0);
+}
+
+void CLevelMgr::exit()
+{
+	// ì—ë””í„° ì¹´ë©”ë¼ë¥¼ ë ˆë²¨ì—ì„œ ì ì‹œ ì œê±°
+	if (m_CurLevel != nullptr)
+	{
+		m_EditorCam = m_CurLevel->FindObjectByName(L"Editor Camera");
+		m_EditorCam->DisconnectWithLayer();
+	}
 }
 
 void CLevelMgr::ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextLevelStartState)
@@ -77,6 +97,14 @@ void CLevelMgr::ChangeLevelState(LEVEL_STATE _State)
 void CLevelMgr::ChangeLevel_Task(CLevel* _NextLevel, LEVEL_STATE _NextLevelState)
 {
 	assert(!(m_CurLevel == _NextLevel));
+
+	CLevelMgr::GetInst()->exit();
+	CRenderMgr::GetInst()->exit();
+	CTimeMgr::GetInst()->exit();
+	CAssetMgr::GetInst()->exit();
+	CCollisionMgr::GetInst()->exit();
+	CGC::GetInst()->exit();
+
 		
 	if (nullptr != m_CurLevel)
 		delete m_CurLevel;
@@ -85,4 +113,8 @@ void CLevelMgr::ChangeLevel_Task(CLevel* _NextLevel, LEVEL_STATE _NextLevelState
 
 	if (nullptr != m_CurLevel)
 		m_CurLevel->ChangeState(_NextLevelState);
+
+
+	CLevelMgr::GetInst()->enter();
+
 }

@@ -2,11 +2,6 @@
 
 #include "CTaskMgr.h"
 #include "CLevelMgr.h"
-#include "CAssetMgr.h"
-#include "CRenderMgr.h"
-#include "CTimeMgr.h"
-#include "CCollisionMgr.h"
-#include "CGC.h"
 
 #include "CLevel.h"
 #include "CGameObject.h"
@@ -111,15 +106,7 @@ void CTaskMgr::tick()
 		{
 			CLevel* pNextLevel = (CLevel*)m_vecTask[i].Param_1;
 			LEVEL_STATE State = (LEVEL_STATE)m_vecTask[i].Param_2;
-
-			CRenderMgr::GetInst()->exit();
-			CTimeMgr::GetInst()->exit();
-			CAssetMgr::GetInst()->exit();
-			CCollisionMgr::GetInst()->exit();
-			CGC::GetInst()->exit();
-
 			CLevelMgr::GetInst()->ChangeLevel_Task(pNextLevel, State);
-
 			m_bCreateObject = true;
 
 			break;
