@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CLevelMgr.h"
 
 #include "CRenderMgr.h"
@@ -34,10 +34,10 @@ void CLevelMgr::tick()
 	if (nullptr == m_CurLevel)
 		return;
 
-	// ÀÌÀü ÇÁ·¹ÀÓ¿¡ µî·ÏµÈ ¿ÀºêÁ§Æ®µé clear
+	// ì´ì „ í”„ë ˆìž„ì— ë“±ë¡ëœ ì˜¤ë¸Œì íŠ¸ë“¤ clear
 	m_CurLevel->clear();
 
-	// ·¹º§ÀÌ Play »óÅÂÀÏ °æ¿ì¿¡¸¸ tick() È£Ãâ
+	// ë ˆë²¨ì´ Play ìƒíƒœì¼ ê²½ìš°ì—ë§Œ tick() í˜¸ì¶œ
 	if (m_CurLevel->GetState() == LEVEL_STATE::PLAY)
 	{
 		m_CurLevel->tick();
@@ -45,7 +45,7 @@ void CLevelMgr::tick()
 	
 	m_CurLevel->finaltick();
 
-	// Ãæµ¹ Ã³¸®
+	// ì¶©ëŒ ì²˜ë¦¬
 	CCollisionMgr::GetInst()->tick();
 
 	// Render
