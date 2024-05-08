@@ -145,6 +145,11 @@ enum class DS_TYPE
 
 	NO_TEST_NO_WRITE,	// 깊이 테스트 X			깊이 기록 X
 
+	// Volume Mesh 용
+	BACKFACE_CHECK,
+	FRONTFACE_CHECK,
+	STENCIL_CHECK,
+
 	END,
 };
 

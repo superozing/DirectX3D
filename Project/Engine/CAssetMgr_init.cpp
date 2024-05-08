@@ -595,7 +595,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->CreateVertexShader(L"shader\\light.fx", "VS_PointLight");
 	pShader->CreatePixelShader(L"shader\\light.fx", "PS_PointLight");
 
-	pShader->SetRSType(RS_TYPE::CULL_BACK);
+	pShader->SetRSType(RS_TYPE::CULL_FRONT);
 	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
 	pShader->SetBSType(BS_TYPE::ONE_ONE);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_LIGHTING);

@@ -259,6 +259,46 @@ int CDevice::CreateDepthStencilState()
 	hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::NO_TEST_NO_WRITE].GetAddressOf());
 	if (FAILED(hr)) return E_FAIL;
 
+
+
+	//// BackFace Check
+	//tDesc.DepthEnable = true;
+	//tDesc.DepthFunc = D3D11_COMPARISON_GREATER;
+	//tDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	//tDesc.StencilEnable = true;
+
+	//tDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+	//tDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_INCR;
+
+	//hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::BACKFACE_CHECK].GetAddressOf());
+	//if (FAILED(hr)) return E_FAIL;
+
+	//// FrontFace Check
+	//tDesc.DepthEnable = true;
+	//tDesc.DepthFunc = D3D11_COMPARISON_LESS;
+	//tDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	//tDesc.StencilEnable = true;
+
+	//tDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+	//tDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_INCR;
+	//tDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_DECR;
+
+	//hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::FRONTFACE_CHECK].GetAddressOf());
+	//if (FAILED(hr)) return E_FAIL;
+
+	//// Stencil Check
+	//tDesc.DepthEnable = false;
+	//tDesc.DepthFunc = D3D11_COMPARISON_NEVER;
+	//tDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	//tDesc.StencilEnable = true;
+
+	//tDesc.FrontFace.StencilFunc = D3D11_COMPARISON_EQUAL;
+	//tDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_ZERO;
+	//tDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_ZERO;
+
+	//hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::STENCIL_CHECK].GetAddressOf());
+	//if (FAILED(hr)) return E_FAIL;
+
 	return S_OK;
 }
 
