@@ -36,6 +36,9 @@ private:
     // NoiseTexture
     vector<Ptr<CTexture>>   m_vecNoiseTex;
 
+    // CopyRTTexture
+    Ptr<CTexture>           m_CopyRTTex;
+
     // render function pointer
     typedef void(CRenderMgr::* RENDER_FUNC)(void);
     RENDER_FUNC             m_RenderFunc;
@@ -59,6 +62,9 @@ public:
 
     void CopyRenderTargetToPostProcessTarget();
     Ptr<CTexture> GetPostProcessTex() { return m_PostProcessTex; }
+
+    void CopyRTTex();
+    Ptr<CTexture> GetCopiedRTTex() { return m_CopyRTTex; }
 
     void RegisterEditorCamera(CCamera* _Cam) { m_EditorCam = _Cam; }
     void ClearCamera() { m_vecCam.clear(); }
