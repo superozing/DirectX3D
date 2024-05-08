@@ -108,9 +108,7 @@ PS_OUT PS_PointLight(VS_OUT _in)
     // Deferred 단계에서 그려진게 없다면 빛을 줄 수 없다.
     if (-1.f == vViewPos.w)
     {
-        output.vDiffuse = float4(1.f, 0.f, 0.f, 1.f);
-        return output;
-        //discard;
+        discard;
     }
                 
     // Sphere 볼륨메쉬의 로컬 공간으로 데려간다.
@@ -119,24 +117,21 @@ PS_OUT PS_PointLight(VS_OUT _in)
     // 로컬공간에서 구(Sphere) 내부에 있는지 체크한다.
     if (0.5f < length(vLocal))
     {
-        output.vDiffuse = float4(0.f, 0.f, 1.f, 1.f);
-        return output;
-        //discard;
+        discard;
     }
     
-    //// 해당 지점의 Normal 값을 가져온다.
-    //float3 vViewNormal = normalize(g_tex_1.Sample(g_sam_0, vScreenUV).xyz);
+    // 해당 지점의 Normal 값을 가져온다.
+    float3 vViewNormal = normalize(g_tex_1.Sample(g_sam_0, vScreenUV).xyz);
        
-    //// 해당 지점이 받을 빛의 세기를 구한다.
-    //tLightColor LightColor = (tLightColor) 0.f;
-    //CalculateLight3D(g_int_0, vViewPos.xyz, vViewNormal, LightColor);
+    // 해당 지점이 받을 빛의 세기를 구한다.
+    tLightColor LightColor = (tLightColor) 0.f;
+    CalLight3D(g_int_0, vViewPos.xyz, vViewNormal, LightColor);
         
-    //output.vDiffuse = LightColor.vColor + LightColor.vAmbient;
-    //output.vSpecular = LightColor.vSpecular;
-    //output.vDiffuse.a = 1.f;
-    //output.vSpecular.a = 1.f;
+    output.vDiffuse = LightColor.vColor + LightColor.vAmbient;
+    output.vSpecular = LightColor.vSpecular;
+    output.vDiffuse.a = 1.f;
+    output.vSpecular.a = 1.f;
     
-    output.vDiffuse = float4(0.f, 1.f, 0.f, 1.f);
     return output;
 }
 

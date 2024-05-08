@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "CEntity.h"
 
 
@@ -33,6 +33,7 @@ public:
     inline class CLight3D* Light3D() { return GetOwner()->Light3D();}
     inline class CTileMap* TileMap() { return GetOwner()->TileMap();}
     inline class CSkyBox* SkyBox() { return GetOwner()->SkyBox();}
+    inline class CDecal* Decal() { return GetOwner()->Decal();}
 
     class CRenderComponent* GetRenderComponent() { return m_Owner->GetRenderComopnent(); }
 

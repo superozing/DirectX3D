@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "CTransform.h"
 #include "CMeshRender.h"
@@ -11,9 +11,9 @@
 #include "CTileMap.h"
 #include "CParticleSystem.h"
 #include "CSkybox.h"
+#include "CDecal.h"
 
 //#include "CCollider3D.h"
 //#include "CAnimator3D.h"
 
-//#include "Decal.h"
 //#include "Landscape.h"

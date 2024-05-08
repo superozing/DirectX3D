@@ -113,9 +113,9 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->AddComponent(new CLight3D);
 
 	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
-	//pObj->Transform()->SetRelativeRotation(Vec3(XM_PI / 4.f, XM_PI / 4.f, 0.f));
+	pObj->Transform()->SetRelativeRotation(Vec3(XM_PI / 4.f, XM_PI / 4.f, 0.f));
 
-	pObj->Light3D()->SetLightType(LIGHT_TYPE::POINT);
+	pObj->Light3D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
 	pObj->Light3D()->SetLightColor(Vec3(1.f, 1.f, 1.f));
 	pObj->Light3D()->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
 	pObj->Light3D()->SetSpecular(Vec3(0.2f, 0.2f, 0.2f));
@@ -128,7 +128,6 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
 	pObj->Light3D()->SetLightColor(Vec3(0.3f, 1.f, 0.3f));
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
-
 
 	// SkyBox 용 오브젝트 추가
 	pObj = new CGameObject;
@@ -148,6 +147,17 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
+	// Decal 
+	pObj = new CGameObject;
+	pObj->SetName(L"Decal");
+
+	pObj->AddComponent(new CTransform);
+	pObj->AddComponent(new CDecal);
+
+	pObj->Transform()->SetRelativePos(Vec3(-200.f, -170.f, 500.f));
+	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+
+	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
 	// Player Object 생성
 	pObj = new CGameObject;
