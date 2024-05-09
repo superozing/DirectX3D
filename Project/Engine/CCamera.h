@@ -95,7 +95,7 @@ public:
     void render_postprocess();
     void Merge();
 
-private:
+public:
 
     virtual void SaveToFile(FILE* _File) override;
     virtual void SaveToFile(ofstream& fout) override;
