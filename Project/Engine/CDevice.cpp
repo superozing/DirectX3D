@@ -2,6 +2,7 @@
 #include "CDevice.h"
 
 #include "CConstBuffer.h"
+#include "CStructuredBuffer.h"
 #include "CAssetMgr.h"
 
 CDevice::CDevice()
@@ -11,12 +12,20 @@ CDevice::CDevice()
 	, m_arrDS{}
 	, m_arrBS{}
 	, m_arrSampler{}
+	, m_Light2DBuffer(nullptr)
+	, m_Light3DBuffer(nullptr)
 {
 }
 
 CDevice::~CDevice()
 {	
 	Delete_Array(m_arrCB);
+
+	if (nullptr != m_Light2DBuffer)
+		delete m_Light2DBuffer;
+
+	if (nullptr != m_Light3DBuffer)
+		delete m_Light3DBuffer;
 }
 
 int CDevice::init(HWND _hWnd, Vec2 _vResolution)
@@ -80,6 +89,11 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution)
 		return E_FAIL;
 	}
 
+	if (FAILED(CreateLightBuffer()))
+	{
+		MessageBox(nullptr, L"Light Buffer 생성 실패", L"Device 초기화 실패", MB_OK);
+		return E_FAIL;
+	}
 
 	// ViewPort 설정
 	D3D11_VIEWPORT ViewportDesc = {};
@@ -400,6 +414,17 @@ int CDevice::CreateConstBuffer()
 
 	m_arrCB[(UINT)CB_TYPE::GLOBAL_DATA] = new CConstBuffer(CB_TYPE::GLOBAL_DATA);
 	m_arrCB[(UINT)CB_TYPE::GLOBAL_DATA]->Create(sizeof(tGlobalData), 1);
+
+	return S_OK;
+}
+
+int CDevice::CreateLightBuffer()
+{
+	m_Light2DBuffer = new CStructuredBuffer;
+	m_Light2DBuffer->Create(sizeof(tLightInfo), 10, SB_TYPE::READ_ONLY, true);
+
+	m_Light3DBuffer = new CStructuredBuffer;
+	m_Light3DBuffer->Create(sizeof(tLightInfo), 10, SB_TYPE::READ_ONLY, true);
 
 	return S_OK;
 }

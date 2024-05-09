@@ -15,7 +15,6 @@
 
 CRenderMgr::CRenderMgr()
 	: m_arrMRT{}
-	, m_Light2DBuffer(nullptr)
 	, m_pDebugObj(nullptr)
 	, m_DebugPosition(true)
 	, m_EditorCam(nullptr)
@@ -29,12 +28,6 @@ CRenderMgr::~CRenderMgr()
 {
 	if (nullptr != m_pDebugObj)
 		delete m_pDebugObj;
-
-	if (nullptr != m_Light2DBuffer)
-		delete m_Light2DBuffer;
-
-	if (nullptr != m_Light3DBuffer)
-		delete m_Light3DBuffer;
 
 	Delete_Array(m_arrMRT);
 }
@@ -199,9 +192,10 @@ void CRenderMgr::UpdateData()
 
 	if (!vecLight2DInfo.empty())
 	{
-		m_Light2DBuffer->SetData(vecLight2DInfo.data(), (UINT)vecLight2DInfo.size());
+		CDevice::GetInst()->GetLight2DBuffer()->SetData(vecLight2DInfo.data(), (UINT)vecLight2DInfo.size());
+		//m_Light2DBuffer->SetData(vecLight2DInfo.data(), (UINT)vecLight2DInfo.size());
 	}
-	m_Light2DBuffer->UpdateData(11);
+	CDevice::GetInst()->GetLight2DBuffer()->UpdateData(11);
 
 	vecLight2DInfo.clear();
 
@@ -216,9 +210,9 @@ void CRenderMgr::UpdateData()
 
 	if (!vecLight3DInfo.empty())
 	{
-		m_Light3DBuffer->SetData(vecLight3DInfo.data(), (UINT)vecLight3DInfo.size());
+		CDevice::GetInst()->GetLight3DBuffer()->SetData(vecLight3DInfo.data(), (UINT)vecLight3DInfo.size());
 	}
-	m_Light3DBuffer->UpdateData(12);
+	CDevice::GetInst()->GetLight3DBuffer()->UpdateData(12);
 
 	vecLight3DInfo.clear();
 }
