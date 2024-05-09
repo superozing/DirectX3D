@@ -61,7 +61,10 @@ void CTimeMgr::tick()
 	}
 
 	++m_iCall;	
-	g_global.g_time += (float)m_DeltaTime;	
+	g_global.g_time += (float)m_DeltaTime;
+	
+	// 레벨 누적 시간 추가
+	m_AccLevelTime += m_DeltaTime;
 }
 
 void CTimeMgr::exit()
@@ -70,6 +73,8 @@ void CTimeMgr::exit()
 	QueryPerformanceFrequency(&m_Frequency);
 
 	QueryPerformanceCounter(&m_PrevCount);
+
+	m_AccLevelTime = 0.;
 }
 
 void CTimeMgr::render()

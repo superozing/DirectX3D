@@ -20,6 +20,8 @@ private:
 	UINT			m_iCall;
 	double			m_Time;
 
+	double			m_AccLevelTime;
+
 	wchar_t			m_szText[256];
 
 public:
@@ -33,6 +35,8 @@ public:
 	void SetDTScale(float _DTScale) { m_DTScale = _DTScale; }
 
 	void LockDeltaTime(bool _Lock) { m_bLock = _Lock; }
+
+	double GetAccLevelTime() const { return m_AccLevelTime; }
 
 public:
 	virtual void init() override;
