@@ -12,6 +12,7 @@ private:
     TreeUI*             m_Tree;
 
     vector<wstring>     m_vecAssetFileName;
+    string m_strCurDirectory;
 
 public:
     void ReloadContent();
