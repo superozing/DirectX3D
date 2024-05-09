@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 
 #include "CTaskMgr.h"
 #include "CLevelMgr.h"
@@ -53,7 +53,7 @@ void CTaskMgr::tick()
 			list<CGameObject*> queue;
 			queue.push_back(pDeadObj);
 
-			// ·¹ÀÌ¾î¿¡ ÀÔ·ÂµÇ´Â ¿ÀºêÁ§Æ® Æ÷ÇÔ, ±× ¹Ø¿¡ ´Ş¸° ÀÚ½Äµé±îÁö ¸ğµÎ È®ÀÎ
+			// ë ˆì´ì–´ì— ì…ë ¥ë˜ëŠ” ì˜¤ë¸Œì íŠ¸ í¬í•¨, ê·¸ ë°‘ì— ë‹¬ë¦° ìì‹ë“¤ê¹Œì§€ ëª¨ë‘ í™•ì¸
 			while (!queue.empty())
 			{
 				CGameObject* pObject = queue.front();
@@ -133,7 +133,7 @@ void CTaskMgr::Clear()
 {
 	m_bCreateObject = false;
 	
-	// ¾ïÁö
+	// ì–µì§€
 	if (1 == m_DeleteFrameCount)
 	{
 		++m_DeleteFrameCount;

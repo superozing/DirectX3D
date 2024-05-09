@@ -20,11 +20,13 @@
 #define KEY_PRESSED(Key)			KEY_CHECK(Key, PRESSED, FOCUS_STATE::MAIN)
 #define KEY_RELEASED(Key)			KEY_CHECK(Key, RELEASED, FOCUS_STATE::MAIN)
 #define KEY_NONE(Key)				KEY_CHECK(Key, NONE, FOCUS_STATE::MAIN)
+#define WHEEL_CHECK(Key) (CKeyMgr::GetInst()->GetWheel() == Key && (CKeyMgr::GetInst()->GetFocusState() == FOCUS_STATE::MAIN))
 
 #define KEY_TAP_EDITOR(Key)			KEY_CHECK(Key, TAP, FOCUS_STATE::OTHER)
 #define KEY_PRESSED_EDITOR(Key)		KEY_CHECK(Key, PRESSED, FOCUS_STATE::OTHER)
 #define KEY_RELEASED_EDITOR(Key)	KEY_CHECK(Key, RELEASED, FOCUS_STATE::OTHER)
 #define KEY_NONE_EDITOR(Key)		KEY_CHECK(Key, NONE, FOCUS_STATE::OTHER)
+#define WHEEL_CHECK_EDITOR(Key) (CKeyMgr::GetInst()->GetWheel() == Key && (CKeyMgr::GetInst()->GetFocusState() == FOCUS_STATE::OTHER))
 
 
 //#define LAYER_MAX 32

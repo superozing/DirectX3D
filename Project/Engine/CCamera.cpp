@@ -15,8 +15,8 @@
 
 #include "CAssetMgr.h"
 
+#include "CCameraShake.h"
 #include "CLight3D.h"
-
 
 CCamera::CCamera()
 	: CComponent(COMPONENT_TYPE::CAMERA)
@@ -31,6 +31,7 @@ CCamera::CCamera()
 {
 	Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
 	m_AspectRatio = vResol.x / vResol.y;
+	SetShake();
 }
 
 CCamera::~CCamera()
@@ -53,14 +54,42 @@ struct CmpDescending
 	}
 };
 
+void CCamera::SetShake()
+{
+	m_pShake = make_shared<CCameraShake>(GetOwner()); 
+}
+
+void CCamera::SetShake(float _duration, Vec3 _posScale, Vec3 _rotScale, float _frequency, float _releaseTime)
+{
+	m_pShake = make_shared<CCameraShake>(GetOwner(), _duration, _posScale, _rotScale, _frequency, _releaseTime);
+}
+
+void CCamera::SetShake(shared_ptr<class CCameraShake> _shake)
+{
+	if (!_shake) return;
+
+	m_pShake = _shake;
+	m_pShake->RegistCamera(GetOwner());
+}
+
+void CCamera::Shake()
+{
+	m_pShake->Shake();
+}
+
 void CCamera::begin()
 {
 	// 카메라를 우선순위값에 맞게 RenderMgr 에 등록시킴
 	CRenderMgr::GetInst()->RegisterCamera(this, m_CameraPriority);
+	SetShake();
 }
 
 void CCamera::finaltick()
 {
+	if(m_pShake.get())
+		m_pShake->finaltick();
+
+
 	// 뷰 행렬을 계산한다.
 	// 카메라를 원점으로 이동시키는 이동 행렬
 	Vec3 vCamPos = Transform()->GetRelativePos();
@@ -287,6 +316,7 @@ void CCamera::SaveToFile(FILE* _File)
 #define TagFar "[Far]"
 #define TagLayerCheck "[LayerCheck]"
 #define TagPriority "[Priority]"
+#define TagShake "[Shake]"
 
 void CCamera::SaveToFile(ofstream& fout)
 {
@@ -314,6 +344,15 @@ void CCamera::SaveToFile(ofstream& fout)
 
 	fout << TagPriority << endl;
 	fout << m_CameraPriority << endl;
+
+	fout << TagShake << endl;
+	if (m_pShake.get()) {
+		fout << 1 << endl;
+		fout << *m_pShake.get() << endl;
+	}
+	else {
+		fout << (int)0 << endl;
+	}
 }
 
 void CCamera::LoadFromFile(FILE* _File)
@@ -355,4 +394,12 @@ void CCamera::LoadFromFile(ifstream& fin)
 
 	Utils::GetLineUntilString(fin, TagPriority);
 	fin >> m_CameraPriority;
+
+	int exist;
+	Utils::GetLineUntilString(fin, TagShake);
+	fin >> exist;
+	if (exist) {
+		fin >> *m_pShake.get();
+		m_pShake->RegistCamera(GetOwner());
+	}
 }
