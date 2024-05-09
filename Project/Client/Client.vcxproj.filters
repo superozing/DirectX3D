@@ -134,9 +134,6 @@
     <Filter Include="02. UI\7. Viewport">
       <UniqueIdentifier>{da2e8217-b280-4ad3-a4c6-87441e1d37b5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. UI\8. ContentBrowser">
-      <UniqueIdentifier>{92d5027f-cfef-4737-bdf0-3a816393073a}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -282,9 +279,6 @@
     </ClInclude>
     <ClInclude Include="RTViewPort.h">
       <Filter>02. UI\7. Viewport</Filter>
-    </ClInclude>
-    <ClInclude Include="ContentBrowser.h">
-      <Filter>02. UI\8. ContentBrowser</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -433,9 +427,6 @@
     </ClCompile>
     <ClCompile Include="RTViewPort.cpp">
       <Filter>02. UI\7. Viewport</Filter>
-    </ClCompile>
-    <ClCompile Include="ContentBrowser.cpp">
-      <Filter>02. UI\8. ContentBrowser</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

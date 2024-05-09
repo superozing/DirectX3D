@@ -12,45 +12,121 @@ Content::Content()
 	: UI("Content", "##Content")
 {
 	// ContentUI 자식으로 Tree 를 지정
-	m_Tree = new TreeUI("ContentTree");
-	m_Tree->ShowRootNode(false);
-	AddChildUI(m_Tree);
-	
+	m_ContentTree = new TreeUI("ContentTree");
+	m_ContentTree->ShowRootNode(false);
+
+	m_DirectoryTree = new TreeUI("DirectoryTree");
+	m_DirectoryTree->ShowRootNode(false);
+	//AddChildUI(m_Tree);
+		// 트리에 Delegate 를 등록한다.
+	m_DirectoryTree->AddSelectDelegate(this, (Delegate_1)&Content::SelectBrowser);
+
+	ResetBrowser();
 	// AssetMgr 의 에셋상태를 트리에 적용한다.
 	ResetContent();
 
 	// 트리에 Delegate 를 등록한다.
-	m_Tree->AddSelectDelegate(this, (Delegate_1)&Content::SelectAsset);
-
-	// 컨텐츠 폴더에 있는 에셋을 로딩한다.
-	ReloadContent();
+	m_ContentTree->AddSelectDelegate(this, (Delegate_1)&Content::SelectAsset);
 }
 
 Content::~Content()
 {
+	if (m_ContentTree) 
+	{
+		delete m_ContentTree;
+		m_ContentTree = nullptr;
+	}
+
+	if (m_DirectoryTree)
+	{
+		delete m_DirectoryTree;
+		m_DirectoryTree = nullptr;
+	}
+}
+
+void Content::AddDirectoryNode(TreeNode* _parent, const wstring& _path)
+{
+	namespace fs = std::filesystem;
+	for (const fs::directory_entry& entry : fs::directory_iterator(_path)) {
+		if (entry.is_directory()) {
+			auto node = m_DirectoryTree->AddTreeNode(_parent, entry.path().filename().string(), 0);
+			AddDirectoryNode(node, entry.path().native());
+		}
+	}
 }
 
 void Content::render_update()
 {
 	if (CTaskMgr::GetInst()->GetAssetEvent())
 	{
-		ResetContent();
+			ResetContent();
 	}
+
+	static float w = 200.0f;
+	float h = ImGui::GetWindowSize().y- 40.f;
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
+	ImGui::BeginChild("##Browser", ImVec2(w, h), true);
+	m_DirectoryTree->render_update();
+	ImGui::EndChild();
+
+	ImGui::SameLine();
+
+	ImGui::InvisibleButton("vsplitter", ImVec2(8.0f, h));
+	if (ImGui::IsItemActive())
+		w += ImGui::GetIO().MouseDelta.x;
+	ImGui::SameLine();
+	ImGui::BeginChild("##Content", ImVec2(0, h), true);
+	m_ContentTree->render_update();
+	ImGui::EndChild();
+
+	//ImGui::InvisibleButton("hsplitter", ImVec2(-1, 8.0f));
+	//if (ImGui::IsItemActive())
+	//	h += ImGui::GetIO().MouseDelta.y;
+	//ImGui::BeginChild("child3", ImVec2(0, 0), true);
+	//ImGui::EndChild();
+
+	ImGui::PopStyleVar();
+}
+
+void Content::ResetBrowser()
+{
+	// Tree Clear
+	m_DirectoryTree->ClearNode();
+
+	// 루트노드 추가
+	TreeNode* RootNode = m_DirectoryTree->AddTreeNode(nullptr, "Root", 0);
+
+	wstring contentPath = CPathMgr::GetContentPath();
+	AddDirectoryNode(RootNode, contentPath);
+}
+
+void Content::SelectBrowser(DWORD_PTR _Node)
+{
+	TreeNode* pNode = (TreeNode*)_Node;
+	string name = pNode->GetName();
+	while (pNode->GetParent() && pNode->GetParent()->GetName() != "Root") {
+		pNode = pNode->GetParent();
+		name = pNode->GetName() + "\\" + name;
+	}
+
+	// 선택한 에셋을 Inspector 에게 알려준다.
+	Content* pContent = (Content*)CImGuiMgr::GetInst()->FindUI("##Content");
+	pContent->SetTargetDirectory(name);
 }
 
 void Content::ResetContent()
 {
 	// Tree Clear
-	m_Tree->ClearNode();
+	m_ContentTree->ClearNode();
 
 	// 루트노드 추가
-	TreeNode* RootNode = m_Tree->AddTreeNode(nullptr, "Root", 0);
+	TreeNode* RootNode = m_ContentTree->AddTreeNode(nullptr, "Root", 0);
 
 	string path = ToString(CPathMgr::GetContentPath()) + m_strCurDirectory;
 	namespace fs = std::filesystem;
 	for (const fs::directory_entry& entry : fs::directory_iterator(path)) {
 		if (!entry.is_directory()) {
-			auto node = m_Tree->AddTreeNode(RootNode, entry.path().filename().string(), 0);
+			auto node = m_ContentTree->AddTreeNode(RootNode, entry.path().filename().string(), 0);
 		}
 	}
 }
@@ -61,14 +137,57 @@ void Content::SelectAsset(DWORD_PTR _Node)
 
 	if (nullptr == pNode)
 		return;
-	
-	Ptr<CAsset> pAsset = (CAsset*)pNode->GetData();
-	if (nullptr == pAsset)
-		return;
+
+	auto name = pNode->GetName();
+	string key = m_strCurDirectory + "\\" + name;
 
 	// 선택한 에셋을 Inspector 에게 알려준다.
 	Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
-	pInspector->SetTargetAsset(pAsset);
+
+	// asset 일 경우
+	ASSET_TYPE assetType = GetAssetTypeByExt(name);
+	if (assetType != ASSET_TYPE::END) {
+		Ptr<CAsset> pAsset;
+		switch (assetType)
+		{
+		case ASSET_TYPE::MESH:
+			pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CMesh>(key).Get();
+			break;
+		case ASSET_TYPE::MESHDATA:
+			//pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CMeshData>(key).Get();
+			break;
+		case ASSET_TYPE::PREFAB:
+			pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CPrefab>(key).Get();
+			break;
+		case ASSET_TYPE::TEXTURE:
+			pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CTexture>(key).Get();
+			break;
+		case ASSET_TYPE::MATERIAL:
+			pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CMaterial>(key).Get();
+			break;
+		case ASSET_TYPE::SOUND:
+			pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CSound>(key).Get();
+			break;
+			// 이건 제외해야 함
+		//case ASSET_TYPE::COMPUTE_SHADER:
+		//	pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CComputeShader>(key).Get();
+		//	break;
+		case ASSET_TYPE::GRAPHICS_SHADER:
+			pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CGraphicsShader>(key).Get();
+			break;
+		case ASSET_TYPE::FSM:
+			pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CFSM>(key).Get();
+			break;
+		case ASSET_TYPE::END:
+			break;
+		default:
+			break;
+		}
+		pInspector->SetTargetAsset(pAsset);
+
+		return;
+	}
+	
 }
 
 void Content::SetTargetDirectory(const string & _path)
@@ -80,122 +199,10 @@ void Content::SetTargetDirectory(const string & _path)
 
 void Content::ReloadContent()
 {
-	// Content 폴더에 있는 모든 에셋 파일명(상대경로)을 찾아낸다.
-	wstring strContentPath = CPathMgr::GetContentPath();
-	FindFileName(strContentPath);
-
-	// 찾은 파일이름으로 에셋들을 로드
-	for (size_t i = 0; i < m_vecAssetFileName.size(); ++i)
-	{
-		ASSET_TYPE Type = GetAssetTypeByExt(m_vecAssetFileName[i]);
-
-		switch (Type)
-		{
-		case ASSET_TYPE::END:
-		default:
-			continue;
-			break;
-		case ASSET_TYPE::MESH:
-			CAssetMgr::GetInst()->Load<CMesh>(m_vecAssetFileName[i], m_vecAssetFileName[i]);
-			break;
-		case ASSET_TYPE::MESHDATA:
-			//CAssetMgr::GetInst()->Load<CMeshData>(m_vecAssetFileName[i], m_vecAssetFileName[i]);
-			break;
-		case ASSET_TYPE::PREFAB:
-			CAssetMgr::GetInst()->Load<CPrefab>(m_vecAssetFileName[i], m_vecAssetFileName[i]);
-			break;
-		case ASSET_TYPE::TEXTURE:
-			CAssetMgr::GetInst()->Load<CTexture>(m_vecAssetFileName[i], m_vecAssetFileName[i]);
-			break;
-		case ASSET_TYPE::MATERIAL:
-			CAssetMgr::GetInst()->Load<CMaterial>(m_vecAssetFileName[i], m_vecAssetFileName[i]);
-			break;
-		case ASSET_TYPE::SOUND:
-			CAssetMgr::GetInst()->Load<CSound>(m_vecAssetFileName[i], m_vecAssetFileName[i]);
-			break;
-		}		
-	}
-
-	// 삭제된 에셋이 있으면, AssetMgr 에서도 메모리 해제 
-	for (UINT i = 0; i < (UINT)ASSET_TYPE::END; ++i)
-	{
-		const map<wstring, Ptr<CAsset>>& mapAsset = CAssetMgr::GetInst()->GetAssets((ASSET_TYPE)i);
-
-		for (const auto& pair : mapAsset)
-		{
-			// 엔진 에셋인 경우 continue 
-			// 엔진 에셋은 파일로부터 로딩된 에셋이 아니라, 프로그램 실행 도중 만들어진 에셋들이기 때문
-			if (pair.second->IsEngineAsset())
-				continue;
-
-			// 메모리에 로딩된 에셋의 원본파일이, content 폴더 내에서 삭제된 경우
-			// 실제 로딩되어있는 에셋도 삭제시켜서 sync 를 맞춘다.
-			wstring strFilePath = strContentPath + pair.second->GetRelativePath();			
-			if (!std::experimental::filesystem::exists(strFilePath))
-			{
-				MessageBox(nullptr, L"원본파일이 삭제되었습니다.", L"Asset 싱크", MB_OK);
-
-				if (1 < pair.second->GetRefCount())
-				{
-					int value = MessageBox(nullptr, L"Asset 이 참조되고 있습니다.\n강제 삭제하시겠습니까?", L"Asset 싱크", MB_YESNO);
-					if (value == IDCANCEL)
-						continue;
-				}
-
-				// 에셋 매니저에서 해당 에셋을 삭제한다.
-				tTask task = {};
-				task.Type = TASK_TYPE::DELETE_ASSET;
-				task.Param_1 = (DWORD_PTR)i;
-				task.Param_2 = (DWORD_PTR)pair.second.Get();
-				CTaskMgr::GetInst()->AddTask(task);
-			}
-		}
-	}
-
-
 	ResetContent();
 }
 
-
-void Content::FindFileName(const wstring& _Directory)
-{
-	// 파일 탐색 결과 저장
-	WIN32_FIND_DATA FIND_DATA = {};
-	
-	// 탐색을 시도할 디렉터리 경로 + 찾을 파일 타입 포맷
-	wstring strDirectory = _Directory + L"*.*";
-
-	// 탐색 핸들 생성
-	HANDLE hFindHandle = FindFirstFile(strDirectory.c_str(), &FIND_DATA);
-
-	if (INVALID_HANDLE_VALUE == hFindHandle)		
-		return;
-		
-	// 탐색 핸들을 이용해서, 파일을 다음 파일을 탐색, 더이상 없으면 false 반환
-	while (FindNextFile(hFindHandle, &FIND_DATA))
-	{	
-		// 찾은 파일이 Directory 타입인지 확인
-		if (FIND_DATA.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-		{
-			// .. 이름의 폴더는 부모폴더로 가는 기능
-			if (!wcscmp(L"..", FIND_DATA.cFileName))
-				continue;
-
-			// 재귀함수로 하위 폴더내에 있는 파일이름을 탐색
-			FindFileName(_Directory + FIND_DATA.cFileName + L"\\");
-		}
-		else
-		{
-			// 파일 타입인 경우, 디렉터리까지 붙여서 최종 경로를 만들고, 상대경로만 추출해서 m_vecAssetFileName 에 취합
-			wstring strRelativePath = CPathMgr::GetRelativePath(_Directory + FIND_DATA.cFileName);
-			m_vecAssetFileName.push_back(strRelativePath);
-		}
-	}
-
-	FindClose(hFindHandle);
-}
-
-ASSET_TYPE Content::GetAssetTypeByExt(const std::experimental::filesystem::path& _relativePath)
+ASSET_TYPE Content::GetAssetTypeByExt(const path& _relativePath)
 {
 	if (_relativePath.extension() == L".mesh")
 		return ASSET_TYPE::MESH;
@@ -206,7 +213,7 @@ ASSET_TYPE Content::GetAssetTypeByExt(const std::experimental::filesystem::path&
 	if (_relativePath.extension() == L".pref")
 		return ASSET_TYPE::PREFAB;
 
-	if (_relativePath.extension() == L".png" 
+	if (_relativePath.extension() == L".png"
 		|| _relativePath.extension() == L".bmp"
 		|| _relativePath.extension() == L".jpg"
 		|| _relativePath.extension() == L".jpeg"

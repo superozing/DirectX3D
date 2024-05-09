@@ -9,26 +9,28 @@ class Content :
     public UI
 {
 private:
-    TreeUI*             m_Tree;
+    TreeUI*             m_DirectoryTree;
+    TreeUI*             m_ContentTree;
 
     vector<wstring>     m_vecAssetFileName;
     string m_strCurDirectory;
 
 public:
-    void ReloadContent();
+    void ResetBrowser();
+    void SelectBrowser(DWORD_PTR _Node);
 
     void ResetContent();
-
+    void ReloadContent();
     void SelectAsset(DWORD_PTR _Node);
     void SetTargetDirectory(const string & _path);
 
-public:
-    virtual void render_update() override;
-
+    ASSET_TYPE GetAssetTypeByExt(const path& _relativePath);
 
 private:
-    void FindFileName(const wstring& _Directory);
-    ASSET_TYPE GetAssetTypeByExt(const std::experimental::filesystem::path& _relativePath);
+    void AddDirectoryNode(class TreeNode* _parent, const wstring& _path);
+
+public:
+    virtual void render_update() override;
 
 public:
     Content();

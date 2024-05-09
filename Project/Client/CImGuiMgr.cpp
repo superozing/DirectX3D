@@ -21,7 +21,6 @@
 #include "MenuUI.h"
 #include "ListUI.h"
 #include "RTViewPort.h"
-#include "ContentBrowser.h"
 
 #include "ParamUI.h"
 
@@ -241,10 +240,6 @@ void CImGuiMgr::create_ui()
 
     // Viewport
     pUI = new RTViewPort;
-    AddUI(pUI->GetID(), pUI);
-
-    // ContentBrowser
-    pUI = new ContentBrowser;
     AddUI(pUI->GetID(), pUI);
 }
 
