@@ -198,7 +198,6 @@ PS_OUT PS_SpotLight(VS_OUT _in)
     output.vDiffuse.a = 1.f;
     output.vSpecular.a = 1.f;
     
-    //output.vDiffuse = float4(0.f, 1.f, 0.f, 1.f);
     return output;
 }
 
