@@ -15,12 +15,13 @@
 
 CRenderMgr::CRenderMgr()
 	: m_arrMRT{}
-	, m_Light2DBuffer(nullptr)
 	, m_pDebugObj(nullptr)
 	, m_DebugPosition(true)
 	, m_EditorCam(nullptr)
 	, m_RenderFunc(nullptr)
 	, m_vClearColor(Vec4(0.f, 0.f, 0.f, 1.f))
+	, m_Light2DBuffer(nullptr)
+	, m_Light3DBuffer(nullptr)
 {
 	m_RenderFunc = &CRenderMgr::render_play;
 }
@@ -29,12 +30,6 @@ CRenderMgr::~CRenderMgr()
 {
 	if (nullptr != m_pDebugObj)
 		delete m_pDebugObj;
-
-	if (nullptr != m_Light2DBuffer)
-		delete m_Light2DBuffer;
-
-	if (nullptr != m_Light3DBuffer)
-		delete m_Light3DBuffer;
 
 	Delete_Array(m_arrMRT);
 }

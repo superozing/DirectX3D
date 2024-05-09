@@ -3,6 +3,7 @@
 #include "CTexture.h"
 
 class CConstBuffer;
+class CStructuredBuffer;
 
 // Directx11 기준 GPU 제어
 class CDevice
@@ -25,6 +26,8 @@ private:
 	ComPtr<ID3D11BlendState>		m_arrBS[(UINT)BS_TYPE::END];
 	ComPtr<ID3D11SamplerState>		m_arrSampler[2];
 
+	CStructuredBuffer* m_Light2DBuffer;
+	CStructuredBuffer* m_Light3DBuffer;
 
 public:
 	int init(HWND _hWnd, Vec2 _vResolution);
@@ -39,6 +42,9 @@ public:
 	ComPtr<ID3D11DepthStencilState> GetDSState(DS_TYPE _Type) { return m_arrDS[(UINT)_Type]; }
 	ComPtr<ID3D11BlendState> GetBSState(BS_TYPE _Type) { return m_arrBS[(UINT)_Type]; }
 
+	CStructuredBuffer* GetLight2DBuffer() { return m_Light2DBuffer; }
+	CStructuredBuffer* GetLight3DBuffer() { return m_Light3DBuffer; }
+
 
 private:
 	int CreateSwapChain();
@@ -49,5 +55,6 @@ private:
 	int CreateSamplerState();
 
 	int CreateConstBuffer();
+	int CreateLightBuffer();
 };
 
