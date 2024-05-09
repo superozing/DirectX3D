@@ -166,6 +166,8 @@ enum class BS_TYPE
 
 	ONE_ONE, 
 
+	DECAL,
+
 	END,
 };
 

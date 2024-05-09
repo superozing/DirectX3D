@@ -29,9 +29,8 @@ using std::weak_ptr;
 #include <wrl.h>
 using namespace Microsoft::WRL;
 
-#define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
-#include <experimental/filesystem>
 #include <filesystem>
+using namespace std::filesystem;
 
 #include <fstream>
 using std::ofstream;

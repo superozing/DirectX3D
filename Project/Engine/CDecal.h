@@ -6,6 +6,10 @@ class CDecal :
     public CRenderComponent
 {
 private:
+    int m_bAsEmissive;
+
+public:
+    void SetDecalAsEmissive(bool _bTrue) { m_bAsEmissive = _bTrue; }
 
 public:
     virtual void finaltick() override;

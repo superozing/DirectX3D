@@ -37,6 +37,7 @@ private:
 
     // 물체 분류
     vector<CGameObject*>    m_vecDeferred;
+    vector<CGameObject*>    m_vecDecal;
     vector<CGameObject*>    m_vecOpaque;
     vector<CGameObject*>    m_vecMasked;
     vector<CGameObject*>    m_vecTransparent;
@@ -88,14 +89,13 @@ public:
     virtual void finaltick() override;
 
     void SortObject();
-    void render();
-
-private:
-    void render(vector<CGameObject*>& _vecObj);
+    void render_deferred();
+    void render_decal();
+    void render_forward();
     void render_postprocess();
-
-    void Lighting();
     void Merge();
+
+public:
 
     virtual void SaveToFile(FILE* _File) override;
     virtual void SaveToFile(ofstream& fout) override;
