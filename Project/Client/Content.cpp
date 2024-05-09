@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "Content.h"
 
 #include <Engine/CAssetMgr.h>
@@ -11,18 +11,18 @@
 Content::Content()
 	: UI("Content", "##Content")
 {
-	// ContentUI ÀÚ½ÄÀ¸·Î Tree ¸¦ ÁöÁ¤
+	// ContentUI ìì‹ìœ¼ë¡œ Tree ë¥¼ ì§€ì •
 	m_Tree = new TreeUI("ContentTree");
 	m_Tree->ShowRootNode(false);
 	AddChildUI(m_Tree);
 	
-	// AssetMgr ÀÇ ¿¡¼Â»óÅÂ¸¦ Æ®¸®¿¡ Àû¿ëÇÑ´Ù.
+	// AssetMgr ì˜ ì—ì…‹ìƒíƒœë¥¼ íŠ¸ë¦¬ì— ì ìš©í•œë‹¤.
 	ResetContent();
 
-	// Æ®¸®¿¡ Delegate ¸¦ µî·ÏÇÑ´Ù.
+	// íŠ¸ë¦¬ì— Delegate ë¥¼ ë“±ë¡í•œë‹¤.
 	m_Tree->AddSelectDelegate(this, (Delegate_1)&Content::SelectAsset);
 
-	// ÄÁÅÙÃ÷ Æú´õ¿¡ ÀÖ´Â ¿¡¼ÂÀ» ·ÎµùÇÑ´Ù.
+	// ì»¨í…ì¸  í´ë”ì— ìˆëŠ” ì—ì…‹ì„ ë¡œë”©í•œë‹¤.
 	ReloadContent();
 }
 
@@ -46,7 +46,7 @@ void Content::ResetContent()
 	// Tree Clear
 	m_Tree->ClearNode();
 
-	// ·çÆ®³ëµå Ãß°¡
+	// ë£¨íŠ¸ë…¸ë“œ ì¶”ê°€
 	TreeNode* RootNode = m_Tree->AddTreeNode(nullptr, "Root", 0);
 
 	for (UINT i = 0; i < (UINT)ASSET_TYPE::END; ++i)
@@ -76,19 +76,24 @@ void Content::SelectAsset(DWORD_PTR _Node)
 	if (nullptr == pAsset)
 		return;
 
-	// ¼±ÅÃÇÑ ¿¡¼ÂÀ» Inspector ¿¡°Ô ¾Ë·ÁÁØ´Ù.
+	// ì„ íƒí•œ ì—ì…‹ì„ Inspector ì—ê²Œ ì•Œë ¤ì¤€ë‹¤.
 	Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
 	pInspector->SetTargetAsset(pAsset);
+}
+
+void Content::SetTargetDirectory(const string & _path)
+{
+	int a = 0;
 }
 
 
 void Content::ReloadContent()
 {
-	// Content Æú´õ¿¡ ÀÖ´Â ¸ğµç ¿¡¼Â ÆÄÀÏ¸í(»ó´ë°æ·Î)À» Ã£¾Æ³½´Ù.
+	// Content í´ë”ì— ìˆëŠ” ëª¨ë“  ì—ì…‹ íŒŒì¼ëª…(ìƒëŒ€ê²½ë¡œ)ì„ ì°¾ì•„ë‚¸ë‹¤.
 	wstring strContentPath = CPathMgr::GetContentPath();
 	FindFileName(strContentPath);
 
-	// Ã£Àº ÆÄÀÏÀÌ¸§À¸·Î ¿¡¼ÂµéÀ» ·Îµå
+	// ì°¾ì€ íŒŒì¼ì´ë¦„ìœ¼ë¡œ ì—ì…‹ë“¤ì„ ë¡œë“œ
 	for (size_t i = 0; i < m_vecAssetFileName.size(); ++i)
 	{
 		ASSET_TYPE Type = GetAssetTypeByExt(m_vecAssetFileName[i]);
@@ -120,33 +125,33 @@ void Content::ReloadContent()
 		}		
 	}
 
-	// »èÁ¦µÈ ¿¡¼ÂÀÌ ÀÖÀ¸¸é, AssetMgr ¿¡¼­µµ ¸Ş¸ğ¸® ÇØÁ¦ 
+	// ì‚­ì œëœ ì—ì…‹ì´ ìˆìœ¼ë©´, AssetMgr ì—ì„œë„ ë©”ëª¨ë¦¬ í•´ì œ 
 	for (UINT i = 0; i < (UINT)ASSET_TYPE::END; ++i)
 	{
 		const map<wstring, Ptr<CAsset>>& mapAsset = CAssetMgr::GetInst()->GetAssets((ASSET_TYPE)i);
 
 		for (const auto& pair : mapAsset)
 		{
-			// ¿£Áø ¿¡¼ÂÀÎ °æ¿ì continue 
-			// ¿£Áø ¿¡¼ÂÀº ÆÄÀÏ·ÎºÎÅÍ ·ÎµùµÈ ¿¡¼ÂÀÌ ¾Æ´Ï¶ó, ÇÁ·Î±×·¥ ½ÇÇà µµÁß ¸¸µé¾îÁø ¿¡¼ÂµéÀÌ±â ¶§¹®
+			// ì—”ì§„ ì—ì…‹ì¸ ê²½ìš° continue 
+			// ì—”ì§„ ì—ì…‹ì€ íŒŒì¼ë¡œë¶€í„° ë¡œë”©ëœ ì—ì…‹ì´ ì•„ë‹ˆë¼, í”„ë¡œê·¸ë¨ ì‹¤í–‰ ë„ì¤‘ ë§Œë“¤ì–´ì§„ ì—ì…‹ë“¤ì´ê¸° ë•Œë¬¸
 			if (pair.second->IsEngineAsset())
 				continue;
 
-			// ¸Ş¸ğ¸®¿¡ ·ÎµùµÈ ¿¡¼ÂÀÇ ¿øº»ÆÄÀÏÀÌ, content Æú´õ ³»¿¡¼­ »èÁ¦µÈ °æ¿ì
-			// ½ÇÁ¦ ·ÎµùµÇ¾îÀÖ´Â ¿¡¼Âµµ »èÁ¦½ÃÄÑ¼­ sync ¸¦ ¸ÂÃá´Ù.
+			// ë©”ëª¨ë¦¬ì— ë¡œë”©ëœ ì—ì…‹ì˜ ì›ë³¸íŒŒì¼ì´, content í´ë” ë‚´ì—ì„œ ì‚­ì œëœ ê²½ìš°
+			// ì‹¤ì œ ë¡œë”©ë˜ì–´ìˆëŠ” ì—ì…‹ë„ ì‚­ì œì‹œì¼œì„œ sync ë¥¼ ë§ì¶˜ë‹¤.
 			wstring strFilePath = strContentPath + pair.second->GetRelativePath();			
 			if (!std::experimental::filesystem::exists(strFilePath))
 			{
-				MessageBox(nullptr, L"¿øº»ÆÄÀÏÀÌ »èÁ¦µÇ¾ú½À´Ï´Ù.", L"Asset ½ÌÅ©", MB_OK);
+				MessageBox(nullptr, L"ì›ë³¸íŒŒì¼ì´ ì‚­ì œë˜ì—ˆìŠµë‹ˆë‹¤.", L"Asset ì‹±í¬", MB_OK);
 
 				if (1 < pair.second->GetRefCount())
 				{
-					int value = MessageBox(nullptr, L"Asset ÀÌ ÂüÁ¶µÇ°í ÀÖ½À´Ï´Ù.\n°­Á¦ »èÁ¦ÇÏ½Ã°Ú½À´Ï±î?", L"Asset ½ÌÅ©", MB_YESNO);
+					int value = MessageBox(nullptr, L"Asset ì´ ì°¸ì¡°ë˜ê³  ìˆìŠµë‹ˆë‹¤.\nê°•ì œ ì‚­ì œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?", L"Asset ì‹±í¬", MB_YESNO);
 					if (value == IDCANCEL)
 						continue;
 				}
 
-				// ¿¡¼Â ¸Å´ÏÀú¿¡¼­ ÇØ´ç ¿¡¼ÂÀ» »èÁ¦ÇÑ´Ù.
+				// ì—ì…‹ ë§¤ë‹ˆì €ì—ì„œ í•´ë‹¹ ì—ì…‹ì„ ì‚­ì œí•œë‹¤.
 				tTask task = {};
 				task.Type = TASK_TYPE::DELETE_ASSET;
 				task.Param_1 = (DWORD_PTR)i;
@@ -163,34 +168,34 @@ void Content::ReloadContent()
 
 void Content::FindFileName(const wstring& _Directory)
 {
-	// ÆÄÀÏ Å½»ö °á°ú ÀúÀå
+	// íŒŒì¼ íƒìƒ‰ ê²°ê³¼ ì €ì¥
 	WIN32_FIND_DATA FIND_DATA = {};
 	
-	// Å½»öÀ» ½ÃµµÇÒ µğ·ºÅÍ¸® °æ·Î + Ã£À» ÆÄÀÏ Å¸ÀÔ Æ÷¸Ë
+	// íƒìƒ‰ì„ ì‹œë„í•  ë””ë ‰í„°ë¦¬ ê²½ë¡œ + ì°¾ì„ íŒŒì¼ íƒ€ì… í¬ë§·
 	wstring strDirectory = _Directory + L"*.*";
 
-	// Å½»ö ÇÚµé »ı¼º
+	// íƒìƒ‰ í•¸ë“¤ ìƒì„±
 	HANDLE hFindHandle = FindFirstFile(strDirectory.c_str(), &FIND_DATA);
 
 	if (INVALID_HANDLE_VALUE == hFindHandle)		
 		return;
 		
-	// Å½»ö ÇÚµéÀ» ÀÌ¿ëÇØ¼­, ÆÄÀÏÀ» ´ÙÀ½ ÆÄÀÏÀ» Å½»ö, ´õÀÌ»ó ¾øÀ¸¸é false ¹İÈ¯
+	// íƒìƒ‰ í•¸ë“¤ì„ ì´ìš©í•´ì„œ, íŒŒì¼ì„ ë‹¤ìŒ íŒŒì¼ì„ íƒìƒ‰, ë”ì´ìƒ ì—†ìœ¼ë©´ false ë°˜í™˜
 	while (FindNextFile(hFindHandle, &FIND_DATA))
 	{	
-		// Ã£Àº ÆÄÀÏÀÌ Directory Å¸ÀÔÀÎÁö È®ÀÎ
+		// ì°¾ì€ íŒŒì¼ì´ Directory íƒ€ì…ì¸ì§€ í™•ì¸
 		if (FIND_DATA.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 		{
-			// .. ÀÌ¸§ÀÇ Æú´õ´Â ºÎ¸ğÆú´õ·Î °¡´Â ±â´É
+			// .. ì´ë¦„ì˜ í´ë”ëŠ” ë¶€ëª¨í´ë”ë¡œ ê°€ëŠ” ê¸°ëŠ¥
 			if (!wcscmp(L"..", FIND_DATA.cFileName))
 				continue;
 
-			// Àç±ÍÇÔ¼ö·Î ÇÏÀ§ Æú´õ³»¿¡ ÀÖ´Â ÆÄÀÏÀÌ¸§À» Å½»ö
+			// ì¬ê·€í•¨ìˆ˜ë¡œ í•˜ìœ„ í´ë”ë‚´ì— ìˆëŠ” íŒŒì¼ì´ë¦„ì„ íƒìƒ‰
 			FindFileName(_Directory + FIND_DATA.cFileName + L"\\");
 		}
 		else
 		{
-			// ÆÄÀÏ Å¸ÀÔÀÎ °æ¿ì, µğ·ºÅÍ¸®±îÁö ºÙ¿©¼­ ÃÖÁ¾ °æ·Î¸¦ ¸¸µé°í, »ó´ë°æ·Î¸¸ ÃßÃâÇØ¼­ m_vecAssetFileName ¿¡ ÃëÇÕ
+			// íŒŒì¼ íƒ€ì…ì¸ ê²½ìš°, ë””ë ‰í„°ë¦¬ê¹Œì§€ ë¶™ì—¬ì„œ ìµœì¢… ê²½ë¡œë¥¼ ë§Œë“¤ê³ , ìƒëŒ€ê²½ë¡œë§Œ ì¶”ì¶œí•´ì„œ m_vecAssetFileName ì— ì·¨í•©
 			wstring strRelativePath = CPathMgr::GetRelativePath(_Directory + FIND_DATA.cFileName);
 			m_vecAssetFileName.push_back(strRelativePath);
 		}

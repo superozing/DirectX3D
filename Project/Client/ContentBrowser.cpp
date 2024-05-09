@@ -1,7 +1,10 @@
 ﻿#include "pch.h"
 #include "ContentBrowser.h"
 
+#include "CImGuiMgr.h"
+
 #include "TreeUI.h"
+#include "Content.h"
 
 ContentBrowser::ContentBrowser()
 	: UI("ContentBrowser", "##ContentBrowser")
@@ -33,6 +36,16 @@ void ContentBrowser::AddDirectoryNode(TreeNode* _parent, const wstring& _path)
 
 void ContentBrowser::SelectBrowser(DWORD_PTR _Node)
 {
+	TreeNode* pNode = (TreeNode*)_Node;
+	string name = pNode->GetName();
+	while (pNode->GetParent() && pNode->GetParent()->GetName() != "Root") {
+		pNode = pNode->GetParent();
+		name = pNode->GetName() + "\\" + name;
+	}
+
+	// 선택한 에셋을 Inspector 에게 알려준다.
+	Content* pContent = (Content*)CImGuiMgr::GetInst()->FindUI("##Content");
+	pContent->SetTargetDirectory(name);
 
 }
 

@@ -1,7 +1,7 @@
-#pragma once
+ï»¿#pragma once
 #include "UI.h"
 
-// AssetMgr ¿¡ ·ÎµùµÇ¾î ÀÖ´Â ¸ğµç ¿¡¼ÂµéÀ» ³ª¿­
+// AssetMgr ì— ë¡œë”©ë˜ì–´ ìˆëŠ” ëª¨ë“  ì—ì…‹ë“¤ì„ ë‚˜ì—´
 
 class TreeUI;
 
@@ -19,6 +19,7 @@ public:
     void ResetContent();
 
     void SelectAsset(DWORD_PTR _Node);
+    void SetTargetDirectory(const string & _path);
 
 public:
     virtual void render_update() override;

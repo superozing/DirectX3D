@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "UI.h"
 
 
@@ -23,6 +23,7 @@ public:
 
     const string& GetName() { return m_Name; }
     DWORD_PTR GetData() { return m_Data; }
+    TreeNode* GetParent() { return m_ParentNode; }
 
 private:
     void SetID(const string& _ID) { m_ID = _ID; }
