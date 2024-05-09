@@ -5,6 +5,7 @@
 
 CDecal::CDecal()
 	: CRenderComponent(COMPONENT_TYPE::DECAL)
+	, m_bAsEmissive(false)
 {
 	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CubeMesh"));
 	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DecalMtrl"));
@@ -22,6 +23,14 @@ void CDecal::finaltick()
 void CDecal::UpdateData()
 {
 	Transform()->UpdateData();
+
+	// ViewInv * WorldInv
+	Matrix mat = g_Transform.matViewInv * Transform()->GetWorldInvMat();
+	GetMaterial()->SetScalarParam(SCALAR_PARAM::MAT_0, mat);
+
+	// AsEmissive
+	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, m_bAsEmissive);
+
 	GetMaterial()->UpdateData();
 }
 

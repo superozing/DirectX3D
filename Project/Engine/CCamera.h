@@ -37,6 +37,7 @@ private:
 
     // 물체 분류
     vector<CGameObject*>    m_vecDeferred;
+    vector<CGameObject*>    m_vecDecal;
     vector<CGameObject*>    m_vecOpaque;
     vector<CGameObject*>    m_vecMasked;
     vector<CGameObject*>    m_vecTransparent;

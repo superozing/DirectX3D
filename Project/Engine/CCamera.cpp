@@ -189,6 +189,9 @@ void CCamera::SortObject()
 			case SHADER_DOMAIN::DOMAIN_DEFERRED:
 				m_vecDeferred.push_back(vecObjects[j]);
 				break;
+			case SHADER_DOMAIN::DOMAIN_DECAL:
+				m_vecDecal.push_back(vecObjects[j]);
+				break;
 			case SHADER_DOMAIN::DOMAIN_OPAQUE:
 				m_vecOpaque.push_back(vecObjects[j]);
 				break;
@@ -227,6 +230,10 @@ void CCamera::render()
 	// Deferred 물체 렌더링
 	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED)->OMSet();
 	render(m_vecDeferred);
+
+	// Decal 물체 렌더링
+	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DECAL)->OMSet();
+	render(m_vecDecal);
 
 	// 광원 처리
 	Lighting();
