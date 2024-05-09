@@ -8,6 +8,7 @@
 #include <Engine/CLevel.h>
 #include <Engine/CGameObject.h>
 
+#include <Engine\CRenderMgr.h>
 #include <Engine/CPathMgr.h>
 
 #include "imgui.h"
@@ -19,6 +20,7 @@
 #include "Outliner.h"
 #include "MenuUI.h"
 #include "ListUI.h"
+#include "RTViewPort.h"
 
 #include "ParamUI.h"
 
@@ -75,6 +77,7 @@ void CImGuiMgr::init(HWND _hMainWnd, ComPtr<ID3D11Device> _Device
     {
         style.WindowRounding = 0.0f;
         style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+
     }
 
     // Setup Platform/Renderer backends
@@ -116,26 +119,7 @@ void CImGuiMgr::progress()
 }
 
 FOCUS_STATE CImGuiMgr::GetFocus_debug()
-{
-    if (ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
-    {
-        return FOCUS_STATE::OTHER;
-    }
-    else if (GetFocus() == CEngine::GetInst()->GetMainWind())
-    {
-        return FOCUS_STATE::MAIN;
-    }
-    else
-    {
-        return FOCUS_STATE::NONE;
-    }
-
-    // 뷰포트 부착 시: 
-    // 1. 아래 코드 주석 해제 
-    // 2. 위 쪽 분기 코드 제거
-    // 3. 뷰포트를 그리는 함수 마지막에 다음 구문 추가: /*CImGuiMgr::isViewportFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_None);*/
-
-    /*
+{    
     // 현재 포커싱 된 창이 없을 경우
     if (GetFocus() == nullptr)
     {
@@ -154,7 +138,7 @@ FOCUS_STATE CImGuiMgr::GetFocus_debug()
     {
         return FOCUS_STATE::OTHER;
     }
-    */
+    
 }
 
 FOCUS_STATE CImGuiMgr::GetFocus_release()
@@ -175,7 +159,8 @@ void CImGuiMgr::tick()
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
 
-    
+    ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+
     if (m_bDemoUI)
     {
         ImGui::ShowDemoWindow(&m_bDemoUI);
@@ -191,6 +176,7 @@ void CImGuiMgr::tick()
 
 void CImGuiMgr::render()
 {
+
     for (const auto& pair : m_mapUI)
     {
         pair.second->render();
@@ -250,6 +236,10 @@ void CImGuiMgr::create_ui()
 
     // List
     pUI = new ListUI;
+    AddUI(pUI->GetID(), pUI);
+
+    // Viewport
+    pUI = new RTViewPort;
     AddUI(pUI->GetID(), pUI);
 }
 
