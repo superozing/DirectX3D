@@ -46,7 +46,6 @@ namespace GamePlayStatic
 	void DrawDebugSphere(Vec3 _vWorldPos, float _fRadius, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
 
 	void DrawDebugCone(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
-	void DrawDebugCone(Vec3 _vWorldPos, float _fRadius, float _fHeight, UINT _iSliceCount, Vec3 _Color, bool _bDepthTest, float _Duration);
 	
 	class COLOR
 	{

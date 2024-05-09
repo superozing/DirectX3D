@@ -115,7 +115,21 @@ void CalLight3D(int _LightIdx, float3 _vViewPos, float3 _vViewNormal, inout tLig
     // Spot Light
     else
     {
+        float3 vLightViewPos = mul(float4(Light.vWorldPos, 1.f), g_matView).xyz;
+        vViewLightDir = _vViewPos - vLightViewPos;
+
+        // 광원과 물체 사이의 거리
+        float fDistance = length(vViewLightDir);
         
+        // 광원에서 물체를 향하는 방향 벡터
+        vViewLightDir = normalize(vViewLightDir);
+
+        // 광원
+        float3 fRadiusDir = -Light.vWorldPos;
+        normalize(fRadiusDir);
+        
+        // 광원 반경과 물체까지의 거리에 따른 빛의 세기
+        fDistanceRatio = saturate(cos(fDistance / Light.fRadius * (PI / 2.f))); // cos            
     }
 
      // ViewSpace 에서 광원의 방향과, 물체 표면의 법선를 이용해서 광원의 진입 세기(Diffuse) 를 구한다.
@@ -135,8 +149,6 @@ void CalLight3D(int _LightIdx, float3 _vViewPos, float3 _vViewNormal, inout tLig
     _LightColor.vColor += Light.Color.vColor * LightPow * fDistanceRatio;
     _LightColor.vAmbient += Light.Color.vAmbient;
     _LightColor.vSpecular += Light.Color.vColor * Light.Color.vSpecular * ReflectPow * fDistanceRatio;
-
-
 }
 
 // ======

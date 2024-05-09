@@ -132,7 +132,6 @@ void GamePlayStatic::DrawDebugCone(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWo
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
 
-
 void GamePlayStatic::DrawDebugCircle(const Matrix& _WorldMat, Vec3 _Color, bool _bDepthTest, float _Duration)
 {
 	tDebugShapeInfo info = {};
@@ -268,6 +267,7 @@ void LoadWString(wstring& _str, FILE* _FILE)
 
 #include "CPathMgr.h"
 #include <filesystem>
+#include "func.h"
 void Utils::LoadAllFileNames(const wstring& _path, vector<string>& vec)
 {
 	namespace fs = std::filesystem;
