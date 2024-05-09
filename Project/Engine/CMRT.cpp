@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CMRT.h"
 
 #include "CDevice.h"
@@ -37,7 +37,15 @@ void CMRT::SetClearColor(Vec4* _arrClearColor, UINT _RTCount)
 
 void CMRT::OMSet()
 {
-	CONTEXT->OMSetRenderTargets(m_RTCount, m_RTView, m_DSTex->GetDSV().Get());
+	// DSTex 사용 여부 체크
+	if (nullptr == m_DSTex)
+	{
+		CONTEXT->OMSetRenderTargets(m_RTCount, m_RTView, nullptr);
+	}
+	else
+	{
+		CONTEXT->OMSetRenderTargets(m_RTCount, m_RTView, m_DSTex->GetDSV().Get());
+	}
 }
 
 void CMRT::Clear()

@@ -8,6 +8,7 @@
 #include <Engine/CLevel.h>
 #include <Engine/CGameObject.h>
 
+#include <Engine\CRenderMgr.h>
 #include <Engine/CPathMgr.h>
 
 #include "imgui.h"
@@ -19,13 +20,14 @@
 #include "Outliner.h"
 #include "MenuUI.h"
 #include "ListUI.h"
+#include "RTViewPort.h"
 
 #include "ParamUI.h"
 
 bool CImGuiMgr::isViewportFocused;
 
 CImGuiMgr::CImGuiMgr()
-    : m_bDemoUI(true)
+    : m_bDemoUI(false)
     , m_hNotify(nullptr)
 {
 
@@ -75,6 +77,7 @@ void CImGuiMgr::init(HWND _hMainWnd, ComPtr<ID3D11Device> _Device
     {
         style.WindowRounding = 0.0f;
         style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+
     }
 
     // Setup Platform/Renderer backends
@@ -116,32 +119,26 @@ void CImGuiMgr::progress()
 }
 
 FOCUS_STATE CImGuiMgr::GetFocus_debug()
-{
-    // ����Ʈ ���� ��, 
-    // 1. �ּ� Ǯ�� �ڵ� ����
-    // 2. "����Ʈ UI �� tick()"��
-    //      CImGuiMgr::isViewportFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_None); ���� �߰�
-
-    if (GetFocus() == CEngine::GetInst()->GetMainWind())
-    {
-        if (isViewportFocused)
-        {
-            return FOCUS_STATE::MAIN;
-        }
-        else
-        {
-            return FOCUS_STATE::MAIN;   // ����Ʈ ���� �� �ڵ� ����
-            //return FOCUS_STATE::OTHER;// ����Ʈ ���� �� �ּ� ����
-        }
-    }
-    else  if (ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
-    {
-        return FOCUS_STATE::OTHER;
-    }
-    else
+{    
+    // 현재 포커싱 된 창이 없을 경우
+    if (GetFocus() == nullptr)
     {
         return FOCUS_STATE::NONE;
     }
+
+    // 현재 포커싱이 뷰포트일 경우
+    if (GetFocus() == CEngine::GetInst()->GetMainWind() && isViewportFocused)
+    {
+        isViewportFocused = false;
+        return FOCUS_STATE::MAIN;
+    }
+
+    // 뷰포트가 아닌 다른 ImGui 창이 포커싱 된 경우
+    else
+    {
+        return FOCUS_STATE::OTHER;
+    }
+    
 }
 
 FOCUS_STATE CImGuiMgr::GetFocus_release()
@@ -162,7 +159,8 @@ void CImGuiMgr::tick()
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
 
-    
+    ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+
     if (m_bDemoUI)
     {
         ImGui::ShowDemoWindow(&m_bDemoUI);
@@ -178,6 +176,7 @@ void CImGuiMgr::tick()
 
 void CImGuiMgr::render()
 {
+
     for (const auto& pair : m_mapUI)
     {
         pair.second->render();
@@ -237,6 +236,10 @@ void CImGuiMgr::create_ui()
 
     // List
     pUI = new ListUI;
+    AddUI(pUI->GetID(), pUI);
+
+    // Viewport
+    pUI = new RTViewPort;
     AddUI(pUI->GetID(), pUI);
 }
 

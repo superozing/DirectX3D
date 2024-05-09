@@ -56,6 +56,7 @@ void CRenderMgr::ClearMRT()
 {
 	m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->Clear();
 	m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->ClearRT();
+	m_arrMRT[(UINT)MRT_TYPE::LIGHT]->ClearRT();
 }
 
 void CRenderMgr::render_play()
@@ -118,6 +119,8 @@ void CRenderMgr::render_debug()
 		case DEBUG_SHAPE::SPHERE:
 			m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
 			break;
+		case DEBUG_SHAPE::CONE:
+			m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"ConeMesh"));
 		default:
 			break;
 		}
@@ -143,6 +146,11 @@ void CRenderMgr::render_debug()
 		{
 			m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 			m_pDebugObj->MeshRender()->GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, 1); // Sphere Mesh임을 쉐이더 코드에 알림
+		}
+		else if (DEBUG_SHAPE::CONE == (*iter).eShape)
+		{
+			m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+			m_pDebugObj->MeshRender()->GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, 2); // Cone Mesh임을 쉐이더 코드에 알림
 		}
 		else
 		{

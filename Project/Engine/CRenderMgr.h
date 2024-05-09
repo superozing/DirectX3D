@@ -50,10 +50,17 @@ public:
     bool IsDebugPosition() { return m_DebugPosition; }
 
     void RegisterLight2D(CLight2D* _Light2D) { m_vecLight2D.push_back(_Light2D); }
-    void RegisterLight3D(CLight3D* _Light3D) { m_vecLight3D.push_back(_Light3D); }
+    int RegisterLight3D(CLight3D* _Light3D) 
+    { 
+        m_vecLight3D.push_back(_Light3D); 
+        return m_vecLight3D.size() - 1; 
+    }
+
 
     void CopyRenderTargetToPostProcessTarget();
     Ptr<CTexture> GetPostProcessTex() { return m_PostProcessTex; }
+
+    Ptr<CTexture> CopyRTTex(Ptr<CTexture> pTexture);
 
     void RegisterEditorCamera(CCamera* _Cam) { m_EditorCam = _Cam; }
     void ClearCamera() { m_vecCam.clear(); }
@@ -67,6 +74,8 @@ public:
     }
 
     CMRT* GetMRT(MRT_TYPE _Type) { return m_arrMRT[(UINT)_Type]; }
+
+    const vector<CLight3D*>& GetLight3D() { return m_vecLight3D; }
 
     void SetClearColor(const Vec4& _ClearColor) { m_vClearColor = _ClearColor; }
     Vec4 GetClearColor() { return m_vClearColor;}

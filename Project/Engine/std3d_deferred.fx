@@ -56,7 +56,7 @@ struct PS_OUT
     float4 vColor : SV_Target0;
     float4 vPosition : SV_Target1;
     float4 vNormal : SV_Target2;
-    float4 vData : SV_Target3;
+    float4 vEmissive : SV_Target3;
 };
 
 PS_OUT PS_Std3D_Deferred(VS_OUT _in) : SV_Target
@@ -77,7 +77,7 @@ PS_OUT PS_Std3D_Deferred(VS_OUT _in) : SV_Target
     
     if (NormalMapCheck)
     {
-        float3 vNormal = NormalMap.Sample(g_sam_0, _in.vUV).grb;
+        float3 vNormal = NormalMap.Sample(g_sam_0, _in.vUV).rgb;
         vNormal = vNormal * 2.f - 1.f;
         
         float3x3 matRot =
@@ -92,7 +92,7 @@ PS_OUT PS_Std3D_Deferred(VS_OUT _in) : SV_Target
     }
     
     output.vNormal = float4(vViewNormal, 1.f);
-    output.vData = float4(0.f, 0.f, 0.f, 1.f);
+    output.vEmissive = float4(0.f, 0.f, 0.f, 1.f);
     
     return output;
 }

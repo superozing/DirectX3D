@@ -53,8 +53,8 @@ int CEngine::init(HWND _hWnd, Vec2 _vResolution)
 	CPathMgr::init();
 	CTimeMgr::GetInst()->init();
 	CKeyMgr::GetInst()->init();
-	CAssetMgr::GetInst()->init();
 	CRenderMgr::GetInst()->init();
+	CAssetMgr::GetInst()->init();
 	CLevelMgr::GetInst()->init();
 	CFontMgr::GetInst()->init();
 

@@ -16,6 +16,7 @@
 #include "CAssetMgr.h"
 
 #include "CCameraShake.h"
+#include "CLight3D.h"
 
 CCamera::CCamera()
 	: CComponent(COMPONENT_TYPE::CAMERA)
@@ -106,6 +107,7 @@ void CCamera::finaltick()
 
 	// 이동 x 회전 = view 행렬
 	m_matView = matTrans * matRotate;
+	m_matViewInv = XMMatrixInverse(nullptr, m_matView);
 
 
 	// 투영 방식에 따른 투영 행렬을 계산한다.
@@ -122,6 +124,8 @@ void CCamera::finaltick()
 		// 원근투영
 		m_matProj = XMMatrixPerspectiveFovLH(m_FOV, m_AspectRatio, 1.f, m_Far);
 	}
+
+	m_matProjInv = XMMatrixInverse(nullptr, m_matProj);
 }
 
 void CCamera::SetCameraPriority(int _Priority)
@@ -214,7 +218,9 @@ void CCamera::render()
 {
 	// 계산한 view 행렬과 proj 행렬을 전역변수에 담아둔다.
 	g_Transform.matView = m_matView;
+	g_Transform.matViewInv = m_matViewInv;
 	g_Transform.matProj = m_matProj;
+	g_Transform.matProjInv = m_matProjInv;
 
 	// Domain 순서대로 렌더링
 
@@ -222,15 +228,11 @@ void CCamera::render()
 	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED)->OMSet();
 	render(m_vecDeferred);
 
-	// Deferred 정보를 SwapChain 으로 병합
-	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
+	// 광원 처리
+	Lighting();
 
-	Ptr<CMesh>	pRectMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
-	Ptr<CMaterial> pMergeMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"MergeMtrl");
-
-	pMergeMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"ColorTargetTex")); // NormalTargetTex || PositionTargetTex || ColorTargetTex
-	pMergeMtrl->UpdateData();
-	pRectMesh->render();
+	// Deferred + 광원 => SwapChain 으로 병합
+	Merge();
 
 	// Foward 렌더링
 	render(m_vecOpaque);	
@@ -266,6 +268,32 @@ void CCamera::render_postprocess()
 	}
 
 	m_vecPostProcess.clear();
+}
+
+void CCamera::Lighting()
+{
+	// Light MRT 로 변경
+	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::LIGHT)->OMSet();
+
+	// 광원이 자신의 영향 범위 안에 있는 Deferred 물체에 빛을 남긴다.
+	const vector<CLight3D*>& vecLight3D = CRenderMgr::GetInst()->GetLight3D();
+
+	for (size_t i = 0; i < vecLight3D.size(); ++i)
+	{
+		vecLight3D[i]->render();
+	}
+}
+
+void CCamera::Merge()
+{
+	// Deferred 정보를 SwapChain 으로 병합
+	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
+
+	static Ptr<CMesh>	  pRectMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
+	static Ptr<CMaterial> pMergeMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"MergeMtrl");
+
+	pMergeMtrl->UpdateData();
+	pRectMesh->render();
 }
 
 void CCamera::SaveToFile(FILE* _File)

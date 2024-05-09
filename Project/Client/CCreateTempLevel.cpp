@@ -114,14 +114,14 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->AddComponent(new CTransform);
 	pObj->AddComponent(new CLight3D);
 
-	pObj->Transform()->SetRelativePos(Vec3(-500.f, 0.f, 500.f));
+	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
 	pObj->Transform()->SetRelativeRotation(Vec3(XM_PI / 4.f, XM_PI / 4.f, 0.f));
 
-	pObj->Light3D()->SetLightType(LIGHT_TYPE::POINT);
+	pObj->Light3D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
 	pObj->Light3D()->SetLightColor(Vec3(1.f, 1.f, 1.f));
-	pObj->Light3D()->SetAmbient(Vec3(0.1f, 0.1f, 0.1f));
-	pObj->Light3D()->SetSpecular(Vec3(0.3f, 0.3f, 0.3f));
-	pObj->Light3D()->SetRadius(1000.f);
+	pObj->Light3D()->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
+	pObj->Light3D()->SetSpecular(Vec3(0.2f, 0.2f, 0.2f));
+	pObj->Light3D()->SetRadius(500.f);
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
@@ -130,7 +130,6 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
 	pObj->Light3D()->SetLightColor(Vec3(0.3f, 1.f, 0.3f));
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
-
 
 	// SkyBox 용 오브젝트 추가
 	pObj = new CGameObject;
@@ -150,6 +149,17 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
+	// Decal 
+	pObj = new CGameObject;
+	pObj->SetName(L"Decal");
+
+	pObj->AddComponent(new CTransform);
+	pObj->AddComponent(new CDecal);
+
+	pObj->Transform()->SetRelativePos(Vec3(-200.f, -170.f, 500.f));
+	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+
+	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
 	// Player Object 생성
 	pObj = new CGameObject;
@@ -163,22 +173,22 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->AddComponent(new CMissileScript);
 
 
-	Ptr<CTexture> pAltasTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\link.png", L"texture\\link.png");
-	pObj->Animator2D()->Create(L"IDLE_UP", pAltasTex, Vec2(0.f, 260.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 1, 10);
-	pObj->Animator2D()->Create(L"IDLE_DOWN", pAltasTex, Vec2(0.f, 0.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 3, 10);
-	wstring str = CPathMgr::GetContentPath();
-	str += L"anim\\";
-	pObj->Animator2D()->SaveAllAnim(str);
+	//Ptr<CTexture> pAltasTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\link.png", L"texture\\link.png");
+	//pObj->Animator2D()->Create(L"IDLE_UP", pAltasTex, Vec2(0.f, 260.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 1, 10);
+	//pObj->Animator2D()->Create(L"IDLE_DOWN", pAltasTex, Vec2(0.f, 0.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 3, 10);
+	//wstring str = CPathMgr::GetContentPath();
+	//str += L"anim\\";
+	//pObj->Animator2D()->SaveAllAnim(str);
 
-	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
-	pObj->Transform()->SetRelativeScale(Vec3(500.f, 500.f, 500.f));
-	pObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
+	pObj->Transform()->SetRelativePos(Vec3(0.f, -200.f, 500.f));
+	pObj->Transform()->SetRelativeScale(Vec3(2000.f, 2000.f, 1.f));
+	pObj->Transform()->SetRelativeRotation(Vec3(XM_PI / 2.f, 0.f, 0.f));
 
 	pObj->Collider2D()->SetAbsolute(true);
 	pObj->Collider2D()->SetOffsetScale(Vec2(100.f, 100.f));
 	pObj->Collider2D()->SetOffsetPos(Vec2(0.f, 0.f));
 
-	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
+	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std3D_DeferredMtrl"));
 	pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_01.tga", L"texture\\tile\\TILE_01.tga"));
 	pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_01_N.tga", L"texture\\tile\\TILE_01_N.tga"));
