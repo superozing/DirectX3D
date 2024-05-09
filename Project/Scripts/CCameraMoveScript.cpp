@@ -4,7 +4,9 @@
 CCameraMoveScript::CCameraMoveScript()
 	: CScript((UINT)SCRIPT_TYPE::CAMERAMOVESCRIPT)
 	, m_CamSpeed(500.f)
+	, m_fZoomSpeed(10.f)
 {
+	AppendScriptParam("ZoomSpeed", SCRIPT_PARAM::FLOAT, &m_fZoomSpeed, 0);
 }
 
 CCameraMoveScript::~CCameraMoveScript()
@@ -35,6 +37,14 @@ void CCameraMoveScript::tick()
 		MovePerspective();
 	}
 
+	// 줌 인, 줌 아웃
+	if (WHEEL_CHECK(WHEEL_UP)) {
+		Camera()->SetFOV(Camera()->GetFOV() - m_fZoomSpeed * DT);
+	}
+
+	if (WHEEL_CHECK(WHEEL_DOWN)) {
+		Camera()->SetFOV(Camera()->GetFOV() + m_fZoomSpeed * DT);
+	}
 }
 
 void CCameraMoveScript::MoveOrthographic()

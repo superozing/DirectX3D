@@ -9,9 +9,6 @@ private:
     float m_fInitialFOV;
     float m_fInitialScale;
 
-    float m_fZoomSpeed;
-
-
 public:
     void RegistInitial();
     void SendToInitial();

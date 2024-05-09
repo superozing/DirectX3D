@@ -5,22 +5,7 @@
 
 CCameraEffect::CCameraEffect()
 	: CScript((UINT)SCRIPT_TYPE::CAMERAEFFECT)
-	, m_fZoomSpeed(10.f)
 {
-	//AppendScriptParam("ShakeDuration", SCRIPT_PARAM::FLOAT, &m_fShakeDuration, 0);
-	//AppendScriptParam("ShakeTimer", SCRIPT_PARAM::FLOAT, &m_fShakeTimer, 0, 0, true);
-
-	//AppendScriptParam("ReleaseDuration", SCRIPT_PARAM::FLOAT, &m_fReleaseDuration, 0);
-	//AppendScriptParam("ReleaseTimer", SCRIPT_PARAM::FLOAT, &m_fReleaseTimer, 0, 0, true);
-
-	//AppendScriptParam("ShakePosIntensity", SCRIPT_PARAM::VEC3, &m_vShakePosIntensity, 0);
-	//AppendScriptParam("ShakeRotationIntensity", SCRIPT_PARAM::VEC3, &m_vShakeRotationIntensity, 0);
-
-	//AppendScriptParam("ShakeFrequnecy", SCRIPT_PARAM::FLOAT, &m_fShakeFrequency, 0);
-	//AppendScriptParam("ShakeFreqTimer", SCRIPT_PARAM::FLOAT, &m_fShakeFrequencyTimer, 0, 0, true);
-
-	AppendScriptParam("ZoomSpeed", SCRIPT_PARAM::FLOAT, &m_fZoomSpeed, 0);
-
 	RegistInitial();
 }
 
@@ -48,21 +33,6 @@ void CCameraEffect::SendToInitial()
 
 void CCameraEffect::tick()
 {
-	// 테스트용 코드
-
-	if (KEY_TAP(I)) {
-		SendToInitial();
-	}
-
-	// 줌 인, 줌 아웃
-	if (WHEEL_CHECK(WHEEL_UP)) {
-		Camera()->SetFOV(Camera()->GetFOV() - m_fZoomSpeed * DT);
-	}
-
-	if (WHEEL_CHECK(WHEEL_DOWN)) {
-		Camera()->SetFOV(Camera()->GetFOV() + m_fZoomSpeed * DT);
-	}
-
 	// 상태 세이브, 로드
 	if (KEY_TAP(MBTN) && KEY_PRESSED(KEY::LCTRL)) {
 		RegistInitial();
@@ -70,7 +40,6 @@ void CCameraEffect::tick()
 	else if (KEY_TAP(MBTN)) {
 		SendToInitial();
 	}
-
 }
 
 void CCameraEffect::begin()

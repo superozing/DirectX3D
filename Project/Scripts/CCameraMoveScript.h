@@ -6,6 +6,7 @@ class CCameraMoveScript :
 {
 private:
     float       m_CamSpeed;
+    float m_fZoomSpeed;
 
 private:
     void MoveOrthographic();
