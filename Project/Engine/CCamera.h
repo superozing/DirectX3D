@@ -89,14 +89,13 @@ public:
     virtual void finaltick() override;
 
     void SortObject();
-    void render();
+    void render_deferred();
+    void render_decal();
+    void render_forward();
+    void render_postprocess();
+    void Merge();
 
 private:
-    void render(vector<CGameObject*>& _vecObj);
-    void render_postprocess();
-
-    void Lighting();
-    void Merge();
 
     virtual void SaveToFile(FILE* _File) override;
     virtual void SaveToFile(ofstream& fout) override;

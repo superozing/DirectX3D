@@ -1,7 +1,7 @@
-#pragma once
+ï»¿#pragma once
 #include "UI.h"
 
-// AssetMgr ¿¡ ·ÎµùµÇ¾î ÀÖ´Â ¸ğµç ¿¡¼ÂµéÀ» ³ª¿­
+// AssetMgr ì— ë¡œë”©ë˜ì–´ ìˆëŠ” ëª¨ë“  ì—ì…‹ë“¤ì„ ë‚˜ì—´
 
 class TreeUI;
 
@@ -26,7 +26,7 @@ public:
 
 private:
     void FindFileName(const wstring& _Directory);
-    ASSET_TYPE GetAssetTypeByExt(const std::experimental::filesystem::path& _relativePath);
+    ASSET_TYPE GetAssetTypeByExt(const path& _relativePath);
 
 public:
     Content();
