@@ -438,14 +438,3 @@ float RoRMath::ClampFloat(float _input, float _min, float _max)
 
 	return _input;
 }
-
-Vec3 RoRMath::Cross(Vec3 A, Vec3 B)
-{
-	Vec3 vCross = Vec3(0.f, 0.f, 0.f);
-
-	vCross.x = A.y * B.z - A.z * B.y;
-	vCross.y = A.z * B.x - A.x * B.z;
-	vCross.z = A.x * B.y - A.y * B.x;
-
-	return vCross;
-}

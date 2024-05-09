@@ -516,11 +516,11 @@ void CAssetMgr::CreateDefaultMesh()
 		{
 			size_t lastVtxIdx = vecVtx.size() - 1;
 
-			Vec3& vtx1 = vecVtx[lastVtxIdx - 1].vPos; // 가장 마지막 바로 전 VtxIdx
-			Vec3& vtx2 = vecVtx[lastVtxIdx].vPos;     // 가장 마지막에 추가된 VtxIdx
+			Vec3 vtx1 = vecVtx[lastVtxIdx - 1].vPos; // 가장 마지막 바로 전 VtxIdx
+			Vec3 vtx2 = vecVtx[lastVtxIdx].vPos;     // 가장 마지막에 추가된 VtxIdx
 
 			// 아랫면의 한 정점을 기준으로 연결된 두 벡터를 외적하여 노말 벡터를 재계산
-			Vec3 vNormal = RoRMath::Cross(vtx1 - vecVtx[0].vPos, vtx2 - vecVtx[0].vPos).Normalize();
+			Vec3 vNormal = (vtx1 - vecVtx[0].vPos).Cross(vtx1 - vtx2).Normalize();
 
 			vecVtx[lastVtxIdx - 1].vNormal = vNormal;
 			vecVtx[lastVtxIdx].vNormal = vNormal;
