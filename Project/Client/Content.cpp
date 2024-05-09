@@ -64,9 +64,10 @@ void Content::render_update()
 
 	static float w = 200.0f;
 	float h = ImGui::GetWindowSize().y- 40.f;
+	if (h < 1.f) h = 1.f;
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
 	ImGui::BeginChild("##Browser", ImVec2(w, h), true);
-	m_DirectoryTree->render_update();
+	DirectoryUI();
 	ImGui::EndChild();
 
 	ImGui::SameLine();
@@ -76,7 +77,7 @@ void Content::render_update()
 		w += ImGui::GetIO().MouseDelta.x;
 	ImGui::SameLine();
 	ImGui::BeginChild("##Content", ImVec2(0, h), true);
-	m_ContentTree->render_update();
+	ContentUI();
 	ImGui::EndChild();
 
 	//ImGui::InvisibleButton("hsplitter", ImVec2(-1, 8.0f));
@@ -232,4 +233,54 @@ ASSET_TYPE Content::GetAssetTypeByExt(const path& _relativePath)
 		return ASSET_TYPE::MESH;
 
 	return ASSET_TYPE::END;
+}
+
+void Content::DirectoryUI()
+{
+	if (ImGui::Button("+Add"))
+	{
+		ImGui::OpenPopup("MakeNew");
+	}
+
+	if (ImGui::BeginPopup("MakeNew"))
+	{
+		// 팝업 창 내부 UI 구현
+		if (ImGui::MenuItem("Create Empty Object", ""))
+		{
+			CGameObject* pNewObj = new CGameObject;
+			pNewObj->SetName(L"New GameObject");
+			GamePlayStatic::SpawnGameObject(pNewObj, 0);
+
+			// Inspector 의 타겟정보를 새로 만든걸로 갱신
+			Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
+			pInspector->SetTargetObject(pNewObj);
+		}
+		if (ImGui::MenuItem("Create Empty Material"))
+		{
+			wchar_t szPath[255] = {};
+			wstring FilePath = CPathMgr::GetContentPath();
+
+			int num = 0;
+			while (true)
+			{
+				swprintf_s(szPath, L"Material//New Material_%d.mtrl", num);
+				if (!exists(FilePath + szPath))
+					break;
+				++num;
+			}
+
+			CMaterial* pMtrl = new CMaterial;
+			pMtrl->SetName(szPath);
+			pMtrl->Save(szPath);
+			GamePlayStatic::AddAsset(pMtrl);
+			SetTargetDirectory("material");
+		}
+		ImGui::EndPopup();
+	}
+	m_DirectoryTree->render_update();
+}
+
+void Content::ContentUI()
+{
+	m_ContentTree->render_update();
 }

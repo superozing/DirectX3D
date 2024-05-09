@@ -27,6 +27,9 @@ public:
     ASSET_TYPE GetAssetTypeByExt(const path& _relativePath);
 
 private:
+    void DirectoryUI();
+    void ContentUI();
+
     void AddDirectoryNode(class TreeNode* _parent, const wstring& _path);
 
 public:
