@@ -23,7 +23,10 @@ private:
 
     Ptr<CTexture>           m_PostProcessTex;
 
+    CStructuredBuffer*      m_Light2DBuffer;
     vector<CLight2D*>       m_vecLight2D;
+
+    CStructuredBuffer*      m_Light3DBuffer;
     vector<CLight3D*>       m_vecLight3D;
 
     list<tDebugShapeInfo>   m_DbgShapeInfo;

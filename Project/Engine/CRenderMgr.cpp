@@ -20,6 +20,8 @@ CRenderMgr::CRenderMgr()
 	, m_EditorCam(nullptr)
 	, m_RenderFunc(nullptr)
 	, m_vClearColor(Vec4(0.f, 0.f, 0.f, 1.f))
+	, m_Light2DBuffer(nullptr)
+	, m_Light3DBuffer(nullptr)
 {
 	m_RenderFunc = &CRenderMgr::render_play;
 }
@@ -192,10 +194,9 @@ void CRenderMgr::UpdateData()
 
 	if (!vecLight2DInfo.empty())
 	{
-		CDevice::GetInst()->GetLight2DBuffer()->SetData(vecLight2DInfo.data(), (UINT)vecLight2DInfo.size());
-		//m_Light2DBuffer->SetData(vecLight2DInfo.data(), (UINT)vecLight2DInfo.size());
+		m_Light2DBuffer->SetData(vecLight2DInfo.data(), (UINT)vecLight2DInfo.size());
 	}
-	CDevice::GetInst()->GetLight2DBuffer()->UpdateData(11);
+	m_Light2DBuffer->UpdateData(11);
 
 	vecLight2DInfo.clear();
 
@@ -210,9 +211,9 @@ void CRenderMgr::UpdateData()
 
 	if (!vecLight3DInfo.empty())
 	{
-		CDevice::GetInst()->GetLight3DBuffer()->SetData(vecLight3DInfo.data(), (UINT)vecLight3DInfo.size());
+		m_Light3DBuffer->SetData(vecLight3DInfo.data(), (UINT)vecLight3DInfo.size());
 	}
-	CDevice::GetInst()->GetLight3DBuffer()->UpdateData(12);
+	m_Light3DBuffer->UpdateData(12);
 
 	vecLight3DInfo.clear();
 }
