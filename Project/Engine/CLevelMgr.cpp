@@ -25,6 +25,9 @@ CLevelMgr::~CLevelMgr()
 {
 	if (nullptr != m_CurLevel)
 		delete m_CurLevel;
+
+	if (nullptr != m_EditorCam)
+		delete m_EditorCam;
 }
 
 void CLevelMgr::init()
@@ -57,8 +60,10 @@ void CLevelMgr::tick()
 
 void CLevelMgr::enter()
 {
-	// 에디터 카메라를 레벨에 추가
-	if (m_EditorCam && m_CurLevel)
+	// 에디터 카메라가 레벨에 없으면서
+	// 에디터 카메라가 존재하면서
+	// 현재 레벨이 존재할 경우 AddObject
+	if (!m_CurLevel->FindObjectByName(L"Editor Camera") && m_EditorCam && m_CurLevel)
 		m_CurLevel->AddObject(m_EditorCam, 0);
 }
 
