@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "Light3DUI.h"
 
 #include <Engine\CLight3D.h>
@@ -24,11 +24,11 @@ void Light3DUI::render_update()
 	int LightType = (int)info.LightType;
 	Vec3 vColor = info.vColor;
 	Vec3 vAmbient = info.vAmbient;
-	Vec3 vWorldDir = info.vWorldDir;
 	float fRadius = info.fRadius;
 	float fAngle = info.fAngle;
-
-
+	Vec3 vWorldDir = info.vWorldDir;
+	Vec3 vSpecular = info.vSpecular;
+	vWorldDir.ToDegree();
 
 	ImGui::Text("Light Type");
 	ImGui::SameLine(0, 20); ImGui::PushItemWidth(150);
@@ -36,42 +36,57 @@ void Light3DUI::render_update()
 
 	if (0 == LightType)
 	{
-		ImGui::Text("Ambient");
-		ImGui::SameLine(0, 41); ImGui::PushItemWidth(250);
+		ImGui::Text("Light Color"); ImGui::SameLine(); ImGui::PushItemWidth(200.f);
+		ImGui::ColorPicker3("##LightColor", vColor, ImGuiColorEditFlags_HDR | ImGuiColorEditFlags_PickerHueWheel);
+
+		ImGui::Text("Specular   "); ImGui::SameLine(); ImGui::PushItemWidth(200.f);
+		ImGui::ColorPicker3("##Specular", vSpecular, ImGuiColorEditFlags_HDR | ImGuiColorEditFlags_PickerHueWheel);
+
+		ImGui::Text("Ambient    ");	ImGui::SameLine(); ImGui::PushItemWidth(200.f);
 		ImGui::ColorEdit3("##LightAmbient", vAmbient);
 	}
 	else if (1 == LightType)
 	{
-		ImGui::Text("Light Color");
-		ImGui::SameLine(0, 13); ImGui::PushItemWidth(200);
+		ImGui::Text("Light Color"); ImGui::SameLine(); ImGui::PushItemWidth(200.f);
 		ImGui::ColorPicker3("##LightColor", vColor, ImGuiColorEditFlags_HDR | ImGuiColorEditFlags_PickerHueWheel);
 
-		ImGui::Text("Radius");
-		ImGui::SameLine(0, 48); ImGui::PushItemWidth(200);
-		ImGui::DragFloat("##LightRadius", &fRadius);
+		ImGui::Text("Specular   "); ImGui::SameLine(); ImGui::PushItemWidth(200.f);
+		ImGui::ColorPicker3("##Specular", vSpecular, ImGuiColorEditFlags_HDR | ImGuiColorEditFlags_PickerHueWheel);
+
+		ImGui::Text("Ambient    ");	ImGui::SameLine(); ImGui::PushItemWidth(200.f);
+		ImGui::ColorEdit3("##LightAmbient", vAmbient);
+
+		ImGui::Text("Radius     "); ImGui::SameLine(); ImGui::PushItemWidth(200.f);
+		ImGui::DragFloat("##LightRadius", &fRadius, 0.1f, 0.f, 0.f, "%.1f");
 	}
 	else
 	{
-		ImGui::Text("Light Color");
-		ImGui::SameLine(0, 13); ImGui::PushItemWidth(200);
+		ImGui::Text("Light Color"); ImGui::SameLine(); ImGui::PushItemWidth(200.f);
 		ImGui::ColorPicker3("##LightColor", vColor, ImGuiColorEditFlags_HDR | ImGuiColorEditFlags_PickerHueWheel);
 
-		ImGui::Text("Radius");
-		ImGui::SameLine(0, 48); ImGui::PushItemWidth(200);
-		ImGui::DragFloat("##LightRadius", &fRadius);
+		ImGui::Text("Specular   "); ImGui::SameLine(); ImGui::PushItemWidth(200.f);
+		ImGui::ColorPicker3("##Specular", vSpecular, ImGuiColorEditFlags_HDR | ImGuiColorEditFlags_PickerHueWheel);
 
-		ImGui::Text("LightDir");
-		ImGui::SameLine(0, 34); ImGui::PushItemWidth(200);
-		ImGui::DragFloat3("##LightDir", vWorldDir);
+		ImGui::Text("Ambient    ");	ImGui::SameLine(); ImGui::PushItemWidth(200.f);
+		ImGui::ColorEdit3("##LightAmbient", vAmbient);
 
-		ImGui::Text("Angle");
-		ImGui::SameLine(0, 55); ImGui::PushItemWidth(200);
-		ImGui::SliderAngle("##LightAngle", &fAngle, 0.f, 360.f);
+		ImGui::Text("Radius     "); ImGui::SameLine(); ImGui::PushItemWidth(200.f);
+		ImGui::DragFloat("##LightRadius", &fRadius, 0.1f, 0.f, 0.f, "%.1f");
+
+		ImGui::Text("LightDir   "); ImGui::SameLine(); ImGui::PushItemWidth(200.f);
+		ImGui::DragFloat3("##LightDir", vWorldDir, 0.1f, 0.f, 0.f, "%.1f");
+
+		ImGui::Text("Angle      "); ImGui::SameLine(); ImGui::PushItemWidth(200.f);
+		ImGui::SliderAngle("##LightAngle", &fAngle, 0.f, 179.f);
+	
+		vWorldDir.ToRadian();
 	}
 
 	GetTargetObject()->Light3D()->SetLightType((LIGHT_TYPE)LightType);
 	GetTargetObject()->Light3D()->SetLightColor(vColor);
 	GetTargetObject()->Light3D()->SetAmbient(vAmbient);
 	GetTargetObject()->Light3D()->SetRadius(fRadius);
+	GetTargetObject()->Light3D()->SetSpecular(vSpecular);
+	GetTargetObject()->Light3D()->SetDir(vWorldDir);
 	GetTargetObject()->Light3D()->SetAngle(fAngle);
 }

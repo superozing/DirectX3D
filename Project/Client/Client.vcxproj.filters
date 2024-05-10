@@ -131,6 +131,9 @@
     <Filter Include="02. UI\3. Inspector\ComponentUI\Light3D">
       <UniqueIdentifier>{a199b71c-f304-4030-86a1-1826be66bc95}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. UI\7. Viewport">
+      <UniqueIdentifier>{da2e8217-b280-4ad3-a4c6-87441e1d37b5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -273,6 +276,9 @@
     </ClInclude>
     <ClInclude Include="Light3DUI.h">
       <Filter>02. UI\3. Inspector\ComponentUI\Light3D</Filter>
+    </ClInclude>
+    <ClInclude Include="RTViewPort.h">
+      <Filter>02. UI\7. Viewport</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -418,6 +424,9 @@
     </ClCompile>
     <ClCompile Include="Light3DUI.cpp">
       <Filter>02. UI\3. Inspector\ComponentUI\Light3D</Filter>
+    </ClCompile>
+    <ClCompile Include="RTViewPort.cpp">
+      <Filter>02. UI\7. Viewport</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

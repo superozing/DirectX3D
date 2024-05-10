@@ -13,11 +13,8 @@
 
 void CRenderMgr::init()
 {
-	m_Light2DBuffer = new CStructuredBuffer;
-	m_Light2DBuffer->Create(sizeof(tLightInfo), 10, SB_TYPE::READ_ONLY, true);
-
-	m_Light3DBuffer = new CStructuredBuffer;
-	m_Light3DBuffer->Create(sizeof(tLightInfo), 10, SB_TYPE::READ_ONLY, true);
+	m_Light2DBuffer = CDevice::GetInst()->GetLight2DBuffer();
+	m_Light3DBuffer = CDevice::GetInst()->GetLight3DBuffer();
 
 	m_pDebugObj = new CGameObject;
 	m_pDebugObj->AddComponent(new CTransform);
@@ -99,7 +96,6 @@ void CRenderMgr::CreateMRT()
 		m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->SetClearColor(arrClearColor, 4);
 	}
 
-
 	// ============
 	// Light MRT
 	// ============
@@ -125,6 +121,26 @@ void CRenderMgr::CreateMRT()
 		m_arrMRT[(UINT)MRT_TYPE::LIGHT]->Create(pRTTex, 2, nullptr);
 		m_arrMRT[(UINT)MRT_TYPE::LIGHT]->SetClearColor(arrClearColor, 2);
 	}
+
+	// =========
+	// Decal MRT
+	// =========
+	{
+		Ptr<CTexture> pRTTex[2] =
+		{
+			CAssetMgr::GetInst()->FindAsset<CTexture>(L"ColorTargetTex"),
+			CAssetMgr::GetInst()->FindAsset<CTexture>(L"EmissiveTargetTex"),
+		};
+
+		Vec4 arrClearColor[2] = {
+			Vec4(0.f, 0.f, 0.f, 1.f),
+			Vec4(0.f, 0.f, 0.f, 1.f),
+		};
+
+		m_arrMRT[(UINT)MRT_TYPE::DECAL] = new CMRT;
+		m_arrMRT[(UINT)MRT_TYPE::DECAL]->Create(pRTTex, 2, nullptr);
+		m_arrMRT[(UINT)MRT_TYPE::DECAL]->SetClearColor(arrClearColor, 2);
+	}
 }
 
 void CRenderMgr::CopyRenderTargetToPostProcessTarget()
@@ -132,3 +148,15 @@ void CRenderMgr::CopyRenderTargetToPostProcessTarget()
 	Ptr<CTexture> pRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
 	CONTEXT->CopyResource(m_PostProcessTex->GetTex2D().Get(), pRTTex->GetTex2D().Get());
 }
+
+Ptr<CTexture> CRenderMgr::CopyRTTex(Ptr<CTexture> pTexture)
+{
+	Ptr<CTexture> pRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
+
+	pTexture = CAssetMgr::GetInst()->FindAsset<CTexture>(L"CopyRTtex");
+
+	CONTEXT->CopyResource(pTexture->GetTex2D().Get(), pRTTex->GetTex2D().Get());
+
+	return pTexture;
+}
+

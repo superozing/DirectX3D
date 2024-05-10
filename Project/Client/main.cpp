@@ -236,6 +236,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             ::SetWindowPos(hWnd, nullptr, suggested_rect->left, suggested_rect->top, suggested_rect->right - suggested_rect->left, suggested_rect->bottom - suggested_rect->top, SWP_NOZORDER | SWP_NOACTIVATE);
         }
         break;
+#include <Engine\CKeyMgr.h>
+    case WM_MOUSEWHEEL:
+        if ((SHORT)HIWORD(wParam) > 0)
+            CKeyMgr::GetInst()->SetWheel(WHEEL_STATE::WHEEL_UP);
+        if ((SHORT)HIWORD(wParam) < 0)
+            CKeyMgr::GetInst()->SetWheel(WHEEL_STATE::WHEEL_DOWN);
+
+        break;
 
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);

@@ -26,10 +26,16 @@ VS_OUT VS_DebugShape(VS_IN _in)
     output.vPosition = mul(float4(_in.vPos, 1.f), g_matWVP);    
     output.vUV = _in.vUV;
     
-    // g_int_0 가 0 이 아니면, 현재 렌더링하는 메시가 Sphere 메시이다.
-    if (g_int_0)
+    // 현재 렌더링하는 메쉬가 Sphere 메쉬일 때,
+    if (1 == g_int_0)
     {
         // Sphere 의 View 공간상에서의 정점의 좌표와 노말값을 픽셀쉐이더로 전달
+        output.vViewPos = mul(float4(_in.vPos, 1.f), g_matWV).xyz;
+        output.vViewNormal = normalize(mul(float4(_in.vNormal, 0.f), g_matWV).xyz);
+    }
+    // 현재 렌더링하는 메쉬가 Cone 메쉬일 때,
+    else if (2 == g_int_0)
+    {
         output.vViewPos = mul(float4(_in.vPos, 1.f), g_matWV).xyz;
         output.vViewNormal = normalize(mul(float4(_in.vNormal, 0.f), g_matWV).xyz);
     }
@@ -45,7 +51,7 @@ float4 PS_DebugShape(VS_OUT _in) : SV_Target
     vOutColor.a = 1.f;
     
     // 렌더링 중인 메시가 SphereMesh 인 경우
-    if (g_int_0)
+    if (1 == g_int_0)
     {
         // View 공간에서 카메라(원점) 가 픽셀(대상) 을 바라보는 시선 방향벡터는 물체의 좌표이다.
         float3 vEye = normalize(_in.vViewPos);
@@ -56,7 +62,12 @@ float4 PS_DebugShape(VS_OUT _in) : SV_Target
         // absolute 로 절대값을 씌운다        
         vOutColor.a = 1.f - pow(saturate(abs(dot(-vEye, _in.vViewNormal))), 0.1f);
     }
-    
+    else if (2 == g_int_0)
+    {
+        float3 vEye = normalize(_in.vViewPos);
+        vOutColor.a = 1.f - pow(saturate(abs(dot(-vEye, _in.vViewNormal))), 0.1f);
+    }
+
     return vOutColor;
 }
 

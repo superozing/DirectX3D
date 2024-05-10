@@ -8,6 +8,7 @@
 #include "CCameraMoveScript.h"
 #include "CRenderMgrScript.h"
 #include "CTimeMgrScript.h"
+#include "CCameraEffect.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -18,6 +19,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CCameraMoveScript");
 	_vec.push_back(L"CRenderMgrScript");
 	_vec.push_back(L"CTimeMgrScript");
+	_vec.push_back(L"CCameraEffect");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -36,6 +38,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CRenderMgrScript;
 	if (L"CTimeMgrScript" == _strScriptName)
 		return new CTimeMgrScript;
+	if (L"CCameraEffect" == _strScriptName)
+		return new CCameraEffect;
 	return nullptr;
 }
 
@@ -63,6 +67,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::TIMEMGRSCRIPT:
 		return new CTimeMgrScript;
+		break;
+	case (UINT)SCRIPT_TYPE::CAMERAEFFECT:
+		return new CCameraEffect;
 		break;
 	}
 	return nullptr;
@@ -98,6 +105,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::TIMEMGRSCRIPT:
 		return L"CTimeMgrScript";
+		break;
+
+	case SCRIPT_TYPE::CAMERAEFFECT:
+		return L"CCameraEffect";
 		break;
 
 	}

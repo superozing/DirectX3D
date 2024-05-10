@@ -16,6 +16,43 @@ UI::~UI()
 	Delete_Vec(m_vecChildUI);
 }
 
+void UI::TitleButton(const wstring& _content)
+{
+	TitleButton(ToString(_content).c_str());
+}
+
+void UI::TitleButton(const string& _content)
+{
+	TitleButton(_content.c_str());
+}
+
+void UI::TitleButton(const char* _content)
+{
+	ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
+
+	ImGui::Button(_content);
+
+	ImGui::PopStyleColor(3);
+}
+
+bool UI::TitleCollapse(const char* _content)
+{
+	ImGui::PushStyleColor(ImGuiCol_Header, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
+	ImGui::PushStyleColor(ImGuiCol_HeaderHovered, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
+	ImGui::PushStyleColor(ImGuiCol_HeaderActive, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
+
+	if (ImGui::CollapsingHeader(_content)) {
+		ImGui::PopStyleColor(3);
+		return true;
+	}
+	else {
+		ImGui::PopStyleColor(3);
+		return false;
+	}
+}
+
 void UI::tick()
 {
 

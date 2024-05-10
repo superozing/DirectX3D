@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "ScriptUI.h"
 
 #include <Scripts/CScriptMgr.h>
@@ -29,11 +29,11 @@ void ScriptUI::render_update()
 {
 	ComponentUI::render_update();
 
-	const std::unordered_map<string, tScriptParam>& umParam = m_TargetScript->GetScriptParam();
+	const auto& vParam = m_TargetScript->GetScriptParam();
 
-	auto iter = umParam.begin();
+	auto iter = vParam.begin();
 
-	for (; iter != umParam.end(); ++iter)
+	for (; iter != vParam.end(); ++iter)
 	{
 		switch (iter->second.Type)
 		{
@@ -41,24 +41,30 @@ void ScriptUI::render_update()
 			ParamUI::Param_BOOL((bool*)iter->second.pData, iter->first, iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::INT:
-			ParamUI::Param_INT((int*)iter->second.pData, iter->first, (int)iter->second.min, (int)iter->second.Max, iter->second.View, iter->second.Tooltip);
+			ParamUI::Param_INT((int*)iter->second.pData, iter->first, (int)iter->second.fmin, (int)iter->second.fMax, iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::FLOAT:
-			ParamUI::Param_FLOAT((float*)iter->second.pData, iter->first, iter->second.min, iter->second.Max, iter->second.View, iter->second.Tooltip);
+			ParamUI::Param_FLOAT((float*)iter->second.pData, iter->first, iter->second.fmin, iter->second.fMax, iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::VEC2:
-			ParamUI::Param_VEC2((Vec2*)iter->second.pData, iter->first, iter->second.min, iter->second.Max, iter->second.View, iter->second.Tooltip);
+			ParamUI::Param_VEC2((Vec2*)iter->second.pData, iter->first, iter->second.fmin, iter->second.fMax, iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::VEC3:
-			ParamUI::Param_VEC3((Vec3*)iter->second.pData, iter->first, iter->second.min, iter->second.Max, iter->second.View, iter->second.Tooltip);
+			ParamUI::Param_VEC3((Vec3*)iter->second.pData, iter->first, iter->second.fmin, iter->second.fMax, iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::VEC4:
-			ParamUI::Param_VEC4((Vec4*)iter->second.pData, iter->first, iter->second.min, iter->second.Max, iter->second.View, iter->second.Tooltip);
+			ParamUI::Param_VEC4((Vec4*)iter->second.pData, iter->first, iter->second.fmin, iter->second.fMax, iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::OBJECT:
 			break;
 		case SCRIPT_PARAM::COLOR:
 			ParamUI::Param_COLOR((Vec4*)iter->second.pData, iter->first, iter->second.View, iter->second.Tooltip);
+			break;
+		case SCRIPT_PARAM::FUNC_STATIC:
+			ParamUI::Param_FUNC_STATIC(iter->second.StaticFunc, iter->first);
+			break;
+		case SCRIPT_PARAM::FUNC_MEMBER:
+			ParamUI::Param_FUNC_MEMBER(iter->second.MemberFunc, iter->first);
 			break;
 		}
 	}

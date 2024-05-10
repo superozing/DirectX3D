@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CScript.h"
 
 CScript::CScript(UINT _ScriptType)
@@ -21,13 +21,4 @@ void CScript::Instantiate(Ptr<CPrefab> _Prefab, Vec3 _vWorldPos, int _layerIdx)
 	pNewObj->Transform()->SetRelativePos(_vWorldPos);
 
 	GamePlayStatic::SpawnGameObject(pNewObj, _layerIdx);
-}
-
-void CScript::SaveToFile(FILE* _File)
-{
-
-}
-
-void CScript::LoadFromFile(FILE* _File)
-{
 }

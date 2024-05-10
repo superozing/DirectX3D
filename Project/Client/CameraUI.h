@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "ComponentUI.h"
 class CameraUI :
     public ComponentUI
@@ -8,4 +8,7 @@ public:
 public:
     CameraUI();
     ~CameraUI();
+
+private:
+    void ShakeUI();
 };

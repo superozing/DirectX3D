@@ -55,6 +55,9 @@
     <ClInclude Include="CTimeMgrScript.h">
       <Filter>Scripts\Manager\Time</Filter>
     </ClInclude>
+    <ClInclude Include="CCameraEffect.h">
+      <Filter>Scripts\Manager\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -86,6 +89,9 @@
     </ClCompile>
     <ClCompile Include="CTimeMgrScript.cpp">
       <Filter>Scripts\Manager\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="CCameraEffect.cpp">
+      <Filter>Scripts\Manager\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

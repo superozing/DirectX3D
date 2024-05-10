@@ -20,11 +20,13 @@
 #define KEY_PRESSED(Key)			KEY_CHECK(Key, PRESSED, FOCUS_STATE::MAIN)
 #define KEY_RELEASED(Key)			KEY_CHECK(Key, RELEASED, FOCUS_STATE::MAIN)
 #define KEY_NONE(Key)				KEY_CHECK(Key, NONE, FOCUS_STATE::MAIN)
+#define WHEEL_CHECK(Key) (CKeyMgr::GetInst()->GetWheel() == Key && (CKeyMgr::GetInst()->GetFocusState() == FOCUS_STATE::MAIN))
 
 #define KEY_TAP_EDITOR(Key)			KEY_CHECK(Key, TAP, FOCUS_STATE::OTHER)
 #define KEY_PRESSED_EDITOR(Key)		KEY_CHECK(Key, PRESSED, FOCUS_STATE::OTHER)
 #define KEY_RELEASED_EDITOR(Key)	KEY_CHECK(Key, RELEASED, FOCUS_STATE::OTHER)
 #define KEY_NONE_EDITOR(Key)		KEY_CHECK(Key, NONE, FOCUS_STATE::OTHER)
+#define WHEEL_CHECK_EDITOR(Key) (CKeyMgr::GetInst()->GetWheel() == Key && (CKeyMgr::GetInst()->GetFocusState() == FOCUS_STATE::OTHER))
 
 
 //#define LAYER_MAX 32
@@ -145,6 +147,11 @@ enum class DS_TYPE
 
 	NO_TEST_NO_WRITE,	// 깊이 테스트 X			깊이 기록 X
 
+	// Volume Mesh 용
+	BACKFACE_CHECK,
+	FRONTFACE_CHECK,
+	STENCIL_CHECK,
+
 	END,
 };
 
@@ -158,6 +165,8 @@ enum class BS_TYPE
 	ONE_ZERO,
 
 	ONE_ONE, 
+
+	DECAL,
 
 	END,
 };
@@ -225,9 +234,20 @@ enum class SCRIPT_PARAM
 	VEC4,
 	OBJECT,
 	COLOR,
+	FUNC_STATIC,
+	FUNC_MEMBER,
 };
 
+enum class FUNC_PARAM
+{
+	INT,
+	FLOAT,
+	VEC2,
+	VEC3,
+	VEC4,
 
+	END,
+};
 
 enum class DEBUG_SHAPE
 {
@@ -237,6 +257,7 @@ enum class DEBUG_SHAPE
 
 	CUBE,
 	SPHERE,
+	CONE,
 };
 
 enum class LIGHT_TYPE
@@ -249,9 +270,9 @@ enum class LIGHT_TYPE
 enum class SHADER_DOMAIN
 {
 	// Deferred
-	DOMAIN_DEFERRED,
-	DOMAIN_DECAL,
-	DOMAIN_LIGHTING,
+	DOMAIN_DEFERRED,	// 자연 렌더링
+	DOMAIN_DECAL,		// 데칼 (문신)
+	DOMAIN_LIGHTING,	// 광원 연산
 
 	// Merge
 	DOMAIN_MERGE, // Deferred 정보를 SwapChain 타겟으로 이동
@@ -299,6 +320,7 @@ enum class MRT_TYPE
 {
 	SWAPCHAIN,		// RT 1, DS 1
 	DEFERRED,		// RT 5, DS 0
+	DECAL,			// RT 2, DS 0
 	LIGHT,			// RT 2, DS 0
 	SHADOW_DEPTH,	// RT 1, DS 1
 

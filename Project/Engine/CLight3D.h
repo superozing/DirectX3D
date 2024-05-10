@@ -25,11 +25,12 @@ public:
     void SetLightType(LIGHT_TYPE _type);
     void SetRadius(float _Radius) { m_Info.fRadius = _Radius; }
     void SetAngle(float _Angle) { m_Info.fAngle = _Angle; }
+    void SetDir(Vec3 _Dir) { m_Info.vWorldDir = _Dir; }
 
     LIGHT_TYPE GetLightType() { return (LIGHT_TYPE)m_Info.LightType; }
     float GetRadius() { return m_Info.fRadius; }
     float GetAngle() { return m_Info.fAngle; }
-
+    Vec3 GetDir() { return m_Info.vWorldDir; }
 
 public:
     virtual void finaltick() override;

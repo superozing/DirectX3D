@@ -16,9 +16,15 @@ enum KEY
 	ESC, ENTER, BACK, DEL,
 	LEFT, RIGHT, UP, DOWN,
 
-	LBTN, RBTN,
+	LBTN, RBTN, MBTN,
 
 	KEY_END,
+};
+
+enum WHEEL_STATE {
+	WHEEL_NONE,
+	WHEEL_UP,
+	WHEEL_DOWN,
 };
 
 enum KEY_STATE
@@ -50,6 +56,9 @@ private:
 
 	Vec2				m_vMouseDrag;
 
+	WHEEL_STATE			_inWheel;
+	WHEEL_STATE			m_ThisFrameWheel;
+
 	FOCUS_STATE			m_FocusState;
 
 public:
@@ -59,6 +68,9 @@ public:
 	KEY_STATE GetKeyState(KEY _Key) { return m_vecKeyData[_Key].eState; }
 	Vec2 GetMousePos() const { return m_vMousePos; }
 	Vec2 GetMouseDrag() const { return m_vMouseDrag; }
+
+	void SetWheel(WHEEL_STATE _in) { _inWheel = _in; }
+	WHEEL_STATE GetWheel() { return m_ThisFrameWheel; }
 
 	FOCUS_STATE GetFocusState() const { return m_FocusState; }
 

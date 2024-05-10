@@ -23,10 +23,10 @@ private:
 
     Ptr<CTexture>           m_PostProcessTex;
 
-    CStructuredBuffer* m_Light2DBuffer;
+    CStructuredBuffer*      m_Light2DBuffer;
     vector<CLight2D*>       m_vecLight2D;
 
-    CStructuredBuffer* m_Light3DBuffer;
+    CStructuredBuffer*      m_Light3DBuffer;
     vector<CLight3D*>       m_vecLight3D;
 
     list<tDebugShapeInfo>   m_DbgShapeInfo;
@@ -59,6 +59,8 @@ public:
 
     void CopyRenderTargetToPostProcessTarget();
     Ptr<CTexture> GetPostProcessTex() { return m_PostProcessTex; }
+
+    Ptr<CTexture> CopyRTTex(Ptr<CTexture> pTexture);
 
     void RegisterEditorCamera(CCamera* _Cam) { m_EditorCam = _Cam; }
     void ClearCamera() { m_vecCam.clear(); }

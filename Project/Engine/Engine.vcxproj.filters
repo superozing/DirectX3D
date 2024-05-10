@@ -181,6 +181,12 @@
     <ClInclude Include="CManager.h">
       <Filter>04. Manager</Filter>
     </ClInclude>
+    <ClInclude Include="CCameraShake.h">
+      <Filter>08. Component\08. Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CDecal.h">
+      <Filter>08. Component\RenderComponent\05. Decal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -356,6 +362,12 @@
     </ClCompile>
     <ClCompile Include="CManager.cpp">
       <Filter>04. Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CCameraShake.cpp">
+      <Filter>08. Component\08. Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CDecal.cpp">
+      <Filter>08. Component\RenderComponent\05. Decal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -536,6 +548,9 @@
     <Filter Include="04. Manager\RandomMgr">
       <UniqueIdentifier>{5a89e353-570a-4435-a23f-d6e1271f5622}</UniqueIdentifier>
     </Filter>
+    <Filter Include="08. Component\RenderComponent\05. Decal">
+      <UniqueIdentifier>{cf7b3261-0fc7-43a7-a8f2-ad0126700482}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -586,6 +601,9 @@
       <Filter>ShaderCode\02. Render\3DShader</Filter>
     </FxCompile>
     <FxCompile Include="merge.fx">
+      <Filter>ShaderCode\02. Render\3DShader</Filter>
+    </FxCompile>
+    <FxCompile Include="decal.fx">
       <Filter>ShaderCode\02. Render\3DShader</Filter>
     </FxCompile>
   </ItemGroup>

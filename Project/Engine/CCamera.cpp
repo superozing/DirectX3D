@@ -15,8 +15,8 @@
 
 #include "CAssetMgr.h"
 
+#include "CCameraShake.h"
 #include "CLight3D.h"
-
 
 CCamera::CCamera()
 	: CComponent(COMPONENT_TYPE::CAMERA)
@@ -31,6 +31,7 @@ CCamera::CCamera()
 {
 	Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
 	m_AspectRatio = vResol.x / vResol.y;
+	SetShake();
 }
 
 CCamera::~CCamera()
@@ -53,14 +54,42 @@ struct CmpDescending
 	}
 };
 
+void CCamera::SetShake()
+{
+	m_pShake = make_shared<CCameraShake>(GetOwner()); 
+}
+
+void CCamera::SetShake(float _duration, Vec3 _posScale, Vec3 _rotScale, float _frequency, float _releaseTime)
+{
+	m_pShake = make_shared<CCameraShake>(GetOwner(), _duration, _posScale, _rotScale, _frequency, _releaseTime);
+}
+
+void CCamera::SetShake(shared_ptr<class CCameraShake> _shake)
+{
+	if (!_shake) return;
+
+	m_pShake = _shake;
+	m_pShake->RegistCamera(GetOwner());
+}
+
+void CCamera::Shake()
+{
+	m_pShake->Shake();
+}
+
 void CCamera::begin()
 {
 	// 카메라를 우선순위값에 맞게 RenderMgr 에 등록시킴
 	CRenderMgr::GetInst()->RegisterCamera(this, m_CameraPriority);
+	SetShake();
 }
 
 void CCamera::finaltick()
 {
+	if(m_pShake.get())
+		m_pShake->finaltick();
+
+
 	// 뷰 행렬을 계산한다.
 	// 카메라를 원점으로 이동시키는 이동 행렬
 	Vec3 vCamPos = Transform()->GetRelativePos();
@@ -78,6 +107,7 @@ void CCamera::finaltick()
 
 	// 이동 x 회전 = view 행렬
 	m_matView = matTrans * matRotate;
+	m_matViewInv = XMMatrixInverse(nullptr, m_matView);
 
 
 	// 투영 방식에 따른 투영 행렬을 계산한다.
@@ -95,7 +125,7 @@ void CCamera::finaltick()
 		m_matProj = XMMatrixPerspectiveFovLH(m_FOV, m_AspectRatio, 1.f, m_Far);
 	}
 
-	
+	m_matProjInv = XMMatrixInverse(nullptr, m_matProj);
 }
 
 void CCamera::SetCameraPriority(int _Priority)
@@ -159,6 +189,9 @@ void CCamera::SortObject()
 			case SHADER_DOMAIN::DOMAIN_DEFERRED:
 				m_vecDeferred.push_back(vecObjects[j]);
 				break;
+			case SHADER_DOMAIN::DOMAIN_DECAL:
+				m_vecDecal.push_back(vecObjects[j]);
+				break;
 			case SHADER_DOMAIN::DOMAIN_OPAQUE:
 				m_vecOpaque.push_back(vecObjects[j]);
 				break;
@@ -184,40 +217,43 @@ void CCamera::SortObject()
 
 }
 
-void CCamera::render()
+void CCamera::render_deferred()
 {
-	// 계산한 view 행렬과 proj 행렬을 전역변수에 담아둔다.
-	g_Transform.matView = m_matView;
-	g_Transform.matProj = m_matProj;
-
-	// Domain 순서대로 렌더링
-
-	// Deferred 물체 렌더링
-	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED)->OMSet();
-	render(m_vecDeferred);
-
-	// 광원 처리
-	Lighting();
-
-	// Deferred + 광원 => SwapChain 으로 병합
-	Merge();
-
-	// Foward 렌더링
-	render(m_vecOpaque);	
-	render(m_vecMasked);
-	render(m_vecTransparent);
-
-	// 후처리 작업
-	render_postprocess();
+	for (size_t i = 0; i < m_vecDeferred.size(); ++i)
+	{
+		m_vecDeferred[i]->render();
+	}
+	m_vecDeferred.clear();
 }
 
-void CCamera::render(vector<CGameObject*>& _vecObj)
+void CCamera::render_decal()
 {
-	for (size_t i = 0; i < _vecObj.size(); ++i)
+	for (size_t i = 0; i < m_vecDecal.size(); ++i)
 	{
-		_vecObj[i]->render();
+		m_vecDecal[i]->render();
 	}
-	_vecObj.clear();
+	m_vecDecal.clear();
+}
+
+void CCamera::render_forward()
+{
+	for (size_t i = 0; i < m_vecOpaque.size(); ++i)
+	{
+		m_vecOpaque[i]->render();
+	}
+	m_vecOpaque.clear();
+
+	for (size_t i = 0; i < m_vecMasked.size(); ++i)
+	{
+		m_vecMasked[i]->render();
+	}
+	m_vecMasked.clear();
+
+	for (size_t i = 0; i < m_vecTransparent.size(); ++i)
+	{
+		m_vecTransparent[i]->render();
+	}
+	m_vecTransparent.clear();
 }
 
 void CCamera::render_postprocess()
@@ -236,20 +272,6 @@ void CCamera::render_postprocess()
 	}
 
 	m_vecPostProcess.clear();
-}
-
-void CCamera::Lighting()
-{
-	// Light MRT 로 변경
-	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::LIGHT)->OMSet();
-
-	// 광원이 자신의 영향 범위 안에 있는 Deferred 물체에 빛을 남긴다.
-	const vector<CLight3D*>& vecLight3D = CRenderMgr::GetInst()->GetLight3D();
-
-	for (size_t i = 0; i < vecLight3D.size(); ++i)
-	{
-		vecLight3D[i]->render();
-	}
 }
 
 void CCamera::Merge()
@@ -284,6 +306,7 @@ void CCamera::SaveToFile(FILE* _File)
 #define TagFar "[Far]"
 #define TagLayerCheck "[LayerCheck]"
 #define TagPriority "[Priority]"
+#define TagShake "[Shake]"
 
 void CCamera::SaveToFile(ofstream& fout)
 {
@@ -311,6 +334,15 @@ void CCamera::SaveToFile(ofstream& fout)
 
 	fout << TagPriority << endl;
 	fout << m_CameraPriority << endl;
+
+	fout << TagShake << endl;
+	if (m_pShake.get()) {
+		fout << 1 << endl;
+		fout << *m_pShake.get() << endl;
+	}
+	else {
+		fout << (int)0 << endl;
+	}
 }
 
 void CCamera::LoadFromFile(FILE* _File)
@@ -352,4 +384,12 @@ void CCamera::LoadFromFile(ifstream& fin)
 
 	Utils::GetLineUntilString(fin, TagPriority);
 	fin >> m_CameraPriority;
+
+	int exist;
+	Utils::GetLineUntilString(fin, TagShake);
+	fin >> exist;
+	if (exist) {
+		fin >> *m_pShake.get();
+		m_pShake->RegistCamera(GetOwner());
+	}
 }

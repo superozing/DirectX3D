@@ -2,6 +2,7 @@
 #include "CDevice.h"
 
 #include "CConstBuffer.h"
+#include "CStructuredBuffer.h"
 #include "CAssetMgr.h"
 
 CDevice::CDevice()
@@ -11,12 +12,20 @@ CDevice::CDevice()
 	, m_arrDS{}
 	, m_arrBS{}
 	, m_arrSampler{}
+	, m_Light2DBuffer(nullptr)
+	, m_Light3DBuffer(nullptr)
 {
 }
 
 CDevice::~CDevice()
 {	
 	Delete_Array(m_arrCB);
+
+	if (nullptr != m_Light2DBuffer)
+		delete m_Light2DBuffer;
+
+	if (nullptr != m_Light3DBuffer)
+		delete m_Light3DBuffer;
 }
 
 int CDevice::init(HWND _hWnd, Vec2 _vResolution)
@@ -80,6 +89,11 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution)
 		return E_FAIL;
 	}
 
+	if (FAILED(CreateLightBuffer()))
+	{
+		MessageBox(nullptr, L"Light Buffer 생성 실패", L"Device 초기화 실패", MB_OK);
+		return E_FAIL;
+	}
 
 	// ViewPort 설정
 	D3D11_VIEWPORT ViewportDesc = {};
@@ -259,6 +273,46 @@ int CDevice::CreateDepthStencilState()
 	hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::NO_TEST_NO_WRITE].GetAddressOf());
 	if (FAILED(hr)) return E_FAIL;
 
+
+
+	//// BackFace Check
+	//tDesc.DepthEnable = true;
+	//tDesc.DepthFunc = D3D11_COMPARISON_GREATER;
+	//tDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	//tDesc.StencilEnable = true;
+
+	//tDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+	//tDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_INCR;
+
+	//hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::BACKFACE_CHECK].GetAddressOf());
+	//if (FAILED(hr)) return E_FAIL;
+
+	//// FrontFace Check
+	//tDesc.DepthEnable = true;
+	//tDesc.DepthFunc = D3D11_COMPARISON_LESS;
+	//tDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	//tDesc.StencilEnable = true;
+
+	//tDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+	//tDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_INCR;
+	//tDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_DECR;
+
+	//hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::FRONTFACE_CHECK].GetAddressOf());
+	//if (FAILED(hr)) return E_FAIL;
+
+	//// Stencil Check
+	//tDesc.DepthEnable = false;
+	//tDesc.DepthFunc = D3D11_COMPARISON_NEVER;
+	//tDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	//tDesc.StencilEnable = true;
+
+	//tDesc.FrontFace.StencilFunc = D3D11_COMPARISON_EQUAL;
+	//tDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_ZERO;
+	//tDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_ZERO;
+
+	//hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::STENCIL_CHECK].GetAddressOf());
+	//if (FAILED(hr)) return E_FAIL;
+
 	return S_OK;
 }
 
@@ -301,6 +355,32 @@ int CDevice::CreateBlendState()
 	tDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
 	DEVICE->CreateBlendState(&tDesc, m_arrBS[(UINT)BS_TYPE::ONE_ONE].GetAddressOf());
+
+	// Decal 
+	tDesc.AlphaToCoverageEnable = false;
+	tDesc.IndependentBlendEnable = true;
+
+	tDesc.RenderTarget[0].BlendEnable = true;
+	tDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	tDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+	tDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+
+	tDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	tDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	tDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
+	tDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+	tDesc.RenderTarget[1].BlendEnable = true;
+	tDesc.RenderTarget[1].BlendOp = D3D11_BLEND_OP_ADD;
+	tDesc.RenderTarget[1].SrcBlend = D3D11_BLEND_ONE;
+	tDesc.RenderTarget[1].DestBlend = D3D11_BLEND_ONE;
+					   
+	tDesc.RenderTarget[1].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	tDesc.RenderTarget[1].SrcBlendAlpha = D3D11_BLEND_ONE;
+	tDesc.RenderTarget[1].DestBlendAlpha = D3D11_BLEND_ONE;
+	tDesc.RenderTarget[1].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+	DEVICE->CreateBlendState(&tDesc, m_arrBS[(UINT)BS_TYPE::DECAL].GetAddressOf());
 
 	return S_OK;
 }
@@ -360,6 +440,17 @@ int CDevice::CreateConstBuffer()
 
 	m_arrCB[(UINT)CB_TYPE::GLOBAL_DATA] = new CConstBuffer(CB_TYPE::GLOBAL_DATA);
 	m_arrCB[(UINT)CB_TYPE::GLOBAL_DATA]->Create(sizeof(tGlobalData), 1);
+
+	return S_OK;
+}
+
+int CDevice::CreateLightBuffer()
+{
+	m_Light2DBuffer = new CStructuredBuffer;
+	m_Light2DBuffer->Create(sizeof(tLightInfo), 10, SB_TYPE::READ_ONLY, true);
+
+	m_Light3DBuffer = new CStructuredBuffer;
+	m_Light3DBuffer->Create(sizeof(tLightInfo), 10, SB_TYPE::READ_ONLY, true);
 
 	return S_OK;
 }

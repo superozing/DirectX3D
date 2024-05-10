@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "imgui.h"
 #include "CImGuiMgr.h"
@@ -15,7 +15,11 @@ private:
 	UI*				m_Parent;
 	vector<UI*>		m_vecChildUI;
 
-	
+protected:
+	void TitleButton(const wstring& _content);
+	void TitleButton(const string& _content);
+	void TitleButton(const char* _content);
+	bool TitleCollapse(const char* _content);
 
 public:
 	void SetName(const string& _name) { m_strName = _name; }

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 
 #include <stdlib.h>
@@ -19,12 +19,18 @@ using std::make_pair;
 using std::wstring;
 using std::string;
 
+#include <memory>
+using std::shared_ptr;
+using std::make_shared;
+using std::unique_ptr;
+using std::make_unique;
+using std::weak_ptr;
+
 #include <wrl.h>
 using namespace Microsoft::WRL;
 
-#define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
-#include <experimental/filesystem>
 #include <filesystem>
+using namespace std::filesystem;
 
 #include <fstream>
 using std::ofstream;
@@ -32,7 +38,7 @@ using std::ifstream;
 using std::endl;
 
 
-// Directx 11 Çì´õ ¹× ¶óÀÌºê·¯¸® ÂüÁ¶
+// Directx 11 í—¤ë” ë° ë¼ì´ë¸ŒëŸ¬ë¦¬ ì°¸ì¡°
 #include <d3d11.h>
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
@@ -63,12 +69,12 @@ typedef Vector4 Vec4;
 
 
 
-// ¿£Áø Çì´õ ÂüÁ¶
+// ì—”ì§„ í—¤ë” ì°¸ì¡°
 #include "singleton.h"
 #include "define.h"
 #include "struct.h"
 #include "func.h"
 
 
-// Magic Enum Çì´õ ÂüÁ¶
+// Magic Enum í—¤ë” ì°¸ì¡°
 #include <Magic_Enum/magic_enum_all.hpp>

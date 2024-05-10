@@ -16,12 +16,13 @@ int g_KeySync[KEY::KEY_END] =
 	VK_TAB, VK_LSHIFT, VK_LMENU, VK_LCONTROL, VK_SPACE,
 	VK_ESCAPE, VK_RETURN, VK_BACK, VK_DELETE,
 	VK_LEFT, VK_RIGHT, VK_UP, VK_DOWN, 
-	VK_LBUTTON, VK_RBUTTON,
+	VK_LBUTTON, VK_RBUTTON, VK_MBUTTON,
 };
 
 
 CKeyMgr::CKeyMgr()
 {
+	_inWheel = WHEEL_NONE;
 }
 
 CKeyMgr::~CKeyMgr()
@@ -59,6 +60,10 @@ void CKeyMgr::tick()
 	//{
 	//	m_FocusState = FOCUS_STATE::OTHER;
 	//}
+
+	//Wheel
+	m_ThisFrameWheel = _inWheel;
+	_inWheel = WHEEL_NONE;
 
 	// FOCUS_STATE 가져오기
 	m_FocusState = m_FocusCallback();
