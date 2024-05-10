@@ -523,7 +523,6 @@ void CAssetMgr::CreateDefaultMesh()
 		}
 	}
 
-	// 아래면의 중심 정점 추가
 	for (UINT i = 0; i <= iSliceCount; ++i)
 	{
 		float theta = i * fSliceAngle;
@@ -535,6 +534,17 @@ void CAssetMgr::CreateDefaultMesh()
 		v.vBinormal = Vec3(0.f, 1.f, 0.f);
 		vecVtx.push_back(v);
 	}
+
+	// 아래면의 중심 정점 추가
+	v.vPos = Vec3(0.f, 0, 1.f);
+	v.vUV = Vec2(0.5f, 1.f);
+	v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+	v.vNormal = v.vPos;
+	v.vNormal.Normalize();
+
+	v.vTangent = Vec3(1.f, 0.f, 0.f);
+	v.vBinormal = Vec3(0.f, 0.f, -1.f);
+	vecVtx.push_back(v);
 
 	iBottomIdx = (UINT)vecVtx.size() - 1;
 	for (UINT i = 0; i < iSliceCount; ++i)
@@ -827,7 +837,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->CreatePixelShader(L"shader\\debug.fx", "PS_DebugShape");
 
 	pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
-	pShader->SetRSType(RS_TYPE::CULL_FRONT);
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
 	pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
 	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
 
