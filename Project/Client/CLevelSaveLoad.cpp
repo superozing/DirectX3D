@@ -311,6 +311,9 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
 		case COMPONENT_TYPE::SKYBOX:
 			pComponent = new CSkyBox;
 			break;
+		case COMPONENT_TYPE::DECAL:
+			pComponent = new CDecal;
+			break;
 		default:
 			assert(nullptr);
 			break;
