@@ -180,8 +180,11 @@ call CodeGen.exe</Command>
     <ClInclude Include="strAnim.h" />
     <ClInclude Include="strFx.h" />
     <ClInclude Include="strLevel.h" />
+    <ClInclude Include="strMat.h" />
+    <ClInclude Include="strMesh.h" />
     <ClInclude Include="strMtrl.h" />
     <ClInclude Include="strPref.h" />
+    <ClInclude Include="strShader.h" />
     <ClInclude Include="strSnd.h" />
     <ClInclude Include="strTex.h" />
     <ClInclude Include="strTxt.h" />

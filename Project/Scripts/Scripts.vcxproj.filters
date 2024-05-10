@@ -58,6 +58,15 @@
     <ClInclude Include="CCameraEffect.h">
       <Filter>Scripts\Manager\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="strMat.h">
+      <Filter>Default\UserString</Filter>
+    </ClInclude>
+    <ClInclude Include="strMesh.h">
+      <Filter>Default\UserString</Filter>
+    </ClInclude>
+    <ClInclude Include="strShader.h">
+      <Filter>Default\UserString</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -121,6 +130,9 @@
     </Filter>
     <Filter Include="Scripts\Manager\Time">
       <UniqueIdentifier>{9b5c2bf2-2681-42e9-b790-8b4aba881373}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Default\UserString">
+      <UniqueIdentifier>{140bbb2b-af68-4364-9d62-a3d5f8475deb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CParticleSystem.h"
 
 #include "CDevice.h"
@@ -15,18 +15,18 @@ CParticleSystem::CParticleSystem()
 	, m_ParticleBuffer(nullptr)
 	, m_MaxParticleCount(1000)
 {
-	// Àü¿ë ¸Ş½¬¿Í Àü¿ë ÀçÁú »ç¿ë
-	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
+	// ì „ìš© ë©”ì‰¬ì™€ ì „ìš© ì¬ì§ˆ ì‚¬ìš©
+	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHpoint));
 	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ParticleMtrl"));
 
-	// ·»´õ¸µ ÇØ»óµµ
+	// ë Œë”ë§ í•´ìƒë„
 	Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
 
-	// ÆÄÆ¼Å¬À» ÀúÀåÇÏ´Â ±¸Á¶È­ ¹öÆÛ
+	// íŒŒí‹°í´ì„ ì €ì¥í•˜ëŠ” êµ¬ì¡°í™” ë²„í¼
 	m_ParticleBuffer = new CStructuredBuffer;
 	m_ParticleBuffer->Create(sizeof(tParticle), m_MaxParticleCount, SB_TYPE::READ_WRITE, true);
 
-	// ÆÄÆ¼Å¬ ¸ğµâÁ¤º¸¸¦ ÀúÀåÇÏ´Â ±¸Á¶È­¹öÆÛ
+	// íŒŒí‹°í´ ëª¨ë“ˆì •ë³´ë¥¼ ì €ì¥í•˜ëŠ” êµ¬ì¡°í™”ë²„í¼
 	m_ParticleModuleBuffer = new CStructuredBuffer;
 	UINT ModuleAddSize = 0;
 	if (sizeof(tParticleModule) % 16 != 0)
@@ -35,15 +35,15 @@ CParticleSystem::CParticleSystem()
 	}
 	m_ParticleModuleBuffer->Create(sizeof(tParticleModule) + ModuleAddSize, 1, SB_TYPE::READ_ONLY, true);
 
-	// ÆÄÆ¼Å¬ ¾÷µ¥ÀÌÆ®¿ë ÄÄÇ»Æ® ½¦ÀÌ´õ ÂüÁ¶
+	// íŒŒí‹°í´ ì—…ë°ì´íŠ¸ìš© ì»´í“¨íŠ¸ ì‰ì´ë” ì°¸ì¡°
 	m_CSParticleUpdate = (CParticleUpdate*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"ParticleUpdateShader").Get();
 
-	// SpawnCount Àü´Ş¿ë ±¸Á¶È­¹öÆÛ
+	// SpawnCount ì „ë‹¬ìš© êµ¬ì¡°í™”ë²„í¼
 	m_SpawnCountBuffer = new CStructuredBuffer;
 	m_SpawnCountBuffer->Create(sizeof(tSpawnCount), 1, SB_TYPE::READ_WRITE, true);
 
 
-	// ÃÊ±â ¸ğµâ ¼¼ÆÃ		
+	// ì´ˆê¸° ëª¨ë“ˆ ì„¸íŒ…		
 	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPAWN] = 1;
 
 	m_Module.SpaceType = 1;
@@ -85,7 +85,7 @@ CParticleSystem::CParticleSystem()
 
 	// Render 
 	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::RENDER] = 1;
-	m_Module.VelocityAlignment = 1; // ¼Óµµ¿¡ µû¸¥ ¹æÇâ Á¤·Ä
+	m_Module.VelocityAlignment = 1; // ì†ë„ì— ë”°ë¥¸ ë°©í–¥ ì •ë ¬
 	m_Module.AlphaBasedLife = 1; // 0 : off, 1 : NomrlizedAge, 2: Age
 	m_Module.AlphaMaxAge = 2.f;
 
@@ -136,10 +136,10 @@ void CParticleSystem::finaltick()
 
 	if ((1.f / m_Module.SpawnRate) < m_Time)
 	{
-		// ´©Àû ½Ã°£À» ½ºÆù °£°İÀ¸·Î ³ª´« °ª
+		// ëˆ„ì  ì‹œê°„ì„ ìŠ¤í° ê°„ê²©ìœ¼ë¡œ ë‚˜ëˆˆ ê°’
 		float fSpawnCount = m_Time / (1.f / m_Module.SpawnRate);
 
-		// ½ºÆù °£°İÀ» Á¦¿ÜÇÑ ÀÜ·®À» ³²Àº ´©Àû½Ã°£À¸·Î ¼³Á¤
+		// ìŠ¤í° ê°„ê²©ì„ ì œì™¸í•œ ì”ëŸ‰ì„ ë‚¨ì€ ëˆ„ì ì‹œê°„ìœ¼ë¡œ ì„¤ì •
 		m_Time -= (1.f / m_Module.SpawnRate) * floorf(fSpawnCount);
 				
 		tSpawnCount count = tSpawnCount{ (int)fSpawnCount, 0, 0, 0 };
@@ -152,11 +152,11 @@ void CParticleSystem::finaltick()
 	}
 
 
-	// ÆÄÆ¼Å¬ ¸ğµâÁ¤º¸ ¾÷µ¥ÀÌÆ®
+	// íŒŒí‹°í´ ëª¨ë“ˆì •ë³´ ì—…ë°ì´íŠ¸
 	m_ParticleModuleBuffer->SetData(&m_Module);
 	m_ParticleModuleBuffer->UpdateData_CS_SRV(20);
 
-	// ÆÄÆ¼Å¬ ¾÷µ¥ÀÌÆ® ÄÄÇ»Æ® ½¦ÀÌ´õ
+	// íŒŒí‹°í´ ì—…ë°ì´íŠ¸ ì»´í“¨íŠ¸ ì‰ì´ë”
 	m_CSParticleUpdate->SetParticleBuffer(m_ParticleBuffer);
 	m_CSParticleUpdate->SetParticleModuleBuffer(m_ParticleModuleBuffer);
 	m_CSParticleUpdate->SetParticleSpawnCount(m_SpawnCountBuffer);
@@ -166,22 +166,22 @@ void CParticleSystem::finaltick()
 
 void CParticleSystem::render()
 {
-	// View, Proj Çà·Ä Àü´Ş
+	// View, Proj í–‰ë ¬ ì „ë‹¬
 	Transform()->UpdateData();
 
-	// ParticleBuffer ¹ÙÀÎµù
+	// ParticleBuffer ë°”ì¸ë”©
 	m_ParticleBuffer->UpdateData(20);
 	m_ParticleModuleBuffer->UpdateData(21);
 
-	// ¸ğµç ÆÄÆ¼Å¬ ·»´õ¸µ
-	// ÆÄÆ¼Å¬ °³º° ·£´õ¸µ -> ÀÎ½ºÅÏ½Ì
+	// ëª¨ë“  íŒŒí‹°í´ ë Œë”ë§
+	// íŒŒí‹°í´ ê°œë³„ ëœë”ë§ -> ì¸ìŠ¤í„´ì‹±
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, 0);
 	GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_ParticleTex);
 	GetMaterial()->UpdateData();
 	
 	GetMesh()->render_asparticle(m_MaxParticleCount);
 
-	// ·»´õ¸µ¶§ »ç¿ëÇÑ ¸®¼Ò½º ¹ÙÀÎµù Clear
+	// ë Œë”ë§ë•Œ ì‚¬ìš©í•œ ë¦¬ì†ŒìŠ¤ ë°”ì¸ë”© Clear
 	m_ParticleBuffer->Clear(20);
 	m_ParticleModuleBuffer->Clear(21);
 }
@@ -193,14 +193,14 @@ void CParticleSystem::UpdateData()
 
 void CParticleSystem::SaveToFile(FILE* _File)
 {
-	// ÆÄÆ¼Å¬ ÃÖ´ë °¹¼ö ¹× ¸ğµâ Á¤º¸ ÀúÀå
+	// íŒŒí‹°í´ ìµœëŒ€ ê°¯ìˆ˜ ë° ëª¨ë“ˆ ì •ë³´ ì €ì¥
 	fwrite(&m_MaxParticleCount, sizeof(UINT), 1, _File);
 	fwrite(&m_Module, sizeof(tParticleModule), 1, _File);	
 
-	// »ç¿ëÇÏ´ø CS °¡ ´©±ºÁö ÀúÀå
+	// ì‚¬ìš©í•˜ë˜ CS ê°€ ëˆ„êµ°ì§€ ì €ì¥
 	//SaveAssetRef(m_CSParticleUpdate, _File);
 
-	// ÆÄÆ¼Å¬ ÀÔÀÚ ÅØ½ºÃÄ Á¤º¸ ÀúÀå
+	// íŒŒí‹°í´ ì…ì í…ìŠ¤ì³ ì •ë³´ ì €ì¥
 	SaveAssetRef(m_ParticleTex, _File);	
 }
 
@@ -223,16 +223,16 @@ void CParticleSystem::SaveToFile(ofstream& fout)
 
 void CParticleSystem::LoadFromFile(FILE* _File)
 {
-	// ÆÄÆ¼Å¬ ÃÖ´ë °¹¼ö ¹× ¸ğµâ Á¤º¸ ·Îµå
+	// íŒŒí‹°í´ ìµœëŒ€ ê°¯ìˆ˜ ë° ëª¨ë“ˆ ì •ë³´ ë¡œë“œ
 	fread(&m_MaxParticleCount, sizeof(UINT), 1, _File);
 	fread(&m_Module, sizeof(tParticleModule), 1, _File);
 
-	// »ç¿ëÇÏ´ø CS °¡ ´©±ºÁö ·Îµå
+	// ì‚¬ìš©í•˜ë˜ CS ê°€ ëˆ„êµ°ì§€ ë¡œë“œ
 	/*Ptr<CComputeShader> cs;
 	LoadAssetRef(cs, _File);
 	m_CSParticleUpdate = (CParticleUpdate*)cs.Get();*/
 
-	// ÆÄÆ¼Å¬ ÀÔÀÚ ÅØ½ºÃÄ Á¤º¸ ·Îµå
+	// íŒŒí‹°í´ ì…ì í…ìŠ¤ì³ ì •ë³´ ë¡œë“œ
 	LoadAssetRef(m_ParticleTex, _File);
 }
 

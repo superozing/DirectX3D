@@ -6,7 +6,7 @@
 CDecal::CDecal()
 	: CRenderComponent(COMPONENT_TYPE::DECAL)
 {
-	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CubeMesh"));
+	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHcube));
 	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DecalMtrl"));
 }
 

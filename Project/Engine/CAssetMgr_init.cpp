@@ -26,7 +26,7 @@ void CAssetMgr::CreateDefaultMesh()
 	UINT Idx = 0;
 	pMesh = new CMesh(true);
 	pMesh->Create(&vPoint, 1, &Idx, 1);
-	AddAsset(L"PointMesh", pMesh);
+	AddAsset(MESHpoint, pMesh);
 
 
 	// 전역변수에 삼각형 위치 설정
@@ -74,7 +74,7 @@ void CAssetMgr::CreateDefaultMesh()
 
 	pMesh = new CMesh(true);
 	pMesh->Create(vecVtx.data(), vecVtx.size(), vecIdx.data(), vecIdx.size());
-	AddAsset(L"RectMesh", pMesh);
+	AddAsset(MESHrect, pMesh);
 		
 	vecIdx.clear();
 
@@ -90,7 +90,7 @@ void CAssetMgr::CreateDefaultMesh()
 
 	pMesh = new CMesh(true);
 	pMesh->Create(vecVtx.data(), vecVtx.size(), vecIdx.data(), vecIdx.size());
-	AddAsset(L"RectMesh_Debug", pMesh);
+	AddAsset(MESHrectdebug, pMesh);
 
 	vecVtx.clear();
 	vecIdx.clear();
@@ -132,7 +132,7 @@ void CAssetMgr::CreateDefaultMesh()
 
 	pMesh = new CMesh(true);
 	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
-	AddAsset(L"CircleMesh", pMesh);
+	AddAsset(MESHcircle, pMesh);
 
 
 	// CircleMesh_Debug
@@ -144,7 +144,7 @@ void CAssetMgr::CreateDefaultMesh()
 
 	pMesh = new CMesh(true);
 	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
-	AddAsset(L"CircleMesh_Debug", pMesh);
+	AddAsset(MESHcircledebug, pMesh);
 	vecVtx.clear();
 	vecIdx.clear();
 
@@ -170,7 +170,7 @@ void CAssetMgr::CreateDefaultMesh()
 
 	pMesh = new CMesh(true);
 	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
-	AddAsset(L"CrossMesh", pMesh);
+	AddAsset(MESHcross, pMesh);
 	vecVtx.clear();
 	vecIdx.clear();
 
@@ -323,7 +323,7 @@ void CAssetMgr::CreateDefaultMesh()
 
 	pMesh = new CMesh(true);
 	pMesh->Create(arrCube, 24, vecIdx.data(), (UINT)vecIdx.size());
-	AddAsset(L"CubeMesh", pMesh);
+	AddAsset(MESHcube, pMesh);
 	vecIdx.clear();
 
 	// ========================
@@ -351,7 +351,7 @@ void CAssetMgr::CreateDefaultMesh()
 
 	pMesh = new CMesh(true);
 	pMesh->Create(arrCube, 24, vecIdx.data(), (UINT)vecIdx.size());
-	AddAsset(L"CubeMesh_Debug", pMesh);
+	AddAsset(MESHcubedebug, pMesh);
 	vecIdx.clear();
 
 
@@ -461,7 +461,7 @@ void CAssetMgr::CreateDefaultMesh()
 
 	pMesh = new CMesh(true);
 	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
-	AddAsset(L"SphereMesh", pMesh);
+	AddAsset(MESHsphere, pMesh);
 	vecVtx.clear();
 	vecIdx.clear();
 
@@ -549,7 +549,7 @@ void CAssetMgr::CreateDefaultMesh()
 
 	pMesh = new CMesh(true);
 	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
-	AddAsset(L"ConeMesh", pMesh);
+	AddAsset(MESHcone, pMesh);
 	vecVtx.clear();
 	vecIdx.clear();
 }

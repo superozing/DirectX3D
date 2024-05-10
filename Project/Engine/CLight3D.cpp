@@ -70,19 +70,19 @@ void CLight3D::SetLightType(LIGHT_TYPE _type)
 
 	if (LIGHT_TYPE::DIRECTIONAL == (LIGHT_TYPE)m_Info.LightType)
 	{
-		m_VolumeMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
+		m_VolumeMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect);
 		m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DirLightMtrl");
 	}
 
 	else if (LIGHT_TYPE::POINT == (LIGHT_TYPE)m_Info.LightType)
 	{
-		m_VolumeMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh");
+		m_VolumeMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MESHsphere);
 		m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLightMtrl");
 	}
 
 	else if (LIGHT_TYPE::SPOT == (LIGHT_TYPE)m_Info.LightType)
 	{
-		m_VolumeMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"ConeMesh");
+		m_VolumeMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MESHcone);
 		m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SpotLightMtrl");
 	}
 }
