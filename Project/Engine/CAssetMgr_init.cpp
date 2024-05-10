@@ -471,16 +471,6 @@ void CAssetMgr::CreateDefaultMesh()
 	fRadius = 0.5f;
 	float fHeight = 1.f;
 
-	// Top
-	v.vPos = Vec3(0.f, 0.f, 0.f);
-	v.vUV = Vec2(0.5f, 0.f);
-	v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
-	v.vNormal = Vec3(0.f, 0.f, -1.f);
-	v.vTangent = Vec3(1.f, 0.f, 0.f);
-	v.vBinormal = Vec3(0.f, 1.f, 0.f);
-	vecVtx.push_back(v);
-
-	// Body
 	iSliceCount = 80; // 원뿔의 세로 분할 개수
 
 	fSliceAngle = XM_2PI / iSliceCount;
@@ -490,44 +480,50 @@ void CAssetMgr::CreateDefaultMesh()
 
 	for (UINT i = 0; i <= iSliceCount; ++i)
 	{
-		float theta = i * fSliceAngle;
-
-		float x = fRadius * cosf(theta);
-		float y = fRadius * sinf(theta);
-
-		v.vPos = Vec3(x, y, fHeight);
-		v.vUV = Vec2(fUVXStep * i, fUVYStep);
+		// Top
+		v.vPos = Vec3(0.f, 0.f, 0.f);
+		v.vUV = Vec2(0.5f, 0.f);
 		v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
-		v.vNormal = Vec3(0.f, 0.f, 1.f);
-		v.vTangent = Vec3(1.f, 0.f, 0.f);
-		v.vBinormal = Vec3(0.f, 1.f, 0.f);
 		vecVtx.push_back(v);
 
-		// 인덱스
-		if (i < iSliceCount)
-		{
-			vecIdx.push_back(0);
-			vecIdx.push_back(i + 2);
-			vecIdx.push_back(i + 1);
-		}
+		// Body
+		float theta = i * fSliceAngle;
+		v.vPos = Vec3(fRadius * cosf(theta), fRadius * sinf(theta), fHeight);
+		v.vUV = Vec2(fUVXStep * i, fUVYStep);
+		v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+		vecVtx.push_back(v);
 
-		// 정점의 법선 벡터 다시 계산
+		// vecVtx 저장 순서 : {꼭대기1, 정점1, 꼭대기2, 정점2, ...}
 		if (i > 0)
 		{
 			size_t lastVtxIdx = vecVtx.size() - 1;
 
-			Vec3 vtx1 = vecVtx[lastVtxIdx - 1].vPos; // 가장 마지막 바로 전 VtxIdx
-			Vec3 vtx2 = vecVtx[lastVtxIdx].vPos;     // 가장 마지막에 추가된 VtxIdx
+			Vtx vtx1 = vecVtx[lastVtxIdx - 2];
+			Vtx vtx2 = vecVtx[lastVtxIdx];
+			
+			// Binormal : 아랫면 정점에서 원뿔 꼭대기를 향하는 방향 벡터
+			vecVtx[lastVtxIdx - 3] .vBinormal = vtx1.vBinormal = (vecVtx[lastVtxIdx - 3].vPos - vtx1.vPos).Normalize();
+			
+			// Tangent : 정점2에서 정점1로 향하는 방향 벡터
+			vecVtx[lastVtxIdx - 3].vTangent = vtx1.vTangent = (vtx2.vPos - vtx1.vPos).Normalize();
 
-			// 아랫면의 한 정점을 기준으로 연결된 두 벡터를 외적하여 노말 벡터를 재계산
-			Vec3 vNormal = (vtx1 - vecVtx[0].vPos).Cross(vtx1 - vtx2).Normalize();
-
-			vecVtx[lastVtxIdx - 1].vNormal = vNormal;
-			vecVtx[lastVtxIdx].vNormal = vNormal;
+			// Normal : Binormal과 Tangent의 외적
+			vecVtx[lastVtxIdx - 3].vNormal = vtx1.vNormal = (vtx1.vBinormal).Cross(vtx1.vTangent).Normalize();
 		}
 	}
 
-	// 아래면의 정점 추가
+	for (UINT i = 0; i <= iSliceCount; ++i)
+	{
+		// 인덱스
+		if (i < iSliceCount)
+		{
+			vecIdx.push_back(2 * i);	
+			vecIdx.push_back(2 * i + 3);
+			vecIdx.push_back(2 * i + 1);
+		}
+	}
+
+	// 아래면의 중심 정점 추가
 	for (UINT i = 0; i <= iSliceCount; ++i)
 	{
 		float theta = i * fSliceAngle;
@@ -538,13 +534,14 @@ void CAssetMgr::CreateDefaultMesh()
 		v.vTangent = Vec3(1.f, 0.f, 0.f);
 		v.vBinormal = Vec3(0.f, 1.f, 0.f);
 		vecVtx.push_back(v);
+	}
 
-		if (i < iSliceCount)
-		{
-			vecIdx.push_back(iSliceCount + 2); // 아랫면 중심점 인덱스
-			vecIdx.push_back(i + 1 + iSliceCount + 1);
-			vecIdx.push_back(i + 2 + iSliceCount + 1);
-		}
+	iBottomIdx = (UINT)vecVtx.size() - 1;
+	for (UINT i = 0; i < iSliceCount; ++i)
+	{
+		vecIdx.push_back(iBottomIdx);
+		vecIdx.push_back(iBottomIdx - (i + 2));
+		vecIdx.push_back(iBottomIdx - (i + 1));
 	}
 
 	pMesh = new CMesh(true);
@@ -552,6 +549,62 @@ void CAssetMgr::CreateDefaultMesh()
 	AddAsset(L"ConeMesh", pMesh);
 	vecVtx.clear();
 	vecIdx.clear();
+
+	//// Top
+	//v.vPos = Vec3(0.f, 0.f, 0.f);
+	//v.vUV = Vec2(0.5f, 0.f);
+	//v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+	//v.vNormal = Vec3(0.f, 0.f, -1.f);
+	//v.vTangent = Vec3(1.f, 0.f, 0.f);
+	//v.vBinormal = Vec3(0.f, 1.f, 0.f);
+	//vecVtx.push_back(v);
+
+	//// Body
+	//iSliceCount = 80; // 원뿔의 세로 분할 개수
+
+	//fSliceAngle = XM_2PI / iSliceCount;
+
+	//fUVXStep = 1.f / (float)iSliceCount;
+	//fUVYStep = 1.f;
+
+	//for (UINT i = 0; i <= iSliceCount; ++i)
+	//{
+	//	float theta = i * fSliceAngle;
+
+	//	float x = fRadius * cosf(theta);
+	//	float y = fRadius * sinf(theta);
+
+	//	v.vPos = Vec3(x, y, fHeight);
+	//	v.vUV = Vec2(fUVXStep * i, fUVYStep);
+	//	v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+	//	v.vNormal = Vec3(0.f, 0.f, 1.f);
+	//	v.vTangent = Vec3(1.f, 0.f, 0.f);
+	//	v.vBinormal = Vec3(0.f, 1.f, 0.f);
+	//	vecVtx.push_back(v);
+
+	//	// 인덱스
+	//	if (i < iSliceCount)
+	//	{
+	//		vecIdx.push_back(0);
+	//		vecIdx.push_back(i + 2);
+	//		vecIdx.push_back(i + 1);
+	//	}
+
+	//	// 정점의 법선 벡터 다시 계산
+	//	if (i > 0)
+	//	{
+	//		size_t lastVtxIdx = vecVtx.size() - 1;
+
+	//		Vec3 vtx1 = vecVtx[lastVtxIdx - 1].vPos; // 가장 마지막 바로 전 VtxIdx
+	//		Vec3 vtx2 = vecVtx[lastVtxIdx].vPos;     // 가장 마지막에 추가된 VtxIdx
+
+	//		// 아랫면의 한 정점을 기준으로 연결된 두 벡터를 외적하여 노말 벡터를 재계산
+	//		Vec3 vNormal = (vtx1 - vecVtx[0].vPos).Cross(vtx1 - vtx2).Normalize();
+
+	//		vecVtx[lastVtxIdx - 1].vNormal = vNormal;
+	//		vecVtx[lastVtxIdx].vNormal = vNormal;
+	//	}
+	//}
 }
 
 void CAssetMgr::CreateDefaultGraphicsShader()
@@ -774,7 +827,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->CreatePixelShader(L"shader\\debug.fx", "PS_DebugShape");
 
 	pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
-	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetRSType(RS_TYPE::CULL_FRONT);
 	pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
 	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
 

@@ -66,6 +66,7 @@ float4 PS_DebugShape(VS_OUT _in) : SV_Target
     {
         float3 vEye = normalize(_in.vViewPos);
         vOutColor.a = 1.f - pow(saturate(abs(dot(-vEye, _in.vViewNormal))), 0.1f);
+        //vOutColor.a = 0.2f;
     }
 
     return vOutColor;
