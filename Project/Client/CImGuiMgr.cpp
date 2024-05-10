@@ -254,7 +254,7 @@ void CImGuiMgr::observe_content()
 
         // ContentUI �� Reload �۾� ����
         Content* pContentUI = (Content*)FindUI("##Content");
-        pContentUI->ReloadContent();
+        pContentUI->ResetContent();
     }
 }
 
