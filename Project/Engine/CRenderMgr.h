@@ -84,6 +84,9 @@ public:
     void tick();
 
 private:
+
+    void CreateDynamicShadowDepth();
+
     void CreateMRT();
     void ClearMRT();
 
