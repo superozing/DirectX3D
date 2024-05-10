@@ -10,8 +10,6 @@ class CLevelMgr :
 private:
     CLevel*         m_CurLevel;
 
-    CGameObject*    m_EditorCam;
-
 public:
     virtual void init() override;
     virtual void tick() override;

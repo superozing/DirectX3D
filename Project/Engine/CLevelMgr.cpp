@@ -60,21 +60,10 @@ void CLevelMgr::tick()
 
 void CLevelMgr::enter()
 {
-	// 에디터 카메라가 레벨에 없으면서
-	// 에디터 카메라가 존재하면서
-	// 현재 레벨이 존재할 경우 AddObject
-	if (!m_CurLevel->FindObjectByName(L"Editor Camera") && m_EditorCam && m_CurLevel)
-		m_CurLevel->AddObject(m_EditorCam, 0);
 }
 
 void CLevelMgr::exit()
 {
-	// 에디터 카메라를 레벨에서 잠시 제거
-	if (m_CurLevel != nullptr)
-	{
-		m_EditorCam = m_CurLevel->FindObjectByName(L"Editor Camera");
-		m_EditorCam->DisconnectWithLayer();
-	}
 }
 
 void CLevelMgr::ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextLevelStartState)
