@@ -25,9 +25,6 @@ CLevelMgr::~CLevelMgr()
 {
 	if (nullptr != m_CurLevel)
 		delete m_CurLevel;
-
-	if (nullptr != m_EditorCam)
-		delete m_EditorCam;
 }
 
 void CLevelMgr::init()
