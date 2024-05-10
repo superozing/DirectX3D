@@ -34,19 +34,14 @@ void CEditorObjMgr::init()
 	m_EditorCam->Camera()->SetFOV(XM_PI / 2.f);
 	m_EditorCam->Camera()->SetFar(100000.f);
 
+	m_vecEditorObj.push_back(m_EditorCam);
+
 	// Editor 용 카메라로서 렌더매니저에 등록
 	CRenderMgr::GetInst()->RegisterEditorCamera(m_EditorCam->Camera());
-	CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(m_EditorCam, 0);
 }
 
 void CEditorObjMgr::progress()
 {
-	if (m_EditorCam != nullptr)
-	{
-		m_EditorCam->tick();
-		m_EditorCam->finaltick();
-	}
-
 	for (size_t i = 0; i < m_vecEditorObj.size(); ++i)
 	{
 		m_vecEditorObj[i]->tick();

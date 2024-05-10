@@ -1,17 +1,19 @@
-#pragma once
-#include "singleton.h"
+﻿#pragma once
+#include "CManager.h"
 
 class CEntity;
 
 class CGC :
-    public CSingleton<CGC>
+    public CManager<CGC>
 {
     SINGLE(CGC);
 private:
     vector<CEntity*>    m_vecEntity;
 
 public:
-    void tick();
+    virtual void tick() override;
+    virtual void enter() override {}
+    virtual void exit() override;
 
     void Add(CEntity* _Entity)
     {

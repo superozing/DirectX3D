@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "CEntity.h"
 
 class CGameObject;
@@ -17,7 +17,7 @@ private:
     void finaltick();    
 
 public:
-    // Æ¯Á¤ ¿ÀºêÁ§Æ®¸¦ ·¹ÀÌ¾î¿¡¼­ Á¦°Å
+    // íŠ¹ì • ì˜¤ë¸Œì íŠ¸ë¥¼ ë ˆì´ì–´ì—ì„œ ì œê±°
     void DetachGameObject(CGameObject* _Object);
     void RegisterGameObject(CGameObject* _Object) { m_vecObjects.push_back(_Object); }
     int GetLayerIdx() { return m_iLayerIdx; }

@@ -1,11 +1,11 @@
-#pragma once
+ï»¿#pragma once
 
 class CTimeMgr
-	: public CSingleton<CTimeMgr>
+	: public CManager<CTimeMgr>
 {
 	SINGLE(CTimeMgr);
 private:
-	// Larget Integer ´Â ±×³É 8¹ÙÀÌÆ® long long Å¸ÀÔ Á¤¼ö·Î Ãë±Ş
+	// Larget Integer ëŠ” ê·¸ëƒ¥ 8ë°”ì´íŠ¸ long long íƒ€ì… ì •ìˆ˜ë¡œ ì·¨ê¸‰
 	LARGE_INTEGER	m_Frequency;
 	LARGE_INTEGER	m_PrevCount;
 	LARGE_INTEGER	m_CurCount;
@@ -13,12 +13,14 @@ private:
 	double			m_DeltaTime;
 	double			m_EngineDeltaTime;
 
-	float			m_DTScale; // µ¨Å¸ Å¸ÀÓ ¹èÀ²
+	float			m_DTScale; // ë¸íƒ€ íƒ€ì„ ë°°ìœ¨
 
-	bool			m_bLock; // DT Àá±İ
+	bool			m_bLock; // DT ì ê¸ˆ
 	
 	UINT			m_iCall;
 	double			m_Time;
+
+	double			m_AccLevelTime;
 
 	wchar_t			m_szText[256];
 
@@ -34,9 +36,13 @@ public:
 
 	void LockDeltaTime(bool _Lock) { m_bLock = _Lock; }
 
+	double GetAccLevelTime() const { return m_AccLevelTime; }
+
 public:
-	void init();
-	void tick();
+	virtual void init() override;
+	virtual void tick() override;
+	virtual void enter() override {}
+	virtual void exit() override;
 	void render();
 };
 

@@ -47,6 +47,11 @@ void CRenderMgr::tick()
 	Clear();
 }
 
+void CRenderMgr::exit()
+{
+	ClearCamera();
+}
+
 void CRenderMgr::ClearMRT()
 {
 	m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->Clear();

@@ -1,12 +1,12 @@
-#pragma once
-#include "singleton.h"
+ï»¿#pragma once
+#include "CManager.h"
 
 #include "CPathMgr.h"
 
 
 #include "CTexture.h"
 #include "CMesh.h"
-#include "CGraphicsShader.h"
+#include "CGraphicsShader.h" 
 #include "CComputeShader.h"
 #include "CMaterial.h"
 #include "CPrefab.h"
@@ -20,14 +20,17 @@ constexpr bool MyBool<T1, T1> = true;
 
 
 class CAssetMgr :
-    public CSingleton<CAssetMgr>
+    public CManager<CAssetMgr>
 {
     SINGLE(CAssetMgr);
 private:
     map<wstring, Ptr<CAsset>>   m_mapAsset[(UINT)ASSET_TYPE::END];
 
 public:
-    void init();
+    virtual void init() override;
+    virtual void enter() override {}
+    virtual void exit() override;
+
 private:
     void InitSound();
     void CreateDefaultMesh();
@@ -62,11 +65,11 @@ public:
     Ptr<CTexture> CreateTexture(const wstring& _strKey, UINT _Width, UINT _Height, DXGI_FORMAT _Format, UINT _Flag, D3D11_USAGE _Usage = D3D11_USAGE_DEFAULT);
     Ptr<CTexture> CreateTexture(const wstring& _strKey, ComPtr<ID3D11Texture2D> _tex2D);
 
-    // ÁöÁ¤µÈ Å¸ÀÔÀÇ ¸ğµç ¿¡¼ÂÀÇ ÀÌ¸§À» ¹Ş¾Æ¿Â´Ù
+    // ì§€ì •ëœ íƒ€ì…ì˜ ëª¨ë“  ì—ì…‹ì˜ ì´ë¦„ì„ ë°›ì•„ì˜¨ë‹¤
     void GetAssetName(ASSET_TYPE _Type, vector<string>& _Out);
  
 private:
-    // ÁöÁ¤µÈ ¿¡¼ÂÀ» »èÁ¦ÇÑ´Ù.
+    // ì§€ì •ëœ ì—ì…‹ì„ ì‚­ì œí•œë‹¤.
     template<typename T>
     void DeleteAsset(const wstring& _strKey);
     void DeleteAsset(ASSET_TYPE _Type, const wstring& _strKey);
@@ -141,7 +144,7 @@ Ptr<T> CAssetMgr::Load(const wstring& _strKey, const wstring& _strRelativePath)
 {
     Ptr<T> pAsset = FindAsset<T>(_strKey);
 
-    // ·ÎµùÇÒ ¶§ »ç¿ëÇÒ Å°·Î ÀÌ¹Ì ´Ù¸¥ ¿¡¼ÂÀÌ ÀÖ´Ù¸é
+    // ë¡œë”©í•  ë•Œ ì‚¬ìš©í•  í‚¤ë¡œ ì´ë¯¸ ë‹¤ë¥¸ ì—ì…‹ì´ ìˆë‹¤ë©´
     if (nullptr != pAsset)
     {
         return (T*)pAsset.Get();
@@ -153,7 +156,7 @@ Ptr<T> CAssetMgr::Load(const wstring& _strKey, const wstring& _strRelativePath)
     pAsset = new T;
     if (FAILED(pAsset->Load(strFilePath)))
     {
-        MessageBox(nullptr, L"¿¡¼Â ·Îµù ½ÇÆĞ", L"¿¡¼Â ·Îµù ½ÇÆĞ", MB_OK);
+        MessageBox(nullptr, L"ì—ì…‹ ë¡œë”© ì‹¤íŒ¨", L"ì—ì…‹ ë¡œë”© ì‹¤íŒ¨", MB_OK);
         pAsset = nullptr;
         return nullptr;
     }

@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CGC.h"
 
 #include "CEntity.h"
@@ -17,4 +17,9 @@ void CGC::tick()
 	{
 		Delete_Vec(m_vecEntity);
 	}
+}
+
+void CGC::exit()
+{
+	Delete_Vec(m_vecEntity);
 }

@@ -1,10 +1,10 @@
-#pragma once
+﻿#pragma once
 #include <Engine\singleton.h>
 
 class CGameObjectEx;
 
 class CEditorObjMgr :
-    public CSingleton<CEditorObjMgr>
+    public CManager<CEditorObjMgr>
 {
     SINGLE(CEditorObjMgr);
 private:
@@ -13,8 +13,12 @@ private:
     CGameObjectEx*            m_EditorCam;
 
 public:
-    void init();
+    virtual void init() override;
+    virtual void enter() override {}
+
     void progress();    
+    
     CGameObjectEx* GetEditorCam() { return m_EditorCam; }
+    const vector<CGameObjectEx*> GetEditorGameObjects() { return m_vecEditorObj; }
 };
 
