@@ -21,11 +21,6 @@ CDevice::~CDevice()
 {	
 	Delete_Array(m_arrCB);
 
-	if (nullptr != m_Light2DBuffer)
-		delete m_Light2DBuffer;
-
-	if (nullptr != m_Light3DBuffer)
-		delete m_Light3DBuffer;
 }
 
 int CDevice::init(HWND _hWnd, Vec2 _vResolution)

@@ -34,11 +34,9 @@ void CMeshRender::UpdateData()
 
 void CMeshRender::finaltick()
 {
-	if (CRenderMgr::GetInst()->IsDebugPosition())
-	{
-		// Depth Test 추가
-		GamePlayStatic::DrawDebugCross(Transform()->GetWorldPos(), 100.f, Vec3(0.f, 1.f, 0.f), false);
-	}
+	// Debug Cross
+	//if (CRenderMgr::GetInst()->IsDebugPosition())
+		//GamePlayStatic::DrawDebugCross(Transform()->GetWorldPos(), 100.f, Vec3(0.f, 1.f, 0.f), false);
 }
 
 void CMeshRender::render()

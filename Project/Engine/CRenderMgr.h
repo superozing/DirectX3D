@@ -86,6 +86,8 @@ public:
     virtual void exit() override;
 
 private:
+    void CreateDynamicShadowDepth();
+
     void CreateMRT();
     void ClearMRT();
 

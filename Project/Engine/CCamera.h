@@ -43,6 +43,8 @@ private:
     vector<CGameObject*>    m_vecTransparent;
     vector<CGameObject*>    m_vecPostProcess;
 
+    vector<CGameObject*>    m_vecShadow;
+
 public:
     PROJ_TYPE GetProjType() { return m_ProjType; }
     void SetProjType(PROJ_TYPE _Type) { m_ProjType = _Type; }
@@ -55,6 +57,9 @@ public:
 
     void SetFar(float _Far) { m_Far = _Far; }
     float GetFar() { return m_Far; }
+
+    void SetWidth(float _Width) { m_Width = _Width; }
+    void SetAspectRatio(float _AR) { m_AspectRatio = _AR; }
 
     const Matrix& GetViewMat() { return m_matView; }
     const Matrix& GetViewInvMat() { return m_matViewInv; }
@@ -94,6 +99,8 @@ public:
     void render_forward();
     void render_postprocess();
     void Merge();
+
+    void SortShadowMapObject();
 
 public:
 

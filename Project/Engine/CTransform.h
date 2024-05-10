@@ -15,6 +15,7 @@ private:
     Matrix  m_matWorld; // 상태행렬
     Matrix  m_matWorldInv;  // 월드 역행렬
     bool    m_bAbsolute;
+    bool    m_IsDynamic;    // 정적물체 or 동적물체
 
 public:
     virtual void finaltick() override;
@@ -33,10 +34,15 @@ public:
 
     Vec3 GetWorldPos() { return m_matWorld.Translation(); }
     Vec3 GetWorldScale();
-    //Vec3 GetWorldRot();
+    Vec3 GetWorldRot();
+
+    void SetDir(Vec3 _Dir);
 
     void SetAbsolute(bool _bAbsolute) { m_bAbsolute = _bAbsolute; }
     bool IsAbsolute() const { return m_bAbsolute; }
+
+    void SetDynamicObject(bool _Dynamic) { m_IsDynamic = _Dynamic; }
+    bool IsDynamic() { return m_IsDynamic; }
 
     const Matrix& GetWorldMat() { return m_matWorld; }
     const Matrix& GetWorldInvMat() { return m_matWorldInv; }
