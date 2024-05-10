@@ -471,7 +471,7 @@ void CAssetMgr::CreateDefaultMesh()
 	fRadius = 0.5f;
 	float fHeight = 1.f;
 
-	iSliceCount = 80; // 원뿔의 세로 분할 개수
+	iSliceCount = 100; // 원뿔의 세로 분할 개수
 
 	fSliceAngle = XM_2PI / iSliceCount;
 
@@ -500,15 +500,23 @@ void CAssetMgr::CreateDefaultMesh()
 
 			Vtx vtx1 = vecVtx[lastVtxIdx - 2];
 			Vtx vtx2 = vecVtx[lastVtxIdx];
-			
-			// Binormal : 아랫면 정점에서 원뿔 꼭대기를 향하는 방향 벡터
-			vecVtx[lastVtxIdx - 3] .vBinormal = vtx1.vBinormal = (vecVtx[lastVtxIdx - 3].vPos - vtx1.vPos).Normalize();
-			
-			// Tangent : 정점2에서 정점1로 향하는 방향 벡터
-			vecVtx[lastVtxIdx - 3].vTangent = vtx1.vTangent = (vtx2.vPos - vtx1.vPos).Normalize();
 
-			// Normal : Binormal과 Tangent의 외적
-			vecVtx[lastVtxIdx - 3].vNormal = vtx1.vNormal = (vtx1.vBinormal).Cross(vtx1.vTangent).Normalize();
+			vecVtx[lastVtxIdx - 3].vNormal = vtx1.vNormal = vtx2.vPos.Cross(vtx1.vPos).Normalize();
+			vecVtx[lastVtxIdx - 3].vBinormal = vtx1.vBinormal = -vtx1.vPos.Normalize();
+			vecVtx[lastVtxIdx - 3].vTangent = vtx1.vTangent = vtx1.vBinormal.Cross(vtx1.vNormal).Normalize();
+
+			//vecVtx[lastVtxIdx].vNormal = vtx2.vNormal = vtx1.vPos.Cross(vtx2.vPos).Normalize();
+			//vecVtx[lastVtxIdx].vBinormal = vtx2.vBinormal = -vtx2.vPos.Normalize();
+			//vecVtx[lastVtxIdx].vTangent = vtx2.vTangent = vtx2.vBinormal.Cross(vtx2.vNormal).Normalize();
+			
+			//// Binormal : 아랫면 정점에서 원뿔 꼭대기를 향하는 방향 벡터
+			//vecVtx[lastVtxIdx - 3] .vBinormal = vtx1.vBinormal = (vecVtx[lastVtxIdx - 3].vPos - vtx1.vPos).Normalize();
+			//
+			//// Tangent : 정점2에서 정점1로 향하는 방향 벡터
+			//vecVtx[lastVtxIdx - 3].vTangent = vtx1.vTangent = (vtx2.vPos - vtx1.vPos).Normalize();
+
+			//// Normal : Binormal과 Tangent의 외적
+			//vecVtx[lastVtxIdx - 3].vNormal = vtx1.vNormal = (vtx1.vBinormal).Cross(vtx1.vTangent).Normalize();
 		}
 	}
 
