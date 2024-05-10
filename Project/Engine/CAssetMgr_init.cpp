@@ -562,8 +562,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	Ptr<CGraphicsShader> pShader = nullptr;
 
 	pShader = new CGraphicsShader;	
-	pShader->CreateVertexShader(L"shader\\std2d.fx", "VS_Std2D");
-	pShader->CreatePixelShader(L"shader\\std2d.fx", "PS_Std2D");
+	pShader->CreateVertexShader(FXstd2d, "VS_Std2D");
+	pShader->CreatePixelShader(FXstd2d, "PS_Std2D");
 
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
 	pShader->SetDSType(DS_TYPE::LESS);
@@ -582,8 +582,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// Std3DShader
 	// ===========
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(L"shader\\std3d.fx", "VS_Std3D");
-	pShader->CreatePixelShader(L"shader\\std3d.fx", "PS_Std3D");
+	pShader->CreateVertexShader(FXstd3d, "VS_Std3D");
+	pShader->CreatePixelShader(FXstd3d, "PS_Std3D");
 
 	pShader->SetRSType(RS_TYPE::CULL_BACK);
 	//pShader->SetRSType(RS_TYPE::WIRE_FRAME);
@@ -601,8 +601,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// Std3D_DeferredShader
 	// ====================
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(L"shader\\std3d_deferred.fx", "VS_Std3D_Deferred");
-	pShader->CreatePixelShader(L"shader\\std3d_deferred.fx", "PS_Std3D_Deferred");
+	pShader->CreateVertexShader(FXstd3d_deferred, "VS_Std3D_Deferred");
+	pShader->CreatePixelShader(FXstd3d_deferred, "PS_Std3D_Deferred");
 
 	pShader->SetRSType(RS_TYPE::CULL_BACK);
 	pShader->SetDSType(DS_TYPE::LESS);
@@ -615,8 +615,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// DirLightShader
 	// ==============
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(L"shader\\light.fx", "VS_DirLight");
-	pShader->CreatePixelShader(L"shader\\light.fx", "PS_DirLight");
+	pShader->CreateVertexShader(FXlight, "VS_DirLight");
+	pShader->CreatePixelShader(FXlight, "PS_DirLight");
 
 	pShader->SetRSType(RS_TYPE::CULL_BACK);
 	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
@@ -629,8 +629,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// PointLight Shader
 	// =================
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(L"shader\\light.fx", "VS_PointLight");
-	pShader->CreatePixelShader(L"shader\\light.fx", "PS_PointLight");
+	pShader->CreateVertexShader(FXlight, "VS_PointLight");
+	pShader->CreatePixelShader(FXlight, "PS_PointLight");
 
 	pShader->SetRSType(RS_TYPE::CULL_FRONT);
 	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
@@ -643,8 +643,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// SpotLight Shader
 	// =================
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(L"shader\\light.fx", "VS_SpotLight");
-	pShader->CreatePixelShader(L"shader\\light.fx", "PS_SpotLight");
+	pShader->CreateVertexShader(FXlight, "VS_SpotLight");
+	pShader->CreatePixelShader(FXlight, "PS_SpotLight");
 
 	pShader->SetRSType(RS_TYPE::CULL_FRONT);
 	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
@@ -657,8 +657,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// Merge Shader
 	// ============
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(L"shader\\merge.fx", "VS_Merge");
-	pShader->CreatePixelShader(L"shader\\merge.fx", "PS_Merge");
+	pShader->CreateVertexShader(FXmerge, "VS_Merge");
+	pShader->CreatePixelShader(FXmerge, "PS_Merge");
 
 	pShader->SetRSType(RS_TYPE::CULL_BACK);
 	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
@@ -671,8 +671,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// EffectShader
 	// =================================
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(L"shader\\std2d.fx", "VS_Std2D");
-	pShader->CreatePixelShader(L"shader\\std2d.fx", "PS_Std2D_Effect");
+	pShader->CreateVertexShader(FXstd2d, "VS_Std2D");
+	pShader->CreatePixelShader(FXstd2d, "PS_Std2D_Effect");
 
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
 	pShader->SetDSType(DS_TYPE::LESS);
@@ -687,8 +687,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// TileMapShader
 	// =============
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(L"shader\\tilemap.fx", "VS_TileMap");
-	pShader->CreatePixelShader(L"shader\\tilemap.fx", "PS_TileMap");
+	pShader->CreateVertexShader(FXtilemap, "VS_TileMap");
+	pShader->CreatePixelShader(FXtilemap, "PS_TileMap");
 
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
 	pShader->SetDSType(DS_TYPE::LESS);
@@ -702,9 +702,9 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// ParticleRenderShader
 	// ====================
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(L"shader\\particle.fx", "VS_Particle");
-	pShader->CreateGeometryShader(L"shader\\particle.fx", "GS_Particle");
-	pShader->CreatePixelShader(L"shader\\particle.fx", "PS_Particle");
+	pShader->CreateVertexShader(FXparticle, "VS_Particle");
+	pShader->CreateGeometryShader(FXparticle, "GS_Particle");
+	pShader->CreatePixelShader(FXparticle, "PS_Particle");
 
 	pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
@@ -724,8 +724,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// Domain		: DOMAIN_POSTPROCESS
 	// =================================
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(L"shader\\postprocess.fx", "VS_GrayFilter");
-	pShader->CreatePixelShader(L"shader\\postprocess.fx", "PS_GrayFilter");
+	pShader->CreateVertexShader(FXpostprocess, "VS_GrayFilter");
+	pShader->CreatePixelShader(FXpostprocess, "PS_GrayFilter");
 
 	pShader->SetRSType(RS_TYPE::CULL_BACK);
 	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
@@ -737,8 +737,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// SkyBoxShader
 	// ============
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(L"shader\\skybox.fx", "VS_SkyBox");
-	pShader->CreatePixelShader(L"shader\\skybox.fx", "PS_SkyBox");
+	pShader->CreateVertexShader(FXskybox, "VS_SkyBox");
+	pShader->CreatePixelShader(FXskybox, "PS_SkyBox");
 
 	pShader->SetRSType(RS_TYPE::CULL_FRONT);
 
@@ -757,8 +757,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// Domain		: DOMAIN_POSTPROCESS
 	// =================================
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(L"shader\\postprocess.fx", "VS_Distortion");
-	pShader->CreatePixelShader(L"shader\\postprocess.fx", "PS_Distortion");
+	pShader->CreateVertexShader(FXpostprocess, "VS_Distortion");
+	pShader->CreatePixelShader(FXpostprocess, "PS_Distortion");
 
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
 	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
@@ -770,8 +770,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// DebugShape Shader
 	// =================================
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(L"shader\\debug.fx", "VS_DebugShape");
-	pShader->CreatePixelShader(L"shader\\debug.fx", "PS_DebugShape");
+	pShader->CreateVertexShader(FXdebug, "VS_DebugShape");
+	pShader->CreatePixelShader(FXdebug, "PS_DebugShape");
 
 	pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
