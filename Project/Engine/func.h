@@ -128,8 +128,6 @@ wstring ToWString(const std::string_view& _sv);
 void SaveWString(const wstring& _str, FILE* _File);
 void LoadWString(wstring& _str, FILE* _FILE);
 
-Vec3 DecomposeRotMat(const Matrix& _matRot);
-
 template<typename T>
 class Ptr;
 

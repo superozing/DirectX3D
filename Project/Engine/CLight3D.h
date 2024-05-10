@@ -10,7 +10,6 @@ private:
     Ptr<CMesh>      m_VolumeMesh;
     Ptr<CMaterial>  m_LightMtrl;
 
-    CGameObject*    m_CamObj; // 광원 시점으로 물체를 찍기 위한 카메라
 
 public:
     const tLightInfo& GetLightInfo() { return m_Info; }
@@ -36,7 +35,6 @@ public:
 public:
     virtual void finaltick() override;
     void render();
-    void render_shadowdepth();
 
     virtual void SaveToFile(FILE* _File) override;
     virtual void SaveToFile(ofstream& fout) override;
