@@ -15,20 +15,6 @@ CDecal::~CDecal()
 {
 }
 
-#define TagAsEmissive "[AsEmissive]"
-
-void CDecal::SaveToFile(ofstream& fout)
-{
-	fout << TagAsEmissive << endl;
-	fout << m_bAsEmissive << endl;
-}
-
-void CDecal::LoadFromFile(ifstream& fin)
-{
-	Utils::GetLineUntilString(fin, TagAsEmissive);
-	fin >> m_bAsEmissive;
-}
-
 void CDecal::finaltick()
 {
 	GamePlayStatic::DrawDebugCube(Transform()->GetWorldMat(), Vec3(0.f, 1.f, 0.f), true);
@@ -56,4 +42,22 @@ void CDecal::render()
 	UpdateData();
 
 	GetMesh()->render();
+}
+
+#define TagAsEmissive "[AsEmissive]"
+
+void CDecal::SaveToFile(ofstream& fout)
+{
+	CRenderComponent::SaveToFile(fout);
+
+	fout << TagAsEmissive << endl;
+	fout << m_bAsEmissive << endl;
+}
+
+void CDecal::LoadFromFile(ifstream& fin)
+{
+	CRenderComponent::LoadFromFile(fin);
+
+	Utils::GetLineUntilString(fin, TagAsEmissive);
+	fin >> m_bAsEmissive;
 }
