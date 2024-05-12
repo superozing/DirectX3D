@@ -47,6 +47,10 @@ void LogUI::render_update()
     }
     ImGui::PopStyleColor(3);
 
+    //ImGui::Checkbox(); 검색 옵션
+
+    //mGui::InputText(); 필터
+
     ImGui::Separator();
   
 }

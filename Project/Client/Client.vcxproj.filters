@@ -134,6 +134,9 @@
     <Filter Include="02. UI\7. Viewport">
       <UniqueIdentifier>{da2e8217-b280-4ad3-a4c6-87441e1d37b5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. UI\8. Log">
+      <UniqueIdentifier>{00aff5bb-3f12-45f1-b96b-52e5d7d97dd4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -279,6 +282,12 @@
     </ClInclude>
     <ClInclude Include="RTViewPort.h">
       <Filter>02. UI\7. Viewport</Filter>
+    </ClInclude>
+    <ClInclude Include="LogUI.h">
+      <Filter>02. UI\8. Log</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageUI.h">
+      <Filter>02. UI\8. Log</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -427,6 +436,12 @@
     </ClCompile>
     <ClCompile Include="RTViewPort.cpp">
       <Filter>02. UI\7. Viewport</Filter>
+    </ClCompile>
+    <ClCompile Include="LogUI.cpp">
+      <Filter>02. UI\8. Log</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageUI.cpp">
+      <Filter>02. UI\8. Log</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
