@@ -326,3 +326,12 @@ enum class MRT_TYPE
 
 	END,
 };
+
+enum class Log_Level
+{
+	ALL,
+	INFO,
+	WARN,
+	ERR,
+	END,
+};
