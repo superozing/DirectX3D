@@ -1,11 +1,15 @@
 ﻿#include "pch.h"
 #include "LogUI.h"
 
+#include "MessageUI.h"
 
 
 LogUI::LogUI()
 	: UI("LogUI", "##LogUI")
 {
+    m_MessageUI = new MessageUI;
+    AddChildUI(m_MessageUI);
+
 }
 
 LogUI::~LogUI()
@@ -18,23 +22,31 @@ void LogUI::tick()
 
 void LogUI::render_update()
 {
-    static float w = 200.0f;
-    static float h = 300.0f;
-    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
-    ImGui::BeginChild("child1", ImVec2(w, h), true);
-    ImGui::EndChild();
-    ImGui::SameLine();
-    ImGui::InvisibleButton("vsplitter", ImVec2(8.0f, h));
-    if (ImGui::IsItemActive())
-        w += ImGui::GetIO().MouseDelta.x;
-    ImGui::SameLine();
-    ImGui::BeginChild("child2", ImVec2(0, h), true);
-    ImGui::EndChild();
-    ImGui::InvisibleButton("hsplitter", ImVec2(-1, 8.0f));
-    if (ImGui::IsItemActive())
-        h += ImGui::GetIO().MouseDelta.y;
-    ImGui::BeginChild("child3", ImVec2(0, 0), true);
-    ImGui::EndChild();
-    ImGui::PopStyleVar();
+    ImVec4 Red = ImVec4(1.f, 0.f, 0.f, 1.0f);
+    ImVec4 Green = ImVec4(0.f, 1.f, 0.f, 1.0f);
+    ImVec4 Blue = ImVec4(0.f, 0.f, 1.f, 1.0f);
+    ImVec4 Gray = ImVec4(0.3f, 0.3f, 0.3f, 1.0f);
 
+    ImGui::PushStyleColor(ImGuiCol_Button, Gray); // 기본 배경색
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Red); // 호버 배경색도 기본 배경색과 동일하게 설정
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, Red);
+    if (ImGui::Button("CopyLog"))
+    {
+       // 
+    }
+    ImGui::PopStyleColor(3);
+
+    ImGui::SameLine();
+
+    ImGui::PushStyleColor(ImGuiCol_Button, Gray); // 기본 배경색
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Red); // 호버 배경색도 기본 배경색과 동일하게 설정
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, Red);
+    if (ImGui::Button("DeleteLog"))
+    {
+       //
+    }
+    ImGui::PopStyleColor(3);
+
+    ImGui::Separator();
+  
 }

@@ -7,7 +7,6 @@ class LogUI :
 private:
 
     UI* m_MessageUI;
-    UI* m_FunctionUI;
 
 public:
     virtual void tick() override;
