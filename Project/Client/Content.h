@@ -17,6 +17,8 @@ private:
     vector<wstring>     m_vecAssetFileName;
     string m_strCurDirectory;
 
+    vector<string> m_strData;
+
 public:
     void ResetBrowser();
     void SelectBrowser(DWORD_PTR _Node);

@@ -181,6 +181,7 @@ void Content::ResetContent()
 {
 	// Tree Clear
 	m_ContentTree->ClearNode();
+	m_strData.clear();
 
 	// 루트노드 추가
 	TreeNode* RootNode = m_ContentTree->AddTreeNode(nullptr, "Root", 0);
@@ -190,13 +191,30 @@ void Content::ResetContent()
 	for (const fs::directory_entry& entry : fs::directory_iterator(path)) {
 		if (!entry.is_directory()) {
 			auto filename = entry.path().filename().string();
+			auto extension = entry.path().extension().string();
 			auto type = CAssetMgr::GetInst()->GetAssetTypeByExt(filename);
 			Ptr<CAsset> pAsset;
 			if (type != ASSET_TYPE::END) {
 				pAsset  = CAssetMgr::GetInst()->GetAsset(type, m_strCurDirectory+ "\\" + filename);
+				m_ContentTree->AddTreeNode(RootNode, filename, (DWORD_PTR)pAsset.Get());
 			}
-			
-			auto node = m_ContentTree->AddTreeNode(RootNode, filename, (DWORD_PTR)pAsset.Get());
+			 // 선택한게 애셋이 아닌경우 [ex) .lv, .anim]
+			else {
+				// 현재는 레벨을 갖고있는 매니저가 없기 때문에 userdata에 0을 넣고 받아주는 곳에서 filename을 통해서 파악 할 예정
+				// 따라서 일단은 lv과 anim의 분기는 나눠놨지만 같은 형식을 호출중
+				if (extension == ".lv") {
+					m_strData.push_back(m_strCurDirectory + "\\" + filename);
+					m_ContentTree->AddTreeNode(RootNode, filename, (DWORD_PTR)&m_strData.back());
+				}
+				else if (extension == ".anim") {
+					m_ContentTree->AddTreeNode(RootNode, filename, 0);
+				}
+				else {
+					m_ContentTree->AddTreeNode(RootNode, filename, 0);
+				}
+
+			}
+
 		}
 	}
 }
@@ -220,7 +238,6 @@ void Content::SelectAsset(DWORD_PTR _Node)
 		Ptr<CAsset> pAsset = CAssetMgr::GetInst()->GetAsset(assetType, key);
 		
 		pInspector->SetTargetAsset(pAsset);
-
 		return;
 	}
 }

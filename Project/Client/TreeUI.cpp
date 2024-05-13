@@ -79,58 +79,57 @@ void TreeNode::ImageListRender(UINT _flag, const string& _id)
 	// 임시 파일
 	Ptr<CTexture> thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconFile);
 
-	// 애셋일 경우
-	auto pAsset = dynamic_cast<CAsset*>((CAsset*)m_Data);
-	if (pAsset) {
-		auto type = pAsset->GetType();
-		switch (type)
-		{
-		case ASSET_TYPE::MESH:
-			thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconMesh);
-			break;
-		case ASSET_TYPE::MESHDATA:
-			break;
-		case ASSET_TYPE::PREFAB:
-			thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconPrefab);
-			break;
-		case ASSET_TYPE::TEXTURE:
-			thumb = (CTexture*)pAsset;
-			break;
-		case ASSET_TYPE::MATERIAL:
-			thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconMaterial);
-			break;
-		case ASSET_TYPE::SOUND:
-			thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconSound);
-			break;
-		case ASSET_TYPE::COMPUTE_SHADER:
-			thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconComputeShader);
-			break;
-		case ASSET_TYPE::GRAPHICS_SHADER:
-			thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconGraphicsShader);
-			break;
-		case ASSET_TYPE::FSM:
-			thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconStateMachine);
-			break;
-		case ASSET_TYPE::END:
-			break;
-		default:
-			break;
-		}
-	}
 	// 애셋이 아닐 경우
+	auto ext = path(m_Name).extension().string();
+	if (ext == ".fx") {
+		thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconGraphicsShader);
+	}
+	else if (ext == ".lv") {
+		thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconLevel);
+	}
+	else if (ext == ".anim") {
+		thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconAnim);
+	}
+	// 애셋일 경우
 	else {
-		auto ext = path(m_Name).extension().string();
-		if (ext == ".fx") {
-			thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconGraphicsShader);
-		}
-		else if (ext == ".lv") {
-			thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconLevel);
-		}
-		else if (ext == ".anim") {
-			thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconAnim);
+		auto pAsset = dynamic_cast<CAsset*>((CAsset*)m_Data);
+		if (pAsset) {
+			auto type = pAsset->GetType();
+			switch (type)
+			{
+			case ASSET_TYPE::MESH:
+				thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconMesh);
+				break;
+			case ASSET_TYPE::MESHDATA:
+				break;
+			case ASSET_TYPE::PREFAB:
+				thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconPrefab);
+				break;
+			case ASSET_TYPE::TEXTURE:
+				thumb = (CTexture*)pAsset;
+				break;
+			case ASSET_TYPE::MATERIAL:
+				thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconMaterial);
+				break;
+			case ASSET_TYPE::SOUND:
+				thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconSound);
+				break;
+			case ASSET_TYPE::COMPUTE_SHADER:
+				thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconComputeShader);
+				break;
+			case ASSET_TYPE::GRAPHICS_SHADER:
+				thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconGraphicsShader);
+				break;
+			case ASSET_TYPE::FSM:
+				thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconStateMachine);
+				break;
+			case ASSET_TYPE::END:
+				break;
+			default:
+				break;
+			}
 		}
 	}
-
 
 	ImGui::Image(thumb->GetSRV().Get(), ImVec2(64, 64));
 	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
@@ -254,7 +253,7 @@ void TreeUI::render_update()
 				m_Root->m_vecChildNode[i]->render_update();
 				ImGui::EndChild();
 
-				if ((colCnt + 2) >= winX / 120) {
+				if ((colCnt + 3) >= winX / 80) {
 					colCnt = 0;
 				}
 				else {
