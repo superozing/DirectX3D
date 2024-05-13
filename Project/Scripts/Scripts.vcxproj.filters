@@ -67,6 +67,9 @@
     <ClInclude Include="strShader.h">
       <Filter>Default\UserString</Filter>
     </ClInclude>
+    <ClInclude Include="global.h">
+      <Filter>Default</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">

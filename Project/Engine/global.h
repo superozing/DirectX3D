@@ -79,12 +79,3 @@ typedef Vector4 Vec4;
 
 // Magic Enum 헤더 참조
 #include <Magic_Enum/magic_enum_all.hpp>
-
-
-// String Table(User)
-#include <Scripts/strMesh.h>
-#include <Scripts/strMat.h>
-#include <Scripts/strShader.h>
-
-// String Table(Gen)
-#include <Scripts/strFx.h>
