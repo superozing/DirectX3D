@@ -6,6 +6,9 @@
 #include <Engine\CLayer.h>
 #include <Engine/CTransform.h>
 
+#include "CImGuiMgr.h"
+#include "Outliner.h"
+
 #include "TransformUI.h"
 #include "MeshRenderUI.h"
 #include "Collider2DUI.h"
@@ -53,11 +56,21 @@ void Inspector::render_update()
 
 		ImGui::SameLine();
 		ImGui::InputText("##ObjName", ObjName, 255);
-		m_TargetObject->SetName(ToWString(string(ObjName)));
 
 		if (prevName != string(ObjName))
 		{
-			GamePlayStatic::ChangeName();
+			if (KEY_TAP_EDITOR(ENTER))
+			{
+				m_TargetObject->SetName(ToWString(string(ObjName)));
+				prevName = ObjName;
+
+				Outliner* pOutliner = (Outliner*)CImGuiMgr::GetInst()->FindUI("##Outliner");
+				pOutliner->ResetCurrentLevel();
+			}
+			else if (KEY_TAP_EDITOR(ESC))
+			{
+				m_TargetObject->SetName(ToWString(string(strName)));
+			}
 		}
 
 		// 오브젝트 레이어

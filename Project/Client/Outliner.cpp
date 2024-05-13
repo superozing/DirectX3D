@@ -38,7 +38,7 @@ Outliner::~Outliner()
 
 void Outliner::render_update()
 {
-	if (CTaskMgr::GetInst()->GetObjectEvent() || CTaskMgr::GetInst()->GetNameEvent())
+	if (CTaskMgr::GetInst()->GetObjectEvent())
 	{
 		ResetCurrentLevel();
 	}

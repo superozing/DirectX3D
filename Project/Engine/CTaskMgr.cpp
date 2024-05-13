@@ -111,11 +111,6 @@ void CTaskMgr::tick()
 
 			break;
 		}
-		case TASK_TYPE::CHANGE_NAME:
-		{
-			m_bNameChange = true;
-		}
-			break;
 		case TASK_TYPE::ADD_CHILD:
 
 			break;
@@ -146,5 +141,4 @@ void CTaskMgr::Clear()
 	}		
 
 	m_bAssetChange = false;
-	m_bNameChange = false;
 }
