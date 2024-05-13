@@ -1,18 +1,20 @@
-#pragma once
+﻿#pragma once
 #include "singleton.h"
 
 class CLevel;
 
 class CLevelMgr :
-    public CSingleton<CLevelMgr>
+    public CManager<CLevelMgr>
 {
     SINGLE(CLevelMgr);
 private:
     CLevel*         m_CurLevel;
 
 public:
-    void init();        
-    void tick();  
+    virtual void init() override;
+    virtual void tick() override;
+    virtual void enter() override;
+    virtual void exit() override;
 
 public:
     void ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextStartState);

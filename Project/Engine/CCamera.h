@@ -37,10 +37,13 @@ private:
 
     // 물체 분류
     vector<CGameObject*>    m_vecDeferred;
+    vector<CGameObject*>    m_vecDecal;
     vector<CGameObject*>    m_vecOpaque;
     vector<CGameObject*>    m_vecMasked;
     vector<CGameObject*>    m_vecTransparent;
     vector<CGameObject*>    m_vecPostProcess;
+    
+    vector<CGameObject*>    m_vecShadow;
 
 public:
     PROJ_TYPE GetProjType() { return m_ProjType; }
@@ -54,6 +57,9 @@ public:
 
     void SetFar(float _Far) { m_Far = _Far; }
     float GetFar() { return m_Far; }
+
+    void SetWidth(float _Width) { m_Width = _Width; }
+    void SetAspectRatio(float _AR) { m_AspectRatio = _AR; }
 
     const Matrix& GetViewMat() { return m_matView; }
     const Matrix& GetViewInvMat() { return m_matViewInv; }
@@ -88,14 +94,15 @@ public:
     virtual void finaltick() override;
 
     void SortObject();
-    void render();
-
-private:
-    void render(vector<CGameObject*>& _vecObj);
+    void render_deferred();
+    void render_decal();
+    void render_forward();
     void render_postprocess();
-
-    void Lighting();
     void Merge();
+
+    void SortShadowMapObject();
+
+public:
 
     virtual void SaveToFile(FILE* _File) override;
     virtual void SaveToFile(ofstream& fout) override;

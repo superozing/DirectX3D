@@ -47,6 +47,11 @@ void CRenderMgr::tick()
 	Clear();
 }
 
+void CRenderMgr::exit()
+{
+	ClearCamera();
+}
+
 void CRenderMgr::ClearMRT()
 {
 	m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->Clear();
@@ -54,12 +59,73 @@ void CRenderMgr::ClearMRT()
 	m_arrMRT[(UINT)MRT_TYPE::LIGHT]->ClearRT();
 }
 
+void CRenderMgr::CreateDynamicShadowDepth()
+{
+	GetMRT(MRT_TYPE::SHADOW_DEPTH)->OMSet();
+
+	for (size_t i = 0; i < m_vecLight3D.size(); ++i)
+	{
+		// 광원 시점에서 물체들의 깊이를 그린다.
+		m_vecLight3D[i]->render_shadowdepth();
+	}
+}
+
 void CRenderMgr::render_play()
 {
-	for (size_t i = 0; i < m_vecCam.size(); ++i)
+	if (m_vecCam.empty())
+		return;
+
+	CreateDynamicShadowDepth();
+
+	// 메인 카메라 시점 렌더링
+	if (nullptr != m_vecCam[0])
 	{
-		m_vecCam[i]->SortObject();
-		m_vecCam[i]->render();
+		CCamera* pMainCam = m_vecCam[0];
+
+		// 도메인에 따른 물체 분류
+		pMainCam->SortObject();
+
+		// 계산한 view 행렬과 proj 행렬을 전역 변수에 담는다.
+		g_Transform.matView = pMainCam->GetViewMat();
+		g_Transform.matViewInv = pMainCam->GetViewInvMat();
+		g_Transform.matProj = pMainCam->GetProjMat();
+		g_Transform.matProjInv = pMainCam->GetProjInvMat();
+
+		// Domain 순서대로 렌더링
+		// Deferred 물체 렌더링
+		GetMRT(MRT_TYPE::DEFERRED)->OMSet();
+		pMainCam->render_deferred();
+
+		// Decal 물체 렌더링
+		GetMRT(MRT_TYPE::DECAL)->OMSet();
+		pMainCam->render_decal();
+
+		// 광원처리
+		// LightMRT 변경
+		GetMRT(MRT_TYPE::LIGHT)->OMSet();
+		
+		// 광원이 자신의 영향 범위에 있는 Deferred 물체에 빛을 남긴다
+		for (size_t i = 0; i < m_vecLight3D.size(); ++i)
+		{
+			m_vecLight3D[i]->render();
+		}
+
+		// Deferred + 광원 => SwapChain 으로 병합
+		pMainCam->Merge();
+
+		// Foward 렌더링
+		pMainCam->render_forward();
+
+		// 후처리 작업
+		pMainCam->render_postprocess();
+
+	}
+
+	// 추가 보조카메라 시점 렌더링
+	for (int i = 1; i < m_vecCam.size(); ++i)
+	{
+		// Foward 렌더링
+		m_vecCam[i]->render_forward();
 	}
 }
 
@@ -68,8 +134,46 @@ void CRenderMgr::render_editor()
 	if (nullptr == m_EditorCam)
 		return;
 
+	// 광원 시점에서 ShadowDepthMap 생성
+	CreateDynamicShadowDepth();
+
+	// 도메인에 따른 물체 분류
 	m_EditorCam->SortObject();
-	m_EditorCam->render();
+
+	// 계산한 view 행렬과 proj 행렬을 전역변수에 담아둔다.
+	g_Transform.matView = m_EditorCam->GetViewMat();
+	g_Transform.matViewInv = m_EditorCam->GetViewInvMat();
+	g_Transform.matProj = m_EditorCam->GetProjMat();
+	g_Transform.matProjInv = m_EditorCam->GetProjInvMat();
+
+	// Domain 순서대로 렌더링
+	// Deferred 물체 렌더링
+	GetMRT(MRT_TYPE::DEFERRED)->OMSet();
+	m_EditorCam->render_deferred();
+
+	// Decal 물체 렌더링
+	GetMRT(MRT_TYPE::DECAL)->OMSet();
+	m_EditorCam->render_decal();
+
+	// 광원처리
+	// Light MRT 로 변경
+	GetMRT(MRT_TYPE::LIGHT)->OMSet();
+
+	// 광원이 자신의 영향범위에 있는 Deferred 물체에 빛을 남긴다.		
+	for (size_t i = 0; i < m_vecLight3D.size(); ++i)
+	{
+		m_vecLight3D[i]->render();
+	}
+
+	// Deferred + 광원 => SwapChain 으로 병합
+	m_EditorCam->Merge();
+
+	// Foward 렌더링
+	m_EditorCam->render_forward();
+
+	// 후처리 작업
+	m_EditorCam->render_postprocess();
+	
 }
 
 void CRenderMgr::render_debug()

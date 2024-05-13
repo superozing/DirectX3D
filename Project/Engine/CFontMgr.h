@@ -1,5 +1,5 @@
-#pragma once
-#include "singleton.h"
+﻿#pragma once
+#include "CManager.h"
 
 #include <FontEngine/FW1FontWrapper.h>
 #include <FontEngine/FW1CompileSettings.h>
@@ -15,7 +15,7 @@
 
 
 class CFontMgr :
-    public CSingleton<CFontMgr>
+    public CManager<CFontMgr>
 {
     SINGLE(CFontMgr);
 private:
@@ -23,7 +23,8 @@ private:
     IFW1FontWrapper*    m_pFontWrapper;
 
 public:
-    void init();
+    virtual void init() override;
+    virtual void enter() override {}
     void DrawFont(const wchar_t* _pStr, float _fPosX, float _fPosY, float _fFontSize, UINT _Color);
 
 };

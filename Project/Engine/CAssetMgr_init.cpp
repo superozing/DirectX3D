@@ -738,6 +738,23 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
 	AddAsset(L"MergeShader", pShader.Get());
 
+	// ============
+	// Decal Shader
+	// ============
+	pShader = new CGraphicsShader;
+	pShader->CreateVertexShader(L"shader\\decal.fx", "VS_Decal");
+	pShader->CreatePixelShader(L"shader\\decal.fx", "PS_Decal");
+
+	pShader->SetRSType(RS_TYPE::CULL_FRONT);
+	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+	pShader->SetBSType(BS_TYPE::DECAL);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DECAL);
+
+	// Parameter
+	pShader->AddTexParam(TEX_PARAM::TEX_0, "Decal Texture");
+
+	AddAsset(L"DecalShader", pShader.Get());
+
 	// =================================
 	// EffectShader
 	// =================================
@@ -902,7 +919,14 @@ void CAssetMgr::CreateDefaultMaterial()
 	pMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"ColorTargetTex"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"DiffuseTargetTex"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"SpecularTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_3, CAssetMgr::GetInst()->FindAsset<CTexture>(L"EmissiveTargetTex"));
 	AddAsset<CMaterial>(L"MergeMtrl", pMtrl);
+
+	// DecalMtrl
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DecalShader"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
+	AddAsset<CMaterial>(L"DecalMtrl", pMtrl);
 
 	// BackgroundMtrl
 	pMtrl = new CMaterial(true);

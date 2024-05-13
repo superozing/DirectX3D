@@ -4,7 +4,7 @@
 #include <random>
 
 class CRandomMgr :
-    public CSingleton<CRandomMgr>
+    public CManager<CRandomMgr>
 {
 private:
     UINT32 m_seed;
@@ -17,7 +17,9 @@ public:
     /// <summary>
     /// 랜덤한 시드를 생성합니다.
     /// </summary>
-    void init();
+    virtual void init() override;
+
+    virtual void enter() override {}
 
     /// <summary>
     /// 랜덤한 값을 추출합니다

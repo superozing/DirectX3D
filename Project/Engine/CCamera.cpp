@@ -189,6 +189,9 @@ void CCamera::SortObject()
 			case SHADER_DOMAIN::DOMAIN_DEFERRED:
 				m_vecDeferred.push_back(vecObjects[j]);
 				break;
+			case SHADER_DOMAIN::DOMAIN_DECAL:
+				m_vecDecal.push_back(vecObjects[j]);
+				break;
 			case SHADER_DOMAIN::DOMAIN_OPAQUE:
 				m_vecOpaque.push_back(vecObjects[j]);
 				break;
@@ -214,42 +217,43 @@ void CCamera::SortObject()
 
 }
 
-void CCamera::render()
+void CCamera::render_deferred()
 {
-	// 계산한 view 행렬과 proj 행렬을 전역변수에 담아둔다.
-	g_Transform.matView = m_matView;
-	g_Transform.matViewInv = m_matViewInv;
-	g_Transform.matProj = m_matProj;
-	g_Transform.matProjInv = m_matProjInv;
-
-	// Domain 순서대로 렌더링
-
-	// Deferred 물체 렌더링
-	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED)->OMSet();
-	render(m_vecDeferred);
-
-	// 광원 처리
-	Lighting();
-
-	// Deferred + 광원 => SwapChain 으로 병합
-	Merge();
-
-	// Foward 렌더링
-	render(m_vecOpaque);	
-	render(m_vecMasked);
-	render(m_vecTransparent);
-
-	// 후처리 작업
-	render_postprocess();
+	for (size_t i = 0; i < m_vecDeferred.size(); ++i)
+	{
+		m_vecDeferred[i]->render();
+	}
+	m_vecDeferred.clear();
 }
 
-void CCamera::render(vector<CGameObject*>& _vecObj)
+void CCamera::render_decal()
 {
-	for (size_t i = 0; i < _vecObj.size(); ++i)
+	for (size_t i = 0; i < m_vecDecal.size(); ++i)
 	{
-		_vecObj[i]->render();
+		m_vecDecal[i]->render();
 	}
-	_vecObj.clear();
+	m_vecDecal.clear();
+}
+
+void CCamera::render_forward()
+{
+	for (size_t i = 0; i < m_vecOpaque.size(); ++i)
+	{
+		m_vecOpaque[i]->render();
+	}
+	m_vecOpaque.clear();
+
+	for (size_t i = 0; i < m_vecMasked.size(); ++i)
+	{
+		m_vecMasked[i]->render();
+	}
+	m_vecMasked.clear();
+
+	for (size_t i = 0; i < m_vecTransparent.size(); ++i)
+	{
+		m_vecTransparent[i]->render();
+	}
+	m_vecTransparent.clear();
 }
 
 void CCamera::render_postprocess()
@@ -270,20 +274,6 @@ void CCamera::render_postprocess()
 	m_vecPostProcess.clear();
 }
 
-void CCamera::Lighting()
-{
-	// Light MRT 로 변경
-	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::LIGHT)->OMSet();
-
-	// 광원이 자신의 영향 범위 안에 있는 Deferred 물체에 빛을 남긴다.
-	const vector<CLight3D*>& vecLight3D = CRenderMgr::GetInst()->GetLight3D();
-
-	for (size_t i = 0; i < vecLight3D.size(); ++i)
-	{
-		vecLight3D[i]->render();
-	}
-}
-
 void CCamera::Merge()
 {
 	// Deferred 정보를 SwapChain 으로 병합
@@ -294,6 +284,10 @@ void CCamera::Merge()
 
 	pMergeMtrl->UpdateData();
 	pRectMesh->render();
+}
+
+void CCamera::SortShadowMapObject()
+{
 }
 
 void CCamera::SaveToFile(FILE* _File)
