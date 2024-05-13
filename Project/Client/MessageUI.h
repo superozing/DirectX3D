@@ -7,8 +7,10 @@ class MessageUI :
 private:
 
     vector<tLog>    m_vectLog;
+    ImVec4          m_LogColor[(UINT)Log_Level::END];
 
-    int test;
+public:
+    ImVec4 SetLogColor(tLog Log);
 
 public:
     virtual void tick() override;

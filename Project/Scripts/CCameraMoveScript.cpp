@@ -84,7 +84,7 @@ void CCameraMoveScript::MovePerspective()
 	if (KEY_PRESSED(KEY::W))
 	{
 		vPos += DT_ENGINE * m_CamSpeed * vFront;
-		CLogMgr::GetInst()->AddLog(Log_Level::INFO, "key pressed w");
+		CLogMgr::GetInst()->AddLog(Log_Level::WARN, "key pressed w");
 	}
 
 	if (KEY_PRESSED(KEY::S))
