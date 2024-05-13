@@ -20,6 +20,8 @@ enum class TASK_TYPE
 	// Param1 : Level Adress, Param2 : Next Level Start State
 	CHANGE_LEVEL,
 
+	CHANGE_NAME,
+
 	// Param1 : Parent Object, Param2 : Child Object
 	ADD_CHILD,
 
@@ -46,6 +48,7 @@ private:
 	bool			m_bCreateObject;
 	bool			m_bDeleteObject;
 	bool			m_bAssetChange;
+	bool			m_bNameChange;
 	int				m_DeleteFrameCount;
 
 public:
@@ -55,6 +58,7 @@ public:
 	void AddTask(const tTask& _Task) { m_vecTask.push_back(_Task); }
 	bool GetObjectEvent() { return m_bCreateObject || m_bDeleteObject; }
 	bool GetAssetEvent() { return m_bAssetChange; }
+	bool GetNameEvent() { return m_bNameChange; }
 
 private:
 	void Clear();

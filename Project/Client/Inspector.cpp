@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "Inspector.h"
 
 #include <Engine/CTransform.h>
@@ -18,7 +18,7 @@ Inspector::Inspector()
 	, m_TargetObject(nullptr)
 	, m_arrComUI{}
 {
-	// ÀÚ½Ä UI »ı¼º
+	// ìì‹ UI ìƒì„±
 	CreateChildUI();
 }
 
@@ -38,17 +38,32 @@ void Inspector::render_update()
 
 	if (nullptr != m_TargetObject)
 	{
+		char ObjName[255] = {};
 		string strName = string(m_TargetObject->GetName().begin(), m_TargetObject->GetName().end());
-		ImGui::Text(strName.c_str());
+		string prevName = strName;
+
+		for (size_t i = 0; i < strName.length(); ++i)
+		{
+			ObjName[i] = strName[i];
+		}
+
+		ImGui::SameLine();
+		ImGui::InputText("##ObjName", ObjName, 255);
+		GetTargetObject()->SetName(ToWString(string(ObjName)));
+
+		if (prevName != string(ObjName))
+		{
+			GamePlayStatic::ChangeName();
+		}
 	}
 }
 
 void Inspector::SetTargetObject(CGameObject* _Object)
 {
-	// Target ¿ÀºêÁ§Æ® ¼³Á¤
+	// Target ì˜¤ë¸Œì íŠ¸ ì„¤ì •
 	m_TargetObject = _Object;
 
-	// ÇØ´ç ¿ÀºêÁ§Æ®°¡ º¸À¯ÇÏ°í ÀÖ´Â ÄÄÆ÷³ÍÆ®¿¡ ´ëÀÀÇÏ´Â ÄÄÆ÷³ÍÆ®UI È°¼ºÈ­
+	// í•´ë‹¹ ì˜¤ë¸Œì íŠ¸ê°€ ë³´ìœ í•˜ê³  ìˆëŠ” ì»´í¬ë„ŒíŠ¸ì— ëŒ€ì‘í•˜ëŠ” ì»´í¬ë„ŒíŠ¸UI í™œì„±í™”
 	for (UINT i = 0; i < (UINT)COMPONENT_TYPE::END; ++i)
 	{
 		if (nullptr != m_arrComUI[i])
@@ -60,7 +75,7 @@ void Inspector::SetTargetObject(CGameObject* _Object)
 	RefreshScriptUI();
 
 
-	// AssetUI ºñÈ°¼ºÈ­
+	// AssetUI ë¹„í™œì„±í™”
 	for (UINT i = 0; i < (UINT)ASSET_TYPE::END; ++i)
 	{
 		m_arrAssetUI[i]->Deactivate();

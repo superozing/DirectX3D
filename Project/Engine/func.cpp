@@ -28,6 +28,13 @@ void GamePlayStatic::AddAsset(CAsset* _Asset)
 	CTaskMgr::GetInst()->AddTask(task);
 }
 
+void GamePlayStatic::ChangeName()
+{
+	tTask task = {};
+	task.Type = TASK_TYPE::CHANGE_NAME;
+	CTaskMgr::GetInst()->AddTask(task);
+}
+
 void GamePlayStatic::DrawDebugRect(const Matrix& _WorldMat, Vec3 _Color, bool _bDepthTest, float _Duration)
 {
 	tDebugShapeInfo info = {};
