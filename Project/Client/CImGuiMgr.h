@@ -41,6 +41,7 @@ private:
     void create_ui();
     void observe_content();
 
+    void StyleColorPupple();
 
 public:
     UI* FindUI(const string& _strUIName);   
