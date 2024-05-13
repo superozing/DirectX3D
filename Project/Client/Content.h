@@ -38,10 +38,6 @@ private:
     void ContentUI();
 
     void AddDirectoryNode(class TreeNode* _parent, const wstring& _path);
-    ASSET_TYPE GetAssetTypeByExt(const path& _relativePath);
-
-    Ptr<CAsset> GetAsset(ASSET_TYPE _type, string _key);
-
 public:
     virtual void render_update() override;
 

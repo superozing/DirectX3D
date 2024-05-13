@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "singleton.h"
 
 #include "CPathMgr.h"
@@ -62,11 +62,21 @@ public:
     Ptr<CTexture> CreateTexture(const wstring& _strKey, UINT _Width, UINT _Height, DXGI_FORMAT _Format, UINT _Flag, D3D11_USAGE _Usage = D3D11_USAGE_DEFAULT);
     Ptr<CTexture> CreateTexture(const wstring& _strKey, ComPtr<ID3D11Texture2D> _tex2D);
 
-    // ÁöÁ¤µÈ Å¸ÀÔÀÇ ¸ğµç ¿¡¼ÂÀÇ ÀÌ¸§À» ¹Ş¾Æ¿Â´Ù
+    // ì§€ì •ëœ íƒ€ì…ì˜ ëª¨ë“  ì—ì…‹ì˜ ì´ë¦„ì„ ë°›ì•„ì˜¨ë‹¤
     void GetAssetName(ASSET_TYPE _Type, vector<string>& _Out);
+
+    /// <summary>
+    /// í™•ì¥ìë¡œ ì• ì…‹ íƒ€ì…ì„ ê°€ì ¸ì˜µë‹ˆë‹¤. ë“±ë¡ë˜ì§€ ì•Šì€ í™•ì¥ìëŠ” ASSET_TYPE::ENDë¥¼ ë¦¬í„´í•©ë‹ˆë‹¤
+    /// </summary>
+    ASSET_TYPE GetAssetTypeByExt(const path& _relativePath);
+
+    /// <summary>
+    /// ì• ì…‹ íƒ€ì…ê³¼ í‚¤ë¡œ ì• ì…‹ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+    /// </summary>
+    Ptr<CAsset> GetAsset(ASSET_TYPE _type, string _key);
  
 private:
-    // ÁöÁ¤µÈ ¿¡¼ÂÀ» »èÁ¦ÇÑ´Ù.
+    // ì§€ì •ëœ ì—ì…‹ì„ ì‚­ì œí•œë‹¤.
     template<typename T>
     void DeleteAsset(const wstring& _strKey);
     void DeleteAsset(ASSET_TYPE _Type, const wstring& _strKey);
@@ -141,7 +151,7 @@ Ptr<T> CAssetMgr::Load(const wstring& _strKey, const wstring& _strRelativePath)
 {
     Ptr<T> pAsset = FindAsset<T>(_strKey);
 
-    // ·ÎµùÇÒ ¶§ »ç¿ëÇÒ Å°·Î ÀÌ¹Ì ´Ù¸¥ ¿¡¼ÂÀÌ ÀÖ´Ù¸é
+    // ë¡œë”©í•  ë•Œ ì‚¬ìš©í•  í‚¤ë¡œ ì´ë¯¸ ë‹¤ë¥¸ ì—ì…‹ì´ ìˆë‹¤ë©´
     if (nullptr != pAsset)
     {
         return (T*)pAsset.Get();
@@ -153,7 +163,7 @@ Ptr<T> CAssetMgr::Load(const wstring& _strKey, const wstring& _strRelativePath)
     pAsset = new T;
     if (FAILED(pAsset->Load(strFilePath)))
     {
-        MessageBox(nullptr, L"¿¡¼Â ·Îµù ½ÇÆĞ", L"¿¡¼Â ·Îµù ½ÇÆĞ", MB_OK);
+        MessageBox(nullptr, L"ì—ì…‹ ë¡œë”© ì‹¤íŒ¨", L"ì—ì…‹ ë¡œë”© ì‹¤íŒ¨", MB_OK);
         pAsset = nullptr;
         return nullptr;
     }

@@ -208,9 +208,9 @@ void Content::SelectAsset(DWORD_PTR _Node)
 	Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
 
 	// asset 일 경우
-	ASSET_TYPE assetType = GetAssetTypeByExt(name);
+	ASSET_TYPE assetType = CAssetMgr::GetInst()->GetAssetTypeByExt(name);
 	if (assetType != ASSET_TYPE::END) {
-		Ptr<CAsset> pAsset = GetAsset(assetType, key);
+		Ptr<CAsset> pAsset = CAssetMgr::GetInst()->GetAsset(assetType, key);
 		
 		pInspector->SetTargetAsset(pAsset);
 
@@ -230,7 +230,7 @@ void Content::SelectEngineAsset(DWORD_PTR _Node)
 	// 선택한 에셋을 Inspector 에게 알려준다.
 	Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
 
-	Ptr<CAsset> pAsset = GetAsset(magic_enum::enum_cast<ASSET_TYPE>(m_strCurDirectory).value(), name);
+	Ptr<CAsset> pAsset = CAssetMgr::GetInst()->GetAsset(magic_enum::enum_cast<ASSET_TYPE>(m_strCurDirectory).value(), name);
 
 	pInspector->SetTargetAsset(pAsset);
 
@@ -241,80 +241,6 @@ void Content::SetTargetDirectory(const string & _path)
 {
 	m_strCurDirectory = _path;
 	ResetContent();
-}
-
-ASSET_TYPE Content::GetAssetTypeByExt(const path& _relativePath)
-{
-	if (_relativePath.extension() == L".mesh")
-		return ASSET_TYPE::MESH;
-	if (_relativePath.extension() == L".mtrl")
-		return ASSET_TYPE::MATERIAL;
-	if (_relativePath.extension() == L".mdat")
-		return ASSET_TYPE::MESHDATA;
-	if (_relativePath.extension() == L".pref")
-		return ASSET_TYPE::PREFAB;
-
-	if (_relativePath.extension() == L".png"
-		|| _relativePath.extension() == L".bmp"
-		|| _relativePath.extension() == L".jpg"
-		|| _relativePath.extension() == L".jpeg"
-		|| _relativePath.extension() == L".dds"
-		|| _relativePath.extension() == L".tga")
-		return ASSET_TYPE::TEXTURE;
-
-	if (_relativePath.extension() == L".wav"
-		|| _relativePath.extension() == L".mp3"
-		|| _relativePath.extension() == L".ogg")
-		return ASSET_TYPE::SOUND;
-
-	if (_relativePath.extension() == L".mesh")
-		return ASSET_TYPE::MESH;
-	if (_relativePath.extension() == L".mesh")
-		return ASSET_TYPE::MESH;
-
-	return ASSET_TYPE::END;
-}
-
-Ptr<CAsset> Content::GetAsset(ASSET_TYPE _type, string _key)
-{
-	Ptr<CAsset> pAsset;
-	
-	switch (_type)
-	{
-	case ASSET_TYPE::MESH:
-		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CMesh>(_key).Get();
-		break;
-	case ASSET_TYPE::MESHDATA:
-		//pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CMeshData>(key).Get();
-		break;
-	case ASSET_TYPE::PREFAB:
-		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CPrefab>(_key).Get();
-		break;
-	case ASSET_TYPE::TEXTURE:
-		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CTexture>(_key).Get();
-		break;
-	case ASSET_TYPE::MATERIAL:
-		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CMaterial>(_key).Get();
-		break;
-	case ASSET_TYPE::SOUND:
-		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CSound>(_key).Get();
-		break;
-		// 이건 제외해야 함
-	//case ASSET_TYPE::COMPUTE_SHADER:
-	//	pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CComputeShader>(key).Get();
-	//	break;
-	case ASSET_TYPE::GRAPHICS_SHADER:
-		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CGraphicsShader>(_key).Get();
-		break;
-	case ASSET_TYPE::FSM:
-		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CFSM>(_key).Get();
-		break;
-	case ASSET_TYPE::END:
-		break;
-	default:
-		break;
-	}
-	return pAsset;
 }
 
 void Content::DirectoryUI()

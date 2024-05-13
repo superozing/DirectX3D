@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CAssetMgr.h"
 
 #include "CMesh.h"
@@ -33,7 +33,7 @@ Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey
 									 , UINT _Width, UINT _Height, DXGI_FORMAT _Format
 									 , UINT _Flag, D3D11_USAGE _Usage)
 {
-	// »ı¼ºÇÏ·Á´Â ÅØ½ºÃÄ¿Í µ¿ÀÏÇÑ Å°ÀÇ ÅØ½ºÃÄ°¡ ÀÌ¹Ì AssetMgr ¿¡ ÀÖ´Ù¸é
+	// ìƒì„±í•˜ë ¤ëŠ” í…ìŠ¤ì³ì™€ ë™ì¼í•œ í‚¤ì˜ í…ìŠ¤ì³ê°€ ì´ë¯¸ AssetMgr ì— ìˆë‹¤ë©´
 	Ptr<CTexture> pTex = FindAsset<CTexture>(_strKey);	
 	assert(!pTex.Get());
 
@@ -41,7 +41,7 @@ Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey
 
 	if (FAILED(pTex->Create(_Width, _Height, _Format, _Flag, _Usage)))
 	{
-		MessageBox(nullptr, L"ÅØ½ºÃÄ »ı¼º ½ÇÆĞ", L"¸®¼Ò½º »ı¼º ½ÇÆĞ", MB_OK);
+		MessageBox(nullptr, L"í…ìŠ¤ì³ ìƒì„± ì‹¤íŒ¨", L"ë¦¬ì†ŒìŠ¤ ìƒì„± ì‹¤íŒ¨", MB_OK);
 		return nullptr;
 	}
 
@@ -52,7 +52,7 @@ Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey
 
 Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, ComPtr<ID3D11Texture2D> _tex2D)
 {
-	// »ı¼ºÇÏ·Á´Â ÅØ½ºÃÄ¿Í µ¿ÀÏÇÑ Å°ÀÇ ÅØ½ºÃÄ°¡ ÀÌ¹Ì AssetMgr ¿¡ ÀÖ´Ù¸é
+	// ìƒì„±í•˜ë ¤ëŠ” í…ìŠ¤ì³ì™€ ë™ì¼í•œ í‚¤ì˜ í…ìŠ¤ì³ê°€ ì´ë¯¸ AssetMgr ì— ìˆë‹¤ë©´
 	Ptr<CTexture> pTex = FindAsset<CTexture>(_strKey);
 	assert(!pTex.Get());
 
@@ -60,7 +60,7 @@ Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, ComPtr<ID3D11Text
 
 	if (FAILED(pTex->Create(_tex2D)))
 	{
-		MessageBox(nullptr, L"ÅØ½ºÃÄ »ı¼º ½ÇÆĞ", L"¸®¼Ò½º »ı¼º ½ÇÆĞ", MB_OK);
+		MessageBox(nullptr, L"í…ìŠ¤ì³ ìƒì„± ì‹¤íŒ¨", L"ë¦¬ì†ŒìŠ¤ ìƒì„± ì‹¤íŒ¨", MB_OK);
 		return nullptr;
 	}
 
@@ -84,4 +84,78 @@ void CAssetMgr::GetAssetName(ASSET_TYPE _Type, vector<string>& _Out)
 	{
 		_Out.push_back(ToString(pair.first));
 	}
+}
+
+ASSET_TYPE CAssetMgr::GetAssetTypeByExt(const path& _relativePath)
+{
+	if (_relativePath.extension() == L".mesh")
+		return ASSET_TYPE::MESH;
+	if (_relativePath.extension() == L".mtrl")
+		return ASSET_TYPE::MATERIAL;
+	if (_relativePath.extension() == L".mdat")
+		return ASSET_TYPE::MESHDATA;
+	if (_relativePath.extension() == L".pref")
+		return ASSET_TYPE::PREFAB;
+
+	if (_relativePath.extension() == L".png"
+		|| _relativePath.extension() == L".bmp"
+		|| _relativePath.extension() == L".jpg"
+		|| _relativePath.extension() == L".jpeg"
+		|| _relativePath.extension() == L".dds"
+		|| _relativePath.extension() == L".tga")
+		return ASSET_TYPE::TEXTURE;
+
+	if (_relativePath.extension() == L".wav"
+		|| _relativePath.extension() == L".mp3"
+		|| _relativePath.extension() == L".ogg")
+		return ASSET_TYPE::SOUND;
+
+	if (_relativePath.extension() == L".mesh")
+		return ASSET_TYPE::MESH;
+	if (_relativePath.extension() == L".mesh")
+		return ASSET_TYPE::MESH;
+
+	return ASSET_TYPE::END;
+}
+
+Ptr<CAsset> CAssetMgr::GetAsset(ASSET_TYPE _type, string _key)
+{
+	Ptr<CAsset> pAsset;
+
+	switch (_type)
+	{
+	case ASSET_TYPE::MESH:
+		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CMesh>(_key).Get();
+		break;
+	case ASSET_TYPE::MESHDATA:
+		//pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CMeshData>(key).Get();
+		break;
+	case ASSET_TYPE::PREFAB:
+		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CPrefab>(_key).Get();
+		break;
+	case ASSET_TYPE::TEXTURE:
+		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CTexture>(_key).Get();
+		break;
+	case ASSET_TYPE::MATERIAL:
+		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CMaterial>(_key).Get();
+		break;
+	case ASSET_TYPE::SOUND:
+		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CSound>(_key).Get();
+		break;
+		// ì´ê±´ ì œì™¸í•´ì•¼ í•¨
+	//case ASSET_TYPE::COMPUTE_SHADER:
+	//	pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CComputeShader>(key).Get();
+	//	break;
+	case ASSET_TYPE::GRAPHICS_SHADER:
+		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CGraphicsShader>(_key).Get();
+		break;
+	case ASSET_TYPE::FSM:
+		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CFSM>(_key).Get();
+		break;
+	case ASSET_TYPE::END:
+		break;
+	default:
+		break;
+	}
+	return pAsset;
 }
