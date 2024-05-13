@@ -83,8 +83,9 @@ typedef Vector4 Vec4;
 
 // String Table(User)
 #include <Scripts/strMesh.h>
-#include <Scripts/strMat.h>
+#include <Scripts/strEngineMtrl.h>
 #include <Scripts/strShader.h>
+#include <Scripts/strFnShader.h>
 
 // String Table(Gen)
 #include <Scripts/strFx.h>

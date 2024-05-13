@@ -179,9 +179,10 @@ call CodeGen.exe</Command>
     <ClInclude Include="global.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="strAnim.h" />
+    <ClInclude Include="strFnShader.h" />
     <ClInclude Include="strFx.h" />
     <ClInclude Include="strLevel.h" />
-    <ClInclude Include="strMat.h" />
+    <ClInclude Include="strEngineMtrl.h" />
     <ClInclude Include="strMesh.h" />
     <ClInclude Include="strMtrl.h" />
     <ClInclude Include="strPref.h" />

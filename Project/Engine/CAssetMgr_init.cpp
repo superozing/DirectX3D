@@ -562,8 +562,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	Ptr<CGraphicsShader> pShader = nullptr;
 
 	pShader = new CGraphicsShader;	
-	pShader->CreateVertexShader(FXstd2d, "VS_Std2D");
-	pShader->CreatePixelShader(FXstd2d, "PS_Std2D");
+	pShader->CreateVertexShader(FXstd2d, FN_VS_std2d);
+	pShader->CreatePixelShader(FXstd2d, FN_PS_std2d);
 
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
 	pShader->SetDSType(DS_TYPE::LESS);
@@ -574,7 +574,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->AddScalarParam(SCALAR_PARAM::INT_0, "Test Param");
 	pShader->AddTexParam(TEX_PARAM::TEX_0, "Output Texture 1");
 	
-	AddAsset(L"Std2DShader", pShader.Get());
+	AddAsset(SHADER_std2d, pShader.Get());
 
 
 
@@ -582,8 +582,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// Std3DShader
 	// ===========
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(FXstd3d, "VS_Std3D");
-	pShader->CreatePixelShader(FXstd3d, "PS_Std3D");
+	pShader->CreateVertexShader(FXstd3d, FN_VS_std3d);
+	pShader->CreatePixelShader(FXstd3d, FN_PS_std3d);
 
 	pShader->SetRSType(RS_TYPE::CULL_BACK);
 	//pShader->SetRSType(RS_TYPE::WIRE_FRAME);
@@ -595,14 +595,14 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->AddTexParam(TEX_PARAM::TEX_0, "Output Texture");
 	pShader->AddTexParam(TEX_PARAM::TEX_1, "Normal Texture");
 
-	AddAsset(L"Std3DShader", pShader.Get());
+	AddAsset(SHADER_std3d, pShader.Get());
 
 	// ====================
 	// Std3D_DeferredShader
 	// ====================
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(FXstd3d_deferred, "VS_Std3D_Deferred");
-	pShader->CreatePixelShader(FXstd3d_deferred, "PS_Std3D_Deferred");
+	pShader->CreateVertexShader(FXstd3d_deferred, FN_VS_deferred);
+	pShader->CreatePixelShader(FXstd3d_deferred, FN_PS_deferred);
 
 	pShader->SetRSType(RS_TYPE::CULL_BACK);
 	pShader->SetDSType(DS_TYPE::LESS);
@@ -615,64 +615,64 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// DirLightShader
 	// ==============
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(FXlight, "VS_DirLight");
-	pShader->CreatePixelShader(FXlight, "PS_DirLight");
+	pShader->CreateVertexShader(FXlight, FN_VS_dirlight);
+	pShader->CreatePixelShader(FXlight, FN_PS_dirlight);
 
 	pShader->SetRSType(RS_TYPE::CULL_BACK);
 	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
 	pShader->SetBSType(BS_TYPE::ONE_ONE);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_LIGHTING);
 
-	AddAsset(L"DirLightShader", pShader.Get());
+	AddAsset(SHADER_dirlight, pShader.Get());
 
 	// =================
 	// PointLight Shader
 	// =================
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(FXlight, "VS_PointLight");
-	pShader->CreatePixelShader(FXlight, "PS_PointLight");
+	pShader->CreateVertexShader(FXlight, FN_VS_pointlight);
+	pShader->CreatePixelShader(FXlight, FN_PS_pointlight);
 
 	pShader->SetRSType(RS_TYPE::CULL_FRONT);
 	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
 	pShader->SetBSType(BS_TYPE::ONE_ONE);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_LIGHTING);
 
-	AddAsset(L"PointLightShader", pShader.Get());
+	AddAsset(SHADER_pointlight, pShader.Get());
 
 	// =================
 	// SpotLight Shader
 	// =================
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(FXlight, "VS_SpotLight");
-	pShader->CreatePixelShader(FXlight, "PS_SpotLight");
+	pShader->CreateVertexShader(FXlight, FN_VS_spotlight);
+	pShader->CreatePixelShader(FXlight, FN_PS_spotlight);
 
 	pShader->SetRSType(RS_TYPE::CULL_FRONT);
 	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
 	pShader->SetBSType(BS_TYPE::ONE_ONE);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_LIGHTING);
 
-	AddAsset(L"SpotLightShader", pShader.Get());
+	AddAsset(SHADER_spotlight, pShader.Get());
 
 	// ============
 	// Merge Shader
 	// ============
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(FXmerge, "VS_Merge");
-	pShader->CreatePixelShader(FXmerge, "PS_Merge");
+	pShader->CreateVertexShader(FXmerge, FN_VS_merge);
+	pShader->CreatePixelShader(FXmerge, FN_PS_merge);
 
 	pShader->SetRSType(RS_TYPE::CULL_BACK);
 	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
 	pShader->SetBSType(BS_TYPE::DEFAULT);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MERGE);
 
-	AddAsset(L"MergeShader", pShader.Get());
+	AddAsset(SHADER_merge, pShader.Get());
 
 	// =================================
 	// EffectShader
 	// =================================
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(FXstd2d, "VS_Std2D");
-	pShader->CreatePixelShader(FXstd2d, "PS_Std2D_Effect");
+	pShader->CreateVertexShader(FXstd2d, FN_VS_std2d);
+	pShader->CreatePixelShader(FXstd2d, FN_PS_effect);
 
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
 	pShader->SetDSType(DS_TYPE::LESS);
@@ -680,15 +680,15 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
 
-	AddAsset(L"EffectShader", pShader.Get());
+	AddAsset(SHADER_effect, pShader.Get());
 
 
 	// =============
 	// TileMapShader
 	// =============
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(FXtilemap, "VS_TileMap");
-	pShader->CreatePixelShader(FXtilemap, "PS_TileMap");
+	pShader->CreateVertexShader(FXtilemap, FN_VS_tile);
+	pShader->CreatePixelShader(FXtilemap, FN_PS_tile);
 
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
 	pShader->SetDSType(DS_TYPE::LESS);
@@ -696,15 +696,15 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
 
-	AddAsset(L"TileMapShader", pShader.Get());
+	AddAsset(SHADER_tilemap, pShader.Get());
 
 	// ====================
 	// ParticleRenderShader
 	// ====================
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(FXparticle, "VS_Particle");
-	pShader->CreateGeometryShader(FXparticle, "GS_Particle");
-	pShader->CreatePixelShader(FXparticle, "PS_Particle");
+	pShader->CreateVertexShader(FXparticle, FN_VS_particle);
+	pShader->CreateGeometryShader(FXparticle, FN_GS_particle);
+	pShader->CreatePixelShader(FXparticle, FN_PS_particle);
 
 	pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
@@ -713,7 +713,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
 	
-	AddAsset(L"ParticleRenderShader", pShader.Get());
+	AddAsset(SHADER_particlerender, pShader.Get());
 
 	// =================================
 	// GrayFilter Shader
@@ -724,21 +724,21 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// Domain		: DOMAIN_POSTPROCESS
 	// =================================
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(FXpostprocess, "VS_GrayFilter");
-	pShader->CreatePixelShader(FXpostprocess, "PS_GrayFilter");
+	pShader->CreateVertexShader(FXpostprocess, FN_VS_grayfilter);
+	pShader->CreatePixelShader(FXpostprocess, FN_PS_grayfilter);
 
 	pShader->SetRSType(RS_TYPE::CULL_BACK);
 	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
-	AddAsset(L"GrayFilterShader", pShader.Get());
+	AddAsset(SHADER_grayfilter, pShader.Get());
 
 	// ============
 	// SkyBoxShader
 	// ============
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(FXskybox, "VS_SkyBox");
-	pShader->CreatePixelShader(FXskybox, "PS_SkyBox");
+	pShader->CreateVertexShader(FXskybox, FN_VS_skybox);
+	pShader->CreatePixelShader(FXskybox, FN_PS_skybox);
 
 	pShader->SetRSType(RS_TYPE::CULL_FRONT);
 
@@ -747,7 +747,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
 
-	AddAsset(L"SkyBoxShader", pShader.Get());
+	AddAsset(SHADER_skybox, pShader.Get());
 
 	// =================================
 	// Distortion Shader	
@@ -757,21 +757,21 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// Domain		: DOMAIN_POSTPROCESS
 	// =================================
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(FXpostprocess, "VS_Distortion");
-	pShader->CreatePixelShader(FXpostprocess, "PS_Distortion");
+	pShader->CreateVertexShader(FXpostprocess, FN_VS_distortion);
+	pShader->CreatePixelShader(FXpostprocess, FN_PS_distortion);
 
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
 	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
-	AddAsset(L"DistortionShader", pShader.Get());
+	AddAsset(SHADER_distortion, pShader.Get());
 
 	// =================================
 	// DebugShape Shader
 	// =================================
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(FXdebug, "VS_DebugShape");
-	pShader->CreatePixelShader(FXdebug, "PS_DebugShape");
+	pShader->CreateVertexShader(FXdebug, FN_VS_debugshape);
+	pShader->CreatePixelShader(FXdebug, FN_PS_debugshape);
 
 	pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
@@ -780,7 +780,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEBUG);
 
-	AddAsset(L"DebugShapeShader", pShader.Get());
+	AddAsset(SHADER_debugshape, pShader.Get());
 }
 
 
@@ -791,43 +791,43 @@ void CAssetMgr::CreateDefaultMaterial()
 
 	// Std2DMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std2DShader"));
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_std2d));
 	AddAsset<CMaterial>(L"Std2DMtrl", pMtrl);
 
 	// Std3DMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std3DShader"));
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_std3d));
 	AddAsset<CMaterial>(L"Std3DMtrl", pMtrl);
 
 	// Std3D_DeferredMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std3D_DeferredShader"));
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_deferred));
 	AddAsset<CMaterial>(L"Std3D_DeferredMtrl", pMtrl);
 
 	// DirLightMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DirLightShader"));
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_dirlight));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_0, FindAsset<CTexture>(L"PositionTargetTex"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_1, FindAsset<CTexture>(L"NormalTargetTex"));
 	AddAsset<CMaterial>(L"DirLightMtrl", pMtrl);
 
 	// PointLightMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"PointLightShader"));
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_pointlight));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_0, FindAsset<CTexture>(L"PositionTargetTex"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_1, FindAsset<CTexture>(L"NormalTargetTex"));
 	AddAsset<CMaterial>(L"PointLightMtrl", pMtrl);
 
 	// SpotLightMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"SpotLightShader"));
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_spotlight));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_0, FindAsset<CTexture>(L"PositionTargetTex"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_1, FindAsset<CTexture>(L"NormalTargetTex"));
 	AddAsset<CMaterial>(L"SpotLightMtrl", pMtrl);
 
 	// MergeMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"MergeShader"));
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_merge));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"ColorTargetTex"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"DiffuseTargetTex"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"SpecularTargetTex"));
@@ -835,37 +835,37 @@ void CAssetMgr::CreateDefaultMaterial()
 
 	// BackgroundMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std2DShader"));
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_std2d));
 	AddAsset<CMaterial>(L"BackgroundMtrl", pMtrl);
 
 	// TileMapMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"TileMapShader"));
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_tilemap));
 	AddAsset<CMaterial>(L"TileMapMtrl", pMtrl);
 
 	// ParticleMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"ParticleRenderShader"));
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_particlerender));
 	AddAsset<CMaterial>(L"ParticleMtrl", pMtrl);
 
 	// SkyBoxMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"SkyBoxShader"));
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_skybox));
 	AddAsset<CMaterial>(L"SkyBoxMtrl", pMtrl);
 
 	// GrayFilterMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"GrayFilterShader"));
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_grayfilter));
 	AddAsset<CMaterial>(L"GrayFilterMtrl", pMtrl);
 
 	// DistortionMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DistortionShader"));
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_distortion));
 	AddAsset<CMaterial>(L"DistortionMtrl", pMtrl);
 
 	// DebugShapeMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DebugShapeShader"));
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_debugshape));
 	AddAsset<CMaterial>(L"DebugShapeMtrl", pMtrl);
 }
 

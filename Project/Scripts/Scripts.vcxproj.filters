@@ -58,7 +58,7 @@
     <ClInclude Include="CCameraEffect.h">
       <Filter>Scripts\Manager\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="strMat.h">
+    <ClInclude Include="strEngineMtrl.h">
       <Filter>Default\UserString</Filter>
     </ClInclude>
     <ClInclude Include="strMesh.h">
@@ -69,6 +69,9 @@
     </ClInclude>
     <ClInclude Include="global.h">
       <Filter>Default</Filter>
+    </ClInclude>
+    <ClInclude Include="strFnShader.h">
+      <Filter>Default\UserString</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
