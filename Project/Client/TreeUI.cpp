@@ -132,7 +132,7 @@ void TreeNode::ImageListRender(UINT _flag, const string& _id)
 	}
 
 
-	ImGui::Image(thumb->GetSRV().Get(), ImVec2(80, 80));
+	ImGui::Image(thumb->GetSRV().Get(), ImVec2(64, 64));
 	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
 	{
 		ImGui::SetDragDropPayload(m_Owner->GetID().c_str(), &m_Data, sizeof(DWORD_PTR));
@@ -160,7 +160,8 @@ void TreeNode::ImageListRender(UINT _flag, const string& _id)
 			m_Owner->SetSelectedNode(this);
 		}
 	}
-	ImGui::Text(_id.c_str());
+	ImGui::Dummy(ImVec2(0, 4));
+	ImGui::TextWrapped(_id.c_str());
 	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
 	{
 		ImGui::SetDragDropPayload(m_Owner->GetID().c_str(), &m_Data, sizeof(DWORD_PTR));
@@ -247,7 +248,9 @@ void TreeUI::render_update()
 		{
 			if (m_bImageTree) {
 				string id = "##imagetree" + std::to_string(i);
-				ImGui::BeginChild(id.c_str(), ImVec2(120, 120));
+				ImGui::Dummy(ImVec2(8,0));
+				ImGui::SameLine();
+				ImGui::BeginChild(id.c_str(), ImVec2(80, 120));
 				m_Root->m_vecChildNode[i]->render_update();
 				ImGui::EndChild();
 
