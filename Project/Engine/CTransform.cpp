@@ -10,6 +10,7 @@ CTransform::CTransform()
 	: CComponent(COMPONENT_TYPE::TRANSFORM)
 	, m_vRelativeScale(Vec3(1.f, 1.f, 1.f))
 	, m_bAbsolute(true)
+	, m_IsDynamic(true)
 {
 }
 
@@ -110,6 +111,36 @@ Vec3 CTransform::GetWorldScale()
 	}
 
 	return vWorldScale;
+}
+
+Vec3 CTransform::GetWorldRot()
+{
+	XMVECTOR Qurt;
+	XMVECTOR Scale;
+	XMVECTOR Pos;
+	XMMatrixDecompose(&Scale, &Qurt, &Pos, m_matWorld);
+	Matrix matRot = XMMatrixRotationQuaternion(Qurt);
+	return DecomposeRotMat(matRot);
+}
+
+void CTransform::SetDir(Vec3 _Dir)
+{
+	_Dir.Normalize();
+	Vec3 vRight = Vec3(0.f, 1.f, 0.f).Cross(_Dir);
+	if (vRight.x == 0.f && vRight.y == 0.f && vRight.z == 0.f)
+		vRight = Vec3(1.f, 0.f, 0.f);
+
+	vRight.Normalize();
+	Vec3 vUp = _Dir.Cross(vRight);
+
+	Matrix matRot = XMMatrixIdentity();
+
+	matRot._11 = vRight.x; matRot._12 = vRight.y; matRot._13 = vRight.z;
+	matRot._21 = vUp.x;	   matRot._22 = vUp.y;    matRot._23 = vUp.z;
+	matRot._31 = _Dir.x;   matRot._32 = _Dir.y;   matRot._33 = _Dir.z;
+
+	Vec3 vRot = DecomposeRotMat(matRot);
+	SetRelativeRotation(vRot);
 }
 
 void CTransform::SaveToFile(FILE* _File)

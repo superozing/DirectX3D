@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "CRenderComponent.h"
 
 enum class SKYBOX_TYPE

@@ -59,10 +59,23 @@ void CRenderMgr::ClearMRT()
 	m_arrMRT[(UINT)MRT_TYPE::LIGHT]->ClearRT();
 }
 
+void CRenderMgr::CreateDynamicShadowDepth()
+{
+	GetMRT(MRT_TYPE::SHADOW_DEPTH)->OMSet();
+
+	for (size_t i = 0; i < m_vecLight3D.size(); ++i)
+	{
+		// 광원 시점에서 물체들의 깊이를 그린다.
+		m_vecLight3D[i]->render_shadowdepth();
+	}
+}
+
 void CRenderMgr::render_play()
 {
 	if (m_vecCam.empty())
 		return;
+
+	CreateDynamicShadowDepth();
 
 	// 메인 카메라 시점 렌더링
 	if (nullptr != m_vecCam[0])
@@ -120,6 +133,9 @@ void CRenderMgr::render_editor()
 {
 	if (nullptr == m_EditorCam)
 		return;
+
+	// 광원 시점에서 ShadowDepthMap 생성
+	CreateDynamicShadowDepth();
 
 	// 도메인에 따른 물체 분류
 	m_EditorCam->SortObject();

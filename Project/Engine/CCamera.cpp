@@ -286,6 +286,10 @@ void CCamera::Merge()
 	pRectMesh->render();
 }
 
+void CCamera::SortShadowMapObject()
+{
+}
+
 void CCamera::SaveToFile(FILE* _File)
 {
 	fwrite(&m_ProjType, sizeof(PROJ_TYPE), 1, _File);
