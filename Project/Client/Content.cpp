@@ -312,7 +312,7 @@ void Content::DirectoryUI()
 			SetTargetDirectory("material");
 		}
 
-		if (ImGui::MenuItem("Make New Level", ""))
+		if (ImGui::MenuItem("Create New Level", ""))
 		{
 			wchar_t szSelect[256] = {};
 
