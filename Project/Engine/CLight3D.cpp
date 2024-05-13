@@ -46,7 +46,7 @@ void CLight3D::finaltick()
 		float fHalfAngle = m_Info.fAngle / 2.f;
 		float fRange = m_Info.fRadius * tanf(fHalfAngle);
 		Transform()->SetRelativeScale(Vec3(fRange * 2.f, fRange * 2.f, m_Info.fRadius));
-		Transform()->SetRelativeRotation(m_Info.vWorldDir);
+		Transform()->SetDir(m_Info.vWorldDir);
 	}
 
 	// 광원을 등록하면서 자신이 구조화 버퍼에서 속한 인덱스 값 가져오기
@@ -61,7 +61,7 @@ void CLight3D::finaltick()
 	{
 		float fHalfAngle = m_Info.fAngle / 2.f;
 		float fRange = m_Info.fRadius * tanf(fHalfAngle);
-		GamePlayStatic::DrawDebugCone(m_Info.vWorldPos, Vec3(fRange * 2.f, fRange * 2.f, m_Info.fRadius), m_Info.vWorldDir, Vec3(0.f, 1.f, 0.1f), true);
+		GamePlayStatic::DrawDebugCone(m_Info.vWorldPos, Vec3(fRange * 2.f, fRange * 2.f, m_Info.fRadius), Transform()->GetRelativeRotation(), Vec3(0.f, 1.f, 0.1f), true);
 	}
 }
 
