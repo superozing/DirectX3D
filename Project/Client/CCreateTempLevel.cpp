@@ -122,9 +122,15 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->Light3D()->SetAmbient(Vec3(0.1f, 0.1f, 0.1f));
 	pObj->Light3D()->SetSpecular(Vec3(0.05f, 0.05f, 0.05f));
 	pObj->Light3D()->SetRadius(500.f);
+	pObj->Light3D()->SetAngle(1.f);
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
+	//pObj = pObj->Clone();
+	//pObj->SetName(L"Light3D_Clone2");
+	//pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+	//pObj->Light3D()->SetLightColor(Vec3(0.3f, 1.f, 0.3f));
+	//pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
 	// SkyBox 용 오브젝트 추가
 	pObj = new CGameObject;

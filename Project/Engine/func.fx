@@ -126,11 +126,26 @@ void CalLight3D(int _LightIdx, float3 _vViewPos, float3 _vViewNormal, inout tLig
 
         // 광원 방향 벡터
         float3 vLightDir = mul(float4(Light.vWorldDir, 0.f), g_matView).xyz;
+        
+        // 광원의 방향이 (0.f, 0.f, 0.f)로 설정되어 있다면, 이것은 기본 원뿔 메쉬의 방향인 z축 방향을 가리킨다
+        if (0.f == vLightDir.x && 0.f == vLightDir.y && 0.f == vLightDir.z)
+        {
+            vLightDir = float3(0.f, 0.f, 1.f);
+        }
         vLightDir = normalize(vLightDir);
         
-        float fDirRatio = saturate(cos(dot(vLightDir, vViewLightDir)));
+        // 물체와 광원 사이의 각도가 광원에 설정된 fAngle과 가까울 수록 빛의 세기가 약해져야 함
+        if (0.f != Light.fAngle)
+        {
+            float fHalfAngle = Light.fAngle / 2.f * (PI / 2.f);
+            float fObjAngle = abs(dot(vLightDir, vViewLightDir)) * (PI / 2.f);
+            
+            //float fDirRatio = saturate(cos(fObjAngle / fHalfAngle));
+            //fDistanceRatio = fDirRatio;
+        }
+        //float fDirRatio = saturate(abs(cos(dot(vLightDir, vViewLightDir))));
         
-        fDistanceRatio = saturate(saturate(cos(fDistance / (Light.fRadius * 1.5f) * (PI / 2.f))) * fDirRatio);
+        //fDistanceRatio = saturate(saturate(cos(fDistance / (Light.fRadius * 1.2f) * (PI / 2.f))));
         
         // 광원 반경과 물체까지의 거리에 따른 빛의 세기
         //fDistanceRatio = saturate(cos(fDistance / Light.fRadius * (PI / 2.f))); // cos            
