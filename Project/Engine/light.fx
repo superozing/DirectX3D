@@ -13,9 +13,12 @@
 // BS_TYPE  : ONE_ONE , 여러개의 빛이 누적될 수 있게
 
 // Parameter
+// g_mat_1 : 광원 시점의 View * Proj Matrix
+
 // g_int_0 : Light Idex
 // g_tex_0 : PositionTargetTex
 // g_tex_1 : NormalTargetTex
+// g_tex_2 : ShadowDepthTargetTex
 // ========================
 struct VS_IN
 {
@@ -62,6 +65,13 @@ PS_OUT PS_DirLight(VS_OUT _in)
     // 해당 지점이 받을 빛의 세기를 구한다.
     tLightColor LightColor = (tLightColor) 0.f;
     CalLight3D(g_int_0, vViewPos.xyz, vViewNormal, LightColor);
+    
+    // 그림자 확인
+    // ViewPos 를 ViewInv 행렬(메인카메라)을 적용, WorldPos 를 알아낸다.
+    float3 vWorld = mul(float4(vViewPos.xyz, 1.f), g_matViewInv).xyz;
+    
+    // 광원 시야 기준 Projection 좌표계로 변환한다.
+    float4 vLightProjPos = mul(float4(vWorld, 1.f), g_mat_1);
         
     output.vDiffuse = LightColor.vColor + LightColor.vAmbient;
     output.vSpecular = LightColor.vSpecular;

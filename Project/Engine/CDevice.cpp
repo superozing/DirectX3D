@@ -95,25 +95,11 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution)
 		return E_FAIL;
 	}
 
-	// ViewPort 설정
-	D3D11_VIEWPORT ViewportDesc = {};
-
-	ViewportDesc.MinDepth = 0;
-	ViewportDesc.MaxDepth = 1.f;
-
-	ViewportDesc.TopLeftX = 0;
-	ViewportDesc.TopLeftY = 0;
-	ViewportDesc.Width	  = m_vRenderResolution.x;
-	ViewportDesc.Height	  = m_vRenderResolution.y;
-
-	CONTEXT->RSSetViewports(1, &ViewportDesc);
-
 	if (FAILED(CreateConstBuffer()))
 	{
 		MessageBox(nullptr, L"상수버퍼 생성 실패", L"Device 초기화 실패", MB_OK);
 		return E_FAIL;
 	}
-
 	
 	return S_OK;
 }

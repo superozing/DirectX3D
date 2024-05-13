@@ -101,6 +101,7 @@ public:
     void Merge();
 
     void SortShadowMapObject();
+    void render_shadowmap();
 
 public:
 

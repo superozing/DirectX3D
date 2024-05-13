@@ -798,6 +798,17 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEBUG);
 
 	AddAsset(L"DebugShapeShader", pShader.Get());
+
+	// ================
+	// ShadowMap Shader
+	// ================
+	pShader = new CGraphicsShader;
+	pShader->CreateVertexShader(L"shader\\shadowmap.fx", "VS_ShadowMap");
+	pShader->CreatePixelShader(L"shader\\shadowmap.fx", "PS_ShadowMap");
+
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_SHADOWMAP);
+
+	AddAsset(L"ShadowMapShader", pShader.Get());
 }
 
 
@@ -826,6 +837,7 @@ void CAssetMgr::CreateDefaultMaterial()
 	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DirLightShader"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_0, FindAsset<CTexture>(L"PositionTargetTex"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_1, FindAsset<CTexture>(L"NormalTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_2, FindAsset<CTexture>(L"ShadowDepthTargetTex"));
 	AddAsset<CMaterial>(L"DirLightMtrl", pMtrl);
 
 	// PointLightMtrl
@@ -833,6 +845,7 @@ void CAssetMgr::CreateDefaultMaterial()
 	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"PointLightShader"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_0, FindAsset<CTexture>(L"PositionTargetTex"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_1, FindAsset<CTexture>(L"NormalTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_2, FindAsset<CTexture>(L"ShadowDepthTargetTex"));
 	AddAsset<CMaterial>(L"PointLightMtrl", pMtrl);
 
 	// SpotLightMtrl
@@ -891,6 +904,11 @@ void CAssetMgr::CreateDefaultMaterial()
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DebugShapeShader"));
 	AddAsset<CMaterial>(L"DebugShapeMtrl", pMtrl);
+
+	// ShadowMapMtrl
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"ShadowMapShader"));
+	AddAsset(L"ShadowMapMtrl", pMtrl);
 }
 
 
