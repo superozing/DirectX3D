@@ -6,6 +6,10 @@ class MessageUI :
 {
 private:
 
+    vector<tLog>    m_vectLog;
+
+    int test;
+
 public:
     virtual void tick() override;
     virtual void render_update() override;

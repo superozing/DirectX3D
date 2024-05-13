@@ -1,6 +1,15 @@
 ﻿#include "pch.h"
 #include "CLogMgr.h"
 
+CLogMgr::CLogMgr()
+{
+
+}
+
+CLogMgr::~CLogMgr()
+{
+}
+
 void CLogMgr::init()
 {
 }
@@ -17,8 +26,15 @@ void CLogMgr::exit()
 {
 }
 
-void CLogMgr::AddLog()
+void CLogMgr::AddLog(Log_Level Lv, string msg)
 {
+	tLog Log;
+	
+	Log.m_LogLv = Lv;
+	Log.m_strMsg = msg;
+
+
+	m_vecLog.push_back(Log);
 }
 
 void CLogMgr::CopyLog()

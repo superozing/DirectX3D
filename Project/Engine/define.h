@@ -329,7 +329,6 @@ enum class MRT_TYPE
 
 enum class Log_Level
 {
-	ALL,
 	INFO,
 	WARN,
 	ERR,

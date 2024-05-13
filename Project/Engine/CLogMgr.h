@@ -1,4 +1,4 @@
-﻿#pragma once
+﻿ #pragma once
 #include "CManager.h"
 
 class CLogMgr :
@@ -17,7 +17,7 @@ public:
     virtual void exit() override;
 
 public:
-    void AddLog();
+    void AddLog(Log_Level Lv, string msg);
     void CopyLog();
     void ClearLog();
 };

@@ -78,3 +78,6 @@ typedef Vector4 Vec4;
 
 // Magic Enum 헤더 참조
 #include <Magic_Enum/magic_enum_all.hpp>
+
+//전역 MANAGER 참조
+#include "CLogMgr.h"

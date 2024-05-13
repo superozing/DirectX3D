@@ -5,7 +5,7 @@
 
 
 LogUI::LogUI()
-	: UI("LogUI", "##LogUI")
+	: UI("Log", "##LogUI")
 {
     m_MessageUI = new MessageUI;
     AddChildUI(m_MessageUI);
