@@ -178,6 +178,9 @@
     <ClInclude Include="CRandomMgr.h">
       <Filter>04. Manager\RandomMgr</Filter>
     </ClInclude>
+    <ClInclude Include="CManager.h">
+      <Filter>04. Manager</Filter>
+    </ClInclude>
     <ClInclude Include="CCameraShake.h">
       <Filter>08. Component\08. Camera</Filter>
     </ClInclude>
@@ -356,6 +359,9 @@
     </ClCompile>
     <ClCompile Include="SimpleMath.cpp">
       <Filter>01. Header</Filter>
+    </ClCompile>
+    <ClCompile Include="CManager.cpp">
+      <Filter>04. Manager</Filter>
     </ClCompile>
     <ClCompile Include="CCameraShake.cpp">
       <Filter>08. Component\08. Camera</Filter>

@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "SoundUI.h"
 
 #include <Engine/CSound.h>
@@ -17,11 +17,11 @@ void SoundUI::render_update()
 {
 	AssetUI::render_update();
 
-    // ÇØ´ç ÅØ½ºÃÄ ÀÌ¹ÌÁö Ãâ·Â
+    // í•´ë‹¹ í…ìŠ¤ì³ ì´ë¯¸ì§€ ì¶œë ¥
     Ptr<CSound> pSound = (CSound*)GetAsset().Get();
     string strPath = string(pSound->GetRelativePath().begin(), pSound->GetRelativePath().end());
         
-    strPath = std::experimental::filesystem::path(strPath).filename().generic_string();
+    strPath = path(strPath).filename().generic_string();
 
     ImGui::Text("Sound");
     ImGui::SameLine();

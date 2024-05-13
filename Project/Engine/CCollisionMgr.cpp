@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CCollisionMgr.h"
 
 #include "CLevelMgr.h"
@@ -28,10 +28,16 @@ void CCollisionMgr::tick()
 			if (!(m_matrix[iRow] & (1 << iCol)) )			
 				continue;
 			
-			// iRow ·¹ÀÌ¾î¿Í iCol ·¹ÀÌ¾î´Â ¼­·Î Ãæµ¹°Ë»ç¸¦ ÁøÇàÇÑ´Ù.
+			// iRow ë ˆì´ì–´ì™€ iCol ë ˆì´ì–´ëŠ” ì„œë¡œ ì¶©ëŒê²€ì‚¬ë¥¼ ì§„í–‰í•œë‹¤.
 			CollisionBtwLayer(iRow, iCol);
 		}
 	}
+}
+
+void CCollisionMgr::exit()
+{
+	// ë§µ ì •ë³´ ì´ˆê¸°í™”
+	m_mapPrevInfo.clear();
 }
 
 void CCollisionMgr::CollisionBtwLayer(UINT _left, UINT _right)
@@ -46,28 +52,28 @@ void CCollisionMgr::CollisionBtwLayer(UINT _left, UINT _right)
 
 	for (size_t i = 0; i < vecLeft.size(); ++i)
 	{
-		// Ãæµ¹Ã¼°¡ ¾ø´Â °æ¿ì
+		// ì¶©ëŒì²´ê°€ ì—†ëŠ” ê²½ìš°
 		if (nullptr == vecLeft[i]->Collider2D())
 			continue;
 				
 		size_t j = 0;
-		if (_left == _right) // Left, Right µ¿ÀÏ ·¹ÀÌ¾îÀÎ °æ¿ì, ÀÌÁß °Ë»ç¸¦ ÇÇÇÏ±â À§ÇÔ
+		if (_left == _right) // Left, Right ë™ì¼ ë ˆì´ì–´ì¸ ê²½ìš°, ì´ì¤‘ ê²€ì‚¬ë¥¼ í”¼í•˜ê¸° ìœ„í•¨
 		{
 			j = i + 1;
 		}
 
 		for (; j < vecRight.size(); ++j)
 		{
-			// Ãæµ¹Ã¼¸¦ º¸À¯ÇÏ°í ÀÖÁö ¾Ê°Å³ª, Ãæµ¹À» ÁøÇà½ÃÅ³ µÎ ´ë»óÀÌ µ¿ÀÏÇÑ ¿ÀºêÁ§Æ®ÀÎ °æ¿ì
+			// ì¶©ëŒì²´ë¥¼ ë³´ìœ í•˜ê³  ìˆì§€ ì•Šê±°ë‚˜, ì¶©ëŒì„ ì§„í–‰ì‹œí‚¬ ë‘ ëŒ€ìƒì´ ë™ì¼í•œ ì˜¤ë¸Œì íŠ¸ì¸ ê²½ìš°
 			if (nullptr == vecRight[j]->Collider2D())// || vecLeft[i] == vecRight[j] )
 				continue;
 
-			// µÎ Ãæµ¹Ã¼ÀÇ ¾ÆÀÌµğ¸¦ Á¶ÇÕ
+			// ë‘ ì¶©ëŒì²´ì˜ ì•„ì´ë””ë¥¼ ì¡°í•©
 			CollisionID ID = {};
 			ID.LeftID = vecLeft[i]->Collider2D()->GetID();
 			ID.RightID = vecRight[j]->Collider2D()->GetID();
 
-			// ÀÌÀü ÇÁ·¹ÀÓ Ãæµ¹ È®ÀÎ
+			// ì´ì „ í”„ë ˆì„ ì¶©ëŒ í™•ì¸
 			map<UINT_PTR, bool>::iterator iter = m_mapPrevInfo.find(ID.id);
 			if (iter == m_mapPrevInfo.end())
 			{
@@ -78,10 +84,10 @@ void CCollisionMgr::CollisionBtwLayer(UINT _left, UINT _right)
 
 			bool bDead = vecLeft[i]->IsDead() || vecRight[j]->IsDead();
 
-			// Áö±İ °ãÃÄÀÖ´Ù.
+			// ì§€ê¸ˆ ê²¹ì³ìˆë‹¤.
 			if (CollisionBtwCollider(vecLeft[i]->Collider2D(), vecRight[j]->Collider2D()))
 			{
-				// ÀÌÀü¿¡µµ °ãÃÄÀÖ¾ú´Ù.
+				// ì´ì „ì—ë„ ê²¹ì³ìˆì—ˆë‹¤.
 				if (iter->second)
 				{
 					if (bDead)
@@ -96,10 +102,10 @@ void CCollisionMgr::CollisionBtwLayer(UINT _left, UINT _right)
 					}					
 				}
 
-				// ÀÌÀü¿¡ Ãæµ¹ÇÑ ÀûÀÌ ¾ø´Ù.
+				// ì´ì „ì— ì¶©ëŒí•œ ì ì´ ì—†ë‹¤.
 				else
 				{
-					// µÑÁß ÇÏ³ª¶óµµ Dead »óÅÂ¸é, Ãæµ¹À» ¾ø¾ú´ø °ÍÀ¸·Î ÇÑ´Ù.
+					// ë‘˜ì¤‘ í•˜ë‚˜ë¼ë„ Dead ìƒíƒœë©´, ì¶©ëŒì„ ì—†ì—ˆë˜ ê²ƒìœ¼ë¡œ í•œë‹¤.
 					if (!bDead)
 					{
 						vecLeft[i]->Collider2D()->BeginOverlap(vecRight[j]->Collider2D());
@@ -109,10 +115,10 @@ void CCollisionMgr::CollisionBtwLayer(UINT _left, UINT _right)
 				}
 			}
 
-			// Áö±İ ¶³¾îÁ® ÀÖ´Ù.
+			// ì§€ê¸ˆ ë–¨ì–´ì ¸ ìˆë‹¤.
 			else
 			{
-				// ÀÌÀü¿¡´Â °ãÃÄÀÖ¾ú´Ù.
+				// ì´ì „ì—ëŠ” ê²¹ì³ìˆì—ˆë‹¤.
 				if (iter->second)
 				{					
 					vecLeft[i]->Collider2D()->EndOverlap(vecRight[j]->Collider2D());
@@ -148,39 +154,39 @@ bool CCollisionMgr::CollisionBtwCollider(CCollider2D* _pLeft, CCollider2D* _pRig
 
 	Vec3 vCenter = XMVector3TransformCoord(Vec3(0.f, 0.f, 0.f), matRight) - XMVector3TransformCoord(Vec3(0.f, 0.f, 0.f), matLeft);
 	
-	// i ¹øÂ° Åõ¿µÃàÀ¸·Î 4°³ÀÇ Ç¥¸éº¤ÅÍ¸¦ Åõ¿µ½ÃÅ²´Ù.
+	// i ë²ˆì§¸ íˆ¬ì˜ì¶•ìœ¼ë¡œ 4ê°œì˜ í‘œë©´ë²¡í„°ë¥¼ íˆ¬ì˜ì‹œí‚¨ë‹¤.
 	for (int i = 0; i < 4; ++i)
 	{		
-		// i ¹øÂ° Ç¥¸é¹éÅÍ¸¦ Åõ¿µÃàÀ¸·Î »ï´Â´Ù
+		// i ë²ˆì§¸ í‘œë©´ë°±í„°ë¥¼ íˆ¬ì˜ì¶•ìœ¼ë¡œ ì‚¼ëŠ”ë‹¤
 		Vec3 vProj = arrProj[i];
 
-		// ´ÜÀ§º¤ÅÍ·Î ¸¸µé¾î¼­ ³»ÀûÇÒ °æ¿ì Åõ¿µµÈ ±æÀÌ¸¦ ±¸ÇÒ ¼ö ÀÖ°Ô ÇÑ´Ù.
+		// ë‹¨ìœ„ë²¡í„°ë¡œ ë§Œë“¤ì–´ì„œ ë‚´ì í•  ê²½ìš° íˆ¬ì˜ëœ ê¸¸ì´ë¥¼ êµ¬í•  ìˆ˜ ìˆê²Œ í•œë‹¤.
 		vProj.Normalize(); 
 
-		// Åõ¿µµÈ ±æÀÌ¸¦ ´©Àû½ÃÅ³ º¯¼ö
+		// íˆ¬ì˜ëœ ê¸¸ì´ë¥¼ ëˆ„ì ì‹œí‚¬ ë³€ìˆ˜
 		float ProjAcc = 0.f;
 
-		// ¹İº¹¹® µ¹¸é¼­ 4°³ÀÇ Ç¥¸éº¤ÅÍ¸¦ ÁöÁ¤µÈ Åõ¿µÃàÀ¸·Î Åõ¿µ½ÃÄÑ¼­ ±æÀÌ¸¦ ´©Àû¹Ş´Â´Ù.
+		// ë°˜ë³µë¬¸ ëŒë©´ì„œ 4ê°œì˜ í‘œë©´ë²¡í„°ë¥¼ ì§€ì •ëœ íˆ¬ì˜ì¶•ìœ¼ë¡œ íˆ¬ì˜ì‹œì¼œì„œ ê¸¸ì´ë¥¼ ëˆ„ì ë°›ëŠ”ë‹¤.
 		for (int j = 0; j < 4; ++j)
 		{
 			ProjAcc += abs(vProj.Dot(arrProj[j]));
 		}
 
-		// Åõ¿µµÈ ±æÀÌÀÇ Àı¹İ¾¿ ÇÕÄ£ ±æÀÌ°¡ ÇÊ¿äÇÏ±â ¶§¹®¿¡ ÀüÃ¼ ÇÕÄ£±æÀÌ¸¦ 2 ·Î ³ª´«´Ù
+		// íˆ¬ì˜ëœ ê¸¸ì´ì˜ ì ˆë°˜ì”© í•©ì¹œ ê¸¸ì´ê°€ í•„ìš”í•˜ê¸° ë•Œë¬¸ì— ì „ì²´ í•©ì¹œê¸¸ì´ë¥¼ 2 ë¡œ ë‚˜ëˆˆë‹¤
 		ProjAcc /= 2.f;
 
-		// µÎ Ãæµ¹Ã¼ÀÇ Áß½ÉÀ» ÀÌÀº º¤ÅÍµµ Åõ¿µ½ÃÅ²´Ù.
+		// ë‘ ì¶©ëŒì²´ì˜ ì¤‘ì‹¬ì„ ì´ì€ ë²¡í„°ë„ íˆ¬ì˜ì‹œí‚¨ë‹¤.
 		float fCenterDist = abs(vProj.Dot(vCenter));
 
-		// Áß½ÉÀ» ÀÌÀº º¤ÅÍ¸¦ Åõ¿µ½ÃÅ² ±æÀÌ°¡, Ç¥¸éÀ» Åõ¿µ½ÃÅ² ±æÀÌÀÇ Àı¹İº¸´Ù Å©´Ù¸é 
-		// µÑÀ» ºĞ¸®½ÃÅ³ ¼ö ÀÖ´Ù.
+		// ì¤‘ì‹¬ì„ ì´ì€ ë²¡í„°ë¥¼ íˆ¬ì˜ì‹œí‚¨ ê¸¸ì´ê°€, í‘œë©´ì„ íˆ¬ì˜ì‹œí‚¨ ê¸¸ì´ì˜ ì ˆë°˜ë³´ë‹¤ í¬ë‹¤ë©´ 
+		// ë‘˜ì„ ë¶„ë¦¬ì‹œí‚¬ ìˆ˜ ìˆë‹¤.
 		if (ProjAcc < fCenterDist)
 		{
 			return false;
 		}
 	}
 
-	// 4¹øÀÇ Å×½ºÆ®µ¿¾È ºĞ¸®ÇÒ ¼ö ¾ø¾ú´Ù.
+	// 4ë²ˆì˜ í…ŒìŠ¤íŠ¸ë™ì•ˆ ë¶„ë¦¬í•  ìˆ˜ ì—†ì—ˆë‹¤.
 	return true;
 }
 
@@ -196,8 +202,8 @@ bool CCollisionMgr::CollisionBtwCirCleCollider(CCollider2D* _pLeft, CCollider2D*
 
 	float fCenterDist = sqrtf(powf(vCenter.x, 2) + powf(vCenter.y, 2));
 
-	// Å¸¿øÀÌ ¾Æ´Ï¶ó´Â ÀüÁ¦ÇÏ¿¡ µÎ Ãæµ¹Ã¼ÀÇ ¹İÁö¸§ÀÇ ÇÕº¸´Ù
-	// µÎ Ãæµ¹Ã¼ÀÇ ÁßÁ¡ »çÀÌÀÇ °Å¸®°¡ ÀÛ°Å³ª °°´Ù¸é Ãæµ¹ »óÅÂ
+	// íƒ€ì›ì´ ì•„ë‹ˆë¼ëŠ” ì „ì œí•˜ì— ë‘ ì¶©ëŒì²´ì˜ ë°˜ì§€ë¦„ì˜ í•©ë³´ë‹¤
+	// ë‘ ì¶©ëŒì²´ì˜ ì¤‘ì  ì‚¬ì´ì˜ ê±°ë¦¬ê°€ ì‘ê±°ë‚˜ ê°™ë‹¤ë©´ ì¶©ëŒ ìƒíƒœ
 	if ((LeftRadius.x + RightRadius.x) / 2 >= fCenterDist)
 	{
 		return true;
@@ -230,7 +236,7 @@ void CCollisionMgr::LayerCheck(const wstring& _LeftLayer, const wstring& _RightL
 	CLayer* pLeftLayer = pCurLevel->GetLayer(_LeftLayer);
 	CLayer* pRightLayer = pCurLevel->GetLayer(_RightLayer);
 
-	// ÀÌ¸§¿¡ ÇØ´çÇÏ´Â Layer °¡ Á¸ÀçÇÏÁö ¾ÊÀ¸¸é
+	// ì´ë¦„ì— í•´ë‹¹í•˜ëŠ” Layer ê°€ ì¡´ì¬í•˜ì§€ ì•Šìœ¼ë©´
 	assert(pLeftLayer && pRightLayer);
 
 	LayerCheck(pLeftLayer->GetLayerIdx(), pRightLayer->GetLayerIdx());

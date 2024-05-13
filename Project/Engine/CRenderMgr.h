@@ -12,7 +12,7 @@ class CMRT;
 
 
 class CRenderMgr :
-    public CSingleton<CRenderMgr>
+    public CManager<CRenderMgr>
 {
     SINGLE(CRenderMgr);
 private:
@@ -23,10 +23,10 @@ private:
 
     Ptr<CTexture>           m_PostProcessTex;
 
-    CStructuredBuffer* m_Light2DBuffer;
+    CStructuredBuffer*      m_Light2DBuffer;
     vector<CLight2D*>       m_vecLight2D;
 
-    CStructuredBuffer* m_Light3DBuffer;
+    CStructuredBuffer*      m_Light3DBuffer;
     vector<CLight3D*>       m_vecLight3D;
 
     list<tDebugShapeInfo>   m_DbgShapeInfo;
@@ -80,10 +80,15 @@ public:
     void SetClearColor(const Vec4& _ClearColor) { m_vClearColor = _ClearColor; }
     Vec4 GetClearColor() { return m_vClearColor;}
 public:
-    void init();
-    void tick();
+    virtual void init() override;
+    virtual void tick() override;
+    virtual void enter() override {}
+    virtual void exit() override;
 
 private:
+
+    void CreateDynamicShadowDepth();
+
     void CreateMRT();
     void ClearMRT();
 

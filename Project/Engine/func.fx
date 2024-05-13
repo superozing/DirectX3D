@@ -124,12 +124,20 @@ void CalLight3D(int _LightIdx, float3 _vViewPos, float3 _vViewNormal, inout tLig
         // 광원에서 물체를 향하는 방향 벡터
         vViewLightDir = normalize(vViewLightDir);
 
-        // 광원
-        float3 fRadiusDir = -Light.vWorldPos;
-        normalize(fRadiusDir);
+        // 광원 방향 벡터
+        float3 vLightDir = mul(float4(Light.vWorldDir, 0.f), g_matView).xyz;
         
-        // 광원 반경과 물체까지의 거리에 따른 빛의 세기
-        fDistanceRatio = saturate(cos(fDistance / Light.fRadius * (PI / 2.f))); // cos            
+        // 광원의 방향이 (0.f, 0.f, 0.f)로 설정되어 있다면, 이것은 기본 원뿔 메쉬의 방향인 z축 방향을 가리킨다
+        if (0.f == vLightDir.x && 0.f == vLightDir.y && 0.f == vLightDir.z)
+        {
+            vLightDir = float3(0.f, 0.f, 1.f);
+        }
+        vLightDir = normalize(vLightDir);
+        
+        // 물체와 광원 사이의 각도가 광원에 설정된 fAngle과 가까울 수록 빛의 세기가 약해져야 함
+        if (0.f != Light.fAngle)
+        {
+        }        
     }
 
      // ViewSpace 에서 광원의 방향과, 물체 표면의 법선를 이용해서 광원의 진입 세기(Diffuse) 를 구한다.

@@ -17,6 +17,22 @@ CAssetMgr::~CAssetMgr()
 	
 }
 
+void CAssetMgr::exit()
+{
+	for (UINT i = 0; i < (UINT)ASSET_TYPE::END; ++i)
+	{
+		for (auto it = m_mapAsset[i].begin(); it != m_mapAsset[i].end(); )
+		{
+			// 엔진 에셋이 아닌 에셋을 맵에서 제거
+			if (!it->second->IsEngineAsset())
+				it = m_mapAsset[i].erase(it);
+			else
+				++it;
+		}
+	}
+
+}
+
 void CAssetMgr::AddAsset(const wstring& _strKey, CAsset* _Asset)
 {
 	ASSET_TYPE Type = _Asset->GetType();

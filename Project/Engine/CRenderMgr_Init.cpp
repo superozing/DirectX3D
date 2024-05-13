@@ -13,11 +13,8 @@
 
 void CRenderMgr::init()
 {
-	m_Light2DBuffer = new CStructuredBuffer;
-	m_Light2DBuffer->Create(sizeof(tLightInfo), 10, SB_TYPE::READ_ONLY, true);
-
-	m_Light3DBuffer = new CStructuredBuffer;
-	m_Light3DBuffer->Create(sizeof(tLightInfo), 10, SB_TYPE::READ_ONLY, true);
+	m_Light2DBuffer = CDevice::GetInst()->GetLight2DBuffer();
+	m_Light3DBuffer = CDevice::GetInst()->GetLight3DBuffer();
 
 	m_pDebugObj = new CGameObject;
 	m_pDebugObj->AddComponent(new CTransform);
@@ -143,6 +140,30 @@ void CRenderMgr::CreateMRT()
 		m_arrMRT[(UINT)MRT_TYPE::DECAL] = new CMRT;
 		m_arrMRT[(UINT)MRT_TYPE::DECAL]->Create(pRTTex, 2, nullptr);
 		m_arrMRT[(UINT)MRT_TYPE::DECAL]->SetClearColor(arrClearColor, 2);
+	}
+
+	// ============
+	// SHADOW_DEPTH
+	// ============
+	{
+		Ptr<CTexture> pRTTex[1] =
+		{
+			CAssetMgr::GetInst()->CreateTexture(L"ShadowDepthTargetTex"
+							    , 8192, 8192, DXGI_FORMAT_R32_FLOAT
+							    , D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE)
+		};
+
+		Vec4 arrClearColor[1] = {
+			Vec4(0.f, 0.f, 0.f, 0.f),			
+		};
+
+		Ptr<CTexture> pDepthTex = CAssetMgr::GetInst()->CreateTexture(L"ShadowDepthStencilTex"
+								 , 8192, 8192, DXGI_FORMAT_D32_FLOAT
+								 , D3D11_BIND_DEPTH_STENCIL);
+								 
+		m_arrMRT[(UINT)MRT_TYPE::SHADOW_DEPTH] = new CMRT;
+		m_arrMRT[(UINT)MRT_TYPE::SHADOW_DEPTH]->Create(pRTTex, 1, pDepthTex);
+		m_arrMRT[(UINT)MRT_TYPE::SHADOW_DEPTH]->SetClearColor(arrClearColor, 1);
 	}
 }
 

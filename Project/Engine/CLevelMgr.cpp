@@ -4,10 +4,13 @@
 #include "CRenderMgr.h"
 #include "CLevel.h"
 #include "CLayer.h"
+#include "CGameObject.h"
 
 #include "CDevice.h"
 #include "CAssetMgr.h"
 #include "CCollisionMgr.h"
+#include "CTimeMgr.h"
+#include "CGC.h"
 
 #include "CTaskMgr.h"
 
@@ -52,6 +55,14 @@ void CLevelMgr::tick()
 	CRenderMgr::GetInst()->tick();
 }
 
+void CLevelMgr::enter()
+{
+}
+
+void CLevelMgr::exit()
+{
+}
+
 void CLevelMgr::ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextLevelStartState)
 {
 	tTask task = {};
@@ -77,6 +88,14 @@ void CLevelMgr::ChangeLevelState(LEVEL_STATE _State)
 void CLevelMgr::ChangeLevel_Task(CLevel* _NextLevel, LEVEL_STATE _NextLevelState)
 {
 	assert(!(m_CurLevel == _NextLevel));
+
+	CLevelMgr::GetInst()->exit();
+	CRenderMgr::GetInst()->exit();
+	CTimeMgr::GetInst()->exit();
+	CAssetMgr::GetInst()->exit();
+	CCollisionMgr::GetInst()->exit();
+	CGC::GetInst()->exit();
+
 		
 	if (nullptr != m_CurLevel)
 		delete m_CurLevel;
@@ -85,4 +104,8 @@ void CLevelMgr::ChangeLevel_Task(CLevel* _NextLevel, LEVEL_STATE _NextLevelState
 
 	if (nullptr != m_CurLevel)
 		m_CurLevel->ChangeState(_NextLevelState);
+
+
+	CLevelMgr::GetInst()->enter();
+
 }

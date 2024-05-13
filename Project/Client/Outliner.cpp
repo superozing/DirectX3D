@@ -8,6 +8,8 @@
 #include <Engine/CKeyMgr.h>
 
 #include "CImGuiMgr.h"
+#include "CEditorObjMgr.h"
+#include "CGameObjectEx.h"
 #include "Inspector.h"
 #include "TreeUI.h"
 
@@ -75,6 +77,17 @@ void Outliner::ResetCurrentLevel()
 			AddObjectToTree(pRootNode, vecParent[i]);
 		}
 	}
+
+	TreeNode* pEditorRootNode = m_Tree->AddTreeNode(pRootNode, "Editor Object", 0);
+
+	auto vecEditorObj = CEditorObjMgr::GetInst()->GetEditorGameObjects();
+
+	for (size_t i = 0; i < vecEditorObj.size(); ++i)
+	{
+		AddObjectToTree(pEditorRootNode, vecEditorObj[i]);
+	}
+
+
 }
 
 void Outliner::AddObjectToTree(TreeNode* _Node, CGameObject* _Object)

@@ -11,6 +11,7 @@
 // g_tex_0 : ColorTargetTex
 // g_tex_1 : DiffuseTargetTex
 // g_tex_2 : SpecularTargetTex
+// g_tex_3 : EmissiveTargetTex
 // ===============
 
 struct VS_IN
@@ -42,8 +43,9 @@ float4 PS_Merge(VS_OUT _in) : SV_Target
     float4 vColor = g_tex_0.Sample(g_sam_0, _in.vUV);
     float4 vDiffuse = g_tex_1.Sample(g_sam_0, _in.vUV);
     float4 Specular = g_tex_2.Sample(g_sam_0, _in.vUV);
+    float4 Emissive = g_tex_3.Sample(g_sam_0, _in.vUV);
         
-    vOutColor = (vColor * vDiffuse) + Specular;
+    vOutColor = (vColor * (vDiffuse + Emissive)) + Specular;
     vOutColor.a = 1.f;
     
     return vOutColor;

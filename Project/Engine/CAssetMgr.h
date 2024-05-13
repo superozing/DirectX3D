@@ -1,12 +1,12 @@
 ﻿#pragma once
-#include "singleton.h"
+#include "CManager.h"
 
 #include "CPathMgr.h"
 
 
 #include "CTexture.h"
 #include "CMesh.h"
-#include "CGraphicsShader.h"
+#include "CGraphicsShader.h" 
 #include "CComputeShader.h"
 #include "CMaterial.h"
 #include "CPrefab.h"
@@ -20,14 +20,17 @@ constexpr bool MyBool<T1, T1> = true;
 
 
 class CAssetMgr :
-    public CSingleton<CAssetMgr>
+    public CManager<CAssetMgr>
 {
     SINGLE(CAssetMgr);
 private:
     map<wstring, Ptr<CAsset>>   m_mapAsset[(UINT)ASSET_TYPE::END];
 
 public:
-    void init();
+    virtual void init() override;
+    virtual void enter() override {}
+    virtual void exit() override;
+
 private:
     void InitSound();
     void CreateDefaultMesh();

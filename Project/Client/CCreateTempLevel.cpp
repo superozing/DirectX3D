@@ -115,21 +115,22 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->AddComponent(new CLight3D);
 
 	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
-	pObj->Transform()->SetRelativeRotation(Vec3(XM_PI / 4.f, XM_PI / 4.f, 0.f));
+	pObj->Transform()->SetDir(Vec3(1.f, -1.f, 1.f));
 
 	pObj->Light3D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
-	pObj->Light3D()->SetLightColor(Vec3(1.f, 1.f, 1.f));
-	pObj->Light3D()->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
-	pObj->Light3D()->SetSpecular(Vec3(0.2f, 0.2f, 0.2f));
+	pObj->Light3D()->SetLightColor(Vec3(0.8f, 0.8f, 0.8f));
+	pObj->Light3D()->SetAmbient(Vec3(0.1f, 0.1f, 0.1f));
+	pObj->Light3D()->SetSpecular(Vec3(0.05f, 0.05f, 0.05f));
 	pObj->Light3D()->SetRadius(500.f);
+	pObj->Light3D()->SetAngle(1.f);
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
-	pObj = pObj->Clone();
-	pObj->SetName(L"Light3D_Clone2");
-	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
-	pObj->Light3D()->SetLightColor(Vec3(0.3f, 1.f, 0.3f));
-	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
+	//pObj = pObj->Clone();
+	//pObj->SetName(L"Light3D_Clone2");
+	//pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+	//pObj->Light3D()->SetLightColor(Vec3(0.3f, 1.f, 0.3f));
+	//pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
 	// SkyBox 용 오브젝트 추가
 	pObj = new CGameObject;
@@ -144,21 +145,6 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->SkyBox()->SetSkyBoxType(SKYBOX_TYPE::SPHERE);
 	pObj->SkyBox()->SetSphereTexture(CAssetMgr::GetInst()->Load<CTexture>(L"texture\\skybox\\Sky02.jpg", L"texture\\skybox\\Sky02.jpg"));
 
-	//pObj->SkyBox()->SetSkyBoxType(SKYBOX_TYPE::CUBE);
-	//pObj->SkyBox()->SetCubeTexture(CAssetMgr::GetInst()->Load<CTexture>(L"texture\\skybox\\SkyWater.dds", L"texture\\skybox\\SkyWater.dds"));
-
-	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
-
-	// Decal 
-	pObj = new CGameObject;
-	pObj->SetName(L"Decal");
-
-	pObj->AddComponent(new CTransform);
-	pObj->AddComponent(new CDecal);
-
-	pObj->Transform()->SetRelativePos(Vec3(-200.f, -170.f, 500.f));
-	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
-
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
 	// Player Object 생성
@@ -167,26 +153,11 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pObj->AddComponent(new CTransform);
 	pObj->AddComponent(new CMeshRender);
-	pObj->AddComponent(new CCollider2D);
-	pObj->AddComponent(new CAnimator2D);
-	pObj->AddComponent(new CPlayerScript);
-	pObj->AddComponent(new CMissileScript);
-
-
-	//Ptr<CTexture> pAltasTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\link.png", L"texture\\link.png");
-	//pObj->Animator2D()->Create(L"IDLE_UP", pAltasTex, Vec2(0.f, 260.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 1, 10);
-	//pObj->Animator2D()->Create(L"IDLE_DOWN", pAltasTex, Vec2(0.f, 0.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 3, 10);
-	//wstring str = CPathMgr::GetContentPath();
-	//str += L"anim\\";
-	//pObj->Animator2D()->SaveAllAnim(str);
 
 	pObj->Transform()->SetRelativePos(Vec3(0.f, -200.f, 500.f));
 	pObj->Transform()->SetRelativeScale(Vec3(2000.f, 2000.f, 1.f));
-	pObj->Transform()->SetRelativeRotation(Vec3(XM_PI / 2.f, 0.f, 0.f));
-
-	pObj->Collider2D()->SetAbsolute(true);
-	pObj->Collider2D()->SetOffsetScale(Vec2(100.f, 100.f));
-	pObj->Collider2D()->SetOffsetPos(Vec2(0.f, 0.f));
+	//pObj->Transform()->SetRelativeRotation(Vec3(XM_PI / 2.f, 0.f, 0.f));
+	pObj->Transform()->SetDir(Vec3(0.f, -1.f, 0.f));
 
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std3D_DeferredMtrl"));
@@ -196,6 +167,23 @@ void CCreateTempLevel::CreateTempLevel()
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_PLAYER, false);
 
 
+	// Sphere Object
+	pObj = new CGameObject;
+	pObj->SetName(L"Sphere");
+
+	pObj->AddComponent(new CTransform);
+	pObj->AddComponent(new CMeshRender);
+
+	pObj->Transform()->SetRelativePos(Vec3(0.f, 200.f, 500.f));
+	pObj->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 200.f));
+	pObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
+
+	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
+	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std3D_DeferredMtrl"));
+
+	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
+
+
 	// TimeMgr Object 생성
 	pObj = new CGameObject;
 	pObj->SetName(L"Manager Object");
@@ -203,7 +191,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->AddComponent(new CTimeMgrScript);
 	pObj->AddComponent(new CRenderMgrScript);
 
-	pTempLevel->AddObject(pObj, 0);
+	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
 
 	// 충돌 설정
