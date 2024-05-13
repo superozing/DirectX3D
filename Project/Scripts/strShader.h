@@ -27,3 +27,8 @@
 #define SHADER_distortion L"DistortionShader"
 
 #define SHADER_debugshape L"DebugShapeShader"
+
+//CS
+#define SHADER_setcolor L"SetColorShader"
+
+#define SHADER_particleupdate L"ParticleUpdateShader"

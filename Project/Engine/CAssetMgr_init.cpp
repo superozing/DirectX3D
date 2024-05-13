@@ -792,38 +792,38 @@ void CAssetMgr::CreateDefaultMaterial()
 	// Std2DMtrl
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_std2d));
-	AddAsset<CMaterial>(L"Std2DMtrl", pMtrl);
+	AddAsset<CMaterial>(MTRL_std2d, pMtrl);
 
 	// Std3DMtrl
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_std3d));
-	AddAsset<CMaterial>(L"Std3DMtrl", pMtrl);
+	AddAsset<CMaterial>(MTRL_std3d, pMtrl);
 
 	// Std3D_DeferredMtrl
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_deferred));
-	AddAsset<CMaterial>(L"Std3D_DeferredMtrl", pMtrl);
+	AddAsset<CMaterial>(MTRL_deferred, pMtrl);
 
 	// DirLightMtrl
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_dirlight));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_0, FindAsset<CTexture>(L"PositionTargetTex"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_1, FindAsset<CTexture>(L"NormalTargetTex"));
-	AddAsset<CMaterial>(L"DirLightMtrl", pMtrl);
+	AddAsset<CMaterial>(MTRL_dirlight, pMtrl);
 
 	// PointLightMtrl
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_pointlight));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_0, FindAsset<CTexture>(L"PositionTargetTex"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_1, FindAsset<CTexture>(L"NormalTargetTex"));
-	AddAsset<CMaterial>(L"PointLightMtrl", pMtrl);
+	AddAsset<CMaterial>(MTRL_pointlight, pMtrl);
 
 	// SpotLightMtrl
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_spotlight));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_0, FindAsset<CTexture>(L"PositionTargetTex"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_1, FindAsset<CTexture>(L"NormalTargetTex"));
-	AddAsset<CMaterial>(L"SpotLightMtrl", pMtrl);
+	AddAsset<CMaterial>(MTRL_spotlight, pMtrl);
 
 	// MergeMtrl
 	pMtrl = new CMaterial(true);
@@ -831,42 +831,42 @@ void CAssetMgr::CreateDefaultMaterial()
 	pMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"ColorTargetTex"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"DiffuseTargetTex"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"SpecularTargetTex"));
-	AddAsset<CMaterial>(L"MergeMtrl", pMtrl);
+	AddAsset<CMaterial>(MTRL_merge, pMtrl);
 
 	// BackgroundMtrl
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_std2d));
-	AddAsset<CMaterial>(L"BackgroundMtrl", pMtrl);
+	AddAsset<CMaterial>(MTRL_background, pMtrl);
 
 	// TileMapMtrl
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_tilemap));
-	AddAsset<CMaterial>(L"TileMapMtrl", pMtrl);
+	AddAsset<CMaterial>(MTRL_tilemap, pMtrl);
 
 	// ParticleMtrl
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_particlerender));
-	AddAsset<CMaterial>(L"ParticleMtrl", pMtrl);
+	AddAsset<CMaterial>(MTRL_particle, pMtrl);
 
 	// SkyBoxMtrl
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_skybox));
-	AddAsset<CMaterial>(L"SkyBoxMtrl", pMtrl);
+	AddAsset<CMaterial>(MTRL_skybox, pMtrl);
 
 	// GrayFilterMtrl
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_grayfilter));
-	AddAsset<CMaterial>(L"GrayFilterMtrl", pMtrl);
+	AddAsset<CMaterial>(MTRL_grayfilter, pMtrl);
 
 	// DistortionMtrl
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_distortion));
-	AddAsset<CMaterial>(L"DistortionMtrl", pMtrl);
+	AddAsset<CMaterial>(MTRL_distortion, pMtrl);
 
 	// DebugShapeMtrl
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_debugshape));
-	AddAsset<CMaterial>(L"DebugShapeMtrl", pMtrl);
+	AddAsset<CMaterial>(MTRL_debugshape, pMtrl);
 }
 
 
@@ -880,11 +880,11 @@ void CAssetMgr::CreateDefaultComputeShader()
 
 	// SetColorShader
 	pShader = new CSetColorShader;	
-	AddAsset(L"SetColorShader", pShader.Get());
+	AddAsset(SHADER_setcolor, pShader.Get());
 
 	// ParticleUpdateShader
 	pShader = new CParticleUpdate;
-	AddAsset(L"ParticleUpdateShader", pShader.Get());
+	AddAsset(SHADER_particleupdate, pShader.Get());
 }
 
 
