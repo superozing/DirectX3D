@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include <Engine/singleton.h>
+#include <Engine/CManager.h>
 
 class UI;
 
@@ -13,11 +13,26 @@ typedef void (*CALL_BACK_0)(void);
 typedef void (*CALL_BACK_1)(DWORD_PTR);
 typedef void (*CALL_BACK_2)(DWORD_PTR, DWORD_PTR);
 
+enum class STATIC_BTN_TYPE
+{
+    TITLE,
+
+};
+
+struct tStaticBtnColor
+{
+    ImVec4 ColBtnColor;
+    ImVec4 ColBtnHoveredColor;
+    ImVec4 ColBtnActiveColor;
+};
+
 class CImGuiMgr :
-    public CSingleton<CImGuiMgr>
+    public CManager<CImGuiMgr>
 {
     SINGLE(CImGuiMgr);
 private:
+    std::unordered_map<STATIC_BTN_TYPE, tStaticBtnColor>    m_umapStaticBtn;
+
     map<string, UI*>    m_mapUI;
     bool                m_bDemoUI;
 
@@ -28,8 +43,11 @@ private:
 public:
     void init(HWND _hMainWnd, ComPtr<ID3D11Device> _Device, ComPtr <ID3D11DeviceContext> _Context);
     void progress();
+    virtual void enter() override {}
 
     bool& GetbViewportFocused() { return isViewportFocused; }
+
+    const tStaticBtnColor& GetStaticButtonColor(STATIC_BTN_TYPE _type);
 
 public: // Callback
     static FOCUS_STATE GetFocus_debug();
