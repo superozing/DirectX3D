@@ -46,6 +46,7 @@ private:
 	bool			m_bCreateObject;
 	bool			m_bDeleteObject;
 	bool			m_bAssetChange;
+
 	int				m_DeleteFrameCount;
 
 public:
