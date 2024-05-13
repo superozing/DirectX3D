@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "TreeUI.h"
 
 #include <Engine/CKeyMgr.h>
@@ -13,32 +13,17 @@ TreeNode::~TreeNode()
 	Delete_Vec(m_vecChildNode);
 }
 
-
-void TreeNode::render_update()
+void TreeNode::GenericTreeRender(UINT _flag, const string& _id)
 {
-	string strID = m_Name + m_ID;
-
-	UINT Flag = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
-
-	if (m_bFrame)
-		Flag |= ImGuiTreeNodeFlags_Framed;
-	if (m_vecChildNode.empty())	
-		Flag |= ImGuiTreeNodeFlags_Leaf;		
-	if (m_bSelected)
-		Flag |= ImGuiTreeNodeFlags_Selected;
-
-	if (m_bFrame && m_vecChildNode.empty())
-		strID = "   " + strID;
-
-	if (ImGui::TreeNodeEx(strID.c_str(), Flag))
+	if (ImGui::TreeNodeEx(_id.c_str(), _flag))
 	{
 		if (ImGui::BeginDragDropSource())
-		{			
+		{
 			ImGui::SetDragDropPayload(m_Owner->GetID().c_str(), &m_Data, sizeof(DWORD_PTR));
 			ImGui::Text(m_Name.c_str());
 			ImGui::EndDragDropSource();
 
-			// Tree ¿¡ ÀÚ½ÅÀÌ Drag µÈ ³ëµåÀÓÀ» ¾Ë¸°´Ù.
+			// Tree ì— ìì‹ ì´ Drag ëœ ë…¸ë“œì„ì„ ì•Œë¦°ë‹¤.
 			m_Owner->SetDragNode(this);
 		}
 
@@ -75,7 +60,7 @@ void TreeNode::render_update()
 			ImGui::Text(m_Name.c_str());
 			ImGui::EndDragDropSource();
 
-			// Tree ¿¡ ÀÚ½ÅÀÌ Drag µÈ ³ëµåÀÓÀ» ¾Ë¸°´Ù.
+			// Tree ì— ìì‹ ì´ Drag ëœ ë…¸ë“œì„ì„ ì•Œë¦°ë‹¤.
 			m_Owner->SetDragNode(this);
 		}
 		else
@@ -88,13 +73,97 @@ void TreeNode::render_update()
 	}
 }
 
+void TreeNode::ImageListRender(UINT _flag, const string& _id)
+{
+	string treeId =  _id;
 
+	Ptr<CTexture> thumb = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Character.png");
 
+	ImGui::Image(thumb->GetSRV().Get(), ImVec2(80, 80));
+	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
+	{
+		ImGui::SetDragDropPayload(m_Owner->GetID().c_str(), &m_Data, sizeof(DWORD_PTR));
+		ImGui::Text(m_Name.c_str());
+		ImGui::EndDragDropSource();
 
+		// Tree ì— ìì‹ ì´ Drag ëœ ë…¸ë“œì„ì„ ì•Œë¦°ë‹¤.
+		m_Owner->SetDragNode(this);
+	}
+
+	else if (ImGui::BeginDragDropTarget())
+	{
+		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(m_Owner->GetID().c_str());
+		if (payload)
+		{
+			m_Owner->SetDropNode(this);
+		}
+		ImGui::EndDragDropTarget();
+	}
+
+	else
+	{
+		if (KEY_RELEASED_EDITOR(KEY::LBTN) && ImGui::IsItemHovered(ImGuiHoveredFlags_None))
+		{
+			m_Owner->SetSelectedNode(this);
+		}
+	}
+	ImGui::Text(_id.c_str());
+	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
+	{
+		ImGui::SetDragDropPayload(m_Owner->GetID().c_str(), &m_Data, sizeof(DWORD_PTR));
+		ImGui::Text(m_Name.c_str());
+		ImGui::EndDragDropSource();
+
+		// Tree ì— ìì‹ ì´ Drag ëœ ë…¸ë“œì„ì„ ì•Œë¦°ë‹¤.
+		m_Owner->SetDragNode(this);
+	}
+
+	else if (ImGui::BeginDragDropTarget())
+	{
+		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(m_Owner->GetID().c_str());
+		if (payload)
+		{
+			m_Owner->SetDropNode(this);
+		}
+		ImGui::EndDragDropTarget();
+	}
+
+	else
+	{
+		if (KEY_RELEASED_EDITOR(KEY::LBTN) && ImGui::IsItemHovered(ImGuiHoveredFlags_None))
+		{
+			m_Owner->SetSelectedNode(this);
+		}
+	}
+}
+
+void TreeNode::render_update()
+{
+	string strID = m_Name + m_ID;
+
+	UINT Flag = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
+
+	if (m_bFrame)
+		Flag |= ImGuiTreeNodeFlags_Framed;
+	if (m_vecChildNode.empty())	
+		Flag |= ImGuiTreeNodeFlags_Leaf;		
+	if (m_bSelected)
+		Flag |= ImGuiTreeNodeFlags_Selected;
+
+	if (m_bFrame && m_vecChildNode.empty())
+		strID = "   " + strID;
+
+	if(!m_Owner->m_bImageTree){
+		GenericTreeRender(Flag, strID);
+	}
+	else {
+		strID = m_Name;
+		ImageListRender(Flag, strID);
+	}
+
+}
 
 UINT TreeUI::NodeID = 0;
-
-
 
 TreeUI::TreeUI(const string& _ID)
 	: UI("", _ID)
@@ -112,28 +181,38 @@ void TreeUI::render_update()
 {
 	if (nullptr == m_Root)
 		return;
-	
+
 	if (m_bShowRoot)
 	{
 		m_Root->render_update();
 	}
 	else
 	{
+		float winX = ImGui::GetWindowSize().x-40.f;
+		int colCnt = 0;
 		for (size_t i = 0; i < m_Root->m_vecChildNode.size(); ++i)
 		{
-			m_Root->m_vecChildNode[i]->render_update();
+			if (m_bImageTree) {
+				string id = "##imagetree" + std::to_string(i);
+				ImGui::BeginChild(id.c_str(), ImVec2(120, 120), true);
+				m_Root->m_vecChildNode[i]->render_update();
+				ImGui::EndChild();
+
+				if ((colCnt + 2) >= winX / 120) {
+					colCnt = 0;
+				}
+				else {
+					ImGui::SameLine();
+					colCnt++;
+				}
+			}
+			else {
+				m_Root->m_vecChildNode[i]->render_update();
+			}
 		}
 	}
 
-	
-
-
-
-
-
-
-
-	// Delegate È£Ãâ
+	// Delegate í˜¸ì¶œ
 	if (m_bSelectEvent)
 	{
 		if (m_SelectInst && m_SelectFunc)
@@ -143,7 +222,7 @@ void TreeUI::render_update()
 	}
 
 
-	// µå·¡±× ´ë»óÀ» Æ¯Á¤ ³ëµå°¡ ¾Æ´Ñ °øÁßµå¶ø ½ÃÅ² °æ¿ì
+	// ë“œë˜ê·¸ ëŒ€ìƒì„ íŠ¹ì • ë…¸ë“œê°€ ì•„ë‹Œ ê³µì¤‘ë“œë ì‹œí‚¨ ê²½ìš°
 	if (KEY_RELEASED_EDITOR(KEY::LBTN) && m_DragNode && !m_DropNode)
 	{
 		if (m_DragDropInst && m_DragDropFunc)
@@ -173,7 +252,7 @@ TreeNode* TreeUI::AddTreeNode(TreeNode* _Parent, string _strName, DWORD_PTR _dwD
 	pNewNode->m_Data = _dwData;
 	pNewNode->SetName(_strName);
 
-	// ³ëµå¸¶´Ù °ãÄ¡Áö¾Ê´Â ¼ıÀÚ¸¦ ## µÚ¿¡ ID ·Î ºÙÀÎ´Ù.
+	// ë…¸ë“œë§ˆë‹¤ ê²¹ì¹˜ì§€ì•ŠëŠ” ìˆ«ìë¥¼ ## ë’¤ì— ID ë¡œ ë¶™ì¸ë‹¤.
 	UINT id = NodeID++;
 
 	char buff[50] = {};

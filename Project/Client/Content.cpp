@@ -26,6 +26,7 @@ Content::Content()
 	m_ContentTree->ShowRootNode(false);
 	// 트리에 Delegate 를 등록한다.
 	m_ContentTree->AddSelectDelegate(this, (Delegate_1)&Content::SelectAsset);
+	m_ContentTree->SetImageTree(true);
 
 
 	ResetBrowser();

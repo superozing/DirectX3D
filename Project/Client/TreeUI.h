@@ -33,6 +33,9 @@ private:
         _Node->m_ParentNode = this;
     }
 
+    void GenericTreeRender(UINT _flag, const string& _id);
+    void ImageListRender(UINT _flag, const string& id);
+
 
 public:
     void render_update();
@@ -70,6 +73,8 @@ private:
     Delegate_2      m_DragDropFunc;
     bool            m_bDragDropEvent;
 
+    bool                m_bImageTree;
+
 public:
     virtual void render_update() override;
 
@@ -92,6 +97,8 @@ public:
             m_Root = nullptr;
         }         
     }
+
+    void SetImageTree(bool _setImage) { m_bImageTree = _setImage; }
 
 private:
     void SetSelectedNode(TreeNode* _SelectedNode);
