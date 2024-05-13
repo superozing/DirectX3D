@@ -72,12 +72,21 @@ void TreeNode::GenericTreeRender(UINT _flag, const string& _id)
 		}
 	}
 }
-
 void TreeNode::ImageListRender(UINT _flag, const string& _id)
 {
 	string treeId =  _id;
 
-	Ptr<CTexture> thumb = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Character.png");
+	// 임시 파일
+	Ptr<CTexture> thumb = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\imgui\\icon\\file.png");
+
+	auto pTex = dynamic_cast<CTexture*>((CAsset*)m_Data);
+	if (pTex) {
+		thumb = pTex;
+	}
+	else {
+
+	}
+
 
 	ImGui::Image(thumb->GetSRV().Get(), ImVec2(80, 80));
 	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
@@ -194,7 +203,7 @@ void TreeUI::render_update()
 		{
 			if (m_bImageTree) {
 				string id = "##imagetree" + std::to_string(i);
-				ImGui::BeginChild(id.c_str(), ImVec2(120, 120), true);
+				ImGui::BeginChild(id.c_str(), ImVec2(120, 120));
 				m_Root->m_vecChildNode[i]->render_update();
 				ImGui::EndChild();
 
