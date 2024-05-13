@@ -137,18 +137,7 @@ void CalLight3D(int _LightIdx, float3 _vViewPos, float3 _vViewNormal, inout tLig
         // 물체와 광원 사이의 각도가 광원에 설정된 fAngle과 가까울 수록 빛의 세기가 약해져야 함
         if (0.f != Light.fAngle)
         {
-            float fHalfAngle = Light.fAngle / 2.f * (PI / 2.f);
-            float fObjAngle = abs(dot(vLightDir, vViewLightDir)) * (PI / 2.f);
-            
-            //float fDirRatio = saturate(cos(fObjAngle / fHalfAngle));
-            //fDistanceRatio = fDirRatio;
-        }
-        //float fDirRatio = saturate(abs(cos(dot(vLightDir, vViewLightDir))));
-        
-        //fDistanceRatio = saturate(saturate(cos(fDistance / (Light.fRadius * 1.2f) * (PI / 2.f))));
-        
-        // 광원 반경과 물체까지의 거리에 따른 빛의 세기
-        //fDistanceRatio = saturate(cos(fDistance / Light.fRadius * (PI / 2.f))); // cos            
+        }        
     }
 
      // ViewSpace 에서 광원의 방향과, 물체 표면의 법선를 이용해서 광원의 진입 세기(Diffuse) 를 구한다.

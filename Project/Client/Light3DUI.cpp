@@ -74,7 +74,7 @@ void Light3DUI::render_update()
 		ImGui::DragFloat("##LightRadius", &fRadius, 0.1f, 0.f, 0.f, "%.1f");
 
 		ImGui::Text("LightDir   "); ImGui::SameLine(); ImGui::PushItemWidth(200.f);
-		ImGui::DragFloat3("##LightDir", vWorldDir, 0.1f, 0.f, 0.f, "%.1f");
+		ImGui::DragFloat3("##LightDir", vWorldDir, 0.01f, -1.f, 1.f, "%.2f");
 
 		ImGui::Text("Angle      "); ImGui::SameLine(); ImGui::PushItemWidth(200.f);
 		ImGui::SliderAngle("##LightAngle", &fAngle, 0.f, 179.f);
@@ -87,6 +87,6 @@ void Light3DUI::render_update()
 	GetTargetObject()->Light3D()->SetAmbient(vAmbient);
 	GetTargetObject()->Light3D()->SetRadius(fRadius);
 	GetTargetObject()->Light3D()->SetSpecular(vSpecular);
-	GetTargetObject()->Light3D()->SetDir(vWorldDir);
+	GetTargetObject()->Light3D()->SetLightDir(vWorldDir);
 	GetTargetObject()->Light3D()->SetAngle(fAngle);
 }
