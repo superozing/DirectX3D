@@ -267,6 +267,10 @@ void Content::SetTargetDirectory(const string & _path)
 	ResetContent();
 }
 
+#include "CLevelSaveLoad.h"
+#include <Engine\CLevel.h>
+#include <Engine\CLevelMgr.h>
+
 void Content::DirectoryUI()
 {
 	if (ImGui::Button("+Add"))
@@ -306,6 +310,40 @@ void Content::DirectoryUI()
 			pMtrl->Save(szPath);
 			GamePlayStatic::AddAsset(pMtrl);
 			SetTargetDirectory("material");
+		}
+
+		if (ImGui::MenuItem("Make New Level", ""))
+		{
+			wchar_t szSelect[256] = {};
+
+			OPENFILENAME ofn = {};
+
+			ofn.lStructSize = sizeof(ofn);
+			ofn.hwndOwner = nullptr;
+			ofn.lpstrFile = szSelect;
+			ofn.lpstrFile[0] = '\0';
+			ofn.nMaxFile = sizeof(szSelect);
+			ofn.lpstrFilter = L"ALL\0*.*\0Level\0*.lv";
+			ofn.lpstrDefExt = L"lv";
+			ofn.nFilterIndex = 1;
+			ofn.lpstrFileTitle = NULL;
+			ofn.nMaxFileTitle = 0;
+
+			// 탐색창 초기 위치 지정
+			wstring strInitPath = CPathMgr::GetContentPath();
+			strInitPath += L"level\\";
+			ofn.lpstrInitialDir = strInitPath.c_str();
+
+			ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+			if (GetSaveFileName(&ofn))
+			{
+				CLevel* pLevel = new CLevel;
+				pLevel->SetName(szSelect);
+				CLevelSaveLoad::SaveLevel(pLevel, CPathMgr::GetRelativePath(szSelect));
+				CLevelMgr::GetInst()->ChangeLevel(pLevel, LEVEL_STATE::STOP);
+			}
+			SetTargetDirectory("level");
 		}
 		ImGui::EndPopup();
 	}

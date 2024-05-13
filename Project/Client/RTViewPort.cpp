@@ -41,6 +41,7 @@ void RTViewPort::render_update()
 		if (payload)
 		{
 			DWORD_PTR data = *((DWORD_PTR*)payload->Data);
+			if (data == 0) return;
 			string& str = *(string*)data;
 			auto extension = path(str).extension().string();
 			if (extension == ".lv") {
