@@ -174,15 +174,15 @@ void CCamera::SortObject()
 		for (size_t j = 0; j < vecObjects.size(); ++j)
 		{
 			// 메쉬, 재질, 쉐이더 확인
-			if (!( vecObjects[j]->GetRenderComopnent()
-				&& vecObjects[j]->GetRenderComopnent()->GetMesh().Get()
-				&& vecObjects[j]->GetRenderComopnent()->GetMaterial().Get()
-				&& vecObjects[j]->GetRenderComopnent()->GetMaterial()->GetShader().Get()))
+			if (!( vecObjects[j]->GetRenderComponent()
+				&& vecObjects[j]->GetRenderComponent()->GetMesh().Get()
+				&& vecObjects[j]->GetRenderComponent()->GetMaterial().Get()
+				&& vecObjects[j]->GetRenderComponent()->GetMaterial()->GetShader().Get()))
 			{
 				continue;
 			}
 
-			SHADER_DOMAIN domain = vecObjects[j]->GetRenderComopnent()->GetMaterial()->GetShader()->GetDomain();
+			SHADER_DOMAIN domain = vecObjects[j]->GetRenderComponent()->GetMaterial()->GetShader()->GetDomain();
 
 			switch (domain)
 			{
@@ -303,11 +303,11 @@ void CCamera::SortShadowMapObject()
 			// 메쉬, 재질, 쉐이더 확인
 			if (!(vecObjects[j]->Transform()
 				&& vecObjects[j]->Transform()->IsDynamic()
-				&& vecObjects[j]->GetRenderComopnent()
-				&& vecObjects[j]->GetRenderComopnent()->IsDrawShadow()
-				&& vecObjects[j]->GetRenderComopnent()->GetMesh().Get()
-				&& vecObjects[j]->GetRenderComopnent()->GetMaterial().Get()
-				&& vecObjects[j]->GetRenderComopnent()->GetMaterial()->GetShader().Get()))
+				&& vecObjects[j]->GetRenderComponent()
+				&& vecObjects[j]->GetRenderComponent()->IsDrawShadow()
+				&& vecObjects[j]->GetRenderComponent()->GetMesh().Get()
+				&& vecObjects[j]->GetRenderComponent()->GetMaterial().Get()
+				&& vecObjects[j]->GetRenderComponent()->GetMaterial()->GetShader().Get()))
 			{
 				continue;
 			}
@@ -330,7 +330,7 @@ void CCamera::render_shadowmap()
 	{
 		m_vecShadow[i]->Transform()->UpdateData();
 		pShadowMapMtrl->UpdateData();
-		m_vecShadow[i]->GetRenderComopnent()->GetMesh()->render();
+		m_vecShadow[i]->GetRenderComponent()->GetMesh()->render();
 	}
 
 	m_vecShadow.clear();
