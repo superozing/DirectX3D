@@ -189,7 +189,14 @@ void Content::ResetContent()
 	namespace fs = std::filesystem;
 	for (const fs::directory_entry& entry : fs::directory_iterator(path)) {
 		if (!entry.is_directory()) {
-			auto node = m_ContentTree->AddTreeNode(RootNode, entry.path().filename().string(), 0);
+			auto filename = entry.path().filename().string();
+			auto type = CAssetMgr::GetInst()->GetAssetTypeByExt(filename);
+			Ptr<CAsset> pAsset;
+			if (type != ASSET_TYPE::END) {
+				pAsset  = CAssetMgr::GetInst()->GetAsset(type, m_strCurDirectory+ "\\" + filename);
+			}
+			
+			auto node = m_ContentTree->AddTreeNode(RootNode, filename, (DWORD_PTR)pAsset.Get());
 		}
 	}
 }
