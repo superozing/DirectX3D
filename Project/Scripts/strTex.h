@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #define TEXBackground L"texture\\Background.jpg"
 #define TEXCharacter L"texture\\Character.png"
