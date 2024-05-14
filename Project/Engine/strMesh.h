@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-
 #define MESHpoint L"PointMesh"
 #define MESHrect  L"RectMesh"
 #define MESHrectdebug L"RectMesh_Debug"

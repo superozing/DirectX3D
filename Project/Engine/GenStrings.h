@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "strLevel.h"
 #include "strFx.h"
 #include "strSnd.h"

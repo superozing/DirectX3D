@@ -177,10 +177,6 @@ call CodeGen.exe</Command>
     <ClInclude Include="CTimeMgrScript.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="strFnShader.h" />
-    <ClInclude Include="strEngineMtrl.h" />
-    <ClInclude Include="strMesh.h" />
-    <ClInclude Include="strShader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CBackgroundScript.cpp" />
