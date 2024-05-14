@@ -187,6 +187,48 @@
     <ClInclude Include="CDecal.h">
       <Filter>08. Component\RenderComponent\05. Decal</Filter>
     </ClInclude>
+    <ClInclude Include="GenStrings.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strAnim.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strFx.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strLevel.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strMtrl.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strPref.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strSnd.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strTex.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strTxt.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strEngineMtrl.h">
+      <Filter>01. Header\UserString</Filter>
+    </ClInclude>
+    <ClInclude Include="strFnShader.h">
+      <Filter>01. Header\UserString</Filter>
+    </ClInclude>
+    <ClInclude Include="strMesh.h">
+      <Filter>01. Header\UserString</Filter>
+    </ClInclude>
+    <ClInclude Include="strShader.h">
+      <Filter>01. Header\UserString</Filter>
+    </ClInclude>
+    <ClInclude Include="UserStrings.h">
+      <Filter>01. Header\UserString</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -550,6 +592,12 @@
     </Filter>
     <Filter Include="08. Component\RenderComponent\05. Decal">
       <UniqueIdentifier>{cf7b3261-0fc7-43a7-a8f2-ad0126700482}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Header\GenString">
+      <UniqueIdentifier>{30e22cac-c910-4ab5-877f-0026b4e9eae6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Header\UserString">
+      <UniqueIdentifier>{c1009191-600d-4cef-9dd2-821374428ad8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

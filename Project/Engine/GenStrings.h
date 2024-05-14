@@ -1,0 +1,9 @@
+#pragma once
+#include "strLevel.h"
+#include "strFx.h"
+#include "strSnd.h"
+#include "strTex.h"
+#include "strMtrl.h"
+#include "strPref.h"
+#include "strAnim.h"
+#include "strTxt.h"

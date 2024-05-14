@@ -1,4 +1,4 @@
-#include "pch.h"
+Ôªø#include "pch.h"
 #include "CTileMap.h"
 
 #include "CStructuredBuffer.h"
@@ -15,7 +15,7 @@ CTileMap::CTileMap()
 	, m_vTileRenderSize(Vec2(128.f, 128.f))	
 	, m_TileInfoBuffer(nullptr)
 {
-	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
 	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"TileMapMtrl"));
 
 	m_TileInfoBuffer = new CStructuredBuffer;
@@ -50,30 +50,30 @@ CTileMap::~CTileMap()
 
 void CTileMap::finaltick()
 {
-	// (≈∏¿œ ∞≥ºˆ * ≈∏¿œ ªÁ¿Ã¡Ó) ∑Œ ªÁ¿Ã¡Ó∏¶ ∫Ø∞Ê√≥∏Æ«—¥Ÿ.
+	// (ÌÉÄÏùº Í∞úÏàò * ÌÉÄÏùº ÏÇ¨Ïù¥Ï¶à) Î°ú ÏÇ¨Ïù¥Ï¶àÎ•º Î≥ÄÍ≤ΩÏ≤òÎ¶¨ÌïúÎã§.
 	Vec3 vTileMapSize = Vec3(m_FaceX * m_vTileRenderSize.x, m_FaceY * m_vTileRenderSize.y, 1.f);
 	Transform()->SetRelativeScale(vTileMapSize);
 }
 
 void CTileMap::render()
 {	
-	// ¿Á¡˙ø° æ∆∆≤∂ÛΩ∫ ≈ÿΩ∫√ƒ ¿¸¥ﬁ.
+	// Ïû¨ÏßàÏóê ÏïÑÌãÄÎùºÏä§ ÌÖçÏä§Ï≥ê Ï†ÑÎã¨.
 	GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_TileAtlas);
 	
-	// ≈∏¿œ¿« ∞°∑Œ ºº∑Œ ∞≥ºˆ
+	// ÌÉÄÏùºÏùò Í∞ÄÎ°ú ÏÑ∏Î°ú Í∞úÏàò
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, m_FaceX);
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_1, m_FaceY);
 		
-	// æ∆∆≤∂ÛΩ∫ ¿ÃπÃ¡ˆø°º≠ ≈∏¿œ 1∞≥¿« ¿⁄∏£¥¬ ªÁ¿Ã¡Ó(UV ±‚¡ÿ)
+	// ÏïÑÌãÄÎùºÏä§ Ïù¥ÎØ∏ÏßÄÏóêÏÑú ÌÉÄÏùº 1Í∞úÏùò ÏûêÎ•¥Îäî ÏÇ¨Ïù¥Ï¶à(UV Í∏∞Ï§Ä)
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC2_0, m_vSliceSizeUV);
 
-	// ∞¢ ≈∏¿œ ¡§∫∏∏¶ ±∏¡∂»≠ πˆ∆€∑Œ ¿Ãµø
+	// Í∞Å ÌÉÄÏùº Ï†ïÎ≥¥Î•º Íµ¨Ï°∞Ìôî Î≤ÑÌçºÎ°ú Ïù¥Îèô
 	m_TileInfoBuffer->SetData(m_vecTileInfo.data(), m_vecTileInfo.size());
 
-	// ≈∏¿œ ±∏¡∂»≠ πˆ∆€∏¶ t20 ø° πŸ¿Œµ˘
+	// ÌÉÄÏùº Íµ¨Ï°∞Ìôî Î≤ÑÌçºÎ•º t20 Ïóê Î∞îÏù∏Îî©
 	m_TileInfoBuffer->UpdateData(20);
 
-	// ¿Á¡˙ æ˜µ•¿Ã∆Æ
+	// Ïû¨Ïßà ÏóÖÎç∞Ïù¥Ìä∏
 	GetMaterial()->UpdateData();	
 
 	Transform()->UpdateData();
@@ -119,7 +119,7 @@ void CTileMap::SetTileIndex(UINT _Row, UINT _Col, UINT _ImgIdx)
 
 	UINT idx = _Row* m_FaceX + _Col;
 
-	// ∑ª¥ı∏µ«“ ≈∏¿œ ¡§∫∏
+	// Î†åÎçîÎßÅÌï† ÌÉÄÏùº Ï†ïÎ≥¥
 	UINT iRow = _ImgIdx / m_MaxCol;
 	UINT iCol = _ImgIdx % m_MaxCol;
 
@@ -131,7 +131,7 @@ void CTileMap::SetTileIndex(UINT _Row, UINT _Col, UINT _ImgIdx)
 
 void CTileMap::SaveToFile(FILE* _File)
 {
-	// TileMap ¡§∫∏ ¿˙¿Â
+	// TileMap Ï†ïÎ≥¥ Ï†ÄÏû•
 	fwrite(&m_FaceX, sizeof(UINT), 1, _File);
 	fwrite(&m_FaceY, sizeof(UINT), 1, _File);
 	fwrite(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
@@ -201,7 +201,7 @@ void CTileMap::SaveToFile(ofstream& fout)
 
 void CTileMap::LoadFromFile(FILE* _File)
 {
-	// TileMap ¡§∫∏ ¿˙¿Â
+	// TileMap Ï†ïÎ≥¥ Ï†ÄÏû•
 	fread(&m_FaceX, sizeof(UINT), 1, _File);
 	fread(&m_FaceY, sizeof(UINT), 1, _File);
 	fread(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
