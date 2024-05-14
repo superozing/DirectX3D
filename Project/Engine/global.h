@@ -88,4 +88,4 @@ typedef Vector4 Vec4;
 #include <Scripts/strFnShader.h>
 
 // String Table(Gen)
-#include <Scripts/strFx.h>
+#include "GenStrings.h"
