@@ -41,6 +41,8 @@ public:
 	bool IsActivate() { return m_bActive; }
 	void SetModal(bool _Modal) { m_bModal = _Modal; }
 
+	void HeaderSetting(UI* _SelectedHeader);
+	void DeleteComponent();
 
 public:
 	virtual void tick();
