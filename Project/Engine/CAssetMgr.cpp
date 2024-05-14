@@ -101,3 +101,77 @@ void CAssetMgr::GetAssetName(ASSET_TYPE _Type, vector<string>& _Out)
 		_Out.push_back(ToString(pair.first));
 	}
 }
+
+ASSET_TYPE CAssetMgr::GetAssetTypeByExt(const path& _relativePath)
+{
+	if (_relativePath.extension() == L".mesh")
+		return ASSET_TYPE::MESH;
+	if (_relativePath.extension() == L".mtrl")
+		return ASSET_TYPE::MATERIAL;
+	if (_relativePath.extension() == L".mdat")
+		return ASSET_TYPE::MESHDATA;
+	if (_relativePath.extension() == L".pref")
+		return ASSET_TYPE::PREFAB;
+
+	if (_relativePath.extension() == L".png"
+		|| _relativePath.extension() == L".bmp"
+		|| _relativePath.extension() == L".jpg"
+		|| _relativePath.extension() == L".jpeg"
+		|| _relativePath.extension() == L".dds"
+		|| _relativePath.extension() == L".tga")
+		return ASSET_TYPE::TEXTURE;
+
+	if (_relativePath.extension() == L".wav"
+		|| _relativePath.extension() == L".mp3"
+		|| _relativePath.extension() == L".ogg")
+		return ASSET_TYPE::SOUND;
+
+	if (_relativePath.extension() == L".mesh")
+		return ASSET_TYPE::MESH;
+	if (_relativePath.extension() == L".mesh")
+		return ASSET_TYPE::MESH;
+
+	return ASSET_TYPE::END;
+}
+
+Ptr<CAsset> CAssetMgr::GetAsset(ASSET_TYPE _type, string _key)
+{
+	Ptr<CAsset> pAsset;
+
+	switch (_type)
+	{
+	case ASSET_TYPE::MESH:
+		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CMesh>(_key).Get();
+		break;
+	case ASSET_TYPE::MESHDATA:
+		//pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CMeshData>(key).Get();
+		break;
+	case ASSET_TYPE::PREFAB:
+		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CPrefab>(_key).Get();
+		break;
+	case ASSET_TYPE::TEXTURE:
+		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CTexture>(_key).Get();
+		break;
+	case ASSET_TYPE::MATERIAL:
+		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CMaterial>(_key).Get();
+		break;
+	case ASSET_TYPE::SOUND:
+		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CSound>(_key).Get();
+		break;
+		// 이건 제외해야 함
+	//case ASSET_TYPE::COMPUTE_SHADER:
+	//	pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CComputeShader>(key).Get();
+	//	break;
+	case ASSET_TYPE::GRAPHICS_SHADER:
+		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CGraphicsShader>(_key).Get();
+		break;
+	case ASSET_TYPE::FSM:
+		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CFSM>(_key).Get();
+		break;
+	case ASSET_TYPE::END:
+		break;
+	default:
+		break;
+	}
+	return pAsset;
+}

@@ -3,7 +3,7 @@ unity*.cpp
 
 External/Include/Engine
 External/Include/Scripts
-OutputFile/content/level/*.lv
+OutputFile/content/level/temp.lv
 OutputFile/content/shader/*.fx
 
 *.cso

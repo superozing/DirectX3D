@@ -67,6 +67,16 @@ public:
 
     // 지정된 타입의 모든 에셋의 이름을 받아온다
     void GetAssetName(ASSET_TYPE _Type, vector<string>& _Out);
+
+    /// <summary>
+    /// 확장자로 애셋 타입을 가져옵니다. 등록되지 않은 확장자는 ASSET_TYPE::END를 리턴합니다
+    /// </summary>
+    ASSET_TYPE GetAssetTypeByExt(const path& _relativePath);
+
+    /// <summary>
+    /// 애셋 타입과 키로 애셋을 가져옵니다.
+    /// </summary>
+    Ptr<CAsset> GetAsset(ASSET_TYPE _type, string _key);
  
 private:
     // 지정된 에셋을 삭제한다.

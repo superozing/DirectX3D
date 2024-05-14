@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "UI.h"
 
 
@@ -23,6 +23,7 @@ public:
 
     const string& GetName() { return m_Name; }
     DWORD_PTR GetData() { return m_Data; }
+    TreeNode* GetParent() { return m_ParentNode; }
 
 private:
     void SetID(const string& _ID) { m_ID = _ID; }
@@ -31,6 +32,9 @@ private:
         m_vecChildNode.push_back(_Node); 
         _Node->m_ParentNode = this;
     }
+
+    void GenericTreeRender(UINT _flag, const string& _id);
+    void ImageListRender(UINT _flag, const string& id);
 
 
 public:
@@ -69,6 +73,8 @@ private:
     Delegate_2      m_DragDropFunc;
     bool            m_bDragDropEvent;
 
+    bool                m_bImageTree;
+
 public:
     virtual void render_update() override;
 
@@ -91,6 +97,8 @@ public:
             m_Root = nullptr;
         }         
     }
+
+    void SetImageTree(bool _setImage) { m_bImageTree = _setImage; }
 
 private:
     void SetSelectedNode(TreeNode* _SelectedNode);
