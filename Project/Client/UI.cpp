@@ -80,7 +80,13 @@ bool UI::TitleCollapse(const char* _content)
 		ImGui::SameLine(ImGui::GetWindowWidth() - ImGui::GetStyle().ItemSpacing.x - Btnsize.x);
 		if (ImGui::ImageButton(BtnTexID, Btnsize))
 		{
+			ImGui::OpenPopup("HeaderSetting");
+		}
 
+		if (ImGui::BeginPopup("HeaderSetting"))
+		{
+			HeaderSetting(this);
+			ImGui::EndPopup();
 		}
 
 		ImGui::PopStyleColor(3);
