@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CSkyBox.h"
 
 #include "CAssetMgr.h"
@@ -17,6 +17,7 @@ CSkyBox::CSkyBox()
 {
 	SetSkyBoxType(m_SkyBoxType);
 	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SkyBoxMtrl"));
+	DrawShadow(false);
 }
 
 CSkyBox::~CSkyBox()

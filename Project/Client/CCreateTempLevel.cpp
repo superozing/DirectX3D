@@ -114,7 +114,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->AddComponent(new CTransform);
 	pObj->AddComponent(new CLight3D);
 
-	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
+	pObj->Transform()->SetRelativePos(Vec3(-1000.f, 2000.f, -1000.f));
 	pObj->Transform()->SetDir(Vec3(1.f, -1.f, 1.f));
 
 	pObj->Light3D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);

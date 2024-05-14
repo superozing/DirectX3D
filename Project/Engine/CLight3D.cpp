@@ -69,6 +69,12 @@ void CLight3D::render()
 {
 	m_LightMtrl->SetScalarParam(SCALAR_PARAM::INT_0, m_LightIdx);
 
+	if (LIGHT_TYPE::DIRECTIONAL == (LIGHT_TYPE)m_Info.LightType)
+	{
+		Matrix matLightVP = m_CamObj->Camera()->GetViewMat() * m_CamObj->Camera()->GetProjMat();
+		m_LightMtrl->SetScalarParam(SCALAR_PARAM::MAT_1, matLightVP);
+	}
+
 	if (LIGHT_TYPE::DIRECTIONAL != (LIGHT_TYPE)m_Info.LightType)
 	{
 		Matrix matVWInv = g_Transform.matViewInv * Transform()->GetWorldInvMat();
@@ -87,13 +93,13 @@ void CLight3D::render_shadowdepth()
 
 	// 광원의 위치값을 CameraObject 에 갱신시킨다.
 	m_CamObj->Transform()->SetRelativePos(Transform()->GetWorldPos());
-	//m_CamObj->Transform()->SetRelativeRotation(Transform()->GetWorldRot());
 	m_CamObj->Transform()->SetDir(Transform()->GetWorldDir(DIR_TYPE::FRONT));
 
 	m_CamObj->Transform()->finaltick();
 	m_CamObj->Camera()->finaltick();
 
 	m_CamObj->Camera()->SortShadowMapObject();
+	m_CamObj->Camera()->render_shadowmap();
 }
 
 void CLight3D::SetLightType(LIGHT_TYPE _type)

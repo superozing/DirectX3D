@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "CComponent.h"
 
 #include "CMesh.h"
@@ -14,14 +14,18 @@ private:
     Ptr<CMaterial>  m_DynamicMtrl;
     Ptr<CMaterial>  m_CurMtrl;
 
+    bool m_DrawShadowMap;
+
 public:
     void SetMesh(Ptr<CMesh> _Mesh) { m_Mesh = _Mesh; }
     void SetMaterial(Ptr<CMaterial> _Mtrl);
+    void DrawShadow(bool _bShadow) { m_DrawShadowMap = _bShadow; }
 
     Ptr<CMesh> GetMesh() { return m_Mesh; }
     Ptr<CMaterial> GetMaterial() { return m_CurMtrl; }
     Ptr<CMaterial> GetSharedMaterial() { return m_SharedMtrl; }
     Ptr<CMaterial> GetDynamicMaterial();
+    bool IsDrawShadow() { return m_DrawShadowMap; }
 
     void RestoreMaterial();
 
