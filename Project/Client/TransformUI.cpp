@@ -18,6 +18,8 @@ void TransformUI::render_update()
 {
 	ComponentUI::render_update();
 
+	if (!TitleCollapse("Transform")) return;
+
 	Vec3 vPos = GetTargetObject()->Transform()->GetRelativePos();
 	Vec3 vScale = GetTargetObject()->Transform()->GetRelativeScale();
 	Vec3 vRot = GetTargetObject()->Transform()->GetRelativeRotation();

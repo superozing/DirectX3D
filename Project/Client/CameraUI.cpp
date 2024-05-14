@@ -28,8 +28,9 @@ CameraUI::~CameraUI()
 
 void CameraUI::render_update()
 {
-
     ComponentUI::render_update();
+
+    if (!TitleCollapse("Camera")) return;
 
     CGameObject* pTarget = GetTargetObject();
 

@@ -23,6 +23,8 @@ void MeshRenderUI::render_update()
 {
 	ComponentUI::render_update();
 
+	if (!TitleCollapse("MeshRender")) return;
+
 	CGameObject* pTarget = GetTargetObject();
 	CMeshRender* pMeshRender = pTarget->MeshRender();
 
