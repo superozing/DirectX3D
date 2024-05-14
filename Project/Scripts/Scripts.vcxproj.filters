@@ -10,30 +10,6 @@
     <ClInclude Include="CScriptMgr.h">
       <Filter>ScriptMgr</Filter>
     </ClInclude>
-    <ClInclude Include="strAnim.h">
-      <Filter>Default\GenString</Filter>
-    </ClInclude>
-    <ClInclude Include="strFx.h">
-      <Filter>Default\GenString</Filter>
-    </ClInclude>
-    <ClInclude Include="strLevel.h">
-      <Filter>Default\GenString</Filter>
-    </ClInclude>
-    <ClInclude Include="strMtrl.h">
-      <Filter>Default\GenString</Filter>
-    </ClInclude>
-    <ClInclude Include="strPref.h">
-      <Filter>Default\GenString</Filter>
-    </ClInclude>
-    <ClInclude Include="strSnd.h">
-      <Filter>Default\GenString</Filter>
-    </ClInclude>
-    <ClInclude Include="strTex.h">
-      <Filter>Default\GenString</Filter>
-    </ClInclude>
-    <ClInclude Include="strTxt.h">
-      <Filter>Default\GenString</Filter>
-    </ClInclude>
     <ClInclude Include="CBackgroundScript.h">
       <Filter>Scripts\Lecture</Filter>
     </ClInclude>
@@ -57,9 +33,6 @@
     </ClInclude>
     <ClInclude Include="CCameraEffect.h">
       <Filter>Scripts\Manager\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="global.h">
-      <Filter>Default</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -106,9 +79,6 @@
     </Filter>
     <Filter Include="ScriptMgr">
       <UniqueIdentifier>{b42de7fc-e585-40cf-9c65-79e91e2b59d4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Default\GenString">
-      <UniqueIdentifier>{46c15b8a-1132-401e-a7fa-a09bd70b5dff}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Lecture">
       <UniqueIdentifier>{4d80f442-9779-4484-a06b-9160bbb02db5}</UniqueIdentifier>

@@ -30,11 +30,11 @@ void CSkyBox::SetSkyBoxType(SKYBOX_TYPE _Type)
 
 	if (SKYBOX_TYPE::SPHERE == m_SkyBoxType)
 	{
-		SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
+		SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHsphere));
 	}
 	else if (SKYBOX_TYPE::CUBE == m_SkyBoxType)
 	{
-		SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CubeMesh"));
+		SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHcube));
 	}
 }
 
