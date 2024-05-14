@@ -44,72 +44,19 @@ void Inspector::render_update()
 
 	if (nullptr != m_TargetObject)
 	{
-		// 오브젝트 이름
-		char ObjName[255] = {};
-		string strName = string(m_TargetObject->GetName().begin(), m_TargetObject->GetName().end());
-		string prevName = strName;
+		ObjectName();
+		ObjectLayer();
 
-		for (size_t i = 0; i < strName.length(); ++i)
+		if (ImGui::Button("Add Component"))
 		{
-			ObjName[i] = strName[i];
+			ImGui::OpenPopup("ComponentList");
 		}
 
-		ImGui::SameLine();
-		ImGui::InputText("##ObjName", ObjName, 255);
-
-		if (prevName != string(ObjName))
+		if (ImGui::BeginPopup("ComponentList"))
 		{
-			if (KEY_TAP_EDITOR(ENTER))
-			{
-				m_TargetObject->SetName(ToWString(string(ObjName)));
-				prevName = ObjName;
+			ObjectComponent();
 
-				Outliner* pOutliner = (Outliner*)CImGuiMgr::GetInst()->FindUI("##Outliner");
-				pOutliner->ResetCurrentLevel();
-			}
-			else if (KEY_TAP_EDITOR(ESC))
-			{
-				m_TargetObject->SetName(ToWString(string(strName)));
-			}
-		}
-
-		// 오브젝트 레이어
-		int LayerIdx = m_TargetObject->GetLayerIdx();
-		int PrevIdx = LayerIdx;
-
-		if (-1 != LayerIdx)
-		{
-			ImGui::Text("Layer"); ImGui::SameLine();
-			auto Layer_Names = magic_enum::enum_names<LAYER>();
-			string strLayer = string(Layer_Names[LayerIdx]);
-
-			if (ImGui::BeginCombo("##ObjLayer", strLayer.c_str()))
-			{
-				for (int i = 0; i < (int)Layer_Names.size(); ++i)
-				{
-					int CurLayer = i;
-
-					bool isSelected = (CurLayer == LayerIdx);
-
-					if (ImGui::Selectable(string(Layer_Names[CurLayer]).c_str(), isSelected))
-					{
-						LayerIdx = CurLayer;
-					}
-
-					if (isSelected)
-					{
-						ImGui::SetItemDefaultFocus();
-					}
-				}
-
-				ImGui::EndCombo();
-
-				if (PrevIdx != LayerIdx)
-				{
-					CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-					pCurLevel->AddObject(m_TargetObject, LayerIdx);
-				}
-			}
+			ImGui::EndPopup();
 		}
 	}
 }
@@ -154,4 +101,130 @@ void Inspector::SetTargetAsset(Ptr<CAsset> _Asset)
 		m_arrAssetUI[(UINT)m_TargetAsset->GetType()]->Activate();
 		m_arrAssetUI[(UINT)m_TargetAsset->GetType()]->SetAsset(_Asset);
 	}	
+}
+
+
+void Inspector::ObjectName()
+{
+	// 오브젝트 이름
+	char ObjName[255] = {};
+	string strName = string(m_TargetObject->GetName().begin(), m_TargetObject->GetName().end());
+	string prevName = strName;
+
+	for (size_t i = 0; i < strName.length(); ++i)
+	{
+		ObjName[i] = strName[i];
+	}
+
+	ImGui::SameLine();
+	ImGui::InputText("##ObjName", ObjName, 255);
+
+	if (prevName != string(ObjName))
+	{
+		if (KEY_TAP_EDITOR(ENTER))
+		{
+			m_TargetObject->SetName(ToWString(string(ObjName)));
+			prevName = ObjName;
+
+			Outliner* pOutliner = (Outliner*)CImGuiMgr::GetInst()->FindUI("##Outliner");
+			pOutliner->ResetCurrentLevel();
+		}
+		else if (KEY_TAP_EDITOR(ESC))
+		{
+			m_TargetObject->SetName(ToWString(string(strName)));
+		}
+	}
+}
+
+void Inspector::ObjectLayer()
+{
+	// 오브젝트 레이어
+	int LayerIdx = m_TargetObject->GetLayerIdx();
+	int PrevIdx = LayerIdx;
+
+	if (-1 != LayerIdx)
+	{
+		ImGui::Text("Layer"); ImGui::SameLine();
+		auto Layer_Names = magic_enum::enum_names<LAYER>();
+		string strLayer = string(Layer_Names[LayerIdx]);
+
+		if (ImGui::BeginCombo("##ObjLayer", strLayer.c_str()))
+		{
+			for (int i = 0; i < (int)Layer_Names.size(); ++i)
+			{
+				int CurLayer = i;
+
+				bool isSelected = (CurLayer == LayerIdx);
+
+				if (ImGui::Selectable(string(Layer_Names[CurLayer]).c_str(), isSelected))
+				{
+					LayerIdx = CurLayer;
+				}
+
+				if (isSelected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+
+			ImGui::EndCombo();
+
+			if (PrevIdx != LayerIdx)
+			{
+				CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+				pCurLevel->AddObject(m_TargetObject, LayerIdx);
+			}
+		}
+	}
+}
+
+void Inspector::ObjectComponent()
+{
+	auto ComponentList = magic_enum::enum_names<COMPONENT_TYPE>();
+
+	for (size_t i = 0; i < ComponentList.size(); ++i)
+	{
+		if (ImGui::MenuItem(string(ComponentList[i]).c_str()))
+		{
+			switch ((COMPONENT_TYPE)i)
+			{
+			case COMPONENT_TYPE::TRANSFORM:
+				break;
+			case COMPONENT_TYPE::COLLIDER2D:
+				break;
+			case COMPONENT_TYPE::COLLIDER3D:
+				break;
+			case COMPONENT_TYPE::ANIMATOR2D:
+				break;
+			case COMPONENT_TYPE::ANIMATOR3D:
+				break;
+			case COMPONENT_TYPE::LIGHT2D:
+				break;
+			case COMPONENT_TYPE::LIGHT3D:
+				break;
+			case COMPONENT_TYPE::CAMERA:
+				break;
+			case COMPONENT_TYPE::STATEMACHINE:
+				break;
+			case COMPONENT_TYPE::MESHRENDER:
+				break;
+			case COMPONENT_TYPE::TILEMAP:
+				break;
+			case COMPONENT_TYPE::PARTICLESYSTEM:
+				break;
+			case COMPONENT_TYPE::SKYBOX:
+				break;
+			case COMPONENT_TYPE::DECAL:
+				break;
+			case COMPONENT_TYPE::LANDSCAPE:
+				break;
+			case COMPONENT_TYPE::END:
+				break;
+			case COMPONENT_TYPE::SCRIPT:
+				break;
+			default:
+				break;
+			}
+		}
+	}
 }
