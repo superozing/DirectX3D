@@ -44,6 +44,8 @@ public:
     void ObjectLayer();
     void ObjectComponent();
 
+    void CheckComponent(COMPONENT_TYPE _type);
+
 private:
     void CreateChildUI();
     void CreateComponentUI();
