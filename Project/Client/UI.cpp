@@ -47,11 +47,53 @@ bool UI::TitleCollapse(const char* _content)
 	ImGui::PushStyleColor(ImGuiCol_HeaderHovered, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
 	ImGui::PushStyleColor(ImGuiCol_HeaderActive, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
 
-	if (ImGui::CollapsingHeader(_content)) {
+	Ptr<CTexture> BtnTex = CAssetMgr::GetInst()->Load<CTexture>(TEXIconSetting);
+	ImTextureID BtnTexID = (ImTextureID)(BtnTex->GetSRV().Get());
+
+	float FrameHeight = ImGui::GetFrameHeight();
+	float padding = ImGui::GetFrameHeightWithSpacing() - ImGui::GetFrameHeight();
+	ImVec2 Btnsize = ImVec2(FrameHeight - padding, FrameHeight - padding);
+
+	if (ImGui::CollapsingHeader(_content, ImGuiTreeNodeFlags_AllowItemOverlap)) {
+
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f, 0.f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f, 0.f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f, 0.f));
+
+		ImGui::SameLine(ImGui::GetWindowWidth() - ImGui::GetStyle().ItemSpacing.x - Btnsize.x);
+		if (ImGui::ImageButton(BtnTexID, Btnsize))
+		{
+			ImGui::OpenPopup("HeaderSetting");
+		}
+		
+		if (ImGui::BeginPopup("HeaderSetting"))
+		{
+			HeaderSetting(this);
+			ImGui::EndPopup();
+		}
+
+		ImGui::PopStyleColor(3);
 		ImGui::PopStyleColor(3);
 		return true;
 	}
 	else {
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f, 0.f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f, 0.f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f, 0.f));
+
+		ImGui::SameLine(ImGui::GetWindowWidth() - ImGui::GetStyle().ItemSpacing.x - Btnsize.x);
+		if (ImGui::ImageButton(BtnTexID, Btnsize))
+		{
+			ImGui::OpenPopup("HeaderSetting");
+		}
+
+		if (ImGui::BeginPopup("HeaderSetting"))
+		{
+			HeaderSetting(this);
+			ImGui::EndPopup();
+		}
+
+		ImGui::PopStyleColor(3);
 		ImGui::PopStyleColor(3);
 		return false;
 	}
@@ -179,4 +221,18 @@ bool UI::ColorSelector(const char* _label, Vec4* _col)
 	{
 		return true;
 	}
+}
+
+
+void UI::HeaderSetting(UI* _SelectedHeader)
+{
+	if (ImGui::MenuItem("Delete Component", ""))
+	{
+		DeleteComponent();
+	}
+}
+
+void UI::DeleteComponent()
+{
+
 }
