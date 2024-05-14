@@ -4,7 +4,7 @@
 #include <Engine\CLevelMgr.h>
 #include <Engine\CLevel.h>
 #include <Engine\CLayer.h>
-#include <Engine/CTransform.h>
+#include <Engine/components.h>
 
 #include "CImGuiMgr.h"
 #include "Outliner.h"
@@ -181,46 +181,139 @@ void Inspector::ObjectLayer()
 void Inspector::ObjectComponent()
 {
 	auto ComponentList = magic_enum::enum_names<COMPONENT_TYPE>();
-
-	for (size_t i = 0; i < ComponentList.size(); ++i)
+	
+	for (size_t i = 0; i < ComponentList.size() - 2; ++i)
 	{
 		if (ImGui::MenuItem(string(ComponentList[i]).c_str()))
 		{
 			switch ((COMPONENT_TYPE)i)
 			{
 			case COMPONENT_TYPE::TRANSFORM:
+				if (nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE)i))
+				{
+					MessageBoxA(nullptr, "Already contains the same component", "Can't add the same component multiple times!", MB_OK);
+					return;
+				}
+				m_TargetObject->AddComponent(new CTransform);
+				SetTargetObject(GetTargetObject());
 				break;
 			case COMPONENT_TYPE::COLLIDER2D:
+				if (nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE)i))
+				{
+					MessageBoxA(nullptr, "Already contains the same component", "Can't add the same component multiple times!", MB_OK);
+					return;
+				}
+				m_TargetObject->AddComponent(new CCollider2D);
+				SetTargetObject(GetTargetObject());
 				break;
 			case COMPONENT_TYPE::COLLIDER3D:
+				if (nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE)i))
+				{
+					MessageBoxA(nullptr, "Already contains the same component", "Can't add the same component multiple times!", MB_OK);
+					return;
+				}
 				break;
 			case COMPONENT_TYPE::ANIMATOR2D:
+				if (nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE)i))
+				{
+					MessageBoxA(nullptr, "Already contains the same component", "Can't add the same component multiple times!", MB_OK);
+					return;
+				}
+				m_TargetObject->AddComponent(new CAnimator2D);
+				SetTargetObject(GetTargetObject());
 				break;
 			case COMPONENT_TYPE::ANIMATOR3D:
+				if (nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE)i))
+				{
+					MessageBoxA(nullptr, "Already contains the same component", "Can't add the same component multiple times!", MB_OK);
+					return;
+				}
 				break;
 			case COMPONENT_TYPE::LIGHT2D:
+				if (nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE)i))
+				{
+					MessageBoxA(nullptr, "Already contains the same component", "Can't add the same component multiple times!", MB_OK);
+					return;
+				}
+				m_TargetObject->AddComponent(new CLight2D);
+				SetTargetObject(GetTargetObject());
 				break;
 			case COMPONENT_TYPE::LIGHT3D:
+				if (nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE)i))
+				{
+					MessageBoxA(nullptr, "Already contains the same component", "Can't add the same component multiple times!", MB_OK);
+					return;
+				}
+				m_TargetObject->AddComponent(new CLight3D);
+				SetTargetObject(GetTargetObject());
 				break;
 			case COMPONENT_TYPE::CAMERA:
+				if (nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE)i))
+				{
+					MessageBoxA(nullptr, "Already contains the same component", "Can't add the same component multiple times!", MB_OK);
+					return;
+				}
+				m_TargetObject->AddComponent(new CCamera);
+				SetTargetObject(GetTargetObject());
 				break;
 			case COMPONENT_TYPE::STATEMACHINE:
+				if (nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE)i))
+				{
+					MessageBoxA(nullptr, "Already contains the same component", "Can't add the same component multiple times!", MB_OK);
+					return;
+				}
 				break;
 			case COMPONENT_TYPE::MESHRENDER:
+				if (nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE)i))
+				{
+					MessageBoxA(nullptr, "Already contains the same component", "Can't add the same component multiple times!", MB_OK);
+					return;
+				}
+				m_TargetObject->AddComponent(new CMeshRender);
+				SetTargetObject(GetTargetObject());
 				break;
 			case COMPONENT_TYPE::TILEMAP:
+				if (nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE)i))
+				{
+					MessageBoxA(nullptr, "Already contains the same component", "Can't add the same component multiple times!", MB_OK);
+					return;
+				}
+				m_TargetObject->AddComponent(new CTileMap);
+				SetTargetObject(GetTargetObject());
 				break;
 			case COMPONENT_TYPE::PARTICLESYSTEM:
+				if (nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE)i))
+				{
+					MessageBoxA(nullptr, "Already contains the same component", "Can't add the same component multiple times!", MB_OK);
+					return;
+				}
+				m_TargetObject->AddComponent(new CParticleSystem);
+				SetTargetObject(GetTargetObject());
 				break;
 			case COMPONENT_TYPE::SKYBOX:
+				if (nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE)i))
+				{
+					MessageBoxA(nullptr, "Already contains the same component", "Can't add the same component multiple times!", MB_OK);
+					return;
+				}
+				m_TargetObject->AddComponent(new CSkyBox);
+				SetTargetObject(GetTargetObject());
 				break;
 			case COMPONENT_TYPE::DECAL:
+				if (nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE)i))
+				{
+					MessageBoxA(nullptr, "Already contains the same component", "Can't add the same component multiple times!", MB_OK);
+					return;
+				}
+				m_TargetObject->AddComponent(new CDecal);
+				SetTargetObject(GetTargetObject());
 				break;
 			case COMPONENT_TYPE::LANDSCAPE:
-				break;
-			case COMPONENT_TYPE::END:
-				break;
-			case COMPONENT_TYPE::SCRIPT:
+				if (nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE)i))
+				{
+					MessageBoxA(nullptr, "Already contains the same component", "Can't add the same component multiple times!", MB_OK);
+					return;
+				}
 				break;
 			default:
 				break;
