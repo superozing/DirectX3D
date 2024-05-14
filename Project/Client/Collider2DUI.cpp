@@ -17,6 +17,8 @@ void Collider2DUI::render_update()
 {
 	ComponentUI::render_update();
 
+	if (!TitleCollapse("Collider2D")) return;
+
 	Vec2 vPos = GetTargetObject()->Collider2D()->GetOffsetPos();
 	Vec2 vScale = GetTargetObject()->Collider2D()->GetOffsetScale();
 	static int ColType = int(GetTargetObject()->Collider2D()->GetType());

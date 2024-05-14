@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "ComponentUI.h"
 
 ComponentUI::ComponentUI(const string& _strName, const string& _ID, COMPONENT_TYPE _Type)
@@ -21,8 +21,6 @@ void ComponentUI::render_update()
 	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
 	ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
 
-	ImGui::Button(m_ComponentTitle.c_str());
-
 	ImGui::PopStyleColor(3);
 	ImGui::PopID();
 }
@@ -31,8 +29,8 @@ void ComponentUI::SetTargetObject(CGameObject* _Target)
 {
 	m_TargetObject = _Target;
 
-	// Å¸°Ù ¿ÀºêÁ§Æ®°¡ ¾ø°Å³ª, Å¸°Ù ¿ÀºêÁ§Æ®°¡ ÄÄÆ÷³ÍÆ®UI ´ã´ç ÄÄÆ÷³ÍÆ®¸¦ º¸À¯ÇÏ°í ÀÖÁö ¾Ê´Ù¸ç
-	// ÄÄÆ÷³ÍÆ®UI ¸¦ ºñÈ°¼ºÈ­ ÇÑ´Ù.
+	// íƒ€ê²Ÿ ì˜¤ë¸Œì íŠ¸ê°€ ì—†ê±°ë‚˜, íƒ€ê²Ÿ ì˜¤ë¸Œì íŠ¸ê°€ ì»´í¬ë„ŒíŠ¸UI ë‹´ë‹¹ ì»´í¬ë„ŒíŠ¸ë¥¼ ë³´ìœ í•˜ê³  ìˆì§€ ì•Šë‹¤ë©°
+	// ì»´í¬ë„ŒíŠ¸UI ë¥¼ ë¹„í™œì„±í™” í•œë‹¤.
 	if (nullptr == m_TargetObject)
 	{
 		Deactivate();
