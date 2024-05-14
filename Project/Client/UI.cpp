@@ -18,17 +18,17 @@ UI::~UI()
 	Delete_Vec(m_vecChildUI);
 }
 
-void UI::StaticButton(STATIC_BTN_TYPE _type, const wstring& _content)
+void UI::StaticButton(const wstring& _content, STATIC_BTN_TYPE _type)
 {
-	StaticButton(_type, ToString(_content).c_str());
+	StaticButton(ToString(_content).c_str(), _type);
 }
 
-void UI::StaticButton(STATIC_BTN_TYPE _type, const string& _content)
+void UI::StaticButton(const string& _content, STATIC_BTN_TYPE _type)
 {
-	StaticButton(_type, _content.c_str());
+	StaticButton(_content.c_str(), _type);
 }
 
-void UI::StaticButton(STATIC_BTN_TYPE _type, const char* _content)
+void UI::StaticButton(const char* _content, STATIC_BTN_TYPE _type)
 {
 	auto& tColor = CImGuiMgr::GetInst()->GetStaticButtonColor(_type);
 

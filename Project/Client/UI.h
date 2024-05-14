@@ -16,10 +16,10 @@ private:
 	vector<UI*>		m_vecChildUI;
 
 protected:
-	void StaticButton(STATIC_BTN_TYPE _type, const wstring& _content);
-	void StaticButton(STATIC_BTN_TYPE _type, const string& _content);
-
-	void StaticButton(STATIC_BTN_TYPE _type, const char* _content);
+	void StaticButton(const wstring& _content, STATIC_BTN_TYPE _type = STATIC_BTN_TYPE::TITLE);
+	void StaticButton(const string& _content, STATIC_BTN_TYPE _type = STATIC_BTN_TYPE::TITLE);
+											  
+	void StaticButton(const char* _content, STATIC_BTN_TYPE _type = STATIC_BTN_TYPE::TITLE);
 
 	bool TitleCollapse(const char* _content);
 

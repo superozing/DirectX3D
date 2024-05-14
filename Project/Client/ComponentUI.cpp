@@ -18,7 +18,7 @@ void ComponentUI::render_update()
 
 	ImGui::PushID(0);
 
-	StaticButton(STATIC_BTN_TYPE::TITLE, m_ComponentTitle);
+	StaticButton(m_ComponentTitle);
 
 	ImGui::PopID();
 }
