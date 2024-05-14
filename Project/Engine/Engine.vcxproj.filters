@@ -657,5 +657,8 @@
     <FxCompile Include="shadowmap.fx">
       <Filter>ShaderCode\02. Render\3DShader</Filter>
     </FxCompile>
+    <FxCompile Include="tess.fx">
+      <Filter>ShaderCode\02. Render\3DShader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

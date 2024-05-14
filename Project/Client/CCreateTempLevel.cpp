@@ -37,26 +37,6 @@
 
 void CCreateTempLevel::Init()
 {
-	// Missile Prefab 생성
-	/*CGameObject* pObj = nullptr;
-
-	pObj = new CGameObject;
-	pObj->SetName(L"Missile");
-	pObj->AddComponent(new CTransform);
-	pObj->AddComponent(new CMeshRender);
-	pObj->AddComponent(new CMissileScript);
-
-	pObj->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 1.f));
-
-	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
-	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
-
-	Ptr<CPrefab> pMissilePrefab = new CPrefab(pObj);
-	CAssetMgr::GetInst()->AddAsset<CPrefab>(L"MissilePrefab", pMissilePrefab.Get());
-
-
-	//pMissilePrefab->Save(L"prefab\\missile.pref");
-	*/
 
 	// 임시 FSM 객체 에셋 하나 생성하기
 	Ptr<CFSM>	pFSM = new CFSM(true);
@@ -149,14 +129,13 @@ void CCreateTempLevel::CreateTempLevel()
 
 	// Player Object 생성
 	pObj = new CGameObject;
-	pObj->SetName(L"Player");
+	pObj->SetName(L"Plane");
 
 	pObj->AddComponent(new CTransform);
 	pObj->AddComponent(new CMeshRender);
 
 	pObj->Transform()->SetRelativePos(Vec3(0.f, -200.f, 500.f));
 	pObj->Transform()->SetRelativeScale(Vec3(2000.f, 2000.f, 1.f));
-	//pObj->Transform()->SetRelativeRotation(Vec3(XM_PI / 2.f, 0.f, 0.f));
 	pObj->Transform()->SetDir(Vec3(0.f, -1.f, 0.f));
 
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
@@ -167,9 +146,9 @@ void CCreateTempLevel::CreateTempLevel()
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_PLAYER, false);
 
 
-	// Sphere Object
+	// Rect Object
 	pObj = new CGameObject;
-	pObj->SetName(L"Sphere");
+	pObj->SetName(L"Rect");
 
 	pObj->AddComponent(new CTransform);
 	pObj->AddComponent(new CMeshRender);
@@ -178,8 +157,8 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 200.f));
 	pObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
 
-	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
-	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std3D_DeferredMtrl"));
+	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"TessMtrl"));
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 

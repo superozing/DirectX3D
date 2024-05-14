@@ -15,5 +15,6 @@
 #define FXstd3d L"shader\\std3d.fx"
 #define FXstd3d_deferred L"shader\\std3d_deferred.fx"
 #define FXstruct L"shader\\struct.fx"
+#define FXtess L"shader\\tess.fx"
 #define FXtilemap L"shader\\tilemap.fx"
 #define FXvalue L"shader\\value.fx"
