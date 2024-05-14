@@ -113,12 +113,18 @@ void CImGuiMgr::init(HWND _hMainWnd, ComPtr<ID3D11Device> _Device
 
 
     // static button init
+    
+    m_vecStaticBtn.resize((UINT)STATIC_BTN_TYPE::END);
+
     tStaticBtnColor tColor{};
+
     tColor.ColBtnColor = (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f);
     tColor.ColBtnHoveredColor = (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f);
     tColor.ColBtnActiveColor = (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f);
 
-    m_umapStaticBtn.insert({ STATIC_BTN_TYPE::TITLE, tColor });
+    m_vecStaticBtn[(UINT)STATIC_BTN_TYPE::TITLE] = tColor;
+
+
 
 }
 
@@ -129,16 +135,6 @@ void CImGuiMgr::progress()
     render();
 
     observe_content();
-}
-
-const tStaticBtnColor& CImGuiMgr::GetStaticButtonColor(STATIC_BTN_TYPE _type)
-{
-    auto it = m_umapStaticBtn.find(_type);
-
-    if (it == m_umapStaticBtn.end())
-        return tStaticBtnColor();
-    else
-        return it->second;
 }
 
 FOCUS_STATE CImGuiMgr::GetFocus_debug()

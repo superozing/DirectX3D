@@ -17,6 +17,7 @@ enum class STATIC_BTN_TYPE
 {
     TITLE,
 
+    END
 };
 
 struct tStaticBtnColor
@@ -31,7 +32,7 @@ class CImGuiMgr :
 {
     SINGLE(CImGuiMgr);
 private:
-    std::unordered_map<STATIC_BTN_TYPE, tStaticBtnColor>    m_umapStaticBtn;
+    vector<tStaticBtnColor>    m_vecStaticBtn;
 
     map<string, UI*>    m_mapUI;
     bool                m_bDemoUI;
@@ -43,11 +44,15 @@ private:
 public:
     void init(HWND _hMainWnd, ComPtr<ID3D11Device> _Device, ComPtr <ID3D11DeviceContext> _Context);
     void progress();
+
     virtual void enter() override {}
 
     bool& GetbViewportFocused() { return isViewportFocused; }
 
-    const tStaticBtnColor& GetStaticButtonColor(STATIC_BTN_TYPE _type);
+    const tStaticBtnColor& GetStaticButtonColor(STATIC_BTN_TYPE _type)
+    {
+        return m_vecStaticBtn[(UINT)_type];
+    }
 
 public: // Callback
     static FOCUS_STATE GetFocus_debug();
