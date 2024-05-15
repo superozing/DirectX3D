@@ -119,7 +119,7 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pObj->Light3D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
 	pObj->Light3D()->SetLightColor(Vec3(0.1f, 0.1f, 0.1f));
-	pObj->Light3D()->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
+	pObj->Light3D()->SetAmbient(Vec3(0.5f, 0.5f, 0.5f));
 	pObj->Light3D()->SetSpecular(Vec3(0.05f, 0.05f, 0.05f));
 	pObj->Light3D()->SetRadius(500.f);
 

@@ -51,6 +51,8 @@ void LogUI::render_update()
 
     //mGui::InputText(); 필터
 
+    m_AvailableSize = ImGui::GetContentRegionAvail();
+    m_UISize = ImGui::GetWindowSize();
+    
     ImGui::Separator();
-  
 }
