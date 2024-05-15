@@ -56,17 +56,34 @@ void LogUI::render_update()
     }
     ImGui::PopStyleColor(3);
 
-    ImGui::Checkbox("All", &m_LoglvCheckBox[0]);
+    if (ImGui::Checkbox("All", &m_LoglvCheckBox[0]))
+    {
+        if (m_LoglvCheckBox[1] || m_LoglvCheckBox[2] || m_LoglvCheckBox[3])
+        {
+            m_LoglvCheckBox[1] = false;
+            m_LoglvCheckBox[2] = false;
+            m_LoglvCheckBox[3] = false;
+        }
+    }
     ImGui::SameLine();
 
     
-    ImGui::Checkbox("Info", &m_LoglvCheckBox[1]);
+    if (ImGui::Checkbox("Info", &m_LoglvCheckBox[1]))
+    {
+        m_LoglvCheckBox[0] = false;
+    }
     ImGui::SameLine();
 
-    ImGui::Checkbox("Error", &m_LoglvCheckBox[2]);
+    if (ImGui::Checkbox("Error", &m_LoglvCheckBox[2]))
+    {
+        m_LoglvCheckBox[0] = false;
+    }
     ImGui::SameLine();
 
-    ImGui::Checkbox("Warn", &m_LoglvCheckBox[3]);
+    if (ImGui::Checkbox("Warn", &m_LoglvCheckBox[3]))
+    {
+        m_LoglvCheckBox[0] = false;
+    }
 
     ImGui::Text("Search");
     ImGui::SameLine();
