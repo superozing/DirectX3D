@@ -22,30 +22,6 @@ MessageUI::~MessageUI()
 {
 }
 
-ImVec4 MessageUI::SetLogColor(tLog Log)
-{
-    ImVec4 Color;
-
-    switch (Log.m_LogLv)
-    {
-    case Log_Level::INFO:
-        return Color = m_LogColor[(UINT)Log_Level::INFO];
-        break;
-    case Log_Level::WARN:
-        return Color = m_LogColor[(UINT)Log_Level::ERR];
-        break;
-    case Log_Level::ERR:
-        return Color = m_LogColor[(UINT)Log_Level::WARN];
-        break;
-    case Log_Level::END:
-        break;
-    default:
-        break;
-    }
-
-    return Color;
-}
-
 void MessageUI::tick()
 {
     
@@ -53,51 +29,32 @@ void MessageUI::tick()
 
 void MessageUI::render_update()
 {
-    // 데이터 갱신
-    m_vectLog = CLogMgr::GetInst()->GetLogvec();
-
-    // 사이즈 측정
-    LogUI* Parent = dynamic_cast<LogUI*>(this->GetParentUI());
-
-    m_charLogMsgFilter = Parent->GetLogTextFilter();
-
-    if (Parent != nullptr)
-        m_TableSize = Parent->GetUISize();
+    UpdateData();
 
     // 스크롤 얻어오기
     m_fLastScrollY = ImGui::GetScrollY();
 
+    // 변경 여부 체크
     if (m_iLogCount < m_vectLog.size())
     {
         m_bResize = true;
     }
 
+    // 사이즈 변경
     if (m_MaxTableSize.y < m_TableSize.y && m_bResize == true)
     {
         m_MaxTableSize = m_TableSize;
     }
 
-    for (int i = 0; i < 4; ++i)
-    {
-        bool* mask = Parent->GetLogLvFilter();
-        
-        if (mask[i] == true)
-        {
-            m_iLoglvMask |=  (1 << i);
-        }
-        else
-        {
-            m_iLoglvMask &= ~(1 << i);
-        }
-    }
-;
+    // 필터 레벨 체크
+    CheckLogLvFilter();
 
     // table 플래그 설정
-    static ImGuiTableFlags flags = ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable | ImGuiTableFlags_BordersOuter | ImGuiTableFlags_SizingStretchProp | ImGuiTableFlags_ScrollY | ImGuiTableFlags_NoHostExtendY;
-
+    static ImGuiTableFlags flags = ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable | 
+                                   ImGuiTableFlags_BordersOuter | ImGuiTableFlags_SizingStretchProp | ImGuiTableFlags_ScrollY | ImGuiTableFlags_NoHostExtendY;
 
     // table 생성
-    if (ImGui::BeginTable("LogMessage", 1, flags))
+    if (ImGui::BeginTable("LogMessage", 1, flags, m_TableSize))
     {
         ImGui::TableSetupColumn("Log");
         ImGui::TableHeadersRow();
@@ -110,44 +67,9 @@ void MessageUI::render_update()
             bool SearchDisplay = false;
             bool ColorDisplay = false;
 
-            if (m_charLogMsgFilter.empty())
-            {
-                SearchDisplay = true;
-            }
-            else
-            {
-                for (int i = 0; i <= m_vectLog[row].m_strMsg.size() - m_charLogMsgFilter.size(); ++i)
-                {
-                    if (m_vectLog[row].m_strMsg.substr(i, m_charLogMsgFilter.size()) == m_charLogMsgFilter)
-                    {
-                        SearchDisplay = true;
-                        break;
-                    }
-                }
-            }
+            CheckSearchDisplay(SearchDisplay, row);
 
-            if (m_iLoglvMask & 1)
-            {
-                ColorDisplay = true;
-            }
-            else if (m_iLoglvMask & 2 && m_vectLog[row].m_LogLv == Log_Level::INFO )
-            {
-                ColorDisplay = true;
-               
-            }
-            else if (m_iLoglvMask & 4 && m_vectLog[row].m_LogLv == Log_Level::WARN)
-            {
-                ColorDisplay = true;
-               
-            }
-            else if (m_iLoglvMask & 8 && m_vectLog[row].m_LogLv == Log_Level::ERR)
-            {
-                ColorDisplay = true;
-               
-            }
-            
-
-
+            CheckColorDispaly(ColorDisplay, row);
 
             if (ColorDisplay && SearchDisplay)
             {
@@ -175,8 +97,6 @@ void MessageUI::render_update()
 
         }
 
- 
-
         ImGui::EndTable();
     }
 
@@ -186,3 +106,102 @@ void MessageUI::render_update()
 
 }
 
+ImVec4 MessageUI::SetLogColor(tLog Log)
+{
+    ImVec4 Color;
+
+    switch (Log.m_LogLv)
+    {
+    case Log_Level::INFO:
+        return Color = m_LogColor[(UINT)Log_Level::INFO];
+        break;
+    case Log_Level::WARN:
+        return Color = m_LogColor[(UINT)Log_Level::ERR];
+        break;
+    case Log_Level::ERR:
+        return Color = m_LogColor[(UINT)Log_Level::WARN];
+        break;
+    case Log_Level::END:
+        break;
+    default:
+        break;
+    }
+
+    return Color;
+}
+
+void MessageUI::UpdateData()
+{
+    // 데이터 갱신
+    m_vectLog = CLogMgr::GetInst()->GetLogvec();
+
+    // 사이즈 측정
+    m_Parent = dynamic_cast<LogUI*>(this->GetParentUI());
+
+    //필터값 갱신
+    m_charLogMsgFilter = m_Parent->GetLogTextFilter();
+
+
+    // 부모 ui 사이즈 받아오기
+    if (m_Parent != nullptr)
+        m_TableSize = m_Parent->GetUISize();
+}
+
+void MessageUI::CheckLogLvFilter()
+{
+    for (int i = 0; i < 4; ++i)
+    {
+        bool* mask = m_Parent->GetLogLvFilter();
+
+        if (mask[i] == true)
+        {
+            m_iLoglvMask |= (1 << i);
+        }
+        else
+        {
+            m_iLoglvMask &= ~(1 << i);
+        }
+    }
+}
+
+void MessageUI::CheckSearchDisplay(bool& check, int row)
+{
+    if (m_charLogMsgFilter.empty())
+    {
+        check = true;
+    }
+    else
+    {
+        for (int i = 0; i <= m_vectLog[row].m_strMsg.size() - m_charLogMsgFilter.size(); ++i)
+        {
+            if (m_vectLog[row].m_strMsg.substr(i, m_charLogMsgFilter.size()) == m_charLogMsgFilter)
+            {
+                check = true;
+                break;
+            }
+        }
+    }
+}
+
+void MessageUI::CheckColorDispaly(bool& check, int row)
+{
+    if (m_iLoglvMask & 1)
+    {
+        check = true;
+    }
+    else if (m_iLoglvMask & 2 && m_vectLog[row].m_LogLv == Log_Level::INFO)
+    {
+        check = true;
+
+    }
+    else if (m_iLoglvMask & 4 && m_vectLog[row].m_LogLv == Log_Level::WARN)
+    {
+        check = true;
+
+    }
+    else if (m_iLoglvMask & 8 && m_vectLog[row].m_LogLv == Log_Level::ERR)
+    {
+        check = true;
+
+    }
+}

@@ -31,11 +31,13 @@ void LogUI::tick()
 
 void LogUI::render_update()
 {
+    // 색 테이블
     ImVec4 Red = ImVec4(1.f, 0.f, 0.f, 1.0f);
     ImVec4 Green = ImVec4(0.f, 1.f, 0.f, 1.0f);
     ImVec4 Blue = ImVec4(0.f, 0.f, 1.f, 1.0f);
     ImVec4 Gray = ImVec4(0.3f, 0.3f, 0.3f, 1.0f);
 
+    // 복사 버튼
     ImGui::PushStyleColor(ImGuiCol_Button, Gray); // 기본 배경색
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Red); // 호버 배경색도 기본 배경색과 동일하게 설정
     ImGui::PushStyleColor(ImGuiCol_ButtonActive, Red);
@@ -47,6 +49,8 @@ void LogUI::render_update()
 
     ImGui::SameLine();
 
+
+    // 삭제 버튼
     ImGui::PushStyleColor(ImGuiCol_Button, Gray); // 기본 배경색
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Red); // 호버 배경색도 기본 배경색과 동일하게 설정
     ImGui::PushStyleColor(ImGuiCol_ButtonActive, Red);
@@ -56,6 +60,8 @@ void LogUI::render_update()
     }
     ImGui::PopStyleColor(3);
 
+
+    // 필터 체크박스
     if (ImGui::Checkbox("All", &m_LoglvCheckBox[0]))
     {
         if (m_LoglvCheckBox[1] || m_LoglvCheckBox[2] || m_LoglvCheckBox[3])
@@ -85,6 +91,7 @@ void LogUI::render_update()
         m_LoglvCheckBox[0] = false;
     }
 
+    // 검색 필터
     ImGui::Text("Search");
     ImGui::SameLine();
 

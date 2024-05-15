@@ -5,6 +5,7 @@ class MessageUI :
     public UI
 {
 private:
+    LogUI*          m_Parent;
 
     vector<tLog>    m_vectLog;
     ImVec4          m_LogColor[(UINT)Log_Level::END];
@@ -22,6 +23,11 @@ private:
 
 public:
     ImVec4 SetLogColor(tLog Log);
+    void UpdateData();
+    void CheckLogLvFilter();
+    void CheckSearchDisplay(bool& check , int row);
+    void CheckColorDispaly(bool& check, int row);
+
 
 public:
     virtual void tick() override;
