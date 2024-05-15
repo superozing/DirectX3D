@@ -41,20 +41,23 @@ void MessageUI::render_update()
     }
 
     // 사이즈 변경
-    if (m_MaxTableSize.y < m_TableSize.y && m_bResize == true)
+    if (m_MaxTableSize.y < m_TableSize.y - 125.f && m_bResize == true)
     {
         m_MaxTableSize = m_TableSize;
+        m_MaxTableSize.x -= 25.f;
+        m_MaxTableSize.y -= 125.f;
+
     }
 
     // 필터 레벨 체크
     CheckLogLvFilter();
 
     // table 플래그 설정
-    static ImGuiTableFlags flags = ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable | 
+    static ImGuiTableFlags flags = ImGuiTableFlags_Resizable |  ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_NoBordersInBodyUntilResize |
                                    ImGuiTableFlags_BordersOuter | ImGuiTableFlags_SizingStretchProp | ImGuiTableFlags_ScrollY | ImGuiTableFlags_NoHostExtendY;
 
     // table 생성
-    if (ImGui::BeginTable("LogMessage", 1, flags, m_TableSize))
+    if (ImGui::BeginTable("LogMessage", 1, flags, m_MaxTableSize))
     {
         ImGui::TableSetupColumn("Log");
         ImGui::TableHeadersRow();
