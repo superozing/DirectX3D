@@ -1,6 +1,8 @@
 ﻿#include "pch.h"
 #include "LogUI.h"
 
+#include <Engine\CLogMgr.h>
+
 #include "MessageUI.h"
 
 
@@ -50,7 +52,7 @@ void LogUI::render_update()
     ImGui::PushStyleColor(ImGuiCol_ButtonActive, Red);
     if (ImGui::Button("DeleteLog"))
     {
-       //
+        CLogMgr::GetInst()->ClearLog();
     }
     ImGui::PopStyleColor(3);
 

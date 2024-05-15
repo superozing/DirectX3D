@@ -43,4 +43,7 @@ void CLogMgr::CopyLog()
 
 void CLogMgr::ClearLog()
 {
+	vector<tLog> ChnageVectoer;
+
+	m_vecLog.swap(ChnageVectoer);
 }
