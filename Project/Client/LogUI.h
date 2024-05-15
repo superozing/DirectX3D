@@ -11,12 +11,14 @@ private:
     ImVec2 m_UISize;
 
     bool m_LoglvCheckBox[4];
+    char m_LogTextFilter[255];
 
 public:
     ImVec2 GetAvailableSize() { return m_AvailableSize; }
     ImVec2 GetUISize() { return m_UISize; }
 
     bool* GetLogLvFilter() { return m_LoglvCheckBox; }
+    char*  GetLogTextFilter() { return m_LogTextFilter; }
 
 
 public:

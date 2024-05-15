@@ -98,6 +98,9 @@ void CCameraMoveScript::MovePerspective()
 	{
 		vPos += DT_ENGINE * m_CamSpeed * -vRight;
 		CLogMgr::GetInst()->AddLog(Log_Level::WARN, "key pressed a");
+		CLogMgr::GetInst()->AddLog(Log_Level::INFO, "key pressed a");
+		CLogMgr::GetInst()->AddLog(Log_Level::ERR, "key pressed a");
+
 
 	}
 

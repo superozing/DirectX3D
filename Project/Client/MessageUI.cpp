@@ -59,6 +59,8 @@ void MessageUI::render_update()
     // 사이즈 측정
     LogUI* Parent = dynamic_cast<LogUI*>(this->GetParentUI());
 
+    m_charLogMsgFilter = Parent->GetLogTextFilter();
+
     if (Parent != nullptr)
         m_TableSize = Parent->GetUISize();
 
@@ -81,11 +83,11 @@ void MessageUI::render_update()
         
         if (mask[i] == true)
         {
-            m_LoglvMask |=  (1 << i);
+            m_iLoglvMask |=  (1 << i);
         }
         else
         {
-            m_LoglvMask &= ~(1 << i);
+            m_iLoglvMask &= ~(1 << i);
         }
     }
 ;
@@ -105,30 +107,49 @@ void MessageUI::render_update()
             //색상 설정
             ImVec4 Color;
    
-            bool ShoudDispaly = false;
+            bool SearchDisplay = false;
+            bool ColorDisplay = false;
 
-            if (m_LoglvMask & 1)
+            if (m_charLogMsgFilter.empty())
             {
-                ShoudDispaly = true;
+                SearchDisplay = true;
             }
-            else if (m_LoglvMask & 2 && m_vectLog[row].m_LogLv == Log_Level::INFO )
+            else
             {
-                ShoudDispaly = true;
+                for (int i = 0; i <= m_vectLog[row].m_strMsg.size() - m_charLogMsgFilter.size(); ++i)
+                {
+                    if (m_vectLog[row].m_strMsg.substr(i, m_charLogMsgFilter.size()) == m_charLogMsgFilter)
+                    {
+                        SearchDisplay = true;
+                        break;
+                    }
+                }
+            }
+
+            if (m_iLoglvMask & 1)
+            {
+                ColorDisplay = true;
+            }
+            else if (m_iLoglvMask & 2 && m_vectLog[row].m_LogLv == Log_Level::INFO )
+            {
+                ColorDisplay = true;
                
             }
-            else if (m_LoglvMask & 4 && m_vectLog[row].m_LogLv == Log_Level::WARN)
+            else if (m_iLoglvMask & 4 && m_vectLog[row].m_LogLv == Log_Level::WARN)
             {
-                ShoudDispaly = true;
+                ColorDisplay = true;
                
             }
-            else if (m_LoglvMask & 8 && m_vectLog[row].m_LogLv == Log_Level::ERR)
+            else if (m_iLoglvMask & 8 && m_vectLog[row].m_LogLv == Log_Level::ERR)
             {
-                ShoudDispaly = true;
+                ColorDisplay = true;
                
             }
             
 
-            if (ShoudDispaly)
+
+
+            if (ColorDisplay && SearchDisplay)
             {
                 string count = std::to_string(row);
                 string temp = m_vectLog[row].m_strMsg.c_str() + count;

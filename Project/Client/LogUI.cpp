@@ -68,8 +68,12 @@ void LogUI::render_update()
 
     ImGui::Checkbox("Warn", &m_LoglvCheckBox[3]);
 
+    ImGui::Text("Search");
+    ImGui::SameLine();
 
-    //mGui::InputText(); 필터
+    ImGui::PushItemWidth(-FLT_MIN);
+    ImGui::InputText("##Search", m_LogTextFilter, IM_ARRAYSIZE(m_LogTextFilter));
+    ImGui::PopItemWidth();
 
     m_AvailableSize = ImGui::GetContentRegionAvail();
     m_UISize = ImGui::GetWindowSize();
