@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CGraphicsShader.h"
 
 #include "CDevice.h"
@@ -21,8 +21,8 @@ CGraphicsShader::~CGraphicsShader()
 
 int CGraphicsShader::CreateVertexShader(const wstring& _strRelativePath, const string& _strFuncName)
 {
-	// ¹öÅØ½º ½¦ÀÌ´õ
-	// HLSL ¹öÅØ½º ½¦ÀÌ´õ ÇÔ¼ö ÄÄÆÄÀÏ
+	// ë²„í…ìŠ¤ ì‰ì´ë”
+	// HLSL ë²„í…ìŠ¤ ì‰ì´ë” í•¨ìˆ˜ ì»´íŒŒì¼
 	wstring strContentPath = CPathMgr::GetContentPath();
 	wstring strFilePath = strContentPath + _strRelativePath;
 
@@ -44,8 +44,11 @@ int CGraphicsShader::CreateVertexShader(const wstring& _strRelativePath, const s
 		, m_VSBlob->GetBufferSize(), nullptr
 		, m_VS.GetAddressOf());
 
+	// VS ìƒì„±ì— ì„±ê³µí–ˆë‹¤ë©´ ë©¤ë²„ë¡œ ì €ìž¥
+	m_VSPath = ToString(_strRelativePath);
+	m_VSFuncName = ToString(_strFuncName);
 
-	// Á¤Á¡ ±¸Á¶Á¤º¸(Layout) »ý¼º
+	// ì •ì  êµ¬ì¡°ì •ë³´(Layout) ìƒì„±
 	D3D11_INPUT_ELEMENT_DESC arrElement[6] = {};
 
 	arrElement[0].InputSlot = 0;
@@ -97,7 +100,7 @@ int CGraphicsShader::CreateVertexShader(const wstring& _strRelativePath, const s
 	arrElement[5].Format = DXGI_FORMAT_R32G32B32_FLOAT;
 
 
-	// Layout »ý¼º
+	// Layout ìƒì„±
 	DEVICE->CreateInputLayout(arrElement, 6
 							, m_VSBlob->GetBufferPointer()
 							, m_VSBlob->GetBufferSize()
@@ -112,7 +115,7 @@ int CGraphicsShader::CreateGeometryShader(const wstring& _strRelativePath, const
 	wstring strContentPath = CPathMgr::GetContentPath();
 	wstring strFilePath = strContentPath + _strRelativePath;
 
-	// ÇÈ¼¿ ½¦ÀÌ´õ »ý¼º	
+	// í”½ì…€ ì‰ì´ë” ìƒì„±	
 	if (FAILED(D3DCompileFromFile(strFilePath.c_str()
 		, nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE
 		, _strFuncName.c_str(), "gs_5_0", D3DCOMPILE_DEBUG, 0
@@ -131,6 +134,9 @@ int CGraphicsShader::CreateGeometryShader(const wstring& _strRelativePath, const
 								, m_GSBlob->GetBufferSize(), nullptr
 								, m_GS.GetAddressOf());
 
+	m_GSPath = ToString(_strRelativePath);
+	m_GSFuncName = ToString(_strFuncName);
+
 	return S_OK;
 }
 
@@ -139,8 +145,8 @@ int CGraphicsShader::CreatePixelShader(const wstring& _strRelativePath, const st
 	wstring strContentPath = CPathMgr::GetContentPath();
 	wstring strFilePath = strContentPath + _strRelativePath;
 
-	// ÇÈ¼¿ ½¦ÀÌ´õ »ý¼º
-	// ÇÈ¼¿ ½¦ÀÌ´õ ÄÄÆÄÀÏ
+	// í”½ì…€ ì‰ì´ë” ìƒì„±
+	// í”½ì…€ ì‰ì´ë” ì»´íŒŒì¼
 	if (FAILED(D3DCompileFromFile(strFilePath.c_str()
 		, nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE
 		, _strFuncName.c_str(), "ps_5_0", D3DCOMPILE_DEBUG, 0
@@ -158,6 +164,9 @@ int CGraphicsShader::CreatePixelShader(const wstring& _strRelativePath, const st
 	DEVICE->CreatePixelShader(m_PSBlob->GetBufferPointer()
 		, m_PSBlob->GetBufferSize(), nullptr
 		, m_PS.GetAddressOf());
+
+	m_PSPath = ToString(_strRelativePath);
+	m_PSFuncName = ToString(_strFuncName);
 
 	return S_OK;
 }
