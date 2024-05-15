@@ -41,7 +41,7 @@ void LogUI::render_update()
     ImGui::PushStyleColor(ImGuiCol_ButtonActive, Red);
     if (ImGui::Button("CopyLog"))
     {
-       // 
+        CLogMgr::GetInst()->CopyLog();
     }
     ImGui::PopStyleColor(3);
 
