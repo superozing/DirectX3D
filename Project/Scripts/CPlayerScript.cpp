@@ -124,17 +124,17 @@ void CPlayerScript::tick()
 
 
 	//Log Test
-	/*
+	
 	float x = vPos.x;
 	float y = vPos.y;
 	float z = vPos.z;
 
-	string pos;
-	pos += "pos x = " + std::to_string(x) + " ";
-	pos += "pos y = " + std::to_string(y) + " ";
-	pos += "pos z = " + std::to_string(z) + " ";
+	wstring pos;
+	pos += L"pos x = " + std::to_wstring(x) + L" ";
+	pos += L"pos y = " + std::to_wstring(y) + L" ";
+	pos += L"pos z = " + std::to_wstring(z) + L" ";
 
-	CLogMgr::GetInst()->AddTimeLog(Log_Level::INFO, pos);*/
+	CLogMgr::GetInst()->AddTimeLog(Log_Level::WARN, pos);
 
 }
 
