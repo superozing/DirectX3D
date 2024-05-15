@@ -12,6 +12,8 @@ private:
     ImVec2          m_TableSize;
     ImVec2          m_MaxTableSize;
 
+    int             m_LoglvMask;
+
     int             m_iLogCount;
     bool            m_bResize;
     float           m_fLastScrollY;

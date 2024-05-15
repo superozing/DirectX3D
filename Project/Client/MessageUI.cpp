@@ -75,8 +75,24 @@ void MessageUI::render_update()
         m_MaxTableSize = m_TableSize;
     }
 
+    for (int i = 0; i < 4; ++i)
+    {
+        bool* mask = Parent->GetLogLvFilter();
+        
+        if (mask[i] == true)
+        {
+            m_LoglvMask |=  (1 << i);
+        }
+        else
+        {
+            m_LoglvMask &= ~(1 << i);
+        }
+    }
+;
+
     // table 플래그 설정
     static ImGuiTableFlags flags = ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable | ImGuiTableFlags_BordersOuter | ImGuiTableFlags_SizingStretchProp | ImGuiTableFlags_ScrollY | ImGuiTableFlags_NoHostExtendY;
+
 
     // table 생성
     if (ImGui::BeginTable("LogMessage", 1, flags))
@@ -86,13 +102,42 @@ void MessageUI::render_update()
 
         for (int row = 0; row < m_vectLog.size(); row++)
         {
-            ImGui::TableNextRow();
-            ImGui::TableSetColumnIndex(0);
-
             //색상 설정
-                ImVec4 Color = SetLogColor(m_vectLog[row]);
+            ImVec4 Color;
+   
+            bool ShoudDispaly = false;
 
-            ImGui::TextColored(Color, m_vectLog[row].m_strMsg.c_str());
+            if (m_LoglvMask & 1)
+            {
+                ShoudDispaly = true;
+            }
+            else if (m_LoglvMask & 2 && m_vectLog[row].m_LogLv == Log_Level::INFO )
+            {
+                ShoudDispaly = true;
+               
+            }
+            else if (m_LoglvMask & 4 && m_vectLog[row].m_LogLv == Log_Level::WARN)
+            {
+                ShoudDispaly = true;
+               
+            }
+            else if (m_LoglvMask & 8 && m_vectLog[row].m_LogLv == Log_Level::ERR)
+            {
+                ShoudDispaly = true;
+               
+            }
+            
+
+            if (ShoudDispaly)
+            {
+                string count = std::to_string(row);
+                string temp = m_vectLog[row].m_strMsg.c_str() + count;
+
+                ImGui::TableNextRow();
+                ImGui::TableSetColumnIndex(0);
+                ImGui::TextColored(SetLogColor(m_vectLog[row]), temp.c_str());
+
+             }
 
             // 현재 스크롤 위치
             float currentScrollY = ImGui::GetScrollY();

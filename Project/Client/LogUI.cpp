@@ -10,6 +10,13 @@ LogUI::LogUI()
     m_MessageUI = new MessageUI;
     AddChildUI(m_MessageUI);
 
+    m_LoglvCheckBox[0] = true;
+    m_LoglvCheckBox[1] = false;
+    m_LoglvCheckBox[2] = false;
+    m_LoglvCheckBox[3] = false;
+
+
+
 }
 
 LogUI::~LogUI()
@@ -47,7 +54,18 @@ void LogUI::render_update()
     }
     ImGui::PopStyleColor(3);
 
-    //ImGui::Checkbox(); 검색 옵션
+    ImGui::Checkbox("All", &m_LoglvCheckBox[0]);
+    ImGui::SameLine();
+
+    
+    ImGui::Checkbox("Info", &m_LoglvCheckBox[1]);
+    ImGui::SameLine();
+
+    ImGui::Checkbox("Error", &m_LoglvCheckBox[2]);
+    ImGui::SameLine();
+
+    ImGui::Checkbox("Warn", &m_LoglvCheckBox[3]);
+
 
     //mGui::InputText(); 필터
 
