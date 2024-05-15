@@ -17,7 +17,10 @@ public:
     virtual void exit() override;
 
 public:
+    vector<tLog> GetLogvec() { return m_vecLog; }
     void AddLog(Log_Level Lv, string msg);
+    void AddLog(tLog Log);
+    void AddTimeLog(Log_Level Lv, string msg);
     void CopyLog();
     void ClearLog();
 };

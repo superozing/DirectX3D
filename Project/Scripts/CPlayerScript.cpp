@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CPlayerScript.h"
 #include <Engine/CAssetMgr.h>
 
@@ -7,6 +7,8 @@
 
 #include <Engine/CMaterial.h>
 #include <Engine/CRenderComponent.h>
+
+#include <Engine\CLogMgr.h>
 
 
 CPlayerScript::CPlayerScript()
@@ -119,6 +121,21 @@ void CPlayerScript::tick()
 
 	//GamePlayStatic::DrawDebugRect(Vec3(0.f, 0.f, 0.f), Vec3(200.f, 200.f, 1.f), Vec3(0.f, 0.f, 0.f), Vec3(1.f, 1.f, 1.f), true, 20);
 	//GamePlayStatic::DrawDebugCircle(Vec3(0.f, 0.f, 0.f), 200.f, Vec3(0.f, 1.f, 1.f), true);
+
+
+	//Log Test
+	/*
+	float x = vPos.x;
+	float y = vPos.y;
+	float z = vPos.z;
+
+	string pos;
+	pos += "pos x = " + std::to_string(x) + " ";
+	pos += "pos y = " + std::to_string(y) + " ";
+	pos += "pos z = " + std::to_string(z) + " ";
+
+	CLogMgr::GetInst()->AddTimeLog(Log_Level::INFO, pos);*/
+
 }
 
 void CPlayerScript::BeginOverlap(CCollider2D* _Collider
