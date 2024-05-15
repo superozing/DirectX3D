@@ -26,7 +26,7 @@ void CAssetMgr::CreateDefaultMesh()
 	UINT Idx = 0;
 	pMesh = new CMesh(true);
 	pMesh->Create(&vPoint, 1, &Idx, 1);
-	AddAsset(L"PointMesh", pMesh);
+	AddAsset(MESHpoint, pMesh);
 
 
 	// 전역변수에 삼각형 위치 설정
@@ -74,7 +74,7 @@ void CAssetMgr::CreateDefaultMesh()
 
 	pMesh = new CMesh(true);
 	pMesh->Create(vecVtx.data(), vecVtx.size(), vecIdx.data(), vecIdx.size());
-	AddAsset(L"RectMesh", pMesh);
+	AddAsset(MESHrect, pMesh);
 		
 	vecIdx.clear();
 
@@ -90,7 +90,7 @@ void CAssetMgr::CreateDefaultMesh()
 
 	pMesh = new CMesh(true);
 	pMesh->Create(vecVtx.data(), vecVtx.size(), vecIdx.data(), vecIdx.size());
-	AddAsset(L"RectMesh_Debug", pMesh);
+	AddAsset(MESHrectdebug, pMesh);
 
 	vecVtx.clear();
 	vecIdx.clear();
@@ -132,7 +132,7 @@ void CAssetMgr::CreateDefaultMesh()
 
 	pMesh = new CMesh(true);
 	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
-	AddAsset(L"CircleMesh", pMesh);
+	AddAsset(MESHcircle, pMesh);
 
 
 	// CircleMesh_Debug
@@ -144,7 +144,7 @@ void CAssetMgr::CreateDefaultMesh()
 
 	pMesh = new CMesh(true);
 	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
-	AddAsset(L"CircleMesh_Debug", pMesh);
+	AddAsset(MESHcircledebug, pMesh);
 	vecVtx.clear();
 	vecIdx.clear();
 
@@ -170,7 +170,7 @@ void CAssetMgr::CreateDefaultMesh()
 
 	pMesh = new CMesh(true);
 	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
-	AddAsset(L"CrossMesh", pMesh);
+	AddAsset(MESHcross, pMesh);
 	vecVtx.clear();
 	vecIdx.clear();
 
@@ -323,7 +323,7 @@ void CAssetMgr::CreateDefaultMesh()
 
 	pMesh = new CMesh(true);
 	pMesh->Create(arrCube, 24, vecIdx.data(), (UINT)vecIdx.size());
-	AddAsset(L"CubeMesh", pMesh);
+	AddAsset(MESHcube, pMesh);
 	vecIdx.clear();
 
 	// ========================
@@ -351,7 +351,7 @@ void CAssetMgr::CreateDefaultMesh()
 
 	pMesh = new CMesh(true);
 	pMesh->Create(arrCube, 24, vecIdx.data(), (UINT)vecIdx.size());
-	AddAsset(L"CubeMesh_Debug", pMesh);
+	AddAsset(MESHcubedebug, pMesh);
 	vecIdx.clear();
 
 
@@ -461,7 +461,7 @@ void CAssetMgr::CreateDefaultMesh()
 
 	pMesh = new CMesh(true);
 	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
-	AddAsset(L"SphereMesh", pMesh);
+	AddAsset(MESHsphere, pMesh);
 	vecVtx.clear();
 	vecIdx.clear();
 
@@ -471,17 +471,7 @@ void CAssetMgr::CreateDefaultMesh()
 	fRadius = 0.5f;
 	float fHeight = 1.f;
 
-	// Top
-	v.vPos = Vec3(0.f, 0.f, 0.f);
-	v.vUV = Vec2(0.5f, 0.f);
-	v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
-	v.vNormal = Vec3(0.f, 0.f, -1.f);
-	v.vTangent = Vec3(1.f, 0.f, 0.f);
-	v.vBinormal = Vec3(0.f, 1.f, 0.f);
-	vecVtx.push_back(v);
-
-	// Body
-	iSliceCount = 80; // 원뿔의 세로 분할 개수
+	iSliceCount = 100; // 원뿔의 세로 분할 개수
 
 	fSliceAngle = XM_2PI / iSliceCount;
 
@@ -490,44 +480,57 @@ void CAssetMgr::CreateDefaultMesh()
 
 	for (UINT i = 0; i <= iSliceCount; ++i)
 	{
-		float theta = i * fSliceAngle;
-
-		float x = fRadius * cosf(theta);
-		float y = fRadius * sinf(theta);
-
-		v.vPos = Vec3(x, y, fHeight);
-		v.vUV = Vec2(fUVXStep * i, fUVYStep);
+		// Top
+		v.vPos = Vec3(0.f, 0.f, 0.f);
+		v.vUV = Vec2(0.5f, 0.f);
 		v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
-		v.vNormal = Vec3(0.f, 0.f, 1.f);
-		v.vTangent = Vec3(1.f, 0.f, 0.f);
-		v.vBinormal = Vec3(0.f, 1.f, 0.f);
 		vecVtx.push_back(v);
 
-		// 인덱스
-		if (i < iSliceCount)
-		{
-			vecIdx.push_back(0);
-			vecIdx.push_back(i + 2);
-			vecIdx.push_back(i + 1);
-		}
+		// Body
+		float theta = i * fSliceAngle;
+		v.vPos = Vec3(fRadius * cosf(theta), fRadius * sinf(theta), fHeight);
+		v.vUV = Vec2(fUVXStep * i, fUVYStep);
+		v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+		vecVtx.push_back(v);
 
-		// 정점의 법선 벡터 다시 계산
+		// vecVtx 저장 순서 : {꼭대기1, 정점1, 꼭대기2, 정점2, ...}
 		if (i > 0)
 		{
 			size_t lastVtxIdx = vecVtx.size() - 1;
 
-			Vec3 vtx1 = vecVtx[lastVtxIdx - 1].vPos; // 가장 마지막 바로 전 VtxIdx
-			Vec3 vtx2 = vecVtx[lastVtxIdx].vPos;     // 가장 마지막에 추가된 VtxIdx
+			Vtx vtx1 = vecVtx[lastVtxIdx - 2];
+			Vtx vtx2 = vecVtx[lastVtxIdx];
 
-			// 아랫면의 한 정점을 기준으로 연결된 두 벡터를 외적하여 노말 벡터를 재계산
-			Vec3 vNormal = (vtx1 - vecVtx[0].vPos).Cross(vtx1 - vtx2).Normalize();
+			vecVtx[lastVtxIdx - 3].vNormal = vtx1.vNormal = vtx2.vPos.Cross(vtx1.vPos).Normalize();
+			vecVtx[lastVtxIdx - 3].vBinormal = vtx1.vBinormal = -vtx1.vPos.Normalize();
+			vecVtx[lastVtxIdx - 3].vTangent = vtx1.vTangent = vtx1.vBinormal.Cross(vtx1.vNormal).Normalize();
 
-			vecVtx[lastVtxIdx - 1].vNormal = vNormal;
-			vecVtx[lastVtxIdx].vNormal = vNormal;
+			//vecVtx[lastVtxIdx].vNormal = vtx2.vNormal = vtx1.vPos.Cross(vtx2.vPos).Normalize();
+			//vecVtx[lastVtxIdx].vBinormal = vtx2.vBinormal = -vtx2.vPos.Normalize();
+			//vecVtx[lastVtxIdx].vTangent = vtx2.vTangent = vtx2.vBinormal.Cross(vtx2.vNormal).Normalize();
+			
+			//// Binormal : 아랫면 정점에서 원뿔 꼭대기를 향하는 방향 벡터
+			//vecVtx[lastVtxIdx - 3] .vBinormal = vtx1.vBinormal = (vecVtx[lastVtxIdx - 3].vPos - vtx1.vPos).Normalize();
+			//
+			//// Tangent : 정점2에서 정점1로 향하는 방향 벡터
+			//vecVtx[lastVtxIdx - 3].vTangent = vtx1.vTangent = (vtx2.vPos - vtx1.vPos).Normalize();
+
+			//// Normal : Binormal과 Tangent의 외적
+			//vecVtx[lastVtxIdx - 3].vNormal = vtx1.vNormal = (vtx1.vBinormal).Cross(vtx1.vTangent).Normalize();
 		}
 	}
 
-	// 아래면의 정점 추가
+	for (UINT i = 0; i <= iSliceCount; ++i)
+	{
+		// 인덱스
+		if (i < iSliceCount)
+		{
+			vecIdx.push_back(2 * i);	
+			vecIdx.push_back(2 * i + 3);
+			vecIdx.push_back(2 * i + 1);
+		}
+	}
+
 	for (UINT i = 0; i <= iSliceCount; ++i)
 	{
 		float theta = i * fSliceAngle;
@@ -538,20 +541,88 @@ void CAssetMgr::CreateDefaultMesh()
 		v.vTangent = Vec3(1.f, 0.f, 0.f);
 		v.vBinormal = Vec3(0.f, 1.f, 0.f);
 		vecVtx.push_back(v);
+	}
 
-		if (i < iSliceCount)
-		{
-			vecIdx.push_back(iSliceCount + 2); // 아랫면 중심점 인덱스
-			vecIdx.push_back(i + 1 + iSliceCount + 1);
-			vecIdx.push_back(i + 2 + iSliceCount + 1);
-		}
+	// 아래면의 중심 정점 추가
+	v.vPos = Vec3(0.f, 0, 1.f);
+	v.vUV = Vec2(0.5f, 1.f);
+	v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+	v.vNormal = v.vPos;
+	v.vNormal.Normalize();
+
+	v.vTangent = Vec3(1.f, 0.f, 0.f);
+	v.vBinormal = Vec3(0.f, 0.f, -1.f);
+	vecVtx.push_back(v);
+
+	iBottomIdx = (UINT)vecVtx.size() - 1;
+	for (UINT i = 0; i < iSliceCount; ++i)
+	{
+		vecIdx.push_back(iBottomIdx);
+		vecIdx.push_back(iBottomIdx - (i + 2));
+		vecIdx.push_back(iBottomIdx - (i + 1));
 	}
 
 	pMesh = new CMesh(true);
 	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
-	AddAsset(L"ConeMesh", pMesh);
+	AddAsset(MESHcone, pMesh);
 	vecVtx.clear();
 	vecIdx.clear();
+
+	//// Top
+	//v.vPos = Vec3(0.f, 0.f, 0.f);
+	//v.vUV = Vec2(0.5f, 0.f);
+	//v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+	//v.vNormal = Vec3(0.f, 0.f, -1.f);
+	//v.vTangent = Vec3(1.f, 0.f, 0.f);
+	//v.vBinormal = Vec3(0.f, 1.f, 0.f);
+	//vecVtx.push_back(v);
+
+	//// Body
+	//iSliceCount = 80; // 원뿔의 세로 분할 개수
+
+	//fSliceAngle = XM_2PI / iSliceCount;
+
+	//fUVXStep = 1.f / (float)iSliceCount;
+	//fUVYStep = 1.f;
+
+	//for (UINT i = 0; i <= iSliceCount; ++i)
+	//{
+	//	float theta = i * fSliceAngle;
+
+	//	float x = fRadius * cosf(theta);
+	//	float y = fRadius * sinf(theta);
+
+	//	v.vPos = Vec3(x, y, fHeight);
+	//	v.vUV = Vec2(fUVXStep * i, fUVYStep);
+	//	v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+	//	v.vNormal = Vec3(0.f, 0.f, 1.f);
+	//	v.vTangent = Vec3(1.f, 0.f, 0.f);
+	//	v.vBinormal = Vec3(0.f, 1.f, 0.f);
+	//	vecVtx.push_back(v);
+
+	//	// 인덱스
+	//	if (i < iSliceCount)
+	//	{
+	//		vecIdx.push_back(0);
+	//		vecIdx.push_back(i + 2);
+	//		vecIdx.push_back(i + 1);
+	//	}
+
+	//	// 정점의 법선 벡터 다시 계산
+	//	if (i > 0)
+	//	{
+	//		size_t lastVtxIdx = vecVtx.size() - 1;
+
+	//		Vec3 vtx1 = vecVtx[lastVtxIdx - 1].vPos; // 가장 마지막 바로 전 VtxIdx
+	//		Vec3 vtx2 = vecVtx[lastVtxIdx].vPos;     // 가장 마지막에 추가된 VtxIdx
+
+	//		// 아랫면의 한 정점을 기준으로 연결된 두 벡터를 외적하여 노말 벡터를 재계산
+	//		Vec3 vNormal = (vtx1 - vecVtx[0].vPos).Cross(vtx1 - vtx2).Normalize();
+
+	//		vecVtx[lastVtxIdx - 1].vNormal = vNormal;
+	//		vecVtx[lastVtxIdx].vNormal = vNormal;
+	//	}
+	//}
 }
 
 void CAssetMgr::CreateDefaultGraphicsShader()
@@ -562,8 +633,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	Ptr<CGraphicsShader> pShader = nullptr;
 
 	pShader = new CGraphicsShader;	
-	pShader->CreateVertexShader(L"shader\\std2d.fx", "VS_Std2D");
-	pShader->CreatePixelShader(L"shader\\std2d.fx", "PS_Std2D");
+	pShader->CreateVertexShader(FXstd2d, FN_VS_std2d);
+	pShader->CreatePixelShader(FXstd2d, FN_PS_std2d);
 
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
 	pShader->SetDSType(DS_TYPE::LESS);
@@ -574,7 +645,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->AddScalarParam(SCALAR_PARAM::INT_0, "Test Param");
 	pShader->AddTexParam(TEX_PARAM::TEX_0, "Output Texture 1");
 	
-	AddAsset(L"Std2DShader", pShader.Get());
+	AddAsset(SHADER_std2d, pShader.Get());
 
 
 
@@ -582,8 +653,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// Std3DShader
 	// ===========
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(L"shader\\std3d.fx", "VS_Std3D");
-	pShader->CreatePixelShader(L"shader\\std3d.fx", "PS_Std3D");
+	pShader->CreateVertexShader(FXstd3d, FN_VS_std3d);
+	pShader->CreatePixelShader(FXstd3d, FN_PS_std3d);
 
 	pShader->SetRSType(RS_TYPE::CULL_BACK);
 	//pShader->SetRSType(RS_TYPE::WIRE_FRAME);
@@ -595,14 +666,14 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->AddTexParam(TEX_PARAM::TEX_0, "Output Texture");
 	pShader->AddTexParam(TEX_PARAM::TEX_1, "Normal Texture");
 
-	AddAsset(L"Std3DShader", pShader.Get());
+	AddAsset(SHADER_std3d, pShader.Get());
 
 	// ====================
 	// Std3D_DeferredShader
 	// ====================
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(L"shader\\std3d_deferred.fx", "VS_Std3D_Deferred");
-	pShader->CreatePixelShader(L"shader\\std3d_deferred.fx", "PS_Std3D_Deferred");
+	pShader->CreateVertexShader(FXstd3d_deferred, FN_VS_deferred);
+	pShader->CreatePixelShader(FXstd3d_deferred, FN_PS_deferred);
 
 	pShader->SetRSType(RS_TYPE::CULL_BACK);
 	pShader->SetDSType(DS_TYPE::LESS);
@@ -615,57 +686,57 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// DirLightShader
 	// ==============
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(L"shader\\light.fx", "VS_DirLight");
-	pShader->CreatePixelShader(L"shader\\light.fx", "PS_DirLight");
+	pShader->CreateVertexShader(FXlight, FN_VS_dirlight);
+	pShader->CreatePixelShader(FXlight, FN_PS_dirlight);
 
 	pShader->SetRSType(RS_TYPE::CULL_BACK);
 	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
 	pShader->SetBSType(BS_TYPE::ONE_ONE);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_LIGHTING);
 
-	AddAsset(L"DirLightShader", pShader.Get());
+	AddAsset(SHADER_dirlight, pShader.Get());
 
 	// =================
 	// PointLight Shader
 	// =================
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(L"shader\\light.fx", "VS_PointLight");
-	pShader->CreatePixelShader(L"shader\\light.fx", "PS_PointLight");
+	pShader->CreateVertexShader(FXlight, FN_VS_pointlight);
+	pShader->CreatePixelShader(FXlight, FN_PS_pointlight);
 
 	pShader->SetRSType(RS_TYPE::CULL_FRONT);
 	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
 	pShader->SetBSType(BS_TYPE::ONE_ONE);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_LIGHTING);
 
-	AddAsset(L"PointLightShader", pShader.Get());
+	AddAsset(SHADER_pointlight, pShader.Get());
 
 	// =================
 	// SpotLight Shader
 	// =================
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(L"shader\\light.fx", "VS_SpotLight");
-	pShader->CreatePixelShader(L"shader\\light.fx", "PS_SpotLight");
+	pShader->CreateVertexShader(FXlight, FN_VS_spotlight);
+	pShader->CreatePixelShader(FXlight, FN_PS_spotlight);
 
 	pShader->SetRSType(RS_TYPE::CULL_FRONT);
 	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
 	pShader->SetBSType(BS_TYPE::ONE_ONE);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_LIGHTING);
 
-	AddAsset(L"SpotLightShader", pShader.Get());
+	AddAsset(SHADER_spotlight, pShader.Get());
 
 	// ============
 	// Merge Shader
 	// ============
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(L"shader\\merge.fx", "VS_Merge");
-	pShader->CreatePixelShader(L"shader\\merge.fx", "PS_Merge");
+	pShader->CreateVertexShader(FXmerge, FN_VS_merge);
+	pShader->CreatePixelShader(FXmerge, FN_PS_merge);
 
 	pShader->SetRSType(RS_TYPE::CULL_BACK);
 	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
 	pShader->SetBSType(BS_TYPE::DEFAULT);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MERGE);
 
-	AddAsset(L"MergeShader", pShader.Get());
+	AddAsset(SHADER_merge, pShader.Get());
 
 	// ============
 	// Decal Shader
@@ -688,8 +759,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// EffectShader
 	// =================================
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(L"shader\\std2d.fx", "VS_Std2D");
-	pShader->CreatePixelShader(L"shader\\std2d.fx", "PS_Std2D_Effect");
+	pShader->CreateVertexShader(FXstd2d, FN_VS_std2d);
+	pShader->CreatePixelShader(FXstd2d, FN_PS_effect);
 
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
 	pShader->SetDSType(DS_TYPE::LESS);
@@ -697,15 +768,15 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
 
-	AddAsset(L"EffectShader", pShader.Get());
+	AddAsset(SHADER_effect, pShader.Get());
 
 
 	// =============
 	// TileMapShader
 	// =============
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(L"shader\\tilemap.fx", "VS_TileMap");
-	pShader->CreatePixelShader(L"shader\\tilemap.fx", "PS_TileMap");
+	pShader->CreateVertexShader(FXtilemap, FN_VS_tile);
+	pShader->CreatePixelShader(FXtilemap, FN_PS_tile);
 
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
 	pShader->SetDSType(DS_TYPE::LESS);
@@ -713,15 +784,15 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
 
-	AddAsset(L"TileMapShader", pShader.Get());
+	AddAsset(SHADER_tilemap, pShader.Get());
 
 	// ====================
 	// ParticleRenderShader
 	// ====================
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(L"shader\\particle.fx", "VS_Particle");
-	pShader->CreateGeometryShader(L"shader\\particle.fx", "GS_Particle");
-	pShader->CreatePixelShader(L"shader\\particle.fx", "PS_Particle");
+	pShader->CreateVertexShader(FXparticle, FN_VS_particle);
+	pShader->CreateGeometryShader(FXparticle, FN_GS_particle);
+	pShader->CreatePixelShader(FXparticle, FN_PS_particle);
 
 	pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
@@ -730,7 +801,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
 	
-	AddAsset(L"ParticleRenderShader", pShader.Get());
+	AddAsset(SHADER_particlerender, pShader.Get());
 
 	// =================================
 	// GrayFilter Shader
@@ -741,21 +812,21 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// Domain		: DOMAIN_POSTPROCESS
 	// =================================
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(L"shader\\postprocess.fx", "VS_GrayFilter");
-	pShader->CreatePixelShader(L"shader\\postprocess.fx", "PS_GrayFilter");
+	pShader->CreateVertexShader(FXpostprocess, FN_VS_grayfilter);
+	pShader->CreatePixelShader(FXpostprocess, FN_PS_grayfilter);
 
 	pShader->SetRSType(RS_TYPE::CULL_BACK);
 	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
-	AddAsset(L"GrayFilterShader", pShader.Get());
+	AddAsset(SHADER_grayfilter, pShader.Get());
 
 	// ============
 	// SkyBoxShader
 	// ============
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(L"shader\\skybox.fx", "VS_SkyBox");
-	pShader->CreatePixelShader(L"shader\\skybox.fx", "PS_SkyBox");
+	pShader->CreateVertexShader(FXskybox, FN_VS_skybox);
+	pShader->CreatePixelShader(FXskybox, FN_PS_skybox);
 
 	pShader->SetRSType(RS_TYPE::CULL_FRONT);
 
@@ -764,7 +835,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
 
-	AddAsset(L"SkyBoxShader", pShader.Get());
+	AddAsset(SHADER_skybox, pShader.Get());
 
 	// =================================
 	// Distortion Shader	
@@ -774,21 +845,21 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// Domain		: DOMAIN_POSTPROCESS
 	// =================================
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(L"shader\\postprocess.fx", "VS_Distortion");
-	pShader->CreatePixelShader(L"shader\\postprocess.fx", "PS_Distortion");
+	pShader->CreateVertexShader(FXpostprocess, FN_VS_distortion);
+	pShader->CreatePixelShader(FXpostprocess, FN_PS_distortion);
 
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
 	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
-	AddAsset(L"DistortionShader", pShader.Get());
+	AddAsset(SHADER_distortion, pShader.Get());
 
 	// =================================
 	// DebugShape Shader
 	// =================================
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(L"shader\\debug.fx", "VS_DebugShape");
-	pShader->CreatePixelShader(L"shader\\debug.fx", "PS_DebugShape");
+	pShader->CreateVertexShader(FXdebug, FN_VS_debugshape);
+	pShader->CreatePixelShader(FXdebug, FN_PS_debugshape);
 
 	pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
@@ -796,8 +867,18 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
 
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEBUG);
+	AddAsset(SHADER_debugshape, pShader.Get());
 
-	AddAsset(L"DebugShapeShader", pShader.Get());
+	// ================
+	// ShadowMap Shader
+	// ================
+	pShader = new CGraphicsShader;
+	pShader->CreateVertexShader(L"shader\\shadowmap.fx", "VS_ShadowMap");
+	pShader->CreatePixelShader(L"shader\\shadowmap.fx", "PS_ShadowMap");
+
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_SHADOWMAP);
+
+	AddAsset(L"ShadowMapShader", pShader.Get());
 }
 
 
@@ -808,48 +889,50 @@ void CAssetMgr::CreateDefaultMaterial()
 
 	// Std2DMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std2DShader"));
-	AddAsset<CMaterial>(L"Std2DMtrl", pMtrl);
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_std2d));
+	AddAsset<CMaterial>(MTRL_std2d, pMtrl);
 
 	// Std3DMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std3DShader"));
-	AddAsset<CMaterial>(L"Std3DMtrl", pMtrl);
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_std3d));
+	AddAsset<CMaterial>(MTRL_std3d, pMtrl);
 
 	// Std3D_DeferredMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std3D_DeferredShader"));
-	AddAsset<CMaterial>(L"Std3D_DeferredMtrl", pMtrl);
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_deferred));
+	AddAsset<CMaterial>(MTRL_deferred, pMtrl);
 
 	// DirLightMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DirLightShader"));
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_dirlight));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_0, FindAsset<CTexture>(L"PositionTargetTex"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_1, FindAsset<CTexture>(L"NormalTargetTex"));
-	AddAsset<CMaterial>(L"DirLightMtrl", pMtrl);
+	pMtrl->SetTexParam(TEX_PARAM::TEX_2, FindAsset<CTexture>(L"ShadowDepthTargetTex"));
+	AddAsset<CMaterial>(MTRL_dirlight, pMtrl);
 
 	// PointLightMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"PointLightShader"));
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_pointlight));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_0, FindAsset<CTexture>(L"PositionTargetTex"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_1, FindAsset<CTexture>(L"NormalTargetTex"));
-	AddAsset<CMaterial>(L"PointLightMtrl", pMtrl);
+	pMtrl->SetTexParam(TEX_PARAM::TEX_2, FindAsset<CTexture>(L"ShadowDepthTargetTex"));
+	AddAsset<CMaterial>(MTRL_pointlight, pMtrl);
 
 	// SpotLightMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"SpotLightShader"));
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_spotlight));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_0, FindAsset<CTexture>(L"PositionTargetTex"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_1, FindAsset<CTexture>(L"NormalTargetTex"));
-	AddAsset<CMaterial>(L"SpotLightMtrl", pMtrl);
+	AddAsset<CMaterial>(MTRL_spotlight, pMtrl);
 
 	// MergeMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"MergeShader"));
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_merge));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"ColorTargetTex"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"DiffuseTargetTex"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"SpecularTargetTex"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_3, CAssetMgr::GetInst()->FindAsset<CTexture>(L"EmissiveTargetTex"));
-	AddAsset<CMaterial>(L"MergeMtrl", pMtrl);
+	AddAsset<CMaterial>(MTRL_merge, pMtrl);
 
 	// DecalMtrl
 	pMtrl = new CMaterial(true);
@@ -859,38 +942,43 @@ void CAssetMgr::CreateDefaultMaterial()
 
 	// BackgroundMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std2DShader"));
-	AddAsset<CMaterial>(L"BackgroundMtrl", pMtrl);
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_std2d));
+	AddAsset<CMaterial>(MTRL_background, pMtrl);
 
 	// TileMapMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"TileMapShader"));
-	AddAsset<CMaterial>(L"TileMapMtrl", pMtrl);
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_tilemap));
+	AddAsset<CMaterial>(MTRL_tilemap, pMtrl);
 
 	// ParticleMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"ParticleRenderShader"));
-	AddAsset<CMaterial>(L"ParticleMtrl", pMtrl);
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_particlerender));
+	AddAsset<CMaterial>(MTRL_particle, pMtrl);
 
 	// SkyBoxMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"SkyBoxShader"));
-	AddAsset<CMaterial>(L"SkyBoxMtrl", pMtrl);
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_skybox));
+	AddAsset<CMaterial>(MTRL_skybox, pMtrl);
 
 	// GrayFilterMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"GrayFilterShader"));
-	AddAsset<CMaterial>(L"GrayFilterMtrl", pMtrl);
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_grayfilter));
+	AddAsset<CMaterial>(MTRL_grayfilter, pMtrl);
 
 	// DistortionMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DistortionShader"));
-	AddAsset<CMaterial>(L"DistortionMtrl", pMtrl);
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_distortion));
+	AddAsset<CMaterial>(MTRL_distortion, pMtrl);
 
 	// DebugShapeMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DebugShapeShader"));
-	AddAsset<CMaterial>(L"DebugShapeMtrl", pMtrl);
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_debugshape));
+	AddAsset<CMaterial>(MTRL_debugshape, pMtrl);
+
+	// ShadowMapMtrl
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"ShadowMapShader"));
+	AddAsset(L"ShadowMapMtrl", pMtrl);
 }
 
 
@@ -904,11 +992,11 @@ void CAssetMgr::CreateDefaultComputeShader()
 
 	// SetColorShader
 	pShader = new CSetColorShader;	
-	AddAsset(L"SetColorShader", pShader.Get());
+	AddAsset(SHADER_setcolor, pShader.Get());
 
 	// ParticleUpdateShader
 	pShader = new CParticleUpdate;
-	AddAsset(L"ParticleUpdateShader", pShader.Get());
+	AddAsset(SHADER_particleupdate, pShader.Get());
 }
 
 

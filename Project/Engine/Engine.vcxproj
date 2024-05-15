@@ -227,12 +227,26 @@ call EngineCopy.bat</Command>
     <ClInclude Include="define.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="func.h" />
+    <ClInclude Include="GenStrings.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Ptr.h" />
     <ClInclude Include="SimpleMath.h" />
     <ClInclude Include="singleton.h" />
+    <ClInclude Include="strAnim.h" />
+    <ClInclude Include="strEngineMtrl.h" />
+    <ClInclude Include="strFnShader.h" />
+    <ClInclude Include="strFx.h" />
+    <ClInclude Include="strLevel.h" />
+    <ClInclude Include="strMesh.h" />
+    <ClInclude Include="strMtrl.h" />
+    <ClInclude Include="strPref.h" />
+    <ClInclude Include="strShader.h" />
+    <ClInclude Include="strSnd.h" />
+    <ClInclude Include="strTex.h" />
+    <ClInclude Include="strTxt.h" />
     <ClInclude Include="struct.h" />
+    <ClInclude Include="UserStrings.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCameraShake.cpp" />
@@ -353,6 +367,12 @@ call EngineCopy.bat</Command>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="setcolor.fx">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="shadowmap.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>

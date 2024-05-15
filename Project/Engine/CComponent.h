@@ -35,7 +35,7 @@ public:
     inline class CSkyBox* SkyBox() { return GetOwner()->SkyBox();}
     inline class CDecal* Decal() { return GetOwner()->Decal();}
 
-    class CRenderComponent* GetRenderComponent() { return m_Owner->GetRenderComopnent(); }
+    class CRenderComponent* GetRenderComponent() { return m_Owner->GetRenderComponent(); }
 
 
     virtual void SaveToFile(FILE* _File) = 0;

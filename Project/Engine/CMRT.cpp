@@ -7,6 +7,8 @@
 CMRT::CMRT()
 	: m_RTView{}
 	, m_ClearColor{}
+	, m_RTCount(0)
+	, m_ViewPort{}
 {
 }
 
@@ -25,6 +27,12 @@ void CMRT::Create(Ptr<CTexture>* _pArrTex, UINT _RTCount, Ptr<CTexture> _DSTex)
 	}
 
 	m_DSTex = _DSTex;
+
+	// ViewPort 설정
+	m_ViewPort.MinDepth = 0.f;
+	m_ViewPort.MaxDepth = 1.f;
+	m_ViewPort.Width = m_arrRTTex[0]->GetWidth();
+	m_ViewPort.Height = m_arrRTTex[0]->GetHeight();
 }
 
 void CMRT::SetClearColor(Vec4* _arrClearColor, UINT _RTCount)
@@ -46,6 +54,9 @@ void CMRT::OMSet()
 	{
 		CONTEXT->OMSetRenderTargets(m_RTCount, m_RTView, m_DSTex->GetDSV().Get());
 	}
+
+	// ViewPort 설정
+	CONTEXT->RSSetViewports(1, &m_ViewPort);
 }
 
 void CMRT::Clear()

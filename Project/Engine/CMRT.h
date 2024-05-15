@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "CEntity.h"
 
 class CMRT :
@@ -12,6 +12,7 @@ private:
     UINT                    m_RTCount;
 
     Ptr<CTexture>           m_DSTex;
+    D3D11_VIEWPORT m_ViewPort;
 
 public:
     void Create(Ptr<CTexture>* _pArrTex, UINT _RTCount, Ptr<CTexture> _DSTex);

@@ -7,7 +7,7 @@ CDecal::CDecal()
 	: CRenderComponent(COMPONENT_TYPE::DECAL)
 	, m_bAsEmissive(false)
 {
-	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CubeMesh"));
+	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHcube));
 	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DecalMtrl"));
 }
 
@@ -42,4 +42,22 @@ void CDecal::render()
 	UpdateData();
 
 	GetMesh()->render();
+}
+
+#define TagAsEmissive "[AsEmissive]"
+
+void CDecal::SaveToFile(ofstream& fout)
+{
+	CRenderComponent::SaveToFile(fout);
+
+	fout << TagAsEmissive << endl;
+	fout << m_bAsEmissive << endl;
+}
+
+void CDecal::LoadFromFile(ifstream& fin)
+{
+	CRenderComponent::LoadFromFile(fin);
+
+	Utils::GetLineUntilString(fin, TagAsEmissive);
+	fin >> m_bAsEmissive;
 }

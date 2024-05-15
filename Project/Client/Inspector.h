@@ -1,12 +1,12 @@
-#pragma once
+ï»¿#pragma once
 #include "UI.h"
 
-// GameObject Á¤º¸
-//  - ÄÄÆ÷³ÍÆ®
-//  - ½ºÅ©¸³Æ®
+// GameObject ì •ë³´
+//  - ì»´í¬ë„ŒíŠ¸
+//  - ìŠ¤í¬ë¦½íŠ¸
 
-// Asset Á¤º¸
-//  - °¢ ¿¡¼ÂÀÇ Á¤º¸
+// Asset ì •ë³´
+//  - ê° ì—ì…‹ì˜ ì •ë³´
 
 #include <Engine/CGameObject.h>
 #include <Engine/CAsset.h>
@@ -39,6 +39,12 @@ public:
     CGameObject* GetTargetObject() { return m_TargetObject; }
 
     void RefreshScriptUI();
+
+    void ObjectName();
+    void ObjectLayer();
+    void ObjectComponent();
+
+    void CheckComponent(COMPONENT_TYPE _type);
 
 private:
     void CreateChildUI();

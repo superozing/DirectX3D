@@ -31,6 +31,7 @@ CCamera::CCamera()
 {
 	Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
 	m_AspectRatio = vResol.x / vResol.y;
+	m_Width = vResol.x;
 	SetShake();
 }
 
@@ -116,8 +117,7 @@ void CCamera::finaltick()
 	if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)
 	{
 		// 직교투영
-		Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
-		m_matProj = XMMatrixOrthographicLH(vResol.x * m_Scale, (vResol.x / m_AspectRatio) * m_Scale, 1.f, m_Far);
+		m_matProj = XMMatrixOrthographicLH(m_Width * m_Scale, (m_Width / m_AspectRatio) * m_Scale, 1.f, m_Far);
 	}
 	else
 	{
@@ -174,15 +174,15 @@ void CCamera::SortObject()
 		for (size_t j = 0; j < vecObjects.size(); ++j)
 		{
 			// 메쉬, 재질, 쉐이더 확인
-			if (!( vecObjects[j]->GetRenderComopnent()
-				&& vecObjects[j]->GetRenderComopnent()->GetMesh().Get()
-				&& vecObjects[j]->GetRenderComopnent()->GetMaterial().Get()
-				&& vecObjects[j]->GetRenderComopnent()->GetMaterial()->GetShader().Get()))
+			if (!( vecObjects[j]->GetRenderComponent()
+				&& vecObjects[j]->GetRenderComponent()->GetMesh().Get()
+				&& vecObjects[j]->GetRenderComponent()->GetMaterial().Get()
+				&& vecObjects[j]->GetRenderComponent()->GetMaterial()->GetShader().Get()))
 			{
 				continue;
 			}
 
-			SHADER_DOMAIN domain = vecObjects[j]->GetRenderComopnent()->GetMaterial()->GetShader()->GetDomain();
+			SHADER_DOMAIN domain = vecObjects[j]->GetRenderComponent()->GetMaterial()->GetShader()->GetDomain();
 
 			switch (domain)
 			{
@@ -279,11 +279,61 @@ void CCamera::Merge()
 	// Deferred 정보를 SwapChain 으로 병합
 	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
 
-	static Ptr<CMesh>	  pRectMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
+	static Ptr<CMesh>	  pRectMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect);
 	static Ptr<CMaterial> pMergeMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"MergeMtrl");
 
 	pMergeMtrl->UpdateData();
 	pRectMesh->render();
+}
+
+void CCamera::SortShadowMapObject()
+{
+	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+
+	for (int i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)
+	{
+		// 카메라가 찍도록 설정된 Layer 가 아니면 무시
+		if (false == (m_LayerCheck & (1 << i)))
+			continue;
+
+		CLayer* pLayer = pCurLevel->GetLayer(i);
+		const vector<CGameObject*>& vecObjects = pLayer->GetLayerObjects();
+		for (size_t j = 0; j < vecObjects.size(); ++j)
+		{
+			// 메쉬, 재질, 쉐이더 확인
+			if (!(vecObjects[j]->Transform()
+				&& vecObjects[j]->Transform()->IsDynamic()
+				&& vecObjects[j]->GetRenderComponent()
+				&& vecObjects[j]->GetRenderComponent()->IsDrawShadow()
+				&& vecObjects[j]->GetRenderComponent()->GetMesh().Get()
+				&& vecObjects[j]->GetRenderComponent()->GetMaterial().Get()
+				&& vecObjects[j]->GetRenderComponent()->GetMaterial()->GetShader().Get()))
+			{
+				continue;
+			}
+
+			m_vecShadow.push_back(vecObjects[j]);
+		}
+	}
+}
+
+void CCamera::render_shadowmap()
+{
+	Ptr<CMaterial> pShadowMapMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ShadowMapMtrl");
+
+	g_Transform.matView = m_matView;
+	g_Transform.matViewInv = m_matViewInv;
+	g_Transform.matProj = m_matProj;
+	g_Transform.matProjInv = m_matProjInv;
+
+	for (size_t i = 0; i < m_vecShadow.size(); ++i)
+	{
+		m_vecShadow[i]->Transform()->UpdateData();
+		pShadowMapMtrl->UpdateData();
+		m_vecShadow[i]->GetRenderComponent()->GetMesh()->render();
+	}
+
+	m_vecShadow.clear();
 }
 
 void CCamera::SaveToFile(FILE* _File)

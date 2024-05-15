@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "TextureUI.h"
 
 #include <Engine/CTexture.h>
@@ -16,7 +16,7 @@ void TextureUI::render_update()
 {
 	AssetUI::render_update();
 
-    // ÇØ´ç ÅØ½ºÃÄ ÀÌ¹ÌÁö Ãâ·Â
+    // í•´ë‹¹ í…ìŠ¤ì³ ì´ë¯¸ì§€ ì¶œë ¥
     Ptr<CTexture> pTex = (CTexture*)GetAsset().Get();
     
     string strPath = string(pTex->GetRelativePath().begin(), pTex->GetRelativePath().end());
@@ -25,7 +25,7 @@ void TextureUI::render_update()
     ImGui::SameLine();
     ImGui::InputText("##TexName", (char*)strPath.c_str(), strPath.length(), ImGuiInputTextFlags_ReadOnly);   
 
-    // ÇØ»óµµ Á¤º¸ Ãâ·Â
+    // í•´ìƒë„ ì •ë³´ ì¶œë ¥
     float Width = pTex->GetWidth();
     float Height = pTex->GetHeight();
 
@@ -42,5 +42,6 @@ void TextureUI::render_update()
     ImVec2 uv_max = ImVec2(1.0f, 1.0f);                 // Lower-right
     ImVec4 tint_col = use_text_color_for_tint ? ImGui::GetStyleColorVec4(ImGuiCol_Text) : ImVec4(1.0f, 1.0f, 1.0f, 1.0f); // No tint
     ImVec4 border_col = ImGui::GetStyleColorVec4(ImGuiCol_Border);
+    ImVec2 vScreenPos = ImGui::GetCursorScreenPos();
     ImGui::Image(pTex->GetSRV().Get(), ImVec2(150, 150), uv_min, uv_max, tint_col, border_col);
 }

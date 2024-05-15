@@ -1,10 +1,21 @@
-#pragma once
+﻿#pragma once
 
 #define TEXBackground L"texture\\Background.jpg"
 #define TEXCharacter L"texture\\Character.png"
 #define TEXEffect L"texture\\Effect.png"
 #define TEXEx L"texture\\Ex.png"
 #define TEXFighter L"texture\\Fighter.bmp"
+#define TEXIconAnim L"texture\\imgui\\icon\\IconAnim.png"
+#define TEXIconComputeShader L"texture\\imgui\\icon\\IconComputeShader.png"
+#define TEXIconFile L"texture\\imgui\\icon\\IconFile.png"
+#define TEXIconGraphicsShader L"texture\\imgui\\icon\\IconGraphicsShader.png"
+#define TEXIconLevel L"texture\\imgui\\icon\\IconLevel.png"
+#define TEXIconMaterial L"texture\\imgui\\icon\\IconMaterial.png"
+#define TEXIconMesh L"texture\\imgui\\icon\\IconMesh.png"
+#define TEXIconPrefab L"texture\\imgui\\icon\\IconPrefab.png"
+#define TEXIconSetting L"texture\\imgui\\icon\\IconSetting.png"
+#define TEXIconSound L"texture\\imgui\\icon\\IconSound.png"
+#define TEXIconStateMachine L"texture\\imgui\\icon\\IconStateMachine.png"
 #define TEXlink L"texture\\link.png"
 #define TEXnoise_01 L"texture\\noise\\noise_01.png"
 #define TEXnoise_02 L"texture\\noise\\noise_02.png"

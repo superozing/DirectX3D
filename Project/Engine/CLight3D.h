@@ -10,6 +10,7 @@ private:
     Ptr<CMesh>      m_VolumeMesh;
     Ptr<CMaterial>  m_LightMtrl;
 
+    CGameObject*    m_CamObj; // 광원 시점으로 물체를 찍기 위한 카메라
 
 public:
     const tLightInfo& GetLightInfo() { return m_Info; }
@@ -25,16 +26,18 @@ public:
     void SetLightType(LIGHT_TYPE _type);
     void SetRadius(float _Radius) { m_Info.fRadius = _Radius; }
     void SetAngle(float _Angle) { m_Info.fAngle = _Angle; }
-    void SetDir(Vec3 _Dir) { m_Info.vWorldDir = _Dir; }
+    void SetLightDir(Vec3 _Dir) { m_Info.vWorldDir = _Dir; }
 
     LIGHT_TYPE GetLightType() { return (LIGHT_TYPE)m_Info.LightType; }
     float GetRadius() { return m_Info.fRadius; }
     float GetAngle() { return m_Info.fAngle; }
-    Vec3 GetDir() { return m_Info.vWorldDir; }
+    Vec3 GetLightDir() { return m_Info.vWorldDir; }
 
 public:
     virtual void finaltick() override;
+
     void render();
+    void render_shadowdepth();
 
     virtual void SaveToFile(FILE* _File) override;
     virtual void SaveToFile(ofstream& fout) override;
