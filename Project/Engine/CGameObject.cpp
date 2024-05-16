@@ -190,11 +190,13 @@ void CGameObject::DeleteComponent(COMPONENT_TYPE _Type)
 
 void CGameObject::DeleteScript(CScript* _Script)
 {
-	CComponent* pComponent = (CComponent*)_Script;
-	pComponent->m_Owner = nullptr;
 	auto iter = find(m_vecScript.begin(), m_vecScript.end(), _Script);
-	m_vecScript.erase(iter);
-	_Script->~CScript();
+	
+	if (iter != m_vecScript.end())
+	{
+		delete (*iter);
+		m_vecScript.erase(iter);
+	}
 }
 
 
