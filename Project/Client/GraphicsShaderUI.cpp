@@ -1,5 +1,6 @@
 ﻿#include "pch.h"
 #include "GraphicsShaderUI.h"
+#include "CImGuiMgr.h"
 
 GraphicsShader::GraphicsShader()
 	: AssetUI("GraphicsShader", "##GraphicsShader", ASSET_TYPE::GRAPHICS_SHADER)
@@ -90,14 +91,49 @@ void GraphicsShader::render_update()
 		ImGui::InputText("##PS_Func", (char*)strFuncName.c_str(), strFuncName.length(), ImGuiInputTextFlags_ReadOnly);
 	}
 
+
+
 	ImGui::SeparatorText("Shader State ");
+
+
 
 	string strEnum = ToString(magic_enum::enum_name(pShader->GetTopology()));
 	if (!strEnum.empty())
 	{
 		ImGui::Text("Topology           ");
 		ImGui::SameLine();
-		ImGui::InputText("##ShaderTopology", (char*)strEnum.c_str(), strEnum.length(), ImGuiInputTextFlags_ReadOnly);
+
+		auto SelectedTopology = pShader->GetTopology();
+
+		const vector<string>& vecTopologyNames = CImGuiMgr::GetInst()->GetVecEnumTopology();
+
+		if (ImGui::BeginCombo("##ShaderTopology", (char*)strEnum.c_str()))
+		{
+			for (int i = 0; i < (int)vecTopologyNames.size(); ++i)
+			{
+				auto topologyBuffer = (D3D11_PRIMITIVE_TOPOLOGY)i;
+
+				bool isSelected = (topologyBuffer == SelectedTopology);
+
+				if (vecTopologyNames[(UINT)topologyBuffer] != "" 
+					&& ImGui::Selectable(vecTopologyNames[(UINT)topologyBuffer].c_str(), isSelected))
+				{
+					SelectedTopology = topologyBuffer;
+				}
+
+				if (isSelected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+
+			ImGui::EndCombo();
+
+			if (pShader->GetTopology() != SelectedTopology)
+			{
+				pShader->SetTopology(SelectedTopology);
+			}
+		}
 	}
 
 	strEnum = ToString(magic_enum::enum_name(pShader->GetRSType()));
@@ -105,7 +141,38 @@ void GraphicsShader::render_update()
 	{
 		ImGui::Text("Resterizer State   ");
 		ImGui::SameLine();
-		ImGui::InputText("##ResterizerState", (char*)strEnum.c_str(), strEnum.length(), ImGuiInputTextFlags_ReadOnly);
+
+		RS_TYPE SelectedType = pShader->GetRSType();
+
+		const vector<string>& vecTypeNames = CImGuiMgr::GetInst()->GetVecEnumRS();
+
+		if (ImGui::BeginCombo("##ResterizerState", (char*)strEnum.c_str()))
+		{
+			for (int i = 0; i < (int)vecTypeNames.size(); ++i)
+			{
+				RS_TYPE TypeBuffer = (RS_TYPE)i;
+
+				bool isSelected = (TypeBuffer == SelectedType);
+
+				if (vecTypeNames[(UINT)TypeBuffer] != ""
+					&& ImGui::Selectable(vecTypeNames[(UINT)TypeBuffer].c_str(), isSelected))
+				{
+					SelectedType = TypeBuffer;
+				}
+
+				if (isSelected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+
+			ImGui::EndCombo();
+
+			if (pShader->GetRSType() != SelectedType)
+			{
+				pShader->SetRSType(SelectedType);
+			}
+		}
 	}
 
 	strEnum = ToString(magic_enum::enum_name(pShader->GetDSType()));
@@ -113,7 +180,38 @@ void GraphicsShader::render_update()
 	{
 		ImGui::Text("Depth Stancil State");
 		ImGui::SameLine();
-		ImGui::InputText("##DepthStancilState", (char*)strEnum.c_str(), strEnum.length(), ImGuiInputTextFlags_ReadOnly);
+	
+		DS_TYPE SelectedType = pShader->GetDSType();
+
+		const vector<string>& vecTypeNames = CImGuiMgr::GetInst()->GetVecEnumDS();
+
+		if (ImGui::BeginCombo("##DepthStancilState", (char*)strEnum.c_str()))
+		{
+			for (int i = 0; i < (int)vecTypeNames.size(); ++i)
+			{
+				DS_TYPE TypeBuffer = (DS_TYPE)i;
+
+				bool isSelected = (TypeBuffer == SelectedType);
+
+				if (vecTypeNames[(UINT)TypeBuffer] != ""
+					&& ImGui::Selectable(vecTypeNames[(UINT)TypeBuffer].c_str(), isSelected))
+				{
+					SelectedType = TypeBuffer;
+				}
+
+				if (isSelected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+
+			ImGui::EndCombo();
+
+			if (pShader->GetDSType() != SelectedType)
+			{
+				pShader->SetDSType(SelectedType);
+			}
+		}
 	}
 
 	strEnum = ToString(magic_enum::enum_name(pShader->GetBSType()));
@@ -121,7 +219,38 @@ void GraphicsShader::render_update()
 	{
 		ImGui::Text("Blend State        ");
 		ImGui::SameLine();
-		ImGui::InputText("##BlendState", (char*)strEnum.c_str(), strEnum.length(), ImGuiInputTextFlags_ReadOnly);
+
+		BS_TYPE SelectedType = pShader->GetBSType();
+
+		const vector<string>& vecTypeNames = CImGuiMgr::GetInst()->GetVecEnumBS();
+
+		if (ImGui::BeginCombo("##BlendState", (char*)strEnum.c_str()))
+		{
+			for (int i = 0; i < (int)vecTypeNames.size(); ++i)
+			{
+				BS_TYPE TypeBuffer = (BS_TYPE)i;
+
+				bool isSelected = (TypeBuffer == SelectedType);
+
+				if (vecTypeNames[(UINT)TypeBuffer] != ""
+					&& ImGui::Selectable(vecTypeNames[(UINT)TypeBuffer].c_str(), isSelected))
+				{
+					SelectedType = TypeBuffer;
+				}
+
+				if (isSelected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+
+			ImGui::EndCombo();
+
+			if (pShader->GetBSType() != SelectedType)
+			{
+				pShader->SetBSType(SelectedType);
+			}
+		}
 	}
 
 	strEnum = ToString(magic_enum::enum_name(pShader->GetDomain()));
@@ -129,7 +258,37 @@ void GraphicsShader::render_update()
 	{
 		ImGui::Text("Shader Domain      ");
 		ImGui::SameLine();
-		ImGui::InputText("##ShaderDomain", (char*)strEnum.c_str(), strEnum.length(), ImGuiInputTextFlags_ReadOnly);
+		SHADER_DOMAIN SelectedType = pShader->GetDomain();
+
+		const vector<string>& vecTypeNames = CImGuiMgr::GetInst()->GetVecEnumShaderDomain();
+
+		if (ImGui::BeginCombo("##ShaderDomain", (char*)strEnum.c_str()))
+		{
+			for (int i = 0; i < (int)vecTypeNames.size(); ++i)
+			{
+				SHADER_DOMAIN TypeBuffer = (SHADER_DOMAIN)i;
+
+				bool isSelected = (TypeBuffer == SelectedType);
+
+				if (vecTypeNames[(UINT)TypeBuffer] != ""
+					&& ImGui::Selectable(vecTypeNames[(UINT)TypeBuffer].c_str(), isSelected))
+				{
+					SelectedType = TypeBuffer;
+				}
+
+				if (isSelected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+
+			ImGui::EndCombo();
+
+			if (pShader->GetDomain() != SelectedType)
+			{
+				pShader->SetDomain(SelectedType);
+			}
+		}
 	}
 
 }
