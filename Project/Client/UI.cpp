@@ -2,7 +2,8 @@
 #include "UI.h"
 
 #include "CImGuiMgr.h"
-
+#include "Inspector.h"
+#include "ComponentUI.h"
 
 UI::UI(const string& _strName, const string& _strID)
 	: m_strName(_strName)
@@ -226,13 +227,19 @@ bool UI::ColorSelector(const char* _label, Vec4* _col)
 
 void UI::HeaderSetting(UI* _SelectedHeader)
 {
-	if (ImGui::MenuItem("Delete Component", ""))
+	COMPONENT_TYPE Type = dynamic_cast<ComponentUI*>(_SelectedHeader)->GetType();
+
+	if (COMPONENT_TYPE::TRANSFORM != Type)
 	{
-		DeleteComponent();
+		if (ImGui::MenuItem("Delete Component", ""))
+		{
+			DeleteComponent(Type);
+		}
 	}
 }
 
-void UI::DeleteComponent()
+void UI::DeleteComponent(COMPONENT_TYPE _Type)
 {
-
+	Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
+	pInspector->DeleteComponent(_Type);
 }

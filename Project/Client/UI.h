@@ -44,7 +44,7 @@ public:
 	void SetModal(bool _Modal) { m_bModal = _Modal; }
 
 	void HeaderSetting(UI* _SelectedHeader);
-	void DeleteComponent();
+	void DeleteComponent(COMPONENT_TYPE _Type);
 
 public:
 	virtual void tick();

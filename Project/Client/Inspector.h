@@ -50,6 +50,7 @@ public:
     void SavePrefab(const string& _Directory, const string& _FileName);
 
     void CheckComponent(COMPONENT_TYPE _type);
+    void DeleteComponent(COMPONENT_TYPE _type);
 
 private:
     void CreateChildUI();
