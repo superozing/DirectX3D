@@ -186,12 +186,12 @@ void Inspector::ObjectComponent()
 	{
 		if (ImGui::MenuItem(string(ComponentList[i]).c_str()))
 		{
-			CheckComponent((COMPONENT_TYPE)i);
+			CheckTargetComponent((COMPONENT_TYPE)i);
 		}
 	}
 }
 
-void Inspector::CheckComponent(COMPONENT_TYPE _type)
+void Inspector::CheckTargetComponent(COMPONENT_TYPE _type)
 {
 	if (nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE)_type))
 	{
@@ -273,12 +273,20 @@ void Inspector::CheckComponent(COMPONENT_TYPE _type)
 	}
 }
 
-void Inspector::DeleteComponent(COMPONENT_TYPE _type)
+void Inspector::DeleteTargetComponent(COMPONENT_TYPE _type)
 {
 	if (nullptr != m_TargetObject->GetComponent(_type))
 	{
 		m_TargetObject->DeleteComponent(_type);
 	}
+
+	SetTargetObject(GetTargetObject());
+}
+
+void Inspector::DeleteTargetScript(ScriptUI* _Script)
+{
+	CScript* pScript = _Script->GetTargetScript();
+	m_TargetObject->DeleteScript(pScript);
 
 	SetTargetObject(GetTargetObject());
 }

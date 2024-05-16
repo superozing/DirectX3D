@@ -44,8 +44,9 @@ public:
     void ObjectLayer();
     void ObjectComponent();
 
-    void CheckComponent(COMPONENT_TYPE _type);
-    void DeleteComponent(COMPONENT_TYPE _type);
+    void CheckTargetComponent(COMPONENT_TYPE _type);
+    void DeleteTargetComponent(COMPONENT_TYPE _type);
+    void DeleteTargetScript(ScriptUI* _Script);
 
 private:
     void CreateChildUI();
