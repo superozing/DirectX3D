@@ -36,7 +36,7 @@ public:
     inline class CDecal* Decal() { return GetOwner()->Decal();}
 
     class CRenderComponent* GetRenderComponent() { return m_Owner->GetRenderComponent(); }
-
+    static bool IsRenderComponent(COMPONENT_TYPE _Type);
 
     virtual void SaveToFile(FILE* _File) = 0;
     virtual void SaveToFile(ofstream& fout) = 0;
