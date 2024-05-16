@@ -33,6 +33,23 @@ CCamera::CCamera()
 	m_AspectRatio = vResol.x / vResol.y;
 	m_Width = vResol.x;
 	SetShake();
+
+	m_Frustum.SetOwner(this);
+}
+
+CCamera::CCamera(const CCamera& _Other)
+	: CComponent(_Other)
+	, m_Frustum(_Other.m_Frustum)
+	, m_ProjType(_Other.m_ProjType)
+	, m_FOV(_Other.m_FOV)
+	, m_Width(_Other.m_Width)
+	, m_Scale(_Other.m_Scale)
+	, m_AspectRatio(_Other.m_AspectRatio)
+	, m_Far(_Other.m_Far)
+	, m_LayerCheck(_Other.m_LayerCheck)
+	, m_CameraPriority(-1)
+{
+	m_Frustum.SetOwner(this);
 }
 
 CCamera::~CCamera()
@@ -126,6 +143,8 @@ void CCamera::finaltick()
 	}
 
 	m_matProjInv = XMMatrixInverse(nullptr, m_matProj);
+
+	m_Frustum.finaltick();
 }
 
 void CCamera::SetCameraPriority(int _Priority)

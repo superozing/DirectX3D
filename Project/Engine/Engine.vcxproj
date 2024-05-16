@@ -187,6 +187,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CEntity.h" />
     <ClInclude Include="CAnimator2D.h" />
     <ClInclude Include="CFontMgr.h" />
+    <ClInclude Include="CFrustum.h" />
     <ClInclude Include="CFSM.h" />
     <ClInclude Include="CGameObject.h" />
     <ClInclude Include="CGC.h" />
@@ -266,6 +267,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CEntity.cpp" />
     <ClCompile Include="CAnimator2D.cpp" />
     <ClCompile Include="CFontMgr.cpp" />
+    <ClCompile Include="CFrustum.cpp" />
     <ClCompile Include="CFSM.cpp" />
     <ClCompile Include="CGameObject.cpp" />
     <ClCompile Include="CGC.cpp" />
