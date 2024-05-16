@@ -281,6 +281,21 @@ void Inspector::CheckComponent(COMPONENT_TYPE _type)
 		return;
 	}
 
+	// 두 개 이상의 렌더 컴포넌트를 추가하려고 할 시
+	if (COMPONENT_TYPE::MESHRENDER == _type || COMPONENT_TYPE::TILEMAP == _type || COMPONENT_TYPE::PARTICLESYSTEM == _type
+		|| COMPONENT_TYPE::SKYBOX == _type || COMPONENT_TYPE::DECAL == _type)
+	{
+		if (nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE::MESHRENDER))
+			|| nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE::TILEMAP))
+			|| nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE::PARTICLESYSTEM))
+			|| nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE::SKYBOX))
+			|| nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE::DECAL)))
+		{
+			MessageBoxA(nullptr, "Already contains the other render component", "Can't add more than one render component!", MB_OK);
+			return;
+		}
+	}
+
 	switch ((COMPONENT_TYPE)_type)
 	{
 	case COMPONENT_TYPE::TRANSFORM:
