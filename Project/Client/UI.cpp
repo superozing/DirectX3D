@@ -228,6 +228,8 @@ bool UI::ColorSelector(const char* _label, Vec4* _col)
 
 void UI::HeaderSetting(UI* _SelectedHeader)
 {
+	assert(nullptr != dynamic_cast<ComponentUI*>(_SelectedHeader));
+
 	COMPONENT_TYPE Type = dynamic_cast<ComponentUI*>(_SelectedHeader)->GetType();
 
 	if (COMPONENT_TYPE::SCRIPT != Type)
@@ -260,8 +262,8 @@ void UI::DeleteHeaderComponent(COMPONENT_TYPE _Type)
 	pInspector->DeleteTargetComponent(_Type);
 }
 
-void UI::DeleteHeaderScript(ScriptUI* _Script)
+void UI::DeleteHeaderScript(ScriptUI* _ScriptUI)
 {
 	Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
-	pInspector->DeleteTargetScript(_Script);
+	pInspector->DeleteTargetScript(_ScriptUI);
 }

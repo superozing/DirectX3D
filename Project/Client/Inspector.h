@@ -46,7 +46,7 @@ public:
 
     void CheckTargetComponent(COMPONENT_TYPE _type);
     void DeleteTargetComponent(COMPONENT_TYPE _type);
-    void DeleteTargetScript(ScriptUI* _Script);
+    void DeleteTargetScript(ScriptUI* _ScriptUI);
 
 private:
     void CreateChildUI();
