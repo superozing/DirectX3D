@@ -279,16 +279,11 @@ void Inspector::CheckTargetComponent(COMPONENT_TYPE _type)
 		MessageBoxA(nullptr, "Already contains the same component", "Can't add the same component multiple times!", MB_OK);
 		return;
 	}
-
+	
 	// 두 개 이상의 렌더 컴포넌트를 추가하려고 할 시
-	if (COMPONENT_TYPE::MESHRENDER == _type || COMPONENT_TYPE::TILEMAP == _type || COMPONENT_TYPE::PARTICLESYSTEM == _type
-		|| COMPONENT_TYPE::SKYBOX == _type || COMPONENT_TYPE::DECAL == _type)
+	if (COMPONENT_TYPE::MESHRENDER <= _type && _type < COMPONENT_TYPE::END)
 	{
-		if (nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE::MESHRENDER))
-			|| nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE::TILEMAP))
-			|| nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE::PARTICLESYSTEM))
-			|| nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE::SKYBOX))
-			|| nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE::DECAL)))
+		if (nullptr != m_TargetObject->GetRenderComponent())
 		{
 			MessageBoxA(nullptr, "Already contains the other render component", "Can't add more than one render component!", MB_OK);
 			return;
@@ -387,9 +382,9 @@ void Inspector::DeleteTargetComponent(COMPONENT_TYPE _type)
 	SetTargetObject(GetTargetObject());
 }
 
-void Inspector::DeleteTargetScript(ScriptUI* _Script)
+void Inspector::DeleteTargetScript(ScriptUI* _ScriptUI)
 {
-	CScript* pScript = _Script->GetTargetScript();
+	CScript* pScript = _ScriptUI->GetTargetScript();
 	m_TargetObject->DeleteScript(pScript);
 
 	SetTargetObject(GetTargetObject());

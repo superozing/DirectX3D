@@ -47,7 +47,7 @@ public:
 
 	void HeaderSetting(UI* _SelectedHeader);
 	void DeleteHeaderComponent(COMPONENT_TYPE _Type);
-	void DeleteHeaderScript(ScriptUI* _Script);
+	void DeleteHeaderScript(ScriptUI* _ScriptUI);
 
 public:
 	virtual void tick();
