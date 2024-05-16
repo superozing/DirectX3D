@@ -272,3 +272,13 @@ void Inspector::CheckComponent(COMPONENT_TYPE _type)
 		break;
 	}
 }
+
+void Inspector::DeleteComponent(COMPONENT_TYPE _type)
+{
+	if (nullptr != m_TargetObject->GetComponent(_type))
+	{
+		m_TargetObject->DeleteComponent(_type);
+	}
+
+	SetTargetObject(GetTargetObject());
+}

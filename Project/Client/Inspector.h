@@ -45,6 +45,7 @@ public:
     void ObjectComponent();
 
     void CheckComponent(COMPONENT_TYPE _type);
+    void DeleteComponent(COMPONENT_TYPE _type);
 
 private:
     void CreateChildUI();
