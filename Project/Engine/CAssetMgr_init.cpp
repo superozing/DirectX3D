@@ -64,12 +64,12 @@ void CAssetMgr::CreateDefaultMesh()
 
 	// 인덱스
 	vecIdx.push_back(0);
-	vecIdx.push_back(1);
-	vecIdx.push_back(2);
-
-	vecIdx.push_back(0);
 	vecIdx.push_back(2);
 	vecIdx.push_back(3);
+
+	vecIdx.push_back(2);
+	vecIdx.push_back(0);
+	vecIdx.push_back(1);
 	
 
 	pMesh = new CMesh(true);
@@ -887,11 +887,14 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader = new CGraphicsShader;
 	pShader->CreateVertexShader(L"shader\\tess.fx", "VS_Tess");
 	pShader->CreateHullShader(L"shader\\tess.fx", "HS_Tess");
+	pShader->CreateDomainShader(L"shader\\tess.fx", "DS_Tess");
 	pShader->CreatePixelShader(L"shader\\tess.fx", "PS_Tess");
 
 	pShader->SetRSType(RS_TYPE::WIRE_FRAME);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
 	pShader->SetTopology(D3D_PRIMITIVE_TOPOLOGY_3_CONTROL_POINT_PATCHLIST);
+
+	pShader->AddScalarParam(SCALAR_PARAM::VEC4_0, "Tess Factor");
 
 	AddAsset(L"TessShader", pShader.Get());
 }
