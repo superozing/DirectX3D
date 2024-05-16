@@ -46,6 +46,9 @@ public:
     int PrefabLayer();
     void ObjectComponent();
 
+    void CheckTargetComponent(COMPONENT_TYPE _type);
+    void DeleteTargetComponent(COMPONENT_TYPE _type);
+    void DeleteTargetScript(ScriptUI* _Script);
     void MakePrefab();
     void SavePrefab(const string& _Directory, const string& _FileName);
 

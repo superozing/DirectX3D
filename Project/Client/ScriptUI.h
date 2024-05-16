@@ -11,6 +11,7 @@ private:
 
 public:
     void SetScript(CScript* _Script);
+    CScript* GetTargetScript() { return m_TargetScript; }
 
     virtual void render_update() override;
 
