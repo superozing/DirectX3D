@@ -281,7 +281,7 @@ void Inspector::CheckTargetComponent(COMPONENT_TYPE _type)
 	}
 	
 	// 두 개 이상의 렌더 컴포넌트를 추가하려고 할 시
-	if (COMPONENT_TYPE::MESHRENDER <= _type && _type < COMPONENT_TYPE::END)
+	if (CComponent::IsRenderComponent(_type))
 	{
 		if (nullptr != m_TargetObject->GetRenderComponent())
 		{
