@@ -37,10 +37,6 @@ void CFrustum::finaltick()
 {
     Matrix matInv = m_Owner->GetProjInvMat() * m_Owner->GetViewInvMat();
 
-    Matrix viewinv = m_Owner->GetViewInvMat();
-    Matrix projinv = m_Owner->GetProjInvMat();
-
-
     Vec3 vWorld[8] = {};
     for (int i = 0; i < 8; ++i)
     {
