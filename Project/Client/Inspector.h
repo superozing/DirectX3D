@@ -43,6 +43,7 @@ public:
     void ObjectName();
     void ObjectLayer();
     void ObjectComponent();
+    void MakePrefab();
 
     void CheckComponent(COMPONENT_TYPE _type);
 

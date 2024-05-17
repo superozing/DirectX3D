@@ -44,7 +44,10 @@ void Inspector::render_update()
 
 	if (nullptr != m_TargetObject)
 	{
-		ObjectName();
+		ObjectName(); ImGui::SameLine();
+		if (ImGui::Button("Make Prefab"))
+			MakePrefab();
+
 		ObjectLayer();
 
 		if (ImGui::Button("Add Component"))
@@ -191,6 +194,7 @@ void Inspector::ObjectComponent()
 	}
 }
 
+
 void Inspector::CheckComponent(COMPONENT_TYPE _type)
 {
 	if (nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE)_type))
@@ -256,4 +260,15 @@ void Inspector::CheckComponent(COMPONENT_TYPE _type)
 	default:
 		break;
 	}
+}
+
+void Inspector::MakePrefab()
+{
+	CGameObject* pObj = GetTargetObject();
+	pObj = pObj->Clone();
+	wstring Key;
+	Key = L"prefab\\" + m_TargetObject->GetName() + L".pref";
+	Ptr<CPrefab> pPrefab = new CPrefab(pObj, false);
+	CAssetMgr::GetInst()->AddAsset<CPrefab>(Key, pPrefab.Get());
+	pPrefab->Save(Key);
 }
