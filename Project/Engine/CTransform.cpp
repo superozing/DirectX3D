@@ -94,6 +94,21 @@ void CTransform::UpdateData()
 	pCB->UpdateData();
 }
 
+void CTransform::SetWorldMat(const Matrix& _matWorld)
+{
+	m_matWorld = _matWorld;
+	Vec3 vScale, vRot, vPos;
+	Quaternion Quat;
+
+	m_matWorld.Decompose(vScale, Quat, vPos);
+	auto mat = XMMatrixRotationQuaternion(Quat);
+	vRot = DecomposeRotMat(mat);
+
+	SetRelativePos(vPos);
+	SetRelativeScale(vScale);
+	SetRelativeRotation(vRot);
+}
+
 Vec3 CTransform::GetWorldScale()
 {
 	if (m_bAbsolute)

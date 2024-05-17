@@ -138,7 +138,7 @@ void EditTransform(float* cameraView, float* cameraProjection, float* matrix, bo
     //ImGuizmo::DrawCubes(cameraView, cameraProjection, &objectMatrix[0][0], gizmoCount);
     ImGuizmo::Manipulate(cameraView, cameraProjection, mCurrentGizmoOperation, mCurrentGizmoMode, matrix, NULL, useSnap ? &snap[0] : NULL, boundSizing ? bounds : NULL, boundSizingSnap ? boundsSnap : NULL);
 
-    ImGuizmo::ViewManipulate(cameraView, _distance, ImVec2(viewManipulateRight - 128, viewManipulateTop), ImVec2(128, 128), 0x10101010);
+    //ImGuizmo::ViewManipulate(cameraView, _distance, ImVec2(viewManipulateRight - 128, viewManipulateTop), ImVec2(128, 128), 0x10101010);
     auto pos = ImGuizmo::IsOver();
     //ImGuizmo::
     if (pos) {
@@ -250,6 +250,8 @@ void RTViewPort::render_update()
 
     EditTransform(cameraView, cameraProjection, objectMatrix, true, distance);
 
+    RoRMath::Float16ToMatrix(cameraViewMat, cameraView);
+    RoRMath::Float16ToMatrix(cameraProjMat, cameraProjection);
     RoRMath::Float16ToMatrix(objmat, objectMatrix);
 
     player->Transform()->SetWorldMat(objmat);
