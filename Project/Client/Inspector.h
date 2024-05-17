@@ -45,6 +45,7 @@ public:
     void ObjectLayer();
     int PrefabLayer();
     void ObjectComponent();
+    void ObjectScript();
 
     void CheckTargetComponent(COMPONENT_TYPE _type);
     void DeleteTargetComponent(COMPONENT_TYPE _type);
