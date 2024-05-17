@@ -47,9 +47,9 @@ void EditTransform(float* cameraView, float* cameraProjection, float* matrix, bo
 
     if (editTransformDecomposition)
     {
-        if (ImGui::IsKeyPressed(ImGuiKey_T))
+        if (KEY_TAP(W))
             mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-        if (ImGui::IsKeyPressed(ImGuiKey_E))
+        if (KEY_TAP(E))
             mCurrentGizmoOperation = ImGuizmo::ROTATE;
         if (KEY_TAP(R)) // r Key
             mCurrentGizmoOperation = ImGuizmo::SCALE;
