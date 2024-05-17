@@ -27,6 +27,8 @@ void RTViewPort::tick()
 
 #include "CLevelSaveLoad.h"
 #include <Engine\CLevelMgr.h>
+#include <Engine/CKeyMgr.h>
+
 #include <Engine/CLevel.h>
 #include <Engine/CGameObject.h>
 #include <Engine/CTransform.h>
@@ -48,7 +50,7 @@ void EditTransform(float* cameraView, float* cameraProjection, float* matrix, bo
             mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
         if (ImGui::IsKeyPressed(ImGuiKey_E))
             mCurrentGizmoOperation = ImGuizmo::ROTATE;
-        if (ImGui::IsKeyPressed(ImGuiKey_R)) // r Key
+        if (KEY_TAP(R)) // r Key
             mCurrentGizmoOperation = ImGuizmo::SCALE;
         if (ImGui::RadioButton("Translate", mCurrentGizmoOperation == ImGuizmo::TRANSLATE))
             mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
@@ -229,69 +231,26 @@ void RTViewPort::render_update()
     ImGui::Separator();
 
     ImGui::End();
-    auto cameraview = g_Transform.matView;
-    auto cameraproj = g_Transform.matProj;
+    auto cameraViewMat = g_Transform.matView;
+    auto cameraProjMat = g_Transform.matProj;
     auto player = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Player");
     auto objmat = player->Transform()->GetWorldMat();
     Vec3 playerPos = player->Transform()->GetWorldPos();
     Vec3 cameraPos = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"MainCamera")->Transform()->GetWorldPos();
+
     float distance = Vec3::Distance(playerPos, cameraPos);
 
-    float cameraView[16] = {
-        cameraview._11, cameraview._12, cameraview._13, cameraview._14,
-        cameraview._21, cameraview._22, cameraview._23, cameraview._24,
-        cameraview._31, cameraview._32, cameraview._33, cameraview._34,
-        cameraview._41, cameraview._42, cameraview._43, cameraview._44,
-    };
-    float cameraProjection[16] = {
-        cameraproj._11, cameraproj._12, cameraproj._13, cameraproj._14,
-        cameraproj._21, cameraproj._22, cameraproj._23, cameraproj._24,
-        cameraproj._31, cameraproj._32, cameraproj._33, cameraproj._34,
-        cameraproj._41, cameraproj._42, cameraproj._43, cameraproj._44,
-    };
-    float objectMatrix[16] = {
-        objmat._11, objmat._12, objmat._13, objmat._14,
-        objmat._21, objmat._22, objmat._23, objmat._24,
-        objmat._31, objmat._32, objmat._33, objmat._34,
-        objmat._41, objmat._42, objmat._43, objmat._44,
-    };
-    static int lastUsing = 1;
-    for (int matId = 0; matId < gizmoCount; matId++)
-    {
-        ImGuizmo::SetID(matId);
+    float cameraView[16] = {};
+    float cameraProjection[16] = {};
+    float objectMatrix[16] = {};
 
-        EditTransform(cameraView, cameraProjection, objectMatrix, lastUsing == matId, distance);
-        if (ImGuizmo::IsUsing())
-        {
-            lastUsing = matId;
-        }
-    }
-    objmat. _11 = objectMatrix[0];
-    objmat._12 = objectMatrix[1];
-    objmat._13 = objectMatrix[2];
-    objmat._14 = objectMatrix[3];
+    RoRMath::MatrixToFloat16(cameraView, cameraViewMat);
+    RoRMath::MatrixToFloat16(cameraProjection, cameraProjMat);
+    RoRMath::MatrixToFloat16(objectMatrix, objmat);
 
-    objmat._21 = objectMatrix[4];
-    objmat._22 = objectMatrix[5];
-    objmat._23 = objectMatrix[6];
-    objmat._24 = objectMatrix[7];
+    EditTransform(cameraView, cameraProjection, objectMatrix, true, distance);
 
-    objmat._31 = objectMatrix[8];
-    objmat._32 = objectMatrix[9];
-    objmat._33 = objectMatrix[10];
-    objmat._34 = objectMatrix[11];
+    RoRMath::Float16ToMatrix(objmat, objectMatrix);
 
-    objmat._41 = objectMatrix[12];
-    objmat._42 = objectMatrix[13];
-    objmat._43 = objectMatrix[14];
-    objmat._44 = objectMatrix[15];
-    Vec3 scale;
-    Quaternion quat;
-    Vec3 pos;
-    objmat.Decompose(scale, quat, pos);
-    player->Transform()->SetRelativePos(pos);
-    player->Transform()->SetRelativeScale(scale);
-    //player->Transform()->SetDir(Vec3(quat.x / quat.w, quat.y/quat.w, quat.z/quat.w));s
-    //player->Transform()->SetRelativeRotation(Vec3(quat.x, quat.y, quat.z));
-    //player->Transform()->SetRelativePos(Vec3(objectMatrix[12], objectMatrix[13], objectMatrix[14]));
+    player->Transform()->SetWorldMat(objmat);
 }

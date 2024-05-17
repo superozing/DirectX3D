@@ -26,7 +26,18 @@ public:
     void SetRelativeScale(Vec3 _Scale) {m_vRelativeScale = _Scale;}
     void SetRelativeRotation(Vec3 _Rotation) { m_vRelativeRotation = _Rotation; }
 
-    void SetWorldMat(const Matrix _matWorld) { m_matWorld = _matWorld; }
+    void SetWorldMat(const Matrix _matWorld) { m_matWorld = _matWorld;
+        Vec3 vScale, vRot, vPos;
+        Quaternion Quat;
+
+        m_matWorld.Decompose(vScale, Quat, vPos);
+        auto mat = XMMatrixRotationQuaternion(Quat);
+        vRot = DecomposeRotMat(mat);
+
+        SetRelativePos(vPos);
+        SetRelativeScale(vScale);
+        SetRelativeRotation(vRot);
+    }
 
     Vec3 GetRelativePos() const { return m_vRelativePos; }
     Vec3 GetRelativeScale() const { return m_vRelativeScale; }
