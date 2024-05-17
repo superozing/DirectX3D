@@ -43,6 +43,7 @@ public:
     void ObjectName();
     void ObjectLayer();
     void ObjectComponent();
+    void ObjectScript();
 
     void CheckTargetComponent(COMPONENT_TYPE _type);
     void DeleteTargetComponent(COMPONENT_TYPE _type);

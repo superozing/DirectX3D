@@ -58,6 +58,10 @@ void Inspector::render_update()
 
 			ImGui::EndPopup();
 		}
+
+		ImGui::Separator();
+
+		ObjectScript();
 	}
 }
 
@@ -188,6 +192,62 @@ void Inspector::ObjectComponent()
 		{
 			CheckTargetComponent((COMPONENT_TYPE)i);
 		}
+	}
+}
+
+void Inspector::ObjectScript()
+{
+	static int CurSciprt = 0;
+	static ImGuiTextFilter filter;
+	vector<string> filteredScripts;
+	ImGui::Text("Script Filter"); ImGui::SameLine();
+	filter.Draw("##Script Filter");
+
+	auto ScriptList = magic_enum::enum_names<SCRIPT_TYPE>();
+	for (const auto& script : ScriptList)
+	{
+		// PassFilter : filter에 입력된 문자열과 비교하여 현재 텍스트가 필터를 통과하는지 확인하는 함수
+		if (filter.PassFilter(script.data()))
+		{
+			filteredScripts.push_back(string(script));
+		}
+	}
+
+	string strScript = CurSciprt < filteredScripts.size() - 1 ? filteredScripts[CurSciprt] : "";
+
+	if (ImGui::BeginCombo("##ScriptList", strScript.c_str()))
+	{
+		for (int i = 0; i < filteredScripts.size() - 1; ++i)
+		{
+			bool is_selected = (CurSciprt == i);
+
+			if (ImGui::Selectable(filteredScripts[i].c_str(), is_selected))
+			{
+				CurSciprt = i;
+				strScript = filteredScripts[CurSciprt];
+			}
+
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndCombo();
+	}
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Add Script"))
+	{
+		if (!strScript.empty())
+		{
+			auto ScriptType = magic_enum::enum_cast<SCRIPT_TYPE>(strScript);
+			if (ScriptType.has_value())
+			{
+				SCRIPT_TYPE type = ScriptType.value();
+				m_TargetObject->AddComponent(CScriptMgr::GetScript((UINT)type));
+			}
+		}
+
+		SetTargetObject(GetTargetObject());
 	}
 }
 
