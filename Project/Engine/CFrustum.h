@@ -6,7 +6,7 @@ enum class FACE
     F_NEAR,
     F_FAR,
     F_TOP,
-    F_BOTTOM,
+    F_BOT,
     F_LEFT,
     F_RIGHT,
     END
@@ -24,7 +24,8 @@ private:
     Vec4            m_arrFace[(UINT)FACE::END];
 
 public:
-    bool FrustumCheck(Vec3 _vWorldPos);
+    bool FrustumCheck(Vec3 _Center);
+    bool FrustumCheck(Vec3 _Center, float _Radius);
 
 public:
     void finaltick();

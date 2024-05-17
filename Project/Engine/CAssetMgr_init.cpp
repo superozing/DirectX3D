@@ -897,6 +897,23 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->AddScalarParam(SCALAR_PARAM::VEC4_0, "Tess Factor");
 
 	AddAsset(L"TessShader", pShader.Get());
+
+	// ================
+	// LandScape Shader
+	// ================
+	pShader = new CGraphicsShader;
+	pShader->CreateVertexShader(L"shader\\landscape.fx", "VS_LandScape");
+	pShader->CreateHullShader(L"shader\\landscape.fx", "HS_LandScape");
+	pShader->CreateDomainShader(L"shader\\landscape.fx", "DS_LandScape");
+	pShader->CreatePixelShader(L"shader\\landscape.fx", "PS_LandScape");
+
+	pShader->AddScalarParam(SCALAR_PARAM::VEC4_0, "Tess Factor");
+
+	pShader->SetRSType(RS_TYPE::WIRE_FRAME);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE); //pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
+	pShader->SetTopology(D3D_PRIMITIVE_TOPOLOGY_3_CONTROL_POINT_PATCHLIST);
+
+	AddAsset(L"LandScapeShader", pShader.Get());
 }
 
 
@@ -1002,6 +1019,11 @@ void CAssetMgr::CreateDefaultMaterial()
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"TessShader"));
 	AddAsset(L"TessMtrl", pMtrl);
+
+	// LandScapeMtrl
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"LandScapeShader"));
+	AddAsset(L"LandScapeMtrl", pMtrl);
 }
 
 

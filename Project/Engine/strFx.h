@@ -3,6 +3,7 @@
 #define FXdebug L"shader\\debug.fx"
 #define FXdecal L"shader\\decal.fx"
 #define FXfunc L"shader\\func.fx"
+#define FXlandscape L"shader\\landscape.fx"
 #define FXlight L"shader\\light.fx"
 #define FXmerge L"shader\\merge.fx"
 #define FXparticle L"shader\\particle.fx"

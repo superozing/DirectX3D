@@ -201,6 +201,10 @@ void CCamera::SortObject()
 				continue;
 			}
 
+			// 절두체 안에 존재하지 않을 경우 continue
+			/*if (!m_Frustum.FrustumCheck(vecObjects[j]->Transform()->GetWorldPos()))
+				continue;*/
+
 			SHADER_DOMAIN domain = vecObjects[j]->GetRenderComponent()->GetMaterial()->GetShader()->GetDomain();
 
 			switch (domain)
