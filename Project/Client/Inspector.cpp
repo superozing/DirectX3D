@@ -207,7 +207,7 @@ void Inspector::ObjectScript()
 	for (const auto& script : ScriptList)
 	{
 		// PassFilter : filter에 입력된 문자열과 비교하여 현재 텍스트가 필터를 통과하는지 확인하는 함수
-		if (filter.PassFilter(string(script.data()).c_str()))
+		if (filter.PassFilter(script.data()))
 		{
 			filteredScripts.push_back(string(script.data()));
 		}
