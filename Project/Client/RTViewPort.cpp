@@ -138,14 +138,7 @@ void RTViewPort::render_update()
 
     CImGuiMgr::GetInst()->GetbViewportFocused() = ImGui::IsWindowFocused(ImGuiFocusedFlags_None);
 
-	//
-	// 
-	// 
-	// 
-	// 
-	// 
-	// 
-	//
+	// IMGUIZMO
     ImGuiIO& io = ImGui::GetIO();
     
     ImGuizmo::SetOrthographic(false);
