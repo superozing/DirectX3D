@@ -51,22 +51,22 @@ void CCameraMoveScript::MoveOrthographic()
 {
 	Vec3 vPos = Transform()->GetRelativePos();
 
-	if (KEY_PRESSED(KEY::W))
+	if (KEY_PRESSED(KEY::RBTN) && KEY_PRESSED(KEY::W))
 	{
 		vPos.y += DT_ENGINE * m_CamSpeed;
 	}
 
-	if (KEY_PRESSED(KEY::S))
+	if (KEY_PRESSED(KEY::RBTN) && KEY_PRESSED(KEY::S))
 	{
 		vPos.y -= DT_ENGINE * m_CamSpeed;
 	}
 
-	if (KEY_PRESSED(KEY::A))
+	if (KEY_PRESSED(KEY::RBTN) && KEY_PRESSED(KEY::A))
 	{
 		vPos.x -= DT_ENGINE * m_CamSpeed;
 	}
 
-	if (KEY_PRESSED(KEY::D))
+	if (KEY_PRESSED(KEY::RBTN) && KEY_PRESSED(KEY::D))
 	{
 		vPos.x += DT_ENGINE * m_CamSpeed;
 	}
@@ -81,22 +81,22 @@ void CCameraMoveScript::MovePerspective()
 	Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
 	Vec3 vRight = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
 
-	if (KEY_PRESSED(KEY::W))
+	if (KEY_PRESSED(KEY::RBTN) && KEY_PRESSED(KEY::W))
 	{
 		vPos += DT_ENGINE * m_CamSpeed * vFront;
 	}
 
-	if (KEY_PRESSED(KEY::S))
+	if (KEY_PRESSED(KEY::RBTN) && KEY_PRESSED(KEY::S))
 	{
 		vPos += DT_ENGINE * m_CamSpeed * -vFront;
 	}
 
-	if (KEY_PRESSED(KEY::A))
+	if (KEY_PRESSED(KEY::RBTN) && KEY_PRESSED(KEY::A))
 	{
 		vPos += DT_ENGINE * m_CamSpeed * -vRight;
 	}
 
-	if (KEY_PRESSED(KEY::D))
+	if (KEY_PRESSED(KEY::RBTN) && KEY_PRESSED(KEY::D))
 	{
 		vPos += DT_ENGINE * m_CamSpeed * vRight;
 	}

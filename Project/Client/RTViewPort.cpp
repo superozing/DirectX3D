@@ -47,11 +47,11 @@ void EditTransform(float* cameraView, float* cameraProjection, float* matrix, bo
 
     if (editTransformDecomposition)
     {
-        if (KEY_TAP(W))
+        if (KEY_TAP(W) && KEY_NONE(RBTN))
             mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-        if (KEY_TAP(E))
+        if (KEY_TAP(E) && KEY_NONE(RBTN))
             mCurrentGizmoOperation = ImGuizmo::ROTATE;
-        if (KEY_TAP(R)) // r Key
+        if (KEY_TAP(R) && KEY_NONE(RBTN)) // r Key
             mCurrentGizmoOperation = ImGuizmo::SCALE;
         if (ImGui::RadioButton("Translate", mCurrentGizmoOperation == ImGuizmo::TRANSLATE))
             mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
@@ -71,7 +71,7 @@ void EditTransform(float* cameraView, float* cameraProjection, float* matrix, bo
             if (ImGui::RadioButton("World", mCurrentGizmoMode == ImGuizmo::WORLD))
                 mCurrentGizmoMode = ImGuizmo::WORLD;
         }
-        if (ImGui::IsKeyPressed(ImGuiKey_S))
+        if (KEY_TAP(KEY::S) && KEY_NONE(RBTN))
             useSnap = !useSnap;
         ImGui::Checkbox("##UseSnap", &useSnap);
         ImGui::SameLine();
