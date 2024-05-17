@@ -288,47 +288,55 @@ void Inspector::ObjectScript()
 	for (const auto& script : ScriptList)
 	{
 		// PassFilter : filter에 입력된 문자열과 비교하여 현재 텍스트가 필터를 통과하는지 확인하는 함수
-		if (filter.PassFilter(script.data()))
+		if (filter.PassFilter(string(script.data()).c_str()))
 		{
-			filteredScripts.push_back(string(script));
+			filteredScripts.push_back(string(script.data()));
 		}
 	}
 
-	string strScript = CurSciprt < filteredScripts.size() - 1 ? filteredScripts[CurSciprt] : "";
+	if (0 == filteredScripts.size())
+		CurSciprt = -1;
+	else
+		CurSciprt = 0;
 
-	if (ImGui::BeginCombo("##ScriptList", strScript.c_str()))
+	if (-1 != CurSciprt)
 	{
-		for (int i = 0; i < filteredScripts.size() - 1; ++i)
+		string strScript = filteredScripts[CurSciprt];
+
+		if (ImGui::BeginCombo("##ScriptList", strScript.c_str()))
 		{
-			bool is_selected = (CurSciprt == i);
-
-			if (ImGui::Selectable(filteredScripts[i].c_str(), is_selected))
+			for (int i = 0; i < filteredScripts.size(); ++i)
 			{
-				CurSciprt = i;
-				strScript = filteredScripts[CurSciprt];
+				bool is_selected = (CurSciprt == i);
+
+				if (ImGui::Selectable(filteredScripts[i].c_str(), is_selected))
+				{
+					CurSciprt = i;
+					strScript = filteredScripts[CurSciprt];
+				}
+
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
 			}
-
-			if (is_selected)
-				ImGui::SetItemDefaultFocus();
-		}
-		ImGui::EndCombo();
-	}
-
-	ImGui::SameLine();
-
-	if (ImGui::Button("Add Script"))
-	{
-		if (!strScript.empty())
-		{
-			auto ScriptType = magic_enum::enum_cast<SCRIPT_TYPE>(strScript);
-			if (ScriptType.has_value())
-			{
-				SCRIPT_TYPE type = ScriptType.value();
-				m_TargetObject->AddComponent(CScriptMgr::GetScript((UINT)type));
-			}
+			ImGui::EndCombo();
 		}
 
-		SetTargetObject(GetTargetObject());
+		ImGui::SameLine();
+
+		if (ImGui::Button("Add Script"))
+		{
+			if (!strScript.empty())
+			{
+				auto ScriptType = magic_enum::enum_cast<SCRIPT_TYPE>(strScript);
+				if (ScriptType.has_value())
+				{
+					SCRIPT_TYPE type = ScriptType.value();
+					m_TargetObject->AddComponent(CScriptMgr::GetScript((UINT)type));
+				}
+			}
+
+			SetTargetObject(GetTargetObject());
+		}
 	}
 }
 
