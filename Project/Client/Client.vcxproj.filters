@@ -286,9 +286,6 @@
     <ClInclude Include="LogUI.h">
       <Filter>02. UI\8. Log</Filter>
     </ClInclude>
-    <ClInclude Include="MessageUI.h">
-      <Filter>02. UI\8. Log</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -438,9 +435,6 @@
       <Filter>02. UI\7. Viewport</Filter>
     </ClCompile>
     <ClCompile Include="LogUI.cpp">
-      <Filter>02. UI\8. Log</Filter>
-    </ClCompile>
-    <ClCompile Include="MessageUI.cpp">
       <Filter>02. UI\8. Log</Filter>
     </ClCompile>
   </ItemGroup>
