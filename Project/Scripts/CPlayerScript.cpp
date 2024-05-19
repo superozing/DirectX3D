@@ -123,19 +123,6 @@ void CPlayerScript::tick()
 	//GamePlayStatic::DrawDebugCircle(Vec3(0.f, 0.f, 0.f), 200.f, Vec3(0.f, 1.f, 1.f), true);
 
 
-	//Log Test
-	
-	float x = vPos.x;
-	float y = vPos.y;
-	float z = vPos.z;
-
-	wstring pos;
-	pos += L"pos x = " + std::to_wstring(x) + L" ";
-	pos += L"pos y = " + std::to_wstring(y) + L" ";
-	pos += L"pos z = " + std::to_wstring(z) + L" ";
-
-	CLogMgr::GetInst()->AddTimeLog(Log_Level::WARN, pos);
-
 }
 
 void CPlayerScript::BeginOverlap(CCollider2D* _Collider

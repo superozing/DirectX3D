@@ -1,6 +1,8 @@
 ﻿#include "pch.h"
 #include "CCameraMoveScript.h"
 
+#include <Engine\CLogMgr.h>
+
 CCameraMoveScript::CCameraMoveScript()
 	: CScript((UINT)SCRIPT_TYPE::CAMERAMOVESCRIPT)
 	, m_CamSpeed(500.f)

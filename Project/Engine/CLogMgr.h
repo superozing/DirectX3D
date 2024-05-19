@@ -17,12 +17,10 @@ public:
     virtual void exit() override;
 
 public:
-    vector<tLog> GetLogvec() { return m_vecLog; }
+    vector<tLog>& GetLogs() { return m_vecLog; }
     void AddLog(Log_Level Lv, string msg);
     void AddLog(Log_Level Lv, wstring msg);
     void AddLog(tLog Log);
-    void AddTimeLog(Log_Level Lv, string msg);
-    void AddTimeLog(Log_Level Lv, wstring msg);
     void CopyLog();
     void ClearLog();
 };

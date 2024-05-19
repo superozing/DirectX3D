@@ -49,6 +49,7 @@ void CLogMgr::AddLog(Log_Level Lv, string msg)
 	Log.m_LogLv = Lv;
 	Log.m_strMsg = msg;
 
+	Log.m_dTime = CTimeMgr::GetInst()->GetAccLevelTime();
 
 	m_vecLog.push_back(Log);
 }
@@ -61,65 +62,13 @@ void CLogMgr::AddLog(Log_Level Lv, wstring msg)
 
 void CLogMgr::AddLog(tLog Log)
 {
+	Log.m_dTime = CTimeMgr::GetInst()->GetAccLevelTime();
 	m_vecLog.push_back(Log);
-}
-
-void CLogMgr::AddTimeLog(Log_Level Lv, string msg)
-{
-	tLog Log;
-
-	if (CLevelMgr::GetInst()->GetCurrentLevel()->GetState() != LEVEL_STATE::PLAY)
-	{
-		Log.m_fMin = 00.0f;
-		Log.m_fsec = 00.0f;
-	}
-	else
-	{
-		float time = g_global.g_time;
-
-		Log.m_fMin = (int)time / 60.f;
-		Log.m_fsec = (int)time % 60;
-
-	}
-
-	string time = TagOpen + std::to_string(Log.m_fMin) + TagTimedevide + std::to_string(Log.m_fsec) + TagClose;
-
-	Log.m_LogLv = Lv;
-	Log.m_strMsg = time + msg;
-
-	AddLog(Log);
-}
-
-void CLogMgr::AddTimeLog(Log_Level Lv, wstring msg)
-{
-	tLog Log;
-
-	if (CLevelMgr::GetInst()->GetCurrentLevel()->GetState() != LEVEL_STATE::PLAY)
-	{
-		Log.m_fMin = 00.0f;
-		Log.m_fsec = 00.0f;
-	}
-	else
-	{
-		float time = g_global.g_time;
-
-		Log.m_fMin = (int)time / 60.f;
-		Log.m_fsec = (int)time % 60;
-
-	}
-
-	string time = TagOpen + std::to_string(Log.m_fMin) + TagTimedevide + std::to_string(Log.m_fsec) + TagClose;
-	string Msg = ToString(msg);
-
-	Log.m_LogLv = Lv;
-	Log.m_strMsg = time + Msg;
-
-	AddLog(Log);
 }
 
 void CLogMgr::CopyLog()
 {
-	wstring strLogSavepath =CPathMgr::GetContentPath();
+	wstring strLogSavepath =CPathMgr::GetLogPath();
 	strLogSavepath += L"\\Log.txt";
 
 	ofstream fout(strLogSavepath, ofstream::out | ofstream::trunc);
@@ -158,7 +107,5 @@ void CLogMgr::CopyLog()
 
 void CLogMgr::ClearLog()
 {
-	vector<tLog> ChnageVectoer;
-
-	m_vecLog.swap(ChnageVectoer);
+	m_vecLog.clear();
 }

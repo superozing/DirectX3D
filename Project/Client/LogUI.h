@@ -6,17 +6,29 @@ class LogUI :
 {
 private:
 
-    UI* m_MessageUI;
+    vector<tLog>    m_vectLog;
+    ImVec4          m_LogColor[(UINT)Log_Level::END];
+    
     ImVec2 m_AvailableSize;
-    ImVec2 m_UISize;
+
+    int             m_iLoglvMask;
+    int             m_iLogTimeMask;
+    ImGuiTextFilter m_TextFilter;
+
 
     bool m_LoglvCheckBox[4];
+    bool m_LogTimePrint[4];
     char m_LogTextFilter[255];
 
-public:
-    ImVec2 GetAvailableSize() { return m_AvailableSize; }
-    ImVec2 GetUISize() { return m_UISize; }
+    float           m_fLastScrollY;
 
+public:
+    ImVec4 SetLogColor(tLog Log);
+    void CheckLevelMask();
+    void CheckTimeMask();
+    bool CheckSearchDisplay(string msg);
+    bool CheckLogLvDispaly(Log_Level Loglv);
+    string GetTimeMsg(double time);
     bool* GetLogLvFilter() { return m_LoglvCheckBox; }
     char*  GetLogTextFilter() { return m_LogTextFilter; }
 
