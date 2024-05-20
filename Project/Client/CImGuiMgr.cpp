@@ -172,8 +172,15 @@ FOCUS_STATE CImGuiMgr::GetFocus_release()
     }
 }
 
+#include <Engine\CKeyMgr.h>
 void CImGuiMgr::tick()
 {
+    if (KEY_PRESSED(KEY::Y))
+    {
+        ResetInspectorTarget();
+    }
+
+
     ImGui_ImplDX11_NewFrame();
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
@@ -229,6 +236,22 @@ void CImGuiMgr::AddUI(const string& _strKey, UI* _UI)
     UI* pUI = FindUI(_strKey);
     assert(!pUI);
     m_mapUI.insert(make_pair(_strKey, _UI));
+}
+
+void CImGuiMgr::ResetInspectorTarget()
+{
+    auto pUI =  FindUI("##Inspector");
+
+    if (nullptr == pUI)
+        assert(pUI);
+
+    auto pInspectUI = dynamic_cast<Inspector*>(pUI);
+
+    if (nullptr == pInspectUI)
+        assert(pInspectUI);
+
+    pInspectUI->ResetTargetObject();
+    pInspectUI->ResetTargetAsset();
 }
 
 

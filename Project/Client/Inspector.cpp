@@ -19,12 +19,12 @@
 #include "AssetUI.h"
 
 
-void Inspector::InitTargetObject()
+void Inspector::ResetTargetObject()
 {
 	SetTargetObject(nullptr);
 }
 
-void Inspector::InitTargetAsset()
+void Inspector::ResetTargetAsset()
 {
 	SetTargetAsset(nullptr);
 }

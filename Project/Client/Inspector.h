@@ -53,8 +53,8 @@ private:
     void ResizeScriptUI(UINT _Size);
 
 private:
-    void InitTargetObject();
-    void InitTargetAsset();
+    void ResetTargetObject();
+    void ResetTargetAsset();
 
 public:
     Inspector();
