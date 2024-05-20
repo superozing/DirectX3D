@@ -45,6 +45,7 @@ public:
     inline class CTileMap* TileMap() { return (CTileMap*)m_arrCom[(UINT)COMPONENT_TYPE::TILEMAP]; }
     inline class CSkyBox* SkyBox() { return (CSkyBox*)m_arrCom[(UINT)COMPONENT_TYPE::SKYBOX]; }
     inline class CDecal* Decal() { return (CDecal*)m_arrCom[(UINT)COMPONENT_TYPE::DECAL]; }
+    inline class CLandScape* LandScape() { return (CLandScape*)m_arrCom[(UINT)COMPONENT_TYPE::LANDSCAPE]; }
 
     int GetLayerIdx() { return m_iLayerIdx; }
 

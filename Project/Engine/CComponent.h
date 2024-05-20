@@ -34,6 +34,7 @@ public:
     inline class CTileMap* TileMap() { return GetOwner()->TileMap();}
     inline class CSkyBox* SkyBox() { return GetOwner()->SkyBox();}
     inline class CDecal* Decal() { return GetOwner()->Decal();}
+    inline class CLandScape* LandScape() { return GetOwner()->LandScape();}
 
     class CRenderComponent* GetRenderComponent() { return m_Owner->GetRenderComponent(); }
     static bool IsRenderComponent(COMPONENT_TYPE _Type);
