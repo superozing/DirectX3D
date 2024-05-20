@@ -22,13 +22,13 @@ private:
     float           m_fLastScrollY;
 
 public:
-    ImVec4 SetLogColor(tLog Log);
+    ImVec4 GetLogColor(tLog Log);
     
     void CheckLevelMask();
     void CheckTimeMask();
   
     bool CheckSearchDisplay(string msg);
-    bool CheckLogLvDispaly(Log_Level Loglv);
+    bool CheckLogLvDisplay(Log_Level Loglv);
     
     bool* GetLogLvFilter() { return m_LoglvCheckBox; }
     char*  GetLogTextFilter() { return m_LogTextFilter; }

@@ -33,7 +33,7 @@ LogUI::~LogUI()
 {
 }
 
-ImVec4 LogUI::SetLogColor(tLog Log)
+ImVec4 LogUI::GetLogColor(tLog Log)
 {
     ImVec4 Color;
 
@@ -61,15 +61,12 @@ void LogUI::CheckLevelMask()
 {
     if (m_LoglvCheckBox[0])
     {
-        m_iLoglvMask |= 1;
-        m_iLoglvMask |= 2;
-        m_iLoglvMask |= 4;
+        m_iLoglvMask |= (UINT)Log_Level::INFO;
+        m_iLoglvMask |= (UINT)Log_Level::WARN;
+        m_iLoglvMask |= (UINT)Log_Level::ERR;
     }
     else
     {
-        m_iLoglvMask &= 1;
-        m_iLoglvMask &= 2;
-        m_iLoglvMask &= 4;
 
         for (int i = 0; i < 3; ++i)
         {
@@ -88,17 +85,18 @@ void LogUI::CheckTimeMask()
 
     if (m_LogTimePrint[0])
     {
-        m_iLogTimeMask &= 1;
-        m_iLogTimeMask &= 2;
-        m_iLogTimeMask &= 4;
-    }
+        m_iLogTimeMask = 0;
 
-    for (int i = 0; i < 3; ++i)
+    }
+    else
     {
-        if (m_LogTimePrint[i + 1])
-            m_iLogTimeMask |= (1 << i);
-        else
-            m_iLogTimeMask &= ~(1 << i);
+        for (int i = 0; i < 3; ++i)
+        {
+            if (m_LogTimePrint[i + 1])
+                m_iLogTimeMask |= (1 << i);
+            else
+                m_iLogTimeMask &= ~(1 << i);
+        }
     }
 
     CLogMgr::GetInst()->SetTimeMask(m_iLogTimeMask);
@@ -110,7 +108,7 @@ bool LogUI::CheckSearchDisplay(string msg)
 }
 
 
-bool LogUI::CheckLogLvDispaly(Log_Level Loglv)
+bool LogUI::CheckLogLvDisplay(Log_Level Loglv)
 {
     return (UINT)Loglv & m_iLoglvMask;
 }
@@ -131,15 +129,10 @@ void LogUI::render_update()
     {
         CLogMgr::GetInst()->CopyLog();
     }
-    ImGui::PopStyleColor(3);
 
     ImGui::SameLine();
 
-
     // 삭제 버튼
-    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.3f, 0.3f, 0.3f, 1.0f)); // 기본 배경색
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(1.f, 0.f, 0.f, 1.0f)); // 호버 배경색도 기본 배경색과 동일하게 설정
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(1.f, 0.f, 0.f, 1.0f));
     if (ImGui::Button("DeleteLog"))
     {
         CLogMgr::GetInst()->ClearLog();
@@ -161,14 +154,14 @@ void LogUI::render_update()
 
     if (ImGui::Checkbox("Info", &m_LoglvCheckBox[1]))
     {
-        if (m_LoglvCheckBox[0])
+        if (m_LoglvCheckBox[1])
             m_LoglvCheckBox[0] = false;
     }
     ImGui::SameLine();
 
     if (ImGui::Checkbox("Warn", &m_LoglvCheckBox[2]))
     {
-        if (m_LoglvCheckBox[0])
+        if (m_LoglvCheckBox[2])
             m_LoglvCheckBox[0] = false;
     }
 
@@ -176,7 +169,7 @@ void LogUI::render_update()
 
     if (ImGui::Checkbox("Error", &m_LoglvCheckBox[3]))
     {
-        if (m_LoglvCheckBox[0])
+        if (m_LoglvCheckBox[3])
             m_LoglvCheckBox[0] = false;
     }
 
@@ -198,21 +191,21 @@ void LogUI::render_update()
     
     if (ImGui::Checkbox("Sec", &m_LogTimePrint[1]))
     {
-        if (m_LogTimePrint[0])
+        if (m_LogTimePrint[1])
             m_LogTimePrint[0] = false;
     }
     ImGui::SameLine();
 
     if (ImGui::Checkbox("Min", &m_LogTimePrint[2]))
     {
-        if (m_LogTimePrint[0])
+        if (m_LogTimePrint[2])
             m_LogTimePrint[0] = false;
     }
     ImGui::SameLine();
 
     if (ImGui::Checkbox("Hour", &m_LogTimePrint[3]))
     {
-        if (m_LogTimePrint[0])
+        if (m_LogTimePrint[3])
             m_LogTimePrint[0] = false;
     }
 
@@ -268,7 +261,7 @@ void LogUI::render_update()
 
             SearchDisplay =  CheckSearchDisplay(m_vectLog[row].m_strMsg);
 
-            ColorDisplay = CheckLogLvDispaly(m_vectLog[row].m_LogLv);
+            ColorDisplay = CheckLogLvDisplay(m_vectLog[row].m_LogLv);
 
            if (SearchDisplay && ColorDisplay)
            { 
@@ -287,7 +280,7 @@ void LogUI::render_update()
 
                 ImGui::TableNextRow();
                 ImGui::TableSetColumnIndex(0);
-                ImGui::TextColored(SetLogColor(m_vectLog[row]), m_vectLog[row].m_strMsg.c_str());
+                ImGui::TextColored(GetLogColor(m_vectLog[row]), m_vectLog[row].m_strMsg.c_str());
            }
             
 
