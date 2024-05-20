@@ -6,6 +6,10 @@
 class SkyBoxUI :
     public ComponentUI
 {
+private:
+
+    int     m_iSkyBoxTypeLv;
+
 public:
     virtual void render_update() override;
 public:
