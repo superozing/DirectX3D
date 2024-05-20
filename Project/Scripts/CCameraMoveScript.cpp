@@ -39,11 +39,11 @@ void CCameraMoveScript::tick()
 
 	// 줌 인, 줌 아웃
 	if (WHEEL_CHECK(WHEEL_UP)) {
-		Camera()->SetFOV(Camera()->GetFOV() - m_fZoomSpeed * DT);
+		Camera()->SetFOV(Camera()->GetFOV() - m_fZoomSpeed * DT_ENGINE);
 	}
 
 	if (WHEEL_CHECK(WHEEL_DOWN)) {
-		Camera()->SetFOV(Camera()->GetFOV() + m_fZoomSpeed * DT);
+		Camera()->SetFOV(Camera()->GetFOV() + m_fZoomSpeed * DT_ENGINE);
 	}
 }
 
