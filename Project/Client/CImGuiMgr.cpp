@@ -172,15 +172,8 @@ FOCUS_STATE CImGuiMgr::GetFocus_release()
     }
 }
 
-#include <Engine\CKeyMgr.h>
 void CImGuiMgr::tick()
 {
-    if (KEY_PRESSED(KEY::Y))
-    {
-        ResetInspectorTarget();
-    }
-
-
     ImGui_ImplDX11_NewFrame();
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
