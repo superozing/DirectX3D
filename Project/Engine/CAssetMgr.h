@@ -127,6 +127,11 @@ inline void CAssetMgr::AddAsset(const wstring& _strKey, T* _Asset)
     ASSET_TYPE Type = GetAssetType<T>();
 
     map<wstring, Ptr<CAsset>>::iterator iter = m_mapAsset[(UINT)Type].find(_strKey);
+    if (iter != m_mapAsset[(UINT)Type].end())
+    {
+        DeleteAsset(Type, iter->first);
+        iter = m_mapAsset[(UINT)Type].end();
+    }
     assert(iter == m_mapAsset[(UINT)Type].end());
     
     _Asset->SetKey(_strKey);

@@ -45,7 +45,9 @@ public:
     void ObjectLayer();
     int PrefabLayer();
     void ObjectComponent();
+
     void MakePrefab();
+    void SavePrefab(const string& _Directory, const string& _FileName);
 
     void CheckComponent(COMPONENT_TYPE _type);
 

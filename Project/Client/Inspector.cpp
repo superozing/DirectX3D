@@ -57,13 +57,33 @@ void Inspector::render_update()
 		if (!m_bPrefab)
 		{
 			ImGui::SameLine();
-			if (ImGui::Button("Make Prefab"))
-				MakePrefab();
+			if (ImGui::Button("Save Prefab"))
+			{
+				wstring ContentPath = CPathMgr::GetContentPath();
+				ContentPath += L"prefab\\";
+
+				wstring FileName = m_TargetObject->GetName();
+				FileName += L".pref";
+
+				SavePrefab(ToString(ContentPath), ToString(FileName));
+			}
 
 			ObjectLayer();
 		}
 		else
 		{
+			ImGui::SameLine();
+			if (ImGui::Button("Save Prefab"))
+			{
+				wstring ContentPath = CPathMgr::GetContentPath();
+				ContentPath += L"prefab\\";
+
+				wstring FileName = m_TargetObject->GetName();
+				FileName += L".pref";
+
+				SavePrefab(ToString(ContentPath), ToString(FileName));
+			}
+
 			int LayerIdx = PrefabLayer(); ImGui::SameLine();
 
 			if (ImGui::Button("Spawn Prefab"))
@@ -337,4 +357,16 @@ void Inspector::MakePrefab()
 	Ptr<CPrefab> pPrefab = new CPrefab(pObj, false);
 	CAssetMgr::GetInst()->AddAsset<CPrefab>(Key, pPrefab.Get());
 	pPrefab->Save(Key);
+}
+
+void Inspector::SavePrefab(const string& _Directory, const string& _FileName)
+{
+	filesystem::path file_path = filesystem::path(_Directory) / _FileName;
+
+	if (filesystem::exists(file_path))
+	{
+		filesystem::remove(file_path);
+	}
+
+	MakePrefab();
 }
