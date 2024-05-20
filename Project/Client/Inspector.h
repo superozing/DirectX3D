@@ -55,6 +55,7 @@ private:
 
 public:
     Inspector();
+    Inspector(CGameObject* _Prefab);
     ~Inspector();
 };
 
