@@ -198,7 +198,7 @@ void CCreateTempLevel::CreateTempLevel()
 	CCollisionMgr::GetInst()->LayerCheck((UINT)LAYER::LAYER_PLAYER, (UINT)LAYER::LAYER_MONSTER);
 	CCollisionMgr::GetInst()->LayerCheck((UINT)LAYER::LAYER_MONSTER, (UINT)LAYER::LAYER_MONSTER);
 
-	CLevelMgr::GetInst()->ChangeLevel(pTempLevel, LEVEL_STATE::STOP);
+	GamePlayStatic::ChangeLevel(pTempLevel, LEVEL_STATE::STOP);
 
 	CLevelSaveLoad::SaveLevel(pTempLevel, L"level\\temp.lv");
 

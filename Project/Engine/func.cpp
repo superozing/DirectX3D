@@ -2,6 +2,7 @@
 
 #include "CTaskMgr.h"
 #include "CRenderMgr.h"
+#include "CLevel.h"
 
 void GamePlayStatic::SpawnGameObject(CGameObject* _Target, int _LayerIdx)
 {
@@ -130,6 +131,17 @@ void GamePlayStatic::DrawDebugCone(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWo
 	info.fDuration = _Duration;
 
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
+}
+
+void GamePlayStatic::ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextLevelStartState)
+{
+	tTask task = {};
+
+	task.Type = TASK_TYPE::CHANGE_LEVEL;
+	task.Param_1 = (DWORD_PTR)_NextLevel;
+	task.Param_2 = (DWORD_PTR)_NextLevelStartState;
+
+	CTaskMgr::GetInst()->AddTask(task);
 }
 
 void GamePlayStatic::DrawDebugCircle(const Matrix& _WorldMat, Vec3 _Color, bool _bDepthTest, float _Duration)

@@ -17,7 +17,6 @@ public:
     virtual void exit() override;
 
 public:
-    void ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextStartState);
     void ChangeLevelState(LEVEL_STATE _State);
 
 private:

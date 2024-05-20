@@ -63,17 +63,6 @@ void CLevelMgr::exit()
 {
 }
 
-void CLevelMgr::ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextLevelStartState)
-{
-	tTask task = {};
-
-	task.Type = TASK_TYPE::CHANGE_LEVEL;
-	task.Param_1 = (DWORD_PTR)_NextLevel;	
-	task.Param_2 = (DWORD_PTR)_NextLevelStartState;
-
-	CTaskMgr::GetInst()->AddTask(task);	
-}
-
 void CLevelMgr::ChangeLevelState(LEVEL_STATE _State)
 {
 	tTask task = {};

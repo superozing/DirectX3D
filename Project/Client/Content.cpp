@@ -341,7 +341,7 @@ void Content::DirectoryUI()
 				CLevel* pLevel = new CLevel;
 				pLevel->SetName(szSelect);
 				CLevelSaveLoad::SaveLevel(pLevel, CPathMgr::GetRelativePath(szSelect));
-				CLevelMgr::GetInst()->ChangeLevel(pLevel, LEVEL_STATE::STOP);
+				GamePlayStatic::ChangeLevel(pLevel, LEVEL_STATE::STOP);
 			}
 			SetTargetDirectory("level");
 		}

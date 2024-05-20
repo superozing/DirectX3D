@@ -9,6 +9,7 @@ string ToString(const wstring& _str);
 wstring ToWString(const string& _str);
 string ToString(const std::string_view& _sv);
 wstring ToWString(const std::string_view& _sv);
+#include "CLevel.h"
 
 namespace RoRMath
 {
@@ -86,6 +87,8 @@ namespace GamePlayStatic
 			};
 		}
 	};
+
+	void ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextLevelStartState);
 }
 
 namespace Utils

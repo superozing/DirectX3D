@@ -46,7 +46,7 @@ void RTViewPort::render_update()
 			auto extension = path(str).extension().string();
 			if (extension == ".lv") {
 				auto pLevel = CLevelSaveLoad::LoadLevel(str);
-				CLevelMgr::GetInst()->ChangeLevel(pLevel, LEVEL_STATE::STOP);
+				GamePlayStatic::ChangeLevel(pLevel, LEVEL_STATE::STOP);
 			}
 		}
 
