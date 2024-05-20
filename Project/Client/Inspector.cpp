@@ -19,6 +19,16 @@
 #include "AssetUI.h"
 
 
+void Inspector::InitTargetObject()
+{
+	SetTargetObject(nullptr);
+}
+
+void Inspector::InitTargetAsset()
+{
+	SetTargetAsset(nullptr);
+}
+
 Inspector::Inspector()
 	: UI("Inspector", "##Inspector")
 	, m_TargetObject(nullptr)
@@ -35,6 +45,11 @@ Inspector::~Inspector()
 
 void Inspector::tick()
 {
+	if (KEY_PRESSED(KEY::Y))
+	{
+		InitTargetObject();
+		InitTargetAsset();
+	}
 }
 
 void Inspector::render_update()
