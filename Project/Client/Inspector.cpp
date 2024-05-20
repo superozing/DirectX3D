@@ -15,6 +15,7 @@
 #include "Light2DUI.h"
 #include "Animator2DUI.h"
 #include "ScriptUI.h"
+#include "SkyBoxUI.h"
 
 #include "AssetUI.h"
 

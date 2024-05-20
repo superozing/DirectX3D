@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "Inspector.h"
 
 #include "ScriptUI.h"
@@ -21,6 +21,7 @@ void Inspector::CreateChildUI()
 #include "PrefabUI.h"
 #include "CameraUI.h"
 #include "Light3DUI.h"
+#include "SkyBoxUI.h"
 
 void Inspector::CreateComponentUI()
 {
@@ -51,6 +52,10 @@ void Inspector::CreateComponentUI()
 	m_arrComUI[(UINT)COMPONENT_TYPE::LIGHT3D] = new Light3DUI;
 	m_arrComUI[(UINT)COMPONENT_TYPE::LIGHT3D]->Deactivate();
 	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::LIGHT3D]);
+
+	m_arrComUI[(UINT)COMPONENT_TYPE::SKYBOX] = new SkyBoxUI;
+	m_arrComUI[(UINT)COMPONENT_TYPE::SKYBOX]->Deactivate();
+	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::SKYBOX]);
 
 }
 

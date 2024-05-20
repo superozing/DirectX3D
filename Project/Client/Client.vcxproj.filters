@@ -134,6 +134,9 @@
     <Filter Include="02. UI\7. Viewport">
       <UniqueIdentifier>{da2e8217-b280-4ad3-a4c6-87441e1d37b5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. UI\3. Inspector\ComponentUI\SkyBox">
+      <UniqueIdentifier>{30fe944e-5329-450b-b146-8c22804ba80b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -279,6 +282,9 @@
     </ClInclude>
     <ClInclude Include="RTViewPort.h">
       <Filter>02. UI\7. Viewport</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyBoxUI.h">
+      <Filter>02. UI\3. Inspector\ComponentUI\SkyBox</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -427,6 +433,9 @@
     </ClCompile>
     <ClCompile Include="RTViewPort.cpp">
       <Filter>02. UI\7. Viewport</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyBoxUI.cpp">
+      <Filter>02. UI\3. Inspector\ComponentUI\SkyBox</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
