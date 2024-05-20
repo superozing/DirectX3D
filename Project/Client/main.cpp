@@ -89,6 +89,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     CCreateTempLevel::Init();
     CCreateTempLevel::CreateTempLevel();
 
+    CImGuiMgr::GetInst()->begin();
+
     CKeyMgr::GetInst()->m_FocusCallback = &CImGuiMgr::GetFocus_debug;
 #else
     CKeyMgr::GetInst()->m_FocusCallback = &CImGuiMgr::GetFocus_release;

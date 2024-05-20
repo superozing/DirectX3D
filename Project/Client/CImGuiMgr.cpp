@@ -153,6 +153,20 @@ FOCUS_STATE CImGuiMgr::GetFocus_release()
     }
 }
 
+void CImGuiMgr::begin()
+{
+    Outliner* pOutlinerUI = (Outliner*)FindUI("##Outliner");
+
+    if (pOutlinerUI)
+    {
+        pOutlinerUI->ResetCurrentLevel();
+    }
+    else
+    {
+        MessageBox(nullptr, L"Outliner 초기화 실패", L"초기화 실패", MB_OK);
+    }
+}
+
 void CImGuiMgr::tick()
 {
     ImGui_ImplDX11_NewFrame();
