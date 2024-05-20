@@ -23,8 +23,8 @@ void PrefabUI::render_update()
 
 	Ptr<CPrefab> pPrefab = (CPrefab*)GetAsset().Get();
 	string strPath = ToString(pPrefab->GetRelativePath());
-	//CGameObject* pObj = pPrefab->Instantiate();
-	CGameObject* pObj = pPrefab->GetProtoObject();
+	CGameObject* pObj = pPrefab->Instantiate();
+	//CGameObject* pObj = pPrefab->GetProtoObject();
 	//ImGui::Text("Prefab");
 	//ImGui::SameLine();
 	//ImGui::InputText("##PrefabName", (char*)strPath.c_str(), strPath.length(), ImGuiInputTextFlags_ReadOnly);

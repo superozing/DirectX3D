@@ -28,14 +28,6 @@ Inspector::Inspector()
 	CreateChildUI();
 }
 
-Inspector::Inspector(CGameObject* _Prefab)
-	: UI("PrefabInspector", "##PrefabInspector")
-	, m_TargetObject(nullptr)
-	, m_arrComUI{}
-{
-	CreateChildUI();
-}
-
 Inspector::~Inspector()
 {
 
