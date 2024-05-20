@@ -27,7 +27,6 @@ LogUI::LogUI()
     m_LogColor[(UINT)Log_Level::WARN] = ImVec4(1.f, 1.f, 0.f, 1.0f);
     m_LogColor[(UINT)Log_Level::ERR] = ImVec4(1.f, 0.f, 0.f, 1.0f);
 
-
 }
 
 LogUI::~LogUI()
@@ -85,6 +84,8 @@ void LogUI::CheckLevelMask()
 void LogUI::CheckTimeMask()
 {
 
+    m_iLogTimeMask = CLogMgr::GetInst()->GetTimeMask();
+
     if (m_LogTimePrint[0])
     {
         m_iLogTimeMask &= 1;
@@ -99,6 +100,8 @@ void LogUI::CheckTimeMask()
         else
             m_iLogTimeMask &= ~(1 << i);
     }
+
+    CLogMgr::GetInst()->SetTimeMask(m_iLogTimeMask);
 }
 
 bool LogUI::CheckSearchDisplay(string msg)
@@ -110,34 +113,6 @@ bool LogUI::CheckSearchDisplay(string msg)
 bool LogUI::CheckLogLvDispaly(Log_Level Loglv)
 {
     return (UINT)Loglv & m_iLoglvMask;
-}
-
-string LogUI::GetTimeMsg(double time)
-{
-    string strTime;
-
-    int iTotalSec = time;
-    int iHour = iTotalSec / 3600;
-    int iSubHour = iTotalSec % 3600;
-    int iMinute = iSubHour / 60;
-    int iSecond = iSubHour % 60;
-
-    if (m_iLogTimeMask & 4)
-    {
-        strTime += "[H:" + std::to_string(iHour) + "]";
-    }
-
-    if (m_iLogTimeMask & 2)
-    {
-        strTime += "[M:" + std::to_string(iMinute) + "]";
-    }
-
-    if (m_iLogTimeMask & 1)
-    {
-        strTime += "[S:" + std::to_string(iSecond) + "]";
-    }
-
-    return strTime;
 }
 
 void LogUI::tick()
@@ -301,12 +276,14 @@ void LogUI::render_update()
 
              if (m_iLogTimeMask > 0)
              {
-                 temp += GetTimeMsg(m_vectLog[row].m_dTime) + " ";
+                 
+
+                 temp += CLogMgr::GetInst()->GetTimeMsg(m_vectLog[row].m_dTime, m_iLogTimeMask) + " ";
 
                  temp += m_vectLog[row].m_strMsg.c_str();
                  m_vectLog[row].m_strMsg = temp;
              }
-
+             
 
                 ImGui::TableNextRow();
                 ImGui::TableSetColumnIndex(0);

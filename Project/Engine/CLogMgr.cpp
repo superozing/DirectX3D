@@ -18,6 +18,7 @@
 
 
 CLogMgr::CLogMgr()
+	: m_LogTimeMask(0)
 {
 
 }
@@ -66,6 +67,34 @@ void CLogMgr::AddLog(tLog Log)
 	m_vecLog.push_back(Log);
 }
 
+string CLogMgr::GetTimeMsg(double time, int TimeMask)
+{
+	string strTime;
+
+	int iTotalSec = time;
+	int iHour = iTotalSec / 3600;
+	int iSubHour = iTotalSec % 3600;
+	int iMinute = iSubHour / 60;
+	int iSecond = iSubHour % 60;
+
+	if (TimeMask & 4)
+	{
+		strTime += "[H:" + std::to_string(iHour) + "]";
+	}
+
+	if (TimeMask & 2)
+	{
+		strTime += "[M:" + std::to_string(iMinute) + "]";
+	}
+
+	if (TimeMask & 1)
+	{
+		strTime += "[S:" + std::to_string(iSecond) + "]";
+	}
+
+	return strTime;
+}
+
 void CLogMgr::CopyLog()
 {
 	wstring strLogSavepath =CPathMgr::GetLogPath();
@@ -98,6 +127,8 @@ void CLogMgr::CopyLog()
 		default:
 			break;
 		}
+
+		Log += " " + GetTimeMsg(m_vecLog[i].m_dTime, m_LogTimeMask);
 
 		Log += "  " + m_vecLog[i].m_strMsg;
 
