@@ -41,8 +41,8 @@ void CAssetMgr::AddAsset(const wstring& _strKey, CAsset* _Asset)
 
 	if (iter != m_mapAsset[(UINT)Type].end())
 	{
-		DeleteAsset(Type, iter->first);
-		iter = m_mapAsset[(UINT)Type].end();
+		iter->second = _Asset;
+		return;
 	}
 	assert(iter == m_mapAsset[(UINT)Type].end());
 
