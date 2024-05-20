@@ -148,6 +148,7 @@ void RTViewPort::render_update()
     auto cameraViewMat = g_Transform.matView;
     auto cameraProjMat = g_Transform.matProj;
     auto player = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Player");
+    if (player == nullptr) return;
     auto objmat = player->Transform()->GetWorldMat();
     Vec3 playerPos = player->Transform()->GetWorldPos();
     Vec3 cameraPos = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"MainCamera")->Transform()->GetWorldPos();
