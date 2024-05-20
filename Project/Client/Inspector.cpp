@@ -58,6 +58,10 @@ void Inspector::render_update()
 
 			ImGui::EndPopup();
 		}
+
+		ImGui::Separator();
+
+		ObjectScript();
 	}
 }
 
@@ -186,17 +190,91 @@ void Inspector::ObjectComponent()
 	{
 		if (ImGui::MenuItem(string(ComponentList[i]).c_str()))
 		{
-			CheckComponent((COMPONENT_TYPE)i);
+			CheckTargetComponent((COMPONENT_TYPE)i);
 		}
 	}
 }
 
-void Inspector::CheckComponent(COMPONENT_TYPE _type)
+void Inspector::ObjectScript()
+{
+	static int CurSciprt = 0;
+	static ImGuiTextFilter filter;
+	vector<string> filteredScripts;
+	ImGui::Text("Script Filter"); ImGui::SameLine();
+	filter.Draw("##Script Filter");
+
+	auto ScriptList = magic_enum::enum_names<SCRIPT_TYPE>();
+	for (const auto& script : ScriptList)
+	{
+		// PassFilter : filter에 입력된 문자열과 비교하여 현재 텍스트가 필터를 통과하는지 확인하는 함수
+		if (filter.PassFilter(script.data()))
+		{
+			filteredScripts.push_back(string(script.data()));
+		}
+	}
+
+	if (0 == filteredScripts.size())
+		CurSciprt = -1;
+	else
+		CurSciprt = 0;
+
+	if (-1 != CurSciprt)
+	{
+		string strScript = filteredScripts[CurSciprt];
+
+		if (ImGui::BeginCombo("##ScriptList", strScript.c_str()))
+		{
+			for (int i = 0; i < filteredScripts.size(); ++i)
+			{
+				bool is_selected = (CurSciprt == i);
+
+				if (ImGui::Selectable(filteredScripts[i].c_str(), is_selected))
+				{
+					CurSciprt = i;
+					strScript = filteredScripts[CurSciprt];
+				}
+
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+			}
+			ImGui::EndCombo();
+		}
+
+		ImGui::SameLine();
+
+		if (ImGui::Button("Add Script"))
+		{
+			if (!strScript.empty())
+			{
+				auto ScriptType = magic_enum::enum_cast<SCRIPT_TYPE>(strScript);
+				if (ScriptType.has_value())
+				{
+					SCRIPT_TYPE type = ScriptType.value();
+					m_TargetObject->AddComponent(CScriptMgr::GetScript((UINT)type));
+				}
+			}
+
+			SetTargetObject(GetTargetObject());
+		}
+	}
+}
+
+void Inspector::CheckTargetComponent(COMPONENT_TYPE _type)
 {
 	if (nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE)_type))
 	{
 		MessageBoxA(nullptr, "Already contains the same component", "Can't add the same component multiple times!", MB_OK);
 		return;
+	}
+	
+	// 두 개 이상의 렌더 컴포넌트를 추가하려고 할 시
+	if (CComponent::IsRenderComponent(_type))
+	{
+		if (nullptr != m_TargetObject->GetRenderComponent())
+		{
+			MessageBoxA(nullptr, "Already contains the other render component", "Can't add more than one render component!", MB_OK);
+			return;
+		}
 	}
 
 	switch ((COMPONENT_TYPE)_type)
@@ -256,4 +334,22 @@ void Inspector::CheckComponent(COMPONENT_TYPE _type)
 	default:
 		break;
 	}
+}
+
+void Inspector::DeleteTargetComponent(COMPONENT_TYPE _type)
+{
+	if (nullptr != m_TargetObject->GetComponent(_type))
+	{
+		m_TargetObject->DeleteComponent(_type);
+	}
+
+	SetTargetObject(GetTargetObject());
+}
+
+void Inspector::DeleteTargetScript(ScriptUI* _ScriptUI)
+{
+	CScript* pScript = _ScriptUI->GetTargetScript();
+	m_TargetObject->DeleteScript(pScript);
+
+	SetTargetObject(GetTargetObject());
 }

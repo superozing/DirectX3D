@@ -27,7 +27,10 @@ public:
     void render();
 
 public:
-    void AddComponent(CComponent* _Comonent);
+    void AddComponent(CComponent* _Component);
+    void DeleteComponent(COMPONENT_TYPE _Type);
+    void DeleteScript(CScript* _Script);
+
     CComponent* GetComponent(COMPONENT_TYPE _Type) { return m_arrCom[(UINT)_Type]; }
     class CRenderComponent* GetRenderComponent() { return m_RenderCom; }
 

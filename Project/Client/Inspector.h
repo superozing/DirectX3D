@@ -43,8 +43,11 @@ public:
     void ObjectName();
     void ObjectLayer();
     void ObjectComponent();
+    void ObjectScript();
 
-    void CheckComponent(COMPONENT_TYPE _type);
+    void CheckTargetComponent(COMPONENT_TYPE _type);
+    void DeleteTargetComponent(COMPONENT_TYPE _type);
+    void DeleteTargetScript(ScriptUI* _ScriptUI);
 
 private:
     void CreateChildUI();
