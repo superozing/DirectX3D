@@ -45,11 +45,6 @@ Inspector::~Inspector()
 
 void Inspector::tick()
 {
-	if (KEY_PRESSED(KEY::Y))
-	{
-		InitTargetObject();
-		InitTargetAsset();
-	}
 }
 
 void Inspector::render_update()
