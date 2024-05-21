@@ -133,7 +133,7 @@ void SkyBoxUI::render_update()
 	
 	if (pCubeTex != nullptr)
 	{ 
-		ImGui::Image(pCubeTex->GetSRV().Get(), ImVec2(SkyBoxUISize.x, 150), uv_min, uv_max, tint_col, border_col);
+		//ImGui::Image(pCubeTex->GetSRV().Get(), ImVec2(SkyBoxUISize.x, 150), uv_min, uv_max, tint_col, border_col);
 		
 		m_strTextureName[1] = ToString(pCubeTex.Get()->GetKey());
 
