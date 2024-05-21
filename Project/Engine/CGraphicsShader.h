@@ -10,12 +10,16 @@ struct tScalarParam
     float           Max;
     bool            View;
     string          Tooltip;
+
+    bool            IsUse;
 };
 
 struct tTexParam
 {
     TEX_PARAM       Type;
     string          Desc;
+
+    bool            IsUse;
 };
 
 
@@ -121,9 +125,9 @@ public:
 
     void AddScalarParam(SCALAR_PARAM _Param, const string& _Desc, float _min = 0.f, float _Max = 0.f, bool _View = false, const string& _Tooltip = {})
     {
-        m_ScalarParam[(UINT)_Param] = tScalarParam{ _Param , _Desc, _min, _Max, _View, _Tooltip };
+        m_ScalarParam[(UINT)_Param] = tScalarParam{ _Param , _Desc, _min, _Max, _View, _Tooltip, true };
     }
-    void AddTexParam(TEX_PARAM _Param, const string& _Desc) { m_TexParam[(UINT)_Param] = tTexParam{ _Param , _Desc }; }
+    void AddTexParam(TEX_PARAM _Param, const string& _Desc) { m_TexParam[(UINT)_Param] = tTexParam{ _Param, _Desc, true }; }
     const tScalarParam* GetScalarParam() { return  m_ScalarParam; }
     const tTexParam* GetTexParam() { return m_TexParam; }
 

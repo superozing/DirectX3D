@@ -54,6 +54,9 @@ void MaterialUI::render_update()
     const tScalarParam* vecScalarParam = pShader->GetScalarParam();
     for (size_t i = 0; i < (UINT)SCALAR_PARAM::END; ++i)
     {
+        if (!vecScalarParam[i].IsUse)
+            continue;
+
         switch (vecScalarParam[i].Type)
         {
         case SCALAR_PARAM::BOOL_0:
@@ -97,6 +100,9 @@ void MaterialUI::render_update()
     const tTexParam* vecTexParam = pShader->GetTexParam();
     for (size_t i = 0; i < (size_t)TEX_PARAM::END; ++i)
     {
+        if (!vecTexParam[i].IsUse)
+            continue;
+
         Ptr<CTexture> pTex = pMtrl->GetTexParam(vecTexParam[i].Type);      
         if (ParamUI::Param_TEXTURE(pTex, vecTexParam[i].Desc, this, (Delegate_1)&MaterialUI::SelectTexture))
         {           
