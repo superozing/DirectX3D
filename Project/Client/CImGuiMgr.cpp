@@ -21,6 +21,7 @@
 #include "MenuUI.h"
 #include "ListUI.h"
 #include "RTViewPort.h"
+#include "LogUI.h"
 
 #include "ParamUI.h"
 
@@ -273,6 +274,10 @@ void CImGuiMgr::create_ui()
 
     // Viewport
     pUI = new RTViewPort;
+    AddUI(pUI->GetID(), pUI);
+
+    // Log
+    pUI = new LogUI;
     AddUI(pUI->GetID(), pUI);
 }
 

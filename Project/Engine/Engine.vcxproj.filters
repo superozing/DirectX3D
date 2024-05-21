@@ -187,6 +187,9 @@
     <ClInclude Include="CDecal.h">
       <Filter>08. Component\RenderComponent\05. Decal</Filter>
     </ClInclude>
+    <ClInclude Include="CLogMgr.h">
+      <Filter>04. Manager\LogMgr</Filter>
+     </ClInclude>
     <ClInclude Include="GenStrings.h">
       <Filter>01. Header\GenString</Filter>
     </ClInclude>
@@ -417,6 +420,9 @@
     <ClCompile Include="CDecal.cpp">
       <Filter>08. Component\RenderComponent\05. Decal</Filter>
     </ClCompile>
+    <ClCompile Include="CLogMgr.cpp">
+      <Filter>04. Manager\LogMgr</Filter>
+    </ClCompile>
     <ClCompile Include="CFrustum.cpp">
       <Filter>Module\Frustum</Filter>
     </ClCompile>
@@ -607,6 +613,9 @@
     </Filter>
     <Filter Include="08. Component\RenderComponent\05. Decal">
       <UniqueIdentifier>{cf7b3261-0fc7-43a7-a8f2-ad0126700482}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\LogMgr">
+      <UniqueIdentifier>{e6f73a23-7e49-4aad-acb7-d203742f1fd2}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Header\GenString">
       <UniqueIdentifier>{30e22cac-c910-4ab5-877f-0026b4e9eae6}</UniqueIdentifier>

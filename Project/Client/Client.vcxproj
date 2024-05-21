@@ -169,6 +169,7 @@
     <ClInclude Include="ComputeShaderUI.h" />
     <ClInclude Include="Content.h" />
     <ClInclude Include="Light3DUI.h" />
+    <ClInclude Include="LogUI.h" />
     <ClInclude Include="ScriptUI.h" />
     <ClInclude Include="CTraceState.h" />
     <ClInclude Include="framework.h" />
@@ -218,6 +219,7 @@
     <ClCompile Include="ComputeShaderUI.cpp" />
     <ClCompile Include="Content.cpp" />
     <ClCompile Include="Light3DUI.cpp" />
+    <ClCompile Include="LogUI.cpp" />
     <ClCompile Include="ScriptUI.cpp" />
     <ClCompile Include="CTraceState.cpp" />
     <ClCompile Include="FSMUI.cpp" />

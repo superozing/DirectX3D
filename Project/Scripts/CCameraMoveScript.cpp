@@ -1,6 +1,8 @@
 ﻿#include "pch.h"
 #include "CCameraMoveScript.h"
 
+
+
 CCameraMoveScript::CCameraMoveScript()
 	: CScript((UINT)SCRIPT_TYPE::CAMERAMOVESCRIPT)
 	, m_CamSpeed(500.f)
@@ -23,7 +25,7 @@ void CCameraMoveScript::tick()
 		{
 			Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
 			Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
-		}		
+		}	
 	}
 
 
