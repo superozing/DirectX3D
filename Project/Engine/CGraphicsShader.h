@@ -52,8 +52,8 @@ private:
     SHADER_DOMAIN                   m_Domain;
 
     // Shader 파라미터 목록
-    vector<tScalarParam>            m_ScalarParam;
-    vector<tTexParam>               m_TexParam;
+    tScalarParam            m_ScalarParam[(UINT)SCALAR_PARAM::END];
+    tTexParam               m_TexParam[(UINT)TEX_PARAM::END];
 
     // Shader String Info
     string                          m_VSPath;
@@ -121,11 +121,11 @@ public:
 
     void AddScalarParam(SCALAR_PARAM _Param, const string& _Desc, float _min = 0.f, float _Max = 0.f, bool _View = false, const string& _Tooltip = {})
     {
-        m_ScalarParam.push_back(tScalarParam{ _Param , _Desc, _min, _Max, _View, _Tooltip });
+        m_ScalarParam[(UINT)_Param] = tScalarParam{ _Param , _Desc, _min, _Max, _View, _Tooltip };
     }
-    void AddTexParam(TEX_PARAM _Param, const string& _Desc){ m_TexParam.push_back(tTexParam{ _Param , _Desc });}
-    const vector<tScalarParam>& GetScalarParam() { return  m_ScalarParam; }
-    const vector<tTexParam>& GetTexParam() { return m_TexParam; }
+    void AddTexParam(TEX_PARAM _Param, const string& _Desc) { m_TexParam[(UINT)_Param] = tTexParam{ _Param , _Desc }; }
+    const tScalarParam* GetScalarParam() { return  m_ScalarParam; }
+    const tTexParam* GetTexParam() { return m_TexParam; }
 
 
 public:

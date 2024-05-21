@@ -204,6 +204,8 @@ enum class SCALAR_PARAM
 	MAT_1,
 	MAT_2,
 	MAT_3,
+
+	END,
 };
 
 enum class TEX_PARAM
