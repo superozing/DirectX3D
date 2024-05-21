@@ -67,14 +67,29 @@ PS_OUT PS_DirLight(VS_OUT _in)
     CalLight3D(g_int_0, vViewPos.xyz, vViewNormal, LightColor);
     
     // 그림자 확인
+    float fShadowPow = 0.f;
     // ViewPos 를 ViewInv 행렬(메인카메라)을 적용, WorldPos 를 알아낸다.
     float3 vWorld = mul(float4(vViewPos.xyz, 1.f), g_matViewInv).xyz;
     
     // 광원 시야 기준 Projection 좌표계로 변환한다.
     float4 vLightProjPos = mul(float4(vWorld, 1.f), g_mat_1);
         
-    output.vDiffuse = LightColor.vColor + LightColor.vAmbient;
-    output.vSpecular = LightColor.vSpecular;
+    float2 vShadowMapUV = float2(vLightProjPos.x * 0.5f + 0.5f, 1.f - (vLightProjPos.y * 0.5f + 0.5f));
+    
+    if (0.f <= vShadowMapUV.x && vShadowMapUV.x <= 1.f
+        || 0.f <= vShadowMapUV.y && vShadowMapUV.y <= 1.f)
+    {
+        float fDepth = g_tex_2.Sample(g_sam_0, vShadowMapUV).x;
+        
+        // Magic Number
+        if (fDepth + 0.001f < vLightProjPos.z / vLightProjPos.w)
+        {
+            fShadowPow = 0.8f;
+        }
+    }
+        
+    output.vDiffuse = LightColor.vColor * (1.f - fShadowPow) + LightColor.vAmbient;
+    output.vSpecular = LightColor.vSpecular * (1.f - fShadowPow);
     
     output.vDiffuse.a = 1.f;
     output.vSpecular.a = 1.f;

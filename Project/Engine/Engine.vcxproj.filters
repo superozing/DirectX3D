@@ -232,6 +232,12 @@
     <ClInclude Include="UserStrings.h">
       <Filter>01. Header\UserString</Filter>
     </ClInclude>
+    <ClInclude Include="CFrustum.h">
+      <Filter>Module\Frustum</Filter>
+    </ClInclude>
+    <ClInclude Include="CLandScape.h">
+      <Filter>08. Component\RenderComponent\06. LandScape</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -416,6 +422,15 @@
     </ClCompile>
     <ClCompile Include="CLogMgr.cpp">
       <Filter>04. Manager\LogMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CFrustum.cpp">
+      <Filter>Module\Frustum</Filter>
+    </ClCompile>
+    <ClCompile Include="CLandScape.cpp">
+      <Filter>08. Component\RenderComponent\06. LandScape</Filter>
+    </ClCompile>
+    <ClCompile Include="CLandScape_Init.cpp">
+      <Filter>08. Component\RenderComponent\06. LandScape</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -608,6 +623,12 @@
     <Filter Include="01. Header\UserString">
       <UniqueIdentifier>{c1009191-600d-4cef-9dd2-821374428ad8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Module\Frustum">
+      <UniqueIdentifier>{a8487a7c-3784-4573-9493-fd94f3d6f2eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\RenderComponent\06. LandScape">
+      <UniqueIdentifier>{37a73d81-0f81-43af-b25a-b444002ef3eb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -664,6 +685,12 @@
       <Filter>ShaderCode\02. Render\3DShader</Filter>
     </FxCompile>
     <FxCompile Include="shadowmap.fx">
+      <Filter>ShaderCode\02. Render\3DShader</Filter>
+    </FxCompile>
+    <FxCompile Include="tess.fx">
+      <Filter>ShaderCode\02. Render\3DShader</Filter>
+    </FxCompile>
+    <FxCompile Include="landscape.fx">
       <Filter>ShaderCode\02. Render\3DShader</Filter>
     </FxCompile>
   </ItemGroup>
