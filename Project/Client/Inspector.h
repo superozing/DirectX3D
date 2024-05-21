@@ -21,6 +21,7 @@ class Inspector :
 private:
     CGameObject*        m_TargetObject;
     Ptr<CAsset>         m_TargetAsset;
+    bool                m_bPrefab;
 
     ComponentUI*        m_arrComUI[(UINT)COMPONENT_TYPE::END];
     vector<ScriptUI*>   m_vecScriptUI;
@@ -33,7 +34,7 @@ public:
     virtual void render_update() override;
 
 public:
-    void SetTargetObject(CGameObject* _Object);
+    void SetTargetObject(CGameObject* _Object, bool _bPrefab = false);
     void SetTargetAsset(Ptr<CAsset> _Asset);
 
     CGameObject* GetTargetObject() { return m_TargetObject; }
@@ -42,9 +43,15 @@ public:
 
     void ObjectName();
     void ObjectLayer();
+    int PrefabLayer();
     void ObjectComponent();
+    void ObjectScript();
 
-    void CheckComponent(COMPONENT_TYPE _type);
+    void CheckTargetComponent(COMPONENT_TYPE _type);
+    void DeleteTargetComponent(COMPONENT_TYPE _type);
+    void DeleteTargetScript(ScriptUI* _Script);
+    void MakePrefab();
+    void SavePrefab(const string& _Directory, const string& _FileName);
 
 private:
     void CreateChildUI();

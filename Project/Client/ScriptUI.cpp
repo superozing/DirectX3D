@@ -6,7 +6,7 @@
 #include "ParamUI.h"
 
 ScriptUI::ScriptUI()
-	: ComponentUI("Script", "##Script", COMPONENT_TYPE::LIGHT2D)
+	: ComponentUI("Script", "##Script", COMPONENT_TYPE::SCRIPT)
 	, m_TargetScript(nullptr)
 {
 }
