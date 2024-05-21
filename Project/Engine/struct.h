@@ -183,8 +183,7 @@ extern tGlobalData g_global;
 
 struct tLog
 {
-	int		m_fMin;
-	int		m_fsec;
+	double		m_dTime;
 	Log_Level	m_LogLv;
 	string		m_strMsg;
 };
