@@ -8,10 +8,16 @@ class SkyBoxUI :
 {
 private:
 
-    int     m_iSkyBoxTypeLv;
+    int             m_iSkyBoxTypeLv;
+
+    string          m_strTextureName[2];
+    vector<string>  m_vecSkyBoxKey;
 
 public:
     virtual void render_update() override;
+    
+    vector<string> GetSkyBoxFile();
+
 public:
     SkyBoxUI();
     ~SkyBoxUI();
