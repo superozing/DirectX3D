@@ -6,7 +6,10 @@
 
 #include "CStructuredBuffer.h"
 
+#include "CKeyMgr.h"
 #include "CTimeMgr.h"
+#include "CLevelMgr.h"
+#include "CLevel.h"
 #include "CDevice.h"
 #include "CAssetMgr.h"
 #include "components.h"
@@ -22,6 +25,7 @@ CRenderMgr::CRenderMgr()
 	, m_vClearColor(Vec4(0.f, 0.f, 0.f, 1.f))
 	, m_Light2DBuffer(nullptr)
 	, m_Light3DBuffer(nullptr)
+	, m_bEscape(false)
 {
 	m_RenderFunc = &CRenderMgr::render_play;
 }
@@ -40,6 +44,7 @@ void CRenderMgr::tick()
 	ClearMRT();
 	UpdateData();
 
+	CheckEscape();
 
 	(this->*m_RenderFunc)();
 	render_debug();
@@ -348,4 +353,18 @@ void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Idx)
 	assert(nullptr == m_vecCam[_Idx]);
 
 	m_vecCam[_Idx] = _Cam;
+}
+
+
+void CRenderMgr::CheckEscape()
+{
+	if (LEVEL_STATE::PLAY == CLevelMgr::GetInst()->GetCurrentLevel()->GetState())
+	{
+		if (KEY_TAP(F8) || KEY_TAP_EDITOR(F8))
+		{
+			m_bEscape = !m_bEscape;
+
+			ActiveEditorMode(m_bEscape);
+		}
+	}
 }
