@@ -291,4 +291,86 @@ void GraphicsShader::render_update()
 		}
 	}
 
+
+	ImGui::SeparatorText("");
+
+	if (TitleCollapse("Scalar Param"))
+	{
+		auto pScalarParam = pShader->GetScalarParam();
+
+		for (UINT i = 0; i < (UINT)SCALAR_PARAM::END; ++i)
+		{
+			// 1. 사용 여부 (체크 박스)
+			auto& Scalar = pScalarParam[i];
+			bool IsUse = Scalar.IsUse;
+
+			ImGui::Checkbox(ToString(magic_enum::enum_name(SCALAR_PARAM(i))).c_str(), &IsUse);
+
+			// 체크 박스를 체크했을 경우
+			if (IsUse && !Scalar.IsUse)
+			{
+				pShader->AddScalarParam(SCALAR_PARAM(i), ToString(magic_enum::enum_name(SCALAR_PARAM(i))));
+			}
+			// 체크 박스를 해제했을 경우
+			else if (!IsUse && Scalar.IsUse)
+			{
+				pShader->DeleteScalarParam(SCALAR_PARAM(i));
+			}
+
+			// 2. 사용 여부에 따른 정보 표시 
+			if (Scalar.IsUse)
+			{
+				char cdesc[100]{};
+				strcpy_s(cdesc, Scalar.Desc.c_str());
+				ImGui::Text("Param Name");			ImGui::SameLine();
+				ImGui::InputText(("##Scalar" + to_string(i)).c_str(), cdesc, 100, ImGuiInputTextFlags_None);
+
+				char cscalar[100]{};
+				strcpy_s(cscalar, Scalar.Tooltip.c_str());
+				ImGui::Text("Tooltip");			ImGui::SameLine();
+				ImGui::InputText(("##ScalarTooltip" + to_string(i)).c_str(), cscalar, 100, ImGuiInputTextFlags_None);
+
+				pShader->AddScalarParam(SCALAR_PARAM(i), string(cdesc), Scalar.min, Scalar.Max, Scalar.View, string(cscalar));
+			}
+
+
+			ImGui::Separator();
+		}
+	}
+
+	if (TitleCollapse("Tex Param"))
+	{
+		auto pTexParam = pShader->GetTexParam();
+
+		for (UINT i = 0; i < (UINT)TEX_PARAM::END; ++i)
+		{
+			// 1. 사용 여부 (체크 박스)
+			auto& Tex = pTexParam[i];
+			bool IsUse = Tex.IsUse;
+
+			ImGui::Checkbox(ToString(magic_enum::enum_name(TEX_PARAM(i))).c_str(), &IsUse);
+
+			// 체크 박스를 체크했을 경우
+			if (IsUse && !Tex.IsUse)
+				pShader->AddTexParam(TEX_PARAM(i), ToString(magic_enum::enum_name(TEX_PARAM(i))));
+
+			// 체크 박스를 해제했을 경우
+			else if (!IsUse && Tex.IsUse)
+				pShader->DeleteTexParam(TEX_PARAM(i));
+
+
+			// 2. 사용 여부에 따른 정보 표시 
+			if (Tex.IsUse)
+			{
+				char cdesc[100]{};
+				strcpy_s(cdesc, Tex.Desc.c_str());
+				ImGui::Text("Param Name");			ImGui::SameLine();
+				ImGui::InputText(("##Scalar" + to_string(i)).c_str(), cdesc, 100, ImGuiInputTextFlags_None);
+
+				pShader->AddTexParam(TEX_PARAM(i), string(cdesc));
+			}
+
+			ImGui::Separator();
+		}
+	}
 }

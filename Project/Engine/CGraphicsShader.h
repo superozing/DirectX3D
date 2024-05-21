@@ -128,6 +128,10 @@ public:
         m_ScalarParam[(UINT)_Param] = tScalarParam{ _Param , _Desc, _min, _Max, _View, _Tooltip, true };
     }
     void AddTexParam(TEX_PARAM _Param, const string& _Desc) { m_TexParam[(UINT)_Param] = tTexParam{ _Param, _Desc, true }; }
+
+    void DeleteScalarParam(SCALAR_PARAM _Param) { m_ScalarParam[(UINT)_Param] = tScalarParam(); }
+    void DeleteTexParam(TEX_PARAM _Param) { m_TexParam[(UINT)_Param] = tTexParam(); }
+
     const tScalarParam* GetScalarParam() { return  m_ScalarParam; }
     const tTexParam* GetTexParam() { return m_TexParam; }
 
