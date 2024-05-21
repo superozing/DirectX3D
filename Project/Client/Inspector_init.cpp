@@ -22,6 +22,7 @@ void Inspector::CreateChildUI()
 #include "CameraUI.h"
 #include "Light3DUI.h"
 #include "SkyBoxUI.h"
+#include "ParticleSystemUI.h"
 
 void Inspector::CreateComponentUI()
 {
@@ -29,34 +30,37 @@ void Inspector::CreateComponentUI()
 	m_arrComUI[(UINT)COMPONENT_TYPE::TRANSFORM]->Deactivate();
 	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::TRANSFORM]);
 
-	m_arrComUI[(UINT)COMPONENT_TYPE::MESHRENDER] = new MeshRenderUI;
-	m_arrComUI[(UINT)COMPONENT_TYPE::MESHRENDER]->Deactivate();
-	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::MESHRENDER]);
-
 	m_arrComUI[(UINT)COMPONENT_TYPE::COLLIDER2D] = new Collider2DUI;
 	m_arrComUI[(UINT)COMPONENT_TYPE::COLLIDER2D]->Deactivate();
 	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::COLLIDER2D]);
-
-	m_arrComUI[(UINT)COMPONENT_TYPE::LIGHT2D] = new Light2DUI;
-	m_arrComUI[(UINT)COMPONENT_TYPE::LIGHT2D]->Deactivate();
-	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::LIGHT2D]);
 
 	m_arrComUI[(UINT)COMPONENT_TYPE::ANIMATOR2D] = new Animator2DUI;
 	m_arrComUI[(UINT)COMPONENT_TYPE::ANIMATOR2D]->Deactivate();
 	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::ANIMATOR2D]);
 
-	m_arrComUI[(UINT)COMPONENT_TYPE::CAMERA] = new CameraUI;
-	m_arrComUI[(UINT)COMPONENT_TYPE::CAMERA]->Deactivate();
-	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::CAMERA]);
+	m_arrComUI[(UINT)COMPONENT_TYPE::LIGHT2D] = new Light2DUI;
+	m_arrComUI[(UINT)COMPONENT_TYPE::LIGHT2D]->Deactivate();
+	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::LIGHT2D]);
 	
 	m_arrComUI[(UINT)COMPONENT_TYPE::LIGHT3D] = new Light3DUI;
 	m_arrComUI[(UINT)COMPONENT_TYPE::LIGHT3D]->Deactivate();
 	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::LIGHT3D]);
 
+	m_arrComUI[(UINT)COMPONENT_TYPE::CAMERA] = new CameraUI;
+	m_arrComUI[(UINT)COMPONENT_TYPE::CAMERA]->Deactivate();
+	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::CAMERA]);
+
+	m_arrComUI[(UINT)COMPONENT_TYPE::MESHRENDER] = new MeshRenderUI;
+	m_arrComUI[(UINT)COMPONENT_TYPE::MESHRENDER]->Deactivate();
+	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::MESHRENDER]);
+
+	m_arrComUI[(UINT)COMPONENT_TYPE::PARTICLESYSTEM] = new ParticleSystemUI;
+	m_arrComUI[(UINT)COMPONENT_TYPE::PARTICLESYSTEM]->Deactivate();
+	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::PARTICLESYSTEM]);
+
 	m_arrComUI[(UINT)COMPONENT_TYPE::SKYBOX] = new SkyBoxUI;
 	m_arrComUI[(UINT)COMPONENT_TYPE::SKYBOX]->Deactivate();
 	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::SKYBOX]);
-
 }
 
 #include "TextureUI.h"

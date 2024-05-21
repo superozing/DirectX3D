@@ -286,6 +286,9 @@
     <ClInclude Include="SkyBoxUI.h">
       <Filter>02. UI\3. Inspector\ComponentUI\SkyBox</Filter>
     </ClInclude>
+    <ClInclude Include="ParticleSystemUI.h">
+      <Filter>02. UI\3. Inspector\ComponentUI\ParticleSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -436,6 +439,9 @@
     </ClCompile>
     <ClCompile Include="SkyBoxUI.cpp">
       <Filter>02. UI\3. Inspector\ComponentUI\SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystemUI.cpp">
+      <Filter>02. UI\3. Inspector\ComponentUI\ParticleSystem</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
