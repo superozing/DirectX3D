@@ -71,7 +71,7 @@ PatchLevel PatchConstFunc(InputPatch<VS_OUT, 3> _in, uint patchID : SV_Primitive
             output.arrEdge[i] = 1.f;
     }
     
-    if (output.Inside == 1.f)
+    if (output.Inside == 0.f)
     {
         output.Inside = 1.f;
     }
@@ -142,6 +142,7 @@ DS_OUT DS_LandScape(PatchLevel _pathlevel // 각 제어점 별 분할 레벨
         vNormal += _Origin[i].vNormal * _Weight[i];
     }
     
+    // 높이맵 텍스쳐가 있을 때
     if (g_btex_0)
     {
         float2 FullUV = vUV / float2(g_int_0, g_int_1);
@@ -174,16 +175,19 @@ DS_OUT DS_LandScape(PatchLevel _pathlevel // 각 제어점 별 분할 레벨
                             , vLocalPos.z);
         
         
-        vTangent = normalize(vRight - vLeft);
-        vBinormal = normalize(vDown - vUp);
+        vTangent = mul(float4(vRight, 1.f), g_matWorld).xyz - mul(float4(vLeft, 1.f), g_matWorld).xyz;
+        vBinormal = mul(float4(vDown, 1.f), g_matWorld).xyz - mul(float4(vUp, 1.f), g_matWorld).xyz;
         vNormal = normalize(cross(vTangent, vBinormal));
+        
+        output.vViewNormal = normalize(mul(float4(vNormal, 0.f), g_matView).xyz);
     }
-    
+    else
+    {
+        output.vViewNormal = normalize(mul(float4(vNormal, 0.f), g_matWV).xyz);
+    }
     output.vPosition = mul(float4(vLocalPos, 1.f), g_matWVP);
     output.vUV = vUV;
-    
     output.vViewPos = mul(float4(vLocalPos, 1.f), g_matWV).xyz;
-    output.vViewNormal = normalize(mul(float4(vNormal, 0.f), g_matWV).xyz);
     
     return output;
 }
