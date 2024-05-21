@@ -45,7 +45,46 @@ void Inspector::render_update()
 	if (nullptr != m_TargetObject)
 	{
 		ObjectName();
-		ObjectLayer();
+		
+		if (!m_bPrefab)
+		{
+			ImGui::SameLine();
+			if (ImGui::Button("Save Prefab"))
+			{
+				wstring ContentPath = CPathMgr::GetContentPath();
+				ContentPath += L"prefab\\";
+
+				wstring FileName = m_TargetObject->GetName();
+				FileName += L".pref";
+
+				SavePrefab(ToString(ContentPath), ToString(FileName));
+			}
+
+			ObjectLayer();
+		}
+		else
+		{
+			ImGui::SameLine();
+			if (ImGui::Button("Save Prefab"))
+			{
+				wstring ContentPath = CPathMgr::GetContentPath();
+				ContentPath += L"prefab\\";
+
+				wstring FileName = m_TargetObject->GetName();
+				FileName += L".pref";
+
+				SavePrefab(ToString(ContentPath), ToString(FileName));
+			}
+
+			int LayerIdx = PrefabLayer(); ImGui::SameLine();
+
+			if (ImGui::Button("Spawn Prefab"))
+			{
+				Vec3 vPos = m_TargetObject->Transform()->GetRelativePos();
+				m_TargetObject->Transform()->SetRelativePos(vPos);
+				GamePlayStatic::SpawnGameObject(m_TargetObject, LayerIdx);
+			}
+		}
 
 		if (ImGui::Button("Add Component"))
 		{
@@ -65,7 +104,7 @@ void Inspector::render_update()
 	}
 }
 
-void Inspector::SetTargetObject(CGameObject* _Object)
+void Inspector::SetTargetObject(CGameObject* _Object, bool _bPrefab)
 {
 	// Target 오브젝트 설정
 	m_TargetObject = _Object;
@@ -87,6 +126,8 @@ void Inspector::SetTargetObject(CGameObject* _Object)
 	{
 		m_arrAssetUI[i]->Deactivate();
 	}
+
+	m_bPrefab = _bPrefab;
 }
 
 void Inspector::SetTargetAsset(Ptr<CAsset> _Asset)
@@ -180,6 +221,46 @@ void Inspector::ObjectLayer()
 			}
 		}
 	}
+}
+
+int Inspector::PrefabLayer()
+{
+	static int LayerIdx = 0;
+	static int PrevIdx = LayerIdx;
+
+	ImGui::Text("Layer"); ImGui::SameLine();
+	auto Layer_Names = magic_enum::enum_names<LAYER>();
+	string strLayer = string(Layer_Names[LayerIdx]);
+
+	if (ImGui::BeginCombo("##ObjLayer", strLayer.c_str()))
+	{
+		for (int i = 0; i < (int)Layer_Names.size(); ++i)
+		{
+			int CurLayer = i;
+
+			bool isSelected = (CurLayer == LayerIdx);
+
+			if (ImGui::Selectable(string(Layer_Names[CurLayer]).c_str(), isSelected))
+			{
+				LayerIdx = CurLayer;
+			}
+
+			if (isSelected)
+			{
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+
+		ImGui::EndCombo();
+
+		if (PrevIdx != LayerIdx)
+		{
+			CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+			pCurLevel->AddObject(m_TargetObject, LayerIdx);
+		}
+	}
+
+	return LayerIdx;
 }
 
 void Inspector::ObjectComponent()
@@ -334,6 +415,29 @@ void Inspector::CheckTargetComponent(COMPONENT_TYPE _type)
 	default:
 		break;
 	}
+}
+
+void Inspector::MakePrefab()
+{
+	CGameObject* pObj = GetTargetObject();
+	pObj = pObj->Clone();
+	wstring Key;
+	Key = L"prefab\\" + m_TargetObject->GetName() + L".pref";
+	Ptr<CPrefab> pPrefab = new CPrefab(pObj, false);
+	CAssetMgr::GetInst()->AddAsset<CPrefab>(Key, pPrefab.Get());
+	pPrefab->Save(Key);
+}
+
+void Inspector::SavePrefab(const string& _Directory, const string& _FileName)
+{
+	filesystem::path file_path = filesystem::path(_Directory) / _FileName;
+
+	if (filesystem::exists(file_path))
+	{
+		filesystem::remove(file_path);
+	}
+
+	MakePrefab();
 }
 
 void Inspector::DeleteTargetComponent(COMPONENT_TYPE _type)
