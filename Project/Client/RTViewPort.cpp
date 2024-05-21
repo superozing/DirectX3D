@@ -164,7 +164,6 @@ void RTViewPort::render_update()
 	// IMGUIZMO
     ImGuiIO& io = ImGui::GetIO();
     
-    ImGuizmo::SetOrthographic(false);
     ImGuizmo::SetDrawlist();
 
     ImGui::SetCursorPos(ImVec2(10, 30));
@@ -174,6 +173,9 @@ void RTViewPort::render_update()
     auto objmat = m_pTarget->Transform()->GetWorldMat();
     Vec3 objPos = m_pTarget->Transform()->GetWorldPos();
     Vec3 cameraPos = m_pCamera->Transform()->GetWorldPos();
+
+    auto projType = m_pCamera->Camera()->GetProjType();
+    projType == PROJ_TYPE::ORTHOGRAPHIC ? ImGuizmo::SetOrthographic(true) : ImGuizmo::SetOrthographic(false);
 
     float distance = Vec3::Distance(objPos, cameraPos);
 
