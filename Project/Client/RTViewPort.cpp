@@ -21,6 +21,15 @@ RTViewPort::~RTViewPort()
 {
 }
 
+void RTViewPort::SetTarget(CGameObject* _target)
+{
+    if (!_target->Transform()) {
+        m_pTarget = nullptr;
+        return;
+    }
+    m_pTarget = _target;
+}
+
 void RTViewPort::tick()
 {
 }
@@ -147,13 +156,12 @@ void RTViewPort::render_update()
     ImGui::SetCursorPos(ImVec2(10, 30));
     auto cameraViewMat = g_Transform.matView;
     auto cameraProjMat = g_Transform.matProj;
-    auto player = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Player");
-    if (player == nullptr) return;
-    auto objmat = player->Transform()->GetWorldMat();
-    Vec3 playerPos = player->Transform()->GetWorldPos();
+    if (m_pTarget == nullptr) return;
+    auto objmat = m_pTarget->Transform()->GetWorldMat();
+    Vec3 objPos = m_pTarget->Transform()->GetWorldPos();
     Vec3 cameraPos = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"MainCamera")->Transform()->GetWorldPos();
 
-    float distance = Vec3::Distance(playerPos, cameraPos);
+    float distance = Vec3::Distance(objPos, cameraPos);
 
     float cameraView[16] = {};
     float cameraProjection[16] = {};
@@ -169,5 +177,5 @@ void RTViewPort::render_update()
     RoRMath::Float16ToMatrix(cameraProjMat, cameraProjection);
     RoRMath::Float16ToMatrix(objmat, objectMatrix);
 
-    player->Transform()->SetWorldMat(objmat);
+    m_pTarget->Transform()->SetWorldMat(objmat);
 }
