@@ -8,7 +8,7 @@
 #include <Engine/CLevel.h>
 #include <Engine/CGameObject.h>
 
-#include <Engine\CRenderMgr.h>
+#include <Engine/CRenderMgr.h>
 #include <Engine/CPathMgr.h>
 
 #include "imgui.h"
@@ -107,6 +107,9 @@ void CImGuiMgr::init(HWND _hMainWnd, ComPtr<ID3D11Device> _Device
     m_hNotify = FindFirstChangeNotification(strContentPath.c_str(), true
                                         , FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME 
                                         | FILE_ACTION_ADDED | FILE_ACTION_REMOVED);
+
+    RTViewPort* pViewport = (RTViewPort*)CImGuiMgr::GetInst()->FindUI("##Viewport");
+    pViewport->SetCamera(CRenderMgr::GetInst()->GetEditorCam());
 }
 
 void CImGuiMgr::progress()

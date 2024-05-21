@@ -42,7 +42,12 @@ private:
 
     Vec4 m_vClearColor;
 
+
 public:
+    static void(*CameraChange)(CCamera*);
+    /// <summary>
+    /// 0번 idx == MainCamera
+    /// </summary>
     void RegisterCamera(CCamera* _Cam, int _Idx);
     void AddDebugShapeInfo(const tDebugShapeInfo& _info) { m_DbgShapeInfo.push_back(_info); }
 
@@ -62,7 +67,10 @@ public:
 
     Ptr<CTexture> CopyRTTex(Ptr<CTexture> pTexture);
 
-    void RegisterEditorCamera(CCamera* _Cam) { m_EditorCam = _Cam; }
+    void RegisterEditorCamera(CCamera* _Cam) { 
+        m_EditorCam = _Cam;
+        if (CameraChange) CameraChange(m_EditorCam);
+    }
     void ClearCamera() { m_vecCam.clear(); }
 
     void ActiveEditorMode(bool _bActive)
@@ -79,6 +87,9 @@ public:
 
     void SetClearColor(const Vec4& _ClearColor) { m_vClearColor = _ClearColor; }
     Vec4 GetClearColor() { return m_vClearColor;}
+
+    CCamera* GetEditorCam() { return m_EditorCam; }
+
 public:
     virtual void init() override;
     virtual void tick() override;

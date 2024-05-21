@@ -25,6 +25,7 @@
 
 #include <Scripts/CTimeMgrScript.h>
 #include <Scripts/CCameraEffect.h>
+#include <Scripts/CCameraMoveScript.h>
 
 #include <Engine/CAssetMgr.h>
 #include <Engine/CPrefab.h>
@@ -79,6 +80,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pCamObj->AddComponent(new CTransform);
 	pCamObj->AddComponent(new CCamera);
 	pCamObj->AddComponent(new CCameraEffect);
+	pCamObj->AddComponent(new CCameraMoveScript);
 
 	pCamObj->Transform()->SetRelativePos(Vec3(0.5f, 0.f, 0.f));
 	pCamObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));

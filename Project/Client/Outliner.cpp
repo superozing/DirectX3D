@@ -114,7 +114,7 @@ void Outliner::SelectObject(DWORD_PTR _Node)
 	Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
 	pInspector->SetTargetObject(pObject);	
 	RTViewPort* pViewport = (RTViewPort*)CImGuiMgr::GetInst()->FindUI("##Viewport");
-	pViewport->SetTarget(pObject);
+	pViewport->SetTargetObject(pObject);
 }
 
 void Outliner::DragDropObject(DWORD_PTR _Dest, DWORD_PTR _Source)

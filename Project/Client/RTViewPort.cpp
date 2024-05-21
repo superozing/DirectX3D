@@ -21,13 +21,27 @@ RTViewPort::~RTViewPort()
 {
 }
 
-void RTViewPort::SetTarget(CGameObject* _target)
+void RTViewPort::SetTargetObject(CGameObject* _target)
 {
     if (!_target->Transform()) {
         m_pTarget = nullptr;
         return;
     }
     m_pTarget = _target;
+}
+
+#include <Engine/CCamera.h>
+
+void RTViewPort::SetTargetCamera(CCamera* _camera)
+{
+    m_pCamera = _camera->GetOwner();
+}
+
+void RTViewPort::SetCamera(CCamera* _camera)
+{
+    RTViewPort* pViewport = (RTViewPort*)CImGuiMgr::GetInst()->FindUI("##Viewport");
+    if (!pViewport) return;
+    pViewport->SetTargetCamera(_camera);
 }
 
 void RTViewPort::tick()
@@ -159,7 +173,7 @@ void RTViewPort::render_update()
     if (m_pTarget == nullptr) return;
     auto objmat = m_pTarget->Transform()->GetWorldMat();
     Vec3 objPos = m_pTarget->Transform()->GetWorldPos();
-    Vec3 cameraPos = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"MainCamera")->Transform()->GetWorldPos();
+    Vec3 cameraPos = m_pCamera->Transform()->GetWorldPos();
 
     float distance = Vec3::Distance(objPos, cameraPos);
 
