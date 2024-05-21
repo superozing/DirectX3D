@@ -8,7 +8,7 @@ SkyBoxUI::SkyBoxUI()
 {
 	SetComponentTitle("SkyBox");
 
-	m_vecSkyBoxKey = GetSkyBoxFile();
+	m_vecSkyBoxKey = GetSkyBoxFileName();
 }
 
 SkyBoxUI::~SkyBoxUI()
@@ -19,6 +19,7 @@ void SkyBoxUI::render_update()
 {
 	if (!TitleCollapse("SkyBox")) return;
 
+	// 기본 세팅
 	Ptr<CTexture> pSphereTex = GetTargetObject()->SkyBox()->GetSphereTex();
 	Ptr<CTexture> pCubeTex = GetTargetObject()->SkyBox()->GetCubeTex();
 
@@ -27,7 +28,7 @@ void SkyBoxUI::render_update()
 	static const char* cSelectSphere = NULL;
 	static const char* cSelectCube = NULL;
 
-
+	// 타입 선택
 	ImGui::Text("SkyBoxType");
 	ImGui::SameLine();
 
@@ -50,6 +51,7 @@ void SkyBoxUI::render_update()
 	ImGui::PopStyleColor();
 	ImGui::Spacing(); 
 
+	// Sphere Type
 	ImGui::SeparatorText("Sphere Texture");
 
 	static bool use_text_color_for_tint = false;
@@ -94,6 +96,7 @@ void SkyBoxUI::render_update()
 		ImGui::InputText("##Texture Key Sphere", (char*)m_strTextureName->c_str(), m_strTextureName->length(), ImGuiInputTextFlags_ReadOnly);
 	}
 
+	//Sphere ComboBox
 	ImGui::Text("Change Texture");
 	ImGui::SameLine();
 
@@ -122,6 +125,7 @@ void SkyBoxUI::render_update()
 
 	ImGui::Spacing();
 
+	// CubeType
 	ImGui::SeparatorText("Cube Texture");
 
 	use_text_color_for_tint = false;
@@ -166,20 +170,21 @@ void SkyBoxUI::render_update()
 
 	}
 
+	//Rect ComboBox
 	ImGui::Text("Change Texture");
 	ImGui::SameLine();
 
-	if (ImGui::BeginCombo("##comboSkyBoxCube", cSelectCube)) // The second parameter is the label previewed before opening the combo.
+	if (ImGui::BeginCombo("##comboSkyBoxCube", cSelectCube)) 
 	{
 		for (int n = 0; n < m_vecSkyBoxKey.size(); n++)
 		{
-			bool is_selected = (cSelectCube == m_vecSkyBoxKey[n].c_str()); // You can store your selection however you want, outside or inside your objects
+			bool is_selected = (cSelectCube == m_vecSkyBoxKey[n].c_str()); 
 			if (ImGui::Selectable(m_vecSkyBoxKey[n].c_str(), is_selected))
 			{
 				cSelectCube = m_vecSkyBoxKey[n].c_str();
 
 				if (is_selected)
-					ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
+					ImGui::SetItemDefaultFocus();   
 
 				string m_strCurDirectory = "texture\\skybox\\";
 				wstring SkyBoxKey = ToWString(m_strCurDirectory += m_vecSkyBoxKey[n].c_str());
@@ -193,7 +198,7 @@ void SkyBoxUI::render_update()
 
 }
 
-vector<string> SkyBoxUI::GetSkyBoxFile()
+vector<string> SkyBoxUI::GetSkyBoxFileName()
 {
 	vector<string> strFileName;
 
