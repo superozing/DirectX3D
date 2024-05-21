@@ -10,6 +10,10 @@ private:
 
     Ptr<CTexture>       m_ViewPortTexture;
 
+private:
+    void MoveCameraToObject();
+    void Gizmo();
+
 public: 
     Ptr<CTexture> GetViewportTexture() { return m_ViewPortTexture; }
 
