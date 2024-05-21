@@ -909,7 +909,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
 	pShader->AddScalarParam(SCALAR_PARAM::VEC4_0, "Tess Factor");
 
-	pShader->SetRSType(RS_TYPE::WIRE_FRAME);
+	pShader->SetRSType(RS_TYPE::CULL_BACK);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE); //pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
 	pShader->SetTopology(D3D_PRIMITIVE_TOPOLOGY_3_CONTROL_POINT_PATCHLIST);
 
