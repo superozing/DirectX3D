@@ -6,22 +6,17 @@
 
 
 LogUI::LogUI()
-	: UI("##Log", "##LogUI")
+	: UI("Log", "##LogUI")
     , m_vectLog()
     , m_AvailableSize(0.f, 0.f)
     , m_iLoglvMask(0)
-    , m_iLogTimeMask(0)
+    , m_bLogTimePrint(false)
     , m_fLastScrollY(0.f)
 {
     m_LoglvCheckBox[0] = true;
     m_LoglvCheckBox[1] = false;
     m_LoglvCheckBox[2] = false;
     m_LoglvCheckBox[3] = false;
-
-    m_LogTimePrint[0] = true;
-    m_LogTimePrint[1] = false;
-    m_LogTimePrint[2] = false;
-    m_LogTimePrint[3] = false;
 
     m_LogColor[(UINT)Log_Level::INFO] = ImVec4(0.7f, 0.7f, 0.7f, 1.0f);
     m_LogColor[(UINT)Log_Level::WARN] = ImVec4(1.f, 1.f, 0.f, 1.0f);
@@ -76,30 +71,6 @@ void LogUI::CheckLevelMask()
                 m_iLoglvMask &= ~(1 << i);
         }
     }
-}
-
-void LogUI::CheckTimeMask()
-{
-
-    m_iLogTimeMask = CLogMgr::GetInst()->GetTimeMask();
-
-    if (m_LogTimePrint[0])
-    {
-        m_iLogTimeMask = 0;
-
-    }
-    else
-    {
-        for (int i = 0; i < 3; ++i)
-        {
-            if (m_LogTimePrint[i + 1])
-                m_iLogTimeMask |= (1 << i);
-            else
-                m_iLogTimeMask &= ~(1 << i);
-        }
-    }
-
-    CLogMgr::GetInst()->SetTimeMask(m_iLogTimeMask);
 }
 
 bool LogUI::CheckSearchDisplay(string msg)
@@ -176,40 +147,8 @@ void LogUI::render_update()
     CheckLevelMask();
 
 
-    // 시간 관련 표기
-    if (ImGui::Checkbox("No Time", &m_LogTimePrint[0]))
-    {
-        if (m_LogTimePrint[0])
-        {
-            for (int i = 1; i < 4; ++i)
-            {
-                m_LogTimePrint[i] = false;
-            }
-        }
-    }
-    ImGui::SameLine();
-    
-    if (ImGui::Checkbox("Sec", &m_LogTimePrint[1]))
-    {
-        if (m_LogTimePrint[1])
-            m_LogTimePrint[0] = false;
-    }
-    ImGui::SameLine();
-
-    if (ImGui::Checkbox("Min", &m_LogTimePrint[2]))
-    {
-        if (m_LogTimePrint[2])
-            m_LogTimePrint[0] = false;
-    }
-    ImGui::SameLine();
-
-    if (ImGui::Checkbox("Hour", &m_LogTimePrint[3]))
-    {
-        if (m_LogTimePrint[3])
-            m_LogTimePrint[0] = false;
-    }
-
-    CheckTimeMask();
+    // 시간 메세지 체크박스
+    ImGui::Checkbox("Time Stamp", &m_bLogTimePrint);
 
     // 검색 필터
     ImGui::Text("Search");
@@ -243,12 +182,12 @@ void LogUI::render_update()
 
     // table 플래그 설정
     static ImGuiTableFlags flags = ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_NoBordersInBodyUntilResize |
-        ImGuiTableFlags_BordersOuter | ImGuiTableFlags_SizingStretchProp | ImGuiTableFlags_ScrollY | ImGuiTableFlags_NoHostExtendY;
+        ImGuiTableFlags_BordersOuter | ImGuiTableFlags_SizingStretchProp | ImGuiTableFlags_ScrollY | ImGuiTableFlags_NoHostExtendY | ImGuiTableFlags_SizingFixedFit;
 
     // table 생성
     if (ImGui::BeginTable("LogMessage", 1, flags, ImVec2(0.f, tableHeight)))
     {
-        ImGui::TableSetupColumn("Log");
+        ImGui::TableSetupColumn("##Log");
         ImGui::TableHeadersRow();
 
         for (int row = 0; row < m_vectLog.size(); row++)
@@ -267,11 +206,9 @@ void LogUI::render_update()
            { 
                  string temp;
 
-             if (m_iLogTimeMask > 0)
+             if (m_bLogTimePrint)
              {
-                 
-
-                 temp += CLogMgr::GetInst()->GetTimeMsg(m_vectLog[row].m_dTime, m_iLogTimeMask) + " ";
+                 temp += CLogMgr::GetInst()->GetTimeMsg(m_vectLog[row].m_dTime) + " ";
 
                  temp += m_vectLog[row].m_strMsg.c_str();
                  m_vectLog[row].m_strMsg = temp;

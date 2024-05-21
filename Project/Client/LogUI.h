@@ -12,11 +12,10 @@ private:
     ImVec2 m_AvailableSize;
 
     int             m_iLoglvMask;
-    int             m_iLogTimeMask;
     ImGuiTextFilter m_TextFilter;
 
     bool m_LoglvCheckBox[4];
-    bool m_LogTimePrint[4];
+    bool m_bLogTimePrint;
     char m_LogTextFilter[255];
 
     float           m_fLastScrollY;
@@ -25,7 +24,6 @@ public:
     ImVec4 GetLogColor(tLog Log);
     
     void CheckLevelMask();
-    void CheckTimeMask();
   
     bool CheckSearchDisplay(string msg);
     bool CheckLogLvDisplay(Log_Level Loglv);

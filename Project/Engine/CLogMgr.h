@@ -9,7 +9,6 @@ class CLogMgr :
 private:
 
     vector<tLog> m_vecLog;
-    int          m_LogTimeMask;
 
 public:
     virtual void init() override;
@@ -23,9 +22,7 @@ public:
     void AddLog(Log_Level Lv, wstring msg);
     void AddLog(tLog Log);
 
-    int GetTimeMask() { return m_LogTimeMask; }
-    void SetTimeMask(int iMask) { m_LogTimeMask = iMask; }
-    string GetTimeMsg(double time, int TimeMask);
+    string GetTimeMsg(double time);
     void CopyLog();
     void ClearLog();
 };
