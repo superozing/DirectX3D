@@ -183,6 +183,18 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
+	// Particle Object
+	pObj = new CGameObject;
+	pObj->SetName(L"Particle Test");
+
+	pObj->AddComponent(new CTransform);
+	pObj->AddComponent(new CParticleSystem);
+
+	pObj->Transform()->SetRelativePos(Vec3(0.f, 200.f, 500.f));
+	pObj->Transform()->SetRelativeScale(Vec3(20.f, 20.f, 20.f));
+	pObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
+
+	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
 	// TimeMgr Object 생성
 	pObj = new CGameObject;

@@ -34,6 +34,8 @@
 #define TEXSky02 L"texture\\skybox\\Sky02.jpg"
 #define TEXSkyDawn L"texture\\skybox\\SkyDawn.dds"
 #define TEXSkyWater L"texture\\skybox\\SkyWater.dds"
+#define TEXtestskybox L"texture\\skybox\\testskybox.jpg"
+#define TEXvz_netherworld_cubemap_ue L"texture\\skybox\\vz_netherworld_cubemap_ue.dds"
 #define TEXTILE_01 L"texture\\tile\\TILE_01.tga"
 #define TEXTILE_01_N L"texture\\tile\\TILE_01_N.tga"
 #define TEXTILE_02 L"texture\\tile\\TILE_02.tga"
