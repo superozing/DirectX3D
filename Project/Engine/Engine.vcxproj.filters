@@ -229,6 +229,9 @@
     <ClInclude Include="UserStrings.h">
       <Filter>01. Header\UserString</Filter>
     </ClInclude>
+    <ClInclude Include="strGrpShader.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">

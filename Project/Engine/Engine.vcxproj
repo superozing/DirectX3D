@@ -236,6 +236,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="strEngineMtrl.h" />
     <ClInclude Include="strFnShader.h" />
     <ClInclude Include="strFx.h" />
+    <ClInclude Include="strGrpShader.h" />
     <ClInclude Include="strLevel.h" />
     <ClInclude Include="strMesh.h" />
     <ClInclude Include="strMtrl.h" />

@@ -17,6 +17,8 @@ vector<string> g_vecMtrlNames;
 vector<string> g_vecPrefNames;
 vector<string> g_vecAnimNames;
 vector<string> g_vecTxtNames;
+vector<string> g_vecGraphicsShaderNames;
+vector<string> g_excepts;
 #include <iostream>
 
 void ScriptNameInput()
@@ -220,8 +222,13 @@ void SortExtention(const string& path, const string& extention)
 	else if (extention == ".txt") {
 		g_vecTxtNames.push_back(path);
 	}
+	else if (extention == ".gs") {
+		g_vecGraphicsShaderNames.push_back(path);
+	}
 	else {
-		MessageBox(nullptr, wstring(extention.begin(), extention.end()).c_str(), L"없는 자료형", 0);
+		auto iter = find(g_excepts.begin(), g_excepts.end(), extention);
+		if(iter == g_excepts.end())
+			g_excepts.push_back(extention);
 	}
 
 	return;
@@ -280,5 +287,12 @@ void MakeStrHeader(const string& _path, const string& symbol, const vector<strin
 		}
 		fout << "\"";
 		fout << endl;
+	}
+}
+
+void PrintError()
+{
+	for (const string& str : g_excepts) {
+		MessageBox(nullptr, wstring(str.begin(), str.end()).c_str(), L"없는 자료형", 0);
 	}
 }
