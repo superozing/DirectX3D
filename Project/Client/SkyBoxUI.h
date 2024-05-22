@@ -16,7 +16,7 @@ private:
 public:
     virtual void render_update() override;
     
-    vector<string> GetSkyBoxFileName();
+    void GetSkyBoxFileName();
 
 public:
     SkyBoxUI();

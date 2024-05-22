@@ -258,3 +258,8 @@ void Inspector::CheckComponent(COMPONENT_TYPE _type)
 		break;
 	}
 }
+
+ComponentUI* Inspector::GetComponentUI(COMPONENT_TYPE ComType)
+{
+	return this->m_arrComUI[(UINT)ComType];
+}

@@ -13,7 +13,7 @@ private:
 public:
     virtual void render_update() override;
     
-    vector<string> GetParticleFileName();
+    void GetParticleFileName();
 
 
 public:

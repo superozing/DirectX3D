@@ -8,7 +8,7 @@ ParticleSystemUI::ParticleSystemUI()
 	, m_vecParticleKey()
 {
 	SetComponentTitle("ParticleSystem");
-	m_vecParticleKey = GetParticleFileName();
+	GetParticleFileName();
 }
 
 ParticleSystemUI::~ParticleSystemUI()
@@ -340,7 +340,7 @@ void ParticleSystemUI::render_update()
 
 }
 
-vector<string> ParticleSystemUI::GetParticleFileName()
+void ParticleSystemUI::GetParticleFileName()
 {
 	vector<string> strFileName;
 
@@ -357,5 +357,5 @@ vector<string> ParticleSystemUI::GetParticleFileName()
 		}
 	}
 
-	return strFileName;
+	this->m_vecParticleKey = strFileName;
 }

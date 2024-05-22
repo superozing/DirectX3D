@@ -46,6 +46,8 @@ public:
 
     void CheckComponent(COMPONENT_TYPE _type);
 
+    ComponentUI* GetComponentUI(COMPONENT_TYPE ComType);
+
 private:
     void CreateChildUI();
     void CreateComponentUI();

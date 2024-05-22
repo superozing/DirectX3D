@@ -8,7 +8,7 @@ SkyBoxUI::SkyBoxUI()
 {
 	SetComponentTitle("SkyBox");
 
-	m_vecSkyBoxKey = GetSkyBoxFileName();
+	GetSkyBoxFileName();
 }
 
 SkyBoxUI::~SkyBoxUI()
@@ -198,7 +198,7 @@ void SkyBoxUI::render_update()
 
 }
 
-vector<string> SkyBoxUI::GetSkyBoxFileName()
+void SkyBoxUI::GetSkyBoxFileName()
 {
 	vector<string> strFileName;
 
@@ -215,5 +215,5 @@ vector<string> SkyBoxUI::GetSkyBoxFileName()
 		}
 	}
 
-	return strFileName;
+	m_vecSkyBoxKey = strFileName;
 }

@@ -8,6 +8,9 @@
 #include "Inspector.h"
 #include "TreeUI.h"
 
+#include "SkyBoxUI.h"
+#include "ParticleSystemUI.h"
+
 Content::Content()
 	: UI("Content", "##Content")
 {
@@ -216,6 +219,17 @@ void Content::ResetContent()
 			}
 
 		}
+	}
+
+	Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
+
+	if(pInspector != nullptr)
+	{ 
+		ParticleSystemUI* pParticleUI = (ParticleSystemUI*)pInspector->GetComponentUI(COMPONENT_TYPE::PARTICLESYSTEM);
+		SkyBoxUI* pSkyBoxUI = (SkyBoxUI*)pInspector->GetComponentUI(COMPONENT_TYPE::SKYBOX);
+
+		pParticleUI->GetParticleFileName();
+		pSkyBoxUI->GetSkyBoxFileName();
 	}
 }
 
