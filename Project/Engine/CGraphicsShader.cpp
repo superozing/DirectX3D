@@ -350,7 +350,7 @@ int CGraphicsShader::Load(const wstring& _strFilePath)
 		{
 			auto EnumVal = magic_enum::enum_cast<SCALAR_PARAM>(strEnumBuf);
 			if (EnumVal.has_value())
-				SetTopology(EnumVal.value());
+				m_ScalarParam[i].Type = EnumVal.value();
 		}
 		fin >> m_ScalarParam[i].Desc;
 		fin >> m_ScalarParam[i].min;
@@ -367,7 +367,8 @@ int CGraphicsShader::Load(const wstring& _strFilePath)
 		{
 			auto EnumVal = magic_enum::enum_cast<TEX_PARAM>(strEnumBuf);
 			if (EnumVal.has_value())
-				SetTopology(EnumVal.value());
+				m_TexParam[i].Type = EnumVal.value();
+
 		}
 		fin >> m_TexParam[i].Desc;
 		fin >> m_TexParam[i].IsUse;
