@@ -255,7 +255,6 @@ void ParticleSystemUI::render_update()
 		if (ImGui::Button("Off##NoiseForce")) {
 			NewModule.arrModuleCheck[(UINT)PARTICLE_MODULE::NOISE_FORCE] = 1;
 		}
-		ImGui::PopStyleColor(3);
 	}
 	ImGui::Text("NoiseForceScale"); ImGui::SameLine();
 	ImGui::DragFloat("##NoiseForceScale", &NewModule.NoiseForceScale, 0.1f, 0.0f, 100.0f);
@@ -338,6 +337,11 @@ void ParticleSystemUI::render_update()
 
 	pPS->SetModule(NewModule);
 
+}
+
+void ParticleSystemUI::ResetUIinfo()
+{
+	GetParticleFileName();
 }
 
 void ParticleSystemUI::GetParticleFileName()

@@ -12,6 +12,7 @@ private:
 
 public:
     virtual void render_update() override;
+    virtual void ResetUIinfo() override;
     
     void GetParticleFileName();
 

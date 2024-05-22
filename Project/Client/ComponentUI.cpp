@@ -23,6 +23,10 @@ void ComponentUI::render_update()
 	ImGui::PopID();
 }
 
+void ComponentUI::ResetUIinfo()
+{
+}
+
 void ComponentUI::SetTargetObject(CGameObject* _Target)
 {
 	m_TargetObject = _Target;

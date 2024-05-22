@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "UI.h"
 
 #include <Engine/CGameObject.h>
@@ -14,6 +14,7 @@ private:
 
 public:
     virtual void render_update() override;
+    virtual void ResetUIinfo();
 
 public:
     CGameObject* GetTargetObject() { return m_TargetObject; }

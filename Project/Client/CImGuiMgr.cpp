@@ -16,6 +16,7 @@
 #include "imgui_impl_dx11.h"
 
 #include "Inspector.h"
+#include "ComponentUI.h"
 #include "Content.h"
 #include "Outliner.h"
 #include "MenuUI.h"
@@ -280,7 +281,15 @@ void CImGuiMgr::observe_content()
 
         // InspectorUI Reload
         Inspector* pInspectorUI = (Inspector*)FindUI("##Inspector");
-        pInspectorUI->ResetInspector();
+        
+        for (int i = 0; i < (UINT)COMPONENT_TYPE::END; ++i)
+        {
+            ComponentUI* pUI = pInspectorUI->GetComponentUI((COMPONENT_TYPE)i);
+           
+            if(pUI!= nullptr)
+            pUI->ResetUIinfo();
+        }
+           
     }
 }
 

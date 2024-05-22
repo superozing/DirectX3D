@@ -265,11 +265,3 @@ ComponentUI* Inspector::GetComponentUI(COMPONENT_TYPE ComType)
 	return this->m_arrComUI[(UINT)ComType];
 }
 
-void Inspector::ResetInspector()
-{
-		ParticleSystemUI* pParticleUI = (ParticleSystemUI*)this->GetComponentUI(COMPONENT_TYPE::PARTICLESYSTEM);
-		SkyBoxUI* pSkyBoxUI = (SkyBoxUI*)this->GetComponentUI(COMPONENT_TYPE::SKYBOX);
-
-		pParticleUI->GetParticleFileName();
-		pSkyBoxUI->GetSkyBoxFileName();
-}

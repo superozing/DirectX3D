@@ -198,6 +198,11 @@ void SkyBoxUI::render_update()
 
 }
 
+void SkyBoxUI::ResetUIinfo()
+{
+	GetSkyBoxFileName();
+}
+
 void SkyBoxUI::GetSkyBoxFileName()
 {
 	vector<string> strFileName;

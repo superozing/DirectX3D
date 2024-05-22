@@ -26,6 +26,7 @@
 #define TEXCartoonSmoke L"texture\\particle\\CartoonSmoke.png"
 #define TEXHardCircle L"texture\\particle\\HardCircle.png"
 #define TEXHardRain L"texture\\particle\\HardRain.png"
+#define TEXPinkGalaxy L"texture\\particle\\PinkGalaxy.png"
 #define TEXray L"texture\\particle\\ray.png"
 #define TEXsmokeparticle L"texture\\particle\\smokeparticle.png"
 #define TEXSnow50px L"texture\\particle\\Snow50px.png"

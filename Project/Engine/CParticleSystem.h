@@ -28,7 +28,7 @@ public:
     void SetParticleTex(Ptr<CTexture> Texture) { m_ParticleTex = Texture; }
     
     int GetMaxParticleCount() { return (int)m_MaxParticleCount; }
-    CStructuredBuffer* GetSpawnCountBuffer() { return m_SpawnCountBuffer; }
+    void SetMaxParticleCount(UINT Count) { m_MaxParticleCount = Count; }
 
     tParticleModule GetParticleModule() { return m_Module; }
     void SetModule(tParticleModule _Module) { m_Module = _Module; }
