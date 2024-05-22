@@ -211,6 +211,13 @@ int CGraphicsShader::UpdateData()
 #define TagGSFuncName "[GSFuncName]"
 #define TagPSFuncName "[PSFuncName]"
 
+#define TagDesc "[Desc]"
+#define TagMin "[Min]"
+#define TagMax "[Max]"
+#define TagView "[View]"
+#define TagTooltip "[Tooltip]"
+#define TagIsUse "[IsUse]"
+
 int CGraphicsShader::Save(const wstring& _strRelativePath)
 {
 	wstring strFilePath = CPathMgr::GetContentPath();
@@ -222,7 +229,6 @@ int CGraphicsShader::Save(const wstring& _strRelativePath)
 
 	fout << TagTopology << endl;
 	fout << ToString(magic_enum::enum_name(m_Topology)) << endl;
-	
 
 	fout << TagRS_TYPE << endl;
 	fout << ToString(magic_enum::enum_name(m_RSType)) << endl;
@@ -236,61 +242,60 @@ int CGraphicsShader::Save(const wstring& _strRelativePath)
 	fout << TagSHADER_DOMAIN << endl;
 	fout << ToString(magic_enum::enum_name(m_Domain)) << endl;
 
+	fout << TagVSPath << endl;
+	fout << m_VSPath << endl;
+	fout << TagVSFuncName << endl;
+	fout << m_VSFuncName << endl;
+
+	fout << TagHSPath << endl;
+	fout << m_HSPath << endl;
+	fout << TagHSFuncName << endl;
+	fout << m_HSFuncName << endl;
+
+	fout << TagDSPath << endl;
+	fout << m_DSPath << endl;
+	fout << TagDSFuncName << endl;
+	fout << m_DSFuncName << endl;
+
+	fout << TagGSPath << endl;
+	fout << m_GSPath << endl;
+	fout << TagGSFuncName << endl;
+	fout << m_GSFuncName << endl;
+
+	fout << TagPSPath << endl;
+	fout << m_PSPath << endl;
+	fout << TagPSFuncName << endl;
+	fout << m_PSFuncName << endl;
 
 	fout << TagScalarParam << endl;
 	for (UINT i = 0; i < (UINT)SCALAR_PARAM::END; ++i)
 	{
-		fout << ToString(magic_enum::enum_name(m_ScalarParam[i].Type)) << endl;
-		fout << m_ScalarParam[i].Desc << endl;
-		fout << m_ScalarParam[i].min << endl;
-		fout << m_ScalarParam[i].Max << endl;
-		fout << m_ScalarParam[i].View << endl;
-		fout << m_ScalarParam[i].Tooltip << endl;
+		fout << ToString(magic_enum::enum_name((SCALAR_PARAM)i)) << endl;
+		fout << TagIsUse << endl;
 		fout << m_ScalarParam[i].IsUse << endl;
+		if (!m_ScalarParam[i].IsUse) continue;
+		fout << TagDesc << endl; 
+		fout << m_ScalarParam[i].Desc << endl;
+		fout << TagMin << endl; 
+		fout << m_ScalarParam[i].Min << endl;
+		fout << TagMax << endl; 
+		fout << m_ScalarParam[i].Max << endl;
+		fout << TagView << endl; 
+		fout << m_ScalarParam[i].View << endl;
+		fout << TagTooltip << endl; 
+		fout << m_ScalarParam[i].Tooltip << endl;
 	}
 
 	fout << TagTexParam << endl;
 	for (UINT i = 0; i < (UINT)TEX_PARAM::END; ++i)
 	{
-		fout << ToString(magic_enum::enum_name(m_TexParam[i].Type)) << endl;
-		fout << m_TexParam[i].Desc << endl;
+		fout << ToString(magic_enum::enum_name((TEX_PARAM)i)) << endl;
+		fout << TagIsUse << endl;
 		fout << m_TexParam[i].IsUse << endl;
+		if (!m_TexParam[i].IsUse) continue;
+		fout << TagDesc << endl;
+		fout << m_TexParam[i].Desc << endl;
 	}
-
-
-	fout << TagVSPath << endl;
-	fout << m_VSPath << endl;
-	
-	fout << TagHSPath << endl;
-	fout << m_HSPath << endl;
-	
-	fout << TagDSPath << endl;
-	fout << m_DSPath << endl;
-
-	fout << TagGSPath << endl;
-	fout << m_GSPath << endl;
-
-	fout << TagPSPath << endl;
-	fout << m_PSPath << endl;
-
-
-
-	fout << TagVSFuncName << endl;
-	fout << m_VSFuncName << endl;
-
-	fout << TagHSFuncName << endl;
-	fout << m_HSFuncName << endl;
-
-	fout << TagDSFuncName << endl;
-	fout << m_DSFuncName << endl;
-
-	fout << TagGSFuncName << endl;
-	fout << m_GSFuncName << endl;
-
-	fout << TagPSFuncName << endl;
-	fout << m_PSFuncName << endl;
-
-
 
 	return 0;
 }
@@ -303,7 +308,7 @@ int CGraphicsShader::Load(const wstring& _strFilePath)
 	string strEnumBuf;
 
 	Utils::GetLineUntilString(fin, TagTopology);
-	fin >> strEnumBuf;
+	getline(fin, strEnumBuf);
 	{
 		auto EnumVal = magic_enum::enum_cast<D3D11_PRIMITIVE_TOPOLOGY>(strEnumBuf);
 		if (EnumVal.has_value())
@@ -311,7 +316,7 @@ int CGraphicsShader::Load(const wstring& _strFilePath)
 	}
 
 	Utils::GetLineUntilString(fin, TagRS_TYPE);
-	fin >> strEnumBuf;
+	getline(fin, strEnumBuf);
 	{
 		auto EnumVal = magic_enum::enum_cast<RS_TYPE>(strEnumBuf);
 		if (EnumVal.has_value())
@@ -327,7 +332,7 @@ int CGraphicsShader::Load(const wstring& _strFilePath)
 	}
 
 	Utils::GetLineUntilString(fin, TagBS_TYPE);
-	fin >> strEnumBuf;
+	getline(fin, strEnumBuf);
 	{
 		auto EnumVal = magic_enum::enum_cast<BS_TYPE>(strEnumBuf);
 		if (EnumVal.has_value())
@@ -335,29 +340,61 @@ int CGraphicsShader::Load(const wstring& _strFilePath)
 	}
 
 	Utils::GetLineUntilString(fin, TagSHADER_DOMAIN);
-	fin >> strEnumBuf;
+	getline(fin, strEnumBuf);
 	{
 		auto EnumVal = magic_enum::enum_cast<SHADER_DOMAIN>(strEnumBuf);
 		if (EnumVal.has_value())
 			SetDomain(EnumVal.value());
 	}
 
+	Utils::GetLineUntilString(fin, TagVSPath);
+	getline(fin, m_VSPath);
+	Utils::GetLineUntilString(fin, TagVSFuncName);
+	getline(fin, m_VSFuncName);
+
+	Utils::GetLineUntilString(fin, TagHSPath);
+	getline(fin, m_HSPath);
+	Utils::GetLineUntilString(fin, TagHSFuncName);
+	getline(fin, m_HSFuncName);
+
+	Utils::GetLineUntilString(fin, TagDSPath);
+	getline(fin, m_DSPath);
+	Utils::GetLineUntilString(fin, TagDSFuncName);
+	getline(fin, m_DSFuncName);
+
+	Utils::GetLineUntilString(fin, TagGSPath);
+	getline(fin, m_GSPath);
+	Utils::GetLineUntilString(fin, TagGSFuncName);
+	getline(fin, m_GSFuncName);
+
+	Utils::GetLineUntilString(fin, TagPSPath);
+	getline(fin, m_PSPath);
+	Utils::GetLineUntilString(fin, TagPSFuncName);
+	getline(fin, m_PSFuncName);
 
 	Utils::GetLineUntilString(fin, TagScalarParam);
 	for (UINT i = 0; i < (UINT)SCALAR_PARAM::END; ++i)
 	{
-		fin >> strEnumBuf;
+		getline(fin, strEnumBuf);
 		{
 			auto EnumVal = magic_enum::enum_cast<SCALAR_PARAM>(strEnumBuf);
 			if (EnumVal.has_value())
 				m_ScalarParam[i].Type = EnumVal.value();
 		}
-		fin >> m_ScalarParam[i].Desc;
-		fin >> m_ScalarParam[i].min;
-		fin >> m_ScalarParam[i].Max;
-		fin >> m_ScalarParam[i].View;
-		fin >> m_ScalarParam[i].Tooltip;
+		Utils::GetLineUntilString(fin, TagIsUse);
 		fin >> m_ScalarParam[i].IsUse;
+		if (!m_ScalarParam[i].IsUse) continue;
+
+		Utils::GetLineUntilString(fin, TagDesc);
+		getline(fin, m_ScalarParam[i].Desc);
+		Utils::GetLineUntilString(fin, TagMin);
+		fin >> m_ScalarParam[i].Min;
+		Utils::GetLineUntilString(fin, TagMax);
+		fin >> m_ScalarParam[i].Max;
+		Utils::GetLineUntilString(fin, TagView);
+		fin >> m_ScalarParam[i].View;
+		Utils::GetLineUntilString(fin, TagTooltip);
+		getline(fin, m_ScalarParam[i].Tooltip);
 	}
 
 	Utils::GetLineUntilString(fin, TagTexParam);
@@ -370,42 +407,12 @@ int CGraphicsShader::Load(const wstring& _strFilePath)
 				m_TexParam[i].Type = EnumVal.value();
 
 		}
-		fin >> m_TexParam[i].Desc;
+		Utils::GetLineUntilString(fin, TagIsUse);
 		fin >> m_TexParam[i].IsUse;
+		if (!m_TexParam[i].IsUse) continue;
+		Utils::GetLineUntilString(fin, TagDesc);
+		getline(fin, m_TexParam[i].Desc);
 	}
-
-
-	Utils::GetLineUntilString(fin, TagVSPath);
-	fin >> m_VSPath;
-
-	Utils::GetLineUntilString(fin, TagHSPath);
-	fin >> m_HSPath;
-
-	Utils::GetLineUntilString(fin, TagDSPath);
-	fin >> m_DSPath;
-
-	Utils::GetLineUntilString(fin, TagGSPath);
-	fin >> m_GSPath;
-
-	Utils::GetLineUntilString(fin, TagPSPath);
-	fin >> m_PSPath;
-
-
-
-	Utils::GetLineUntilString(fin, TagVSFuncName);
-	fin >> m_VSFuncName;
-
-	Utils::GetLineUntilString(fin, TagHSFuncName);
-	fin >> m_HSFuncName;
-
-	Utils::GetLineUntilString(fin, TagDSFuncName);
-	fin >> m_DSFuncName;
-
-	Utils::GetLineUntilString(fin, TagGSFuncName);
-	fin >> m_GSFuncName;
-
-	Utils::GetLineUntilString(fin, TagPSFuncName);
-	fin >> m_PSFuncName;
 
 	return 0;
 }

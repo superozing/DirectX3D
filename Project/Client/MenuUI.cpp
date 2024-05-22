@@ -330,5 +330,12 @@ void MenuUI::ContentSaveAll()
             CLevelSaveLoad::SaveLevel(pLevel, strRelativePath);
             delete pLevel;
         }
+        else if (extension == ".gs")
+        {
+            CGraphicsShader* shader = new CGraphicsShader;
+            shader->Load(strPath);
+            shader->Save(strRelativePath);
+            delete shader;
+        }
     }
 }

@@ -6,7 +6,7 @@ struct tScalarParam
 {
     SCALAR_PARAM    Type;
     string          Desc;
-    float           min;
+    float           Min;
     float           Max;
     bool            View;
     string          Tooltip;

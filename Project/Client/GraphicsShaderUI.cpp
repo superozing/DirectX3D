@@ -330,7 +330,7 @@ void GraphicsShader::render_update()
 				ImGui::Text("Tooltip");			ImGui::SameLine();
 				ImGui::InputText(("##ScalarTooltip" + to_string(i)).c_str(), cscalar, 100, ImGuiInputTextFlags_None);
 
-				pShader->AddScalarParam(SCALAR_PARAM(i), string(cdesc), Scalar.min, Scalar.Max, Scalar.View, string(cscalar));
+				pShader->AddScalarParam(SCALAR_PARAM(i), string(cdesc), Scalar.Min, Scalar.Max, Scalar.View, string(cscalar));
 			}
 
 

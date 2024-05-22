@@ -69,25 +69,25 @@ void MaterialUI::render_update()
         case SCALAR_PARAM::INT_1:
         case SCALAR_PARAM::INT_2:
         case SCALAR_PARAM::INT_3:                   
-            ParamUI::Param_INT((int*)pMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, (int)vecScalarParam[i].min, (int)vecScalarParam[i].Max,vecScalarParam[i].View, vecScalarParam[i].Tooltip);
+            ParamUI::Param_INT((int*)pMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, (int)vecScalarParam[i].Min, (int)vecScalarParam[i].Max,vecScalarParam[i].View, vecScalarParam[i].Tooltip);
             break;
         case SCALAR_PARAM::FLOAT_0:
         case SCALAR_PARAM::FLOAT_1:
         case SCALAR_PARAM::FLOAT_2:
         case SCALAR_PARAM::FLOAT_3:
-            ParamUI::Param_FLOAT((float*)pMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, vecScalarParam[i].min, vecScalarParam[i].Max, vecScalarParam[i].View, vecScalarParam[i].Tooltip);
+            ParamUI::Param_FLOAT((float*)pMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, vecScalarParam[i].Min, vecScalarParam[i].Max, vecScalarParam[i].View, vecScalarParam[i].Tooltip);
             break;
         case SCALAR_PARAM::VEC2_0:
         case SCALAR_PARAM::VEC2_1:
         case SCALAR_PARAM::VEC2_2:
         case SCALAR_PARAM::VEC2_3:
-            ParamUI::Param_VEC2((Vec2*)pMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, vecScalarParam[i].min, vecScalarParam[i].Max,  vecScalarParam[i].View, vecScalarParam[i].Tooltip);
+            ParamUI::Param_VEC2((Vec2*)pMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, vecScalarParam[i].Min, vecScalarParam[i].Max,  vecScalarParam[i].View, vecScalarParam[i].Tooltip);
             break;
         case SCALAR_PARAM::VEC4_0:
         case SCALAR_PARAM::VEC4_1:
         case SCALAR_PARAM::VEC4_2:
         case SCALAR_PARAM::VEC4_3:
-            ParamUI::Param_VEC4((Vec4*)pMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, vecScalarParam[i].min, vecScalarParam[i].Max,  vecScalarParam[i].View, vecScalarParam[i].Tooltip);
+            ParamUI::Param_VEC4((Vec4*)pMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, vecScalarParam[i].Min, vecScalarParam[i].Max,  vecScalarParam[i].View, vecScalarParam[i].Tooltip);
             break;
         case SCALAR_PARAM::MAT_0:
         case SCALAR_PARAM::MAT_1:
