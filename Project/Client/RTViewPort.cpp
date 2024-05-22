@@ -220,5 +220,5 @@ void RTViewPort::MoveCameraToObject()
     Vec3 vDir = m_pCamera->Transform()->GetWorldDir(DIR_TYPE::FRONT);
     vDir.Normalize();
     Vec3 vNewPos = vPos - (vDir)* distance;
-    m_pCamera->Transform()->SetRelativePos(vNewPos);
+    m_pCamera->Transform()->Lerp(vNewPos, false, Vec3(), false, Vec3(), 0.1f);
 }
