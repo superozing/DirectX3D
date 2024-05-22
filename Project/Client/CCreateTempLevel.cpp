@@ -156,7 +156,7 @@ void CCreateTempLevel::CreateTempLevel()
 	LandScape->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
 	LandScape->Transform()->SetRelativeScale(Vec3(200.f, 1000.f, 200.f));
 
-	LandScape->LandScape()->SetHeightMap(CAssetMgr::GetInst()->Load<CTexture>(L"texture\\HeightMap\\HeightMap_01.jpg"));
+	//LandScape->LandScape()->SetHeightMap(CAssetMgr::GetInst()->Load<CTexture>(L"texture\\HeightMap\\HeightMap_01.jpg"));
 
 	pTempLevel->AddObject(LandScape, (UINT)LAYER::LAYER_DEFAULT, false);
 

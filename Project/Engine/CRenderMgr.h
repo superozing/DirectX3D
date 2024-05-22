@@ -83,6 +83,8 @@ public:
 
     void CheckEscape();
 
+    CCamera* GetMainCam();
+
 public:
     virtual void init() override;
     virtual void tick() override;
