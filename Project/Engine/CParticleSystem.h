@@ -25,7 +25,13 @@ private:
 
 public:
     Ptr<CTexture> GetParticleTex() { return m_ParticleTex; }
+    
     int GetMaxParticleCount() { return (int)m_MaxParticleCount; }
+    CStructuredBuffer* GetSpawnCountBuffer() { return m_SpawnCountBuffer; }
+
+    tParticleModule GetParticleModule() { return m_Module; }
+    void SetModule(tParticleModule _Module) { m_Module = _Module; }
+
 
 public:
     virtual void UpdateData() override;

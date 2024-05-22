@@ -7,8 +7,8 @@ class ParticleSystemUI :
     public ComponentUI
 {
 private:
-    CParticleSystem* m_TargetParticleComponent;
-    Ptr<CTexture>    m_ParticleTexture;
+
+    tParticleModule* m_TargetParticleModule;
 
 public:
     virtual void render_update() override;

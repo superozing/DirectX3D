@@ -31,6 +31,7 @@ public:
     inline class CAnimator2D* Animator2D() { return GetOwner()->Animator2D();}
     inline class CLight2D* Light2D() { return GetOwner()->Light2D();}
     inline class CLight3D* Light3D() { return GetOwner()->Light3D();}
+    inline class CParticleSystem* ParticleSystem() { return GetOwner()->ParticleSystem(); }
     inline class CTileMap* TileMap() { return GetOwner()->TileMap();}
     inline class CSkyBox* SkyBox() { return GetOwner()->SkyBox();}
     inline class CDecal* Decal() { return GetOwner()->Decal();}
