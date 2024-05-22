@@ -62,6 +62,7 @@ void CTimeMgr::tick()
 
 	++m_iCall;	
 	g_global.g_time += (float)m_DeltaTime;
+	g_global.g_dt = (float)m_DeltaTime;
 	
 	// 레벨 누적 시간 추가
 	m_AccLevelTime += m_DeltaTime;
