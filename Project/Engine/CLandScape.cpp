@@ -42,8 +42,6 @@ void CLandScape::UpdateData()
 
 void CLandScape::SaveToFile(ofstream& fout)
 {
-	CRenderComponent::SaveToFile(fout);
-
 	fout << TagFaceX << endl;
 	fout << m_FaceX << endl;
 
@@ -53,8 +51,6 @@ void CLandScape::SaveToFile(ofstream& fout)
 
 void CLandScape::LoadFromFile(ifstream& fin)
 {
-	CRenderComponent::LoadFromFile(fin);
-
 	Utils::GetLineUntilString(fin, TagFaceX);
 	fin >> m_FaceX;
 

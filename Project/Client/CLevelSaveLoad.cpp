@@ -314,6 +314,8 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
 		case COMPONENT_TYPE::DECAL:
 			pComponent = new CDecal;
 			break;
+		case COMPONENT_TYPE::LANDSCAPE:
+			pComponent = new CLandScape;
 		default:
 			assert(nullptr);
 			break;
@@ -411,6 +413,12 @@ CGameObject* CLevelSaveLoad::LoadGameObject(ifstream& fin)
 				break;
 			case COMPONENT_TYPE::SKYBOX:
 				pComponent = new CSkyBox;
+				break;
+			case COMPONENT_TYPE::DECAL:
+				pComponent = new CDecal;
+				break;
+			case COMPONENT_TYPE::LANDSCAPE:
+				pComponent = new CLandScape;
 				break;
 			default:
 				assert(nullptr);
