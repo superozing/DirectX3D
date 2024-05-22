@@ -100,17 +100,17 @@ void SkyBoxUI::render_update()
 	ImGui::Text("Change Texture");
 	ImGui::SameLine();
 
-	if (ImGui::BeginCombo("##comboSkyBoxSphere", cSelectSphere)) // The second parameter is the label previewed before opening the combo.
+	if (ImGui::BeginCombo("##comboSkyBoxSphere", cSelectSphere))
 	{
 		for (int n = 0; n < m_vecSkyBoxKey.size(); n++)
 		{
-			bool is_selected = (cSelectSphere == m_vecSkyBoxKey[n].c_str()); // You can store your selection however you want, outside or inside your objects
+			bool is_selected = (cSelectSphere == m_vecSkyBoxKey[n].c_str()); 
 			if (ImGui::Selectable(m_vecSkyBoxKey[n].c_str(), is_selected))
 			{
 				cSelectSphere = m_vecSkyBoxKey[n].c_str();
 				
 				if (is_selected)
-					ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
+					ImGui::SetItemDefaultFocus();  
 
 				string m_strCurDirectory = "texture\\skybox\\";
 				wstring SkyBoxKey = ToWString(m_strCurDirectory += m_vecSkyBoxKey[n].c_str());

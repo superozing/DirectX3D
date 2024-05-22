@@ -5,8 +5,10 @@
 
 ParticleSystemUI::ParticleSystemUI()
 	: ComponentUI("ParticleSystemUI", "##ParticleSystemUI", COMPONENT_TYPE::PARTICLESYSTEM)
+	, m_vecParticleKey()
 {
 	SetComponentTitle("ParticleSystem");
+	m_vecParticleKey = GetParticleFileName();
 }
 
 ParticleSystemUI::~ParticleSystemUI()
@@ -23,9 +25,11 @@ void ParticleSystemUI::render_update()
 	tParticleModule CurModule = pPS->GetParticleModule();
 	tParticleModule NewModule = CurModule;
 
+	static const char* charParticleTex = NULL;
+
+
 
 	ImVec2 UIsize = ImGui::GetWindowSize();
-
 
 	static bool use_text_color_for_tint = false;
 	ImVec2 uv_min = ImVec2(0.0f, 0.0f);                 // Top-left
@@ -35,8 +39,39 @@ void ParticleSystemUI::render_update()
 
 	// 파티클 텍스쳐
 	StaticButton(string("Particle Texture"), STATIC_BTN_TYPE::SUBTITLE);
+
+	//Particle ComboBox
+	ImGui::Text("Change Texture");
+	ImGui::SameLine();
+
+	if (ImGui::BeginCombo("##ComboParticle", charParticleTex))
+	{
+		for (int n = 0; n < m_vecParticleKey.size(); n++)
+		{
+			bool is_selected = (charParticleTex == m_vecParticleKey[n].c_str());
+			if (ImGui::Selectable(m_vecParticleKey[n].c_str(), is_selected))
+			{
+				charParticleTex = m_vecParticleKey[n].c_str();
+
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+
+				string m_strCurDirectory = "texture\\particle\\";
+				wstring ParticleKey = ToWString(m_strCurDirectory += m_vecParticleKey[n].c_str());
+
+				GetTargetObject()->ParticleSystem()->SetParticleTex(CAssetMgr::GetInst()->Load<CTexture>(ParticleKey, ParticleKey));
+
+			}
+		}
+		ImGui::EndCombo();
+	}
+
 	ImGui::Image(GetTargetObject()->ParticleSystem()->GetParticleTex()->GetSRV().Get(), ImVec2(UIsize.x - 10.f, 150.f), uv_min, uv_max, tint_col, border_col);
 
+	string strTextureName = ToString(GetTargetObject()->ParticleSystem()->GetParticleTex()->GetKey());
+	ImGui::Text("Particle Texture : "); ImGui::SameLine();
+	ImGui::InputText("##ParticleTexName", (char*)strTextureName.c_str(), strTextureName.length(), ImGuiInputTextFlags_ReadOnly);
+	
 	ImGui::Spacing();
 
 
@@ -303,4 +338,24 @@ void ParticleSystemUI::render_update()
 
 	pPS->SetModule(NewModule);
 
+}
+
+vector<string> ParticleSystemUI::GetParticleFileName()
+{
+	vector<string> strFileName;
+
+	string m_strCurDirectory = "texture\\particle\\";
+	string path = ToString(CPathMgr::GetContentPath()) + m_strCurDirectory;
+
+	namespace fs = std::filesystem;
+	for (const fs::directory_entry& entry : fs::directory_iterator(path)) {
+		if (!entry.is_directory()) {
+			auto filename = entry.path().filename().string();
+			auto extension = entry.path().extension().string();
+
+			strFileName.push_back(filename);
+		}
+	}
+
+	return strFileName;
 }

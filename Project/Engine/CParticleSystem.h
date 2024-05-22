@@ -25,6 +25,7 @@ private:
 
 public:
     Ptr<CTexture> GetParticleTex() { return m_ParticleTex; }
+    void SetParticleTex(Ptr<CTexture> Texture) { m_ParticleTex = Texture; }
     
     int GetMaxParticleCount() { return (int)m_MaxParticleCount; }
     CStructuredBuffer* GetSpawnCountBuffer() { return m_SpawnCountBuffer; }

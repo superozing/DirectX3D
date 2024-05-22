@@ -8,10 +8,13 @@ class ParticleSystemUI :
 {
 private:
 
-    tParticleModule* m_TargetParticleModule;
+    vector<string>  m_vecParticleKey;
 
 public:
     virtual void render_update() override;
+    
+    vector<string> GetParticleFileName();
+
 
 public:
     ParticleSystemUI();
