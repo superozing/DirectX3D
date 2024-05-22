@@ -6,6 +6,7 @@
 ParticleSystemUI::ParticleSystemUI()
 	: ComponentUI("ParticleSystemUI", "##ParticleSystemUI", COMPONENT_TYPE::PARTICLESYSTEM)
 	, m_vecParticleKey()
+	, m_iNewMaxCount(0)
 {
 	SetComponentTitle("ParticleSystem");
 	GetParticleFileName();
@@ -41,7 +42,7 @@ void ParticleSystemUI::render_update()
 	StaticButton(string("Particle Texture"), STATIC_BTN_TYPE::SUBTITLE);
 
 	//Particle ComboBox
-	ImGui::Text("Change Texture");
+	ImGui::Text("Texture");
 	ImGui::SameLine();
 
 	if (ImGui::BeginCombo("##ComboParticle", charParticleTex))
@@ -79,6 +80,22 @@ void ParticleSystemUI::render_update()
 	string strMaxParticle = std::to_string(GetTargetObject()->ParticleSystem()->GetMaxParticleCount());
 	ImGui::SetNextItemWidth(80);
 	ImGui::InputText("##Max Count", (char*)strMaxParticle.c_str(), strMaxParticle.length(), ImGuiInputTextFlags_ReadOnly);
+
+	ImGui::Text("Change Max Count");
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(120.f);
+	if (ImGui::InputInt("##NewParticleCount", &m_iNewMaxCount, 1, 100, ImGuiInputTextFlags_CharsDecimal))
+	{
+		if (m_iNewMaxCount < 0)
+			m_iNewMaxCount = 0;
+	}
+	
+	ImGui::SameLine();
+
+	if (ImGui::Button("Apply", ImVec2(50.f, 20.f)))
+	{
+		GetTargetObject()->ParticleSystem()->SetMaxParticleCount((UINT)m_iNewMaxCount);
+	}
 
 	ImGui::Text("Current Spawn Count"); 
 	

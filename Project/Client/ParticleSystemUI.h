@@ -9,6 +9,7 @@ class ParticleSystemUI :
 private:
 
     vector<string>  m_vecParticleKey;
+    int             m_iNewMaxCount;
 
 public:
     virtual void render_update() override;
