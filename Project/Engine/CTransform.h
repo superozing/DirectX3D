@@ -17,7 +17,21 @@ private:
     bool    m_bAbsolute;
     bool    m_IsDynamic;    // 정적물체 or 동적물체
 
+    // =========================
+    // 부드럽게 움직이기(선형) 위한 변수들
+    // =========================
+    Vec3 m_vTargetPos;
+    Vec3 m_vTargetRot;
+    Vec3 m_vTargetScale;
+    float m_fTargetTimer;
+    float m_fTargetTime;
+    bool m_bLerp;
+
 public:
+    void Lerp(Vec3 _pos, bool _bMoveRot = false, Vec3 _rot = Vec3(), bool _bMoveScale = false, Vec3 _scale = Vec3(), float _time = 0.f);
+
+public:
+    virtual void tick() override;
     virtual void finaltick() override;
     virtual void UpdateData() override;
 

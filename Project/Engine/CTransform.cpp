@@ -4,7 +4,7 @@
 #include "CDevice.h"
 #include "CConstBuffer.h"
 
-
+#include "CTimeMgr.h"
 
 CTransform::CTransform()
 	: CComponent(COMPONENT_TYPE::TRANSFORM)
@@ -16,6 +16,44 @@ CTransform::CTransform()
 
 CTransform::~CTransform()
 {
+}
+
+void CTransform::Lerp(Vec3 _pos, bool _bMoveRot, Vec3 _rot, bool _bMoveScale, Vec3 _scale, float _time)
+{
+	m_vTargetPos = _pos;
+	_bMoveRot ? m_vTargetRot = _rot : m_vTargetRot = m_vRelativeRotation;
+	_bMoveScale ? m_vTargetScale = _scale : m_vTargetScale = m_vRelativeScale;
+	m_fTargetTimer = m_fTargetTime = _time;
+	m_bLerp = true;
+
+	if (m_fTargetTime == 0.f) {
+		m_bLerp = false;
+		SetRelativePos(m_vTargetPos);
+		SetRelativeRotation(m_vTargetRot);
+		SetRelativeScale(m_vTargetScale);
+	}
+}
+
+void CTransform::tick()
+{
+	// LerpToTarget();
+	if (m_bLerp) 
+	{
+		// 목표에 도착
+		if (m_fTargetTimer <= 0.f) {
+			m_bLerp = false;
+
+			SetRelativePos(m_vTargetPos);
+			SetRelativeRotation(m_vTargetRot);
+			SetRelativeScale(m_vTargetScale);
+		}
+
+		//Vec3 vNPos = RoRMath::Lerp(m_vTargetPos, m_vRelativePos, m_fTargetTimer / m_fTargetTime);
+		//m_fTargetTimer -= DT;
+		//int a = 0;
+
+	}
+
 }
 
 void CTransform::finaltick()
