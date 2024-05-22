@@ -3,6 +3,11 @@
 
 class CLevel;
 
+enum class Client_Function_Type
+{
+    CIMGUIMGR_ENTER,
+};
+
 class CLevelMgr :
     public CManager<CLevelMgr>
 {
@@ -25,7 +30,10 @@ private:
 
 public:
     CLevel* GetCurrentLevel() { return m_CurLevel; }
+    void RegisterClientFunction(Client_Function_Type _Type, std::function<void()> _MemberFunction);
 
+private:
+    unordered_map<Client_Function_Type, std::function<void()>> m_MapClientFunc;
 
     friend class CTaskMgr;
 };

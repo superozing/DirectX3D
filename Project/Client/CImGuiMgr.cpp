@@ -137,6 +137,15 @@ void CImGuiMgr::progress()
     observe_content();
 }
 
+void CImGuiMgr::enter()
+{
+    ResetInspectorTarget();
+
+    // ContentUI �� Reload �۾� ����
+    Outliner* pOutlinerUI = (Outliner*)FindUI("##Outliner");
+    pOutlinerUI->ResetCurrentLevel();
+}
+
 FOCUS_STATE CImGuiMgr::GetFocus_debug()
 {    
     // 현재 포커싱 된 창이 없을 경우
@@ -248,7 +257,7 @@ void CImGuiMgr::ResetInspectorTarget()
 }
 
 
-
+#include <Engine\CLevelMgr.h>
 void CImGuiMgr::create_ui()
 {
     UI* pUI = nullptr;
@@ -256,6 +265,7 @@ void CImGuiMgr::create_ui()
     // Inspector
     pUI = new Inspector;
     AddUI(pUI->GetID(), pUI);
+    CLevelMgr::GetInst()->RegisterClientFunction(Client_Function_Type::CIMGUIMGR_ENTER, std::bind(&CImGuiMgr::enter, this));
 
     // Content
     pUI = new Content;

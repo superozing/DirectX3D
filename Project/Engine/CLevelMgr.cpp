@@ -94,7 +94,12 @@ void CLevelMgr::ChangeLevel_Task(CLevel* _NextLevel, LEVEL_STATE _NextLevelState
 	if (nullptr != m_CurLevel)
 		m_CurLevel->ChangeState(_NextLevelState);
 
-
 	CLevelMgr::GetInst()->enter();
+	m_MapClientFunc[Client_Function_Type::CIMGUIMGR_ENTER]();
 
+}
+
+void CLevelMgr::RegisterClientFunction(Client_Function_Type _Type, std::function<void()> _MemberFunction)
+{
+	m_MapClientFunc[_Type] = _MemberFunction;
 }
