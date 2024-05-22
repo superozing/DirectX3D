@@ -18,6 +18,6 @@
 #pragma comment(lib, "Engine\\Engine.lib")
 #endif
 
-#include "global.h"
+#include "CScriptMgr.h"
 
 #endif //PCH_H

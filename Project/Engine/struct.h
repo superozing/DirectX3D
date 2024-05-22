@@ -180,3 +180,10 @@ struct tGlobalData
 	int		g_Light3DCount;		// 3D 광원 개수	
 };
 extern tGlobalData g_global;
+
+struct tLog
+{
+	double		m_dTime;
+	Log_Level	m_LogLv;
+	string		m_strMsg;
+};

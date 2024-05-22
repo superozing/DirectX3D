@@ -16,6 +16,7 @@ private:
     Matrix  m_matWorldInv;  // 월드 역행렬
     bool    m_bAbsolute;
     bool    m_IsDynamic;    // 정적물체 or 동적물체
+    //bool    m_FrustumCheck;
 
     // =========================
     // 부드럽게 움직이기(선형) 위한 변수들

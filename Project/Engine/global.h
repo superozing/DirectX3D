@@ -10,9 +10,11 @@
 #include <vector>
 #include <list>
 #include <map>
+#include <unordered_map>
 
 using std::vector;
 using std::list;
+using std::unordered_map;
 using std::map;
 using std::make_pair;
 
@@ -78,3 +80,10 @@ typedef Vector4 Vec4;
 
 // Magic Enum 헤더 참조
 #include <Magic_Enum/magic_enum_all.hpp>
+
+// String Table(Gen)
+#include "GenStrings.h"
+
+// String Table(User)
+#include "UserStrings.h"
+

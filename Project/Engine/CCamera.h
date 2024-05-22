@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include "CComponent.h"
 
+#include "CFrustum.h"
+
 enum class PROJ_TYPE
 {
     ORTHOGRAPHIC, // 직교 투영
@@ -11,6 +13,8 @@ class CCamera :
     public CComponent
 {
 private:
+    CFrustum                m_Frustum;
+
     PROJ_TYPE               m_ProjType;     // 투영 방식
 
     // 원근투영(Perspective)
@@ -101,6 +105,7 @@ public:
     void Merge();
 
     void SortShadowMapObject();
+    void render_shadowmap();
 
 public:
 
@@ -112,6 +117,7 @@ public:
 public:
     CLONE(CCamera);
     CCamera();
+    CCamera(const CCamera& _Other);
     ~CCamera();
 
     friend class CameraUI;

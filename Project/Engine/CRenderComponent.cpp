@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CRenderComponent.h"
 
 #include "CLevelMgr.h"
@@ -7,6 +7,7 @@
 
 CRenderComponent::CRenderComponent(COMPONENT_TYPE _Type)
 	: CComponent(_Type)
+	, m_DrawShadowMap(true)
 {
 }
 
@@ -14,16 +15,17 @@ CRenderComponent::CRenderComponent(const CRenderComponent& _OriginRenderCom)
 	: CComponent(_OriginRenderCom)
 	, m_Mesh(_OriginRenderCom.m_Mesh)
 	, m_SharedMtrl(_OriginRenderCom.m_SharedMtrl)	
+	, m_DrawShadowMap(_OriginRenderCom.m_DrawShadowMap)
 {
-	// ¿øº» ¿ÀºêÁ§Æ®°¡ °øÀ¯ÀçÁúÀ» ÂüÁ¶ÇÏ°í ÀÖ°í, ÇöÀç »ç¿ëÀçÁúÀº °øÀ¯ÀçÁúÀÌ ¾Æ´Ñ°æ¿ì
+	// ì›ë³¸ ì˜¤ë¸Œì íŠ¸ê°€ ê³µìœ ì¬ì§ˆì„ ì°¸ì¡°í•˜ê³  ìˆê³ , í˜„ì¬ ì‚¬ìš©ì¬ì§ˆì€ ê³µìœ ì¬ì§ˆì´ ì•„ë‹Œê²½ìš°
 	if (_OriginRenderCom.m_SharedMtrl != _OriginRenderCom.m_CurMtrl)
 	{
 		assert(_OriginRenderCom.m_DynamicMtrl.Get());
 
-		// º¹»ç ·»´õ ÄÄÆ÷³ÍÆ®µµ º°µµÀÇ µ¿ÀûÀçÁúÀ» »ı¼ºÇÑ´Ù.
+		// ë³µì‚¬ ë Œë” ì»´í¬ë„ŒíŠ¸ë„ ë³„ë„ì˜ ë™ì ì¬ì§ˆì„ ìƒì„±í•œë‹¤.
 		GetDynamicMaterial();
 
-		// ¿øº» ·»´õÄÄÆ÷³ÍÆ®ÀÇ µ¿ÀûÀçÁú °ªÀ» ÇöÀç »ı¼ºÇÑ µ¿ÀûÀçÁú·Î º¹»çÇÑ´Ù.
+		// ì›ë³¸ ë Œë”ì»´í¬ë„ŒíŠ¸ì˜ ë™ì ì¬ì§ˆ ê°’ì„ í˜„ì¬ ìƒì„±í•œ ë™ì ì¬ì§ˆë¡œ ë³µì‚¬í•œë‹¤.
 		*m_DynamicMtrl.Get() = *_OriginRenderCom.m_DynamicMtrl.Get();
 	}
 	else
@@ -39,7 +41,7 @@ CRenderComponent::~CRenderComponent()
 
 void CRenderComponent::SetMaterial(Ptr<CMaterial> _Mtrl)
 {
-	// ÀçÁúÀÌ º¯°æµÇ¸é ±âÁ¸¿¡ º¹»çº» ¹Ş¾ÆµĞ DynamicMaterial À» »èÁ¦ÇÑ´Ù.
+	// ì¬ì§ˆì´ ë³€ê²½ë˜ë©´ ê¸°ì¡´ì— ë³µì‚¬ë³¸ ë°›ì•„ë‘” DynamicMaterial ì„ ì‚­ì œí•œë‹¤.
 	m_CurMtrl = m_SharedMtrl = _Mtrl;
 	m_DynamicMtrl = nullptr;
 }
@@ -51,14 +53,14 @@ Ptr<CMaterial> CRenderComponent::GetDynamicMaterial()
 	if (pCurLevel->GetState() != LEVEL_STATE::PLAY)
 		return nullptr;
 
-	// ÀÌ¹Ì µ¿ÀûÀçÁúÀ» º¸À¯ÇÏ°í ÀÖÀ¸¸é ±×°É ÁØ´Ù.
+	// ì´ë¯¸ ë™ì ì¬ì§ˆì„ ë³´ìœ í•˜ê³  ìˆìœ¼ë©´ ê·¸ê±¸ ì¤€ë‹¤.
 	if (nullptr != m_DynamicMtrl)
 		return m_DynamicMtrl;
 
-	// °øÀ¯ÀçÁúÀÌ ÀÖ´Ù¸é
+	// ê³µìœ ì¬ì§ˆì´ ìˆë‹¤ë©´
 	if (nullptr != m_SharedMtrl)
 	{
-		// °øÀ¯ÀçÁúÀ» º¹»çÇØ¼­ µ¿ÀûÀçÁúÀ» ¸¸µé°í ±×°É ÇöÀç »ç¿ëÀçÁú·Î ¼³Á¤ÇÑ´Ù.
+		// ê³µìœ ì¬ì§ˆì„ ë³µì‚¬í•´ì„œ ë™ì ì¬ì§ˆì„ ë§Œë“¤ê³  ê·¸ê±¸ í˜„ì¬ ì‚¬ìš©ì¬ì§ˆë¡œ ì„¤ì •í•œë‹¤.
 		m_CurMtrl = m_DynamicMtrl = m_SharedMtrl->Clone();		
 		return m_DynamicMtrl;
 	}

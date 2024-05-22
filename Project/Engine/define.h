@@ -283,6 +283,8 @@ enum class SHADER_DOMAIN
 	DOMAIN_TRANSPARENT,		// 반투명
 	DOMAIN_POSTPROCESS,		// 후처리
 
+	DOMAIN_SHADOWMAP, // ShadowMap
+
 	DOMAIN_DEBUG,
 };
 
@@ -324,5 +326,13 @@ enum class MRT_TYPE
 	LIGHT,			// RT 2, DS 0
 	SHADOW_DEPTH,	// RT 1, DS 1
 
+	END,
+};
+
+enum class Log_Level
+{
+	INFO = 1,
+	WARN = 2,
+	ERR = 4,
 	END,
 };

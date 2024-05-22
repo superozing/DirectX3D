@@ -6,7 +6,7 @@
 #include "ParamUI.h"
 
 ScriptUI::ScriptUI()
-	: ComponentUI("Script", "##Script", COMPONENT_TYPE::LIGHT2D)
+	: ComponentUI("Script", "##Script", COMPONENT_TYPE::SCRIPT)
 	, m_TargetScript(nullptr)
 {
 }
@@ -28,6 +28,10 @@ void ScriptUI::SetScript(CScript* _Script)
 void ScriptUI::render_update()
 {
 	ComponentUI::render_update();
+
+	auto ScriptList = magic_enum::enum_names<SCRIPT_TYPE>();
+	UINT ScriptIdx = m_TargetScript->GetScriptType();
+	if (!TitleCollapse(string(ScriptList[ScriptIdx]).c_str())) return;
 
 	const auto& vParam = m_TargetScript->GetScriptParam();
 

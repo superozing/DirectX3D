@@ -15,14 +15,15 @@ int main()
 
 	GetAllContents();
 
-	MakeStrHeader("Project\\Scripts\\strLevel.h", "LEVEL", g_vecLevelNames);
-	MakeStrHeader("Project\\Scripts\\strFx.h", "FX", g_vecFxNames);
-	MakeStrHeader("Project\\Scripts\\strSnd.h", "SND", g_vecSndNames);
-	MakeStrHeader("Project\\Scripts\\strTex.h", "TEX", g_vecTexNames);
-	MakeStrHeader("Project\\Scripts\\strMtrl.h", "MTRL", g_vecMtrlNames);
-	MakeStrHeader("Project\\Scripts\\strPref.h", "PREF", g_vecPrefNames);
-	MakeStrHeader("Project\\Scripts\\strAnim.h", "ANIM", g_vecAnimNames);
-	MakeStrHeader("Project\\Scripts\\strTxt.h", "TXT", g_vecTxtNames);
+	InitStrHeader();
+	MakeStrHeader("Project\\Engine\\strLevel.h", "LEVEL", g_vecLevelNames);
+	MakeStrHeader("Project\\Engine\\strFx.h", "FX", g_vecFxNames);
+	MakeStrHeader("Project\\Engine\\strSnd.h", "SND", g_vecSndNames);
+	MakeStrHeader("Project\\Engine\\strTex.h", "TEX", g_vecTexNames);
+	MakeStrHeader("Project\\Engine\\strMtrl.h", "MTRL", g_vecMtrlNames);
+	MakeStrHeader("Project\\Engine\\strPref.h", "PREF", g_vecPrefNames);
+	MakeStrHeader("Project\\Engine\\strAnim.h", "ANIM", g_vecAnimNames);
+	MakeStrHeader("Project\\Engine\\strTxt.h", "TXT", g_vecTxtNames);
 
 	return 0;
 }

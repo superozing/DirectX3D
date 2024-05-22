@@ -38,26 +38,6 @@
 
 void CCreateTempLevel::Init()
 {
-	// Missile Prefab 생성
-	/*CGameObject* pObj = nullptr;
-
-	pObj = new CGameObject;
-	pObj->SetName(L"Missile");
-	pObj->AddComponent(new CTransform);
-	pObj->AddComponent(new CMeshRender);
-	pObj->AddComponent(new CMissileScript);
-
-	pObj->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 1.f));
-
-	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
-
-	Ptr<CPrefab> pMissilePrefab = new CPrefab(pObj);
-	CAssetMgr::GetInst()->AddAsset<CPrefab>(L"MissilePrefab", pMissilePrefab.Get());
-
-
-	//pMissilePrefab->Save(L"prefab\\missile.pref");
-	*/
 
 	// 임시 FSM 객체 에셋 하나 생성하기
 	Ptr<CFSM>	pFSM = new CFSM(true);
@@ -116,7 +96,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->AddComponent(new CTransform);
 	pObj->AddComponent(new CLight3D);
 
-	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
+	pObj->Transform()->SetRelativePos(Vec3(-1000.f, 2000.f, -1000.f));
 	pObj->Transform()->SetDir(Vec3(1.f, -1.f, 1.f));
 
 	pObj->Light3D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
@@ -151,17 +131,16 @@ void CCreateTempLevel::CreateTempLevel()
 
 	// Player Object 생성
 	pObj = new CGameObject;
-	pObj->SetName(L"Player");
+	pObj->SetName(L"Sphere");
 
 	pObj->AddComponent(new CTransform);
 	pObj->AddComponent(new CMeshRender);
 
-	pObj->Transform()->SetRelativePos(Vec3(0.f, -200.f, 500.f));
-	pObj->Transform()->SetRelativeScale(Vec3(2000.f, 2000.f, 1.f));
-	//pObj->Transform()->SetRelativeRotation(Vec3(XM_PI / 2.f, 0.f, 0.f));
-	pObj->Transform()->SetDir(Vec3(0.f, -1.f, 0.f));
+	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
+	pObj->Transform()->SetRelativeScale(Vec3(500.f, 500.f, 500.f));
+	//pObj->Transform()->SetDir(Vec3(0.f, -1.f, 0.f));
 
-	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHsphere));
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std3D_DeferredMtrl"));
 	pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_01.tga", L"texture\\tile\\TILE_01.tga"));
 	pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_01_N.tga", L"texture\\tile\\TILE_01_N.tga"));
@@ -169,21 +148,19 @@ void CCreateTempLevel::CreateTempLevel()
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_PLAYER, false);
 
 
-	// Sphere Object
-	pObj = new CGameObject;
-	pObj->SetName(L"Sphere");
+	// LandScape Object 생성
+	CGameObject* LandScape = new CGameObject;
+	LandScape->SetName(L"LandScape");
 
-	pObj->AddComponent(new CTransform);
-	pObj->AddComponent(new CMeshRender);
+	LandScape->AddComponent(new CTransform);
+	LandScape->AddComponent(new CLandScape);
 
-	pObj->Transform()->SetRelativePos(Vec3(0.f, 200.f, 500.f));
-	pObj->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 200.f));
-	pObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
+	LandScape->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+	LandScape->Transform()->SetRelativeScale(Vec3(200.f, 1000.f, 200.f));
 
-	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
-	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std3D_DeferredMtrl"));
+	LandScape->LandScape()->SetHeightMap(CAssetMgr::GetInst()->FindAsset<CTexture>(L"texture\\HeightMap\\HeightMap_01.jpg"));
 
-	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
+	pTempLevel->AddObject(LandScape, (UINT)LAYER::LAYER_DEFAULT, false);
 
 
 	// TimeMgr Object 생성

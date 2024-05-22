@@ -5,7 +5,7 @@
 #define IMGUI_DEFINE_MATH_OPERATORS
 
 #include <Engine/global.h>
-#include <Scripts/global.h>
+#include <Scripts\CScriptMgr.h>
 
 #include <string.h>
 using std::string;
