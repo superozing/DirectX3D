@@ -188,3 +188,224 @@ int CGraphicsShader::UpdateData()
 
 	return S_OK;
 }
+
+#define TagTopology "[Topology]"
+
+#define TagRS_TYPE "[RS_TYPE]"
+#define TagDS_TYPE "[DS_TYPE]"
+#define TagBS_TYPE "[BS_TYPE]"
+#define TagSHADER_DOMAIN "[SHADER_DOMAIN]"
+
+#define TagScalarParam "[ScalarParam]"
+#define TagTexParam "[TexParam]"
+
+#define TagVSPath "[VSPath]"
+#define TagHSPath "[HSPath]"
+#define TagDSPath "[DSPath]"
+#define TagGSPath "[GSPath]"
+#define TagPSPath "[PSPath]"
+
+#define TagVSFuncName "[VSFuncName]"
+#define TagHSFuncName "[HSFuncName]"
+#define TagDSFuncName "[DSFuncName]"
+#define TagGSFuncName "[GSFuncName]"
+#define TagPSFuncName "[PSFuncName]"
+
+int CGraphicsShader::Save(const wstring& _strRelativePath)
+{
+	wstring strFilePath = CPathMgr::GetContentPath();
+	strFilePath += _strRelativePath;
+
+	ofstream fout(strFilePath);
+	if (!fout.is_open()) return E_FAIL;
+
+
+	fout << TagTopology << endl;
+	fout << ToString(magic_enum::enum_name(m_Topology)) << endl;
+	
+
+	fout << TagRS_TYPE << endl;
+	fout << ToString(magic_enum::enum_name(m_RSType)) << endl;
+
+	fout << TagDS_TYPE << endl;
+	fout << ToString(magic_enum::enum_name(m_DSType)) << endl;
+
+	fout << TagBS_TYPE << endl;
+	fout << ToString(magic_enum::enum_name(m_BSType)) << endl;
+
+	fout << TagSHADER_DOMAIN << endl;
+	fout << ToString(magic_enum::enum_name(m_Domain)) << endl;
+
+
+	fout << TagScalarParam << endl;
+	for (UINT i = 0; i < (UINT)SCALAR_PARAM::END; ++i)
+	{
+		fout << ToString(magic_enum::enum_name(m_ScalarParam[i].Type)) << endl;
+		fout << m_ScalarParam[i].Desc << endl;
+		fout << m_ScalarParam[i].min << endl;
+		fout << m_ScalarParam[i].Max << endl;
+		fout << m_ScalarParam[i].View << endl;
+		fout << m_ScalarParam[i].Tooltip << endl;
+		fout << m_ScalarParam[i].IsUse << endl;
+	}
+
+	fout << TagTexParam << endl;
+	for (UINT i = 0; i < (UINT)TEX_PARAM::END; ++i)
+	{
+		fout << ToString(magic_enum::enum_name(m_TexParam[i].Type)) << endl;
+		fout << m_TexParam[i].Desc << endl;
+		fout << m_TexParam[i].IsUse << endl;
+	}
+
+
+	fout << TagVSPath << endl;
+	fout << m_VSPath << endl;
+	
+	fout << TagHSPath << endl;
+	fout << m_HSPath << endl;
+	
+	fout << TagDSPath << endl;
+	fout << m_DSPath << endl;
+
+	fout << TagGSPath << endl;
+	fout << m_GSPath << endl;
+
+	fout << TagPSPath << endl;
+	fout << m_PSPath << endl;
+
+
+
+	fout << TagVSFuncName << endl;
+	fout << m_VSFuncName << endl;
+
+	fout << TagHSFuncName << endl;
+	fout << m_HSFuncName << endl;
+
+	fout << TagDSFuncName << endl;
+	fout << m_DSFuncName << endl;
+
+	fout << TagGSFuncName << endl;
+	fout << m_GSFuncName << endl;
+
+	fout << TagPSFuncName << endl;
+	fout << m_PSFuncName << endl;
+
+
+
+	return 0;
+}
+
+int CGraphicsShader::Load(const wstring& _strFilePath)
+{
+	ifstream fin(_strFilePath);
+	if (!fin.is_open()) return E_FAIL;
+
+	string strEnumBuf;
+
+	Utils::GetLineUntilString(fin, TagTopology);
+	fin >> strEnumBuf;
+	{
+		auto EnumVal = magic_enum::enum_cast<D3D11_PRIMITIVE_TOPOLOGY>(strEnumBuf);
+		if (EnumVal.has_value())
+			SetTopology(EnumVal.value());
+	}
+
+	Utils::GetLineUntilString(fin, TagRS_TYPE);
+	fin >> strEnumBuf;
+	{
+		auto EnumVal = magic_enum::enum_cast<RS_TYPE>(strEnumBuf);
+		if (EnumVal.has_value())
+			SetRSType(EnumVal.value());
+	}
+
+	Utils::GetLineUntilString(fin, TagDS_TYPE);
+	fin >> strEnumBuf;
+	{
+		auto EnumVal = magic_enum::enum_cast<DS_TYPE>(strEnumBuf);
+		if (EnumVal.has_value())
+			SetDSType(EnumVal.value());
+	}
+
+	Utils::GetLineUntilString(fin, TagBS_TYPE);
+	fin >> strEnumBuf;
+	{
+		auto EnumVal = magic_enum::enum_cast<BS_TYPE>(strEnumBuf);
+		if (EnumVal.has_value())
+			SetBSType(EnumVal.value());
+	}
+
+	Utils::GetLineUntilString(fin, TagSHADER_DOMAIN);
+	fin >> strEnumBuf;
+	{
+		auto EnumVal = magic_enum::enum_cast<SHADER_DOMAIN>(strEnumBuf);
+		if (EnumVal.has_value())
+			SetDomain(EnumVal.value());
+	}
+
+
+	Utils::GetLineUntilString(fin, TagScalarParam);
+	for (UINT i = 0; i < (UINT)SCALAR_PARAM::END; ++i)
+	{
+		fin >> strEnumBuf;
+		{
+			auto EnumVal = magic_enum::enum_cast<SCALAR_PARAM>(strEnumBuf);
+			if (EnumVal.has_value())
+				SetTopology(EnumVal.value());
+		}
+		fin >> m_ScalarParam[i].Desc;
+		fin >> m_ScalarParam[i].min;
+		fin >> m_ScalarParam[i].Max;
+		fin >> m_ScalarParam[i].View;
+		fin >> m_ScalarParam[i].Tooltip;
+		fin >> m_ScalarParam[i].IsUse;
+	}
+
+	Utils::GetLineUntilString(fin, TagTexParam);
+	for (UINT i = 0; i < (UINT)TEX_PARAM::END; ++i)
+	{
+		fin >> strEnumBuf;
+		{
+			auto EnumVal = magic_enum::enum_cast<TEX_PARAM>(strEnumBuf);
+			if (EnumVal.has_value())
+				SetTopology(EnumVal.value());
+		}
+		fin >> m_TexParam[i].Desc;
+		fin >> m_TexParam[i].IsUse;
+	}
+
+
+	Utils::GetLineUntilString(fin, TagVSPath);
+	fin >> m_VSPath;
+
+	Utils::GetLineUntilString(fin, TagHSPath);
+	fin >> m_HSPath;
+
+	Utils::GetLineUntilString(fin, TagDSPath);
+	fin >> m_DSPath;
+
+	Utils::GetLineUntilString(fin, TagGSPath);
+	fin >> m_GSPath;
+
+	Utils::GetLineUntilString(fin, TagPSPath);
+	fin >> m_PSPath;
+
+
+
+	Utils::GetLineUntilString(fin, TagVSFuncName);
+	fin >> m_VSFuncName;
+
+	Utils::GetLineUntilString(fin, TagHSFuncName);
+	fin >> m_HSFuncName;
+
+	Utils::GetLineUntilString(fin, TagDSFuncName);
+	fin >> m_DSFuncName;
+
+	Utils::GetLineUntilString(fin, TagGSFuncName);
+	fin >> m_GSFuncName;
+
+	Utils::GetLineUntilString(fin, TagPSFuncName);
+	fin >> m_PSFuncName;
+
+	return 0;
+}
+

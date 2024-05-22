@@ -135,6 +135,10 @@ public:
     const tScalarParam* GetScalarParam() { return  m_ScalarParam; }
     const tTexParam* GetTexParam() { return m_TexParam; }
 
+    virtual int Save(const wstring& _strRelativePath) override;
+    virtual int Load(const wstring& _strFilePath) override;
+    virtual int Save(const string& _strRelativePath) override { return Save(ToWString(_strRelativePath)); }
+    virtual int Load(const string& _strFilePath) override { return Load(ToWString(_strFilePath)); }
 
 public:
     virtual int UpdateData();
