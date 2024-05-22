@@ -48,6 +48,8 @@ public:
 
     ComponentUI* GetComponentUI(COMPONENT_TYPE ComType);
 
+    void ResetInspector();
+
 private:
     void CreateChildUI();
     void CreateComponentUI();

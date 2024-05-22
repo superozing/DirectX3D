@@ -277,6 +277,10 @@ void CImGuiMgr::observe_content()
         // ContentUI �� Reload �۾� ����
         Content* pContentUI = (Content*)FindUI("##Content");
         pContentUI->ResetContent();
+
+        // InspectorUI Reload
+        Inspector* pInspectorUI = (Inspector*)FindUI("##Inspector");
+        pInspectorUI->ResetInspector();
     }
 }
 

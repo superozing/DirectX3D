@@ -16,6 +16,7 @@
 #include "Animator2DUI.h"
 #include "ScriptUI.h"
 #include "SkyBoxUI.h"
+#include "ParticleSystemUI.h"
 
 #include "AssetUI.h"
 
@@ -262,4 +263,13 @@ void Inspector::CheckComponent(COMPONENT_TYPE _type)
 ComponentUI* Inspector::GetComponentUI(COMPONENT_TYPE ComType)
 {
 	return this->m_arrComUI[(UINT)ComType];
+}
+
+void Inspector::ResetInspector()
+{
+		ParticleSystemUI* pParticleUI = (ParticleSystemUI*)this->GetComponentUI(COMPONENT_TYPE::PARTICLESYSTEM);
+		SkyBoxUI* pSkyBoxUI = (SkyBoxUI*)this->GetComponentUI(COMPONENT_TYPE::SKYBOX);
+
+		pParticleUI->GetParticleFileName();
+		pSkyBoxUI->GetSkyBoxFileName();
 }

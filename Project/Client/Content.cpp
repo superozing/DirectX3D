@@ -220,23 +220,6 @@ void Content::ResetContent()
 
 		}
 	}
-
-	ResetInspector();
-}
-
-void Content::ResetInspector()
-{
-	Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
-
-	if (pInspector != nullptr)
-	{
-		ParticleSystemUI* pParticleUI = (ParticleSystemUI*)pInspector->GetComponentUI(COMPONENT_TYPE::PARTICLESYSTEM);
-		SkyBoxUI* pSkyBoxUI = (SkyBoxUI*)pInspector->GetComponentUI(COMPONENT_TYPE::SKYBOX);
-
-		pParticleUI->GetParticleFileName();
-		pSkyBoxUI->GetSkyBoxFileName();
-	}
-
 }
 
 void Content::SelectAsset(DWORD_PTR _Node)

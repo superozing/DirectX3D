@@ -29,7 +29,6 @@ public:
     void ResetEngineContent(ASSET_TYPE _type);
 
     void ResetContent();
-    void ResetInspector();
     void SelectAsset(DWORD_PTR _Node);
     void SelectEngineAsset(DWORD_PTR _Node);
     void SetTargetDirectory(const string & _path);
