@@ -23,8 +23,13 @@ private:
     Vec3 m_vTargetPos;
     Vec3 m_vTargetRot;
     Vec3 m_vTargetScale;
+    Vec3 m_vStartPos;
+    Vec3 m_vStartRot;
+    Vec3 m_vStartScale;
     float m_fTargetTimer;
     float m_fTargetTime;
+    bool m_bRotLerp;
+    bool m_bScaleLerp;
     bool m_bLerp;
 
 public:

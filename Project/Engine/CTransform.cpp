@@ -24,7 +24,13 @@ void CTransform::Lerp(Vec3 _pos, bool _bMoveRot, Vec3 _rot, bool _bMoveScale, Ve
 	_bMoveRot ? m_vTargetRot = _rot : m_vTargetRot = m_vRelativeRotation;
 	_bMoveScale ? m_vTargetScale = _scale : m_vTargetScale = m_vRelativeScale;
 	m_fTargetTimer = m_fTargetTime = _time;
+	m_bRotLerp = _bMoveRot;
+	m_bScaleLerp = _bMoveScale;
 	m_bLerp = true;
+
+	m_vStartPos = m_vRelativePos;
+	m_vStartRot = m_vRelativeRotation;
+	m_vStartScale = m_vRelativeScale;
 
 	if (m_fTargetTime == 0.f) {
 		m_bLerp = false;
@@ -36,24 +42,31 @@ void CTransform::Lerp(Vec3 _pos, bool _bMoveRot, Vec3 _rot, bool _bMoveScale, Ve
 
 void CTransform::tick()
 {
-	// LerpToTarget();
+	// LerpToTarget;
 	if (m_bLerp) 
 	{
 		// 목표에 도착
+		Vec3 vNPos, vNRot, vNScale;
 		if (m_fTargetTimer <= 0.f) {
 			m_bLerp = false;
 
-			SetRelativePos(m_vTargetPos);
-			SetRelativeRotation(m_vTargetRot);
-			SetRelativeScale(m_vTargetScale);
+			vNPos = m_vTargetPos;
+			vNRot = m_vTargetRot;
+			vNScale = m_vTargetScale;
+		}
+		else {
+			float alpha = m_fTargetTimer / m_fTargetTime;
+			vNPos = RoRMath::Lerp(m_vTargetPos, m_vStartPos, alpha);
+			vNRot = RoRMath::Lerp(m_vTargetRot, m_vStartRot, alpha);
+			vNScale = RoRMath::Lerp(m_vTargetScale, m_vStartScale, alpha);
+
+			m_fTargetTimer -= DT_ENGINE;
 		}
 
-		//Vec3 vNPos = RoRMath::Lerp(m_vTargetPos, m_vRelativePos, m_fTargetTimer / m_fTargetTime);
-		//m_fTargetTimer -= DT;
-		//int a = 0;
-
+		SetRelativePos(vNPos);
+		if(m_bRotLerp) SetRelativePos(vNPos);
+		if(m_bScaleLerp) SetRelativePos(vNPos);
 	}
-
 }
 
 void CTransform::finaltick()
