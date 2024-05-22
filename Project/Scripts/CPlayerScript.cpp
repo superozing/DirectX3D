@@ -44,14 +44,14 @@ void CPlayerScript::tick()
 	Vec3 vRot = Transform()->GetRelativeRotation();
 
 	if (KEY_PRESSED(KEY::UP))
-		vPos.y += DT * m_Speed;	
+		vPos.z += DT * m_Speed;	
 	//if (KEY_TAP(KEY::UP))
 	//	Animator2D()->Play(L"MOVE_UP");
 	//if (KEY_RELEASED(UP))
 	//	Animator2D()->Play(L"IDLE_UP");
 	
 	if (KEY_PRESSED(KEY::DOWN))
-		vPos.y -= DT * m_Speed;
+		vPos.z -= DT * m_Speed;
 	//if (KEY_TAP(KEY::DOWN))
 	//	Animator2D()->Play(L"MOVE_DOWN");
 	//if (KEY_RELEASED(DOWN))
