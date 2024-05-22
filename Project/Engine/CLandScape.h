@@ -24,6 +24,9 @@ public:
     virtual void render() override;
     virtual void UpdateData() override;
 
+    virtual void SaveToFile(ofstream& fout) override;
+    virtual void LoadFromFile(ifstream& fin) override;
+
 public:
     CLONE(CLandScape);
     CLandScape();

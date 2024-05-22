@@ -36,3 +36,24 @@ void CLandScape::UpdateData()
 
 	GetMaterial()->UpdateData();
 }
+
+#define TagFaceX "[FaceX]"
+#define TagFaceZ "[FaceZ]"
+
+void CLandScape::SaveToFile(ofstream& fout)
+{
+	fout << TagFaceX << endl;
+	fout << m_FaceX << endl;
+
+	fout << TagFaceZ << endl;
+	fout << m_FaceZ << endl;
+}
+
+void CLandScape::LoadFromFile(ifstream& fin)
+{
+	Utils::GetLineUntilString(fin, TagFaceX);
+	fin >> m_FaceX;
+
+	Utils::GetLineUntilString(fin, TagFaceZ);
+	fin >> m_FaceZ;
+}
