@@ -13,7 +13,9 @@ private:
 
 public:
     void SetHeightMap(Ptr<CTexture> _HeightMap) { m_HeightMapTex = _HeightMap; }
+
     Ptr<CTexture> GetHeightMapTex() { return m_HeightMapTex; }
+    void SetHeightMapTex(Ptr<CTexture> texture) { m_HeightMapTex = texture; }
 
 private:
     void Init();

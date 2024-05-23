@@ -7,7 +7,9 @@
 
 LandScapeUI::LandScapeUI()
 	: ComponentUI("LandScapeUI", "##LandScapeUI", COMPONENT_TYPE::LANDSCAPE)
+	, m_vecHeightTextureKey()
 {
+	GetLandScapeFileName();
 }
 
 LandScapeUI::~LandScapeUI()
@@ -31,15 +33,65 @@ void LandScapeUI::render_update()
 
 	ImGui::Image(GetTargetObject()->LandScape()->GetHeightMapTex()->GetSRV().Get(), ImVec2(ImGui::GetWindowSize().x, 150.f), uv_min, uv_max, tint_col, border_col);
 
+	static const char* charHeightMap = NULL;
+
 	float fImageSize[2];
 	fImageSize[0] = GetTargetObject()->LandScape()->GetHeightMapTex()->GetWidth();
 	fImageSize[1] = GetTargetObject()->LandScape()->GetHeightMapTex()->GetHeight();
 
-	ImGui::Text("Texture Name"); ImGui::SameLine();
+	ImGui::Text("Height Map Texture "); ImGui::SameLine();
+
+	if (ImGui::BeginCombo("##ComboHeightMap", charHeightMap))
+	{
+		for (int n = 0; n < m_vecHeightTextureKey.size(); n++)
+		{
+			bool is_selected = (charHeightMap == m_vecHeightTextureKey[n].c_str());
+			if (ImGui::Selectable(m_vecHeightTextureKey[n].c_str(), is_selected))
+			{
+				charHeightMap = m_vecHeightTextureKey[n].c_str();
+
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+
+				string m_strCurDirectory = "texture\\HeightMap\\";
+				wstring ParticleKey = ToWString(m_strCurDirectory += m_vecHeightTextureKey[n].c_str());
+
+				GetTargetObject()->LandScape()->SetHeightMapTex(CAssetMgr::GetInst()->Load<CTexture>(ParticleKey, ParticleKey));
+
+			}
+		}
+		ImGui::EndCombo();
+	}
+
 	string strHeightTexName = ToString(GetTargetObject()->LandScape()->GetHeightMapTex()->GetKey());
 	strHeightTexName = strHeightTexName.substr(LandScapeTexturePathCount, strHeightTexName.size());
-	ImGui::InputText("##Height Map TextureName", (char*)strHeightTexName.c_str(), ImGuiInputTextFlags_ReadOnly);
+
 
 	ImGui::Text("Texture Size"); ImGui::SameLine();
 	ImGui::InputFloat2("##Texture Size", fImageSize, nullptr, ImGuiInputTextFlags_ReadOnly);
+}
+
+void LandScapeUI::ResetUIinfo()
+{
+	GetLandScapeFileName();
+}
+
+void LandScapeUI::GetLandScapeFileName()
+{
+	vector<string> strFileName;
+
+	string m_strCurDirectory = "texture\\HeightMap\\";
+	string path = ToString(CPathMgr::GetContentPath()) + m_strCurDirectory;
+
+	namespace fs = std::filesystem;
+	for (const fs::directory_entry& entry : fs::directory_iterator(path)) {
+		if (!entry.is_directory()) {
+			auto filename = entry.path().filename().string();
+			auto extension = entry.path().extension().string();
+
+			strFileName.push_back(filename);
+		}
+	}
+
+	this->m_vecHeightTextureKey = strFileName;
 }
