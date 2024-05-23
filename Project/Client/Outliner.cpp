@@ -11,6 +11,7 @@
 #include "CEditorObjMgr.h"
 #include "CGameObjectEx.h"
 #include "Inspector.h"
+#include "RTViewPort.h"
 #include "TreeUI.h"
 
 #include <Engine/CTaskMgr.h>
@@ -112,6 +113,8 @@ void Outliner::SelectObject(DWORD_PTR _Node)
 
 	Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
 	pInspector->SetTargetObject(pObject);	
+	RTViewPort* pViewport = (RTViewPort*)CImGuiMgr::GetInst()->FindUI("##Viewport");
+	pViewport->SetTargetObject(pObject);
 }
 
 void Outliner::DragDropObject(DWORD_PTR _Dest, DWORD_PTR _Source)
