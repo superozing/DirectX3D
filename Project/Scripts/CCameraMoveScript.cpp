@@ -1,6 +1,8 @@
 ﻿#include "pch.h"
 #include "CCameraMoveScript.h"
 
+
+
 CCameraMoveScript::CCameraMoveScript()
 	: CScript((UINT)SCRIPT_TYPE::CAMERAMOVESCRIPT)
 	, m_CamSpeed(500.f)
@@ -23,7 +25,7 @@ void CCameraMoveScript::tick()
 		{
 			Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
 			Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
-		}		
+		}	
 	}
 
 
@@ -81,24 +83,29 @@ void CCameraMoveScript::MovePerspective()
 	Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
 	Vec3 vRight = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
 
+	float camspeed = m_CamSpeed;
+
+	if (KEY_PRESSED(KEY::LSHIFT))
+		camspeed *= 5.f;
+
 	if (KEY_PRESSED(KEY::W))
 	{
-		vPos += DT_ENGINE * m_CamSpeed * vFront;
+		vPos += DT_ENGINE * camspeed * vFront;
 	}
 
 	if (KEY_PRESSED(KEY::S))
 	{
-		vPos += DT_ENGINE * m_CamSpeed * -vFront;
+		vPos += DT_ENGINE * camspeed * -vFront;
 	}
 
 	if (KEY_PRESSED(KEY::A))
 	{
-		vPos += DT_ENGINE * m_CamSpeed * -vRight;
+		vPos += DT_ENGINE * camspeed * -vRight;
 	}
 
 	if (KEY_PRESSED(KEY::D))
 	{
-		vPos += DT_ENGINE * m_CamSpeed * vRight;
+		vPos += DT_ENGINE * camspeed * vRight;
 	}
 
 	Transform()->SetRelativePos(vPos);

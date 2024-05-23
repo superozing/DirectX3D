@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CComponent.h"
 
 CComponent::CComponent(COMPONENT_TYPE _Type)
@@ -16,4 +16,12 @@ CComponent::CComponent(const CComponent& _OriginComponent)
 
 CComponent::~CComponent()
 {
+}
+
+bool CComponent::IsRenderComponent(COMPONENT_TYPE _Type)
+{
+	if (COMPONENT_TYPE::MESHRENDER <= _Type && _Type < COMPONENT_TYPE::END)
+		return true;
+
+	return false;
 }

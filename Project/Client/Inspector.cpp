@@ -47,7 +47,46 @@ void Inspector::render_update()
 	if (nullptr != m_TargetObject)
 	{
 		ObjectName();
-		ObjectLayer();
+		
+		if (!m_bPrefab)
+		{
+			ImGui::SameLine();
+			if (ImGui::Button("Save Prefab"))
+			{
+				wstring ContentPath = CPathMgr::GetContentPath();
+				ContentPath += L"prefab\\";
+
+				wstring FileName = m_TargetObject->GetName();
+				FileName += L".pref";
+
+				SavePrefab(ToString(ContentPath), ToString(FileName));
+			}
+
+			ObjectLayer();
+		}
+		else
+		{
+			ImGui::SameLine();
+			if (ImGui::Button("Save Prefab"))
+			{
+				wstring ContentPath = CPathMgr::GetContentPath();
+				ContentPath += L"prefab\\";
+
+				wstring FileName = m_TargetObject->GetName();
+				FileName += L".pref";
+
+				SavePrefab(ToString(ContentPath), ToString(FileName));
+			}
+
+			int LayerIdx = PrefabLayer(); ImGui::SameLine();
+
+			if (ImGui::Button("Spawn Prefab"))
+			{
+				Vec3 vPos = m_TargetObject->Transform()->GetRelativePos();
+				m_TargetObject->Transform()->SetRelativePos(vPos);
+				GamePlayStatic::SpawnGameObject(m_TargetObject, LayerIdx);
+			}
+		}
 
 		if (ImGui::Button("Add Component"))
 		{
@@ -60,10 +99,14 @@ void Inspector::render_update()
 
 			ImGui::EndPopup();
 		}
+
+		ImGui::Separator();
+
+		ObjectScript();
 	}
 }
 
-void Inspector::SetTargetObject(CGameObject* _Object)
+void Inspector::SetTargetObject(CGameObject* _Object, bool _bPrefab)
 {
 	// Target 오브젝트 설정
 	m_TargetObject = _Object;
@@ -85,6 +128,8 @@ void Inspector::SetTargetObject(CGameObject* _Object)
 	{
 		m_arrAssetUI[i]->Deactivate();
 	}
+
+	m_bPrefab = _bPrefab;
 }
 
 void Inspector::SetTargetAsset(Ptr<CAsset> _Asset)
@@ -180,6 +225,46 @@ void Inspector::ObjectLayer()
 	}
 }
 
+int Inspector::PrefabLayer()
+{
+	static int LayerIdx = 0;
+	static int PrevIdx = LayerIdx;
+
+	ImGui::Text("Layer"); ImGui::SameLine();
+	auto Layer_Names = magic_enum::enum_names<LAYER>();
+	string strLayer = string(Layer_Names[LayerIdx]);
+
+	if (ImGui::BeginCombo("##ObjLayer", strLayer.c_str()))
+	{
+		for (int i = 0; i < (int)Layer_Names.size(); ++i)
+		{
+			int CurLayer = i;
+
+			bool isSelected = (CurLayer == LayerIdx);
+
+			if (ImGui::Selectable(string(Layer_Names[CurLayer]).c_str(), isSelected))
+			{
+				LayerIdx = CurLayer;
+			}
+
+			if (isSelected)
+			{
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+
+		ImGui::EndCombo();
+
+		if (PrevIdx != LayerIdx)
+		{
+			CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+			pCurLevel->AddObject(m_TargetObject, LayerIdx);
+		}
+	}
+
+	return LayerIdx;
+}
+
 void Inspector::ObjectComponent()
 {
 	auto ComponentList = magic_enum::enum_names<COMPONENT_TYPE>();
@@ -188,17 +273,91 @@ void Inspector::ObjectComponent()
 	{
 		if (ImGui::MenuItem(string(ComponentList[i]).c_str()))
 		{
-			CheckComponent((COMPONENT_TYPE)i);
+			CheckTargetComponent((COMPONENT_TYPE)i);
 		}
 	}
 }
 
-void Inspector::CheckComponent(COMPONENT_TYPE _type)
+void Inspector::ObjectScript()
+{
+	static int CurSciprt = 0;
+	static ImGuiTextFilter filter;
+	vector<string> filteredScripts;
+	ImGui::Text("Script Filter"); ImGui::SameLine();
+	filter.Draw("##Script Filter");
+
+	auto ScriptList = magic_enum::enum_names<SCRIPT_TYPE>();
+	for (const auto& script : ScriptList)
+	{
+		// PassFilter : filter에 입력된 문자열과 비교하여 현재 텍스트가 필터를 통과하는지 확인하는 함수
+		if (filter.PassFilter(script.data()))
+		{
+			filteredScripts.push_back(string(script.data()));
+		}
+	}
+
+	if (0 == filteredScripts.size())
+		CurSciprt = -1;
+	else
+		CurSciprt = 0;
+
+	if (-1 != CurSciprt)
+	{
+		string strScript = filteredScripts[CurSciprt];
+
+		if (ImGui::BeginCombo("##ScriptList", strScript.c_str()))
+		{
+			for (int i = 0; i < filteredScripts.size(); ++i)
+			{
+				bool is_selected = (CurSciprt == i);
+
+				if (ImGui::Selectable(filteredScripts[i].c_str(), is_selected))
+				{
+					CurSciprt = i;
+					strScript = filteredScripts[CurSciprt];
+				}
+
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+			}
+			ImGui::EndCombo();
+		}
+
+		ImGui::SameLine();
+
+		if (ImGui::Button("Add Script"))
+		{
+			if (!strScript.empty())
+			{
+				auto ScriptType = magic_enum::enum_cast<SCRIPT_TYPE>(strScript);
+				if (ScriptType.has_value())
+				{
+					SCRIPT_TYPE type = ScriptType.value();
+					m_TargetObject->AddComponent(CScriptMgr::GetScript((UINT)type));
+				}
+			}
+
+			SetTargetObject(GetTargetObject());
+		}
+	}
+}
+
+void Inspector::CheckTargetComponent(COMPONENT_TYPE _type)
 {
 	if (nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE)_type))
 	{
 		MessageBoxA(nullptr, "Already contains the same component", "Can't add the same component multiple times!", MB_OK);
 		return;
+	}
+	
+	// 두 개 이상의 렌더 컴포넌트를 추가하려고 할 시
+	if (CComponent::IsRenderComponent(_type))
+	{
+		if (nullptr != m_TargetObject->GetRenderComponent())
+		{
+			MessageBoxA(nullptr, "Already contains the other render component", "Can't add more than one render component!", MB_OK);
+			return;
+		}
 	}
 
 	switch ((COMPONENT_TYPE)_type)
@@ -258,6 +417,47 @@ void Inspector::CheckComponent(COMPONENT_TYPE _type)
 	default:
 		break;
 	}
+}
+
+void Inspector::MakePrefab()
+{
+	CGameObject* pObj = GetTargetObject();
+	pObj = pObj->Clone();
+	wstring Key;
+	Key = L"prefab\\" + m_TargetObject->GetName() + L".pref";
+	Ptr<CPrefab> pPrefab = new CPrefab(pObj, false);
+	CAssetMgr::GetInst()->AddAsset<CPrefab>(Key, pPrefab.Get());
+	pPrefab->Save(Key);
+}
+
+void Inspector::SavePrefab(const string& _Directory, const string& _FileName)
+{
+	filesystem::path file_path = filesystem::path(_Directory) / _FileName;
+
+	if (filesystem::exists(file_path))
+	{
+		filesystem::remove(file_path);
+	}
+
+	MakePrefab();
+}
+
+void Inspector::DeleteTargetComponent(COMPONENT_TYPE _type)
+{
+	if (nullptr != m_TargetObject->GetComponent(_type))
+	{
+		m_TargetObject->DeleteComponent(_type);
+	}
+
+	SetTargetObject(GetTargetObject());
+}
+
+void Inspector::DeleteTargetScript(ScriptUI* _ScriptUI)
+{
+	CScript* pScript = _ScriptUI->GetTargetScript();
+	m_TargetObject->DeleteScript(pScript);
+
+	SetTargetObject(GetTargetObject());
 }
 
 ComponentUI* Inspector::GetComponentUI(COMPONENT_TYPE ComType)

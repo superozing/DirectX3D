@@ -2,12 +2,14 @@
 #include "CPathMgr.h"
 
 wchar_t CPathMgr::g_szContent[255] = {};
-
+wchar_t CPathMgr::g_szLog[255] = {};
 
 void CPathMgr::init()
 {
 	// 실행파일 경로
 	GetCurrentDirectory(255, g_szContent);
+	GetCurrentDirectory(255, g_szLog);
+
 
 	size_t Len = wcslen(g_szContent);
 
@@ -16,9 +18,12 @@ void CPathMgr::init()
 		if ('\\' == g_szContent[i])
 		{
 			g_szContent[i + 1] = '\0';
+			g_szLog[i + 1] = '\0';
 			break;
 		}
 	}
+
+	wcscat_s(g_szLog, 255, L"Log");
 
 	wcscat_s(g_szContent, 255, L"content\\");
 }

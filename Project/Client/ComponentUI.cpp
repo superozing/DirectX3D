@@ -18,8 +18,6 @@ void ComponentUI::render_update()
 
 	ImGui::PushID(0);
 
-	StaticButton(m_ComponentTitle);
-
 	ImGui::PopID();
 }
 

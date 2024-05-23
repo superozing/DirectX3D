@@ -20,6 +20,7 @@ private:
 
     vector<CCamera*>        m_vecCam;
     CCamera* m_EditorCam;
+    bool    m_bEscape;
 
     Ptr<CTexture>           m_PostProcessTex;
 
@@ -79,6 +80,9 @@ public:
 
     void SetClearColor(const Vec4& _ClearColor) { m_vClearColor = _ClearColor; }
     Vec4 GetClearColor() { return m_vClearColor;}
+
+    void CheckEscape();
+
 public:
     virtual void init() override;
     virtual void tick() override;
