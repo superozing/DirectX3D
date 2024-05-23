@@ -17,6 +17,11 @@ public:
     Ptr<CTexture> GetHeightMapTex() { return m_HeightMapTex; }
     void SetHeightMapTex(Ptr<CTexture> texture) { m_HeightMapTex = texture; }
 
+    UINT GetLandScapeFaceX() { return m_FaceX; }
+    UINT GetLandScapeFaceZ() { return m_FaceZ; }
+    void SetLandScapeFace(UINT face, bool bXaxis);
+
+
 private:
     void Init();
     void CreateMesh();

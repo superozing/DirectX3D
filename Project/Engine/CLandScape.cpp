@@ -57,3 +57,15 @@ void CLandScape::LoadFromFile(ifstream& fin)
 	Utils::GetLineUntilString(fin, TagFaceZ);
 	fin >> m_FaceZ;
 }
+
+void CLandScape::SetLandScapeFace(UINT face, bool bXaxis)
+{
+	if (bXaxis)
+	{
+		m_FaceX = face;
+	}
+	else
+	{
+		m_FaceZ = face;
+	}
+}
