@@ -140,6 +140,9 @@
     <Filter Include="02. UI\3. Inspector\ComponentUI\SkyBox">
       <UniqueIdentifier>{30fe944e-5329-450b-b146-8c22804ba80b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. UI\3. Inspector\ComponentUI\Landscape">
+      <UniqueIdentifier>{01c74e88-02bd-4ed1-a9f3-cbe477dbd76f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -294,6 +297,9 @@
     </ClInclude>
     <ClInclude Include="ParticleSystemUI.h">
       <Filter>02. UI\3. Inspector\ComponentUI\ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="LandscapeUI.h">
+      <Filter>02. UI\3. Inspector\ComponentUI\Landscape</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -451,6 +457,9 @@
     </ClCompile>
     <ClCompile Include="ParticleSystemUI.cpp">
       <Filter>02. UI\3. Inspector\ComponentUI\ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="LandscapeUI.cpp">
+      <Filter>02. UI\3. Inspector\ComponentUI\Landscape</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

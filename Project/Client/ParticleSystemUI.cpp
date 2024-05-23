@@ -3,6 +3,8 @@
 
 #include <Engine\CParticleSystem.h>
 
+#define ParticleFolderPathCount 17
+
 ParticleSystemUI::ParticleSystemUI()
 	: ComponentUI("ParticleSystemUI", "##ParticleSystemUI", COMPONENT_TYPE::PARTICLESYSTEM)
 	, m_vecParticleKey()
@@ -74,6 +76,8 @@ void ParticleSystemUI::render_update()
 	ImGui::Image(GetTargetObject()->ParticleSystem()->GetParticleTex()->GetSRV().Get(), ImVec2(UIsize.x - 10.f, 150.f), uv_min, uv_max, tint_col, border_col);
 
 	string strTextureName = ToString(GetTargetObject()->ParticleSystem()->GetParticleTex()->GetKey());
+	strTextureName = strTextureName.substr(ParticleFolderPathCount, strTextureName.size());
+	
 	ImGui::Text("Particle Texture : "); ImGui::SameLine();
 	ImGui::InputText("##ParticleTexName", (char*)strTextureName.c_str(), strTextureName.length(), ImGuiInputTextFlags_ReadOnly);
 	

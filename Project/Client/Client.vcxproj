@@ -168,6 +168,7 @@
     <ClInclude Include="ComponentUI.h" />
     <ClInclude Include="ComputeShaderUI.h" />
     <ClInclude Include="Content.h" />
+    <ClInclude Include="LandscapeUI.h" />
     <ClInclude Include="Light3DUI.h" />
     <ClInclude Include="ParticleSystemUI.h" />
     <ClInclude Include="LogUI.h" />
@@ -220,6 +221,7 @@
     <ClCompile Include="ComponentUI.cpp" />
     <ClCompile Include="ComputeShaderUI.cpp" />
     <ClCompile Include="Content.cpp" />
+    <ClCompile Include="LandscapeUI.cpp" />
     <ClCompile Include="Light3DUI.cpp" />
     <ClCompile Include="LogUI.cpp" />
     <ClCompile Include="ParticleSystemUI.cpp" />
