@@ -4,8 +4,8 @@
 #include "CDevice.h"
 #include "CPathMgr.h"
 
-CGraphicsShader::CGraphicsShader()
-	: CShader(ASSET_TYPE::GRAPHICS_SHADER)
+CGraphicsShader::CGraphicsShader(bool _IsEngineAsset)
+	: CShader(ASSET_TYPE::GRAPHICS_SHADER, _IsEngineAsset)
 	, m_Topology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
 	, m_RSType(RS_TYPE::CULL_BACK)
 	, m_DSType(DS_TYPE::LESS)
@@ -352,25 +352,40 @@ int CGraphicsShader::Load(const wstring& _strFilePath)
 	Utils::GetLineUntilString(fin, TagVSFuncName);
 	getline(fin, m_VSFuncName);
 
+	if (!m_VSPath.empty() && !m_VSFuncName.empty())
+		CreateVertexShader(ToWString(m_VSPath), m_VSFuncName);
+
 	Utils::GetLineUntilString(fin, TagHSPath);
 	getline(fin, m_HSPath);
 	Utils::GetLineUntilString(fin, TagHSFuncName);
 	getline(fin, m_HSFuncName);
+
+	//if (!m_HSPath.empty() && !m_HSFuncName.empty())
+		//CreateHullShader(ToWString(m_HSPath), m_HSFuncName);
 
 	Utils::GetLineUntilString(fin, TagDSPath);
 	getline(fin, m_DSPath);
 	Utils::GetLineUntilString(fin, TagDSFuncName);
 	getline(fin, m_DSFuncName);
 
+	//if (!m_VSPath.empty() && !m_VSFuncName.empty())
+		//CreateDomainShader(ToWString(m_DSPath), m_DSFuncName);
+
 	Utils::GetLineUntilString(fin, TagGSPath);
 	getline(fin, m_GSPath);
 	Utils::GetLineUntilString(fin, TagGSFuncName);
 	getline(fin, m_GSFuncName);
 
+	if (!m_GSPath.empty() && !m_GSFuncName.empty())
+		CreateGeometryShader(ToWString(m_GSPath), m_GSFuncName);
+
 	Utils::GetLineUntilString(fin, TagPSPath);
 	getline(fin, m_PSPath);
 	Utils::GetLineUntilString(fin, TagPSFuncName);
 	getline(fin, m_PSFuncName);
+
+	if (!m_PSPath.empty() && !m_PSFuncName.empty())
+		CreatePixelShader(ToWString(m_PSPath), m_PSFuncName);
 
 	Utils::GetLineUntilString(fin, TagScalarParam);
 	for (UINT i = 0; i < (UINT)SCALAR_PARAM::END; ++i)

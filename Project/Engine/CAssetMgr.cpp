@@ -112,6 +112,8 @@ ASSET_TYPE CAssetMgr::GetAssetTypeByExt(const path& _relativePath)
 		return ASSET_TYPE::MESHDATA;
 	if (_relativePath.extension() == L".pref")
 		return ASSET_TYPE::PREFAB;
+	if (_relativePath.extension() == L".gs")
+		return ASSET_TYPE::GRAPHICS_SHADER;
 
 	if (_relativePath.extension() == L".png"
 		|| _relativePath.extension() == L".bmp"
@@ -126,8 +128,6 @@ ASSET_TYPE CAssetMgr::GetAssetTypeByExt(const path& _relativePath)
 		|| _relativePath.extension() == L".ogg")
 		return ASSET_TYPE::SOUND;
 
-	if (_relativePath.extension() == L".mesh")
-		return ASSET_TYPE::MESH;
 	if (_relativePath.extension() == L".mesh")
 		return ASSET_TYPE::MESH;
 

@@ -144,7 +144,7 @@ public:
     virtual int UpdateData();
 
 public:
-    CGraphicsShader();
+    CGraphicsShader(bool _IsEngineAsset = false);
     ~CGraphicsShader();
 };
 

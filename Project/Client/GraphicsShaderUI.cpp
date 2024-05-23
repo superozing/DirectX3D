@@ -24,7 +24,17 @@ void GraphicsShader::render_update()
 
 	ImGui::Text("Graphics Shader ");
 	ImGui::SameLine();
-	ImGui::InputText("##GraphicsShaderName", (char*)strShaderName.c_str(), strShaderName.length(), ImGuiInputTextFlags_ReadOnly);
+	
+	if (pShader->IsEngineAsset())
+	{
+		ImGui::InputText("##GraphicsShaderName", (char*)strShaderName.c_str(), strShaderName.length(), ImGuiInputTextFlags_ReadOnly);
+	}
+	else
+	{
+		auto str = strShaderName.substr(15);
+		ImGui::InputText("##GraphicsShaderName", (char*)str.c_str(), str.length(), ImGuiInputTextFlags_ReadOnly);
+
+	}
 
 	ImGui::SeparatorText("Shader Info");
 

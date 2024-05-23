@@ -332,7 +332,7 @@ void MenuUI::ContentSaveAll()
         }
         else if (extension == ".gs")
         {
-            CGraphicsShader* shader = new CGraphicsShader;
+            CGraphicsShader* shader = new CGraphicsShader(false);
             shader->Load(strPath);
             shader->Save(strRelativePath);
             delete shader;
