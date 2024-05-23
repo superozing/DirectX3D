@@ -81,23 +81,27 @@ void ParticleSystemUI::render_update()
 
 
 	ImGui::Text("Max Count"); ImGui::SameLine();
-	string strMaxParticle = std::to_string(GetTargetObject()->ParticleSystem()->GetMaxParticleCount());
-	ImGui::SetNextItemWidth(80);
-	ImGui::InputText("##Max Count", (char*)strMaxParticle.c_str(), strMaxParticle.length(), ImGuiInputTextFlags_ReadOnly);
-
-	ImGui::Text("Change Max Count");
-	ImGui::SameLine();
-	ImGui::SetNextItemWidth(120.f);
-	if (ImGui::InputInt("##NewParticleCount", &m_iNewMaxCount, 1, 100, ImGuiInputTextFlags_CharsDecimal))
-	{
-		if (m_iNewMaxCount < 0)
-			m_iNewMaxCount = 0;
-	}
 	
+	int iMaxParticle;
+	iMaxParticle = UINT(GetTargetObject()->ParticleSystem()->GetMaxParticleCount());
+	
+	ImGui::SetNextItemWidth(100);
+	
+	if (ImGui::InputInt("##Max Count", &iMaxParticle))
+	{
+		m_iNewMaxCount = iMaxParticle;
+
+	}
+
 	ImGui::SameLine();
 
 	if (ImGui::Button("Apply", ImVec2(50.f, 20.f)))
 	{
+		if (m_iNewMaxCount < 0)
+		{
+			m_iNewMaxCount = 0;
+		}
+
 		GetTargetObject()->ParticleSystem()->SetMaxParticleCount((UINT)m_iNewMaxCount);
 	}
 	
