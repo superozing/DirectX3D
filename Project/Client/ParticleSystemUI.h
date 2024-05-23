@@ -11,6 +11,8 @@ private:
     vector<string>  m_vecParticleKey;
     int             m_iNewMaxCount;
 
+    ImVec4          m_ModuleButtonColor[2];
+
 public:
     virtual void render_update() override;
     virtual void ResetUIinfo() override;
