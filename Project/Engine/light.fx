@@ -77,7 +77,7 @@ PS_OUT PS_DirLight(VS_OUT _in)
     float2 vShadowMapUV = float2(vLightProjPos.x * 0.5f + 0.5f, 1.f - (vLightProjPos.y * 0.5f + 0.5f));
     
     if (0.f <= vShadowMapUV.x && vShadowMapUV.x <= 1.f
-        || 0.f <= vShadowMapUV.y && vShadowMapUV.y <= 1.f)
+        && 0.f <= vShadowMapUV.y && vShadowMapUV.y <= 1.f)
     {
         float fDepth = g_tex_2.Sample(g_sam_0, vShadowMapUV).x;
         

@@ -84,24 +84,29 @@ void CCameraMoveScript::MovePerspective()
 	Vec3 vRight = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
 	Vec3 vUp = Transform()->GetWorldDir(DIR_TYPE::UP);
 
+	float camspeed = m_CamSpeed;
+
+	if (KEY_PRESSED(KEY::LSHIFT))
+		camspeed *= 5.f;
+
 	if (KEY_PRESSED(KEY::RBTN) && KEY_PRESSED(KEY::W))
 	{
-		vPos += DT_ENGINE * m_CamSpeed * vFront;
+		vPos += DT_ENGINE * camspeed * vFront;
 	}
 
 	if (KEY_PRESSED(KEY::RBTN) && KEY_PRESSED(KEY::S))
 	{
-		vPos += DT_ENGINE * m_CamSpeed * -vFront;
+		vPos += DT_ENGINE * camspeed * -vFront;
 	}
 
 	if (KEY_PRESSED(KEY::RBTN) && KEY_PRESSED(KEY::A))
 	{
-		vPos += DT_ENGINE * m_CamSpeed * -vRight;
+		vPos += DT_ENGINE * camspeed * -vRight;
 	}
 
 	if (KEY_PRESSED(KEY::RBTN) && KEY_PRESSED(KEY::D))
 	{
-		vPos += DT_ENGINE * m_CamSpeed * vRight;
+		vPos += DT_ENGINE * camspeed * vRight;
 	}
 
 	if (KEY_PRESSED(KEY::RBTN) && KEY_PRESSED(KEY::Q))
