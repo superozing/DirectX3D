@@ -11,6 +11,8 @@
 #include "CStructuredBuffer.h"
 #include "CMRT.h"
 
+void (*CRenderMgr::CameraChange)(CCamera*) = nullptr;
+
 void CRenderMgr::init()
 {
 	m_Light2DBuffer = CDevice::GetInst()->GetLight2DBuffer();
