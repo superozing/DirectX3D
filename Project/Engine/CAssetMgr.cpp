@@ -24,7 +24,7 @@ void CAssetMgr::exit()
 		for (auto it = m_mapAsset[i].begin(); it != m_mapAsset[i].end(); )
 		{
 			// 엔진 에셋이 아닌 에셋을 맵에서 제거
-			if (!it->second->IsEngineAsset())
+			if (!it->second->IsEngineAsset() && it->second->GetType() != ASSET_TYPE::GRAPHICS_SHADER)
 				it = m_mapAsset[i].erase(it);
 			else
 				++it;
