@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CAsset.h"
 
 CAsset::CAsset(ASSET_TYPE _Type, bool _bEngineAsset)
@@ -12,6 +12,8 @@ CAsset::CAsset(const CAsset& _Origin)
 	: CEntity(_Origin)
 	, m_Type(_Origin.m_Type)
 	, m_bEngineAsset(_Origin.m_bEngineAsset)
+	, m_Key(_Origin.m_Key)
+	, m_RelativePath(_Origin.m_RelativePath)
 	, m_RefCount(0)
 {
 }

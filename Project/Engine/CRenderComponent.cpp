@@ -49,9 +49,9 @@ void CRenderComponent::SetMaterial(Ptr<CMaterial> _Mtrl)
 
 Ptr<CMaterial> CRenderComponent::GetDynamicMaterial()
 {
-	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-	if (pCurLevel->GetState() != LEVEL_STATE::PLAY)
-		return nullptr;
+	//CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+	//if (pCurLevel->GetState() != LEVEL_STATE::PLAY)
+	//	return nullptr;
 
 	// 이미 동적재질을 보유하고 있으면 그걸 준다.
 	if (nullptr != m_DynamicMtrl)
@@ -61,7 +61,7 @@ Ptr<CMaterial> CRenderComponent::GetDynamicMaterial()
 	if (nullptr != m_SharedMtrl)
 	{
 		// 공유재질을 복사해서 동적재질을 만들고 그걸 현재 사용재질로 설정한다.
-		m_CurMtrl = m_DynamicMtrl = m_SharedMtrl->Clone();		
+		m_CurMtrl = m_DynamicMtrl = m_SharedMtrl->Clone();
 		return m_DynamicMtrl;
 	}
 
