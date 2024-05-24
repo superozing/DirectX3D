@@ -14,6 +14,7 @@ CDevice::CDevice()
 	, m_arrSampler{}
 	, m_Light2DBuffer(nullptr)
 	, m_Light3DBuffer(nullptr)
+	, m_CrossBuffer(nullptr)
 {
 }
 
@@ -26,6 +27,9 @@ CDevice::~CDevice()
 
 	if (nullptr != m_Light3DBuffer)
 		delete m_Light3DBuffer;
+
+	if (nullptr != m_CrossBuffer)
+		delete m_CrossBuffer;
 }
 
 int CDevice::init(HWND _hWnd, Vec2 _vResolution)
@@ -101,6 +105,12 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution)
 		return E_FAIL;
 	}
 	
+	if (FAILED(CreateCrossBuffer()))
+	{
+		MessageBox(nullptr, L"랜드스케이프 크로스버퍼 생성 실패", L"Device 초기화 실패", MB_OK);
+		return E_FAIL;
+	}
+
 	return S_OK;
 }
 
@@ -437,6 +447,14 @@ int CDevice::CreateLightBuffer()
 
 	m_Light3DBuffer = new CStructuredBuffer;
 	m_Light3DBuffer->Create(sizeof(tLightInfo), 10, SB_TYPE::READ_ONLY, true);
+
+	return S_OK;
+}
+
+int CDevice::CreateCrossBuffer()
+{
+	m_CrossBuffer = new CStructuredBuffer;
+	m_CrossBuffer->Create(sizeof(tRaycastOut), 1, SB_TYPE::READ_WRITE, true);
 
 	return S_OK;
 }

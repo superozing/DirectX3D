@@ -1,11 +1,24 @@
 ﻿#include "pch.h"
 #include "CLandScape.h"
 
+#include "CDevice.h"
 #include "CAssetMgr.h"
 
 void CLandScape::Init()
 {
 	CreateMesh();
+
+	// 지형 전용 재질 적용
+	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"LandScapeMtrl"));
+
+	// 지형 전용 컴퓨트 쉐이더 생성
+	CreateComputeShader();
+
+	// 지형 전용 텍스쳐 생성
+	CreateTexture();
+
+	// 레이캐스팅 결과 받는 버퍼
+	m_CrossBuffer = CDevice::GetInst()->GetCrossBuffer();
 }
 
 void CLandScape::CreateMesh()
@@ -60,4 +73,39 @@ void CLandScape::CreateMesh()
 
 	// 지형 전용 재질 적용
 	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"LandScapeMtrl"));
+}
+
+void CLandScape::CreateComputeShader()
+{
+	// ======================
+	// 높이 수정 컴퓨트 쉐이더
+	// ======================
+	m_CSHeightMap = (CHeightMapShader*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"HeightMapShader").Get();
+	if (nullptr == m_HeightMapTex)
+	{
+		m_CSHeightMap = new CHeightMapShader;
+		CAssetMgr::GetInst()->AddAsset<CComputeShader>(L"HeightMapShader", m_CSHeightMap.Get());
+	}
+
+	// =====================
+	// 지형 피킹 컴퓨트 쉐이더
+	// =====================
+	m_CSRaycast = (CRaycastShader*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"RaycastShader").Get();
+	if (nullptr == m_CSRaycast)
+	{
+		m_CSRaycast = new CRaycastShader;
+		CAssetMgr::GetInst()->AddAsset<CComputeShader>(L"RaycastShader", m_CSRaycast.Get());
+	}
+}
+
+void CLandScape::CreateTexture()
+{
+	// 높이맵 텍스쳐		
+	m_HeightMapTex = CAssetMgr::GetInst()->CreateTexture(L"HeightMapTex"
+														, 2048, 2048
+														, DXGI_FORMAT_R32_FLOAT
+														, D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS
+														, D3D11_USAGE_DEFAULT);
+
+	m_BrushTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\brush\\Brush_02.png");
 }

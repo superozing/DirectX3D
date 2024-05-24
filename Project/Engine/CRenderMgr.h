@@ -91,7 +91,7 @@ public:
 
     void CheckEscape();
 
-
+    CCamera* GetMainCam();
     CCamera* GetEditorCam() { return m_EditorCam; }
 
 public:

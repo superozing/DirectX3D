@@ -373,3 +373,18 @@ void CRenderMgr::CheckEscape()
 		}
 	}
 }
+
+CCamera* CRenderMgr::GetMainCam()
+{
+	if (LEVEL_STATE::PLAY == CLevelMgr::GetInst()->GetCurrentLevel()->GetState())
+	{
+		if (m_vecCam.empty())
+			return nullptr;
+
+		return m_vecCam[0];
+	}
+	else
+	{
+		return m_EditorCam;
+	}
+}
