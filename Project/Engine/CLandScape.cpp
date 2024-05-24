@@ -19,8 +19,6 @@ CLandScape::CLandScape()
 
 CLandScape::~CLandScape()
 {
-	if (nullptr != m_CrossBuffer)
-		delete m_CrossBuffer;
 }
 
 void CLandScape::finaltick()

@@ -1,6 +1,7 @@
 ﻿#include "pch.h"
 #include "CLandScape.h"
 
+#include "CDevice.h"
 #include "CAssetMgr.h"
 
 void CLandScape::Init()
@@ -17,8 +18,7 @@ void CLandScape::Init()
 	CreateTexture();
 
 	// 레이캐스팅 결과 받는 버퍼
-	m_CrossBuffer = new CStructuredBuffer;
-	m_CrossBuffer->Create(sizeof(tRaycastOut), 1, SB_TYPE::READ_WRITE, true);
+	m_CrossBuffer = CDevice::GetInst()->GetCrossBuffer();
 }
 
 void CLandScape::CreateMesh()
