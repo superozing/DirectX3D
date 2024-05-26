@@ -632,7 +632,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// =================================
 	Ptr<CGraphicsShader> pShader = nullptr;
 
-	pShader = new CGraphicsShader(true);	
+	pShader = new CGraphicsShader;	
 	pShader->CreateVertexShader(FXstd2d, FN_VS_std2d);
 	pShader->CreatePixelShader(FXstd2d, FN_PS_std2d);
 
@@ -652,7 +652,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// ===========
 	// Std3DShader
 	// ===========
-	pShader = new CGraphicsShader(true);
+	pShader = new CGraphicsShader;
 	pShader->CreateVertexShader(FXstd3d, FN_VS_std3d);
 	pShader->CreatePixelShader(FXstd3d, FN_PS_std3d);
 
@@ -671,7 +671,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// ====================
 	// Std3D_DeferredShader
 	// ====================
-	pShader = new CGraphicsShader(true);
+	pShader = new CGraphicsShader;
 	pShader->CreateVertexShader(FXstd3d_deferred, FN_VS_deferred);
 	pShader->CreatePixelShader(FXstd3d_deferred, FN_PS_deferred);
 
@@ -685,7 +685,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// ==============
 	// DirLightShader
 	// ==============
-	pShader = new CGraphicsShader(true);
+	pShader = new CGraphicsShader;
 	pShader->CreateVertexShader(FXlight, FN_VS_dirlight);
 	pShader->CreatePixelShader(FXlight, FN_PS_dirlight);
 
@@ -699,7 +699,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// =================
 	// PointLight Shader
 	// =================
-	pShader = new CGraphicsShader(true);
+	pShader = new CGraphicsShader;
 	pShader->CreateVertexShader(FXlight, FN_VS_pointlight);
 	pShader->CreatePixelShader(FXlight, FN_PS_pointlight);
 
@@ -713,7 +713,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// =================
 	// SpotLight Shader
 	// =================
-	pShader = new CGraphicsShader(true);
+	pShader = new CGraphicsShader;
 	pShader->CreateVertexShader(FXlight, FN_VS_spotlight);
 	pShader->CreatePixelShader(FXlight, FN_PS_spotlight);
 
@@ -727,7 +727,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// ============
 	// Merge Shader
 	// ============
-	pShader = new CGraphicsShader(true);
+	pShader = new CGraphicsShader;
 	pShader->CreateVertexShader(FXmerge, FN_VS_merge);
 	pShader->CreatePixelShader(FXmerge, FN_PS_merge);
 
@@ -741,7 +741,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// ============
 	// Decal Shader
 	// ============
-	pShader = new CGraphicsShader(true);
+	pShader = new CGraphicsShader;
 	pShader->CreateVertexShader(L"shader\\decal.fx", "VS_Decal");
 	pShader->CreatePixelShader(L"shader\\decal.fx", "PS_Decal");
 
@@ -758,7 +758,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// =================================
 	// EffectShader
 	// =================================
-	pShader = new CGraphicsShader(true);
+	pShader = new CGraphicsShader;
 	pShader->CreateVertexShader(FXstd2d, FN_VS_std2d);
 	pShader->CreatePixelShader(FXstd2d, FN_PS_effect);
 
@@ -774,7 +774,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// =============
 	// TileMapShader
 	// =============
-	pShader = new CGraphicsShader(true);
+	pShader = new CGraphicsShader;
 	pShader->CreateVertexShader(FXtilemap, FN_VS_tile);
 	pShader->CreatePixelShader(FXtilemap, FN_PS_tile);
 
@@ -789,7 +789,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// ====================
 	// ParticleRenderShader
 	// ====================
-	pShader = new CGraphicsShader(true);
+	pShader = new CGraphicsShader;
 	pShader->CreateVertexShader(FXparticle, FN_VS_particle);
 	pShader->CreateGeometryShader(FXparticle, FN_GS_particle);
 	pShader->CreatePixelShader(FXparticle, FN_PS_particle);
@@ -811,7 +811,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// BS_TYPE		: Default
 	// Domain		: DOMAIN_POSTPROCESS
 	// =================================
-	pShader = new CGraphicsShader(true);
+	pShader = new CGraphicsShader;
 	pShader->CreateVertexShader(FXpostprocess, FN_VS_grayfilter);
 	pShader->CreatePixelShader(FXpostprocess, FN_PS_grayfilter);
 
@@ -824,7 +824,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// ============
 	// SkyBoxShader
 	// ============
-	pShader = new CGraphicsShader(true);
+	pShader = new CGraphicsShader;
 	pShader->CreateVertexShader(FXskybox, FN_VS_skybox);
 	pShader->CreatePixelShader(FXskybox, FN_PS_skybox);
 
@@ -844,7 +844,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// BS_TYPE		: Default
 	// Domain		: DOMAIN_POSTPROCESS
 	// =================================
-	pShader = new CGraphicsShader(true);
+	pShader = new CGraphicsShader;
 	pShader->CreateVertexShader(FXpostprocess, FN_VS_distortion);
 	pShader->CreatePixelShader(FXpostprocess, FN_PS_distortion);
 
@@ -857,7 +857,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// =================================
 	// DebugShape Shader
 	// =================================
-	pShader = new CGraphicsShader(true);
+	pShader = new CGraphicsShader;
 	pShader->CreateVertexShader(FXdebug, FN_VS_debugshape);
 	pShader->CreatePixelShader(FXdebug, FN_PS_debugshape);
 
@@ -872,7 +872,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// ================
 	// ShadowMap Shader
 	// ================
-	pShader = new CGraphicsShader(true);
+	pShader = new CGraphicsShader;
 	pShader->CreateVertexShader(L"shader\\shadowmap.fx", "VS_ShadowMap");
 	pShader->CreatePixelShader(L"shader\\shadowmap.fx", "PS_ShadowMap");
 

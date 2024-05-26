@@ -4,8 +4,8 @@
 #include "CDevice.h"
 #include "CPathMgr.h"
 
-CGraphicsShader::CGraphicsShader(bool _IsEngineAsset)
-	: CShader(ASSET_TYPE::GRAPHICS_SHADER, _IsEngineAsset)
+CGraphicsShader::CGraphicsShader()
+	: CShader(ASSET_TYPE::GRAPHICS_SHADER, true)
 	, m_Topology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
 	, m_RSType(RS_TYPE::CULL_BACK)
 	, m_DSType(DS_TYPE::LESS)
