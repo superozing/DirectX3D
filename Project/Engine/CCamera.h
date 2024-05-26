@@ -39,6 +39,8 @@ private:
 
     int                     m_CameraPriority;
 
+    tRay                    m_ray;      // 마우스 방향을 향하는 직선
+
     // 물체 분류
     vector<CGameObject*>    m_vecDeferred;
     vector<CGameObject*>    m_vecDecal;
@@ -82,6 +84,8 @@ public:
 
     int GetCameraPriority() { return m_CameraPriority; }
 
+    const tRay& GetRay() { return m_ray; }
+
 private:
     shared_ptr<class CCameraShake> m_pShake;
 
@@ -106,6 +110,8 @@ public:
 
     void SortShadowMapObject();
     void render_shadowmap();
+
+    void CalculateRay();
 
 public:
 

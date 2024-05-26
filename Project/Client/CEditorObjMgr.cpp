@@ -9,6 +9,8 @@
 #include <Engine/CLevelMgr.h>
 #include <Engine/CLevel.h>
 
+#include <Scripts/CCameraEffect.h>
+
 CEditorObjMgr::CEditorObjMgr()
 {
 
@@ -36,6 +38,9 @@ void CEditorObjMgr::init()
 	m_EditorCam->Camera()->SetFOV(XM_PI / 2.f);
 	m_EditorCam->Camera()->SetFar(100000.f);
 
+	auto pComp = new CCameraEffect;
+	m_EditorCam->AddComponent(pComp);
+	pComp->begin();
 	m_vecEditorObj.push_back(m_EditorCam);
   
   // Editor 용 카메라로서 렌더매니저에 등록

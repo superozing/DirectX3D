@@ -344,6 +344,11 @@ void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Idx)
 	if (_Idx == -1)
 		return;
 
+	if (_Idx == 0)
+	{
+		if (CameraChange) CameraChange(_Cam);
+	}
+
 	if (m_vecCam.size() <= _Idx + 1)
 	{
 		m_vecCam.resize(_Idx + 1);
@@ -366,5 +371,20 @@ void CRenderMgr::CheckEscape()
 
 			ActiveEditorMode(m_bEscape);
 		}
+	}
+}
+
+CCamera* CRenderMgr::GetMainCam()
+{
+	if (LEVEL_STATE::PLAY == CLevelMgr::GetInst()->GetCurrentLevel()->GetState())
+	{
+		if (m_vecCam.empty())
+			return nullptr;
+
+		return m_vecCam[0];
+	}
+	else
+	{
+		return m_EditorCam;
 	}
 }

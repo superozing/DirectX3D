@@ -33,6 +33,8 @@
 #include "CEditorObjMgr.h"
 #include "CCreateTempLevel.h"
 
+#include <Engine/CRenderMgr.h>
+#include "RTViewPort.h"
 //#define _RELEASE_GAME
 
 
@@ -74,7 +76,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     }
         
     CPrefab::GAMEOBJECT_SAVE = &CLevelSaveLoad::SaveGameObject;
-    CPrefab::GAMEOBJECT_LOAD = &CLevelSaveLoad::LoadGameObject;    
+    CPrefab::GAMEOBJECT_LOAD = &CLevelSaveLoad::LoadGameObject;
+    CRenderMgr::CameraChange = &RTViewPort::SetCamera;
 
     
 #ifndef _RELEASE_GAME

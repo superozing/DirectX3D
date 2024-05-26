@@ -25,6 +25,7 @@
 
 #include <Scripts/CTimeMgrScript.h>
 #include <Scripts/CCameraEffect.h>
+#include <Scripts/CCameraMoveScript.h>
 
 #include <Engine/CAssetMgr.h>
 #include <Engine/CPrefab.h>
@@ -59,6 +60,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pCamObj->AddComponent(new CTransform);
 	pCamObj->AddComponent(new CCamera);
 	pCamObj->AddComponent(new CCameraEffect);
+	pCamObj->AddComponent(new CCameraMoveScript);
 
 	pCamObj->Transform()->SetRelativePos(Vec3(0.5f, 0.f, 0.f));
 	pCamObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
@@ -156,7 +158,7 @@ void CCreateTempLevel::CreateTempLevel()
 	LandScape->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
 	LandScape->Transform()->SetRelativeScale(Vec3(200.f, 1000.f, 200.f));
 
-	LandScape->LandScape()->SetHeightMap(CAssetMgr::GetInst()->Load<CTexture>(L"texture\\HeightMap\\HeightMap_01.jpg"));
+	//LandScape->LandScape()->SetHeightMap(CAssetMgr::GetInst()->Load<CTexture>(L"texture\\HeightMap\\HeightMap_01.jpg"));
 
 	pTempLevel->AddObject(LandScape, (UINT)LAYER::LAYER_DEFAULT, false);
 

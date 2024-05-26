@@ -102,4 +102,11 @@ struct tSpawnCount
     int3 iPadding;
 };
 
+struct tRaycastOut
+{
+    float2 vUV;
+    float fDist;
+    int success;
+};
+
 #endif

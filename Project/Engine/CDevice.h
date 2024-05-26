@@ -29,6 +29,8 @@ private:
 	CStructuredBuffer* m_Light2DBuffer;
 	CStructuredBuffer* m_Light3DBuffer;
 
+	CStructuredBuffer* m_CrossBuffer;	    // 마우스 피킹되는 지점 정보 받는 버퍼
+
 public:
 	int init(HWND _hWnd, Vec2 _vResolution);
 	void Present();
@@ -44,6 +46,7 @@ public:
 
 	CStructuredBuffer* GetLight2DBuffer() { return m_Light2DBuffer; }
 	CStructuredBuffer* GetLight3DBuffer() { return m_Light3DBuffer; }
+	CStructuredBuffer* GetCrossBuffer() { return m_CrossBuffer; }
 
 
 private:
@@ -56,5 +59,6 @@ private:
 
 	int CreateConstBuffer();
 	int CreateLightBuffer();
+	int CreateCrossBuffer();
 };
 

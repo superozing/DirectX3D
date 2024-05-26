@@ -189,7 +189,7 @@
     </ClInclude>
     <ClInclude Include="CLogMgr.h">
       <Filter>04. Manager\LogMgr</Filter>
-     </ClInclude>
+    </ClInclude>
     <ClInclude Include="GenStrings.h">
       <Filter>01. Header\GenString</Filter>
     </ClInclude>
@@ -237,6 +237,12 @@
     </ClInclude>
     <ClInclude Include="CLandScape.h">
       <Filter>08. Component\RenderComponent\06. LandScape</Filter>
+    </ClInclude>
+    <ClInclude Include="CRaycastShader.h">
+      <Filter>ShaderCode\03. Compute\LandScape\Raycast</Filter>
+    </ClInclude>
+    <ClInclude Include="CHeightMapShader.h">
+      <Filter>ShaderCode\03. Compute\LandScape\HeightMap</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -431,6 +437,12 @@
     </ClCompile>
     <ClCompile Include="CLandScape_Init.cpp">
       <Filter>08. Component\RenderComponent\06. LandScape</Filter>
+    </ClCompile>
+    <ClCompile Include="CRaycastShader.cpp">
+      <Filter>ShaderCode\03. Compute\LandScape\Raycast</Filter>
+    </ClCompile>
+    <ClCompile Include="CHeightMapShader.cpp">
+      <Filter>ShaderCode\03. Compute\LandScape\HeightMap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -629,6 +641,15 @@
     <Filter Include="08. Component\RenderComponent\06. LandScape">
       <UniqueIdentifier>{37a73d81-0f81-43af-b25a-b444002ef3eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\03. Compute\LandScape">
+      <UniqueIdentifier>{6d7dbbf0-05b3-4c96-9e8d-2f7ee4233e23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\03. Compute\LandScape\HeightMap">
+      <UniqueIdentifier>{aeb8e66f-342f-443c-96f2-7cb73b7288ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\03. Compute\LandScape\Raycast">
+      <UniqueIdentifier>{6b94b2e3-ae3f-409a-b63b-419fe9f7e8af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -692,6 +713,12 @@
     </FxCompile>
     <FxCompile Include="landscape.fx">
       <Filter>ShaderCode\02. Render\3DShader</Filter>
+    </FxCompile>
+    <FxCompile Include="raycast.fx">
+      <Filter>ShaderCode\03. Compute\LandScape\Raycast</Filter>
+    </FxCompile>
+    <FxCompile Include="heightmap.fx">
+      <Filter>ShaderCode\03. Compute\LandScape\HeightMap</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

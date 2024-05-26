@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="리소스 파일">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Default">
       <UniqueIdentifier>{29f21cc2-d1ee-416b-91ff-c3044052af38}</UniqueIdentifier>
     </Filter>
@@ -142,6 +138,10 @@
     </Filter>
     <Filter Include="02. UI\3. Inspector\ComponentUI\Landscape">
       <UniqueIdentifier>{01c74e88-02bd-4ed1-a9f3-cbe477dbd76f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -301,6 +301,7 @@
     <ClInclude Include="LandscapeUI.h">
       <Filter>02. UI\3. Inspector\ComponentUI\Landscape</Filter>
     </ClInclude>
+    <ClInclude Include="ImGuizmo.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -461,5 +462,6 @@
     <ClCompile Include="LandscapeUI.cpp">
       <Filter>02. UI\3. Inspector\ComponentUI\Landscape</Filter>
     </ClCompile>
+    <ClCompile Include="ImGuizmo.cpp" />
   </ItemGroup>
 </Project>

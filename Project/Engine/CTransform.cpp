@@ -4,7 +4,7 @@
 #include "CDevice.h"
 #include "CConstBuffer.h"
 
-
+#include "CTimeMgr.h"
 
 CTransform::CTransform()
 	: CComponent(COMPONENT_TYPE::TRANSFORM)
@@ -16,6 +16,57 @@ CTransform::CTransform()
 
 CTransform::~CTransform()
 {
+}
+
+void CTransform::Lerp(Vec3 _pos, bool _bMoveRot, Vec3 _rot, bool _bMoveScale, Vec3 _scale, float _time)
+{
+	m_vTargetPos = _pos;
+	_bMoveRot ? m_vTargetRot = _rot : m_vTargetRot = m_vRelativeRotation;
+	_bMoveScale ? m_vTargetScale = _scale : m_vTargetScale = m_vRelativeScale;
+	m_fTargetTimer = m_fTargetTime = _time;
+	m_bRotLerp = _bMoveRot;
+	m_bScaleLerp = _bMoveScale;
+	m_bLerp = true;
+
+	m_vStartPos = m_vRelativePos;
+	m_vStartRot = m_vRelativeRotation;
+	m_vStartScale = m_vRelativeScale;
+
+	if (m_fTargetTime == 0.f) {
+		m_bLerp = false;
+		SetRelativePos(m_vTargetPos);
+		SetRelativeRotation(m_vTargetRot);
+		SetRelativeScale(m_vTargetScale);
+	}
+}
+
+void CTransform::tick()
+{
+	// LerpToTarget;
+	if (m_bLerp) 
+	{
+		// 목표에 도착
+		Vec3 vNPos, vNRot, vNScale;
+		if (m_fTargetTimer <= 0.f) {
+			m_bLerp = false;
+
+			vNPos = m_vTargetPos;
+			vNRot = m_vTargetRot;
+			vNScale = m_vTargetScale;
+		}
+		else {
+			float alpha = m_fTargetTimer / m_fTargetTime;
+			vNPos = RoRMath::Lerp(m_vTargetPos, m_vStartPos, alpha);
+			vNRot = RoRMath::Lerp(m_vTargetRot, m_vStartRot, alpha);
+			vNScale = RoRMath::Lerp(m_vTargetScale, m_vStartScale, alpha);
+
+			m_fTargetTimer -= DT_ENGINE;
+		}
+
+		SetRelativePos(vNPos);
+		if(m_bRotLerp) SetRelativePos(vNPos);
+		if(m_bScaleLerp) SetRelativePos(vNPos);
+	}
 }
 
 void CTransform::finaltick()
@@ -92,6 +143,21 @@ void CTransform::UpdateData()
 	CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::TRANSFORM);
 	pCB->SetData(&g_Transform);
 	pCB->UpdateData();
+}
+
+void CTransform::SetWorldMat(const Matrix& _matWorld)
+{
+	m_matWorld = _matWorld;
+	Vec3 vScale, vRot, vPos;
+	Quaternion Quat;
+
+	m_matWorld.Decompose(vScale, Quat, vPos);
+	auto mat = XMMatrixRotationQuaternion(Quat);
+	vRot = DecomposeRotMat(mat);
+
+	SetRelativePos(vPos);
+	SetRelativeScale(vScale);
+	SetRelativeRotation(vRot);
 }
 
 Vec3 CTransform::GetWorldScale()
