@@ -15,11 +15,11 @@ private:
     Ptr<CTexture>           m_BrushTex;         // 브러쉬용 텍스쳐
 
     Ptr<CHeightMapShader>   m_CSHeightMap;      // 높이맵 쉐이더
+    bool                    m_bTessDir;
     Ptr<CTexture>           m_HeightMapTex;     // 높이맵
 
     Ptr<CRaycastShader>     m_CSRaycast;        // 픽킹 쉐이더
     CStructuredBuffer*      m_CrossBuffer;	    // 마우스 피킹되는 지점 정보 받는 버퍼
-
 
 public:
     void SetHeightMap(Ptr<CTexture> _HeightMap) { m_HeightMapTex = _HeightMap; }
@@ -32,6 +32,8 @@ public:
 
     Vec2 GetBrushScale() { return m_BrushScale; }
     void SetBrushScale(Vec2 BrushScale) { m_BrushScale = BrushScale; }
+
+    void SetTessDir(bool bUp) { m_bTessDir = bUp; }
 
     UINT GetLandScapeFaceX() { return m_FaceX; }
     UINT GetLandScapeFaceZ() { return m_FaceZ; }

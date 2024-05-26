@@ -25,6 +25,7 @@ int CHeightMapShader::UpdateData()
 	m_Const.iArr[0] = (int)m_pHeightMap->GetWidth();
 	m_Const.iArr[1] = (int)m_pHeightMap->GetHeight();
 	m_Const.iArr[2] = m_iBrushIdx;
+	m_Const.iArr[3] = (int)m_iUpdown;
 	m_Const.v2Arr[0] = m_vScale;
 
 	// 높이맵

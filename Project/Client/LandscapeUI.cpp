@@ -11,6 +11,8 @@
 
 #include <Engine\CHeightMapShader.h>
 
+
+
 #define LandScapeTexturePathCount 18
 
 LandScapeUI::LandScapeUI()
@@ -45,6 +47,8 @@ void LandScapeUI::render_update()
 	Vec2 vecBrushScale = GetTargetObject()->LandScape()->GetBrushScale();
 	fBrushSize[0] = vecBrushScale.x;
 	fBrushSize[1] = vecBrushScale.y;
+
+	static bool bTexup = true;
 
 	//동적 재질은 현재 play일때만 얻어올 수 있다.
 	if (CLevelMgr::GetInst()->GetCurrentLevel()->GetState() == LEVEL_STATE::PLAY)
@@ -146,6 +150,14 @@ void LandScapeUI::render_update()
 	vecBrushScale.x = fBrushSize[0];  vecBrushScale.y = fBrushSize[1];
 	GetTargetObject()->LandScape()->SetBrushScale(vecBrushScale);
 
+	ImGui::SameLine();
+
+	ImGui::Text("Leveling Up"); ImGui::SameLine();
+	if (ImGui::Checkbox("##TessUp", &bTexup))
+	{
+		GetTargetObject()->LandScape()->SetTessDir(bTexup);
+	}
+
 
 }
 
@@ -189,7 +201,6 @@ void LandScapeUI::GetLandScapeFileName()
 	}
 
 	this->m_vecBrushTextureKey = strFileName;
-
 
 }
 

@@ -7,12 +7,15 @@
 
 #include "CCamera.h"
 
+#include "CLogMgr.h"
+
 CLandScape::CLandScape()
 	: CRenderComponent(COMPONENT_TYPE::LANDSCAPE)
 	, m_FaceX(64)
 	, m_FaceZ(64)
 	, m_BrushScale(Vec2(0.5f, 0.5f))
 	, m_CrossBuffer(nullptr)
+	, m_bTessDir(true)
 {
 	Init();
 }
@@ -34,6 +37,9 @@ void CLandScape::finaltick()
 		m_CSHeightMap->SetBrushIndex(0);				// 브러쉬 인덱스 설정
 		m_CSHeightMap->SetBrushScale(m_BrushScale);		// 브러쉬 크기
 		m_CSHeightMap->SetHeightMap(m_HeightMapTex);
+
+		m_CSHeightMap->SetTesDir(m_bTessDir);
+
 		m_CSHeightMap->Execute();
 	}
 }
@@ -84,6 +90,9 @@ void CLandScape::Raycasting()
 	m_CSRaycast->Execute();
 
 	m_CrossBuffer->GetData(&out);
+
+	string log = std::to_string(out.vUV.x) + " " + std::to_string(out.vUV.y);
+	CLogMgr::GetInst()->AddLog(Log_Level::WARN, log);
 }
 
 
