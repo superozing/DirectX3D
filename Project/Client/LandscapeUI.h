@@ -9,8 +9,10 @@ class LandScapeUI :
 private:
     
     vector<string> m_vecHeightTextureKey;
+    vector<string> m_vecBrushTextureKey;
 
     Ptr<CMaterial> m_pTargetObjMtrl;
+
 
 public:
     virtual void render_update() override;

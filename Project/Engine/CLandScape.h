@@ -27,6 +27,12 @@ public:
     Ptr<CTexture> GetHeightMapTex() { return m_HeightMapTex; }
     void SetHeightMapTex(Ptr<CTexture> texture) { m_HeightMapTex = texture; }
 
+    Ptr<CTexture> GetBrushTex() { return m_BrushTex; }
+    void SetBrushTex(Ptr<CTexture> texture) { m_BrushTex = texture; }
+
+    Vec2 GetBrushScale() { return m_BrushScale; }
+    void SetBrushScale(Vec2 BrushScale) { m_BrushScale = BrushScale; }
+
     UINT GetLandScapeFaceX() { return m_FaceX; }
     UINT GetLandScapeFaceZ() { return m_FaceZ; }
     void SetLandScapeFace(UINT face, bool bXaxis);

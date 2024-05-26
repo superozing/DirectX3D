@@ -3,14 +3,20 @@
 
 #include <Engine\CLandScape.h>
 
+#include <Engine\CLevelMgr.h>
+#include <Engine\CLevel.h>
+
 #include <Engine\CRenderComponent.h>
 #include <Engine\CMaterial.h>
+
+#include <Engine\CHeightMapShader.h>
 
 #define LandScapeTexturePathCount 18
 
 LandScapeUI::LandScapeUI()
 	: ComponentUI("LandScapeUI", "##LandScapeUI", COMPONENT_TYPE::LANDSCAPE)
 	, m_vecHeightTextureKey()
+	, m_vecBrushTextureKey()
 {
 	GetLandScapeFileName();
 }
@@ -25,6 +31,7 @@ void LandScapeUI::render_update()
 
 	// 사전 준비
 	static const char* charHeightMap = NULL;
+	static const char* charBrush = NULL;
 
 	static float fImageSize[2];
 	fImageSize[0] = GetTargetObject()->LandScape()->GetHeightMapTex()->GetWidth();
@@ -34,7 +41,16 @@ void LandScapeUI::render_update()
 	iLandScapeFace[0] = (int)(GetTargetObject()->LandScape()->GetLandScapeFaceX());
 	iLandScapeFace[1] = (int)(GetTargetObject()->LandScape()->GetLandScapeFaceZ());
 
-	m_pTargetObjMtrl = GetTargetObject()->GetRenderComponent()->GetDynamicMaterial();
+	static float fBrushSize[2];
+	Vec2 vecBrushScale = GetTargetObject()->LandScape()->GetBrushScale();
+	fBrushSize[0] = vecBrushScale.x;
+	fBrushSize[1] = vecBrushScale.y;
+
+	//동적 재질은 현재 play일때만 얻어올 수 있다.
+	if (CLevelMgr::GetInst()->GetCurrentLevel()->GetState() == LEVEL_STATE::PLAY)
+		m_pTargetObjMtrl = GetTargetObject()->GetRenderComponent()->GetDynamicMaterial();
+	else
+		m_pTargetObjMtrl = GetTargetObject()->GetRenderComponent()->GetMaterial();
 
 	static bool use_text_color_for_tint = false;
 	ImVec2 uv_min = ImVec2(0.0f, 0.0f);                 // Top-left
@@ -44,8 +60,7 @@ void LandScapeUI::render_update()
 	ImVec2 vScreenPos = ImGui::GetCursorScreenPos();
 
 	// 높이 텍스쳐 정보
-
-	ImGui::Text("Height Map Texture");
+	StaticButton(string("LandScape Info"), STATIC_BTN_TYPE::SUBTITLE);
 
 	ImGui::Image(GetTargetObject()->LandScape()->GetHeightMapTex()->GetSRV().Get(), ImVec2(ImGui::GetWindowSize().x, 150.f), uv_min, uv_max, tint_col, border_col);
 
@@ -92,6 +107,46 @@ void LandScapeUI::render_update()
 	ImGui::DragFloat4("##Tess Factor", fTessFactor);
 
 	SetChangeTessFactor(TessFactor, fTessFactor);
+
+	ImGui::Spacing();
+
+	// 랜드 스케이프 변형 ui
+
+	StaticButton(string("LandScape Edit"), STATIC_BTN_TYPE::SUBTITLE);
+
+	ImGui::Image(GetTargetObject()->LandScape()->GetBrushTex()->GetSRV().Get(), ImVec2(ImGui::GetWindowSize().x, 150.f), uv_min, uv_max, tint_col, border_col);
+
+	ImGui::Text("Brush Texture "); ImGui::SameLine();
+
+	if (ImGui::BeginCombo("##ComboBrushTex", charBrush))
+	{
+		for (int n = 0; n < m_vecBrushTextureKey.size(); n++)
+		{
+			bool is_selected = (charBrush == m_vecBrushTextureKey[n].c_str());
+			if (ImGui::Selectable(m_vecBrushTextureKey[n].c_str(), is_selected))
+			{
+				charBrush = m_vecBrushTextureKey[n].c_str();
+
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+
+				string m_strCurDirectory = "texture\\brush\\";
+				wstring ParticleKey = ToWString(m_strCurDirectory += m_vecBrushTextureKey[n].c_str());
+
+				GetTargetObject()->LandScape()->SetBrushTex(CAssetMgr::GetInst()->Load<CTexture>(ParticleKey, ParticleKey));
+
+			}
+		}
+		ImGui::EndCombo();
+	}
+
+	ImGui::Text("Brush Scale");
+	
+	ImGui::DragFloat2("##Brush Scale", fBrushSize, 1.0f, 0.0f, FLT_MAX);
+	vecBrushScale.x = fBrushSize[0];  vecBrushScale.y = fBrushSize[1];
+	GetTargetObject()->LandScape()->SetBrushScale(vecBrushScale);
+
+
 }
 
 void LandScapeUI::ResetUIinfo()
@@ -117,6 +172,25 @@ void LandScapeUI::GetLandScapeFileName()
 	}
 
 	this->m_vecHeightTextureKey = strFileName;
+
+	strFileName.clear();
+
+	 m_strCurDirectory = "texture\\brush\\";
+	 path = ToString(CPathMgr::GetContentPath()) + m_strCurDirectory;
+
+	namespace fs = std::filesystem;
+	for (const fs::directory_entry& entry : fs::directory_iterator(path)) {
+		if (!entry.is_directory()) {
+			auto filename = entry.path().filename().string();
+			auto extension = entry.path().extension().string();
+
+			strFileName.push_back(filename);
+		}
+	}
+
+	this->m_vecBrushTextureKey = strFileName;
+
+
 }
 
 void LandScapeUI::SetChangeTessFactor(Vec4* _mtrlparam, float* changevalue)
