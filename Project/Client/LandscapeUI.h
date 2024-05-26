@@ -10,11 +10,14 @@ private:
     
     vector<string> m_vecHeightTextureKey;
 
+    Ptr<CMaterial> m_pTargetObjMtrl;
+
 public:
     virtual void render_update() override;
     virtual void ResetUIinfo() override;
     
     void GetLandScapeFileName();
+    void SetChangeTessFactor(Vec4* _mtrlparam, float* changevalue);
 
 public:
     LandScapeUI();

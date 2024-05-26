@@ -3,6 +3,9 @@
 
 #include <Engine\CLandScape.h>
 
+#include <Engine\CRenderComponent.h>
+#include <Engine\CMaterial.h>
+
 #define LandScapeTexturePathCount 18
 
 LandScapeUI::LandScapeUI()
@@ -31,7 +34,7 @@ void LandScapeUI::render_update()
 	iLandScapeFace[0] = (int)(GetTargetObject()->LandScape()->GetLandScapeFaceX());
 	iLandScapeFace[1] = (int)(GetTargetObject()->LandScape()->GetLandScapeFaceZ());
 
-
+	m_pTargetObjMtrl = GetTargetObject()->GetRenderComponent()->GetDynamicMaterial();
 
 	static bool use_text_color_for_tint = false;
 	ImVec2 uv_min = ImVec2(0.0f, 0.0f);                 // Top-left
@@ -74,15 +77,21 @@ void LandScapeUI::render_update()
 	ImGui::Text("Texture Size"); ImGui::SameLine();
 	ImGui::InputFloat2("##Texture Size", fImageSize, nullptr, ImGuiInputTextFlags_ReadOnly);
 
-	if (ImGui::InputInt2("LandScapeFace", iLandScapeFace))
+	ImGui::Text("LandScape Face"); ImGui::SameLine();
+	if (ImGui::InputInt2("##LandScapeFace", iLandScapeFace))
 	{
 		GetTargetObject()->LandScape()->SetLandScapeFace((UINT)iLandScapeFace[0], true);
 		GetTargetObject()->LandScape()->SetLandScapeFace((UINT)iLandScapeFace[1], false);
 
 	}
+	
+	static Vector4* TessFactor = (Vector4*)(m_pTargetObjMtrl->GetScalarParam(SCALAR_PARAM::VEC4_0));
+	float fTessFactor[4] = { (float)TessFactor->x, (float)TessFactor->y, (float)TessFactor->z, (float)TessFactor->w };
 
+	ImGui::Text("Tess Factor"); ImGui::SameLine();
+	ImGui::DragFloat4("##Tess Factor", fTessFactor);
 
-
+	SetChangeTessFactor(TessFactor, fTessFactor);
 }
 
 void LandScapeUI::ResetUIinfo()
@@ -109,3 +118,14 @@ void LandScapeUI::GetLandScapeFileName()
 
 	this->m_vecHeightTextureKey = strFileName;
 }
+
+void LandScapeUI::SetChangeTessFactor(Vec4* _mtrlparam, float* changevalue)
+{
+	_mtrlparam->x = changevalue[0];
+	_mtrlparam->y = changevalue[1];
+	_mtrlparam->z = changevalue[2];
+	_mtrlparam->w = changevalue[3];
+
+}
+
+
