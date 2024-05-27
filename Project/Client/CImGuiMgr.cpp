@@ -126,9 +126,9 @@ void CImGuiMgr::init(HWND _hMainWnd, ComPtr<ID3D11Device> _Device
 
     m_vecStaticBtn[(UINT)STATIC_BTN_TYPE::TITLE] = tColor;
 
-    tColor.ColBtnColor = (ImVec4)ImColor::HSV(0.6f, 0.6f, 0.f);
-    tColor.ColBtnHoveredColor = (ImVec4)ImColor::HSV(0.6f, 0.6f, 0.f);
-    tColor.ColBtnActiveColor = (ImVec4)ImColor::HSV(0.6f, 0.6f, 0.f);
+    tColor.ColBtnColor = (ImVec4)ImColor::HSV(0.9f, 0.8f, 0.8f);
+    tColor.ColBtnHoveredColor = (ImVec4)ImColor::HSV(0.9f, 0.8f, 0.8f);
+    tColor.ColBtnActiveColor = (ImVec4)ImColor::HSV(0.9f, 0.8f, 0.8f);
 
     m_vecStaticBtn[(UINT)STATIC_BTN_TYPE::SUBTITLE] = tColor;
 
