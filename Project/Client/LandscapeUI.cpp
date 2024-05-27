@@ -48,6 +48,9 @@ void LandScapeUI::render_update()
 	fBrushSize[0] = vecBrushScale.x;
 	fBrushSize[1] = vecBrushScale.y;
 
+	static float fBrushPow;
+	fBrushPow = GetTargetObject()->LandScape()->GetBrushPow();
+
 	static bool bTexup = true;
 
 	//동적 재질은 현재 play일때만 얻어올 수 있다.
@@ -158,6 +161,10 @@ void LandScapeUI::render_update()
 		GetTargetObject()->LandScape()->SetTessDir(bTexup);
 	}
 
+	ImGui::Text("Brush Power"); ImGui::SameLine();
+
+	ImGui::DragFloat("##Brush Power", &fBrushPow, 1.0f, 0.0f, FLT_MAX);
+	GetTargetObject()->LandScape()->SetBrushPow(fBrushPow);
 
 }
 

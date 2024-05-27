@@ -16,6 +16,7 @@ CLandScape::CLandScape()
 	, m_BrushScale(Vec2(0.5f, 0.5f))
 	, m_CrossBuffer(nullptr)
 	, m_bTessDir(true)
+	, m_fBrushPow(0.2f)
 {
 	Init();
 }
@@ -37,6 +38,7 @@ void CLandScape::finaltick()
 		m_CSHeightMap->SetBrushIndex(0);				// 브러쉬 인덱스 설정
 		m_CSHeightMap->SetBrushScale(m_BrushScale);		// 브러쉬 크기
 		m_CSHeightMap->SetHeightMap(m_HeightMapTex);
+		m_CSHeightMap->SetBrushPow(m_fBrushPow);
 
 		m_CSHeightMap->SetTesDir(m_bTessDir);
 

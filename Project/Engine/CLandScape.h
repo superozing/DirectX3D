@@ -13,6 +13,7 @@ private:
 
     Vec2                    m_BrushScale;       // 브러쉬 크기(전체 지형대비 크기 비율값)
     Ptr<CTexture>           m_BrushTex;         // 브러쉬용 텍스쳐
+    float                   m_fBrushPow;
 
     Ptr<CHeightMapShader>   m_CSHeightMap;      // 높이맵 쉐이더
     bool                    m_bTessDir;
@@ -32,6 +33,9 @@ public:
 
     Vec2 GetBrushScale() { return m_BrushScale; }
     void SetBrushScale(Vec2 BrushScale) { m_BrushScale = BrushScale; }
+
+    float GetBrushPow() {return m_fBrushPow; }
+    void SetBrushPow(float _Pow) { m_fBrushPow = _Pow; }
 
     void SetTessDir(bool bUp) { m_bTessDir = bUp; }
 

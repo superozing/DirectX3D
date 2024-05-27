@@ -16,6 +16,7 @@ StructuredBuffer<tRaycastOut> LOCATION : register(t16); // 브러쉬 위치(좌상단 기
 #define BRUSH_IDX   g_int_2    // 브러쉬 인덱스
 
 #define TessDir     g_int_3
+#define TessPower   g_float_0
 
 [numthreads(32, 32, 1)]
 void CS_HeightMap(int3 _iThreadID : SV_DispatchThreadID)
@@ -43,7 +44,7 @@ void CS_HeightMap(int3 _iThreadID : SV_DispatchThreadID)
     float4 vBrushColor = BRUSH_TEX.SampleLevel(g_sam_0, vUV, 0);
     //HEIGHT_MAP[_iThreadID.xy] += g_EngineDT * vBrushColor.a * 0.2f; // 브러쉬 알파값으로 높이 설정
 
-    HEIGHT_MAP[_iThreadID.xy] += TessDir ? (g_EngineDT * vBrushColor.a * 0.2f) : (-g_EngineDT * vBrushColor.a * 0.2f);
+    HEIGHT_MAP[_iThreadID.xy] += TessDir ? (g_EngineDT * vBrushColor.a * TessPower) : (-g_EngineDT * vBrushColor.a * TessPower);
 
     // cos 그래프로 높이 설정
     //float vDist = (distance(vCenterPos, _iThreadID.xy) / vScale) * 3.1415926535f;

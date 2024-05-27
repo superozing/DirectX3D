@@ -908,6 +908,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->CreatePixelShader(L"shader\\landscape.fx", "PS_LandScape");
 
 	pShader->AddScalarParam(SCALAR_PARAM::VEC4_0, "Tess Factor");
+	pShader->AddScalarParam(SCALAR_PARAM::FLOAT_0, "Tess Power");
+
 
 	pShader->SetRSType(RS_TYPE::CULL_BACK);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
