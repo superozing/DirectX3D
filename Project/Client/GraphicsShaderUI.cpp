@@ -25,16 +25,15 @@ void GraphicsShader::render_update()
 	ImGui::Text("Graphics Shader ");
 	ImGui::SameLine();
 	
-	if (pShader->IsEngineAsset())
-	{
-		ImGui::InputText("##GraphicsShaderName", (char*)strShaderName.c_str(), strShaderName.length(), ImGuiInputTextFlags_ReadOnly);
-	}
-	else
-	{
-		auto str = strShaderName.substr(15);
-		ImGui::InputText("##GraphicsShaderName", (char*)str.c_str(), str.length(), ImGuiInputTextFlags_ReadOnly);
+	using namespace std::filesystem;
 
-	}
+	path filePath = strShaderName;
+
+	// 확장자 제거 - stem() 함수를 사용하면 파일 명만 가져올 수 있어요.
+	string strFileName = filePath.stem().string();
+
+	ImGui::InputText("##GraphicsShaderName", (char*)strFileName.c_str(), strFileName.length(), ImGuiInputTextFlags_ReadOnly);
+
 
 	ImGui::SeparatorText("Shader Info");
 
