@@ -9,6 +9,7 @@
 #include <Engine\CDevice.h>
 #include <Engine/CPrefab.h>
 #include <Engine/CKeyMgr.h>
+#include <Engine\CCamera.h>
 
 #include "CLevelSaveLoad.h"
 
@@ -78,6 +79,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     CPrefab::GAMEOBJECT_SAVE = &CLevelSaveLoad::SaveGameObject;
     CPrefab::GAMEOBJECT_LOAD = &CLevelSaveLoad::LoadGameObject;
     CRenderMgr::CameraChange = &RTViewPort::SetCamera;
+    CCamera::ViewportConvertFunc = &RTViewPort::ConvertCoord;
 
     
 #ifndef _RELEASE_GAME

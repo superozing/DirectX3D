@@ -7,7 +7,6 @@
 
 #include "CCamera.h"
 
-#include "CLogMgr.h"
 
 CLandScape::CLandScape()
 	: CRenderComponent(COMPONENT_TYPE::LANDSCAPE)
@@ -93,8 +92,6 @@ void CLandScape::Raycasting()
 
 	m_CrossBuffer->GetData(&out);
 
-	string log = std::to_string(out.vUV.x) + " " + std::to_string(out.vUV.y);
-	CLogMgr::GetInst()->AddLog(Log_Level::WARN, log);
 }
 
 

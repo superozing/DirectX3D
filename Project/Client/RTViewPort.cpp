@@ -16,10 +16,13 @@
 
 #include "ImGuizmo.h"
 
+#include <Engine\CLogMgr.h>
+
 RTViewPort::RTViewPort()
 	: UI("Viewport", "##Viewport")
     , m_pTarget(nullptr)
     , m_pCamera(nullptr)
+    , m_LClickedCoord(0.f, 0.f)
 {
 	
 	m_ViewPortTexture = CAssetMgr::GetInst()->CreateTexture(L"CopyRTtex",
@@ -27,7 +30,7 @@ RTViewPort::RTViewPort()
 			CDevice::GetInst()->GetRenderResolution().y,
 			DXGI_FORMAT_R8G8B8A8_UNORM,
 			D3D11_BIND_SHADER_RESOURCE);
-	
+
 }
 
 RTViewPort::~RTViewPort()
@@ -44,6 +47,23 @@ void RTViewPort::render_update()
 
     auto viewportPos = ImGui::GetWindowPos();
     ImGui::Dummy(ImVec2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y - 40));
+    
+    m_ViewportSize = (Vec2(ImGui::GetWindowSize().x , ImGui::GetWindowSize().y ));
+
+    ImGuiIO& io = ImGui::GetIO();
+    if (io.MouseClicked[0]) // 왼쪽 마우스 클릭
+    {
+        float tabBarHeight = ImGui::GetFrameHeightWithSpacing();
+
+        m_LClickedCoord.x = io.MousePos.x -viewportPos.x;
+        m_LClickedCoord.y = io.MousePos.y - (viewportPos.y + tabBarHeight);
+
+        string log = std::to_string(m_ViewportSize.x) + " " + std::to_string(m_ViewportSize.y);
+        CLogMgr::GetInst()->AddLog(Log_Level::INFO, log);
+
+        log = std::to_string(m_LClickedCoord.x) + " " + std::to_string(m_LClickedCoord.y);
+        CLogMgr::GetInst()->AddLog(Log_Level::WARN, log);
+    }
 
     // 레벨 파일 드랍 체크
     if (ImGui::BeginDragDropTarget())
@@ -209,7 +229,6 @@ void RTViewPort::SetCamera(CCamera* _camera)
     pViewport->SetTargetCamera(_camera);
 }
 
-
 void RTViewPort::MoveCameraToObject()
 {
     if (!m_pTarget || !m_pCamera) return;
@@ -221,4 +240,16 @@ void RTViewPort::MoveCameraToObject()
     vDir.Normalize();
     Vec3 vNewPos = vPos - (vDir)* distance;
     m_pCamera->Transform()->Lerp(vNewPos, false, Vec3(), false, Vec3(), 0.1f);
+}
+
+
+
+Vec2 RTViewPort::ConvertCoord()
+{
+    Vec2 OriginResolution = CDevice::GetInst()->GetRenderResolution();
+    RTViewPort* Viewport = dynamic_cast<RTViewPort*>(CImGuiMgr::GetInst()->FindUI("##Viewport"));
+
+    Vec2 MousePos = Viewport->GetLClickCoord();
+  
+    return MousePos;
 }
