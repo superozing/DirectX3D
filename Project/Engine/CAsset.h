@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "CEntity.h"
 
 #include "Ptr.h"
@@ -47,6 +47,7 @@ public:
     virtual CAsset* Clone() = 0;
 
     friend class CAssetMgr;
+    friend class CRenderComponent;
 
     template<typename T>
     friend class Ptr;

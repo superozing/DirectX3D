@@ -67,62 +67,30 @@ PS_OUT PS_Std3D_Deferred(VS_OUT _in) : SV_Target
     
     float3 vViewNormal = (float3) 0.f;
     
-    if (g_int_0 == 0)
+    if (ColorTextureCheck)
     {
-        if (ColorTextureCheck)
-        {
-            vOutColor = ColorTexture.Sample(g_sam_0, _in.vUV);
-        }
-    
-        output.vColor = vOutColor;
-        output.vPosition = float4(_in.vViewPos, 1.f);
-    
-        vViewNormal = _in.vViewNormal;
-    
-        if (NormalMapCheck)
-        {
-            float3 vNormal = NormalMap.Sample(g_sam_0, _in.vUV).rgb;
-            vNormal = vNormal * 2.f - 1.f;
-        
-            float3x3 matRot =
-            {
-                _in.vViewTangent,
-            _in.vViewBinormal,
-            _in.vViewNormal,
-            };
-        
-            vViewNormal = normalize(mul(vNormal, matRot));
-
-        }
+        vOutColor = ColorTexture.Sample(g_sam_0, _in.vUV);
     }
-    else if (g_int_0 == 1)
+    
+    output.vColor = vOutColor;
+    output.vPosition = float4(_in.vViewPos, 1.f);
+    
+    vViewNormal = _in.vViewNormal;
+    
+    if (NormalMapCheck)
     {
-        if (g_btex_2)
+        float3 vNormal = NormalMap.Sample(g_sam_0, _in.vUV).rgb;
+        vNormal = vNormal * 2.f - 1.f;
+        
+        float3x3 matRot =
         {
-            vOutColor = g_tex_2.Sample(g_sam_0, _in.vUV);
+            _in.vViewTangent,
+              _in.vViewBinormal,
+              _in.vViewNormal,
+        };
+        
+        vViewNormal = normalize(mul(vNormal, matRot));
 
-        }
-        
-        output.vColor = vOutColor;
-        output.vPosition = float4(_in.vViewPos, 1.f);
-    
-        vViewNormal = _in.vViewNormal;
-    
-        if (g_btex_3)
-        {
-            float3 vNormal = g_tex_3.Sample(g_sam_0, _in.vUV).rgb;
-            vNormal = vNormal * 2.f - 1.f;
-        
-            float3x3 matRot =
-            {
-                _in.vViewTangent,
-                _in.vViewBinormal,
-                _in.vViewNormal,
-            };
-        
-            vViewNormal = normalize(mul(vNormal, matRot));
-
-        }
     }
     
     output.vNormal = float4(vViewNormal, 1.f);
@@ -131,31 +99,3 @@ PS_OUT PS_Std3D_Deferred(VS_OUT _in) : SV_Target
     return output;
 }
 #endif
-
-
-// ¿øº»
-//if (ColorTextureCheck)
-//{
-//  float3 vOutColor = ColorTexture.Sample(g_sam_0, _in.vUV);
-//}
-    
-//  output.vColor = vOutColor;
-//  output.vPosition = float4(_in.vViewPos, 1.f);
-    
-//  vViewNormal = _in.vViewNormal;
-    
-//  if (NormalMapCheck)
-//  {
-//      float3 vNormal = NormalMap.Sample(g_sam_0, _in.vUV).rgb;
-//      vNormal = vNormal * 2.f - 1.f;
-        
-//      float3x3 matRot =
-//      {
-//          _in.vViewTangent,
-//          _in.vViewBinormal,
-//          _in.vViewNormal,
-//      };
-        
-//      vViewNormal = normalize(mul(vNormal, matRot));
-
-//  }

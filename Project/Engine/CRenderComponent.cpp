@@ -62,6 +62,13 @@ Ptr<CMaterial> CRenderComponent::GetDynamicMaterial()
 	{
 		// 공유재질을 복사해서 동적재질을 만들고 그걸 현재 사용재질로 설정한다.
 		m_CurMtrl = m_DynamicMtrl = m_SharedMtrl->Clone();
+
+		m_CurMtrl->SetKey(m_SharedMtrl->GetKey());
+		m_CurMtrl->SetRelativePath(m_SharedMtrl->GetRelativePath());
+		
+		m_DynamicMtrl->SetKey(m_SharedMtrl->GetKey());
+		m_DynamicMtrl->SetRelativePath(m_SharedMtrl->GetRelativePath());
+		
 		return m_DynamicMtrl;
 	}
 
@@ -77,7 +84,7 @@ void CRenderComponent::RestoreMaterial()
 void CRenderComponent::SaveToFile(FILE* _File)
 {
 	SaveAssetRef(m_Mesh, _File);
-	SaveAssetRef(m_SharedMtrl, _File);	
+	SaveAssetRef(m_SharedMtrl, _File);
 }
 
 #define TagMesh "[Mesh]"
@@ -105,4 +112,6 @@ void CRenderComponent::LoadFromFile(ifstream& fin)
 	LoadAssetRef(m_Mesh, fin);
 	Utils::GetLineUntilString(fin, TagMtrl);
 	LoadAssetRef(m_SharedMtrl, fin);
+
+	SetMaterial(m_SharedMtrl);
 }

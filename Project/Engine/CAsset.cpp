@@ -12,8 +12,6 @@ CAsset::CAsset(const CAsset& _Origin)
 	: CEntity(_Origin)
 	, m_Type(_Origin.m_Type)
 	, m_bEngineAsset(_Origin.m_bEngineAsset)
-	, m_Key(_Origin.m_Key)
-	, m_RelativePath(_Origin.m_RelativePath)
 	, m_RefCount(0)
 {
 }
