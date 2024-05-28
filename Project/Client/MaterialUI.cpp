@@ -6,7 +6,9 @@
 #include <Engine/CGraphicsShader.h>
 #include <Engine/CTexture.h>
 
+#include "CImGuiMgr.h"
 #include "ParamUI.h"
+#include "ListUI.h"
 
 MaterialUI::MaterialUI()
 	: AssetUI("Material", "##Material", ASSET_TYPE::MATERIAL)
@@ -41,10 +43,22 @@ void MaterialUI::render_update()
         pMtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(SHADER_deferred));
     }
 
-    ImGui::Text("Shader  ");
-    ImGui::SameLine();
+    ImGui::Text("Shader  "); ImGui::SameLine();
     ImGui::InputText("##ShaderName", (char*)strShaderName.c_str(), strShaderName.length(), ImGuiInputTextFlags_ReadOnly);
-    
+    ImGui::SameLine();
+
+    if (ImGui::Button("##MtrlBtn", ImVec2(20, 20)))
+    {
+        // 리스트 UI
+        ListUI* pListUI = (ListUI*)CImGuiMgr::GetInst()->FindUI("##List");
+
+        vector<string> vecShaderName;
+        CAssetMgr::GetInst()->GetAssetName(ASSET_TYPE::GRAPHICS_SHADER, vecShaderName);
+
+        pListUI->AddString(vecShaderName);
+        pListUI->SetDbClickDelegate(this, (Delegate_1)&MaterialUI::ShaderSelect);
+        pListUI->Activate();
+    }
 
     ImGui::Spacing(); ImGui::Spacing(); ImGui::Spacing(); ImGui::Spacing();
     ImGui::Text("Material Parameter");
@@ -144,4 +158,16 @@ void MaterialUI::CreateAssetInstance(Ptr<CAsset> _Asset)
     pNewMtrl->SetName(szPath);
     pNewMtrl->Save(szPath);
     GamePlayStatic::AddAsset(pNewMtrl);
+}
+
+
+void MaterialUI::ShaderSelect(DWORD_PTR _ptr)
+{
+    string strShader = (char*)_ptr;
+    wstring strShaderName = ToWString(strShader);
+
+    Ptr<CGraphicsShader> pShader = CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(strShaderName);
+
+    Ptr<CMaterial> pMtrl = (CMaterial*)GetAsset().Get();
+    pMtrl->SetShader(pShader);
 }

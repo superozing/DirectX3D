@@ -12,6 +12,7 @@ public:
 
 public:
     void SelectTexture(DWORD_PTR _dwData);
+    void ShaderSelect(DWORD_PTR _ptr);
 
     virtual void CreateAssetInstance(Ptr<CAsset> _Asset) override;
 
