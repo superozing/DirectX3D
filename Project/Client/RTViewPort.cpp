@@ -46,23 +46,16 @@ void RTViewPort::render_update()
     CRenderMgr::GetInst()->CopyRTTex(m_ViewPortTexture);
 
     auto viewportPos = ImGui::GetWindowPos();
+    float tabBarHeight = ImGui::GetFrameHeightWithSpacing();
     ImGui::Dummy(ImVec2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y - 40));
     
-    m_ViewportSize = (Vec2(ImGui::GetWindowSize().x , ImGui::GetWindowSize().y ));
+    m_ViewportSize = (Vec2(ImGui::GetWindowSize().x , ImGui::GetWindowSize().y - tabBarHeight));
 
     ImGuiIO& io = ImGui::GetIO();
     if (io.MouseClicked[0]) // 왼쪽 마우스 클릭
     {
-        float tabBarHeight = ImGui::GetFrameHeightWithSpacing();
-
         m_LClickedCoord.x = io.MousePos.x -viewportPos.x;
         m_LClickedCoord.y = io.MousePos.y - (viewportPos.y + tabBarHeight);
-
-        string log = std::to_string(m_ViewportSize.x) + " " + std::to_string(m_ViewportSize.y);
-        CLogMgr::GetInst()->AddLog(Log_Level::INFO, log);
-
-        log = std::to_string(m_LClickedCoord.x) + " " + std::to_string(m_LClickedCoord.y);
-        CLogMgr::GetInst()->AddLog(Log_Level::WARN, log);
     }
 
     // 레벨 파일 드랍 체크
@@ -246,10 +239,19 @@ void RTViewPort::MoveCameraToObject()
 
 Vec2 RTViewPort::ConvertCoord()
 {
-    Vec2 OriginResolution = CDevice::GetInst()->GetRenderResolution();
     RTViewPort* Viewport = dynamic_cast<RTViewPort*>(CImGuiMgr::GetInst()->FindUI("##Viewport"));
 
-    Vec2 MousePos = Viewport->GetLClickCoord();
-  
-    return MousePos;
+    Vec2 OriginResolution = CDevice::GetInst()->GetRenderResolution();
+    Vec2 ClickCoord = Viewport->GetLClickCoord();
+
+    ClickCoord.x -= Viewport->GetViewPortSize().x / 2;
+    ClickCoord.y -= Viewport->GetViewPortSize().y / 2;
+    ClickCoord.y = -ClickCoord.y; // y 좌표 반전
+
+    string log = std::to_string(ClickCoord.x) + " " + std::to_string(ClickCoord.y);
+    CLogMgr::GetInst()->AddLog(Log_Level::INFO, log);
+
+
+
+    return OriginResolution;
 }
