@@ -448,4 +448,11 @@ FodyWeavers.xsd
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio,c++
 /OutputFile/content/level/temp.lv
+/Project/Engine/strLevel.h
+/Project/Engine/strFx.h
+/Project/Engine/strSnd.h
 /Project/Engine/strTex.h
+/Project/Engine/strMtrl.h
+/Project/Engine/strPref.h
+/Project/Engine/strAnim.h
+/Project/Engine/strTxt.h
