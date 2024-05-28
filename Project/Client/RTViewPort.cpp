@@ -244,14 +244,25 @@ Vec2 RTViewPort::ConvertCoord()
     Vec2 OriginResolution = CDevice::GetInst()->GetRenderResolution();
     Vec2 ClickCoord = Viewport->GetLClickCoord();
 
+    // viewport 좌표계의 원점을 중앙으로 맞추기
     ClickCoord.x -= Viewport->GetViewPortSize().x / 2;
     ClickCoord.y -= Viewport->GetViewPortSize().y / 2;
+    
     ClickCoord.y = -ClickCoord.y; // y 좌표 반전
 
-    string log = std::to_string(ClickCoord.x) + " " + std::to_string(ClickCoord.y);
-    CLogMgr::GetInst()->AddLog(Log_Level::INFO, log);
+    float OriginAspect = OriginResolution.x / OriginResolution.y;
 
+    // 각 축에 대한 변환 비율 계산
+    float xScale = OriginAspect / 2.f;
+    float yScale;
+    
+    if(OriginResolution.y >= Viewport->GetViewPortSize().y)
+        yScale =  OriginResolution.y / Viewport->GetViewPortSize().y;
+    else
+        yScale =  Viewport->GetViewPortSize().y / OriginResolution.y;
 
+    ClickCoord.x *= xScale;
+    ClickCoord.y *= yScale;
 
-    return OriginResolution;
+    return ClickCoord;
 }
