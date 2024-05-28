@@ -30,6 +30,7 @@
 
 
 //#define LAYER_MAX 32
+#define MAX_MIP	8
 
 #define CLONE(TYPE) virtual TYPE* Clone() { return new TYPE(*this); }
 #define CLONE_DISABLE(TYPE) TYPE* Clone() { return nullptr; assert(nullptr); }\
@@ -329,6 +330,11 @@ enum class MRT_TYPE
 	END,
 };
 
+struct tWeight_4
+{
+	float arrWeight[4];
+};
+
 enum class Log_Level
 {
 	INFO = 1,
@@ -336,3 +342,4 @@ enum class Log_Level
 	ERR = 4,
 	END,
 };
+

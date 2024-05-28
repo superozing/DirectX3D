@@ -30,6 +30,7 @@ private:
 	CStructuredBuffer* m_Light3DBuffer;
 
 	CStructuredBuffer* m_CrossBuffer;	    // 마우스 피킹되는 지점 정보 받는 버퍼
+	CStructuredBuffer* m_WeightMapBuffer;	// Landscape에서 사용하는 가중치 버퍼
 
 public:
 	int init(HWND _hWnd, Vec2 _vResolution);
@@ -46,9 +47,13 @@ public:
 
 	CStructuredBuffer* GetLight2DBuffer() { return m_Light2DBuffer; }
 	CStructuredBuffer* GetLight3DBuffer() { return m_Light3DBuffer; }
+	
+	int CreateWeightMapBuffer(UINT _Width, UINT _Height);
+
 	CStructuredBuffer* GetCrossBuffer() { return m_CrossBuffer; }
+	CStructuredBuffer* GetWeightMapBuffer() { return m_WeightMapBuffer; }
 
-
+	
 private:
 	int CreateSwapChain();
 	int CreateTargetView();
@@ -60,5 +65,6 @@ private:
 	int CreateConstBuffer();
 	int CreateLightBuffer();
 	int CreateCrossBuffer();
+	
 };
 

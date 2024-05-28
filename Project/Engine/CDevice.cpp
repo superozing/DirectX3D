@@ -30,6 +30,9 @@ CDevice::~CDevice()
 
 	if (nullptr != m_CrossBuffer)
 		delete m_CrossBuffer;
+
+	if (nullptr != m_WeightMapBuffer)
+		delete m_WeightMapBuffer;
 }
 
 int CDevice::init(HWND _hWnd, Vec2 _vResolution)
@@ -391,7 +394,7 @@ int CDevice::CreateSamplerState()
 	tDesc.Filter = D3D11_FILTER_ANISOTROPIC;
 
 	tDesc.MinLOD = 0;
-	tDesc.MaxLOD = 1;
+	tDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
 	DEVICE->CreateSamplerState(&tDesc, m_arrSampler[0].GetAddressOf());
 
@@ -402,7 +405,7 @@ int CDevice::CreateSamplerState()
 	tDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
 
 	tDesc.MinLOD = 0;
-	tDesc.MaxLOD = 1;
+	tDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
 	DEVICE->CreateSamplerState(&tDesc, m_arrSampler[1].GetAddressOf());
 
@@ -455,6 +458,14 @@ int CDevice::CreateCrossBuffer()
 {
 	m_CrossBuffer = new CStructuredBuffer;
 	m_CrossBuffer->Create(sizeof(tRaycastOut), 1, SB_TYPE::READ_WRITE, true);
+
+	return S_OK;
+}
+
+int CDevice::CreateWeightMapBuffer(UINT _Width, UINT _Height)
+{
+	m_WeightMapBuffer = new CStructuredBuffer;
+	m_WeightMapBuffer->Create(sizeof(tWeight_4), _Width * _Height, SB_TYPE::READ_WRITE, false);
 
 	return S_OK;
 }
