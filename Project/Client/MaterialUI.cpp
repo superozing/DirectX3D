@@ -36,6 +36,10 @@ void MaterialUI::render_update()
     {
         strShaderName = string(pShader->GetKey().begin(), pShader->GetKey().end());
     }
+    else
+    {
+        pMtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(SHADER_deferred));
+    }
 
     ImGui::Text("Shader  ");
     ImGui::SameLine();
@@ -114,4 +118,30 @@ void MaterialUI::SelectTexture(DWORD_PTR _dwData)
     Ptr<CTexture> pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(strTexName);
     Ptr<CMaterial> pMtrl = (CMaterial*)GetAsset().Get();
     pMtrl->SetTexParam(m_SelectTexParam, pTex);    
+}
+
+void MaterialUI::CreateAssetInstance(Ptr<CAsset> _Asset)
+{
+    auto pOriginMtrl = dynamic_cast<CMaterial*>(_Asset.Get());
+
+    wstring strKey = _Asset->GetKey();
+    strKey.erase(strKey.length() - 5, 5);
+
+    wchar_t szPath[255] = {};
+    wstring FilePath = CPathMgr::GetContentPath();
+
+    int num = 0;
+    while (true)
+    {
+        swprintf_s(szPath, (strKey + L"_Inst_%d.mtrl").c_str(), num);
+        if (!exists(FilePath + szPath))
+            break;
+
+        ++num;
+    }
+
+    CMaterial* pNewMtrl = pOriginMtrl->Clone();
+    pNewMtrl->SetName(szPath);
+    pNewMtrl->Save(szPath);
+    GamePlayStatic::AddAsset(pNewMtrl);
 }

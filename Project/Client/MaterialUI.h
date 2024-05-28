@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "AssetUI.h"
 class MaterialUI :
     public AssetUI
@@ -12,6 +12,8 @@ public:
 
 public:
     void SelectTexture(DWORD_PTR _dwData);
+
+    virtual void CreateAssetInstance(Ptr<CAsset> _Asset) override;
 
 public:
     MaterialUI();

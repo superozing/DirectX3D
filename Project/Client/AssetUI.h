@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "UI.h"
 
 #include <Engine/Ptr.h>
@@ -22,6 +22,7 @@ public:
 public:
     virtual void render_update() override;
 
+    virtual void CreateAssetInstance(Ptr<CAsset> _Asset) {};
 
 public:
     AssetUI(const string& _strName, const string& _ID, ASSET_TYPE _Type);
