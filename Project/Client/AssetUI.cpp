@@ -13,6 +13,7 @@ AssetUI::~AssetUI()
 {
 }
 
+
 void AssetUI::render_update()
 {
 	ImGui::PushID(0);
@@ -27,7 +28,7 @@ void AssetUI::render_update()
 
 	if (ImGui::Button("Save Edit"))
 	{
-	
+		SaveEditAsset(m_Asset);
 	} 
 	
 	ImGui::SameLine();
@@ -64,4 +65,10 @@ void AssetUI::SetAsset(Ptr<CAsset> _Asset)
 			Deactivate();
 		}
 	}
+}
+
+
+void AssetUI::SetAssetKey(Ptr<CAsset> _Asset, const wstring& _Key)
+{
+	_Asset->SetKey(_Key);
 }

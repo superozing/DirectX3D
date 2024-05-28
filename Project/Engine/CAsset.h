@@ -48,6 +48,7 @@ public:
 
     friend class CAssetMgr;
     friend class CRenderComponent;
+    friend class AssetUI;
 
     template<typename T>
     friend class Ptr;

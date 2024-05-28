@@ -5,6 +5,7 @@ class MaterialUI :
 {
 private:
     TEX_PARAM       m_SelectTexParam;
+    Ptr<CMaterial>  m_TargetMtrl;
 
 public:
     virtual void render_update() override;
@@ -15,6 +16,8 @@ public:
     void ShaderSelect(DWORD_PTR _ptr);
 
     virtual void CreateAssetInstance(Ptr<CAsset> _Asset) override;
+
+    void ChangeAssetName(const string& _OriginName, const string& _NewName);
 
 public:
     MaterialUI();

@@ -17,12 +17,13 @@ public:
 
     ASSET_TYPE GetType() { return m_Type; }
 
-
+    void SetAssetKey(Ptr<CAsset> _Asset, const wstring& _Key);
 
 public:
     virtual void render_update() override;
 
     virtual void CreateAssetInstance(Ptr<CAsset> _Asset) {};
+    virtual void SaveEditAsset(Ptr<CAsset> _Asset) {};
 
 public:
     AssetUI(const string& _strName, const string& _ID, ASSET_TYPE _Type);
