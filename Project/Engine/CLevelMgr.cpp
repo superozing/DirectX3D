@@ -14,6 +14,7 @@
 
 #include "CTaskMgr.h"
 
+#include "CEngine.h"
 
 CLevelMgr::CLevelMgr()
 	: m_CurLevel(nullptr)
@@ -53,6 +54,17 @@ void CLevelMgr::tick()
 
 	// Render
 	CRenderMgr::GetInst()->tick();
+
+	static float acctime = 0.f;
+
+	acctime += DTd_ENGINE;
+	if (1.f <= acctime)
+	{
+		//wchar_t szText[50] = {};
+		//swprintf_s(szText, 50, L"%s", ToString( m_CurLevel->GetName()));
+		SetWindowText(CEngine::GetInst()->GetMainWind(), m_CurLevel->GetName().c_str());
+		acctime = 0.f;
+	}
 }
 
 void CLevelMgr::enter()
@@ -61,17 +73,6 @@ void CLevelMgr::enter()
 
 void CLevelMgr::exit()
 {
-}
-
-void CLevelMgr::ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextLevelStartState)
-{
-	tTask task = {};
-
-	task.Type = TASK_TYPE::CHANGE_LEVEL;
-	task.Param_1 = (DWORD_PTR)_NextLevel;	
-	task.Param_2 = (DWORD_PTR)_NextLevelStartState;
-
-	CTaskMgr::GetInst()->AddTask(task);	
 }
 
 void CLevelMgr::ChangeLevelState(LEVEL_STATE _State)
@@ -105,7 +106,12 @@ void CLevelMgr::ChangeLevel_Task(CLevel* _NextLevel, LEVEL_STATE _NextLevelState
 	if (nullptr != m_CurLevel)
 		m_CurLevel->ChangeState(_NextLevelState);
 
-
 	CLevelMgr::GetInst()->enter();
+	m_MapClientFunc[Client_Function_Type::CIMGUIMGR_ENTER]();
 
+}
+
+void CLevelMgr::RegisterClientFunction(Client_Function_Type _Type, std::function<void()> _MemberFunction)
+{
+	m_MapClientFunc[_Type] = _MemberFunction;
 }

@@ -1,4 +1,4 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // SimpleMath.h -- Simplified C++ Math wrapper for DirectXMath
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -37,6 +37,7 @@ namespace DirectX
     namespace SimpleMath
     {
         struct Vector2;
+        struct Vector3;
         struct Vector4;
         struct Matrix;
         struct Quaternion;
@@ -251,6 +252,11 @@ namespace DirectX
             Vector2 XY() { return Vector2(x, y); }
             operator XMVECTOR() const { return XMLoadFloat3(this); }
 
+            // Vec3(Vec2)
+            Vector3(const Vector2& V) : XMFLOAT3(V.x, V.y, 0.f) {}
+            Vector3(const Vector2& V, float f) : XMFLOAT3(V.x, V.y, f) {}
+            Vector3(float f, const Vector2& V) : XMFLOAT3(f ,V.x, V.y) {}
+
             typedef float(&f3)[3];
             operator f3() const { return (f3)x; }
 
@@ -392,6 +398,19 @@ namespace DirectX
 
             // Conversion
             operator XMVECTOR() const { return XMLoadFloat4(this); }
+
+            // Vec4(Vec2)
+            Vector4(const Vector2& V) : XMFLOAT4(V.x, V.y, 0.f, 0.f) {}
+            Vector4(const Vector2& V1, const Vector2& V2) : XMFLOAT4(V1.x, V1.y, V2.x, V2.y) {}
+            Vector4(const Vector2& V, float f1, float f2) : XMFLOAT4(V.x, V.y, f1, f2) {}
+            Vector4(float f1, const Vector2& V, float f2) : XMFLOAT4(f1, V.x, V.y, f2) {}
+            Vector4(float f1, float f2, const Vector2& V) : XMFLOAT4(f1, f2, V.x, V.y) {}
+            Vector4(const Vector2& V, float f) : XMFLOAT4(V.x, V.y, f, 0.f) {}
+            Vector4(float f, const Vector2& V) : XMFLOAT4(f, V.x, V.y, 0.f) {}
+
+            // Vec4(Vec3)
+            Vector4(const Vector3& V) : XMFLOAT4(V.x, V.y, V.z, 0.f) {}
+            Vector4(float f, const Vector3& V) : XMFLOAT4(f, V.x, V.y, V.z) {}
 
             typedef float(&float4)[4];
             operator float4() const { return (float4)x;}

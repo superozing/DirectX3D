@@ -193,30 +193,6 @@
     <ClInclude Include="GenStrings.h">
       <Filter>01. Header\GenString</Filter>
     </ClInclude>
-    <ClInclude Include="strAnim.h">
-      <Filter>01. Header\GenString</Filter>
-    </ClInclude>
-    <ClInclude Include="strFx.h">
-      <Filter>01. Header\GenString</Filter>
-    </ClInclude>
-    <ClInclude Include="strLevel.h">
-      <Filter>01. Header\GenString</Filter>
-    </ClInclude>
-    <ClInclude Include="strMtrl.h">
-      <Filter>01. Header\GenString</Filter>
-    </ClInclude>
-    <ClInclude Include="strPref.h">
-      <Filter>01. Header\GenString</Filter>
-    </ClInclude>
-    <ClInclude Include="strSnd.h">
-      <Filter>01. Header\GenString</Filter>
-    </ClInclude>
-    <ClInclude Include="strTex.h">
-      <Filter>01. Header\GenString</Filter>
-    </ClInclude>
-    <ClInclude Include="strTxt.h">
-      <Filter>01. Header\GenString</Filter>
-    </ClInclude>
     <ClInclude Include="strEngineMtrl.h">
       <Filter>01. Header\UserString</Filter>
     </ClInclude>
@@ -243,6 +219,9 @@
     </ClInclude>
     <ClInclude Include="CHeightMapShader.h">
       <Filter>ShaderCode\03. Compute\LandScape\HeightMap</Filter>
+    </ClInclude>
+    <ClInclude Include="CWeightMapShader.h">
+      <Filter>ShaderCode\03. Compute\LandScape\WeightMap</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -443,6 +422,9 @@
     </ClCompile>
     <ClCompile Include="CHeightMapShader.cpp">
       <Filter>ShaderCode\03. Compute\LandScape\HeightMap</Filter>
+    </ClCompile>
+    <ClCompile Include="CWeightMapShader.cpp">
+      <Filter>ShaderCode\03. Compute\LandScape\WeightMap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -650,6 +632,9 @@
     <Filter Include="ShaderCode\03. Compute\LandScape\Raycast">
       <UniqueIdentifier>{6b94b2e3-ae3f-409a-b63b-419fe9f7e8af}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\03. Compute\LandScape\WeightMap">
+      <UniqueIdentifier>{95edad59-4602-4fa1-b2a1-6de5f8f4d2e9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -719,6 +704,9 @@
     </FxCompile>
     <FxCompile Include="heightmap.fx">
       <Filter>ShaderCode\03. Compute\LandScape\HeightMap</Filter>
+    </FxCompile>
+    <FxCompile Include="weightmap.fx">
+      <Filter>ShaderCode\03. Compute\LandScape\WeightMap</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

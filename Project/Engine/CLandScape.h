@@ -3,6 +3,15 @@
 
 #include "CHeightMapShader.h"
 #include "CRaycastShader.h"
+#include "CWeightMapShader.h"
+
+enum class LANDSCAPE_MODE
+{
+    HEIGHT_MAP,
+    SPLAT,
+    NONE,
+};
+
 
 class CLandScape :
     public CRenderComponent
@@ -21,6 +30,16 @@ private:
 
     Ptr<CRaycastShader>     m_CSRaycast;        // 픽킹 쉐이더
     CStructuredBuffer*      m_CrossBuffer;	    // 마우스 피킹되는 지점 정보 받는 버퍼
+
+    Ptr<CWeightMapShader>   m_CSWeightMap;      // 가중치 쉐이더
+    CStructuredBuffer*      m_WeightMapBuffer;  // 가중치 저장 버퍼
+    UINT                    m_WeightWidth;      // 가중치 버퍼 가로세로 행렬 수
+    UINT                    m_WeightHeight;     // 가중치 버퍼 가로세로 행렬 수
+    UINT                    m_WeightIdx;        // 증가시킬 가중치 부위
+
+    Ptr<CTexture>           m_TileArrTex;       // 타일 배열 텍스쳐
+
+    LANDSCAPE_MODE          m_Mode;
 
 public:
     void SetHeightMap(Ptr<CTexture> _HeightMap) { m_HeightMapTex = _HeightMap; }

@@ -55,22 +55,24 @@ void RTViewPort::render_update()
     m_MouseCoord = Vec2((float)ImGui::GetIO().MousePos.x, (float)ImGui::GetIO().MousePos.y);
 
     ImGui::Dummy(ImVec2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y - 40));
-    
-        // 레벨 파일 드랍 체크
-    if (ImGui::BeginDragDropTarget())
-    {
-        const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ContentTree");
-        if (payload)
-        {
-            DWORD_PTR data = *((DWORD_PTR*)payload->Data);
-            if (data == 0) return;
-            string& str = *(string*)data;
-            auto extension = path(str).extension().string();
-            if (extension == ".lv") {
-                auto pLevel = CLevelSaveLoad::LoadLevel(str);
-                CLevelMgr::GetInst()->ChangeLevel(pLevel, LEVEL_STATE::STOP);
-            }
-        }
+
+	// 레벨 파일 드랍 체크
+	if (ImGui::BeginDragDropTarget())
+	{
+		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ContentTree");
+		if (payload)
+		{
+			DWORD_PTR data = *((DWORD_PTR*)payload->Data);
+			if (data == 0) return;
+			string& str = *(string*)data;
+			auto extension = path(str).extension().string();
+			if (extension == ".lv") {
+				auto pLevel = CLevelSaveLoad::LoadLevel(str);
+				wstring levelname = path(str).stem().wstring();
+				pLevel->SetName(levelname);
+				GamePlayStatic::ChangeLevel(pLevel, LEVEL_STATE::STOP);
+			}
+		}
 
         ImGui::EndDragDropTarget();
     }

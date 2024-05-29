@@ -46,7 +46,7 @@ public:
     void begin();
     void progress();
 
-    virtual void enter() override {}
+    virtual void enter() override;
 
     bool& GetbViewportFocused() { return isViewportFocused; }
 
@@ -70,5 +70,8 @@ private:
 public:
     UI* FindUI(const string& _strUIName);   
     void AddUI(const string& _strKey, UI* _UI);
+
+private:
+    void ResetInspectorTarget();
 };
 
