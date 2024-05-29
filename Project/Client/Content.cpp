@@ -183,6 +183,7 @@ void Content::ResetContent()
 	// Tree Clear
 	m_ContentTree->ClearNode();
 	m_strData.clear();
+	m_strData.reserve(100);
 
 	// 루트노드 추가
 	TreeNode* RootNode = m_ContentTree->AddTreeNode(nullptr, "Root", 0);
@@ -208,7 +209,7 @@ void Content::ResetContent()
 				// 따라서 일단은 lv과 anim의 분기는 나눠놨지만 같은 형식을 호출중
 				if (extension == ".lv") {
 					m_strData.push_back(m_strCurDirectory + "\\" + filename);
-					m_ContentTree->AddTreeNode(RootNode, filename, (DWORD_PTR)&m_strData[idx]);
+					m_ContentTree->AddTreeNode(RootNode, filename, (DWORD_PTR)&m_strData[idx++]);
 				}
 				else if (extension == ".anim") {
 					m_ContentTree->AddTreeNode(RootNode, filename, 0);
