@@ -122,6 +122,15 @@ enum class CB_TYPE
 	END,
 };
 
+enum class SB_TYPE
+{
+	LIGHT2D,
+	LIGHT3D,
+	CROSS,
+	WEIGHTMAP,
+	END,
+};
+
 
 // Rasterizer State Type
 enum class RS_TYPE

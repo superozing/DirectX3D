@@ -18,8 +18,9 @@ void CLandScape::Init()
 	// 지형 전용 텍스쳐 생성
 	CreateTexture();
 
+	m_WeightMapBuffer = CDevice::GetInst()->GetStructuredBuffer(SB_TYPE::WEIGHTMAP);
 	// 레이캐스팅 결과 받는 버퍼
-	m_CrossBuffer = CDevice::GetInst()->GetCrossBuffer();
+	m_CrossBuffer = CDevice::GetInst()->GetStructuredBuffer(SB_TYPE::CROSS);
 
 	// 타일 텍스쳐(Color, Normal 혼합, 총 6장)
 	//m_TileArrTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_ARRR.dds", L"texture\\tile\\TILE_ARRR.dds");
@@ -130,11 +131,4 @@ void CLandScape::CreateTexture()
 	// 가중치 버퍼
 	m_WeightWidth = 1024;
 	m_WeightHeight = 1024;
-
-	if (FAILED(CDevice::GetInst()->CreateWeightMapBuffer(m_WeightWidth, m_WeightHeight)))
-	{
-		MessageBox(nullptr, L"랜드스케이프 가중치버퍼 생성 실패", L"랜드스케이프 createtexture 실패", MB_OK);
-	}
-	
-	m_WeightMapBuffer = CDevice::GetInst()->GetWeightMapBuffer();
 }

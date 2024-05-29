@@ -20,17 +20,12 @@ private:
 	Vec2							m_vRenderResolution;
 
 	CConstBuffer*					m_arrCB[(UINT)CB_TYPE::END];
+	CStructuredBuffer*					m_arrSB[(UINT)SB_TYPE::END];
 
 	ComPtr<ID3D11RasterizerState>	m_arrRS[(UINT)RS_TYPE::END];
 	ComPtr<ID3D11DepthStencilState>	m_arrDS[(UINT)DS_TYPE::END];
 	ComPtr<ID3D11BlendState>		m_arrBS[(UINT)BS_TYPE::END];
 	ComPtr<ID3D11SamplerState>		m_arrSampler[2];
-
-	CStructuredBuffer* m_Light2DBuffer;
-	CStructuredBuffer* m_Light3DBuffer;
-
-	CStructuredBuffer* m_CrossBuffer;	    // 마우스 피킹되는 지점 정보 받는 버퍼
-	CStructuredBuffer* m_WeightMapBuffer;	// Landscape에서 사용하는 가중치 버퍼
 
 public:
 	int init(HWND _hWnd, Vec2 _vResolution);
@@ -39,21 +34,13 @@ public:
 	ID3D11Device* GetDevice() { return m_Device.Get(); }
 	ID3D11DeviceContext* GetContext() { return m_Context.Get(); }
 	CConstBuffer* GetConstBuffer(CB_TYPE _type) { return m_arrCB[(UINT)_type]; }
+	CStructuredBuffer* GetStructuredBuffer(SB_TYPE _type) { return m_arrSB[(UINT)_type]; }
 	Vec2 GetRenderResolution() { return m_vRenderResolution; }
 
 	ComPtr<ID3D11RasterizerState> GetRSState(RS_TYPE _Type) { return m_arrRS[(UINT)_Type]; }
 	ComPtr<ID3D11DepthStencilState> GetDSState(DS_TYPE _Type) { return m_arrDS[(UINT)_Type]; }
 	ComPtr<ID3D11BlendState> GetBSState(BS_TYPE _Type) { return m_arrBS[(UINT)_Type]; }
 
-	CStructuredBuffer* GetLight2DBuffer() { return m_Light2DBuffer; }
-	CStructuredBuffer* GetLight3DBuffer() { return m_Light3DBuffer; }
-	
-	int CreateWeightMapBuffer(UINT _Width, UINT _Height);
-
-	CStructuredBuffer* GetCrossBuffer() { return m_CrossBuffer; }
-	CStructuredBuffer* GetWeightMapBuffer() { return m_WeightMapBuffer; }
-
-	
 private:
 	int CreateSwapChain();
 	int CreateTargetView();
@@ -63,8 +50,6 @@ private:
 	int CreateSamplerState();
 
 	int CreateConstBuffer();
-	int CreateLightBuffer();
-	int CreateCrossBuffer();
-	
+	int CreateStructuredBuffer();
 };
 
