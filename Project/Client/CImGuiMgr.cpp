@@ -125,11 +125,6 @@ void CImGuiMgr::init(HWND _hMainWnd, ComPtr<ID3D11Device> _Device
 
     m_vecStaticBtn[(UINT)STATIC_BTN_TYPE::TITLE] = tColor;
 
-
-
-
-    RTViewPort* pViewport = (RTViewPort*)CImGuiMgr::GetInst()->FindUI("##Viewport");
-    pViewport->SetCamera(CRenderMgr::GetInst()->GetEditorCam());
 }
 
 void CImGuiMgr::progress()
@@ -148,6 +143,9 @@ void CImGuiMgr::enter()
     // ContentUI �� Reload �۾� ����
     Outliner* pOutlinerUI = (Outliner*)FindUI("##Outliner");
     pOutlinerUI->ResetCurrentLevel();
+
+    RTViewPort* pViewport = (RTViewPort*)CImGuiMgr::GetInst()->FindUI("##Viewport");
+    pViewport->SetCamera(CRenderMgr::GetInst()->GetEditorCam());
 }
 
 FOCUS_STATE CImGuiMgr::GetFocus_debug()

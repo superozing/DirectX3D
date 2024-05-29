@@ -181,6 +181,6 @@ void CCreateTempLevel::CreateTempLevel()
 
 	CLevelSaveLoad::SaveLevel(pTempLevel, L"level\\temp.lv");
 
-	CTaskMgr::GetInst()->tick();
+	//CTaskMgr::GetInst()->tick();
 
 }
