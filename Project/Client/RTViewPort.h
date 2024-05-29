@@ -11,7 +11,9 @@ private:
     Ptr<CTexture>       m_ViewPortTexture;
 
     Vec2         m_ViewportSize;
-    Vec2         m_LClickedCoord;
+    Vec2         m_ViewportPos;
+    float        m_fTapHeight;
+    Vec2         m_MouseCoord;
 
 private:
     void MoveCameraToObject();
@@ -24,8 +26,10 @@ public:
     void SetTargetCamera(class CCamera* _camera);
     static void SetCamera(class CCamera* _camera);
 
+    Vec2 GetViewPortPos() { return m_ViewportPos; }
     Vec2 GetViewPortSize() { return m_ViewportSize; }
-    Vec2 GetLClickCoord() { return m_LClickedCoord; }
+    float GetTapHeight() { return m_fTapHeight; }
+    Vec2 GetMouseCoord() { return m_MouseCoord; }
     static Vec2 ConvertCoord();
 
 public:

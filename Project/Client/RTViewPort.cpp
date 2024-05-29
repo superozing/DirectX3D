@@ -16,13 +16,15 @@
 
 #include "ImGuizmo.h"
 
+#include "imgui_internal.h"
 #include <Engine\CLogMgr.h>
 
 RTViewPort::RTViewPort()
 	: UI("Viewport", "##Viewport")
     , m_pTarget(nullptr)
     , m_pCamera(nullptr)
-    , m_LClickedCoord(0.f, 0.f)
+    , m_ViewportPos(0.f, 0.f)
+    , m_MouseCoord(0.f, 0.f)
 {
 	
 	m_ViewPortTexture = CAssetMgr::GetInst()->CreateTexture(L"CopyRTtex",
@@ -45,20 +47,16 @@ void RTViewPort::render_update()
 {
     CRenderMgr::GetInst()->CopyRTTex(m_ViewPortTexture);
 
-    auto viewportPos = ImGui::GetWindowPos();
-    float tabBarHeight = ImGui::GetFrameHeightWithSpacing();
+    m_fTapHeight = ImGui::GetFrameHeightWithSpacing();
+    m_ViewportSize.x = (float)ImGui::GetWindowSize().x;
+    m_ViewportSize.y = (float)ImGui::GetWindowSize().y - m_fTapHeight;
+
+    m_ViewportPos = Vec2((float)ImGui::GetWindowPos().x, (float)ImGui::GetWindowPos().y);
+    m_MouseCoord = Vec2((float)ImGui::GetIO().MousePos.x, (float)ImGui::GetIO().MousePos.y);
+
     ImGui::Dummy(ImVec2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y - 40));
     
-    m_ViewportSize = (Vec2(ImGui::GetWindowSize().x , ImGui::GetWindowSize().y - tabBarHeight));
-
-    ImGuiIO& io = ImGui::GetIO();
-    if (io.MouseClicked[0]) // 왼쪽 마우스 클릭
-    {
-        m_LClickedCoord.x = io.MousePos.x -viewportPos.x;
-        m_LClickedCoord.y = io.MousePos.y - (viewportPos.y + tabBarHeight);
-    }
-
-    // 레벨 파일 드랍 체크
+        // 레벨 파일 드랍 체크
     if (ImGui::BeginDragDropTarget())
     {
         const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ContentTree");
@@ -240,29 +238,40 @@ void RTViewPort::MoveCameraToObject()
 Vec2 RTViewPort::ConvertCoord()
 {
     RTViewPort* Viewport = dynamic_cast<RTViewPort*>(CImGuiMgr::GetInst()->FindUI("##Viewport"));
-
-    Vec2 OriginResolution = CDevice::GetInst()->GetRenderResolution();
-    Vec2 ClickCoord = Viewport->GetLClickCoord();
-
-    // viewport 좌표계의 원점을 중앙으로 맞추기
-    ClickCoord.x -= Viewport->GetViewPortSize().x / 2;
-    ClickCoord.y -= Viewport->GetViewPortSize().y / 2;
     
-    ClickCoord.y = -ClickCoord.y; // y 좌표 반전
+     Vec2 OriginResolution = CDevice::GetInst()->GetRenderResolution();
+     Vec2 Mousepos = Viewport->GetMouseCoord();
 
-    float OriginAspect = OriginResolution.x / OriginResolution.y;
+     Mousepos.x = Mousepos.x - Viewport->GetViewPortPos().x;
+     Mousepos.y = Mousepos.y - (Viewport->GetViewPortPos().y + Viewport->GetTapHeight());
 
-    // 각 축에 대한 변환 비율 계산
-    float xScale = OriginAspect / 2.f;
-    float yScale;
-    
-    if(OriginResolution.y >= Viewport->GetViewPortSize().y)
-        yScale =  OriginResolution.y / Viewport->GetViewPortSize().y;
-    else
-        yScale =  Viewport->GetViewPortSize().y / OriginResolution.y;
+     // viewport 좌표계의 원점을 중앙으로 맞추기
+      Mousepos.x -= Viewport->GetViewPortSize().x / 2;
+     Mousepos.y -= Viewport->GetViewPortSize().y / 2;
+     
+     Mousepos.y = -Mousepos.y; // y 좌표 반전
 
-    ClickCoord.x *= xScale;
-    ClickCoord.y *= yScale;
+     float OriginAspect = OriginResolution.x / OriginResolution.y;
 
-    return ClickCoord;
-}
+     // 각 축에 대한 변환 비율 계산
+     float xScale;
+     float yScale;
+     
+     if (OriginResolution.x > Viewport->GetViewPortSize().x)
+         xScale = OriginResolution.x / Viewport->GetViewPortSize().x;
+     else
+         xScale = Viewport->GetViewPortSize().x / OriginResolution.x;
+
+     if(OriginResolution.y >= Viewport->GetViewPortSize().y)
+         yScale =  OriginResolution.y / Viewport->GetViewPortSize().y;
+     else
+         yScale =  Viewport->GetViewPortSize().y / OriginResolution.y;
+
+     Mousepos.x *= xScale;
+     Mousepos.y *= yScale;
+
+     Mousepos.x = floor(Mousepos.x);
+     Mousepos.y = floor(Mousepos.y);
+
+     return Mousepos;
+ }
