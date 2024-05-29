@@ -71,7 +71,7 @@ void CCreateTempLevel::CreateTempLevel()
 {
 
 	CLevel* pTempLevel = new CLevel;
-
+	pTempLevel->SetName("TempLevel");
 
 	// Main Camera Object 생성
 	CGameObject* pCamObj = new CGameObject;

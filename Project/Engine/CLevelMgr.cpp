@@ -14,6 +14,7 @@
 
 #include "CTaskMgr.h"
 
+#include "CEngine.h"
 
 CLevelMgr::CLevelMgr()
 	: m_CurLevel(nullptr)
@@ -53,6 +54,17 @@ void CLevelMgr::tick()
 
 	// Render
 	CRenderMgr::GetInst()->tick();
+
+	static float acctime = 0.f;
+
+	acctime += DTd_ENGINE;
+	if (1.f <= acctime)
+	{
+		//wchar_t szText[50] = {};
+		//swprintf_s(szText, 50, L"%s", ToString( m_CurLevel->GetName()));
+		SetWindowText(CEngine::GetInst()->GetMainWind(), m_CurLevel->GetName().c_str());
+		acctime = 0.f;
+	}
 }
 
 void CLevelMgr::enter()
