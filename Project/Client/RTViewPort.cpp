@@ -245,12 +245,6 @@ Vec2 RTViewPort::ConvertCoord()
      Mousepos.x = Mousepos.x - Viewport->GetViewPortPos().x;
      Mousepos.y = Mousepos.y - (Viewport->GetViewPortPos().y + Viewport->GetTapHeight());
 
-     // viewport 좌표계의 원점을 중앙으로 맞추기
-      Mousepos.x -= Viewport->GetViewPortSize().x / 2;
-     Mousepos.y -= Viewport->GetViewPortSize().y / 2;
-     
-     Mousepos.y = -Mousepos.y; // y 좌표 반전
-
      float OriginAspect = OriginResolution.x / OriginResolution.y;
 
      // 각 축에 대한 변환 비율 계산
