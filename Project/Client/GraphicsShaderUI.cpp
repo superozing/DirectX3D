@@ -15,8 +15,15 @@ GraphicsShader::~GraphicsShader()
 void GraphicsShader::render_update()
 {
 	AssetUI::render_update();
-
+	
 	Ptr<CGraphicsShader> pShader = (CGraphicsShader*)GetAsset().Get();
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Save to file"))
+	{
+		pShader->Save(pShader->GetKey());
+	}
 
 	string strShaderName = ToString(pShader->GetKey());
 
