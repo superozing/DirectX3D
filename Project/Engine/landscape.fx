@@ -2,6 +2,7 @@
 #define _LANDSCAPE
 
 #include "value.fx"
+#include "func.fx"
 
 // =======================================
 // LandScape Shader
@@ -19,6 +20,7 @@
 #define                     TileTexArr                      g_texarr_0  // Tile 배열 택스쳐
 #define                     TileTexArrSize                  g_float_0   // 배열 개수
 #define                     WeightMapResolution             g_vec2_0    // 가중치 버퍼 해상도
+#define                     CamWorldPos                     g_vec4_0.xyz // 카메라 월드 좌표
 StructuredBuffer<float4> WEIGHT_MAP : register(t17); // 가중치 버퍼
 // =======================================
 struct VS_IN
@@ -36,6 +38,7 @@ struct VS_OUT
     float3 vPos : POSITION;
     float2 vUV : TEXCOORD;
     
+    float3 vWorldPos : POSITION1;
     float3 vTangent : TANGENT;
     float3 vBinormal : BINORMAL;
     float3 vNormal : NORMAL;
@@ -47,6 +50,8 @@ VS_OUT VS_LandScape(VS_IN _in)
     
     output.vPos = _in.vPos;
     output.vUV = _in.vUV;
+    
+    output.vWorldPos = mul(float4(_in.vPos, 1.f), g_matWorld).xyz;
     
     output.vTangent = _in.vTangent;
     output.vBinormal = _in.vBinormal;
@@ -66,21 +71,18 @@ PatchLevel PatchConstFunc(InputPatch<VS_OUT, 3> _in, uint patchID : SV_Primitive
 {
     PatchLevel output = (PatchLevel) 0.f;
         
-    output.arrEdge[0] = g_vec4_0.x;
-    output.arrEdge[1] = g_vec4_0.y;
-    output.arrEdge[2] = g_vec4_0.z;
-    output.Inside = g_vec4_0.w;
+    float3 vUpDown = (_in[1].vWorldPos + _in[2].vWorldPos) / 2.f;
+    float3 vLeftRight = (_in[0].vWorldPos + _in[2].vWorldPos) / 2.f;
+    float3 vSlide = (_in[0].vWorldPos + _in[1].vWorldPos) / 2.f;
+    float3 vMid = (_in[0].vWorldPos + _in[1].vWorldPos + _in[2].vWorldPos) / 3.f;
+
+    float3 vCamWorldPos = CamWorldPos;
+    vCamWorldPos.y = 0.f;
     
-    for (int i = 0; i < 3; i++)
-    {
-        if (output.arrEdge[i] == 0.f)
-            output.arrEdge[i] = 1.f;
-    }
-    
-    if (output.Inside == 0.f)
-    {
-        output.Inside = 1.f;
-    }
+    output.arrEdge[0] = pow(2, (int) GetTessFactor(distance(vCamWorldPos, vUpDown), 1, 4, 1000.f, 4000.f));
+    output.arrEdge[1] = pow(2, (int) GetTessFactor(distance(vCamWorldPos, vLeftRight), 1, 4, 1000.f, 4000.f));
+    output.arrEdge[2] = pow(2, (int) GetTessFactor(distance(vCamWorldPos, vSlide), 1, 4, 1000.f, 4000.f));
+    output.Inside = pow(2, (int) GetTessFactor(distance(vCamWorldPos, vMid), 1, 4, 1000.f, 4000.f));
     
     return output;
 }
