@@ -272,6 +272,11 @@ void MenuUI::Asset()
             ContentSaveAll();
         }
 
+        if (ImGui::MenuItem("Create Default GraphicsShader"))
+        {
+            CAssetMgr::GetInst()->SaveDefaultGraphicsShader();
+        }
+
         ImGui::EndMenu();
     }
 }
