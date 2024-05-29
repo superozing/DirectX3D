@@ -4,6 +4,7 @@
 #include "CDevice.h"
 #include "CAssetMgr.h"
 
+
 void CLandScape::Init()
 {
 	CreateMesh();
@@ -17,8 +18,15 @@ void CLandScape::Init()
 	// 지형 전용 텍스쳐 생성
 	CreateTexture();
 
+	m_WeightMapBuffer = CDevice::GetInst()->GetStructuredBuffer(SB_TYPE::WEIGHTMAP);
 	// 레이캐스팅 결과 받는 버퍼
-	m_CrossBuffer = CDevice::GetInst()->GetCrossBuffer();
+	m_CrossBuffer = CDevice::GetInst()->GetStructuredBuffer(SB_TYPE::CROSS);
+
+	// 타일 텍스쳐(Color, Normal 혼합, 총 6장)
+	//m_TileArrTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_ARRR.dds", L"texture\\tile\\TILE_ARRR.dds");
+	//m_TileArrTex = CAssetMgr::GetInst()->LoadTexture(L"texture\\tile\\TILE_ARRR.dds", L"texture\\tile\\TILE_ARRR.dds", 8);
+	m_TileArrTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_ARRR.dds");
+	m_TileArrTex->GenerateMip(8);
 }
 
 void CLandScape::CreateMesh()
@@ -96,6 +104,17 @@ void CLandScape::CreateComputeShader()
 		m_CSRaycast = new CRaycastShader;
 		CAssetMgr::GetInst()->AddAsset<CComputeShader>(L"RaycastShader", m_CSRaycast.Get());
 	}
+
+	// =======================
+	// 가중치 수정 컴퓨트 쉐이더
+	// =======================
+	m_CSWeightMap = (CWeightMapShader*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"WeightMapShader").Get();
+	if (nullptr == m_CSWeightMap)
+	{
+		m_CSWeightMap = new CWeightMapShader;
+		m_CSWeightMap->Create(L"shader\\weightmap.fx", "CS_WeightMap");
+		CAssetMgr::GetInst()->AddAsset<CComputeShader>(L"WeightMapShader", m_CSWeightMap.Get());
+	}
 }
 
 void CLandScape::CreateTexture()
@@ -108,4 +127,8 @@ void CLandScape::CreateTexture()
 														, D3D11_USAGE_DEFAULT);
 
 	m_BrushTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\brush\\Brush_02.png");
+
+	// 가중치 버퍼
+	m_WeightWidth = 1024;
+	m_WeightHeight = 1024;
 }

@@ -1,7 +1,7 @@
-#pragma once
+ï»¿#pragma once
 #include "CEntity.h"
 
-enum class SB_TYPE
+enum class SB_READ_TYPE
 {
     READ_ONLY, // SRV
     READ_WRITE, // SRV + UAV
@@ -21,15 +21,15 @@ private:
     UINT                                m_ElementSize;
     UINT                                m_ElementCount;
 
-    SB_TYPE                             m_Type;
+    SB_READ_TYPE                             m_Type;
     bool                                m_bSysMemMove;
 
-    UINT                                m_RegentSRV;    // ÃÖ±Ù¿¡ ¹ÙÀÎµùÇÑ t·¹Áö½ºÅÍ ¹øÈ£
-    UINT                                m_RegentUAV;    // ÃÖ±Ù¿¡ ¹ÙÀÎµùÇÑ u·¹Áö½ºÅÍ ¹øÈ£
+    UINT                                m_RegentSRV;    // ìµœê·¼ì— ë°”ì¸ë”©í•œ të ˆì§€ìŠ¤í„° ë²ˆí˜¸
+    UINT                                m_RegentUAV;    // ìµœê·¼ì— ë°”ì¸ë”©í•œ uë ˆì§€ìŠ¤í„° ë²ˆí˜¸
 
 
 public:
-    int Create(UINT _ElementSize, UINT _ElementCount, SB_TYPE _Type, bool _bSysMemMove = false, void* _pSysMem = nullptr);
+    int Create(UINT _ElementSize, UINT _ElementCount, SB_READ_TYPE _Type, bool _bSysMemMove = false, void* _pSysMem = nullptr);
 
     void UpdateData(UINT _RegisterNum);
     int UpdateData_CS_SRV(UINT _RegisterNum);
