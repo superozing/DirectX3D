@@ -59,8 +59,14 @@ private:
     void CreateAssetUI();
     void ResizeScriptUI(UINT _Size);
 
+private:
+    void ResetTargetObject();
+    void ResetTargetAsset();
+
 public:
     Inspector();
     ~Inspector();
+
+    friend class CImGuiMgr;
 };
 

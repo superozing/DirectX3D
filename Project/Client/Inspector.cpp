@@ -19,6 +19,16 @@
 #include "AssetUI.h"
 
 
+void Inspector::ResetTargetObject()
+{
+	SetTargetObject(nullptr);
+}
+
+void Inspector::ResetTargetAsset()
+{
+	SetTargetAsset(nullptr);
+}
+
 Inspector::Inspector()
 	: UI("Inspector", "##Inspector")
 	, m_TargetObject(nullptr)

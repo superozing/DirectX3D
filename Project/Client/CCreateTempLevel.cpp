@@ -52,7 +52,7 @@ void CCreateTempLevel::CreateTempLevel()
 {
 
 	CLevel* pTempLevel = new CLevel;
-
+	pTempLevel->SetName("TempLevel");
 
 	// Main Camera Object 생성
 	CGameObject* pCamObj = new CGameObject;
@@ -149,18 +149,18 @@ void CCreateTempLevel::CreateTempLevel()
 
 
 	// LandScape Object 생성
-	CGameObject* LandScape = new CGameObject;
-	LandScape->SetName(L"LandScape");
-
-	LandScape->AddComponent(new CTransform);
-	LandScape->AddComponent(new CLandScape);
-
-	LandScape->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
-	LandScape->Transform()->SetRelativeScale(Vec3(200.f, 1000.f, 200.f));
-
+	//CGameObject* LandScape = new CGameObject;
+	//LandScape->SetName(L"LandScape");
+	//
+	//LandScape->AddComponent(new CTransform);
+	//LandScape->AddComponent(new CLandScape);
+	//
+	//LandScape->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+	//LandScape->Transform()->SetRelativeScale(Vec3(200.f, 1000.f, 200.f));
+	//
 	//LandScape->LandScape()->SetHeightMap(CAssetMgr::GetInst()->Load<CTexture>(L"texture\\HeightMap\\HeightMap_01.jpg"));
-
-	pTempLevel->AddObject(LandScape, (UINT)LAYER::LAYER_DEFAULT, false);
+	//
+	//pTempLevel->AddObject(LandScape, (UINT)LAYER::LAYER_DEFAULT, false);
 
 
 	// TimeMgr Object 생성
@@ -177,10 +177,10 @@ void CCreateTempLevel::CreateTempLevel()
 	CCollisionMgr::GetInst()->LayerCheck((UINT)LAYER::LAYER_PLAYER, (UINT)LAYER::LAYER_MONSTER);
 	CCollisionMgr::GetInst()->LayerCheck((UINT)LAYER::LAYER_MONSTER, (UINT)LAYER::LAYER_MONSTER);
 
-	CLevelMgr::GetInst()->ChangeLevel(pTempLevel, LEVEL_STATE::STOP);
+	GamePlayStatic::ChangeLevel(pTempLevel, LEVEL_STATE::STOP);
 
 	CLevelSaveLoad::SaveLevel(pTempLevel, L"level\\temp.lv");
 
-	CTaskMgr::GetInst()->tick();
+	//CTaskMgr::GetInst()->tick();
 
 }

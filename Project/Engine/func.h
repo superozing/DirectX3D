@@ -25,6 +25,7 @@ namespace RoRMath
 	void Float16ToMatrix(Matrix& _dest, const float _src[16]);
 }
 
+class CLevel;
 namespace GamePlayStatic
 {
 	void SpawnGameObject(CGameObject* _Target, int _LayerIdx);
@@ -89,6 +90,8 @@ namespace GamePlayStatic
 			};
 		}
 	};
+
+	void ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextLevelStartState);
 }
 
 namespace Utils
