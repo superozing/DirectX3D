@@ -381,9 +381,6 @@ void CCamera::CalculateRay()
 	if (ViewportConvertFunc != nullptr)
 	vMousePos = ViewportConvertFunc();
 
-	//string log = std::to_string(vMousePos.x) + " " + std::to_string(vMousePos.y);
-	//CLogMgr::GetInst()->AddLog(Log_Level::WARN, log);
-
 	// 직선은 카메라의 좌표를 반드시 지난다.
 	m_ray.vStart = Transform()->GetWorldPos();
 

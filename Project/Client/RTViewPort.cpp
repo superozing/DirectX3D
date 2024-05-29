@@ -241,9 +241,10 @@ Vec2 RTViewPort::ConvertCoord()
     
      Vec2 OriginResolution = CDevice::GetInst()->GetRenderResolution();
      Vec2 Mousepos = Viewport->GetMouseCoord();
+     float fTapHeight = Viewport->GetTapHeight();
 
      Mousepos.x = Mousepos.x - Viewport->GetViewPortPos().x;
-     Mousepos.y = Mousepos.y - (Viewport->GetViewPortPos().y + Viewport->GetTapHeight());
+     Mousepos.y = Mousepos.y - Viewport->GetViewPortPos().y - fTapHeight;
 
      float OriginAspect = OriginResolution.x / OriginResolution.y;
 
