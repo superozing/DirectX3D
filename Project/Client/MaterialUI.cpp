@@ -34,19 +34,26 @@ void MaterialUI::render_update()
     string strKey = string(m_TargetMtrl->GetKey().begin(), m_TargetMtrl->GetKey().end());
     string prevKey = strKey;
     
-    strcpy(MtrlKey, strKey.c_str());
+    string FullPath = ToString(CPathMgr::GetContentPath()) + strKey;
+    if (exists(FullPath))
+    {
+        filesystem::path pathObj(FullPath);
+
+        strcpy(MtrlKey, pathObj.stem().string().c_str());
+    }
 
     ImGui::Text("Material");
     ImGui::SameLine();
     ImGui::InputText("##MtrlName", MtrlKey, 255);
 
-    if (prevKey != string(MtrlKey))
+    string NewName = "material\\" + string(MtrlKey) + ".mtrl";
+    if (prevKey != NewName)
     {
         if (KEY_TAP_EDITOR(ENTER))
         {
-            ChangeAssetName(strKey, string(MtrlKey));
-            AssetUI::SetAssetKey((CAsset*)m_TargetMtrl.Get(), ToWString(string(MtrlKey)));
-            prevKey = MtrlKey;
+            ChangeAssetName(strKey, NewName);
+            AssetUI::SetAssetKey((CAsset*)m_TargetMtrl.Get(), ToWString(NewName));
+            prevKey = NewName;
         }
         else if (KEY_TAP_EDITOR(ESC))
         {
@@ -181,20 +188,6 @@ void MaterialUI::CreateAssetInstance(Ptr<CAsset> _Asset)
     pNewMtrl->SetName(szPath);
     pNewMtrl->Save(szPath);
     GamePlayStatic::AddAsset(pNewMtrl);
-}
-
-void MaterialUI::ChangeAssetName(const string& _OriginName, const string& _NewName)
-{
-    wstring strPath = CPathMgr::GetContentPath();
-    strPath += ToWString(_OriginName);
-
-    wstring NstrPath = CPathMgr::GetContentPath();
-    NstrPath += ToWString(_NewName);
-
-    if (exists(strPath))
-    {
-        filesystem::rename(strPath, NstrPath);
-    }
 }
 
 

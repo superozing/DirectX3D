@@ -17,8 +17,6 @@ public:
 
     virtual void CreateAssetInstance(Ptr<CAsset> _Asset) override;
 
-    void ChangeAssetName(const string& _OriginName, const string& _NewName);
-
 public:
     MaterialUI();
     ~MaterialUI();

@@ -24,11 +24,12 @@ void AssetUI::render_update()
 	ImGui::Button(ASSET_TYPE_STRING[(UINT)m_Type]);
 
 	ImGui::PopStyleColor(3);
+
 	ImGui::PopID();
 
 	if (ImGui::Button("Save Edit"))
 	{
-		SaveEditAsset(m_Asset);
+
 	} 
 	
 	ImGui::SameLine();
@@ -71,4 +72,18 @@ void AssetUI::SetAsset(Ptr<CAsset> _Asset)
 void AssetUI::SetAssetKey(Ptr<CAsset> _Asset, const wstring& _Key)
 {
 	_Asset->SetKey(_Key);
+}
+
+void AssetUI::ChangeAssetName(const string& _OriginRelativePath, const string& _NewRelativePath)
+{
+	wstring strPath = CPathMgr::GetContentPath();
+	strPath += ToWString(_OriginRelativePath);
+
+	wstring NstrPath = CPathMgr::GetContentPath();
+	NstrPath += ToWString(_NewRelativePath);
+
+	if (exists(strPath))
+	{
+		filesystem::rename(strPath, NstrPath);
+	}
 }
