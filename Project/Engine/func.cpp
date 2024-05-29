@@ -133,6 +133,7 @@ void GamePlayStatic::DrawDebugCone(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWo
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
 
+#include "CLevel.h"
 void GamePlayStatic::ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextLevelStartState)
 {
 	tTask task = {};
