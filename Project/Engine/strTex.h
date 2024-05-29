@@ -1,10 +1,14 @@
 #pragma once
 
 #define TEXBackground L"texture\\Background.jpg"
+#define TEXBrushArr L"texture\\brush\\BrushArr.dds"
+#define TEXBrush_01 L"texture\\brush\\Brush_01.png"
+#define TEXBrush_02 L"texture\\brush\\Brush_02.png"
 #define TEXCharacter L"texture\\Character.png"
 #define TEXEffect L"texture\\Effect.png"
 #define TEXEx L"texture\\Ex.png"
 #define TEXFighter L"texture\\Fighter.bmp"
+#define TEXHeightMap_01 L"texture\\HeightMap\\HeightMap_01.jpg"
 #define TEXIconAnim L"texture\\imgui\\icon\\IconAnim.png"
 #define TEXIconComputeShader L"texture\\imgui\\icon\\IconComputeShader.png"
 #define TEXIconFile L"texture\\imgui\\icon\\IconFile.png"

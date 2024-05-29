@@ -6,7 +6,7 @@
 CStructuredBuffer::CStructuredBuffer()
 	: m_ElementSize(0)
 	, m_ElementCount(0)
-	, m_Type(SB_TYPE::READ_ONLY)
+	, m_Type(SB_READ_TYPE::READ_ONLY)
 	, m_bSysMemMove(false)
 	, m_RegentSRV(0)
 	, m_RegentUAV(0)
@@ -28,7 +28,7 @@ CStructuredBuffer::~CStructuredBuffer()
 {
 }
 
-int CStructuredBuffer::Create(UINT _ElementSize, UINT _ElementCount, SB_TYPE _Type, bool _bSysMemMove, void* _pSysMem)
+int CStructuredBuffer::Create(UINT _ElementSize, UINT _ElementCount, SB_READ_TYPE _Type, bool _bSysMemMove, void* _pSysMem)
 {
 	// 구조화버퍼 크기가 16의 배수인지 체크
 	assert(!(_ElementSize % 16));
@@ -50,7 +50,7 @@ int CStructuredBuffer::Create(UINT _ElementSize, UINT _ElementCount, SB_TYPE _Ty
 	tDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 
 	// RW 옵션으로 생성된 구조화버퍼는 UnorderedAccessView 생성도 가능하게 만든다.
-	if (SB_TYPE::READ_WRITE == m_Type)
+	if (SB_READ_TYPE::READ_WRITE == m_Type)
 	{
 		tDesc.BindFlags |= D3D11_BIND_UNORDERED_ACCESS;
 	}
@@ -85,7 +85,7 @@ int CStructuredBuffer::Create(UINT _ElementSize, UINT _ElementCount, SB_TYPE _Ty
 
 
 	// Unordered Access View 생성
-	if (SB_TYPE::READ_WRITE == m_Type)
+	if (SB_READ_TYPE::READ_WRITE == m_Type)
 	{
 		D3D11_UNORDERED_ACCESS_VIEW_DESC UAVDesc = {};
 		UAVDesc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
