@@ -163,34 +163,6 @@ void MaterialUI::SelectTexture(DWORD_PTR _dwData)
     m_TargetMtrl->SetTexParam(m_SelectTexParam, pTex);
 }
 
-void MaterialUI::CreateAssetInstance(Ptr<CAsset> _Asset)
-{
-    auto pOriginMtrl = dynamic_cast<CMaterial*>(_Asset.Get());
-
-    wstring strKey = _Asset->GetKey();
-
-    if (strKey.length() > 5 && L".mtrl" == strKey.substr(strKey.length() - 5))
-        strKey.erase(strKey.length() - 5, 5);
-
-    wchar_t szPath[255] = {};
-    wstring FilePath = CPathMgr::GetContentPath();
-    int num = 0;
-    while (true)
-    {
-        swprintf_s(szPath, (strKey + L"_Inst_%d.mtrl").c_str(), num);
-        if (!exists(FilePath + szPath))
-            break;
-
-        ++num;
-    }
-
-    CMaterial* pNewMtrl = pOriginMtrl->Clone();
-    pNewMtrl->SetName(szPath);
-    pNewMtrl->Save(szPath);
-    GamePlayStatic::AddAsset(pNewMtrl);
-}
-
-
 void MaterialUI::ShaderSelect(DWORD_PTR _ptr)
 {
     string strShader = (char*)_ptr;

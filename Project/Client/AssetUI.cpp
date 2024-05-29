@@ -74,6 +74,34 @@ void AssetUI::SetAssetKey(Ptr<CAsset> _Asset, const wstring& _Key)
 	_Asset->SetKey(_Key);
 }
 
+void AssetUI::CreateAssetInstance(Ptr<CAsset> _Asset)
+{
+	wstring strKey = _Asset->GetKey();
+
+	filesystem::path pathObj(strKey);
+
+	wstring ParentPath = pathObj.parent_path().wstring();
+	wstring AssetName = pathObj.stem().wstring();
+	wstring AssetType = pathObj.extension().wstring();
+
+	wchar_t szPath[255] = {};
+	wstring FilePath = CPathMgr::GetContentPath();
+	int num = 0;
+	while (true)
+	{
+		swprintf_s(szPath, (ParentPath + L"\\" + AssetName + L"_Inst_%d" + AssetType).c_str(), num);
+		if (!exists(FilePath + szPath))
+			break;
+
+		++num;
+	}
+
+	CAsset* pNewAsset = _Asset->Clone();
+	pNewAsset->SetName(szPath);
+	pNewAsset->Save(szPath);
+	GamePlayStatic::AddAsset(pNewAsset);
+}
+
 void AssetUI::ChangeAssetName(const string& _OriginRelativePath, const string& _NewRelativePath)
 {
 	wstring strPath = CPathMgr::GetContentPath();

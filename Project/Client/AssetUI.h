@@ -22,7 +22,7 @@ public:
 public:
     virtual void render_update() override;
 
-    virtual void CreateAssetInstance(Ptr<CAsset> _Asset) {};
+    virtual void CreateAssetInstance(Ptr<CAsset> _Asset);
     virtual void ChangeAssetName(const string& _OriginRelativePath, const string& _NewRelativePath);
 
 public:
