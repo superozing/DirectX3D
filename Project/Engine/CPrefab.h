@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "CAsset.h"
 
 typedef void(*SAVE_TYPE)(CGameObject*, ofstream&);

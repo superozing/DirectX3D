@@ -451,6 +451,52 @@ float RoRMath::ClampFloat(float _input, float _min, float _max)
 	return _input;
 }
 
+void RoRMath::MatrixToFloat16(float _dest[16], const Matrix& _src)
+{
+	_dest[0] = _src._11;
+	_dest[1] = _src._12;
+	_dest[2] = _src._13;
+	_dest[3] = _src._14;
+
+	_dest[4] = _src._21;
+	_dest[5] = _src._22;
+	_dest[6] = _src._23;
+	_dest[7] = _src._24;
+
+	_dest[8] = _src._31;
+	_dest[9] = _src._32;
+	_dest[10] = _src._33;
+	_dest[11] = _src._34;
+
+	_dest[12] = _src._41;
+	_dest[13] = _src._42;
+	_dest[14] = _src._43;
+	_dest[15] = _src._44;
+}
+
+void RoRMath::Float16ToMatrix(Matrix& _dest, const float _src[16])
+{
+	_dest._11 = _src[0];
+	_dest._12 = _src[1];
+	_dest._13 = _src[2];
+	_dest._14 = _src[3];
+
+	_dest._21 = _src[4];
+	_dest._22 = _src[5];
+	_dest._23 = _src[6];
+	_dest._24 = _src[7];
+
+	_dest._31 = _src[8];
+	_dest._32 = _src[9];
+	_dest._33 = _src[10];
+	_dest._34 = _src[11];
+
+	_dest._41 = _src[12];
+	_dest._42 = _src[13];
+	_dest._43 = _src[14];
+	_dest._44 = _src[15];
+}
+
 
 bool closeEnough(const float& a, const float& b
 	, const float& epsilon = std::numeric_limits<float>::epsilon())

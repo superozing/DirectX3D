@@ -187,6 +187,9 @@
     <ClInclude Include="CDecal.h">
       <Filter>08. Component\RenderComponent\05. Decal</Filter>
     </ClInclude>
+    <ClInclude Include="CLogMgr.h">
+      <Filter>04. Manager\LogMgr</Filter>
+    </ClInclude>
     <ClInclude Include="GenStrings.h">
       <Filter>01. Header\GenString</Filter>
     </ClInclude>
@@ -204,6 +207,18 @@
     </ClInclude>
     <ClInclude Include="UserStrings.h">
       <Filter>01. Header\UserString</Filter>
+    </ClInclude>
+    <ClInclude Include="CFrustum.h">
+      <Filter>Module\Frustum</Filter>
+    </ClInclude>
+    <ClInclude Include="CLandScape.h">
+      <Filter>08. Component\RenderComponent\06. LandScape</Filter>
+    </ClInclude>
+    <ClInclude Include="CRaycastShader.h">
+      <Filter>ShaderCode\03. Compute\LandScape\Raycast</Filter>
+    </ClInclude>
+    <ClInclude Include="CHeightMapShader.h">
+      <Filter>ShaderCode\03. Compute\LandScape\HeightMap</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -387,6 +402,24 @@
     <ClCompile Include="CDecal.cpp">
       <Filter>08. Component\RenderComponent\05. Decal</Filter>
     </ClCompile>
+    <ClCompile Include="CLogMgr.cpp">
+      <Filter>04. Manager\LogMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CFrustum.cpp">
+      <Filter>Module\Frustum</Filter>
+    </ClCompile>
+    <ClCompile Include="CLandScape.cpp">
+      <Filter>08. Component\RenderComponent\06. LandScape</Filter>
+    </ClCompile>
+    <ClCompile Include="CLandScape_Init.cpp">
+      <Filter>08. Component\RenderComponent\06. LandScape</Filter>
+    </ClCompile>
+    <ClCompile Include="CRaycastShader.cpp">
+      <Filter>ShaderCode\03. Compute\LandScape\Raycast</Filter>
+    </ClCompile>
+    <ClCompile Include="CHeightMapShader.cpp">
+      <Filter>ShaderCode\03. Compute\LandScape\HeightMap</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -569,11 +602,29 @@
     <Filter Include="08. Component\RenderComponent\05. Decal">
       <UniqueIdentifier>{cf7b3261-0fc7-43a7-a8f2-ad0126700482}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. Manager\LogMgr">
+      <UniqueIdentifier>{e6f73a23-7e49-4aad-acb7-d203742f1fd2}</UniqueIdentifier>
+    </Filter>
     <Filter Include="01. Header\GenString">
       <UniqueIdentifier>{30e22cac-c910-4ab5-877f-0026b4e9eae6}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Header\UserString">
       <UniqueIdentifier>{c1009191-600d-4cef-9dd2-821374428ad8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module\Frustum">
+      <UniqueIdentifier>{a8487a7c-3784-4573-9493-fd94f3d6f2eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\RenderComponent\06. LandScape">
+      <UniqueIdentifier>{37a73d81-0f81-43af-b25a-b444002ef3eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\03. Compute\LandScape">
+      <UniqueIdentifier>{6d7dbbf0-05b3-4c96-9e8d-2f7ee4233e23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\03. Compute\LandScape\HeightMap">
+      <UniqueIdentifier>{aeb8e66f-342f-443c-96f2-7cb73b7288ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\03. Compute\LandScape\Raycast">
+      <UniqueIdentifier>{6b94b2e3-ae3f-409a-b63b-419fe9f7e8af}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -632,6 +683,18 @@
     </FxCompile>
     <FxCompile Include="shadowmap.fx">
       <Filter>ShaderCode\02. Render\3DShader</Filter>
+    </FxCompile>
+    <FxCompile Include="tess.fx">
+      <Filter>ShaderCode\02. Render\3DShader</Filter>
+    </FxCompile>
+    <FxCompile Include="landscape.fx">
+      <Filter>ShaderCode\02. Render\3DShader</Filter>
+    </FxCompile>
+    <FxCompile Include="raycast.fx">
+      <Filter>ShaderCode\03. Compute\LandScape\Raycast</Filter>
+    </FxCompile>
+    <FxCompile Include="heightmap.fx">
+      <Filter>ShaderCode\03. Compute\LandScape\HeightMap</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

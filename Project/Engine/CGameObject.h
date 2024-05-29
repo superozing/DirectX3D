@@ -27,7 +27,10 @@ public:
     void render();
 
 public:
-    void AddComponent(CComponent* _Comonent);
+    void AddComponent(CComponent* _Component);
+    void DeleteComponent(COMPONENT_TYPE _Type);
+    void DeleteScript(CScript* _Script);
+
     CComponent* GetComponent(COMPONENT_TYPE _Type) { return m_arrCom[(UINT)_Type]; }
     class CRenderComponent* GetRenderComponent() { return m_RenderCom; }
 
@@ -42,6 +45,7 @@ public:
     inline class CTileMap* TileMap() { return (CTileMap*)m_arrCom[(UINT)COMPONENT_TYPE::TILEMAP]; }
     inline class CSkyBox* SkyBox() { return (CSkyBox*)m_arrCom[(UINT)COMPONENT_TYPE::SKYBOX]; }
     inline class CDecal* Decal() { return (CDecal*)m_arrCom[(UINT)COMPONENT_TYPE::DECAL]; }
+    inline class CLandScape* LandScape() { return (CLandScape*)m_arrCom[(UINT)COMPONENT_TYPE::LANDSCAPE]; }
 
     int GetLayerIdx() { return m_iLayerIdx; }
 

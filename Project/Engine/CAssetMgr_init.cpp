@@ -64,12 +64,12 @@ void CAssetMgr::CreateDefaultMesh()
 
 	// 인덱스
 	vecIdx.push_back(0);
-	vecIdx.push_back(1);
-	vecIdx.push_back(2);
-
-	vecIdx.push_back(0);
 	vecIdx.push_back(2);
 	vecIdx.push_back(3);
+
+	vecIdx.push_back(2);
+	vecIdx.push_back(0);
+	vecIdx.push_back(1);
 	
 
 	pMesh = new CMesh(true);
@@ -879,6 +879,41 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_SHADOWMAP);
 
 	AddAsset(L"ShadowMapShader", pShader.Get());
+
+
+	// ===========
+	// Tess Shader
+	// ===========
+	pShader = new CGraphicsShader;
+	pShader->CreateVertexShader(L"shader\\tess.fx", "VS_Tess");
+	pShader->CreateHullShader(L"shader\\tess.fx", "HS_Tess");
+	pShader->CreateDomainShader(L"shader\\tess.fx", "DS_Tess");
+	pShader->CreatePixelShader(L"shader\\tess.fx", "PS_Tess");
+
+	pShader->SetRSType(RS_TYPE::WIRE_FRAME);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
+	pShader->SetTopology(D3D_PRIMITIVE_TOPOLOGY_3_CONTROL_POINT_PATCHLIST);
+
+	pShader->AddScalarParam(SCALAR_PARAM::VEC4_0, "Tess Factor");
+
+	AddAsset(L"TessShader", pShader.Get());
+
+	// ================
+	// LandScape Shader
+	// ================
+	pShader = new CGraphicsShader;
+	pShader->CreateVertexShader(L"shader\\landscape.fx", "VS_LandScape");
+	pShader->CreateHullShader(L"shader\\landscape.fx", "HS_LandScape");
+	pShader->CreateDomainShader(L"shader\\landscape.fx", "DS_LandScape");
+	pShader->CreatePixelShader(L"shader\\landscape.fx", "PS_LandScape");
+
+	pShader->AddScalarParam(SCALAR_PARAM::VEC4_0, "Tess Factor");
+
+	pShader->SetRSType(RS_TYPE::CULL_BACK);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
+	pShader->SetTopology(D3D_PRIMITIVE_TOPOLOGY_3_CONTROL_POINT_PATCHLIST);
+
+	AddAsset(L"LandScapeShader", pShader.Get());
 }
 
 
@@ -979,6 +1014,16 @@ void CAssetMgr::CreateDefaultMaterial()
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"ShadowMapShader"));
 	AddAsset(L"ShadowMapMtrl", pMtrl);
+
+	// TessMtrl
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"TessShader"));
+	AddAsset(L"TessMtrl", pMtrl);
+
+	// LandScapeMtrl
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"LandScapeShader"));
+	AddAsset(L"LandScapeMtrl", pMtrl);
 }
 
 

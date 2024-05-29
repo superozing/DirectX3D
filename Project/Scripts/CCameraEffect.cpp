@@ -34,10 +34,10 @@ void CCameraEffect::SendToInitial()
 void CCameraEffect::tick()
 {
 	// 상태 세이브, 로드
-	if (KEY_TAP(MBTN) && KEY_PRESSED(KEY::LCTRL)) {
+	if ((KEY_TAP_EDITOR(MBTN) || KEY_TAP(MBTN)) && KEY_PRESSED(KEY::LCTRL)) {
 		RegistInitial();
 	}
-	else if (KEY_TAP(MBTN)) {
+	else if ((KEY_TAP_EDITOR(MBTN) || KEY_TAP(MBTN))) {
 		SendToInitial();
 	}
 }

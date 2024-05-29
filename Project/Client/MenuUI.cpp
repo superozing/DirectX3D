@@ -1,8 +1,6 @@
 ﻿#include "pch.h"
 #include "MenuUI.h"
 
-
-
 #include <Engine/CPathMgr.h>
 #include <Engine/CTaskMgr.h>
 
@@ -20,8 +18,6 @@
 #include "Outliner.h"
 #include "TreeUI.h"
 #include "CLevelSaveLoad.h"
-
-
 
 MenuUI::MenuUI()
 	: UI("Menu", "##Menu")

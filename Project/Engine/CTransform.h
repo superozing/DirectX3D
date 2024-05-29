@@ -16,8 +16,28 @@ private:
     Matrix  m_matWorldInv;  // 월드 역행렬
     bool    m_bAbsolute;
     bool    m_IsDynamic;    // 정적물체 or 동적물체
+    //bool    m_FrustumCheck;
+
+    // =========================
+    // 부드럽게 움직이기(선형) 위한 변수들
+    // =========================
+    Vec3 m_vTargetPos;
+    Vec3 m_vTargetRot;
+    Vec3 m_vTargetScale;
+    Vec3 m_vStartPos;
+    Vec3 m_vStartRot;
+    Vec3 m_vStartScale;
+    float m_fTargetTimer;
+    float m_fTargetTime;
+    bool m_bRotLerp;
+    bool m_bScaleLerp;
+    bool m_bLerp;
 
 public:
+    void Lerp(Vec3 _pos, bool _bMoveRot = false, Vec3 _rot = Vec3(), bool _bMoveScale = false, Vec3 _scale = Vec3(), float _time = 0.f);
+
+public:
+    virtual void tick() override;
     virtual void finaltick() override;
     virtual void UpdateData() override;
 
@@ -26,7 +46,7 @@ public:
     void SetRelativeScale(Vec3 _Scale) {m_vRelativeScale = _Scale;}
     void SetRelativeRotation(Vec3 _Rotation) { m_vRelativeRotation = _Rotation; }
 
-    void SetWorldMat(const Matrix _matWorld) { m_matWorld = _matWorld; }
+    void SetWorldMat(const Matrix& _matWorld);
 
     Vec3 GetRelativePos() const { return m_vRelativePos; }
     Vec3 GetRelativeScale() const { return m_vRelativeScale; }

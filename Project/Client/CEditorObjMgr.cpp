@@ -9,6 +9,8 @@
 #include <Engine/CLevelMgr.h>
 #include <Engine/CLevel.h>
 
+#include <Scripts/CCameraEffect.h>
+
 CEditorObjMgr::CEditorObjMgr()
 {
 
@@ -27,8 +29,8 @@ void CEditorObjMgr::init()
 	m_EditorCam->AddComponent(new CTransform);
 	m_EditorCam->AddComponent(new CCamera);
 	m_EditorCam->AddComponent(new CCameraMoveScript);
-	m_EditorCam->Transform()->SetRelativePos(Vec3(-520.f, 161.f, 848.f));
-	m_EditorCam->Transform()->SetRelativeRotation(Vec3(.6f,1.8f,0.f));
+	m_EditorCam->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+	m_EditorCam->Transform()->SetRelativeRotation(Vec3(.0f,0.f,0.f));
 	
 	m_EditorCam->Camera()->LayerCheckAll();
 	m_EditorCam->Camera()->LayerCheck(31, false);
@@ -36,6 +38,9 @@ void CEditorObjMgr::init()
 	m_EditorCam->Camera()->SetFOV(XM_PI / 2.f);
 	m_EditorCam->Camera()->SetFar(100000.f);
 
+	auto pComp = new CCameraEffect;
+	m_EditorCam->AddComponent(pComp);
+	pComp->begin();
 	m_vecEditorObj.push_back(m_EditorCam);
   
   // Editor 용 카메라로서 렌더매니저에 등록

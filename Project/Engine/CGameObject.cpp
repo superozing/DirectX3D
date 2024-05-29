@@ -12,6 +12,8 @@
 
 #include "CGC.h"
 
+#include <Scripts\CScriptMgr.h>
+
 CGameObject::CGameObject()
 	: m_arrCom{}
 	, m_RenderCom(nullptr)
@@ -140,27 +142,27 @@ void CGameObject::render()
 	}	
 }
 
-void CGameObject::AddComponent(CComponent* _Comonent)
+void CGameObject::AddComponent(CComponent* _Component)
 {
-	COMPONENT_TYPE type = _Comonent->GetType();
+	COMPONENT_TYPE type = _Component->GetType();
 
 	if (type == COMPONENT_TYPE::SCRIPT)
 	{		
 		// Script 타입 Component 가 실제로 Script 클래스가 아닌 경우
-		assert(dynamic_cast<CScript*>(_Comonent));
+		assert(dynamic_cast<CScript*>(_Component));
 
-		m_vecScript.push_back((CScript*)_Comonent);
-		_Comonent->m_Owner = this;
+		m_vecScript.push_back((CScript*)_Component);
+		_Component->m_Owner = this;
 	}
 	else
 	{
 		// 이미 해당 타입의 컴포넌트를 보유하고 있는 경우 
 		assert(!m_arrCom[(UINT)type]);
 
-		m_arrCom[(UINT)type] = _Comonent;
-		_Comonent->m_Owner = this;
+		m_arrCom[(UINT)type] = _Component;
+		_Component->m_Owner = this;
 
-		CRenderComponent* pRenderCom = dynamic_cast<CRenderComponent*>(_Comonent);
+		CRenderComponent* pRenderCom = dynamic_cast<CRenderComponent*>(_Component);
 		if (nullptr != pRenderCom)
 		{
 			// 이미 한 종류 이상의 RenderComponent 를 보유하고 있는 경우
@@ -168,6 +170,32 @@ void CGameObject::AddComponent(CComponent* _Comonent)
 
 			m_RenderCom = pRenderCom;
 		}		
+	}
+}
+
+void CGameObject::DeleteComponent(COMPONENT_TYPE _Type)
+{
+	if (nullptr != m_arrCom[(UINT)_Type])
+	{
+		delete m_arrCom[(UINT)_Type];
+		m_arrCom[(UINT)_Type] = nullptr;
+
+		if (COMPONENT_TYPE::MESHRENDER == _Type || COMPONENT_TYPE::TILEMAP == _Type || COMPONENT_TYPE::PARTICLESYSTEM == _Type
+			|| COMPONENT_TYPE::DECAL == _Type || COMPONENT_TYPE::SKYBOX == _Type)
+		{
+			m_RenderCom = nullptr;
+		}
+	}
+}
+
+void CGameObject::DeleteScript(CScript* _Script)
+{
+	auto iter = find(m_vecScript.begin(), m_vecScript.end(), _Script);
+	
+	if (iter != m_vecScript.end())
+	{
+		delete (*iter);
+		m_vecScript.erase(iter);
 	}
 }
 

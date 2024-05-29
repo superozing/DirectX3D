@@ -8,7 +8,7 @@
 #include <Engine/CLevel.h>
 #include <Engine/CGameObject.h>
 
-#include <Engine\CRenderMgr.h>
+#include <Engine/CRenderMgr.h>
 #include <Engine/CPathMgr.h>
 
 #include "imgui.h"
@@ -21,6 +21,7 @@
 #include "MenuUI.h"
 #include "ListUI.h"
 #include "RTViewPort.h"
+#include "LogUI.h"
 
 #include "ParamUI.h"
 
@@ -126,6 +127,9 @@ void CImGuiMgr::init(HWND _hMainWnd, ComPtr<ID3D11Device> _Device
 
 
 
+
+    RTViewPort* pViewport = (RTViewPort*)CImGuiMgr::GetInst()->FindUI("##Viewport");
+    pViewport->SetCamera(CRenderMgr::GetInst()->GetEditorCam());
 }
 
 void CImGuiMgr::progress()
@@ -178,6 +182,20 @@ FOCUS_STATE CImGuiMgr::GetFocus_release()
     else
     {
         return FOCUS_STATE::NONE;
+    }
+}
+
+void CImGuiMgr::begin()
+{
+    Outliner* pOutlinerUI = (Outliner*)FindUI("##Outliner");
+
+    if (pOutlinerUI)
+    {
+        pOutlinerUI->ResetCurrentLevel();
+    }
+    else
+    {
+        MessageBox(nullptr, L"Outliner 초기화 실패", L"초기화 실패", MB_OK);
     }
 }
 
@@ -285,6 +303,10 @@ void CImGuiMgr::create_ui()
 
     // Viewport
     pUI = new RTViewPort;
+    AddUI(pUI->GetID(), pUI);
+
+    // Log
+    pUI = new LogUI;
     AddUI(pUI->GetID(), pUI);
 }
 

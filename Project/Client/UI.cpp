@@ -2,7 +2,9 @@
 #include "UI.h"
 
 #include "CImGuiMgr.h"
-
+#include "Inspector.h"
+#include "ComponentUI.h"
+#include "ScriptUI.h"
 
 UI::UI(const string& _strName, const string& _strID)
 	: m_strName(_strName)
@@ -226,13 +228,42 @@ bool UI::ColorSelector(const char* _label, Vec4* _col)
 
 void UI::HeaderSetting(UI* _SelectedHeader)
 {
-	if (ImGui::MenuItem("Delete Component", ""))
+	assert(nullptr != dynamic_cast<ComponentUI*>(_SelectedHeader));
+
+	COMPONENT_TYPE Type = dynamic_cast<ComponentUI*>(_SelectedHeader)->GetType();
+
+	if (COMPONENT_TYPE::SCRIPT != Type)
 	{
-		DeleteComponent();
+		if (COMPONENT_TYPE::TRANSFORM == Type)
+			ImGui::BeginDisabled();
+
+		if (ImGui::MenuItem("Delete Component", ""))
+		{
+			DeleteHeaderComponent(Type);
+		}
+
+		if (COMPONENT_TYPE::TRANSFORM == Type)
+			ImGui::EndDisabled();
+	}
+	else
+	{
+		ScriptUI* pScript = dynamic_cast<ScriptUI*>(_SelectedHeader);
+
+		if (ImGui::MenuItem("Delete Script", ""))
+		{
+			DeleteHeaderScript(pScript);
+		}
 	}
 }
 
-void UI::DeleteComponent()
+void UI::DeleteHeaderComponent(COMPONENT_TYPE _Type)
 {
+	Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
+	pInspector->DeleteTargetComponent(_Type);
+}
 
+void UI::DeleteHeaderScript(ScriptUI* _ScriptUI)
+{
+	Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
+	pInspector->DeleteTargetScript(_ScriptUI);
 }

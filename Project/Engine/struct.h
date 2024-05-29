@@ -53,6 +53,21 @@ struct tPixel
 	BYTE r, g, b, a;
 };
 
+// 광선 구조체
+struct tRay
+{
+	Vec3 vStart;
+	Vec3 vDir;
+};
+
+// Raycast 결과를 받을 구조체
+struct tRaycastOut
+{
+	Vec2	vUV;
+	float	fDist;
+	int		bSuccess;
+};
+
 struct tParticle
 {
 	Vec4	vLocalPos;		// 로컬 위치
@@ -174,9 +189,23 @@ struct tGlobalData
 {
 	Vec2	g_RenderResolution;	// 렌더링 해상도
 	Vec2	g_NoiseTexResolution;
+
 	float	g_dt;				// Delta Time
 	float	g_time;				// 누적 시간
+
+	float	g_EngineDT;			// Engine Delta Time
+	float	g_EngineTime;		// Engine 누적 시간
+
 	int		g_Light2DCount;		// 2D 광원 개수
 	int		g_Light3DCount;		// 3D 광원 개수	
+
+	Vec2	padding;
 };
 extern tGlobalData g_global;
+
+struct tLog
+{
+	double		m_dTime;
+	Log_Level	m_LogLv;
+	string		m_strMsg;
+};
