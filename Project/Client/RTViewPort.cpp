@@ -212,6 +212,7 @@ void RTViewPort::SetTargetObject(CGameObject* _target)
 
 void RTViewPort::SetTargetCamera(CCamera* _camera)
 {
+    if(_camera != nullptr)
     m_pCamera = _camera->GetOwner();
 }
 
