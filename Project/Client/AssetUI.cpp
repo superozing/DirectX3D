@@ -96,10 +96,26 @@ void AssetUI::CreateAssetInstance(Ptr<CAsset> _Asset)
 		++num;
 	}
 
-	CAsset* pNewAsset = _Asset->Clone();
-	pNewAsset->SetName(szPath);
-	pNewAsset->Save(szPath);
-	GamePlayStatic::AddAsset(pNewAsset);
+	ASSET_TYPE type = _Asset->GetType();
+	CAsset* pNewAsset = nullptr;
+	switch (type)
+	{
+	case ASSET_TYPE::MATERIAL:
+		_Asset->Save(szPath);
+		pNewAsset = new CMaterial;
+		pNewAsset->Load(szPath);
+		GamePlayStatic::AddAsset(pNewAsset);
+		break;
+	case ASSET_TYPE::GRAPHICS_SHADER:
+		_Asset->Save(szPath);
+		pNewAsset = new CGraphicsShader;
+		pNewAsset->Load(szPath);
+		GamePlayStatic::AddAsset(pNewAsset);
+		break;
+	default:
+		MessageBox(nullptr, L"지원하지 않는 기능입니다", L"지원하지 않는 기능입니다", MB_OK);
+		break;
+	}
 }
 
 void AssetUI::ChangeAssetName(const string& _OriginRelativePath, const string& _NewRelativePath)
