@@ -165,6 +165,9 @@ void CLandScape::Raycasting()
 
 #define TagFaceX "[FaceX]"
 #define TagFaceZ "[FaceZ]"
+#define TagTessDivede "[TessDivide]"
+#define TagMatMatrix "[TessFactor]"
+#define TagHeightMapTex "[HeighMapTex]"
 
 void CLandScape::SaveToFile(ofstream& fout)
 {
@@ -173,6 +176,20 @@ void CLandScape::SaveToFile(ofstream& fout)
 
 	fout << TagFaceZ << endl;
 	fout << m_FaceZ << endl;
+
+	fout << TagTessDivede << endl;
+	fout << m_TessDivide.x << " " << m_TessDivide.y << " " << m_TessDivide.z << " " << m_TessDivide.w << endl;
+
+	fout << TagMatMatrix << endl;
+	fout << m_matEdgeTessFactor._11 << " " << m_matEdgeTessFactor._12 << " " << m_matEdgeTessFactor._13 << " " << m_matEdgeTessFactor._14 << endl;
+	fout << m_matEdgeTessFactor._21 << " " << m_matEdgeTessFactor._22 << " " << m_matEdgeTessFactor._23 << " " << m_matEdgeTessFactor._24 << endl;
+	fout << m_matEdgeTessFactor._31 << " " << m_matEdgeTessFactor._32 << " " << m_matEdgeTessFactor._33 << " " << m_matEdgeTessFactor._34 << endl;
+	fout << m_matEdgeTessFactor._41 << " " << m_matEdgeTessFactor._42 << " " << m_matEdgeTessFactor._43 << " " << m_matEdgeTessFactor._44 << endl;
+
+	fout << TagHeightMapTex << endl;
+	SaveAssetRef(m_HeightMapTex, fout);
+
+
 }
 
 void CLandScape::LoadFromFile(ifstream& fin)
@@ -182,6 +199,18 @@ void CLandScape::LoadFromFile(ifstream& fin)
 
 	Utils::GetLineUntilString(fin, TagFaceZ);
 	fin >> m_FaceZ;
+
+	Utils::GetLineUntilString(fin, TagTessDivede);
+	fin >> m_TessDivide.x >> m_TessDivide.y >> m_TessDivide.z >> m_TessDivide.w;
+
+	Utils::GetLineUntilString(fin, TagMatMatrix);
+	fin >> m_matEdgeTessFactor._11 >> m_matEdgeTessFactor._12 >> m_matEdgeTessFactor._13 >> m_matEdgeTessFactor._14;
+	fin >> m_matEdgeTessFactor._21 >> m_matEdgeTessFactor._22 >> m_matEdgeTessFactor._23 >> m_matEdgeTessFactor._24;
+	fin >> m_matEdgeTessFactor._31 >> m_matEdgeTessFactor._32 >> m_matEdgeTessFactor._33 >> m_matEdgeTessFactor._34;
+	fin >> m_matEdgeTessFactor._41 >> m_matEdgeTessFactor._42 >> m_matEdgeTessFactor._43 >> m_matEdgeTessFactor._44;
+
+	Utils::GetLineUntilString(fin, TagHeightMapTex);
+	LoadAssetRef(m_HeightMapTex, fin);
 }
 
 void CLandScape::SetLandScapeFace(UINT face, bool bXaxis)

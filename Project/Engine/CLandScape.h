@@ -13,7 +13,7 @@ private:
     UINT                    m_FaceZ;
 
     Vec4                    m_TessDivide;       // 각 edge, inside 분할 횟수(pow로 계산됨)
-    Matrix                  m_matEdgeTessFactor;// landscape.fx의 GetTessFactor 함수에 들어감
+    Matrix                  m_matEdgeTessFactor;// landscape.fx의 GetTessFactor 함수에 들어감 // min lv, max lv, min distance, max distance
 
     Vec2                    m_BrushScale;       // 브러쉬 크기(전체 지형대비 크기 비율값)
     Ptr<CTexture>           m_BrushTex;         // 브러쉬용 텍스쳐
