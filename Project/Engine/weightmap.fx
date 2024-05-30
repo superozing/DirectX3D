@@ -22,6 +22,8 @@ StructuredBuffer<tRaycastOut> LOCATION   : register(t16); // 브러쉬 위치(좌상단 
 
 #define WEIGHT_IDX  g_int_3    // 올릴 가중치 위치
 
+#define WeightPower g_float_0 // 가중치 계수
+
 [numthreads(32, 32, 1)]
 void CS_WeightMap (int3 _iThreadID : SV_DispatchThreadID)
 {
@@ -53,7 +55,7 @@ void CS_WeightMap (int3 _iThreadID : SV_DispatchThreadID)
     float arrWeight[4] = WEIGHT_MAP[iIdx].arrWeight;
 
     // 증가량
-    float fAdd = g_EngineDT * vBrushColor.a * 2.f;
+    float fAdd = g_EngineDT * vBrushColor.a * WeightPower;
     
     // 가중치를 올리고, 나머지 부위를 비율에 맞추어 내린다.
     arrWeight[WEIGHT_IDX] = saturate(arrWeight[WEIGHT_IDX] + fAdd);

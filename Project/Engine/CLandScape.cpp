@@ -63,8 +63,7 @@ void CLandScape::finaltick()
 			// 교점 위치정보를 토대로 높이를 수정 함
 			m_CSHeightMap->SetInputBuffer(m_CrossBuffer);	// 픽킹 정보를 HeightMapShader 에 세팅
 
-			m_CSHeightMap->SetBrushTex(m_BrushTex);			// 사용할 브러쉬 텍스쳐 세팅
-			m_CSWeightMap->SetBrushArrTex(m_BrushTex);			
+			m_CSHeightMap->SetBrushTex(m_BrushTex);			// 사용할 브러쉬 텍스쳐 세팅			
 			m_CSHeightMap->SetBrushIndex(0);				// 브러쉬 인덱스 설정
 			m_CSHeightMap->SetBrushScale(m_BrushScale);		// 브러쉬 크기
 			m_CSHeightMap->SetHeightMap(m_HeightMapTex);
@@ -80,7 +79,7 @@ void CLandScape::finaltick()
 			m_CSWeightMap->SetBrushArrTex(m_BrushTex);
 			m_CSWeightMap->SetBrushIndex(0);
 			m_CSWeightMap->SetBrushScale(m_BrushScale); // 브러쉬 크기
-			m_CSHeightMap->SetBrushPow(m_fBrushPow);
+			m_CSWeightMap->SetBrushPow(m_fBrushPow);
 			m_CSWeightMap->SetWeightMap(m_WeightMapBuffer, m_WeightWidth, m_WeightHeight); // 가중치맵, 가로 세로 개수
 			m_CSWeightMap->SetWeightIdx(m_WeightIdx);
 			m_CSWeightMap->Execute();
