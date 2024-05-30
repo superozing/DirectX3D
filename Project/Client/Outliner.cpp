@@ -57,6 +57,9 @@ void Outliner::render_update()
 
 void Outliner::ResetCurrentLevel()
 {
+	unordered_map<std::string, bool> stateMap;
+	SaveNodeState(m_Tree->GetRootNode(), stateMap);
+
 	// 트리 내용을 삭제
 	m_Tree->ClearNode();
 
@@ -88,7 +91,7 @@ void Outliner::ResetCurrentLevel()
 		AddObjectToTree(pEditorRootNode, vecEditorObj[i]);
 	}
 
-
+	RestoreNodeState(m_Tree->GetRootNode(), stateMap);
 }
 
 void Outliner::AddObjectToTree(TreeNode* _Node, CGameObject* _Object)
@@ -152,4 +155,34 @@ void Outliner::DragDropObject(DWORD_PTR _Dest, DWORD_PTR _Source)
 	}
 
 	ResetCurrentLevel();
+}
+
+void Outliner::SaveNodeState(TreeNode* _Node, unordered_map<string, bool>& _StateMap)
+{
+	if (nullptr == _Node)
+		return;
+
+	_StateMap[_Node->GetName()] = _Node->m_bOpen;
+
+	for (auto& child : _Node->GetChildNode())
+	{
+		SaveNodeState(child, _StateMap);
+	}
+}
+
+void Outliner::RestoreNodeState(TreeNode* _Node, const unordered_map<string, bool>& _StateMap)
+{
+	if (nullptr == _Node)
+		return;
+
+	auto it = _StateMap.find(_Node->GetName());
+	if (it != _StateMap.end())
+	{
+		_Node->m_bOpen = it->second;
+	}
+
+	for (auto& child : _Node->GetChildNode())
+	{
+		RestoreNodeState(child, _StateMap);
+	}
 }

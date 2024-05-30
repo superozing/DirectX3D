@@ -5,6 +5,7 @@
 
 TreeNode::TreeNode()
 	: m_bFrame(false)
+	, m_bOpen(false)
 {
 }
 
@@ -13,10 +14,12 @@ TreeNode::~TreeNode()
 	Delete_Vec(m_vecChildNode);
 }
 
+
 void TreeNode::GenericTreeRender(UINT _flag, const string& _id)
 {
 	if (ImGui::TreeNodeEx(_id.c_str(), _flag))
 	{
+		m_bOpen = true;
 		if (ImGui::BeginDragDropSource())
 		{
 			ImGui::SetDragDropPayload(m_Owner->GetID().c_str(), &m_Data, sizeof(DWORD_PTR));
@@ -47,6 +50,7 @@ void TreeNode::GenericTreeRender(UINT _flag, const string& _id)
 
 		for (size_t i = 0; i < m_vecChildNode.size(); ++i)
 		{
+			ImGui::SetNextItemOpen(m_vecChildNode[i]->m_bOpen);
 			m_vecChildNode[i]->render_update();
 		}
 
@@ -54,6 +58,7 @@ void TreeNode::GenericTreeRender(UINT _flag, const string& _id)
 	}
 	else
 	{
+		m_bOpen = false;
 		if (ImGui::BeginDragDropSource())
 		{
 			ImGui::SetDragDropPayload(m_Owner->GetID().c_str(), &m_Data, sizeof(DWORD_PTR));
@@ -72,6 +77,7 @@ void TreeNode::GenericTreeRender(UINT _flag, const string& _id)
 		}
 	}
 }
+
 void TreeNode::ImageListRender(UINT _flag, const string& _id)
 {
 	string treeId =  _id;
@@ -203,6 +209,8 @@ void TreeNode::render_update()
 	if (m_bSelected)
 		Flag |= ImGuiTreeNodeFlags_Selected;
 
+	ImGui::SetNextItemOpen(m_bOpen);
+
 	if (m_bFrame && m_vecChildNode.empty())
 		strID = "   " + strID;
 
@@ -324,7 +332,7 @@ TreeNode* TreeUI::AddTreeNode(TreeNode* _Parent, string _strName, DWORD_PTR _dwD
 	{
 		_Parent->AddChildNode(pNewNode);
 	}
-
+	
 	pNewNode->m_Owner = this;
 
 	return pNewNode;

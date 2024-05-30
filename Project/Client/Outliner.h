@@ -1,7 +1,7 @@
-#pragma once
+ï»¿#pragma once
 #include "UI.h"
 
-// ÇöÀç ·¹º§¿¡ ÀÖ´Â ¸ğµç ¿ÀºêÁ§Æ®µé ³ª¿­
+// í˜„ì¬ ë ˆë²¨ì— ìˆëŠ” ëª¨ë“  ì˜¤ë¸Œì íŠ¸ë“¤ ë‚˜ì—´
 
 class TreeUI;
 class TreeNode;
@@ -11,6 +11,7 @@ class Outliner :
 {
 private:
     TreeUI*     m_Tree;
+    unordered_map<string, bool> m_NodeOpenStates; // ë…¸ë“œ ì—´ë¦¼ ìƒíƒœ ì €ì¥
 
 public:
     virtual void render_update() override;
@@ -23,6 +24,9 @@ private:
     void AddObjectToTree(TreeNode* _Node, CGameObject* _Object);
     void SelectObject(DWORD_PTR _Node);
     void DragDropObject(DWORD_PTR _Dest, DWORD_PTR _Source);
+
+    void SaveNodeState(TreeNode* _Node, unordered_map<string, bool>& _StateMap);
+    void RestoreNodeState(TreeNode* _Node,const unordered_map<string, bool>& _StateMap);
 
 public:
     Outliner();
