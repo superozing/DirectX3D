@@ -21,6 +21,8 @@
 #define                     TileTexArrSize                  g_float_0   // 배열 개수
 #define                     WeightMapResolution             g_vec2_0    // 가중치 버퍼 해상도
 #define                     CamWorldPos                     g_vec4_0.xyz // 카메라 월드 좌표
+
+#define                     EdgePowCOunt                    g_vec4_1    // 각 edge를 분할하는 횟수(x,y,z) ,w = inside 
 StructuredBuffer<float4> WEIGHT_MAP : register(t17); // 가중치 버퍼
 // =======================================
 struct VS_IN
@@ -79,10 +81,10 @@ PatchLevel PatchConstFunc(InputPatch<VS_OUT, 3> _in, uint patchID : SV_Primitive
     float3 vCamWorldPos = CamWorldPos;
     vCamWorldPos.y = 0.f;
     
-    output.arrEdge[0] = pow(2, (int) GetTessFactor(distance(vCamWorldPos, vUpDown), 1, 4, 1000.f, 4000.f));
-    output.arrEdge[1] = pow(2, (int) GetTessFactor(distance(vCamWorldPos, vLeftRight), 1, 4, 1000.f, 4000.f));
-    output.arrEdge[2] = pow(2, (int) GetTessFactor(distance(vCamWorldPos, vSlide), 1, 4, 1000.f, 4000.f));
-    output.Inside = pow(2, (int) GetTessFactor(distance(vCamWorldPos, vMid), 1, 4, 1000.f, 4000.f));
+    output.arrEdge[0] = pow(EdgePowCOunt.x, (int) GetTessFactor(distance(vCamWorldPos, vUpDown), 1, 4, 1000.f, 4000.f));
+    output.arrEdge[1] = pow(EdgePowCOunt.y, (int) GetTessFactor(distance(vCamWorldPos, vLeftRight), 1, 4, 1000.f, 4000.f));
+    output.arrEdge[2] = pow(EdgePowCOunt.z, (int) GetTessFactor(distance(vCamWorldPos, vSlide), 1, 4, 1000.f, 4000.f));
+    output.Inside = pow(EdgePowCOunt.w, (int) GetTessFactor(distance(vCamWorldPos, vMid), 1, 4, 1000.f, 4000.f));
     
     return output;
 }

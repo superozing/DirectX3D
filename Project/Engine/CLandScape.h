@@ -12,6 +12,8 @@ private:
     UINT                    m_FaceX;
     UINT                    m_FaceZ;
 
+    Vec4                    m_TessDevide;
+
     Vec2                    m_BrushScale;       // 브러쉬 크기(전체 지형대비 크기 비율값)
     Ptr<CTexture>           m_BrushTex;         // 브러쉬용 텍스쳐
     float                   m_fBrushPow;
@@ -53,6 +55,9 @@ public:
     UINT GetLandScapeFaceX() { return m_FaceX; }
     UINT GetLandScapeFaceZ() { return m_FaceZ; }
     void SetLandScapeFace(UINT face, bool bXaxis);
+
+    Vec4 GetTessDevide() { return m_TessDevide; }
+    void SetTessDevide(Vec4 _DevideParam) { m_TessDevide = _DevideParam; }
 
     void SetLandScapeMode(LANDSCAPE_MODE _Mode) { m_Mode = _Mode; }
 

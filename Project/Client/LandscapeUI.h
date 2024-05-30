@@ -21,7 +21,6 @@ public:
     virtual void ResetUIinfo() override;
     
     void GetLandScapeFileName();
-    void SetChangeTessFactor(Vec4* _mtrlparam, float* changevalue);
 
 public:
     LandScapeUI();

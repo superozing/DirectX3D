@@ -12,6 +12,7 @@ CLandScape::CLandScape()
 	: CRenderComponent(COMPONENT_TYPE::LANDSCAPE)
 	, m_FaceX(64)
 	, m_FaceZ(64)
+	, m_TessDevide(1.f)
 	, m_BrushScale(Vec2(0.5f, 0.5f))
 	, m_CrossBuffer(nullptr)
 	, m_bTessDir(true)
@@ -71,9 +72,9 @@ void CLandScape::finaltick()
 			m_CSWeightMap->SetBrushArrTex(m_BrushTex);
 			m_CSWeightMap->SetBrushIndex(0);
 			m_CSWeightMap->SetBrushScale(m_BrushScale); // 브러쉬 크기
+			m_CSHeightMap->SetBrushPow(m_fBrushPow);
 			m_CSWeightMap->SetWeightMap(m_WeightMapBuffer, m_WeightWidth, m_WeightHeight); // 가중치맵, 가로 세로 개수
 			m_CSWeightMap->SetWeightIdx(m_WeightIdx);
-			m_CSHeightMap->SetTesDir(m_bTessDir);
 			m_CSWeightMap->Execute();
 		}
 
@@ -96,6 +97,7 @@ void CLandScape::UpdateData()
 
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, m_FaceX);
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_1, m_FaceZ);
+	GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC4_1, m_TessDevide);
 	GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_HeightMapTex);
 	GetMaterial()->GetShader()->SetRSType(RS_TYPE::WIRE_FRAME);
 

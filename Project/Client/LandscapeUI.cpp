@@ -118,13 +118,13 @@ void LandScapeUI::render_update()
 
 	}
 	
-	static Vector4* TessFactor = (Vector4*)(m_pTargetObjMtrl->GetScalarParam(SCALAR_PARAM::VEC4_0));
-	float fTessFactor[4] = { (float)TessFactor->x, (float)TessFactor->y, (float)TessFactor->z, (float)TessFactor->w };
+	Vector4 TessFactor = GetTargetObject()->LandScape()->GetTessDevide();
+	float fTessFactor[4] = { TessFactor.x, TessFactor.y, TessFactor.z, TessFactor.w };
 
 	ImGui::Text("Tess Factor"); ImGui::SameLine();
 	ImGui::DragFloat4("##Tess Factor", fTessFactor);
 
-	SetChangeTessFactor(TessFactor, fTessFactor);
+	GetTargetObject()->LandScape()->SetTessDevide(Vec4(fTessFactor[0] , fTessFactor[1], fTessFactor[2], fTessFactor[3]));
 
 	ImGui::Spacing();
 
@@ -244,13 +244,5 @@ void LandScapeUI::GetLandScapeFileName()
 
 }
 
-void LandScapeUI::SetChangeTessFactor(Vec4* _mtrlparam, float* changevalue)
-{
-	_mtrlparam->x = changevalue[0];
-	_mtrlparam->y = changevalue[1];
-	_mtrlparam->z = changevalue[2];
-	_mtrlparam->w = changevalue[3];
-
-}
 
 
