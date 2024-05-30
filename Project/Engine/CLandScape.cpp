@@ -12,7 +12,8 @@ CLandScape::CLandScape()
 	: CRenderComponent(COMPONENT_TYPE::LANDSCAPE)
 	, m_FaceX(64)
 	, m_FaceZ(64)
-	, m_TessDevide(1.f)
+	, m_TessDivide(1.f)
+	, m_matEdgeTessFactor{}
 	, m_BrushScale(Vec2(0.5f, 0.5f))
 	, m_CrossBuffer(nullptr)
 	, m_bTessDir(true)
@@ -20,6 +21,13 @@ CLandScape::CLandScape()
 	, m_Mode(LANDSCAPE_MODE::NONE)
 {
 	Init();
+
+	XMFLOAT4 row1 = XMFLOAT4(1.f, 4.f, 1000.f, 4000.f);
+	XMFLOAT4 row2 = XMFLOAT4(1.f, 4.f, 1000.f, 4000.f);
+	XMFLOAT4 row3 = XMFLOAT4(1.f, 4.f, 1000.f, 4000.f);
+	XMFLOAT4 row4 = XMFLOAT4(1.f, 4.f, 1000.f, 4000.f);
+	m_matEdgeTessFactor = Matrix(row1, row2, row3, row4);
+
 }
 
 CLandScape::~CLandScape()
@@ -97,7 +105,8 @@ void CLandScape::UpdateData()
 
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, m_FaceX);
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_1, m_FaceZ);
-	GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC4_1, m_TessDevide);
+	GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC4_1, m_TessDivide);
+	GetMaterial()->SetScalarParam(SCALAR_PARAM::MAT_0, m_matEdgeTessFactor);
 	GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_HeightMapTex);
 	GetMaterial()->GetShader()->SetRSType(RS_TYPE::WIRE_FRAME);
 

@@ -20,6 +20,7 @@ LandScapeUI::LandScapeUI()
 	, m_vecHeightTextureKey()
 	, m_vecBrushTextureKey()
 	, m_vecLanderScapeMode()
+	, m_matTessFactor{}
 {
 	GetLandScapeFileName();
 
@@ -43,6 +44,8 @@ void LandScapeUI::render_update()
 	static const char* charHeightMap = NULL;
 	static const char* charBrush = NULL;
 	static const char* charLandScapeMode = NULL;
+
+	m_matTessFactor = GetTargetObject()->LandScape()->GetEdgeTexFactor();
 
 	static float fImageSize[2];
 	fImageSize[0] = GetTargetObject()->LandScape()->GetHeightMapTex()->GetWidth();
@@ -118,15 +121,90 @@ void LandScapeUI::render_update()
 
 	}
 	
-	Vector4 TessFactor = GetTargetObject()->LandScape()->GetTessDevide();
-	float fTessFactor[4] = { TessFactor.x, TessFactor.y, TessFactor.z, TessFactor.w };
+	Vector4 TessDivide = GetTargetObject()->LandScape()->GetTessDivide();
+	float fTessFactor[4] = { TessDivide.x, TessDivide.y, TessDivide.z, TessDivide.w };
 
-	ImGui::Text("Tess Factor"); ImGui::SameLine();
+	ImGui::Text("Tess Divide"); ImGui::SameLine();
 	ImGui::DragFloat4("##Tess Factor", fTessFactor);
 
-	GetTargetObject()->LandScape()->SetTessDevide(Vec4(fTessFactor[0] , fTessFactor[1], fTessFactor[2], fTessFactor[3]));
+	GetTargetObject()->LandScape()->SetTessDivide(Vec4(fTessFactor[0] , fTessFactor[1], fTessFactor[2], fTessFactor[3]));
 
 	ImGui::Spacing();
+
+	ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
+
+
+	if (ImGui::BeginTabBar("MyTabBar", tab_bar_flags))
+	{
+		if (ImGui::BeginTabItem("Edge[0]"))
+		{
+
+			ImGui::Text("Min Level"); ImGui::SameLine();
+			ImGui::InputFloat("##Edge[0]MinLevel", &m_matTessFactor._11, 1.f);
+
+			ImGui::Text("Max Level"); ImGui::SameLine();
+			ImGui::InputFloat("##Edge[0]MaxLevel", &m_matTessFactor._12, 1.f);
+
+			ImGui::Text("Min Dist"); ImGui::SameLine();
+			ImGui::InputFloat("##Edge[0]MinDist", &m_matTessFactor._13);
+
+			ImGui::Text("Max Dist"); ImGui::SameLine();
+			ImGui::InputFloat("##Edge[0]MaxDist", &m_matTessFactor._14);
+
+			ImGui::EndTabItem();
+		}
+		if (ImGui::BeginTabItem("Edge[1]"))
+		{
+			ImGui::Text("Min Level"); ImGui::SameLine();
+			ImGui::InputFloat("##Edge[1]MinLevel", &m_matTessFactor._21, 1.f);
+
+			ImGui::Text("Max Level"); ImGui::SameLine();
+			ImGui::InputFloat("##Edge[1]MaxLevel", &m_matTessFactor._22, 1.f);
+
+			ImGui::Text("Min Dist"); ImGui::SameLine();
+			ImGui::InputFloat("##Edge[1]MinDist", &m_matTessFactor._23);
+
+			ImGui::Text("Max Dist"); ImGui::SameLine();
+			ImGui::InputFloat("##Edge[1]MaxDist", &m_matTessFactor._24);
+			
+			ImGui::EndTabItem();
+		}
+		if (ImGui::BeginTabItem("Edge[2]"))
+		{
+			ImGui::Text("Min Level"); ImGui::SameLine();
+			ImGui::InputFloat("##Edge[2]MinLevel", &m_matTessFactor._31, 1.f);
+
+			ImGui::Text("Max Level"); ImGui::SameLine();
+			ImGui::InputFloat("##Edge[2]MaxLevel", &m_matTessFactor._32, 1.f);
+
+			ImGui::Text("Min Dist"); ImGui::SameLine();
+			ImGui::InputFloat("##Edge[2]MinDist", &m_matTessFactor._33);
+
+			ImGui::Text("Max Dist"); ImGui::SameLine();
+			ImGui::InputFloat("##Edge[2]MaxDist", &m_matTessFactor._34);
+			
+			ImGui::EndTabItem();
+		}
+		if (ImGui::BeginTabItem("Inside"))
+		{
+			ImGui::Text("Min Level"); ImGui::SameLine();
+			ImGui::InputFloat("##InsideMinLevel", &m_matTessFactor._41, 1.f);
+
+			ImGui::Text("Max Level"); ImGui::SameLine();
+			ImGui::InputFloat("##InsideMaxLevel", &m_matTessFactor._42, 1.f);
+
+			ImGui::Text("Min Dist"); ImGui::SameLine();
+			ImGui::InputFloat("##InsideMinDist", &m_matTessFactor._43);
+
+			ImGui::Text("Max Dist"); ImGui::SameLine();
+			ImGui::InputFloat("##InsideMaxDist", &m_matTessFactor._44);
+			
+			ImGui::EndTabItem();
+		}
+		ImGui::EndTabBar();
+	}
+
+	GetTargetObject()->LandScape()->SetEdgeTexFactor(m_matTessFactor);
 
 	// 랜드 스케이프 변형 ui
 
@@ -180,7 +258,7 @@ void LandScapeUI::render_update()
 		ImGui::EndCombo();
 	}
 
-	ImGui::Text("Brush Scale");
+	ImGui::Text("Brush Scale"); ImGui::SameLine();
 	
 	ImGui::DragFloat2("##Brush Scale", fBrushSize, 1.0f, 0.0f, FLT_MAX);
 	vecBrushScale.x = fBrushSize[0];  vecBrushScale.y = fBrushSize[1];

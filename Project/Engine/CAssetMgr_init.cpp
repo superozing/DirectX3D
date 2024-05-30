@@ -907,7 +907,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->CreateDomainShader(L"shader\\landscape.fx", "DS_LandScape");
 	pShader->CreatePixelShader(L"shader\\landscape.fx", "PS_LandScape");
 
-	pShader->AddScalarParam(SCALAR_PARAM::VEC4_1, "Tess Devide");
+	pShader->AddScalarParam(SCALAR_PARAM::VEC4_1, "Tess Divide");
 	pShader->AddScalarParam(SCALAR_PARAM::FLOAT_0, "Tess Power");
 
 

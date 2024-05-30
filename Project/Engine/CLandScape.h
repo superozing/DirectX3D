@@ -12,7 +12,8 @@ private:
     UINT                    m_FaceX;
     UINT                    m_FaceZ;
 
-    Vec4                    m_TessDevide;
+    Vec4                    m_TessDivide;       // 각 edge, inside 분할 횟수(pow로 계산됨)
+    Matrix                  m_matEdgeTessFactor;// landscape.fx의 GetTessFactor 함수에 들어감
 
     Vec2                    m_BrushScale;       // 브러쉬 크기(전체 지형대비 크기 비율값)
     Ptr<CTexture>           m_BrushTex;         // 브러쉬용 텍스쳐
@@ -56,8 +57,11 @@ public:
     UINT GetLandScapeFaceZ() { return m_FaceZ; }
     void SetLandScapeFace(UINT face, bool bXaxis);
 
-    Vec4 GetTessDevide() { return m_TessDevide; }
-    void SetTessDevide(Vec4 _DevideParam) { m_TessDevide = _DevideParam; }
+    Vec4 GetTessDivide() { return m_TessDivide; }
+    void SetTessDivide(Vec4 _DevideParam) { m_TessDivide = _DevideParam; }
+
+    Matrix GetEdgeTexFactor() {return m_matEdgeTessFactor;}
+    void SetEdgeTexFactor(Matrix _mat) { m_matEdgeTessFactor = _mat; }
 
     void SetLandScapeMode(LANDSCAPE_MODE _Mode) { m_Mode = _Mode; }
 

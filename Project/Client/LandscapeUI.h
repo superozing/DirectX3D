@@ -3,6 +3,7 @@
 
 class CLandScape;
 
+
 class LandScapeUI :
     public ComponentUI
 {
@@ -11,6 +12,8 @@ private:
     vector<string> m_vecHeightTextureKey;
     vector<string> m_vecBrushTextureKey;
     vector<string> m_vecLanderScapeMode;
+
+    Matrix m_matTessFactor;
 
 
     Ptr<CMaterial> m_pTargetObjMtrl;
