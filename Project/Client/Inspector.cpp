@@ -114,6 +114,12 @@ void Inspector::render_update()
 	}
 }
 
+void Inspector::enter()
+{
+	ResetTargetObject();
+	ResetTargetAsset();
+}
+
 void Inspector::SetTargetObject(CGameObject* _Object, bool _bPrefab)
 {
 	// Target 오브젝트 설정

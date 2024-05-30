@@ -55,6 +55,11 @@ void Outliner::render_update()
 	}
 }
 
+void Outliner::enter()
+{
+	ResetCurrentLevel();
+}
+
 void Outliner::ResetCurrentLevel()
 {
 	// 트리 내용을 삭제

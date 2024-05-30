@@ -1,7 +1,7 @@
-#pragma once
+ï»¿#pragma once
 #include "UI.h"
 
-// ÇöÀç ·¹º§¿¡ ÀÖ´Â ¸ğµç ¿ÀºêÁ§Æ®µé ³ª¿­
+// í˜„ì¬ ë ˆë²¨ì— ìˆëŠ” ëª¨ë“  ì˜¤ë¸Œì íŠ¸ë“¤ ë‚˜ì—´
 
 class TreeUI;
 class TreeNode;
@@ -14,6 +14,8 @@ private:
 
 public:
     virtual void render_update() override;
+    virtual void enter() override;
+
     TreeUI* GetTree() { return m_Tree; }
 
 public:

@@ -24,6 +24,7 @@ public:
 public:
     virtual void tick() override;
     virtual void render_update() override;
+    virtual void enter() override;
 
 public:
     RTViewPort();
