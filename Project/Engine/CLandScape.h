@@ -54,6 +54,8 @@ public:
     UINT GetLandScapeFaceZ() { return m_FaceZ; }
     void SetLandScapeFace(UINT face, bool bXaxis);
 
+    void SetLandScapeMode(LANDSCAPE_MODE _Mode) { m_Mode = _Mode; }
+
     void Raycasting();
 
 private:

@@ -42,6 +42,7 @@ void LandScapeUI::render_update()
 	// 사전 준비
 	static const char* charHeightMap = NULL;
 	static const char* charBrush = NULL;
+	static const char* charLandScapeMode = NULL;
 
 	static float fImageSize[2];
 	fImageSize[0] = GetTargetObject()->LandScape()->GetHeightMapTex()->GetWidth();
@@ -60,6 +61,8 @@ void LandScapeUI::render_update()
 	fBrushPow = GetTargetObject()->LandScape()->GetBrushPow();
 
 	static bool bTexup = true;
+
+	 
 
 	//동적 재질은 현재 play일때만 얻어올 수 있다.
 	if (CLevelMgr::GetInst()->GetCurrentLevel()->GetState() == LEVEL_STATE::PLAY)
@@ -130,6 +133,28 @@ void LandScapeUI::render_update()
 	StaticButton(string("LandScape Edit"), STATIC_BTN_TYPE::SUBTITLE);
 
 	ImGui::Image(GetTargetObject()->LandScape()->GetBrushTex()->GetSRV().Get(), ImVec2(ImGui::GetWindowSize().x, 150.f), uv_min, uv_max, tint_col, border_col);
+
+	ImGui::Text("LandScape Mode "); ImGui::SameLine();
+
+	if (ImGui::BeginCombo("##ComboLandScapeMode", charLandScapeMode))
+	{
+		for (int n = 0; n < m_vecLanderScapeMode.size(); n++)
+		{
+			bool is_selected = (charLandScapeMode == m_vecLanderScapeMode[n].c_str());
+			if (ImGui::Selectable(m_vecLanderScapeMode[n].c_str(), is_selected))
+			{
+				charLandScapeMode = m_vecLanderScapeMode[n].c_str();
+
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+
+				GetTargetObject()->LandScape()->SetLandScapeMode((LANDSCAPE_MODE)n);
+			
+			}
+		}
+		ImGui::EndCombo();
+	}
+
 
 	ImGui::Text("Brush Texture "); ImGui::SameLine();
 
