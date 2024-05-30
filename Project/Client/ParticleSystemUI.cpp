@@ -32,7 +32,7 @@ void ParticleSystemUI::render_update()
 	tParticleModule CurModule = pPS->GetParticleModule();
 	tParticleModule NewModule = CurModule;
 
-	static const char* charParticleTex = NULL;
+	static string strParticleTex = ToString(GetTargetObject()->ParticleSystem()->GetParticleTex().Get()->GetKey());
 
 
 
@@ -51,14 +51,14 @@ void ParticleSystemUI::render_update()
 	ImGui::Text("Texture");
 	ImGui::SameLine();
 
-	if (ImGui::BeginCombo("##ComboParticle", charParticleTex))
+	if (ImGui::BeginCombo("##ComboParticle", strParticleTex.c_str()))
 	{
 		for (int n = 0; n < m_vecParticleKey.size(); n++)
 		{
-			bool is_selected = (charParticleTex == m_vecParticleKey[n].c_str());
+			bool is_selected = (strParticleTex == m_vecParticleKey[n]);
 			if (ImGui::Selectable(m_vecParticleKey[n].c_str(), is_selected))
 			{
-				charParticleTex = m_vecParticleKey[n].c_str();
+				strParticleTex = m_vecParticleKey[n];
 
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
