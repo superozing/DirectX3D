@@ -20,8 +20,8 @@ void SkyBoxUI::render_update()
 	if (!TitleCollapse("SkyBox")) return;
 
 	// 기본 세팅
-	Ptr<CTexture> pSphereTex = GetTargetObject()->SkyBox()->GetSphereTex();
-	Ptr<CTexture> pCubeTex = GetTargetObject()->SkyBox()->GetCubeTex();
+	Ptr<CTexture> pSphereTex = GetTargetObject()->SkyBox()->m_SphereTex;
+	Ptr<CTexture> pCubeTex = GetTargetObject()->SkyBox()->m_CubeTex;
 
 	ImVec2 SkyBoxUISize = ImGui::GetContentRegionAvail();
 
@@ -34,7 +34,7 @@ void SkyBoxUI::render_update()
 
 	ImGui::PushStyleColor(ImGuiCol_CheckMark, ImVec4(1.f, 1.f, 1.f, 1.f));
 	
-	static int iSkyBoxType = (UINT)(GetTargetObject()->SkyBox()->GetSkyBoxType());
+	static int iSkyBoxType = (UINT)(GetTargetObject()->SkyBox()->m_SkyBoxType);
 	
 	if (ImGui::RadioButton("Sphere Type", &iSkyBoxType, 0))
 	{
