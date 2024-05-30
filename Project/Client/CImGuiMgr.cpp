@@ -333,15 +333,9 @@ void CImGuiMgr::observe_content()
 
         // InspectorUI Reload
         Inspector* pInspectorUI = (Inspector*)FindUI("##Inspector");
-        
-        for (int i = 0; i < (UINT)COMPONENT_TYPE::END; ++i)
-        {
-            ComponentUI* pUI = pInspectorUI->GetComponentUI((COMPONENT_TYPE)i);
-           
-            if(pUI!= nullptr)
-            pUI->ResetUIinfo();
-        }
-           
+        pInspectorUI->ResetComponent();
+       
+      
     }
 }
 

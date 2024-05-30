@@ -55,6 +55,7 @@ public:
 
     ComponentUI* GetComponentUI(COMPONENT_TYPE ComType);
 
+    void ResetComponent();
 
 private:
     void CreateChildUI();
