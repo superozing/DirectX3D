@@ -12,7 +12,7 @@ CLandScape::CLandScape()
 	: CRenderComponent(COMPONENT_TYPE::LANDSCAPE)
 	, m_FaceX(64)
 	, m_FaceZ(64)
-	, m_BrushScale(Vec2(0.1f, 0.1f))
+	, m_BrushScale(Vec2(0.5f, 0.5f))
 	, m_CrossBuffer(nullptr)
 	, m_bTessDir(true)
 	, m_fBrushPow(0.2f)
@@ -97,6 +97,7 @@ void CLandScape::UpdateData()
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, m_FaceX);
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_1, m_FaceZ);
 	GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_HeightMapTex);
+	GetMaterial()->GetShader()->SetRSType(RS_TYPE::WIRE_FRAME);
 
 	// 가중치 버퍼 전달
 	m_WeightMapBuffer->UpdateData(17);
@@ -112,6 +113,11 @@ void CLandScape::UpdateData()
 	float m_fTileCount = float(m_TileArrTex->GetArraySize() / 2); // 색상, 노말 합쳐져 있어서 2를 나눈다.
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::FLOAT_0, m_fTileCount);
 
+	// Camera World Pos 전달
+	Vec3 vCamWorldPos = CRenderMgr::GetInst()->GetMainCam()->Transform()->GetWorldPos();
+	GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC4_0, vCamWorldPos);
+
+	// 재질정보 바인딩
 	GetMaterial()->UpdateData();
 }
 
