@@ -5,14 +5,6 @@
 #include "CRaycastShader.h"
 #include "CWeightMapShader.h"
 
-enum class LANDSCAPE_MODE
-{
-    HEIGHT_MAP,
-    SPLAT,
-    NONE,
-};
-
-
 class CLandScape :
     public CRenderComponent
 {

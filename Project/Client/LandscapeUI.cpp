@@ -19,8 +19,16 @@ LandScapeUI::LandScapeUI()
 	: ComponentUI("LandScapeUI", "##LandScapeUI", COMPONENT_TYPE::LANDSCAPE)
 	, m_vecHeightTextureKey()
 	, m_vecBrushTextureKey()
+	, m_vecLanderScapeMode()
 {
 	GetLandScapeFileName();
+
+	for (int i = 0; i < int(LANDSCAPE_MODE::NONE) + 1; ++i)
+	{
+		m_vecLanderScapeMode.push_back(ToString(magic_enum::enum_name((LANDSCAPE_MODE)i)));
+	}
+	
+	int d = 0;
 }
 
 LandScapeUI::~LandScapeUI()

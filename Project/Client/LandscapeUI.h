@@ -10,6 +10,8 @@ private:
     
     vector<string> m_vecHeightTextureKey;
     vector<string> m_vecBrushTextureKey;
+    vector<string> m_vecLanderScapeMode;
+
 
     Ptr<CMaterial> m_pTargetObjMtrl;
 
