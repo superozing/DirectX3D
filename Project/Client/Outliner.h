@@ -11,7 +11,6 @@ class Outliner :
 {
 private:
     TreeUI*     m_Tree;
-    unordered_map<string, bool> m_NodeOpenStates; // 노드 열림 상태 저장
 
 public:
     virtual void render_update() override;

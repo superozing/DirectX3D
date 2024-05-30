@@ -57,7 +57,7 @@ void Outliner::render_update()
 
 void Outliner::ResetCurrentLevel()
 {
-	unordered_map<std::string, bool> stateMap;
+	unordered_map<string, bool> stateMap;
 	SaveNodeState(m_Tree->GetRootNode(), stateMap);
 
 	// 트리 내용을 삭제
