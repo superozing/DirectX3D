@@ -41,9 +41,9 @@ void LandScapeUI::render_update()
 	if (!TitleCollapse("LandScape")) return;
 
 	// 사전 준비
-	static const char* charHeightMap = NULL;
-	static const char* charBrush = NULL;
-	static const char* charLandScapeMode = NULL;
+	static string strHeightMap = ToString(GetTargetObject()->LandScape()->GetHeightMapTex().Get()->GetKey());
+	static string strBrush = ToString(GetTargetObject()->LandScape()->GetBrushTex().Get()->GetKey());
+	static string strLandScapeMode = ToString(magic_enum::enum_name(GetTargetObject()->LandScape()->GetLandScapeMode()));
 
 	m_matTessFactor = GetTargetObject()->LandScape()->GetEdgeTexFactor();
 
@@ -88,14 +88,14 @@ void LandScapeUI::render_update()
 
 	ImGui::Text("Height Map Texture "); ImGui::SameLine();
 
-	if (ImGui::BeginCombo("##ComboHeightMap", charHeightMap))
+	if (ImGui::BeginCombo("##ComboHeightMap", strHeightMap.c_str()))
 	{
 		for (int n = 0; n < m_vecHeightTextureKey.size(); n++)
 		{
-			bool is_selected = (charHeightMap == m_vecHeightTextureKey[n].c_str());
+			bool is_selected = (strHeightMap == m_vecHeightTextureKey[n]);
 			if (ImGui::Selectable(m_vecHeightTextureKey[n].c_str(), is_selected))
 			{
-				charHeightMap = m_vecHeightTextureKey[n].c_str();
+				strHeightMap = m_vecHeightTextureKey[n];
 
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
@@ -221,14 +221,14 @@ void LandScapeUI::render_update()
 
 	ImGui::Text("LandScape Mode "); ImGui::SameLine();
 
-	if (ImGui::BeginCombo("##ComboLandScapeMode", charLandScapeMode))
+	if (ImGui::BeginCombo("##ComboLandScapeMode", strLandScapeMode.c_str()))
 	{
 		for (int n = 0; n < m_vecLanderScapeMode.size(); n++)
 		{
-			bool is_selected = (charLandScapeMode == m_vecLanderScapeMode[n].c_str());
+			bool is_selected = (strLandScapeMode == m_vecLanderScapeMode[n]);
 			if (ImGui::Selectable(m_vecLanderScapeMode[n].c_str(), is_selected))
 			{
-				charLandScapeMode = m_vecLanderScapeMode[n].c_str();
+				strLandScapeMode = m_vecLanderScapeMode[n];
 
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
@@ -243,14 +243,14 @@ void LandScapeUI::render_update()
 
 	ImGui::Text("Brush Texture "); ImGui::SameLine();
 
-	if (ImGui::BeginCombo("##ComboBrushTex", charBrush))
+	if (ImGui::BeginCombo("##ComboBrushTex", strBrush.c_str()))
 	{
 		for (int n = 0; n < m_vecBrushTextureKey.size(); n++)
 		{
-			bool is_selected = (charBrush == m_vecBrushTextureKey[n].c_str());
+			bool is_selected = (strBrush == m_vecBrushTextureKey[n]);
 			if (ImGui::Selectable(m_vecBrushTextureKey[n].c_str(), is_selected))
 			{
-				charBrush = m_vecBrushTextureKey[n].c_str();
+				strBrush = m_vecBrushTextureKey[n];
 
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();

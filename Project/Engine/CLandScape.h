@@ -63,6 +63,7 @@ public:
     Matrix GetEdgeTexFactor() {return m_matEdgeTessFactor;}
     void SetEdgeTexFactor(Matrix _mat) { m_matEdgeTessFactor = _mat; }
 
+    LANDSCAPE_MODE GetLandScapeMode() { return m_Mode; }
     void SetLandScapeMode(LANDSCAPE_MODE _Mode) { m_Mode = _Mode; }
 
     void Raycasting();
