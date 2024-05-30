@@ -55,10 +55,12 @@ void CLandScape::finaltick()
 			m_CSHeightMap->SetInputBuffer(m_CrossBuffer);	// 픽킹 정보를 HeightMapShader 에 세팅
 
 			m_CSHeightMap->SetBrushTex(m_BrushTex);			// 사용할 브러쉬 텍스쳐 세팅
+			m_CSWeightMap->SetBrushArrTex(m_BrushTex);			
 			m_CSHeightMap->SetBrushIndex(0);				// 브러쉬 인덱스 설정
 			m_CSHeightMap->SetBrushScale(m_BrushScale);		// 브러쉬 크기
 			m_CSHeightMap->SetHeightMap(m_HeightMapTex);
 			m_CSHeightMap->SetBrushPow(m_fBrushPow);
+			m_CSHeightMap->SetTesDir(m_bTessDir);
 			m_CSHeightMap->Execute();
 		}
 
