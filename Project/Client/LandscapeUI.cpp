@@ -124,6 +124,11 @@ void LandScapeUI::render_update()
 	Vector4 TessDivide = GetTargetObject()->LandScape()->GetTessDivide();
 	float fTessFactor[4] = { TessDivide.x, TessDivide.y, TessDivide.z, TessDivide.w };
 
+	ImGui::Spacing();
+
+	// land scape factor 설정
+	StaticButton(string("LandScape Factor"), STATIC_BTN_TYPE::SUBTITLE);
+
 	ImGui::Text("Tess Divide"); ImGui::SameLine();
 	ImGui::DragFloat4("##Tess Factor", fTessFactor);
 
@@ -205,6 +210,8 @@ void LandScapeUI::render_update()
 	}
 
 	GetTargetObject()->LandScape()->SetEdgeTexFactor(m_matTessFactor);
+
+	ImGui::Spacing();
 
 	// 랜드 스케이프 변형 ui
 
