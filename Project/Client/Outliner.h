@@ -18,6 +18,7 @@ public:
 
 public:
     void ResetCurrentLevel();
+    void CollapseAllNode();
 
 private:
     void AddObjectToTree(TreeNode* _Node, CGameObject* _Object);
@@ -26,6 +27,7 @@ private:
 
     void SaveNodeState(TreeNode* _Node, unordered_map<string, bool>& _StateMap);
     void RestoreNodeState(TreeNode* _Node,const unordered_map<string, bool>& _StateMap);
+    void CollapseNode(TreeNode* _Node);
 
 public:
     Outliner();

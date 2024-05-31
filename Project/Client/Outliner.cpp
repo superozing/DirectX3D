@@ -19,6 +19,8 @@
 Outliner::Outliner()
 	: UI("Outliner", "##Outliner")
 {
+	AddOutlinerFilter();
+
 	m_Tree = new TreeUI("OutlinerTree");
 	m_Tree->ShowRootNode(false);
 	m_Tree->UseDragDrop(true);
@@ -39,6 +41,13 @@ Outliner::~Outliner()
 
 void Outliner::render_update()
 {
+	if (ImGui::Button("Collapse All"))
+	{
+		CollapseAllNode();
+	}
+
+	ImGui::Separator();
+
 	if (CTaskMgr::GetInst()->GetObjectEvent())
 	{
 		ResetCurrentLevel();
@@ -92,6 +101,11 @@ void Outliner::ResetCurrentLevel()
 	}
 
 	RestoreNodeState(m_Tree->GetRootNode(), stateMap);
+}
+
+void Outliner::CollapseAllNode()
+{
+	CollapseNode(m_Tree->GetRootNode());
 }
 
 void Outliner::AddObjectToTree(TreeNode* _Node, CGameObject* _Object)
@@ -184,5 +198,18 @@ void Outliner::RestoreNodeState(TreeNode* _Node, const unordered_map<string, boo
 	for (auto& child : _Node->GetChildNode())
 	{
 		RestoreNodeState(child, _StateMap);
+	}
+}
+
+void Outliner::CollapseNode(TreeNode* _Node)
+{
+	if (_Node == nullptr)
+		return;
+
+	_Node->m_bOpen = false;
+
+	for (auto& child : _Node->GetChildNode())
+	{
+		CollapseNode(child);
 	}
 }
