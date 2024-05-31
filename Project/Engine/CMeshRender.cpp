@@ -24,9 +24,9 @@ CMeshRender::~CMeshRender()
 
 void CMeshRender::UpdateData()
 {
-	if (nullptr != GetMaterial())
+	if (nullptr != GetMaterial(0))
 	{
-		GetMaterial()->UpdateData();
+		GetMaterial(0)->UpdateData();
 	}
 
 	Transform()->UpdateData();
@@ -43,7 +43,7 @@ void CMeshRender::finaltick()
 
 void CMeshRender::render()
 {
-	if (nullptr == GetMesh() || nullptr == GetMaterial())
+	if (nullptr == GetMesh() || nullptr == GetMaterial(0))
 		return;
 
 	if (Animator2D())
@@ -57,5 +57,5 @@ void CMeshRender::render()
 
 	UpdateData();
 
-	GetMesh()->render();
+	GetMesh()->render(0);
 }
