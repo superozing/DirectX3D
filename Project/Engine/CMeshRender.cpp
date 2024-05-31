@@ -24,12 +24,7 @@ CMeshRender::~CMeshRender()
 
 void CMeshRender::UpdateData()
 {
-	if (nullptr != GetMaterial(0))
-	{
-		GetMaterial(0)->UpdateData();
-	}
 
-	Transform()->UpdateData();
 }
 
 void CMeshRender::finaltick()
@@ -43,7 +38,7 @@ void CMeshRender::finaltick()
 
 void CMeshRender::render()
 {
-	if (nullptr == GetMesh() || nullptr == GetMaterial(0))
+	if (nullptr == GetMesh())
 		return;
 
 	if (Animator2D())
@@ -55,7 +50,15 @@ void CMeshRender::render()
 		Animator2D()->Clear();
 	}
 
-	UpdateData();
+	Transform()->UpdateData();
 
-	GetMesh()->render(0);
+	// 메쉬의 모든 부위를 렌더링한다.
+	for (UINT i = 0; i < GetMesh()->GetSubsetCount(); ++i)
+	{
+		if (nullptr == GetMaterial(i))
+			continue;
+
+		GetMaterial(i)->UpdateData();
+		GetMesh()->render(i);
+	}
 }
