@@ -6,6 +6,7 @@
 TreeNode::TreeNode()
 	: m_bFrame(false)
 	, m_bOpen(false)
+	, m_bFilter(false)
 {
 }
 
@@ -17,6 +18,9 @@ TreeNode::~TreeNode()
 
 void TreeNode::GenericTreeRender(UINT _flag, const string& _id)
 {
+	if (!m_bFilter)
+		return;
+
 	if (ImGui::TreeNodeEx(_id.c_str(), _flag))
 	{
 		m_bOpen = true;

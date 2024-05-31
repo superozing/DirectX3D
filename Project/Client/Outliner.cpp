@@ -18,9 +18,8 @@
 
 Outliner::Outliner()
 	: UI("Outliner", "##Outliner")
+	, m_Filter()
 {
-	AddOutlinerFilter();
-
 	m_Tree = new TreeUI("OutlinerTree");
 	m_Tree->ShowRootNode(false);
 	m_Tree->UseDragDrop(true);
@@ -41,6 +40,8 @@ Outliner::~Outliner()
 
 void Outliner::render_update()
 {
+	m_Filter.Draw("##NodeFilter");
+
 	if (ImGui::Button("Collapse All"))
 	{
 		CollapseAllNode();
@@ -62,6 +63,8 @@ void Outliner::render_update()
 			GamePlayStatic::DestroyGameObject(pSelectObj);
 		}
 	}
+
+	IsFilteredNode(m_Tree->GetRootNode());
 }
 
 void Outliner::ResetCurrentLevel()
@@ -211,5 +214,33 @@ void Outliner::CollapseNode(TreeNode* _Node)
 	for (auto& child : _Node->GetChildNode())
 	{
 		CollapseNode(child);
+	}
+}
+
+bool Outliner::IsFilteredNode(TreeNode* _Node)
+{
+	if (m_Filter.IsActive())
+	{
+		bool bFilter = m_Filter.PassFilter(_Node->GetName().c_str());
+
+		for (auto& child : _Node->GetChildNode())
+		{
+			bFilter |= IsFilteredNode(child);
+		}
+
+		_Node->SetFilterState(bFilter);
+
+		return bFilter;
+	}
+	else
+	{
+		_Node->SetFilterState(true);
+
+		for (auto& child : _Node->GetChildNode())
+		{
+			IsFilteredNode(child);
+		}
+
+		return true;
 	}
 }

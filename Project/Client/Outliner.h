@@ -11,6 +11,7 @@ class Outliner :
 {
 private:
     TreeUI*     m_Tree;
+    ImGuiTextFilter m_Filter;
 
 public:
     virtual void render_update() override;
@@ -28,6 +29,8 @@ private:
     void SaveNodeState(TreeNode* _Node, unordered_map<string, bool>& _StateMap);
     void RestoreNodeState(TreeNode* _Node,const unordered_map<string, bool>& _StateMap);
     void CollapseNode(TreeNode* _Node);
+
+    bool IsFilteredNode(TreeNode* _Node);
 
 public:
     Outliner();

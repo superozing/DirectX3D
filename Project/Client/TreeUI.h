@@ -17,6 +17,7 @@ private:
     bool                m_bFrame;
     bool                m_bSelected;
     bool                m_bOpen;
+    bool                m_bFilter;
 
 public:
     void SetName(string& _Name) { m_Name = _Name; }    
@@ -24,6 +25,9 @@ public:
 
     void SetOpen(bool _Open) { m_bOpen = _Open; }
     bool IsOpen() { return m_bOpen; }
+
+    void SetFilterState(bool _Filter) { m_bFilter = _Filter; }
+    bool IsFiltered() { return m_bFilter; }
 
     const string& GetName() { return m_Name; }
     DWORD_PTR GetData() { return m_Data; }
