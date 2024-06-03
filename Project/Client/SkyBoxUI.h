@@ -19,8 +19,10 @@ public:
     
     void GetSkyBoxFileName();
 
+    static void PayloadCubeEvent(CAsset* _Asset, ASSET_TYPE _Type, CGameObject* _Object);
+    static void PayloadSphereEvent(CAsset* _Asset, ASSET_TYPE _Type, CGameObject* _Object);
+
 public:
     SkyBoxUI();
     ~SkyBoxUI();
 };
-

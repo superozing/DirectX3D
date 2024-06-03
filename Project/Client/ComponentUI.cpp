@@ -49,7 +49,7 @@ void ComponentUI::SetTargetObject(CGameObject* _Target)
 	}
 }
 
-void ComponentUI::CheckPayLoadData(ASSET_TYPE _Type, int iFuncArrNum)
+void ComponentUI::CheckPayLoadData(ASSET_TYPE _Type, int iFuncArrNum, CGameObject* _TargetObj)
 {
 	if (ImGui::BeginDragDropTarget())
 	{
@@ -58,10 +58,20 @@ void ComponentUI::CheckPayLoadData(ASSET_TYPE _Type, int iFuncArrNum)
 		{
 			DWORD_PTR data = *((DWORD_PTR*)payload->Data);
 			CAsset* pAsset = (CAsset*)data;
-		
-			m_vecPayloadEvent[iFuncArrNum](pAsset, _Type);
+
+			// 등록된 함수 호출
+			m_vecPayloadEvent[iFuncArrNum](pAsset, _Type, _TargetObj);
+
 		}
 
 		ImGui::EndDragDropTarget();
 	}
+}
+
+
+void ComponentUI::AddPayLoadEvent(SetPayloadEvent _Func)
+{
+
+	m_vecPayloadEvent.push_back(_Func);
+
 }

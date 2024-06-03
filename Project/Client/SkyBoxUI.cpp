@@ -9,6 +9,7 @@ SkyBoxUI::SkyBoxUI()
 	SetComponentTitle("SkyBox");
 
 	GetSkyBoxFileName();
+
 }
 
 SkyBoxUI::~SkyBoxUI()
@@ -28,6 +29,12 @@ void SkyBoxUI::render_update()
 	static const char* cSelectSphere = NULL;
 	static const char* cSelectCube = NULL;
 
+	if(m_vecPayloadEvent.size() != 2)
+	{ 
+		AddPayLoadEvent(PayloadSphereEvent);
+		AddPayLoadEvent(PayloadCubeEvent);
+
+	}
 	// 타입 선택
 	ImGui::Text("SkyBoxType");
 	ImGui::SameLine();
@@ -102,6 +109,8 @@ void SkyBoxUI::render_update()
 
 	if (ImGui::BeginCombo("##comboSkyBoxSphere", cSelectSphere))
 	{
+
+
 		for (int n = 0; n < m_vecSkyBoxKey.size(); n++)
 		{
 			bool is_selected = (cSelectSphere == m_vecSkyBoxKey[n].c_str()); 
@@ -122,6 +131,8 @@ void SkyBoxUI::render_update()
 		ImGui::EndCombo();
 	}
 
+	CheckPayLoadData(ASSET_TYPE::TEXTURE, 0, this->GetTargetObject());
+
 
 	ImGui::Spacing();
 
@@ -140,10 +151,12 @@ void SkyBoxUI::render_update()
 		//ImGui::Image(pCubeTex->GetSRV().Get(), ImVec2(SkyBoxUISize.x, 150), uv_min, uv_max, tint_col, border_col);
 		
 		m_strTextureName[1] = ToString(pCubeTex.Get()->GetKey());
+		char* CubeKey = (char*)m_strTextureName[1].c_str();
+
 
 		ImGui::Text("Texture Key  ");
 		ImGui::SameLine();
-		ImGui::InputText("##Texture Key Cube", (char*)m_strTextureName->c_str(), m_strTextureName->length(), ImGuiInputTextFlags_ReadOnly);
+		ImGui::InputText("##Texture Key Cube", CubeKey, m_strTextureName->length(), ImGuiInputTextFlags_ReadOnly);
 
 
 		// 해상도 정보 출력
@@ -196,6 +209,8 @@ void SkyBoxUI::render_update()
 		ImGui::EndCombo();
 	}
 
+	CheckPayLoadData(ASSET_TYPE::TEXTURE, 1, this->GetTargetObject());
+
 }
 
 void SkyBoxUI::ResetUIinfo()
@@ -221,4 +236,17 @@ void SkyBoxUI::GetSkyBoxFileName()
 	}
 
 	m_vecSkyBoxKey = strFileName;
+}
+
+void SkyBoxUI::PayloadCubeEvent(CAsset* _Asset, ASSET_TYPE _Type, CGameObject* _Object)
+{
+	if (_Asset->GetType() == _Type)
+		_Object->SkyBox()->m_CubeTex = (CTexture*)_Asset;
+
+}
+
+void SkyBoxUI::PayloadSphereEvent(CAsset* _Asset, ASSET_TYPE _Type, CGameObject* _Object)
+{
+	if (_Asset->GetType() == _Type)
+		_Object->SkyBox()->m_SphereTex = (CTexture*)_Asset;
 }

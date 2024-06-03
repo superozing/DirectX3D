@@ -3,7 +3,7 @@
 
 #include <Engine/CGameObject.h>
 
-typedef void(*SetPayloadEvent)(CAsset*, ASSET_TYPE);
+typedef void (*SetPayloadEvent)(CAsset*, ASSET_TYPE, CGameObject*);
 
 class ComponentUI :
     public UI
@@ -11,10 +11,10 @@ class ComponentUI :
 private:
     CGameObject*    m_TargetObject;
     COMPONENT_TYPE  m_Type;
-
     string          m_ComponentTitle;
 
 protected:
+
     vector<SetPayloadEvent> m_vecPayloadEvent;
 
 public:
@@ -27,8 +27,9 @@ public:
     void SetComponentTitle(const string& _title) { m_ComponentTitle = _title; }
     COMPONENT_TYPE GetType() { return m_Type; }
     
-    void CheckPayLoadData(ASSET_TYPE _Type , int iFuncArrNum);
-    void AddPayloadEvent(SetPayloadEvent _Event) { m_vecPayloadEvent.push_back(_Event); }
+    void CheckPayLoadData(ASSET_TYPE _Type , int iFuncArrNum, CGameObject* _TargetObj);
+    virtual void ActivePayLoadEvent(CAsset* pAsset, ASSET_TYPE _Type ,CGameObject* Obj) {};
+    void AddPayLoadEvent(SetPayloadEvent _Func);
 
 public:
     ComponentUI(const string& _strName, const string& _ID, COMPONENT_TYPE _Type);
