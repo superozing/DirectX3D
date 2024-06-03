@@ -344,6 +344,14 @@ struct tWeight_4
 	float arrWeight[4];
 };
 
+enum class LANDSCAPE_MODE
+{
+	HEIGHT_MAP,
+	SPLAT,
+	NONE,
+};
+
+
 enum class Log_Level
 {
 	INFO = 1,

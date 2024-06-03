@@ -168,8 +168,10 @@
     <ClInclude Include="ComponentUI.h" />
     <ClInclude Include="ComputeShaderUI.h" />
     <ClInclude Include="Content.h" />
+    <ClInclude Include="LandscapeUI.h" />
     <ClInclude Include="ImGuizmo.h" />
     <ClInclude Include="Light3DUI.h" />
+    <ClInclude Include="ParticleSystemUI.h" />
     <ClInclude Include="LogUI.h" />
     <ClInclude Include="ScriptUI.h" />
     <ClInclude Include="CTraceState.h" />
@@ -197,6 +199,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="PrefabUI.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SkyBoxUI.h" />
     <ClInclude Include="SoundUI.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TextureUI.h" />
@@ -219,9 +222,11 @@
     <ClCompile Include="ComponentUI.cpp" />
     <ClCompile Include="ComputeShaderUI.cpp" />
     <ClCompile Include="Content.cpp" />
+    <ClCompile Include="LandscapeUI.cpp" />
     <ClCompile Include="ImGuizmo.cpp" />
     <ClCompile Include="Light3DUI.cpp" />
     <ClCompile Include="LogUI.cpp" />
+    <ClCompile Include="ParticleSystemUI.cpp" />
     <ClCompile Include="ScriptUI.cpp" />
     <ClCompile Include="CTraceState.cpp" />
     <ClCompile Include="FSMUI.cpp" />
@@ -250,6 +255,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="PrefabUI.cpp" />
+    <ClCompile Include="SkyBoxUI.cpp" />
     <ClCompile Include="SoundUI.cpp" />
     <ClCompile Include="TextureUI.cpp" />
     <ClCompile Include="TransformUI.cpp" />

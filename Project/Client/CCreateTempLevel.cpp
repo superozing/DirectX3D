@@ -149,19 +149,33 @@ void CCreateTempLevel::CreateTempLevel()
 
 
 	// LandScape Object 생성
-	//CGameObject* LandScape = new CGameObject;
-	//LandScape->SetName(L"LandScape");
-	//
-	//LandScape->AddComponent(new CTransform);
-	//LandScape->AddComponent(new CLandScape);
-	//
-	//LandScape->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
-	//LandScape->Transform()->SetRelativeScale(Vec3(200.f, 1000.f, 200.f));
-	//
+	CGameObject* LandScape = new CGameObject;
+	LandScape->SetName(L"LandScape");
+	
+	LandScape->AddComponent(new CTransform);
+	LandScape->AddComponent(new CLandScape);
+	
+	LandScape->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+	LandScape->Transform()->SetRelativeScale(Vec3(200.f, 1000.f, 200.f));
+	
 	//LandScape->LandScape()->SetHeightMap(CAssetMgr::GetInst()->Load<CTexture>(L"texture\\HeightMap\\HeightMap_01.jpg"));
-	//
-	//pTempLevel->AddObject(LandScape, (UINT)LAYER::LAYER_DEFAULT, false);
+	LandScape->LandScape()->SetHeightMap(CAssetMgr::GetInst()->FindAsset<CTexture>(L"HeightMapTex"));
 
+
+	pTempLevel->AddObject(LandScape, (UINT)LAYER::LAYER_DEFAULT, false);
+
+	// Particle Object
+	pObj = new CGameObject;
+	pObj->SetName(L"Particle Test");
+
+	pObj->AddComponent(new CTransform);
+	pObj->AddComponent(new CParticleSystem);
+
+	pObj->Transform()->SetRelativePos(Vec3(0.f, 200.f, 500.f));
+	pObj->Transform()->SetRelativeScale(Vec3(20.f, 20.f, 20.f));
+	pObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
+
+	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
 	// TimeMgr Object 생성
 	pObj = new CGameObject;

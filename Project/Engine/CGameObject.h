@@ -42,6 +42,7 @@ public:
     inline class CAnimator2D* Animator2D() { return (CAnimator2D*)m_arrCom[(UINT)COMPONENT_TYPE::ANIMATOR2D]; }
     inline class CLight2D* Light2D() { return (CLight2D*)m_arrCom[(UINT)COMPONENT_TYPE::LIGHT2D]; }
     inline class CLight3D* Light3D() { return (CLight3D*)m_arrCom[(UINT)COMPONENT_TYPE::LIGHT3D]; }
+    inline class CParticleSystem* ParticleSystem() { return (CParticleSystem*)m_arrCom[(UINT)COMPONENT_TYPE::PARTICLESYSTEM]; }
     inline class CTileMap* TileMap() { return (CTileMap*)m_arrCom[(UINT)COMPONENT_TYPE::TILEMAP]; }
     inline class CSkyBox* SkyBox() { return (CSkyBox*)m_arrCom[(UINT)COMPONENT_TYPE::SKYBOX]; }
     inline class CDecal* Decal() { return (CDecal*)m_arrCom[(UINT)COMPONENT_TYPE::DECAL]; }

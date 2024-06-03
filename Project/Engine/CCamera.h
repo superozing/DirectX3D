@@ -3,6 +3,8 @@
 
 #include "CFrustum.h"
 
+typedef Vec2(*ConvertCoord)();
+
 enum class PROJ_TYPE
 {
     ORTHOGRAPHIC, // 직교 투영
@@ -12,6 +14,9 @@ enum class PROJ_TYPE
 class CCamera :
     public CComponent
 {
+public:
+    static ConvertCoord            ViewportConvertFunc;
+
 private:
     CFrustum                m_Frustum;
 
