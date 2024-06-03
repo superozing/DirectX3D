@@ -230,6 +230,16 @@ bool Outliner::IsFilteredNode(TreeNode* _Node)
 
 		_Node->SetFilterState(bFilter);
 
+		if (bFilter)
+		{
+			TreeNode* ParentNode = _Node;
+			while (nullptr != ParentNode)
+			{
+				ParentNode->m_bOpen = true;
+				ParentNode = ParentNode->GetParent();
+			}
+		}
+
 		return bFilter;
 	}
 	else
