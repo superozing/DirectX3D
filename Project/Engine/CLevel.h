@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "CEntity.h"
 
 class CLayer;
@@ -26,6 +26,8 @@ public:
 
 	CGameObject* FindObjectByName(const wstring& _strName);
 	void FindObjectsByName(const wstring& _strName, vector<CGameObject*>& _vecObj);
+
+	void CheckObjectName(CGameObject* _Object);
 
 public:
 	void ChangeState(LEVEL_STATE _NextState);
