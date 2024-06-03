@@ -23,6 +23,12 @@ cbuffer TRANSFORM : register(b0)
 
 cbuffer MATERIAL_CONST : register(b1)
 {
+    // 재질 계수
+    float4 g_vDiff;
+    float4 g_vSpec;
+    float4 g_vAmb;
+    float4 g_vEmv;
+    
     bool g_bool_0;
     bool g_bool_1;
     bool g_bool_2;

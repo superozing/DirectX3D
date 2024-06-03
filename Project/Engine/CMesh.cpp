@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CMesh.h"
 
 #include "CDevice.h"
@@ -7,7 +7,6 @@ CMesh::CMesh(bool _Engine)
 	: CAsset(ASSET_TYPE::MESH, _Engine)
 	, m_VtxCount(0)
 	, m_VtxSysMem(nullptr)
-	, m_IdxSysMem(nullptr)
 {
 }
 
@@ -16,88 +15,168 @@ CMesh::~CMesh()
 	if (nullptr != m_VtxSysMem)
 		delete m_VtxSysMem;
 
-	if (nullptr != m_IdxSysMem)
-		delete m_IdxSysMem;
+	for (size_t i = 0; i < m_vecIdxInfo.size(); ++i)
+	{
+		if (nullptr != m_vecIdxInfo[i].pIdxSysMem)
+			delete m_vecIdxInfo[i].pIdxSysMem;
+	}
+}
+
+CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
+{
+	const tContainer* container = &_loader.GetContainer(0);
+
+	UINT iVtxCount = (UINT)container->vecPos.size();
+
+	D3D11_BUFFER_DESC tVtxDesc = {};
+
+	tVtxDesc.ByteWidth = sizeof(Vtx) * iVtxCount;
+	tVtxDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+
+	tVtxDesc.Usage = D3D11_USAGE_DEFAULT;
+	if (D3D11_USAGE_DYNAMIC == tVtxDesc.Usage)
+		tVtxDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+	D3D11_SUBRESOURCE_DATA tSub = {};
+	tSub.pSysMem = malloc(tVtxDesc.ByteWidth);
+	Vtx* pSys = (Vtx*)tSub.pSysMem;
+	for (UINT i = 0; i < iVtxCount; ++i)
+	{
+		pSys[i].vPos = container->vecPos[i];
+		pSys[i].vUV = container->vecUV[i];
+		pSys[i].vColor = Vec4(1.f, 0.f, 1.f, 1.f);
+		pSys[i].vNormal = container->vecNormal[i];
+		pSys[i].vTangent = container->vecTangent[i];
+		pSys[i].vBinormal = container->vecBinormal[i];
+		//pSys[i].vWeights = container->vecWeights[i];
+		//pSys[i].vIndices = container->vecIndices[i];
+	}
+
+	ComPtr<ID3D11Buffer> pVB = NULL;
+	if (FAILED(DEVICE->CreateBuffer(&tVtxDesc, &tSub, pVB.GetAddressOf())))
+	{
+		return NULL;
+	}
+
+	CMesh* pMesh = new CMesh;
+	pMesh->m_VB = pVB;
+	pMesh->m_VBDesc = tVtxDesc;
+	pMesh->m_VtxSysMem = pSys;
+
+	// ì¸ë±ìŠ¤ ì •ë³´
+	UINT iIdxBufferCount = (UINT)container->vecIdx.size();
+	D3D11_BUFFER_DESC tIdxDesc = {};
+
+	for (UINT i = 0; i < iIdxBufferCount; ++i)
+	{
+		tIdxDesc.ByteWidth = (UINT)container->vecIdx[i].size() * sizeof(UINT); // Index Format ì´ R32_UINT ì´ê¸° ë•Œë¬¸
+		tIdxDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+		tIdxDesc.Usage = D3D11_USAGE_DEFAULT;
+		if (D3D11_USAGE_DYNAMIC == tIdxDesc.Usage)
+			tIdxDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+		void* pSysMem = malloc(tIdxDesc.ByteWidth);
+		memcpy(pSysMem, container->vecIdx[i].data(), tIdxDesc.ByteWidth);
+		tSub.pSysMem = pSysMem;
+
+		ComPtr<ID3D11Buffer> pIB = nullptr;
+		if (FAILED(DEVICE->CreateBuffer(&tIdxDesc, &tSub, pIB.GetAddressOf())))
+		{
+			return NULL;
+		}
+
+		tIndexInfo info = {};
+		info.tIBDesc = tIdxDesc;
+		info.iIdxCount = (UINT)container->vecIdx[i].size();
+		info.pIdxSysMem = pSysMem;
+		info.pIB = pIB;
+
+		pMesh->m_vecIdxInfo.push_back(info);
+	}
+
+	return pMesh;
 }
 
 int CMesh::Create(void* _Vtx, UINT _VtxCount, void* _Idx, UINT _IdxCount)
 {
 	m_VtxCount = _VtxCount;
-	m_IdxCount = _IdxCount;
 
-	// ¹öÅØ½º ¹öÆÛ »ý¼º
+	// ë²„í…ìŠ¤ ë²„í¼ ìƒì„±
 	m_VBDesc = {};
 
 	m_VBDesc.ByteWidth = sizeof(Vtx) * _VtxCount;
 	m_VBDesc.StructureByteStride = sizeof(Vtx);
 	m_VBDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 
-	// ¹öÆÛ¿¡ µ¥ÀÌÅÍ ¾²±â °¡´É
+	// ë²„í¼ì— ë°ì´í„° ì“°ê¸° ê°€ëŠ¥
 	m_VBDesc.CPUAccessFlags = 0;
 	m_VBDesc.Usage = D3D11_USAGE_DEFAULT;
 
-	// g_Vtx ¹è¿­ÀÇ µ¥ÀÌÅÍ¸¦ ÃÊ±â µ¥ÀÌÅÍ·Î ¼³Á¤
+	// g_Vtx ë°°ì—´ì˜ ë°ì´í„°ë¥¼ ì´ˆê¸° ë°ì´í„°ë¡œ ì„¤ì •
 	D3D11_SUBRESOURCE_DATA tSubData = {};
 	tSubData.pSysMem = _Vtx;
 
-	// ¹öÅØ½º ¹öÆÛ »ý¼º
+	// ë²„í…ìŠ¤ ë²„í¼ ìƒì„±
 	if (FAILED(DEVICE->CreateBuffer(&m_VBDesc, &tSubData, m_VB.GetAddressOf())))
 	{
-		MessageBox(nullptr, L"¹öÅØ½º ¹öÆÛ »ý¼º ½ÇÆÐ", L"¿À·ù", MB_OK);
+		MessageBox(nullptr, L"ë²„í…ìŠ¤ ë²„í¼ ìƒì„± ì‹¤íŒ¨", L"ì˜¤ë¥˜", MB_OK);
 		return E_FAIL;
 	}
 
-	// ÀÎµ¦½º ¹öÆÛ »ý¼º
-	m_IBDesc = {};
+	// ì¸ë±ìŠ¤ ë²„í¼ ìƒì„±
+	tIndexInfo IndexInfo = {};
+	IndexInfo.iIdxCount = _IdxCount;
 
-	m_IBDesc.ByteWidth = sizeof(UINT) * _IdxCount;
-	m_IBDesc.StructureByteStride = sizeof(UINT);
-	m_IBDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	IndexInfo.tIBDesc.ByteWidth = sizeof(UINT) * _IdxCount;
 
-	// ¹öÆÛ¿¡ µ¥ÀÌÅÍ ¾²±â ºÒ°¡´É
-	m_IBDesc.CPUAccessFlags = 0;
-	m_IBDesc.Usage = D3D11_USAGE_DEFAULT;
+	// ë²„í¼ ìƒì„± ì´í›„ì—ë„, ë²„í¼ì˜ ë‚´ìš©ì„ ìˆ˜ì • í•  ìˆ˜ ìžˆëŠ” ì˜µì…˜
+	IndexInfo.tIBDesc.CPUAccessFlags = 0;
+	IndexInfo.tIBDesc.Usage = D3D11_USAGE::D3D11_USAGE_DEFAULT;
 
-	// g_Idx ¹è¿­ÀÇ µ¥ÀÌÅÍ¸¦ ÃÊ±â µ¥ÀÌÅÍ·Î ¼³Á¤
-	tSubData = {};
+	// ì •ì ì„ ì €ìž¥í•˜ëŠ” ëª©ì ì˜ ë²„í¼ ìž„ì„ ì•Œë¦¼
+	IndexInfo.tIBDesc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_INDEX_BUFFER;
+	IndexInfo.tIBDesc.MiscFlags = 0;
+	IndexInfo.tIBDesc.StructureByteStride = 0;
+
+	// ì´ˆê¸° ë°ì´í„°ë¥¼ ë„˜ê²¨ì£¼ê¸° ìœ„í•œ ì •ë³´ êµ¬ì¡°ì²´	
 	tSubData.pSysMem = _Idx;
 
-	// ÀÎµ¦½º ¹öÆÛ »ý¼º
-	if (FAILED(DEVICE->CreateBuffer(&m_IBDesc, &tSubData, m_IB.GetAddressOf())))
+	if (FAILED(DEVICE->CreateBuffer(&IndexInfo.tIBDesc, &tSubData, IndexInfo.pIB.GetAddressOf())))
 	{
-		MessageBox(nullptr, L"ÀÎµ¦½º ¹öÆÛ »ý¼º ½ÇÆÐ", L"¿À·ù", MB_OK);
-		return E_FAIL;
+		assert(nullptr);
 	}
 
-	// ¿øº» Á¤Á¡Á¤º¸ ¹× ÀÎµ¦½º Á¤º¸¸¦ µ¿ÀûÇÒ´çÇÑ °÷¿¡´Ù°¡ ÀúÀå½ÃÄÑµÎ°í °ü¸®
+	// ì›ë³¸ ì •ì ì •ë³´ ë° ì¸ë±ìŠ¤ ì •ë³´ë¥¼ ë™ì í• ë‹¹í•œ ê³³ì—ë‹¤ê°€ ì €ìž¥ì‹œì¼œë‘ê³  ê´€ë¦¬
 	m_VtxSysMem = new Vtx[m_VtxCount];
-	m_IdxSysMem = new UINT[m_IdxCount];
-	
-	memcpy(m_VtxSysMem, _Vtx, sizeof(Vtx) * m_VtxCount);
-	memcpy(m_IdxSysMem, _Idx, sizeof(UINT) * m_IdxCount);
+	IndexInfo.pIdxSysMem = new UINT[IndexInfo.iIdxCount];
 
-	return 0;
+	memcpy(m_VtxSysMem, _Vtx, sizeof(Vtx) * m_VtxCount);
+	memcpy(IndexInfo.pIdxSysMem, _Idx, sizeof(UINT) * IndexInfo.iIdxCount);
+
+	m_vecIdxInfo.push_back(IndexInfo);
+
+	return S_OK;
 }
 
-void CMesh::UpdateData()
+void CMesh::UpdateData(UINT _iSubset)
 {
 	UINT iStride = sizeof(Vtx);
 	UINT iOffset = 0;
 
 	CONTEXT->IASetVertexBuffers(0, 1, m_VB.GetAddressOf(), &iStride, &iOffset);
-	CONTEXT->IASetIndexBuffer(m_IB.Get(), DXGI_FORMAT_R32_UINT, 0);
+	CONTEXT->IASetIndexBuffer(m_vecIdxInfo[_iSubset].pIB.Get(), DXGI_FORMAT_R32_UINT, 0);
 }
 
-void CMesh::render()
+void CMesh::render(UINT _iSubset)
 {
-	UpdateData();
+	UpdateData(_iSubset);
 
-	CONTEXT->DrawIndexed(m_IdxCount, 0, 0);
+	CONTEXT->DrawIndexed(m_vecIdxInfo[_iSubset].iIdxCount, 0, 0);
 }
 
 void CMesh::render_asparticle(UINT _ParticleCount)
 {
-	UpdateData();
+	UpdateData(0);
 
-	CONTEXT->DrawIndexedInstanced(m_IdxCount, _ParticleCount, 0, 0, 0);
+	CONTEXT->DrawIndexedInstanced(m_vecIdxInfo[0].iIdxCount, _ParticleCount, 0, 0, 0);
 }
