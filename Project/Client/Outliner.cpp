@@ -19,6 +19,7 @@
 Outliner::Outliner()
 	: UI("Outliner", "##Outliner")
 	, m_Filter()
+	, m_CopyTarget(nullptr)
 {
 	m_Tree = new TreeUI("OutlinerTree");
 	m_Tree->ShowRootNode(false);
@@ -61,8 +62,13 @@ void Outliner::render_update()
 		{
 			CGameObject* pSelectObj = (CGameObject*)pNode->GetData();
 			GamePlayStatic::DestroyGameObject(pSelectObj);
+
+			Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
+			pInspector->SetTargetObject(nullptr);
 		}
 	}
+
+	CheckCopy();
 
 	IsFilteredNode(m_Tree->GetRootNode());
 }
@@ -252,5 +258,35 @@ bool Outliner::IsFilteredNode(TreeNode* _Node)
 		}
 
 		return true;
+	}
+}
+
+void Outliner::CheckCopy()
+{
+	if (KEY_PRESSED_EDITOR(KEY::LCTRL))
+	{
+		if (KEY_TAP_EDITOR(KEY::C))
+		{
+			TreeNode* pNode = m_Tree->GetSelectedNode();
+
+			if (nullptr != pNode)
+			{
+				m_CopyTarget = (CGameObject*)pNode->GetData();
+			}
+		}
+		else if (KEY_TAP_EDITOR(KEY::V))
+		{
+			if (nullptr != m_CopyTarget)
+			{
+				int LayerIdx = m_CopyTarget->GetLayerIdx();
+				CGameObject* pClone = m_CopyTarget->Clone();
+				GamePlayStatic::SpawnGameObject(pClone, LayerIdx);
+
+				Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
+				pInspector->SetTargetObject(pClone);
+				RTViewPort* pViewport = (RTViewPort*)CImGuiMgr::GetInst()->FindUI("##Viewport");
+				pViewport->SetTargetObject(pClone);
+			}
+		}
 	}
 }

@@ -5,6 +5,7 @@
 
 class TreeUI;
 class TreeNode;
+class CGameObject;
 
 class Outliner :
     public UI
@@ -12,6 +13,7 @@ class Outliner :
 private:
     TreeUI*     m_Tree;
     ImGuiTextFilter m_Filter;
+    CGameObject* m_CopyTarget;
 
 public:
     virtual void render_update() override;
@@ -31,6 +33,8 @@ private:
     void CollapseNode(TreeNode* _Node);
 
     bool IsFilteredNode(TreeNode* _Node);
+
+    void CheckCopy();
 
 public:
     Outliner();
