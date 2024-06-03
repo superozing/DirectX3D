@@ -48,3 +48,20 @@ void ComponentUI::SetTargetObject(CGameObject* _Target)
 		}
 	}
 }
+
+void ComponentUI::CheckPayLoadData(ASSET_TYPE _Type, int iFuncArrNum)
+{
+	if (ImGui::BeginDragDropTarget())
+	{
+		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ContentTree");
+		if (payload)
+		{
+			DWORD_PTR data = *((DWORD_PTR*)payload->Data);
+			CAsset* pAsset = (CAsset*)data;
+		
+			m_vecPayloadEvent[iFuncArrNum](pAsset, _Type);
+		}
+
+		ImGui::EndDragDropTarget();
+	}
+}

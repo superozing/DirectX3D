@@ -3,7 +3,7 @@
 
 #include <Engine/CGameObject.h>
 
-typedef void(*SetPayloadEvent)(DWORD_PTR);
+typedef void(*SetPayloadEvent)(CAsset*, ASSET_TYPE);
 
 class ComponentUI :
     public UI
@@ -15,7 +15,7 @@ private:
     string          m_ComponentTitle;
 
 protected:
-    SetPayloadEvent m_PayloadEvent;
+    vector<SetPayloadEvent> m_vecPayloadEvent;
 
 public:
     virtual void render_update() override;
@@ -27,29 +27,13 @@ public:
     void SetComponentTitle(const string& _title) { m_ComponentTitle = _title; }
     COMPONENT_TYPE GetType() { return m_Type; }
     
-    template <typename T>
-    void CheckPayLoadData(T _type);
+    void CheckPayLoadData(ASSET_TYPE _Type , int iFuncArrNum);
+    void AddPayloadEvent(SetPayloadEvent _Event) { m_vecPayloadEvent.push_back(_Event); }
 
 public:
     ComponentUI(const string& _strName, const string& _ID, COMPONENT_TYPE _Type);
     ~ComponentUI();
 };
 
-template<typename T>
-inline void ComponentUI::CheckPayLoadData(T _type)
-{
-    if (ImGui::BeginDragDropTarget())
-    {
-        const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ContentTree");
-        if (payload)
-        {
-            DWORD_PTR data = *((DWORD_PTR*)payload->Data);
-            if (data == 0) return;
 
-            m_PayloadEvent(data);
 
-        }
-
-        ImGui::EndDragDropTarget();
-    }
-}
