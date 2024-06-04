@@ -108,7 +108,7 @@ void MenuUI::File()
             if (GetOpenFileName(&ofn))
             {                
                 CLevel* pLevel = CLevelSaveLoad::LoadLevel(CPathMgr::GetRelativePath(szSelect));
-                CLevelMgr::GetInst()->ChangeLevel(pLevel, LEVEL_STATE::STOP);
+                GamePlayStatic::ChangeLevel(pLevel, LEVEL_STATE::STOP);
 
                 // Inspector 의 타겟정보를 nullptr 로 되돌리기
                 Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
@@ -170,7 +170,7 @@ void MenuUI::Level()
         if (ImGui::MenuItem("Stop", nullptr, nullptr, StopEnable))
         {
             CLevel* pLoadedLevel = CLevelSaveLoad::LoadLevel(L"Level//temp.lv");
-            CLevelMgr::GetInst()->ChangeLevel(pLoadedLevel, LEVEL_STATE::STOP);
+            GamePlayStatic::ChangeLevel(pLoadedLevel, LEVEL_STATE::STOP);
 
             Outliner* pOutliner = (Outliner*)CImGuiMgr::GetInst()->FindUI("##Outliner");
             auto m_Tree = pOutliner->GetTree()->GetSelectedNode();

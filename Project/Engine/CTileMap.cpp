@@ -109,7 +109,7 @@ void CTileMap::SetFace(UINT _FaceX, UINT _FaceY)
 	m_vecTileInfo.swap(vecTemp);
 	m_vecTileInfo.resize(_FaceX * _FaceY);
 
-	m_TileInfoBuffer->Create(sizeof(tTileInfo), _FaceX * _FaceY, SB_TYPE::READ_ONLY, true);
+	m_TileInfoBuffer->Create(sizeof(tTileInfo), _FaceX * _FaceY, SB_READ_TYPE::READ_ONLY, true);
 }
 
 void CTileMap::SetTileIndex(UINT _Row, UINT _Col, UINT _ImgIdx)

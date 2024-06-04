@@ -2,6 +2,7 @@
 #define _LANDSCAPE
 
 #include "value.fx"
+#include "func.fx"
 
 // =======================================
 // LandScape Shader
@@ -14,6 +15,13 @@
 // g_int_0  : Face X
 // g_int_1  : Face Z
 // g_tex_0  : HeightMap Texture
+
+
+#define                     TileTexArr                      g_texarr_0  // Tile 배열 택스쳐
+#define                     TileTexArrSize                  g_float_0   // 배열 개수
+#define                     WeightMapResolution             g_vec2_0    // 가중치 버퍼 해상도
+#define                     CamWorldPos                     g_vec4_0.xyz // 카메라 월드 좌표
+StructuredBuffer<float4> WEIGHT_MAP : register(t17); // 가중치 버퍼
 // =======================================
 struct VS_IN
 {
@@ -30,6 +38,7 @@ struct VS_OUT
     float3 vPos : POSITION;
     float2 vUV : TEXCOORD;
     
+    float3 vWorldPos : POSITION1;
     float3 vTangent : TANGENT;
     float3 vBinormal : BINORMAL;
     float3 vNormal : NORMAL;
@@ -41,6 +50,8 @@ VS_OUT VS_LandScape(VS_IN _in)
     
     output.vPos = _in.vPos;
     output.vUV = _in.vUV;
+    
+    output.vWorldPos = mul(float4(_in.vPos, 1.f), g_matWorld).xyz;
     
     output.vTangent = _in.vTangent;
     output.vBinormal = _in.vBinormal;
@@ -60,21 +71,18 @@ PatchLevel PatchConstFunc(InputPatch<VS_OUT, 3> _in, uint patchID : SV_Primitive
 {
     PatchLevel output = (PatchLevel) 0.f;
         
-    output.arrEdge[0] = g_vec4_0.x;
-    output.arrEdge[1] = g_vec4_0.y;
-    output.arrEdge[2] = g_vec4_0.z;
-    output.Inside = g_vec4_0.w;
+    float3 vUpDown = (_in[1].vWorldPos + _in[2].vWorldPos) / 2.f;
+    float3 vLeftRight = (_in[0].vWorldPos + _in[2].vWorldPos) / 2.f;
+    float3 vSlide = (_in[0].vWorldPos + _in[1].vWorldPos) / 2.f;
+    float3 vMid = (_in[0].vWorldPos + _in[1].vWorldPos + _in[2].vWorldPos) / 3.f;
+
+    float3 vCamWorldPos = CamWorldPos;
+    vCamWorldPos.y = 0.f;
     
-    for (int i = 0; i < 3; i++)
-    {
-        if (output.arrEdge[i] == 0.f)
-            output.arrEdge[i] = 1.f;
-    }
-    
-    if (output.Inside == 0.f)
-    {
-        output.Inside = 1.f;
-    }
+    output.arrEdge[0] = pow(2, (int) GetTessFactor(distance(vCamWorldPos, vUpDown), 1, 4, 1000.f, 4000.f));
+    output.arrEdge[1] = pow(2, (int) GetTessFactor(distance(vCamWorldPos, vLeftRight), 1, 4, 1000.f, 4000.f));
+    output.arrEdge[2] = pow(2, (int) GetTessFactor(distance(vCamWorldPos, vSlide), 1, 4, 1000.f, 4000.f));
+    output.Inside = pow(2, (int) GetTessFactor(distance(vCamWorldPos, vMid), 1, 4, 1000.f, 4000.f));
     
     return output;
 }
@@ -113,9 +121,12 @@ struct DS_OUT
 {
     float4 vPosition : SV_Position;
     float2 vUV : TEXCOORD;
+    float2 vFullUV : TEXCOORD1;
     
     float3 vViewPos : POSITION;
+    float3 vViewTangent : TANGENT;
     float3 vViewNormal : NORMAL;
+    float3 vViewBinormal : BINORMAL;
 };
 
 [domain("tri")]
@@ -142,10 +153,13 @@ DS_OUT DS_LandScape(PatchLevel _pathlevel // 각 제어점 별 분할 레벨
         vNormal += _Origin[i].vNormal * _Weight[i];
     }
     
+    // 지형 전체 기준 UV
+    output.vFullUV = vUV / float2(g_int_0, g_int_1);
+    
     // 높이맵 텍스쳐가 있을 때
     if (g_btex_0)
     {
-        float2 FullUV = vUV / float2(g_int_0, g_int_1);
+        float2 FullUV = output.vFullUV;
         vLocalPos.y = g_tex_0.SampleLevel(g_sam_0, FullUV, 0).x;
         
         // 주변 정점(위, 아래, 좌, 우) 로 접근할때의 로컬스페이스상에서의 간격
@@ -179,12 +193,13 @@ DS_OUT DS_LandScape(PatchLevel _pathlevel // 각 제어점 별 분할 레벨
         vBinormal = mul(float4(vDown, 1.f), g_matWorld).xyz - mul(float4(vUp, 1.f), g_matWorld).xyz;
         vNormal = normalize(cross(vTangent, vBinormal));
         
-        output.vViewNormal = normalize(mul(float4(vNormal, 0.f), g_matView).xyz);
+
     }
-    else
-    {
-        output.vViewNormal = normalize(mul(float4(vNormal, 0.f), g_matWV).xyz);
-    }
+
+    output.vViewNormal = normalize(mul(float4(vNormal, 0.f), g_matWV).xyz);
+    output.vViewTangent = normalize(mul(float4(vTangent, 0.f), g_matWV).xyz);
+    output.vViewBinormal = normalize(mul(float4(vBinormal, 0.f), g_matWV).xyz);
+    
     output.vPosition = mul(float4(vLocalPos, 1.f), g_matWVP);
     output.vUV = vUV;
     output.vViewPos = mul(float4(vLocalPos, 1.f), g_matWV).xyz;
@@ -204,10 +219,54 @@ PS_OUT PS_LandScape(DS_OUT _in) : SV_Target
 {
     PS_OUT output = (PS_OUT) 0.f;
         
-    output.vColor = float4(0.4f, 0.4f, 0.4f, 1.f);
+    float3 vViewNormal = _in.vViewNormal;
+    
+    // 타일 배열 텍스쳐가 있으면
+    output.vColor = float4(0.8f, 0.8f, 0.8f, 1.f);
+    
+    if (g_btexarr_0)
+    {
+        float2 derivX = ddx(_in.vUV) * 0.5f; // 인접픽셀과 x축 편미분값을 구한다
+        float2 derivY = ddy(_in.vUV) * 0.5f; // 인접픽셀과 y축 편미분값을 구한다
+        
+         // 타일 색상
+        int2 iWeightIdx = (int2) (_in.vFullUV * WeightMapResolution);
+        float4 vWeight = WEIGHT_MAP[iWeightIdx.y * (int) WeightMapResolution.x + iWeightIdx.x];
+        float4 vColor = (float4) 0.f;
+
+        int iMaxWeightIdx = -1;
+        float fMaxWeight = 0.f;
+
+        for (int i = 0; i < TileTexArrSize; ++i)
+        {
+            // 배열 텍스쳐 샘플링할때 UV 3번째값이 배열 인덱스
+            vColor += TileTexArr.SampleGrad(g_sam_0, float3(_in.vUV, i), derivX, derivY) * vWeight[i];
+            //vColor += TileTexArr.SampleLevel(g_sam_0, float3(_in.vUV, i), 0) * vWeight[i];
+
+            if (fMaxWeight < vWeight[i])
+            {
+                fMaxWeight = vWeight[i];
+                iMaxWeightIdx = i;
+            }
+        }
+        
+        output.vColor = float4(vColor.rgb, 1.f);
+        
+         // 타일 노말
+        if (-1 != iMaxWeightIdx)
+        {
+            float3 vTangentSpaceNormal = TileTexArr.SampleGrad(g_sam_0, float3(_in.vUV, iMaxWeightIdx + TileTexArrSize), derivX, derivY).xyz;
+            //float3 vTangentSpaceNormal = TileTexArr.SampleLevel(g_sam_0, float3(_in.vUV, iMaxWeightIdx + TileCount), 0).xyz;
+            vTangentSpaceNormal = vTangentSpaceNormal * 2.f - 1.f;
+
+            float3x3 matTBN = { _in.vViewTangent, _in.vViewBinormal, _in.vViewNormal };
+            vViewNormal = normalize(mul(vTangentSpaceNormal, matTBN));
+        }
+    }
+    
+    output.vNormal = float4(vViewNormal, 1.f);
     output.vPosition = float4(_in.vViewPos, 1.f);
-    output.vNormal = float4(_in.vViewNormal, 1.f);
-    output.vEmissive = float4(0.f, 0.f, 0.f, 0.f);
+    output.vEmissive;
     
     return output;
 }

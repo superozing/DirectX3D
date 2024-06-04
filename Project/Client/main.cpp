@@ -81,18 +81,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     
 #ifndef _RELEASE_GAME
+    // 임시 레벨 생성
+    CCreateTempLevel::Init();
 
-    // EditorObjectManager 초기화
-    CEditorObjMgr::GetInst()->init();
+    CCreateTempLevel::CreateTempLevel();
 
     // ImGui 초기화
     CImGuiMgr::GetInst()->init(hWnd, DEVICE, CONTEXT);
 
-    // 임시 레벨 생성
-    CCreateTempLevel::Init();
-    CCreateTempLevel::CreateTempLevel();
-
-    CImGuiMgr::GetInst()->begin();
+    // EditorObjectManager 초기화
+    CEditorObjMgr::GetInst()->init();
 
     CKeyMgr::GetInst()->m_FocusCallback = &CImGuiMgr::GetFocus_debug;
 #else

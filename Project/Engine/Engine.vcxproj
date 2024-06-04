@@ -139,7 +139,9 @@
     </Link>
     <PreBuildEvent>
       <Command>cd $(SolutionDir)
-call EngineCopy.bat</Command>
+call EngineCopy.bat
+cd $(SolutionDir)CodeGen\
+call CodeGen.exe</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -166,7 +168,9 @@ call EngineCopy.bat</Command>
     </Link>
     <PreBuildEvent>
       <Command>cd $(SolutionDir)
-call EngineCopy.bat</Command>
+call EngineCopy.bat
+cd $(SolutionDir)CodeGen\
+call CodeGen.exe</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -228,6 +232,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CTileMap.h" />
     <ClInclude Include="CTimeMgr.h" />
     <ClInclude Include="CTransform.h" />
+    <ClInclude Include="CWeightMapShader.h" />
     <ClInclude Include="define.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="func.h" />
@@ -237,18 +242,10 @@ call EngineCopy.bat</Command>
     <ClInclude Include="Ptr.h" />
     <ClInclude Include="SimpleMath.h" />
     <ClInclude Include="singleton.h" />
-    <ClInclude Include="strAnim.h" />
     <ClInclude Include="strEngineMtrl.h" />
     <ClInclude Include="strFnShader.h" />
-    <ClInclude Include="strFx.h" />
-    <ClInclude Include="strLevel.h" />
     <ClInclude Include="strMesh.h" />
-    <ClInclude Include="strMtrl.h" />
-    <ClInclude Include="strPref.h" />
     <ClInclude Include="strShader.h" />
-    <ClInclude Include="strSnd.h" />
-    <ClInclude Include="strTex.h" />
-    <ClInclude Include="strTxt.h" />
     <ClInclude Include="struct.h" />
     <ClInclude Include="UserStrings.h" />
   </ItemGroup>
@@ -313,6 +310,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CTileMap.cpp" />
     <ClCompile Include="CTimeMgr.cpp" />
     <ClCompile Include="CTransform.cpp" />
+    <ClCompile Include="CWeightMapShader.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="extern.cpp" />
     <ClCompile Include="func.cpp" />
@@ -452,6 +450,10 @@ call EngineCopy.bat</Command>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="weightmap.fx">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

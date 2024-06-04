@@ -13,6 +13,7 @@ CLandScape::CLandScape()
 	, m_FaceZ(64)
 	, m_BrushScale(Vec2(0.5f, 0.5f))
 	, m_CrossBuffer(nullptr)
+	, m_Mode(LANDSCAPE_MODE::NONE)
 {
 	Init();
 }
@@ -23,18 +24,52 @@ CLandScape::~CLandScape()
 
 void CLandScape::finaltick()
 {
+	if(KEY_TAP(KEY::NUM0))
+		m_Mode = LANDSCAPE_MODE::NONE;
+	else if (KEY_TAP(KEY::NUM1))
+		m_Mode = LANDSCAPE_MODE::HEIGHT_MAP;
+	else if (KEY_TAP(KEY::NUM2))
+		m_Mode = LANDSCAPE_MODE::SPLAT;
+	else if (KEY_TAP(KEY::NUM3))
+	{
+		m_WeightIdx++;
+		if (3 <= m_WeightIdx)
+			m_WeightIdx = 0;
+	}
+
+	if (LANDSCAPE_MODE::NONE == m_Mode)
+	{
+		return;
+	}
+
 	if (KEY_PRESSED(KEY::LBTN))
 	{
 		Raycasting();
 
-		// 교점 위치정보를 토대로 높이를 수정 함
-		m_CSHeightMap->SetInputBuffer(m_CrossBuffer);	// 픽킹 정보를 HeightMapShader 에 세팅
+		if (LANDSCAPE_MODE::HEIGHT_MAP == m_Mode)
+		{
+			// 교점 위치정보를 토대로 높이를 수정 함
+			m_CSHeightMap->SetInputBuffer(m_CrossBuffer);	// 픽킹 정보를 HeightMapShader 에 세팅
 
-		m_CSHeightMap->SetBrushTex(m_BrushTex);			// 사용할 브러쉬 텍스쳐 세팅
-		m_CSHeightMap->SetBrushIndex(0);				// 브러쉬 인덱스 설정
-		m_CSHeightMap->SetBrushScale(m_BrushScale);		// 브러쉬 크기
-		m_CSHeightMap->SetHeightMap(m_HeightMapTex);
-		m_CSHeightMap->Execute();
+			m_CSHeightMap->SetBrushTex(m_BrushTex);			// 사용할 브러쉬 텍스쳐 세팅
+			m_CSHeightMap->SetBrushIndex(0);				// 브러쉬 인덱스 설정
+			m_CSHeightMap->SetBrushScale(m_BrushScale);		// 브러쉬 크기
+			m_CSHeightMap->SetHeightMap(m_HeightMapTex);
+			m_CSHeightMap->Execute();
+		}
+
+		else if (LANDSCAPE_MODE::SPLAT == m_Mode)
+		{
+			// 피킹 위치정보를 토대로 가중치를 수정함	
+			m_CSWeightMap->SetInputBuffer(m_CrossBuffer);  // 레이 캐스트 위치
+			m_CSWeightMap->SetBrushArrTex(m_BrushTex);
+			m_CSWeightMap->SetBrushIndex(0);
+			m_CSWeightMap->SetBrushScale(m_BrushScale); // 브러쉬 크기
+			m_CSWeightMap->SetWeightMap(m_WeightMapBuffer, m_WeightWidth, m_WeightHeight); // 가중치맵, 가로 세로 개수
+			m_CSWeightMap->SetWeightIdx(m_WeightIdx);
+			m_CSWeightMap->Execute();
+		}
+
 	}
 }
 
@@ -43,6 +78,9 @@ void CLandScape::render()
 	UpdateData();
 
 	GetMesh()->render();
+
+	// 가중치 버퍼 클리어(컴퓨터 쉐이더에서도 써야해서)
+	m_WeightMapBuffer->Clear(17);
 }
 
 void CLandScape::UpdateData()
@@ -52,7 +90,27 @@ void CLandScape::UpdateData()
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, m_FaceX);
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_1, m_FaceZ);
 	GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_HeightMapTex);
+	GetMaterial()->GetShader()->SetRSType(RS_TYPE::WIRE_FRAME);
 
+	// 가중치 버퍼 전달
+	m_WeightMapBuffer->UpdateData(17);
+
+	// 가중치 버퍼 해상도 전달
+	Vec2 vWeightMapResolution = Vec2((float)m_WeightWidth, (float)m_WeightHeight);
+	GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC2_0, vWeightMapResolution);
+
+	// 타일 텍스쳐 전달
+	GetMaterial()->SetTexParam(TEX_PARAM::TEXARR_0, m_TileArrTex);
+
+	//타일 배열 개수 전달
+	float m_fTileCount = float(m_TileArrTex->GetArraySize() / 2); // 색상, 노말 합쳐져 있어서 2를 나눈다.
+	GetMaterial()->SetScalarParam(SCALAR_PARAM::FLOAT_0, m_fTileCount);
+
+	// Camera World Pos 전달
+	Vec3 vCamWorldPos = CRenderMgr::GetInst()->GetMainCam()->Transform()->GetWorldPos();
+	GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC4_0, vCamWorldPos);
+
+	// 재질정보 바인딩
 	GetMaterial()->UpdateData();
 }
 

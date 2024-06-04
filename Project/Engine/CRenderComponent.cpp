@@ -112,6 +112,5 @@ void CRenderComponent::LoadFromFile(ifstream& fin)
 	LoadAssetRef(m_Mesh, fin);
 	Utils::GetLineUntilString(fin, TagMtrl);
 	LoadAssetRef(m_SharedMtrl, fin);
-
 	SetMaterial(m_SharedMtrl);
 }
