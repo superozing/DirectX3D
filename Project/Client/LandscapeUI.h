@@ -25,6 +25,9 @@ public:
     
     void GetLandScapeFileName();
 
+    void PayloadHeightMapEvent(CAsset* _Asset, ASSET_TYPE _Type);
+    void PayloadBrushEvent(CAsset* _Asset, ASSET_TYPE _Type);
+
 public:
     LandScapeUI();
     ~LandScapeUI();

@@ -16,6 +16,10 @@ ParticleSystemUI::ParticleSystemUI()
 	m_ModuleButtonColor[0] = { 0.5f, 0.5f, 0.5f, 1.0f }; // normal
 	m_ModuleButtonColor[1] = { 1.0f, 1.0f, 0.0f, 1.0f }; // hover
 
+	SetDelegateUI(this);
+
+	AddPayLoadEvent(std::bind(&ParticleSystemUI::PayloadParticleEvent, this, std::placeholders::_1, std::placeholders::_2));
+
 }
 
 ParticleSystemUI::~ParticleSystemUI()
@@ -72,6 +76,8 @@ void ParticleSystemUI::render_update()
 		}
 		ImGui::EndCombo();
 	}
+
+	CheckPayLoadData(ASSET_TYPE::TEXTURE, 0);
 
 	ImGui::Image(GetTargetObject()->ParticleSystem()->GetParticleTex()->GetSRV().Get(), ImVec2(UIsize.x - 10.f, 150.f), uv_min, uv_max, tint_col, border_col);
 
@@ -450,4 +456,10 @@ void ParticleSystemUI::GetParticleFileName()
 	}
 
 	this->m_vecParticleKey = strFileName;
+}
+
+void ParticleSystemUI::PayloadParticleEvent(CAsset* _Asset, ASSET_TYPE _Type)
+{
+	if (_Asset->GetType() == _Type)
+		GetTargetObject()->ParticleSystem()->SetParticleTex((CTexture*)_Asset);
 }
