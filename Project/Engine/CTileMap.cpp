@@ -16,7 +16,7 @@ CTileMap::CTileMap()
 	, m_TileInfoBuffer(nullptr)
 {
 	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
-	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"TileMapMtrl"));
+	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"TileMapMtrl"), 0);
 
 	m_TileInfoBuffer = new CStructuredBuffer;
 
@@ -58,14 +58,14 @@ void CTileMap::finaltick()
 void CTileMap::render()
 {	
 	// 재질에 아틀라스 텍스쳐 전달.
-	GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_TileAtlas);
+	GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_TileAtlas);
 	
 	// 타일의 가로 세로 개수
-	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, m_FaceX);
-	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_1, m_FaceY);
+	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_0, m_FaceX);
+	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_1, m_FaceY);
 		
 	// 아틀라스 이미지에서 타일 1개의 자르는 사이즈(UV 기준)
-	GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC2_0, m_vSliceSizeUV);
+	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC2_0, m_vSliceSizeUV);
 
 	// 각 타일 정보를 구조화 버퍼로 이동
 	m_TileInfoBuffer->SetData(m_vecTileInfo.data(), m_vecTileInfo.size());
@@ -74,11 +74,11 @@ void CTileMap::render()
 	m_TileInfoBuffer->UpdateData(20);
 
 	// 재질 업데이트
-	GetMaterial()->UpdateData();	
+	GetMaterial(0)->UpdateData();	
 
 	Transform()->UpdateData();
 
-	GetMesh()->render();
+	GetMesh()->render(0);
 }
 
 

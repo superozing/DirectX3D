@@ -160,8 +160,19 @@ struct tTransform
 };
 extern tTransform g_Transform;
 
+// Material 계수
+struct tMtrlData
+{
+	Vec4 vDiff;
+	Vec4 vSpec;
+	Vec4 vAmb;
+	Vec4 vEmv;
+};
+
 struct tMtrlConst
 {
+	tMtrlData mtrl;
+
 	int bArr[4];
 	int iArr[4];
 	float fArr[4];
