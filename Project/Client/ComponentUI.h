@@ -29,7 +29,6 @@ public:
     COMPONENT_TYPE GetType() { return m_Type; }
     
     void CheckPayLoadData(ASSET_TYPE _Type , int iFuncArrNum);
-    virtual void ActivePayLoadEvent(CAsset* pAsset, ASSET_TYPE _Type ,CGameObject* Obj) {};
     void SetDelegateUI(ComponentUI* _pUI) { m_DelegateUI = _pUI; }
     void AddPayLoadEvent(const PayloadEvent& _Func);
 
