@@ -7,3 +7,4 @@
 #include "strPref.h"
 #include "strAnim.h"
 #include "strTxt.h"
+#include "strGrpShader.h"

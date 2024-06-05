@@ -42,6 +42,8 @@ void MaterialUI::render_update()
         strcpy(MtrlKey, pathObj.stem().string().c_str());
     }
 
+    string strPath = string(m_TargetMtrl->GetKey().begin(), m_TargetMtrl->GetKey().end());
+    
     ImGui::Text("Material");
     ImGui::SameLine();
     ImGui::InputText("##MtrlName", MtrlKey, 255);
@@ -97,9 +99,12 @@ void MaterialUI::render_update()
     if (nullptr == pShader)
         return;
 
-    const vector<tScalarParam>& vecScalarParam = pShader->GetScalarParam();
-    for (size_t i = 0; i < vecScalarParam.size(); ++i)
+    const tScalarParam* vecScalarParam = pShader->GetScalarParam();
+    for (size_t i = 0; i < (UINT)SCALAR_PARAM::END; ++i)
     {
+        if (!vecScalarParam[i].IsUse)
+            continue;
+
         switch (vecScalarParam[i].Type)
         {
         case SCALAR_PARAM::BOOL_0:
@@ -112,25 +117,25 @@ void MaterialUI::render_update()
         case SCALAR_PARAM::INT_1:
         case SCALAR_PARAM::INT_2:
         case SCALAR_PARAM::INT_3:                   
-            ParamUI::Param_INT((int*)m_TargetMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, (int)vecScalarParam[i].min, (int)vecScalarParam[i].Max,vecScalarParam[i].View, vecScalarParam[i].Tooltip);
+            ParamUI::Param_INT((int*)m_TargetMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, (int)vecScalarParam[i].Min, (int)vecScalarParam[i].Max,vecScalarParam[i].View, vecScalarParam[i].Tooltip);
             break;
         case SCALAR_PARAM::FLOAT_0:
         case SCALAR_PARAM::FLOAT_1:
         case SCALAR_PARAM::FLOAT_2:
         case SCALAR_PARAM::FLOAT_3:
-            ParamUI::Param_FLOAT((float*)m_TargetMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, vecScalarParam[i].min, vecScalarParam[i].Max, vecScalarParam[i].View, vecScalarParam[i].Tooltip);
+            ParamUI::Param_FLOAT((float*)m_TargetMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, vecScalarParam[i].Min, vecScalarParam[i].Max, vecScalarParam[i].View, vecScalarParam[i].Tooltip);
             break;
         case SCALAR_PARAM::VEC2_0:
         case SCALAR_PARAM::VEC2_1:
         case SCALAR_PARAM::VEC2_2:
         case SCALAR_PARAM::VEC2_3:
-            ParamUI::Param_VEC2((Vec2*)m_TargetMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, vecScalarParam[i].min, vecScalarParam[i].Max,  vecScalarParam[i].View, vecScalarParam[i].Tooltip);
+            ParamUI::Param_VEC2((Vec2*)m_TargetMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, vecScalarParam[i].Min, vecScalarParam[i].Max,  vecScalarParam[i].View, vecScalarParam[i].Tooltip);
             break;
         case SCALAR_PARAM::VEC4_0:
         case SCALAR_PARAM::VEC4_1:
         case SCALAR_PARAM::VEC4_2:
         case SCALAR_PARAM::VEC4_3:
-            ParamUI::Param_VEC4((Vec4*)m_TargetMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, vecScalarParam[i].min, vecScalarParam[i].Max,  vecScalarParam[i].View, vecScalarParam[i].Tooltip);
+            ParamUI::Param_VEC4((Vec4*)m_TargetMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, vecScalarParam[i].Min, vecScalarParam[i].Max,  vecScalarParam[i].View, vecScalarParam[i].Tooltip);
             break;
         case SCALAR_PARAM::MAT_0:
         case SCALAR_PARAM::MAT_1:
@@ -140,9 +145,12 @@ void MaterialUI::render_update()
         }        
     }
 
-    const vector<tTexParam>& vecTexParam = pShader->GetTexParam();
-    for (size_t i = 0; i < vecTexParam.size(); ++i)
+    const tTexParam* vecTexParam = pShader->GetTexParam();
+    for (size_t i = 0; i < (size_t)TEX_PARAM::END; ++i)
     {
+        if (!vecTexParam[i].IsUse)
+            continue;
+
         Ptr<CTexture> pTex = m_TargetMtrl->GetTexParam(vecTexParam[i].Type);
         if (ParamUI::Param_TEXTURE(pTex, vecTexParam[i].Desc, this, (Delegate_1)&MaterialUI::SelectTexture))
         {           

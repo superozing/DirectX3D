@@ -32,14 +32,21 @@ class CImGuiMgr :
 {
     SINGLE(CImGuiMgr);
 private:
-    vector<tStaticBtnColor>    m_vecStaticBtn;
-
     map<string, UI*>    m_mapUI;
     bool                m_bDemoUI;
 
     HANDLE              m_hNotify;
 
     static bool         isViewportFocused;
+
+    vector<tStaticBtnColor>    m_vecStaticBtn;
+
+    vector<string>      m_vecEnumTopology;
+    vector<string>      m_vecEnumRS;
+    vector<string>      m_vecEnumDS;
+    vector<string>      m_vecEnumBS;
+    vector<string>      m_vecEnumShaderDomain;
+
 
 public:
     void init(HWND _hMainWnd, ComPtr<ID3D11Device> _Device, ComPtr <ID3D11DeviceContext> _Context);
@@ -54,6 +61,12 @@ public:
     {
         return m_vecStaticBtn[(UINT)_type];
     }
+
+    const vector<string>& GetVecEnumTopology() { return m_vecEnumTopology; }
+    const vector<string>& GetVecEnumRS() { return m_vecEnumRS; }
+    const vector<string>& GetVecEnumDS() { return m_vecEnumDS; }
+    const vector<string>& GetVecEnumBS() { return m_vecEnumBS; }
+    const vector<string>& GetVecEnumShaderDomain() { return m_vecEnumShaderDomain; } 
 
 public: // Callback
     static FOCUS_STATE GetFocus_debug();

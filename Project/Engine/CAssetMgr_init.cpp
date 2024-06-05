@@ -11,7 +11,7 @@ void CAssetMgr::init()
 
 	CreateDefaultMesh();
 
-	CreateDefaultGraphicsShader();
+	//CreateDefaultGraphicsShader();
 
 	CreateDefaultComputeShader();
 
@@ -926,24 +926,34 @@ void CAssetMgr::CreateDefaultMaterial()
 {
 	CMaterial* pMtrl = nullptr;
 
+	string strShaderPath;
+
 	// Std2DMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_std2d));
+	//pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_std2d));
+	strShaderPath = "GraphicsShader\\Std2DShader.gs";
+	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset<CMaterial>(MTRL_std2d, pMtrl);
 
 	// Std3DMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_std3d));
+	//pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_std3d));
+	strShaderPath = "GraphicsShader\\Std3DShader.gs";
+	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset<CMaterial>(MTRL_std3d, pMtrl);
 
 	// Std3D_DeferredMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_deferred));
+	//pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_deferred));
+	strShaderPath = "GraphicsShader\\Std3D_DeferredShader.gs";
+	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset<CMaterial>(MTRL_deferred, pMtrl);
 
 	// DirLightMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_dirlight));
+	//pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_dirlight));
+	strShaderPath = "GraphicsShader\\DirLightShader.gs";
+	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_0, FindAsset<CTexture>(L"PositionTargetTex"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_1, FindAsset<CTexture>(L"NormalTargetTex"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_2, FindAsset<CTexture>(L"ShadowDepthTargetTex"));
@@ -951,7 +961,9 @@ void CAssetMgr::CreateDefaultMaterial()
 
 	// PointLightMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_pointlight));
+	//pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_pointlight));
+	strShaderPath = "GraphicsShader\\PointLightShader.gs";
+	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_0, FindAsset<CTexture>(L"PositionTargetTex"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_1, FindAsset<CTexture>(L"NormalTargetTex"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_2, FindAsset<CTexture>(L"ShadowDepthTargetTex"));
@@ -959,14 +971,18 @@ void CAssetMgr::CreateDefaultMaterial()
 
 	// SpotLightMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_spotlight));
+	//pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_spotlight));
+	strShaderPath = "GraphicsShader\\SpotLightShader.gs";
+	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_0, FindAsset<CTexture>(L"PositionTargetTex"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_1, FindAsset<CTexture>(L"NormalTargetTex"));
 	AddAsset<CMaterial>(MTRL_spotlight, pMtrl);
 
 	// MergeMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_merge));
+	//pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_merge));
+	strShaderPath = "GraphicsShader\\MergeShader.gs";
+	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"ColorTargetTex"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"DiffuseTargetTex"));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"SpecularTargetTex"));
@@ -975,48 +991,66 @@ void CAssetMgr::CreateDefaultMaterial()
 
 	// DecalMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DecalShader"));
+	//pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DecalShader"));
+	strShaderPath = "GraphicsShader\\DecalShader.gs";
+	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
-	AddAsset<CMaterial>(L"DecalMtrl", pMtrl);
+	AddAsset<CMaterial>(MTRL_decal, pMtrl);
 
 	// BackgroundMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_std2d));
+	//pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_std2d));
+	strShaderPath = "GraphicsShader\\Std2DShader.gs";
+	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset<CMaterial>(MTRL_background, pMtrl);
 
 	// TileMapMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_tilemap));
+	//pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_tilemap));
+	strShaderPath = "GraphicsShader\\TileMapShader.gs";
+	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset<CMaterial>(MTRL_tilemap, pMtrl);
 
 	// ParticleMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_particlerender));
+	//pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_particlerender));
+	strShaderPath = "GraphicsShader\\ParticleRenderShader.gs";
+	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset<CMaterial>(MTRL_particle, pMtrl);
 
 	// SkyBoxMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_skybox));
+	//pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_skybox));
+	strShaderPath = "GraphicsShader\\SkyBoxShader.gs";
+	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset<CMaterial>(MTRL_skybox, pMtrl);
 
 	// GrayFilterMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_grayfilter));
+	//pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_grayfilter));
+	strShaderPath = "GraphicsShader\\GrayFilterShader.gs";
+	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset<CMaterial>(MTRL_grayfilter, pMtrl);
 
 	// DistortionMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_distortion));
+	//pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_distortion));
+	strShaderPath = "GraphicsShader\\DistortionShader.gs";
+	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset<CMaterial>(MTRL_distortion, pMtrl);
 
 	// DebugShapeMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_debugshape));
+	//pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_debugshape));
+	strShaderPath = "GraphicsShader\\DebugShapeShader.gs";
+	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset<CMaterial>(MTRL_debugshape, pMtrl);
 
 	// ShadowMapMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"ShadowMapShader"));
+	//pMtrl->SetShader(FindAsset<CGraphicsShader>(L"ShadowMapShader"));
+	strShaderPath = "GraphicsShader\\ShadowMapShader.gs";
+	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset(L"ShadowMapMtrl", pMtrl);
 
 	// TessMtrl
