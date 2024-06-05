@@ -223,6 +223,12 @@
     <ClInclude Include="CWeightMapShader.h">
       <Filter>ShaderCode\03. Compute\LandScape\WeightMap</Filter>
     </ClInclude>
+    <ClInclude Include="CFBXLoader.h">
+      <Filter>Module\FBXLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="CMeshData.h">
+      <Filter>06. Asset\MeshData</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -425,6 +431,12 @@
     </ClCompile>
     <ClCompile Include="CWeightMapShader.cpp">
       <Filter>ShaderCode\03. Compute\LandScape\WeightMap</Filter>
+    </ClCompile>
+    <ClCompile Include="CFBXLoader.cpp">
+      <Filter>Module\FBXLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="CMeshData.cpp">
+      <Filter>06. Asset\MeshData</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -634,6 +646,9 @@
     </Filter>
     <Filter Include="ShaderCode\03. Compute\LandScape\WeightMap">
       <UniqueIdentifier>{95edad59-4602-4fa1-b2a1-6de5f8f4d2e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module\FBXLoader">
+      <UniqueIdentifier>{81e92f5f-7347-4b4b-9815-eb45c0544dfd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

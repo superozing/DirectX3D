@@ -235,36 +235,28 @@ void CRenderMgr::render_debug()
 			break;
 		}
 
-		m_pDebugObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DebugShapeMtrl"));
-		m_pDebugObj->MeshRender()->GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC4_0, (*iter).vColor);
-
+		m_pDebugObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DebugShapeMtrl"), 0);
+		m_pDebugObj->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, (*iter).vColor);
 
 		// 깊이판정 옵션 설정
 		if ((*iter).bDepthTest)
-			m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->SetDSType(DS_TYPE::NO_WRITE);
+			m_pDebugObj->MeshRender()->GetMaterial(0)->GetShader()->SetDSType(DS_TYPE::NO_WRITE);
 		else
-			m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+			m_pDebugObj->MeshRender()->GetMaterial(0)->GetShader()->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
 
-
-		// 이전 Topology 저장
-		D3D11_PRIMITIVE_TOPOLOGY PrevTopology = m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->GetTopology();
+		D3D11_PRIMITIVE_TOPOLOGY PrevTopology = m_pDebugObj->MeshRender()->GetMaterial(0)->GetShader()->GetTopology();
 		if (DEBUG_SHAPE::CROSS == (*iter).eShape)
 		{
-			m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->SetTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_LINELIST);
+			m_pDebugObj->MeshRender()->GetMaterial(0)->GetShader()->SetTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 		}
 		else if (DEBUG_SHAPE::SPHERE == (*iter).eShape)
 		{
-			m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-			m_pDebugObj->MeshRender()->GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, 1); // Sphere Mesh임을 쉐이더 코드에 알림
-		}
-		else if (DEBUG_SHAPE::CONE == (*iter).eShape)
-		{
-			m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-			m_pDebugObj->MeshRender()->GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, 2); // Cone Mesh임을 쉐이더 코드에 알림
+			m_pDebugObj->MeshRender()->GetMaterial(0)->GetShader()->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+			m_pDebugObj->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_0, 1);
 		}
 		else
 		{
-			m_pDebugObj->MeshRender()->GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, 0);
+			m_pDebugObj->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_0, 0);
 		}
 
 		m_pDebugObj->Transform()->SetWorldMat((*iter).matWorld);
@@ -272,7 +264,7 @@ void CRenderMgr::render_debug()
 
 		m_pDebugObj->render();
 
-		m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->SetTopology(PrevTopology);
+		m_pDebugObj->MeshRender()->GetMaterial(0)->GetShader()->SetTopology(PrevTopology);
 
 		(*iter).fLifeTime += DT;
 		if ((*iter).fDuration <= (*iter).fLifeTime)

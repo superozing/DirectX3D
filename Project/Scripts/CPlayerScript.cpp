@@ -34,7 +34,7 @@ void CPlayerScript::begin()
 	//Animator2D()->Create(L"MOVE_LEFT", pAltasTex, Vec2(0.f, 650.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 10, 20);
 	//Animator2D()->Create(L"MOVE_RIGHT", pAltasTex, Vec2(0.f, 910.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 10, 20);
 
-	//GetRenderComponent()->GetDynamicMaterial();
+	//GetRenderComponent()->GetDynamicMaterial(0);
 
 	//m_Missile = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"MissilePrefab");
 	//m_Missile = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\missile.pref", L"prefab\\missile.pref");
@@ -100,7 +100,7 @@ void CPlayerScript::tick()
 
 	if (KEY_PRESSED(KEY::SPACE))
 	{
-		Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial();
+		Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial(0);
 		if (nullptr != pMtrl)
 		{
 			pMtrl->SetScalarParam(SCALAR_PARAM::INT_0, 1);
@@ -108,7 +108,7 @@ void CPlayerScript::tick()
 	}
 	else if (KEY_RELEASED(KEY::SPACE))
 	{
-		Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial();
+		Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial(0);
 		if (nullptr != pMtrl)
 		{
 			pMtrl->SetScalarParam(SCALAR_PARAM::INT_0, 0);
@@ -128,7 +128,7 @@ void CPlayerScript::tick()
 void CPlayerScript::BeginOverlap(CCollider2D* _Collider
 	, CGameObject* _OtherObj, CCollider2D* _OtherCollider)
 {
-	Ptr<CMaterial> pMtrl = GetRenderComponent()->GetDynamicMaterial();
+	Ptr<CMaterial> pMtrl = GetRenderComponent()->GetDynamicMaterial(0);
 }
 
 void CPlayerScript::Overlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)

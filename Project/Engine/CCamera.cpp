@@ -18,6 +18,10 @@
 #include "CCameraShake.h"
 #include "CLight3D.h"
 
+#include "CLogMgr.h"
+
+ConvertCoord CCamera::ViewportConvertFunc = nullptr;
+
 CCamera::CCamera()
 	: CComponent(COMPONENT_TYPE::CAMERA)
 	, m_ProjType(PROJ_TYPE::ORTHOGRAPHIC)
@@ -199,8 +203,8 @@ void CCamera::SortObject()
 			// 메쉬, 재질, 쉐이더 확인
 			if (!( vecObjects[j]->GetRenderComponent()
 				&& vecObjects[j]->GetRenderComponent()->GetMesh().Get()
-				&& vecObjects[j]->GetRenderComponent()->GetMaterial().Get()
-				&& vecObjects[j]->GetRenderComponent()->GetMaterial()->GetShader().Get()))
+				&& vecObjects[j]->GetRenderComponent()->GetMaterial(0).Get()
+				&& vecObjects[j]->GetRenderComponent()->GetMaterial(0)->GetShader().Get()))
 			{
 				continue;
 			}
@@ -209,7 +213,7 @@ void CCamera::SortObject()
 			/*if (!m_Frustum.FrustumCheck(vecObjects[j]->Transform()->GetWorldPos()))
 				continue;*/
 
-			SHADER_DOMAIN domain = vecObjects[j]->GetRenderComponent()->GetMaterial()->GetShader()->GetDomain();
+			SHADER_DOMAIN domain = vecObjects[j]->GetRenderComponent()->GetMaterial(0)->GetShader()->GetDomain();
 
 			switch (domain)
 			{
@@ -310,7 +314,7 @@ void CCamera::Merge()
 	static Ptr<CMaterial> pMergeMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"MergeMtrl");
 
 	pMergeMtrl->UpdateData();
-	pRectMesh->render();
+	pRectMesh->render(0);
 }
 
 void CCamera::SortShadowMapObject()
@@ -333,8 +337,8 @@ void CCamera::SortShadowMapObject()
 				&& vecObjects[j]->GetRenderComponent()
 				&& vecObjects[j]->GetRenderComponent()->IsDrawShadow()
 				&& vecObjects[j]->GetRenderComponent()->GetMesh().Get()
-				&& vecObjects[j]->GetRenderComponent()->GetMaterial().Get()
-				&& vecObjects[j]->GetRenderComponent()->GetMaterial()->GetShader().Get()))
+				&& vecObjects[j]->GetRenderComponent()->GetMaterial(0).Get()
+				&& vecObjects[j]->GetRenderComponent()->GetMaterial(0)->GetShader().Get()))
 			{
 				continue;
 			}
@@ -357,7 +361,7 @@ void CCamera::render_shadowmap()
 	{
 		m_vecShadow[i]->Transform()->UpdateData();
 		pShadowMapMtrl->UpdateData();
-		m_vecShadow[i]->GetRenderComponent()->GetMesh()->render();
+		m_vecShadow[i]->GetRenderComponent()->GetMesh()->render(0);
 	}
 
 	m_vecShadow.clear();
@@ -373,6 +377,9 @@ void CCamera::CalculateRay()
 
 	//  현재 마우스 좌표
 	Vec2 vMousePos = CKeyMgr::GetInst()->GetMousePos();
+
+	if (ViewportConvertFunc != nullptr)
+	vMousePos = ViewportConvertFunc();
 
 	// 직선은 카메라의 좌표를 반드시 지난다.
 	m_ray.vStart = Transform()->GetWorldPos();

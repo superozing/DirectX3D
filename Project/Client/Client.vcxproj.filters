@@ -133,6 +133,12 @@
     <Filter Include="02. UI\8. Log">
       <UniqueIdentifier>{00aff5bb-3f12-45f1-b96b-52e5d7d97dd4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. UI\3. Inspector\ComponentUI\SkyBox">
+      <UniqueIdentifier>{30fe944e-5329-450b-b146-8c22804ba80b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. UI\3. Inspector\ComponentUI\Landscape">
+      <UniqueIdentifier>{01c74e88-02bd-4ed1-a9f3-cbe477dbd76f}</UniqueIdentifier>
+    </Filter>
     <Filter Include="리소스 파일">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
@@ -286,6 +292,15 @@
     <ClInclude Include="LogUI.h">
       <Filter>02. UI\8. Log</Filter>
     </ClInclude>
+    <ClInclude Include="SkyBoxUI.h">
+      <Filter>02. UI\3. Inspector\ComponentUI\SkyBox</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystemUI.h">
+      <Filter>02. UI\3. Inspector\ComponentUI\ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="LandscapeUI.h">
+      <Filter>02. UI\3. Inspector\ComponentUI\Landscape</Filter>
+    </ClInclude>
     <ClInclude Include="ImGuizmo.h" />
   </ItemGroup>
   <ItemGroup>
@@ -437,6 +452,15 @@
     </ClCompile>
     <ClCompile Include="LogUI.cpp">
       <Filter>02. UI\8. Log</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyBoxUI.cpp">
+      <Filter>02. UI\3. Inspector\ComponentUI\SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystemUI.cpp">
+      <Filter>02. UI\3. Inspector\ComponentUI\ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="LandscapeUI.cpp">
+      <Filter>02. UI\3. Inspector\ComponentUI\Landscape</Filter>
     </ClCompile>
     <ClCompile Include="ImGuizmo.cpp" />
   </ItemGroup>
