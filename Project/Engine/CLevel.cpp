@@ -1,6 +1,7 @@
 ﻿#include "pch.h"
 #include "CLevel.h"
 
+#include "CLevelMgr.h"
 #include "CLayer.h"
 #include "CGameObject.h"
 
@@ -61,6 +62,8 @@ void CLevel::finaltick()
 
 void CLevel::AddObject(CGameObject* _Object, int _LayerIdx, bool _bChildMove)
 {
+	CheckObjectName(_Object);
+
 	m_arrLayer[_LayerIdx]->AddObject(_Object, _bChildMove);
 }
 
@@ -69,6 +72,8 @@ void CLevel::AddObject(CGameObject* _Object, const wstring& _strLayerName, bool 
 	CLayer* pLayer = GetLayer(_strLayerName);
 	if (nullptr == pLayer)
 		return;
+
+	CheckObjectName(_Object);
 
 	pLayer->AddObject(_Object, _bChildMove);
 }
@@ -146,6 +151,56 @@ void CLevel::FindObjectsByName(const wstring& _strName, vector<CGameObject*>& _v
 				{
 					_vecObj.push_back(pObject);
 				}
+			}
+		}
+	}
+}
+
+void CLevel::CheckObjectName(CGameObject* _Object)
+{
+	if (nullptr != _Object)
+	{
+		wstring ObjName = _Object->GetName();
+
+		CLevel* pLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+
+		if (nullptr != pLevel)
+		{
+			CGameObject* pObj = pLevel->FindObjectByName(ObjName);
+
+			// 이미 동일한 이름의 오브젝트가 존재할 경우
+			if (nullptr != pObj)
+			{
+				wchar_t szObj[255] = {};
+				int num = 0;
+
+				if (nullptr != pObj)
+				{
+					while (true)
+					{
+						swprintf_s(szObj, (ObjName + L"_%d").c_str(), num);
+						if (nullptr == pLevel->FindObjectByName(szObj))
+							break;
+						++num;
+					}
+				}
+
+				_Object->SetName(szObj);
+			}
+		}
+
+		list<CGameObject*> queue;
+		queue.push_back(_Object);
+
+		while (!queue.empty())
+		{
+			CGameObject* pObject = queue.front();
+			queue.pop_front();
+
+			for (size_t i = 0; i < pObject->m_vecChild.size(); ++i)
+			{
+				CheckObjectName(pObject->m_vecChild[i]);
+				queue.push_back(pObject->m_vecChild[i]);
 			}
 		}
 	}

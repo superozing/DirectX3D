@@ -85,6 +85,7 @@ public:
     CGameObject(const CGameObject& _OriginObject);
     ~CGameObject();
 
+    friend class CLevel;
     friend class CLayer;
     friend class CTaskMgr;
 };
