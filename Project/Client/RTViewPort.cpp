@@ -16,10 +16,15 @@
 
 #include "ImGuizmo.h"
 
+#include "imgui_internal.h"
+#include <Engine\CLogMgr.h>
+
 RTViewPort::RTViewPort()
 	: UI("Viewport", "##Viewport")
     , m_pTarget(nullptr)
     , m_pCamera(nullptr)
+    , m_ViewportPos(0.f, 0.f)
+    , m_MouseCoord(0.f, 0.f)
 {
 	
 	m_ViewPortTexture = CAssetMgr::GetInst()->CreateTexture(L"CopyRTtex",
@@ -27,7 +32,7 @@ RTViewPort::RTViewPort()
 			CDevice::GetInst()->GetRenderResolution().y,
 			DXGI_FORMAT_R8G8B8A8_UNORM,
 			D3D11_BIND_SHADER_RESOURCE);
-	
+
 }
 
 RTViewPort::~RTViewPort()
@@ -42,7 +47,13 @@ void RTViewPort::render_update()
 {
     CRenderMgr::GetInst()->CopyRTTex(m_ViewPortTexture);
 
-    auto viewportPos = ImGui::GetWindowPos();
+    m_fTapHeight = ImGui::GetFrameHeightWithSpacing();
+    m_ViewportSize.x = (float)ImGui::GetWindowSize().x;
+    m_ViewportSize.y = (float)ImGui::GetWindowSize().y - m_fTapHeight;
+
+    m_ViewportPos = Vec2((float)ImGui::GetWindowPos().x, (float)ImGui::GetWindowPos().y);
+    m_MouseCoord = Vec2((float)ImGui::GetIO().MousePos.x, (float)ImGui::GetIO().MousePos.y);
+
     ImGui::Dummy(ImVec2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y - 40));
 
 	// 레벨 파일 드랍 체크
@@ -201,6 +212,7 @@ void RTViewPort::SetTargetObject(CGameObject* _target)
 
 void RTViewPort::SetTargetCamera(CCamera* _camera)
 {
+    if(_camera != nullptr)
     m_pCamera = _camera->GetOwner();
 }
 
@@ -210,7 +222,6 @@ void RTViewPort::SetCamera(CCamera* _camera)
     if (!pViewport) return;
     pViewport->SetTargetCamera(_camera);
 }
-
 
 void RTViewPort::MoveCameraToObject()
 {
@@ -224,3 +235,41 @@ void RTViewPort::MoveCameraToObject()
     Vec3 vNewPos = vPos - (vDir)* distance;
     m_pCamera->Transform()->Lerp(vNewPos, false, Vec3(), false, Vec3(), 0.1f);
 }
+
+
+
+Vec2 RTViewPort::ConvertCoord()
+{
+    RTViewPort* Viewport = dynamic_cast<RTViewPort*>(CImGuiMgr::GetInst()->FindUI("##Viewport"));
+    
+     Vec2 OriginResolution = CDevice::GetInst()->GetRenderResolution();
+     Vec2 Mousepos = Viewport->GetMouseCoord();
+     float fTapHeight = Viewport->GetTapHeight();
+
+     Mousepos.x = Mousepos.x - Viewport->GetViewPortPos().x;
+     Mousepos.y = Mousepos.y - Viewport->GetViewPortPos().y - fTapHeight;
+
+     float OriginAspect = OriginResolution.x / OriginResolution.y;
+
+     // 각 축에 대한 변환 비율 계산
+     float xScale;
+     float yScale;
+     
+     if (OriginResolution.x > Viewport->GetViewPortSize().x)
+         xScale = OriginResolution.x / Viewport->GetViewPortSize().x;
+     else
+         xScale = Viewport->GetViewPortSize().x / OriginResolution.x;
+
+     if(OriginResolution.y >= Viewport->GetViewPortSize().y)
+         yScale =  OriginResolution.y / Viewport->GetViewPortSize().y;
+     else
+         yScale =  Viewport->GetViewPortSize().y / OriginResolution.y;
+
+     Mousepos.x *= xScale;
+     Mousepos.y *= yScale;
+
+     Mousepos.x = floor(Mousepos.x);
+     Mousepos.y = floor(Mousepos.y);
+
+     return Mousepos;
+ }

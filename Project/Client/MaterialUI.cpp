@@ -1,15 +1,20 @@
 ﻿#include "pch.h"
 #include "MaterialUI.h"
 
+#include <Engine\CKeyMgr.h>
 #include <Engine/CAssetMgr.h>
 #include <Engine/CMaterial.h>
 #include <Engine/CGraphicsShader.h>
 #include <Engine/CTexture.h>
 
+#include "CImGuiMgr.h"
 #include "ParamUI.h"
+#include "ListUI.h"
 
 MaterialUI::MaterialUI()
 	: AssetUI("Material", "##Material", ASSET_TYPE::MATERIAL)
+    , m_TargetMtrl(nullptr)
+    , m_SelectTexParam(TEX_PARAM::END)
 {
 }
 
@@ -23,24 +28,66 @@ void MaterialUI::render_update()
 	AssetUI::render_update();
 
     // 해당 텍스쳐 이미지 출력
-    Ptr<CMaterial> pMtrl = (CMaterial*)GetAsset().Get();
-    string strPath = string(pMtrl->GetRelativePath().begin(), pMtrl->GetRelativePath().end());
+    m_TargetMtrl = (CMaterial*)GetAsset().Get();
+    
+    char MtrlKey[255];
+    string strKey = string(m_TargetMtrl->GetKey().begin(), m_TargetMtrl->GetKey().end());
+    string prevKey = strKey;
+    
+    string FullPath = ToString(CPathMgr::GetContentPath()) + strKey;
+    if (exists(FullPath))
+    {
+        filesystem::path pathObj(FullPath);
+
+        strcpy(MtrlKey, pathObj.stem().string().c_str());
+    }
 
     ImGui::Text("Material");
     ImGui::SameLine();
-    ImGui::InputText("##TexName", (char*)strPath.c_str(), strPath.length(), ImGuiInputTextFlags_ReadOnly);
+    ImGui::InputText("##MtrlName", MtrlKey, 255);
 
-    Ptr<CGraphicsShader> pShader = pMtrl->GetShader();
+    string NewName = "material\\" + string(MtrlKey) + ".mtrl";
+    if (prevKey != NewName)
+    {
+        if (KEY_TAP_EDITOR(ENTER))
+        {
+            ChangeAssetName(strKey, NewName);
+            AssetUI::SetAssetKey((CAsset*)m_TargetMtrl.Get(), ToWString(NewName));
+            prevKey = NewName;
+        }
+        else if (KEY_TAP_EDITOR(ESC))
+        {
+        }
+    }
+
+
+    Ptr<CGraphicsShader> pShader = m_TargetMtrl->GetShader();
     string strShaderName;
     if (nullptr != pShader)
     {
         strShaderName = string(pShader->GetKey().begin(), pShader->GetKey().end());
     }
+    else
+    {
+        m_TargetMtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(SHADER_deferred));
+    }
 
-    ImGui::Text("Shader  ");
-    ImGui::SameLine();
+    ImGui::Text("Shader  "); ImGui::SameLine();
     ImGui::InputText("##ShaderName", (char*)strShaderName.c_str(), strShaderName.length(), ImGuiInputTextFlags_ReadOnly);
-    
+    ImGui::SameLine();
+
+    if (ImGui::Button("##MtrlBtn", ImVec2(20, 20)))
+    {
+        // 리스트 UI
+        ListUI* pListUI = (ListUI*)CImGuiMgr::GetInst()->FindUI("##List");
+
+        vector<string> vecShaderName;
+        CAssetMgr::GetInst()->GetAssetName(ASSET_TYPE::GRAPHICS_SHADER, vecShaderName);
+
+        pListUI->AddString(vecShaderName);
+        pListUI->SetDbClickDelegate(this, (Delegate_1)&MaterialUI::ShaderSelect);
+        pListUI->Activate();
+    }
 
     ImGui::Spacing(); ImGui::Spacing(); ImGui::Spacing(); ImGui::Spacing();
     ImGui::Text("Material Parameter");
@@ -59,31 +106,31 @@ void MaterialUI::render_update()
         case SCALAR_PARAM::BOOL_1:
         case SCALAR_PARAM::BOOL_2:
         case SCALAR_PARAM::BOOL_3:
-            ParamUI::Param_BOOL((bool*)pMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, vecScalarParam[i].View, vecScalarParam[i].Tooltip);
+            ParamUI::Param_BOOL((bool*)m_TargetMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, vecScalarParam[i].View, vecScalarParam[i].Tooltip);
             break;
         case SCALAR_PARAM::INT_0:
         case SCALAR_PARAM::INT_1:
         case SCALAR_PARAM::INT_2:
         case SCALAR_PARAM::INT_3:                   
-            ParamUI::Param_INT((int*)pMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, (int)vecScalarParam[i].min, (int)vecScalarParam[i].Max,vecScalarParam[i].View, vecScalarParam[i].Tooltip);
+            ParamUI::Param_INT((int*)m_TargetMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, (int)vecScalarParam[i].min, (int)vecScalarParam[i].Max,vecScalarParam[i].View, vecScalarParam[i].Tooltip);
             break;
         case SCALAR_PARAM::FLOAT_0:
         case SCALAR_PARAM::FLOAT_1:
         case SCALAR_PARAM::FLOAT_2:
         case SCALAR_PARAM::FLOAT_3:
-            ParamUI::Param_FLOAT((float*)pMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, vecScalarParam[i].min, vecScalarParam[i].Max, vecScalarParam[i].View, vecScalarParam[i].Tooltip);
+            ParamUI::Param_FLOAT((float*)m_TargetMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, vecScalarParam[i].min, vecScalarParam[i].Max, vecScalarParam[i].View, vecScalarParam[i].Tooltip);
             break;
         case SCALAR_PARAM::VEC2_0:
         case SCALAR_PARAM::VEC2_1:
         case SCALAR_PARAM::VEC2_2:
         case SCALAR_PARAM::VEC2_3:
-            ParamUI::Param_VEC2((Vec2*)pMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, vecScalarParam[i].min, vecScalarParam[i].Max,  vecScalarParam[i].View, vecScalarParam[i].Tooltip);
+            ParamUI::Param_VEC2((Vec2*)m_TargetMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, vecScalarParam[i].min, vecScalarParam[i].Max,  vecScalarParam[i].View, vecScalarParam[i].Tooltip);
             break;
         case SCALAR_PARAM::VEC4_0:
         case SCALAR_PARAM::VEC4_1:
         case SCALAR_PARAM::VEC4_2:
         case SCALAR_PARAM::VEC4_3:
-            ParamUI::Param_VEC4((Vec4*)pMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, vecScalarParam[i].min, vecScalarParam[i].Max,  vecScalarParam[i].View, vecScalarParam[i].Tooltip);
+            ParamUI::Param_VEC4((Vec4*)m_TargetMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, vecScalarParam[i].min, vecScalarParam[i].Max,  vecScalarParam[i].View, vecScalarParam[i].Tooltip);
             break;
         case SCALAR_PARAM::MAT_0:
         case SCALAR_PARAM::MAT_1:
@@ -96,13 +143,13 @@ void MaterialUI::render_update()
     const vector<tTexParam>& vecTexParam = pShader->GetTexParam();
     for (size_t i = 0; i < vecTexParam.size(); ++i)
     {
-        Ptr<CTexture> pTex = pMtrl->GetTexParam(vecTexParam[i].Type);      
+        Ptr<CTexture> pTex = m_TargetMtrl->GetTexParam(vecTexParam[i].Type);
         if (ParamUI::Param_TEXTURE(pTex, vecTexParam[i].Desc, this, (Delegate_1)&MaterialUI::SelectTexture))
         {           
             // 리스트 버튼을 눌렀다면
             m_SelectTexParam = vecTexParam[i].Type;
         }
-        pMtrl->SetTexParam(vecTexParam[i].Type, pTex);
+        m_TargetMtrl->SetTexParam(vecTexParam[i].Type, pTex);
     }
 }
 
@@ -112,6 +159,17 @@ void MaterialUI::SelectTexture(DWORD_PTR _dwData)
     wstring strTexName = ToWString(strTex);
 
     Ptr<CTexture> pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(strTexName);
-    Ptr<CMaterial> pMtrl = (CMaterial*)GetAsset().Get();
-    pMtrl->SetTexParam(m_SelectTexParam, pTex);    
+    m_TargetMtrl = (CMaterial*)GetAsset().Get();
+    m_TargetMtrl->SetTexParam(m_SelectTexParam, pTex);
+}
+
+void MaterialUI::ShaderSelect(DWORD_PTR _ptr)
+{
+    string strShader = (char*)_ptr;
+    wstring strShaderName = ToWString(strShader);
+
+    Ptr<CGraphicsShader> pShader = CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(strShaderName);
+
+    m_TargetMtrl = (CMaterial*)GetAsset().Get();
+    m_TargetMtrl->SetShader(pShader);
 }

@@ -88,9 +88,9 @@ Ptr<CMaterial> CRenderComponent::GetSharedMaterial(UINT _idx)
 
 Ptr<CMaterial> CRenderComponent::GetDynamicMaterial(UINT _idx)
 {
-	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-	if (pCurLevel->GetState() != LEVEL_STATE::PLAY)
-		return nullptr;
+	//CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+	//if (pCurLevel->GetState() != LEVEL_STATE::PLAY)
+	//	return nullptr;
 
 	// 원본 재질이 없다 -> Nullptr 반환
 	if (nullptr == m_vecMtrls[_idx].pSharedMtrl)
@@ -105,6 +105,12 @@ Ptr<CMaterial> CRenderComponent::GetDynamicMaterial(UINT _idx)
 		m_vecMtrls[_idx].pDynamicMtrl = m_vecMtrls[_idx].pSharedMtrl->Clone();
 		m_vecMtrls[_idx].pDynamicMtrl->SetName(m_vecMtrls[_idx].pSharedMtrl->GetName() + L"_Clone");
 		m_vecMtrls[_idx].pCurMtrl = m_vecMtrls[_idx].pDynamicMtrl;
+    
+    m_vecMtrls[_idx].pDynamicMtrl->SetKey(m_vecMtrls[_idx].pSharedMtrl->GetKey());
+		m_vecMtrls[_idx].pDynamicMtrl->SetRelativePath(m_vecMtrls[_idx].pSharedMtrl->GetRelativePath());
+
+		m_vecMtrls[_idx].pCurMtrl->SetKey(m_vecMtrls[_idx].pSharedMtrl->GetKey());
+		m_vecMtrls[_idx].pCurMtrl->SetRelativePath(m_vecMtrls[_idx].pSharedMtrl->GetRelativePath());
 	}
 
 	return nullptr;
@@ -180,6 +186,7 @@ void CRenderComponent::LoadFromFile(ifstream& fin)
 	for (UINT i = 0; i < iMtrlCount; ++i)
 	{
 		LoadAssetRef(m_vecMtrls[i].pSharedMtrl, fin);
+    SetMaterial(m_vecMtrls[i].pSharedMtrl.Get(), i);
 	}
 
 	fin >> m_DrawShadowMap;
