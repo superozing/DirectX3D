@@ -8,6 +8,9 @@
 // MRT : Deferred MRT
 #define ColorTexture        g_tex_0
 #define NormalMap           g_tex_1
+#define SpecularMap         g_tex_2
+#define EmissiveMap         g_tex_3
+
 #define ColorTextureCheck   g_btex_0
 #define NormalMapCheck      g_btex_1
 // ======================
