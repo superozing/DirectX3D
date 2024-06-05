@@ -104,6 +104,7 @@ void Content::render_update()
 	//ImGui::EndChild();
 
 	ImGui::PopStyleVar();
+
 }
 
 void Content::ResetBrowser()
@@ -182,12 +183,16 @@ void Content::ResetContent()
 	// Tree Clear
 	m_ContentTree->ClearNode();
 	m_strData.clear();
+	m_strData.reserve(100);
 
 	// 루트노드 추가
 	TreeNode* RootNode = m_ContentTree->AddTreeNode(nullptr, "Root", 0);
 
 	string path = ToString(CPathMgr::GetContentPath()) + m_strCurDirectory;
 	namespace fs = std::filesystem;
+
+	int idx = 0;
+
 	for (const fs::directory_entry& entry : fs::directory_iterator(path)) {
 		if (!entry.is_directory()) {
 			auto filename = entry.path().filename().string();
@@ -204,7 +209,7 @@ void Content::ResetContent()
 				// 따라서 일단은 lv과 anim의 분기는 나눠놨지만 같은 형식을 호출중
 				if (extension == ".lv") {
 					m_strData.push_back(m_strCurDirectory + "\\" + filename);
-					m_ContentTree->AddTreeNode(RootNode, filename, (DWORD_PTR)&m_strData.back());
+					m_ContentTree->AddTreeNode(RootNode, filename, (DWORD_PTR)&m_strData[idx++]);
 				}
 				else if (extension == ".anim") {
 					m_ContentTree->AddTreeNode(RootNode, filename, 0);
@@ -323,6 +328,9 @@ void Content::DirectoryUI()
 
 		if (ImGui::MenuItem("Create New Level", ""))
 		{
+			wstring path = CPathMgr::GetContentPath();
+			path += L"level";
+
 			wchar_t szSelect[256] = {};
 
 			OPENFILENAME ofn = {};
@@ -343,14 +351,18 @@ void Content::DirectoryUI()
 			strInitPath += L"level\\";
 			ofn.lpstrInitialDir = strInitPath.c_str();
 
-			ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
-
-			if (GetSaveFileName(&ofn))
-			{
+			ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_EXPLORER;
+			if (GetSaveFileName(&ofn)) {
+				wstring contentPath = CPathMgr::GetRelativePath(szSelect);
+				if (contentPath == wstring()) {
+					MessageBox(nullptr, L"Content 경로가 아닙니다.", L"경로 지정 실패", 0);
+					ImGui::EndPopup();
+					return;
+				}
 				CLevel* pLevel = new CLevel;
 				pLevel->SetName(szSelect);
 				CLevelSaveLoad::SaveLevel(pLevel, CPathMgr::GetRelativePath(szSelect));
-				CLevelMgr::GetInst()->ChangeLevel(pLevel, LEVEL_STATE::STOP);
+				GamePlayStatic::ChangeLevel(pLevel, LEVEL_STATE::STOP);
 			}
 			SetTargetDirectory("level");
 		}

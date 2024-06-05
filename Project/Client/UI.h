@@ -3,6 +3,8 @@
 #include "imgui.h"
 #include "CImGuiMgr.h"
 
+class ScriptUI;
+
 class UI
 {
 private:
@@ -43,6 +45,9 @@ public:
 	bool IsActivate() { return m_bActive; }
 	void SetModal(bool _Modal) { m_bModal = _Modal; }
 
+	void HeaderSetting(UI* _SelectedHeader);
+	void DeleteHeaderComponent(COMPONENT_TYPE _Type);
+	void DeleteHeaderScript(ScriptUI* _ScriptUI);
 
 public:
 	virtual void tick();

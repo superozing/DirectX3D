@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "Light2DUI.h"
 
 #include <Engine\CLight2D.h>
@@ -17,6 +17,8 @@ Light2DUI::~Light2DUI()
 void Light2DUI::render_update()
 {
 	ComponentUI::render_update();
+
+	if (!TitleCollapse("Light2D")) return;
 
 	tLightInfo info = GetTargetObject()->Light2D()->GetLightInfo();
 

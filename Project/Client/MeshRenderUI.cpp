@@ -23,11 +23,13 @@ void MeshRenderUI::render_update()
 {
 	ComponentUI::render_update();
 
+	if (!TitleCollapse("MeshRender")) return;
+
 	CGameObject* pTarget = GetTargetObject();
 	CMeshRender* pMeshRender = pTarget->MeshRender();
 
 	Ptr<CMesh> pMesh = pMeshRender->GetMesh();
-	Ptr<CMaterial> pMtrl = pMeshRender->GetMaterial();
+	Ptr<CMaterial> pMtrl = pMeshRender->GetMaterial(0);
 
 	string meshname, mtrlname;
 
@@ -97,7 +99,7 @@ void MeshRenderUI::render_update()
 			CAsset* pAsset = (CAsset*)data;
 			if (ASSET_TYPE::MATERIAL == pAsset->GetType())
 			{
-				GetTargetObject()->MeshRender()->SetMaterial((CMaterial*)pAsset);
+				GetTargetObject()->MeshRender()->SetMaterial((CMaterial*)pAsset, 0);
 			}
 		}
 		ImGui::EndDragDropTarget();
@@ -135,5 +137,5 @@ void MeshRenderUI::MaterialSelect(DWORD_PTR _ptr)
 
 	Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(strMtrlName);
 
-	GetTargetObject()->MeshRender()->SetMaterial(pMtrl);
+	GetTargetObject()->MeshRender()->SetMaterial(pMtrl, 0);
 }

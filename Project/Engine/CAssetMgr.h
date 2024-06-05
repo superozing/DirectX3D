@@ -12,6 +12,7 @@
 #include "CPrefab.h"
 #include "CSound.h"
 #include "CFSM.h"
+#include "CMeshData.h"
 
 template<typename T1, typename T2>
 constexpr bool MyBool = false;
@@ -48,6 +49,8 @@ public:
     void AddAsset(const wstring& _strKey, T* _Asset);
 
     void AddAsset(const wstring& _strKey, CAsset* _Asset);
+
+    Ptr<CMeshData> LoadFBX(const wstring& _strPath);
 
     template<typename T>
     Ptr<T> FindAsset(const wstring& _strKey);
@@ -95,6 +98,8 @@ ASSET_TYPE GetAssetType()
 {
     ASSET_TYPE Type = ASSET_TYPE::END;
 
+    if constexpr (std::is_same_v<CMeshData, T>)
+        Type = ASSET_TYPE::MESHDATA;
     if constexpr (std::is_same_v<CMesh, T>)
         Type = ASSET_TYPE::MESH;
     if constexpr (std::is_same_v<CTexture, T>)
@@ -129,6 +134,11 @@ inline void CAssetMgr::AddAsset(const wstring& _strKey, T* _Asset)
     ASSET_TYPE Type = GetAssetType<T>();
 
     map<wstring, Ptr<CAsset>>::iterator iter = m_mapAsset[(UINT)Type].find(_strKey);
+    if (iter != m_mapAsset[(UINT)Type].end())
+    {
+        iter->second = _Asset;
+        return;
+    }
     assert(iter == m_mapAsset[(UINT)Type].end());
     
     _Asset->SetKey(_strKey);
@@ -154,7 +164,7 @@ Ptr<T> CAssetMgr::FindAsset(const wstring& _strKey)
 template<typename T>
 Ptr<T> CAssetMgr::Load(const wstring& _strKey, const wstring& _strRelativePath)
 {
-    Ptr<T> pAsset = FindAsset<T>(_strKey);
+    Ptr<CAsset> pAsset = FindAsset<T>(_strKey).Get();
 
     // 로딩할 때 사용할 키로 이미 다른 에셋이 있다면
     if (nullptr != pAsset)

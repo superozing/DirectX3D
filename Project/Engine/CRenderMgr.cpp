@@ -6,7 +6,10 @@
 
 #include "CStructuredBuffer.h"
 
+#include "CKeyMgr.h"
 #include "CTimeMgr.h"
+#include "CLevelMgr.h"
+#include "CLevel.h"
 #include "CDevice.h"
 #include "CAssetMgr.h"
 #include "components.h"
@@ -22,6 +25,7 @@ CRenderMgr::CRenderMgr()
 	, m_vClearColor(Vec4(0.f, 0.f, 0.f, 1.f))
 	, m_Light2DBuffer(nullptr)
 	, m_Light3DBuffer(nullptr)
+	, m_bEscape(false)
 {
 	m_RenderFunc = &CRenderMgr::render_play;
 }
@@ -40,6 +44,7 @@ void CRenderMgr::tick()
 	ClearMRT();
 	UpdateData();
 
+	CheckEscape();
 
 	(this->*m_RenderFunc)();
 	render_debug();
@@ -57,6 +62,7 @@ void CRenderMgr::ClearMRT()
 	m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->Clear();
 	m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->ClearRT();
 	m_arrMRT[(UINT)MRT_TYPE::LIGHT]->ClearRT();
+	m_arrMRT[(UINT)MRT_TYPE::SHADOW_DEPTH]->Clear();
 }
 
 void CRenderMgr::CreateDynamicShadowDepth()
@@ -99,6 +105,11 @@ void CRenderMgr::render_play()
 		// Decal 물체 렌더링
 		GetMRT(MRT_TYPE::DECAL)->OMSet();
 		pMainCam->render_decal();
+
+		// 그림자 판정
+
+
+
 
 		// 광원처리
 		// LightMRT 변경
@@ -224,36 +235,28 @@ void CRenderMgr::render_debug()
 			break;
 		}
 
-		m_pDebugObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DebugShapeMtrl"));
-		m_pDebugObj->MeshRender()->GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC4_0, (*iter).vColor);
-
+		m_pDebugObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DebugShapeMtrl"), 0);
+		m_pDebugObj->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, (*iter).vColor);
 
 		// 깊이판정 옵션 설정
 		if ((*iter).bDepthTest)
-			m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->SetDSType(DS_TYPE::NO_WRITE);
+			m_pDebugObj->MeshRender()->GetMaterial(0)->GetShader()->SetDSType(DS_TYPE::NO_WRITE);
 		else
-			m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+			m_pDebugObj->MeshRender()->GetMaterial(0)->GetShader()->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
 
-
-		// 이전 Topology 저장
-		D3D11_PRIMITIVE_TOPOLOGY PrevTopology = m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->GetTopology();
+		D3D11_PRIMITIVE_TOPOLOGY PrevTopology = m_pDebugObj->MeshRender()->GetMaterial(0)->GetShader()->GetTopology();
 		if (DEBUG_SHAPE::CROSS == (*iter).eShape)
 		{
-			m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->SetTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_LINELIST);
+			m_pDebugObj->MeshRender()->GetMaterial(0)->GetShader()->SetTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 		}
 		else if (DEBUG_SHAPE::SPHERE == (*iter).eShape)
 		{
-			m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-			m_pDebugObj->MeshRender()->GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, 1); // Sphere Mesh임을 쉐이더 코드에 알림
-		}
-		else if (DEBUG_SHAPE::CONE == (*iter).eShape)
-		{
-			m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-			m_pDebugObj->MeshRender()->GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, 2); // Cone Mesh임을 쉐이더 코드에 알림
+			m_pDebugObj->MeshRender()->GetMaterial(0)->GetShader()->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+			m_pDebugObj->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_0, 1);
 		}
 		else
 		{
-			m_pDebugObj->MeshRender()->GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, 0);
+			m_pDebugObj->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_0, 0);
 		}
 
 		m_pDebugObj->Transform()->SetWorldMat((*iter).matWorld);
@@ -261,7 +264,7 @@ void CRenderMgr::render_debug()
 
 		m_pDebugObj->render();
 
-		m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->SetTopology(PrevTopology);
+		m_pDebugObj->MeshRender()->GetMaterial(0)->GetShader()->SetTopology(PrevTopology);
 
 		(*iter).fLifeTime += DT;
 		if ((*iter).fDuration <= (*iter).fLifeTime)
@@ -333,6 +336,11 @@ void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Idx)
 	if (_Idx == -1)
 		return;
 
+	if (_Idx == 0)
+	{
+		if (CameraChange) CameraChange(_Cam);
+	}
+
 	if (m_vecCam.size() <= _Idx + 1)
 	{
 		m_vecCam.resize(_Idx + 1);
@@ -342,4 +350,33 @@ void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Idx)
 	assert(nullptr == m_vecCam[_Idx]);
 
 	m_vecCam[_Idx] = _Cam;
+}
+
+
+void CRenderMgr::CheckEscape()
+{
+	if (LEVEL_STATE::PLAY == CLevelMgr::GetInst()->GetCurrentLevel()->GetState())
+	{
+		if (KEY_TAP(F8) || KEY_TAP_EDITOR(F8))
+		{
+			m_bEscape = !m_bEscape;
+
+			ActiveEditorMode(m_bEscape);
+		}
+	}
+}
+
+CCamera* CRenderMgr::GetMainCam()
+{
+	if (LEVEL_STATE::PLAY == CLevelMgr::GetInst()->GetCurrentLevel()->GetState())
+	{
+		if (m_vecCam.empty())
+			return nullptr;
+
+		return m_vecCam[0];
+	}
+	else
+	{
+		return m_EditorCam;
+	}
 }

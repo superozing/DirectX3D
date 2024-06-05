@@ -16,7 +16,7 @@ CSkyBox::CSkyBox()
 	, m_SkyBoxType(SKYBOX_TYPE::SPHERE)
 {
 	SetSkyBoxType(m_SkyBoxType);
-	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SkyBoxMtrl"));
+	m_SkyBoxMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SkyBoxMtrl");
 	DrawShadow(false);
 }
 
@@ -31,10 +31,12 @@ void CSkyBox::SetSkyBoxType(SKYBOX_TYPE _Type)
 	if (SKYBOX_TYPE::SPHERE == m_SkyBoxType)
 	{
 		SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHsphere));
+		SetMaterial(m_SkyBoxMtrl, 0);
 	}
 	else if (SKYBOX_TYPE::CUBE == m_SkyBoxType)
 	{
 		SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHcube));
+		SetMaterial(m_SkyBoxMtrl, 0);
 	}
 }
 
@@ -85,23 +87,23 @@ void CSkyBox::UpdateData()
 {
 	Transform()->UpdateData();
 
-	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, (int)m_SkyBoxType);
+	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_0, (int)m_SkyBoxType);
 
 	if (SKYBOX_TYPE::SPHERE == m_SkyBoxType)
 	{
-		GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_SphereTex);
+		GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_SphereTex);
 	}
 	else if (SKYBOX_TYPE::CUBE == m_SkyBoxType)
 	{
-		GetMaterial()->SetTexParam(TEX_PARAM::TEXCUBE_0, m_CubeTex);
+		GetMaterial(0)->SetTexParam(TEX_PARAM::TEXCUBE_0, m_CubeTex);
 	}
 
-	GetMaterial()->UpdateData();
+	GetMaterial(0)->UpdateData();
 }
 
 void CSkyBox::render()
 {
 	UpdateData();
 
-	GetMesh()->render();
+	GetMesh()->render(0);
 }

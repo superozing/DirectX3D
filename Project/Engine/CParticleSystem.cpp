@@ -17,14 +17,14 @@ CParticleSystem::CParticleSystem()
 {
 	// 전용 메쉬와 전용 재질 사용
 	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHpoint));
-	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ParticleMtrl"));
+	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ParticleMtrl"), 0);
 
 	// 렌더링 해상도
 	Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
 
 	// 파티클을 저장하는 구조화 버퍼
 	m_ParticleBuffer = new CStructuredBuffer;
-	m_ParticleBuffer->Create(sizeof(tParticle), m_MaxParticleCount, SB_TYPE::READ_WRITE, true);
+	m_ParticleBuffer->Create(sizeof(tParticle), m_MaxParticleCount, SB_READ_TYPE::READ_WRITE, true);
 
 	// 파티클 모듈정보를 저장하는 구조화버퍼
 	m_ParticleModuleBuffer = new CStructuredBuffer;
@@ -33,14 +33,14 @@ CParticleSystem::CParticleSystem()
 	{
 		ModuleAddSize = 16 - (sizeof(tParticleModule) % 16);
 	}
-	m_ParticleModuleBuffer->Create(sizeof(tParticleModule) + ModuleAddSize, 1, SB_TYPE::READ_ONLY, true);
+	m_ParticleModuleBuffer->Create(sizeof(tParticleModule) + ModuleAddSize, 1, SB_READ_TYPE::READ_ONLY, true);
 
 	// 파티클 업데이트용 컴퓨트 쉐이더 참조
 	m_CSParticleUpdate = (CParticleUpdate*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"ParticleUpdateShader").Get();
 
 	// SpawnCount 전달용 구조화버퍼
 	m_SpawnCountBuffer = new CStructuredBuffer;
-	m_SpawnCountBuffer->Create(sizeof(tSpawnCount), 1, SB_TYPE::READ_WRITE, true);
+	m_SpawnCountBuffer->Create(sizeof(tSpawnCount), 1, SB_READ_TYPE::READ_WRITE, true);
 
 
 	// 초기 모듈 세팅		
@@ -175,9 +175,9 @@ void CParticleSystem::render()
 
 	// 모든 파티클 렌더링
 	// 파티클 개별 랜더링 -> 인스턴싱
-	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, 0);
-	GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_ParticleTex);
-	GetMaterial()->UpdateData();
+	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_0, 0);
+	GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_ParticleTex);
+	GetMaterial(0)->UpdateData();
 	
 	GetMesh()->render_asparticle(m_MaxParticleCount);
 

@@ -1,12 +1,12 @@
-#pragma once
+Ôªø#pragma once
 #include "UI.h"
 
-// GameObject ¡§∫∏
-//  - ƒƒ∆˜≥Õ∆Æ
-//  - Ω∫≈©∏≥∆Æ
+// GameObject Ï†ïÎ≥¥
+//  - Ïª¥Ìè¨ÎÑåÌä∏
+//  - Ïä§ÌÅ¨Î¶ΩÌä∏
 
-// Asset ¡§∫∏
-//  - ∞¢ ø°º¬¿« ¡§∫∏
+// Asset Ï†ïÎ≥¥
+//  - Í∞Å ÏóêÏÖãÏùò Ï†ïÎ≥¥
 
 #include <Engine/CGameObject.h>
 #include <Engine/CAsset.h>
@@ -21,6 +21,7 @@ class Inspector :
 private:
     CGameObject*        m_TargetObject;
     Ptr<CAsset>         m_TargetAsset;
+    bool                m_bPrefab;
 
     ComponentUI*        m_arrComUI[(UINT)COMPONENT_TYPE::END];
     vector<ScriptUI*>   m_vecScriptUI;
@@ -33,12 +34,24 @@ public:
     virtual void render_update() override;
 
 public:
-    void SetTargetObject(CGameObject* _Object);
+    void SetTargetObject(CGameObject* _Object, bool _bPrefab = false);
     void SetTargetAsset(Ptr<CAsset> _Asset);
 
     CGameObject* GetTargetObject() { return m_TargetObject; }
 
     void RefreshScriptUI();
+
+    void ObjectName();
+    void ObjectLayer();
+    int PrefabLayer();
+    void ObjectComponent();
+    void ObjectScript();
+
+    void CheckTargetComponent(COMPONENT_TYPE _type);
+    void DeleteTargetComponent(COMPONENT_TYPE _type);
+    void DeleteTargetScript(ScriptUI* _Script);
+    void MakePrefab();
+    void SavePrefab(const string& _Directory, const string& _FileName);
 
 private:
     void CreateChildUI();
@@ -46,8 +59,14 @@ private:
     void CreateAssetUI();
     void ResizeScriptUI(UINT _Size);
 
+private:
+    void ResetTargetObject();
+    void ResetTargetAsset();
+
 public:
     Inspector();
     ~Inspector();
+
+    friend class CImGuiMgr;
 };
 

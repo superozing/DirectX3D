@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CPlayerScript.h"
 #include <Engine/CAssetMgr.h>
 
@@ -7,6 +7,8 @@
 
 #include <Engine/CMaterial.h>
 #include <Engine/CRenderComponent.h>
+
+#include <Engine\CLogMgr.h>
 
 
 CPlayerScript::CPlayerScript()
@@ -23,16 +25,16 @@ CPlayerScript::~CPlayerScript()
 
 void CPlayerScript::begin()
 {
-	Ptr<CTexture> pAltasTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\link.png", L"texture\\link.png");
-	Animator2D()->Create(L"IDLE_LEFT", pAltasTex, Vec2(0.f, 130.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 3, 10);
-	Animator2D()->Create(L"IDLE_RIGHT", pAltasTex, Vec2(0.f, 390.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 3, 10);
+	//Ptr<CTexture> pAltasTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\link.png", L"texture\\link.png");
+	//Animator2D()->Create(L"IDLE_LEFT", pAltasTex, Vec2(0.f, 130.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 3, 10);
+	//Animator2D()->Create(L"IDLE_RIGHT", pAltasTex, Vec2(0.f, 390.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 3, 10);
 
-	Animator2D()->Create(L"MOVE_UP", pAltasTex, Vec2(0.f, 780.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 10, 20);
-	Animator2D()->Create(L"MOVE_DOWN", pAltasTex, Vec2(0.f, 520.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 10, 20);
-	Animator2D()->Create(L"MOVE_LEFT", pAltasTex, Vec2(0.f, 650.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 10, 20);
-	Animator2D()->Create(L"MOVE_RIGHT", pAltasTex, Vec2(0.f, 910.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 10, 20);
+	//Animator2D()->Create(L"MOVE_UP", pAltasTex, Vec2(0.f, 780.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 10, 20);
+	//Animator2D()->Create(L"MOVE_DOWN", pAltasTex, Vec2(0.f, 520.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 10, 20);
+	//Animator2D()->Create(L"MOVE_LEFT", pAltasTex, Vec2(0.f, 650.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 10, 20);
+	//Animator2D()->Create(L"MOVE_RIGHT", pAltasTex, Vec2(0.f, 910.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 10, 20);
 
-	GetRenderComponent()->GetDynamicMaterial();
+	//GetRenderComponent()->GetDynamicMaterial(0);
 
 	//m_Missile = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"MissilePrefab");
 	//m_Missile = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\missile.pref", L"prefab\\missile.pref");
@@ -44,32 +46,32 @@ void CPlayerScript::tick()
 	Vec3 vRot = Transform()->GetRelativeRotation();
 
 	if (KEY_PRESSED(KEY::UP))
-		vPos.y += DT * m_Speed;	
-	if (KEY_TAP(KEY::UP))
-		Animator2D()->Play(L"MOVE_UP");
-	if (KEY_RELEASED(UP))
-		Animator2D()->Play(L"IDLE_UP");
+		vPos.z += DT * m_Speed;	
+	//if (KEY_TAP(KEY::UP))
+	//	Animator2D()->Play(L"MOVE_UP");
+	//if (KEY_RELEASED(UP))
+	//	Animator2D()->Play(L"IDLE_UP");
 	
 	if (KEY_PRESSED(KEY::DOWN))
-		vPos.y -= DT * m_Speed;
-	if (KEY_TAP(KEY::DOWN))
-		Animator2D()->Play(L"MOVE_DOWN");
-	if (KEY_RELEASED(DOWN))
-		Animator2D()->Play(L"IDLE_DOWN");
+		vPos.z -= DT * m_Speed;
+	//if (KEY_TAP(KEY::DOWN))
+	//	Animator2D()->Play(L"MOVE_DOWN");
+	//if (KEY_RELEASED(DOWN))
+	//	Animator2D()->Play(L"IDLE_DOWN");
 
 	if (KEY_PRESSED(KEY::LEFT))
 		vPos.x -= DT * m_Speed;
-	if (KEY_TAP(KEY::LEFT))
-		Animator2D()->Play(L"MOVE_LEFT");
-	if (KEY_RELEASED(LEFT))
-		Animator2D()->Play(L"IDLE_LEFT");
+	//if (KEY_TAP(KEY::LEFT))
+	//	Animator2D()->Play(L"MOVE_LEFT");
+	//if (KEY_RELEASED(LEFT))
+	//	Animator2D()->Play(L"IDLE_LEFT");
 
 	if (KEY_PRESSED(KEY::RIGHT))
 		vPos.x += DT * m_Speed;
-	if (KEY_TAP(KEY::RIGHT))
-		Animator2D()->Play(L"MOVE_RIGHT");
-	if (KEY_RELEASED(RIGHT))
-		Animator2D()->Play(L"IDLE_RIGHT");
+	//if (KEY_TAP(KEY::RIGHT))
+	//	Animator2D()->Play(L"MOVE_RIGHT");
+	//if (KEY_RELEASED(RIGHT))
+	//	Animator2D()->Play(L"IDLE_RIGHT");
 
 	if (KEY_PRESSED(KEY::X))
 	{
@@ -98,7 +100,7 @@ void CPlayerScript::tick()
 
 	if (KEY_PRESSED(KEY::SPACE))
 	{
-		Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial();
+		Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial(0);
 		if (nullptr != pMtrl)
 		{
 			pMtrl->SetScalarParam(SCALAR_PARAM::INT_0, 1);
@@ -106,7 +108,7 @@ void CPlayerScript::tick()
 	}
 	else if (KEY_RELEASED(KEY::SPACE))
 	{
-		Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial();
+		Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial(0);
 		if (nullptr != pMtrl)
 		{
 			pMtrl->SetScalarParam(SCALAR_PARAM::INT_0, 0);
@@ -119,12 +121,14 @@ void CPlayerScript::tick()
 
 	//GamePlayStatic::DrawDebugRect(Vec3(0.f, 0.f, 0.f), Vec3(200.f, 200.f, 1.f), Vec3(0.f, 0.f, 0.f), Vec3(1.f, 1.f, 1.f), true, 20);
 	//GamePlayStatic::DrawDebugCircle(Vec3(0.f, 0.f, 0.f), 200.f, Vec3(0.f, 1.f, 1.f), true);
+
+
 }
 
 void CPlayerScript::BeginOverlap(CCollider2D* _Collider
 	, CGameObject* _OtherObj, CCollider2D* _OtherCollider)
 {
-	Ptr<CMaterial> pMtrl = GetRenderComponent()->GetDynamicMaterial();
+	Ptr<CMaterial> pMtrl = GetRenderComponent()->GetDynamicMaterial(0);
 }
 
 void CPlayerScript::Overlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)

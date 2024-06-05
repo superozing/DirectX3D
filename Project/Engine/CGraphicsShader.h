@@ -74,8 +74,8 @@ private:
 
 public:
     int CreateVertexShader(const wstring& _strRelativePath, const string& _strFuncName);
-   /* int CreateHullShader();
-    int CreateDomainShader();*/
+    int CreateHullShader(const wstring& _strRelativePath, const string& _strFuncName);
+    int CreateDomainShader(const wstring& _strRelativePath, const string& _strFuncName);
     int CreateGeometryShader(const wstring& _strRelativePath, const string& _strFuncName);
     int CreatePixelShader(const wstring& _strRelativePath, const string& _strFuncName);
 

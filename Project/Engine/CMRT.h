@@ -12,7 +12,10 @@ private:
     UINT                    m_RTCount;
 
     Ptr<CTexture>           m_DSTex;
-    D3D11_VIEWPORT m_ViewPort;
+    D3D11_VIEWPORT          m_ViewPort;
+
+public:
+    const D3D11_VIEWPORT& GetViewPort() { return m_ViewPort; }
 
 public:
     void Create(Ptr<CTexture>* _pArrTex, UINT _RTCount, Ptr<CTexture> _DSTex);

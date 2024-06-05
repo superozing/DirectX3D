@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "CAsset.h"
 
 
@@ -6,25 +6,33 @@ class CTexture :
     public CAsset
 {
 private:
-    ScratchImage                        m_Image;    // ÅØ½ºÃÄ ·Îµù ¹× ½Ã½ºÅÛ¸Ş¸ğ¸® °ü¸®
-    ComPtr<ID3D11Texture2D>             m_Tex2D;    // ÅØ½ºÃÄ µ¥ÀÌÅÍ¸¦ GPU ¸Ş¸ğ¸®¿¡ °ü¸®
-    D3D11_TEXTURE2D_DESC                m_Desc;     // ÅØ½ºÃÄ »ı¼º Á¤º¸
+    ScratchImage                        m_Image;    // í…ìŠ¤ì³ ë¡œë”© ë° ì‹œìŠ¤í…œë©”ëª¨ë¦¬ ê´€ë¦¬
+    ComPtr<ID3D11Texture2D>             m_Tex2D;    // í…ìŠ¤ì³ ë°ì´í„°ë¥¼ GPU ë©”ëª¨ë¦¬ì— ê´€ë¦¬
+    D3D11_TEXTURE2D_DESC                m_Desc;     // í…ìŠ¤ì³ ìƒì„± ì •ë³´
 
-    ComPtr<ID3D11RenderTargetView>      m_RTV;      // ·»´õÅ¸°Ù ¿ëµµ
-    ComPtr<ID3D11DepthStencilView>      m_DSV;      // ‰X½º ½ºÅÙ½Ç ¿ëµµ
-    ComPtr<ID3D11ShaderResourceView>    m_SRV;      // ½¦ÀÌ´õ¿¡¼­ »ç¿ëÇÏ´Â ¿ëµµ(ÅØ½ºÃÄ ·¹Áö½ºÅÍ(t) ¹ÙÀÎµù)
-    ComPtr<ID3D11UnorderedAccessView>   m_UAV;      // GPGPU(General Purpose GPU) - ComputeShader, ÀĞ±â ¾²±â µ¿½Ã°¡´É, (Unordered Register(u) ¿¡ ¹ÙÀÎµù °¡´É)
+    ComPtr<ID3D11RenderTargetView>      m_RTV;      // ë Œë”íƒ€ê²Ÿ ìš©ë„
+    ComPtr<ID3D11DepthStencilView>      m_DSV;      // ëŠìŠ¤ ìŠ¤í…ì‹¤ ìš©ë„
+    ComPtr<ID3D11ShaderResourceView>    m_SRV;      // ì‰ì´ë”ì—ì„œ ì‚¬ìš©í•˜ëŠ” ìš©ë„(í…ìŠ¤ì³ ë ˆì§€ìŠ¤í„°(t) ë°”ì¸ë”©)
+    ComPtr<ID3D11UnorderedAccessView>   m_UAV;      // GPGPU(General Purpose GPU) - ComputeShader, ì½ê¸° ì“°ê¸° ë™ì‹œê°€ëŠ¥, (Unordered Register(u) ì— ë°”ì¸ë”© ê°€ëŠ¥)
 
     UINT                                m_RecentNum_SRV;
     UINT                                m_RecentNum_UAV;
     
 
 private:
+    virtual int Save(const wstring& _strRelativePath) override;
+
+    int Load(const wstring& _strFilePath, int _iMipLevel);
     virtual int Load(const wstring& _strFilePath) override;
+
     int Create(UINT _Width, UINT _Height
         , DXGI_FORMAT _Format, UINT _BindFlag
         , D3D11_USAGE _Usage = D3D11_USAGE_DEFAULT);
     int Create(ComPtr<ID3D11Texture2D> _tex2D);
+    int CreateArrayTexture(const vector<Ptr<CTexture>>& _vecTex, int _iMapLevel);
+
+public:
+    void GenerateMip(UINT _iMipLevel);
 
 public:
     void UpdateData(int _RegisterNum);
@@ -36,15 +44,20 @@ public:
     void Clear_CS_SRV();
     void Clear_CS_UAV();
 
-    UINT GetWidth() { return m_Desc.Width;}
-    UINT GetHeight() { return m_Desc.Height; }
+    UINT    GetWidth() { return m_Desc.Width;}
+    UINT    GetHeight() { return m_Desc.Height; }
+
+    UINT    GetArraySize() { return m_Desc.ArraySize; }
+    UINT    GetRowPitch() const { return (UINT)m_Image.GetImages()->rowPitch; }
+    UINT    GetSlicePitch() const { return (UINT)m_Image.GetImages()->slicePitch; }
+    void*   GetSysMem() { return m_Image.GetPixels(); }
 
     ComPtr<ID3D11Texture2D>           GetTex2D() { return m_Tex2D; }
 	ComPtr<ID3D11RenderTargetView>    GetRTV() { return m_RTV; }
 	ComPtr<ID3D11DepthStencilView>    GetDSV() { return m_DSV; }
 	ComPtr<ID3D11ShaderResourceView>  GetSRV() { return m_SRV; }
 	ComPtr<ID3D11UnorderedAccessView> GetUAV() { return m_UAV; }
-
+    const D3D11_TEXTURE2D_DESC&       GetDesc() { return m_Desc; }
     tPixel* GetPixels();
 
     CLONE_DISABLE(CTexture);

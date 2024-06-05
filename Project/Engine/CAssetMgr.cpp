@@ -38,6 +38,12 @@ void CAssetMgr::AddAsset(const wstring& _strKey, CAsset* _Asset)
 	ASSET_TYPE Type = _Asset->GetType();
 
 	map<wstring, Ptr<CAsset>>::iterator iter = m_mapAsset[(UINT)Type].find(_strKey);
+
+	if (iter != m_mapAsset[(UINT)Type].end())
+	{
+		iter->second = _Asset;
+		return;
+	}
 	assert(iter == m_mapAsset[(UINT)Type].end());
 
 	_Asset->SetKey(_strKey);
@@ -430,4 +436,28 @@ void CAssetMgr::SaveDefaultGraphicsShader()
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_SHADOWMAP);
 
 	pShader->Save(path + L"ShadowMapShader" + ext);
+}
+
+Ptr<CMeshData> CAssetMgr::LoadFBX(const wstring& _strPath)
+{
+	wstring strFileName = path(_strPath).stem();
+
+	wstring strName = L"meshdata\\";
+	strName += strFileName + L".mdat";
+
+	Ptr<CMeshData> pMeshData = FindAsset<CMeshData>(strName);
+
+	if (nullptr != pMeshData)
+		return pMeshData;
+
+	pMeshData = CMeshData::LoadFromFBX(_strPath);
+	pMeshData->SetKey(strName);
+	pMeshData->SetRelativePath(strName);
+
+	m_mapAsset[(UINT)ASSET_TYPE::MESHDATA].insert(make_pair(strName, pMeshData.Get()));
+
+	// meshdata 를 실제파일로 저장
+	//pMeshData->Save(strName);
+
+	return pMeshData;
 }

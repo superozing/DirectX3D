@@ -8,12 +8,11 @@
 CDevice::CDevice()
 	: m_hRenderWnd(nullptr)	
 	, m_arrCB{}
+	, m_arrSB{}
 	, m_arrRS{}
 	, m_arrDS{}
 	, m_arrBS{}
 	, m_arrSampler{}
-	, m_Light2DBuffer(nullptr)
-	, m_Light3DBuffer(nullptr)
 {
 }
 
@@ -21,11 +20,7 @@ CDevice::~CDevice()
 {	
 	Delete_Array(m_arrCB);
 
-	if (nullptr != m_Light2DBuffer)
-		delete m_Light2DBuffer;
-
-	if (nullptr != m_Light3DBuffer)
-		delete m_Light3DBuffer;
+	Delete_Array(m_arrSB);
 }
 
 int CDevice::init(HWND _hWnd, Vec2 _vResolution)
@@ -89,18 +84,18 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution)
 		return E_FAIL;
 	}
 
-	if (FAILED(CreateLightBuffer()))
-	{
-		MessageBox(nullptr, L"Light Buffer 생성 실패", L"Device 초기화 실패", MB_OK);
-		return E_FAIL;
-	}
-
 	if (FAILED(CreateConstBuffer()))
 	{
 		MessageBox(nullptr, L"상수버퍼 생성 실패", L"Device 초기화 실패", MB_OK);
 		return E_FAIL;
 	}
 	
+	if (FAILED(CreateStructuredBuffer()))
+	{
+		MessageBox(nullptr, L"구조화 버퍼 생성 실패", L"Device 초기화 실패", MB_OK);
+		return E_FAIL;
+	}
+
 	return S_OK;
 }
 
@@ -381,7 +376,7 @@ int CDevice::CreateSamplerState()
 	tDesc.Filter = D3D11_FILTER_ANISOTROPIC;
 
 	tDesc.MinLOD = 0;
-	tDesc.MaxLOD = 1;
+	tDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
 	DEVICE->CreateSamplerState(&tDesc, m_arrSampler[0].GetAddressOf());
 
@@ -392,7 +387,7 @@ int CDevice::CreateSamplerState()
 	tDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
 
 	tDesc.MinLOD = 0;
-	tDesc.MaxLOD = 1;
+	tDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
 	DEVICE->CreateSamplerState(&tDesc, m_arrSampler[1].GetAddressOf());
 
@@ -430,13 +425,22 @@ int CDevice::CreateConstBuffer()
 	return S_OK;
 }
 
-int CDevice::CreateLightBuffer()
+#include "CStructuredBuffer.h"
+
+int CDevice::CreateStructuredBuffer()
 {
-	m_Light2DBuffer = new CStructuredBuffer;
-	m_Light2DBuffer->Create(sizeof(tLightInfo), 10, SB_TYPE::READ_ONLY, true);
+	m_arrSB[(UINT)SB_TYPE::LIGHT2D] = new CStructuredBuffer;
+	m_arrSB[(UINT)SB_TYPE::LIGHT2D]->Create(sizeof(tLightInfo), 10, SB_READ_TYPE::READ_ONLY, true);
 
-	m_Light3DBuffer = new CStructuredBuffer;
-	m_Light3DBuffer->Create(sizeof(tLightInfo), 10, SB_TYPE::READ_ONLY, true);
+	m_arrSB[(UINT)SB_TYPE::LIGHT3D] = new CStructuredBuffer;
+	m_arrSB[(UINT)SB_TYPE::LIGHT3D]->Create(sizeof(tLightInfo), 10, SB_READ_TYPE::READ_ONLY, true);
 
+	m_arrSB[(UINT)SB_TYPE::CROSS] = new CStructuredBuffer;
+	m_arrSB[(UINT)SB_TYPE::CROSS]->Create(sizeof(tRaycastOut), 1, SB_READ_TYPE::READ_WRITE, true);
+
+	m_arrSB[(UINT)SB_TYPE::WEIGHTMAP] = new CStructuredBuffer;
+	m_arrSB[(UINT)SB_TYPE::WEIGHTMAP]->Create(sizeof(tWeight_4), 1024 * 1024, SB_READ_TYPE::READ_WRITE, false);
+	
 	return S_OK;
 }
+

@@ -19,6 +19,8 @@ void Light3DUI::render_update()
 {
 	ComponentUI::render_update();
 
+	if (!TitleCollapse("Light3D")) return;
+
 	tLightInfo info = GetTargetObject()->Light3D()->GetLightInfo();
 
 	int LightType = (int)info.LightType;

@@ -33,6 +33,8 @@
 #include "CEditorObjMgr.h"
 #include "CCreateTempLevel.h"
 
+#include <Engine/CRenderMgr.h>
+#include "RTViewPort.h"
 //#define _RELEASE_GAME
 
 
@@ -53,7 +55,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_ int       nCmdShow)
 {
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-    //_CrtSetBreakAlloc(433);
+    //_CrtSetBreakAlloc(1751);
 
     MyRegisterClass(hInstance);
 
@@ -74,20 +76,21 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     }
         
     CPrefab::GAMEOBJECT_SAVE = &CLevelSaveLoad::SaveGameObject;
-    CPrefab::GAMEOBJECT_LOAD = &CLevelSaveLoad::LoadGameObject;    
+    CPrefab::GAMEOBJECT_LOAD = &CLevelSaveLoad::LoadGameObject;
+    CRenderMgr::CameraChange = &RTViewPort::SetCamera;
 
     
 #ifndef _RELEASE_GAME
     // 임시 레벨 생성
     CCreateTempLevel::Init();
-    CCreateTempLevel::CreateTempLevel();
 
-    // EditorObjectManager 초기화
-    CEditorObjMgr::GetInst()->init();
+    CCreateTempLevel::CreateTempLevel();
 
     // ImGui 초기화
     CImGuiMgr::GetInst()->init(hWnd, DEVICE, CONTEXT);
 
+    // EditorObjectManager 초기화
+    CEditorObjMgr::GetInst()->init();
 
     CKeyMgr::GetInst()->m_FocusCallback = &CImGuiMgr::GetFocus_debug;
 #else

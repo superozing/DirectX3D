@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include "CComponent.h"
 
+#include "CFrustum.h"
+
 enum class PROJ_TYPE
 {
     ORTHOGRAPHIC, // 직교 투영
@@ -11,6 +13,8 @@ class CCamera :
     public CComponent
 {
 private:
+    CFrustum                m_Frustum;
+
     PROJ_TYPE               m_ProjType;     // 투영 방식
 
     // 원근투영(Perspective)
@@ -34,6 +38,8 @@ private:
     UINT                    m_LayerCheck;
 
     int                     m_CameraPriority;
+
+    tRay                    m_ray;      // 마우스 방향을 향하는 직선
 
     // 물체 분류
     vector<CGameObject*>    m_vecDeferred;
@@ -78,6 +84,8 @@ public:
 
     int GetCameraPriority() { return m_CameraPriority; }
 
+    const tRay& GetRay() { return m_ray; }
+
 private:
     shared_ptr<class CCameraShake> m_pShake;
 
@@ -103,6 +111,8 @@ public:
     void SortShadowMapObject();
     void render_shadowmap();
 
+    void CalculateRay();
+
 public:
 
     virtual void SaveToFile(FILE* _File) override;
@@ -113,6 +123,7 @@ public:
 public:
     CLONE(CCamera);
     CCamera();
+    CCamera(const CCamera& _Other);
     ~CCamera();
 
     friend class CameraUI;

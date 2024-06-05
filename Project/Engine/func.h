@@ -20,8 +20,12 @@ namespace RoRMath
 	int	  ClampInt(int _input, int _min, int _max = INT_MAX);
 	float ClampFloat(float _input, float _min);
 	float ClampFloat(float _input, float _min, float _max);
+
+	void MatrixToFloat16(float _dest[16], const Matrix& _src);
+	void Float16ToMatrix(Matrix& _dest, const float _src[16]);
 }
 
+class CLevel;
 namespace GamePlayStatic
 {
 	void SpawnGameObject(CGameObject* _Target, int _LayerIdx);
@@ -86,6 +90,8 @@ namespace GamePlayStatic
 			};
 		}
 	};
+
+	void ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextLevelStartState);
 }
 
 namespace Utils

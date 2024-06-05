@@ -2,7 +2,9 @@
 #include "UI.h"
 
 #include "CImGuiMgr.h"
-
+#include "Inspector.h"
+#include "ComponentUI.h"
+#include "ScriptUI.h"
 
 UI::UI(const string& _strName, const string& _strID)
 	: m_strName(_strName)
@@ -47,11 +49,53 @@ bool UI::TitleCollapse(const char* _content)
 	ImGui::PushStyleColor(ImGuiCol_HeaderHovered, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
 	ImGui::PushStyleColor(ImGuiCol_HeaderActive, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
 
-	if (ImGui::CollapsingHeader(_content)) {
+	Ptr<CTexture> BtnTex = CAssetMgr::GetInst()->Load<CTexture>(TEXIconSetting);
+	ImTextureID BtnTexID = (ImTextureID)(BtnTex->GetSRV().Get());
+
+	float FrameHeight = ImGui::GetFrameHeight();
+	float padding = ImGui::GetFrameHeightWithSpacing() - ImGui::GetFrameHeight();
+	ImVec2 Btnsize = ImVec2(FrameHeight - padding, FrameHeight - padding);
+
+	if (ImGui::CollapsingHeader(_content, ImGuiTreeNodeFlags_AllowItemOverlap)) {
+
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f, 0.f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f, 0.f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f, 0.f));
+
+		ImGui::SameLine(ImGui::GetWindowWidth() - ImGui::GetStyle().ItemSpacing.x - Btnsize.x);
+		if (ImGui::ImageButton(BtnTexID, Btnsize))
+		{
+			ImGui::OpenPopup("HeaderSetting");
+		}
+		
+		if (ImGui::BeginPopup("HeaderSetting"))
+		{
+			HeaderSetting(this);
+			ImGui::EndPopup();
+		}
+
+		ImGui::PopStyleColor(3);
 		ImGui::PopStyleColor(3);
 		return true;
 	}
 	else {
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f, 0.f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f, 0.f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f, 0.f));
+
+		ImGui::SameLine(ImGui::GetWindowWidth() - ImGui::GetStyle().ItemSpacing.x - Btnsize.x);
+		if (ImGui::ImageButton(BtnTexID, Btnsize))
+		{
+			ImGui::OpenPopup("HeaderSetting");
+		}
+
+		if (ImGui::BeginPopup("HeaderSetting"))
+		{
+			HeaderSetting(this);
+			ImGui::EndPopup();
+		}
+
+		ImGui::PopStyleColor(3);
 		ImGui::PopStyleColor(3);
 		return false;
 	}
@@ -179,4 +223,47 @@ bool UI::ColorSelector(const char* _label, Vec4* _col)
 	{
 		return true;
 	}
+}
+
+
+void UI::HeaderSetting(UI* _SelectedHeader)
+{
+	assert(nullptr != dynamic_cast<ComponentUI*>(_SelectedHeader));
+
+	COMPONENT_TYPE Type = dynamic_cast<ComponentUI*>(_SelectedHeader)->GetType();
+
+	if (COMPONENT_TYPE::SCRIPT != Type)
+	{
+		if (COMPONENT_TYPE::TRANSFORM == Type)
+			ImGui::BeginDisabled();
+
+		if (ImGui::MenuItem("Delete Component", ""))
+		{
+			DeleteHeaderComponent(Type);
+		}
+
+		if (COMPONENT_TYPE::TRANSFORM == Type)
+			ImGui::EndDisabled();
+	}
+	else
+	{
+		ScriptUI* pScript = dynamic_cast<ScriptUI*>(_SelectedHeader);
+
+		if (ImGui::MenuItem("Delete Script", ""))
+		{
+			DeleteHeaderScript(pScript);
+		}
+	}
+}
+
+void UI::DeleteHeaderComponent(COMPONENT_TYPE _Type)
+{
+	Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
+	pInspector->DeleteTargetComponent(_Type);
+}
+
+void UI::DeleteHeaderScript(ScriptUI* _ScriptUI)
+{
+	Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
+	pInspector->DeleteTargetScript(_ScriptUI);
 }

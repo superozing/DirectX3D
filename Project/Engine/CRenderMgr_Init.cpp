@@ -11,10 +11,12 @@
 #include "CStructuredBuffer.h"
 #include "CMRT.h"
 
+void (*CRenderMgr::CameraChange)(CCamera*) = nullptr;
+
 void CRenderMgr::init()
 {
-	m_Light2DBuffer = CDevice::GetInst()->GetLight2DBuffer();
-	m_Light3DBuffer = CDevice::GetInst()->GetLight3DBuffer();
+	m_Light2DBuffer = CDevice::GetInst()->GetStructuredBuffer(SB_TYPE::LIGHT2D);
+	m_Light3DBuffer = CDevice::GetInst()->GetStructuredBuffer(SB_TYPE::LIGHT3D);
 
 	m_pDebugObj = new CGameObject;
 	m_pDebugObj->AddComponent(new CTransform);

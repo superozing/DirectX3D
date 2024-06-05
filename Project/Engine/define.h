@@ -30,6 +30,7 @@
 
 
 //#define LAYER_MAX 32
+#define MAX_MIP	8
 
 #define CLONE(TYPE) virtual TYPE* Clone() { return new TYPE(*this); }
 #define CLONE_DISABLE(TYPE) TYPE* Clone() { return nullptr; assert(nullptr); }\
@@ -118,6 +119,15 @@ enum class CB_TYPE
 	GLOBAL_DATA,
 	ANIMATION,	
 
+	END,
+};
+
+enum class SB_TYPE
+{
+	LIGHT2D,
+	LIGHT3D,
+	CROSS,
+	WEIGHTMAP,
 	END,
 };
 
@@ -330,3 +340,17 @@ enum class MRT_TYPE
 
 	END,
 };
+
+struct tWeight_4
+{
+	float arrWeight[4];
+};
+
+enum class Log_Level
+{
+	INFO = 1,
+	WARN = 2,
+	ERR = 4,
+	END,
+};
+

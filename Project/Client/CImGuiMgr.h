@@ -50,9 +50,10 @@ private:
 
 public:
     void init(HWND _hMainWnd, ComPtr<ID3D11Device> _Device, ComPtr <ID3D11DeviceContext> _Context);
+    void begin();
     void progress();
 
-    virtual void enter() override {}
+    virtual void enter() override;
 
     bool& GetbViewportFocused() { return isViewportFocused; }
 
@@ -82,5 +83,8 @@ private:
 public:
     UI* FindUI(const string& _strUIName);   
     void AddUI(const string& _strKey, UI* _UI);
+
+private:
+    void ResetInspectorTarget();
 };
 

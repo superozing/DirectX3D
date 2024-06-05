@@ -60,8 +60,11 @@ void CTimeMgr::tick()
 		m_Time = 0.f;
 	}
 
-	++m_iCall;	
+	++m_iCall;
+
 	g_global.g_time += (float)m_DeltaTime;
+	g_global.g_EngineDT = (float)m_EngineDeltaTime;
+	g_global.g_EngineTime += (float)m_EngineDeltaTime;
 	
 	// 레벨 누적 시간 추가
 	m_AccLevelTime += m_DeltaTime;

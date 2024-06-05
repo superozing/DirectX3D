@@ -8,7 +8,7 @@
 #include <Engine/CLevel.h>
 #include <Engine/CGameObject.h>
 
-#include <Engine\CRenderMgr.h>
+#include <Engine/CRenderMgr.h>
 #include <Engine/CPathMgr.h>
 
 #include "imgui.h"
@@ -21,6 +21,7 @@
 #include "MenuUI.h"
 #include "ListUI.h"
 #include "RTViewPort.h"
+#include "LogUI.h"
 
 #include "ParamUI.h"
 
@@ -157,6 +158,18 @@ void CImGuiMgr::progress()
     observe_content();
 }
 
+void CImGuiMgr::enter()
+{
+    ResetInspectorTarget();
+
+    // ContentUI �� Reload �۾� ����
+    Outliner* pOutlinerUI = (Outliner*)FindUI("##Outliner");
+    pOutlinerUI->ResetCurrentLevel();
+
+    RTViewPort* pViewport = (RTViewPort*)CImGuiMgr::GetInst()->FindUI("##Viewport");
+    pViewport->SetCamera(CRenderMgr::GetInst()->GetEditorCam());
+}
+
 FOCUS_STATE CImGuiMgr::GetFocus_debug()
 {    
     // 현재 포커싱 된 창이 없을 경우
@@ -189,6 +202,20 @@ FOCUS_STATE CImGuiMgr::GetFocus_release()
     else
     {
         return FOCUS_STATE::NONE;
+    }
+}
+
+void CImGuiMgr::begin()
+{
+    Outliner* pOutlinerUI = (Outliner*)FindUI("##Outliner");
+
+    if (pOutlinerUI)
+    {
+        pOutlinerUI->ResetCurrentLevel();
+    }
+    else
+    {
+        MessageBox(nullptr, L"Outliner 초기화 실패", L"초기화 실패", MB_OK);
     }
 }
 
@@ -251,8 +278,24 @@ void CImGuiMgr::AddUI(const string& _strKey, UI* _UI)
     m_mapUI.insert(make_pair(_strKey, _UI));
 }
 
+void CImGuiMgr::ResetInspectorTarget()
+{
+    auto pUI =  FindUI("##Inspector");
+
+    if (nullptr == pUI)
+        assert(pUI);
+
+    auto pInspectUI = dynamic_cast<Inspector*>(pUI);
+
+    if (nullptr == pInspectUI)
+        assert(pInspectUI);
+
+    pInspectUI->ResetTargetObject();
+    pInspectUI->ResetTargetAsset();
+}
 
 
+#include <Engine\CLevelMgr.h>
 void CImGuiMgr::create_ui()
 {
     UI* pUI = nullptr;
@@ -260,6 +303,7 @@ void CImGuiMgr::create_ui()
     // Inspector
     pUI = new Inspector;
     AddUI(pUI->GetID(), pUI);
+    CLevelMgr::GetInst()->RegisterClientFunction(Client_Function_Type::CIMGUIMGR_ENTER, std::bind(&CImGuiMgr::enter, this));
 
     // Content
     pUI = new Content;
@@ -279,6 +323,10 @@ void CImGuiMgr::create_ui()
 
     // Viewport
     pUI = new RTViewPort;
+    AddUI(pUI->GetID(), pUI);
+
+    // Log
+    pUI = new LogUI;
     AddUI(pUI->GetID(), pUI);
 }
 

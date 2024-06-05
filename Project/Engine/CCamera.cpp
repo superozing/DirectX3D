@@ -33,6 +33,23 @@ CCamera::CCamera()
 	m_AspectRatio = vResol.x / vResol.y;
 	m_Width = vResol.x;
 	SetShake();
+
+	m_Frustum.SetOwner(this);
+}
+
+CCamera::CCamera(const CCamera& _Other)
+	: CComponent(_Other)
+	, m_Frustum(_Other.m_Frustum)
+	, m_ProjType(_Other.m_ProjType)
+	, m_FOV(_Other.m_FOV)
+	, m_Width(_Other.m_Width)
+	, m_Scale(_Other.m_Scale)
+	, m_AspectRatio(_Other.m_AspectRatio)
+	, m_Far(_Other.m_Far)
+	, m_LayerCheck(_Other.m_LayerCheck)
+	, m_CameraPriority(-1)
+{
+	m_Frustum.SetOwner(this);
 }
 
 CCamera::~CCamera()
@@ -126,6 +143,12 @@ void CCamera::finaltick()
 	}
 
 	m_matProjInv = XMMatrixInverse(nullptr, m_matProj);
+
+	// Frustum 계산
+	m_Frustum.finaltick();
+
+	// 마우스방향 직선 계산
+	CalculateRay();
 }
 
 void CCamera::SetCameraPriority(int _Priority)
@@ -176,13 +199,17 @@ void CCamera::SortObject()
 			// 메쉬, 재질, 쉐이더 확인
 			if (!( vecObjects[j]->GetRenderComponent()
 				&& vecObjects[j]->GetRenderComponent()->GetMesh().Get()
-				&& vecObjects[j]->GetRenderComponent()->GetMaterial().Get()
-				&& vecObjects[j]->GetRenderComponent()->GetMaterial()->GetShader().Get()))
+				&& vecObjects[j]->GetRenderComponent()->GetMaterial(0).Get()
+				&& vecObjects[j]->GetRenderComponent()->GetMaterial(0)->GetShader().Get()))
 			{
 				continue;
 			}
 
-			SHADER_DOMAIN domain = vecObjects[j]->GetRenderComponent()->GetMaterial()->GetShader()->GetDomain();
+			// 절두체 안에 존재하지 않을 경우 continue
+			/*if (!m_Frustum.FrustumCheck(vecObjects[j]->Transform()->GetWorldPos()))
+				continue;*/
+
+			SHADER_DOMAIN domain = vecObjects[j]->GetRenderComponent()->GetMaterial(0)->GetShader()->GetDomain();
 
 			switch (domain)
 			{
@@ -283,7 +310,7 @@ void CCamera::Merge()
 	static Ptr<CMaterial> pMergeMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"MergeMtrl");
 
 	pMergeMtrl->UpdateData();
-	pRectMesh->render();
+	pRectMesh->render(0);
 }
 
 void CCamera::SortShadowMapObject()
@@ -306,8 +333,8 @@ void CCamera::SortShadowMapObject()
 				&& vecObjects[j]->GetRenderComponent()
 				&& vecObjects[j]->GetRenderComponent()->IsDrawShadow()
 				&& vecObjects[j]->GetRenderComponent()->GetMesh().Get()
-				&& vecObjects[j]->GetRenderComponent()->GetMaterial().Get()
-				&& vecObjects[j]->GetRenderComponent()->GetMaterial()->GetShader().Get()))
+				&& vecObjects[j]->GetRenderComponent()->GetMaterial(0).Get()
+				&& vecObjects[j]->GetRenderComponent()->GetMaterial(0)->GetShader().Get()))
 			{
 				continue;
 			}
@@ -330,10 +357,34 @@ void CCamera::render_shadowmap()
 	{
 		m_vecShadow[i]->Transform()->UpdateData();
 		pShadowMapMtrl->UpdateData();
-		m_vecShadow[i]->GetRenderComponent()->GetMesh()->render();
+		m_vecShadow[i]->GetRenderComponent()->GetMesh()->render(0);
 	}
 
 	m_vecShadow.clear();
+}
+
+#include "CKeyMgr.h"
+void CCamera::CalculateRay()
+{	
+	// 마우스 방향을 향하는 Ray 구하기
+	// SwapChain 타겟의 ViewPort 정보
+	CMRT* pMRT = CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN);
+	D3D11_VIEWPORT tVP = pMRT->GetViewPort();
+
+	//  현재 마우스 좌표
+	Vec2 vMousePos = CKeyMgr::GetInst()->GetMousePos();
+
+	// 직선은 카메라의 좌표를 반드시 지난다.
+	m_ray.vStart = Transform()->GetWorldPos();
+
+	// view space 에서의 방향
+	m_ray.vDir.x = ((((vMousePos.x - tVP.TopLeftX) * 2.f / tVP.Width) - 1.f) - m_matProj._31) / m_matProj._11;
+	m_ray.vDir.y = (-(((vMousePos.y - tVP.TopLeftY) * 2.f / tVP.Height) - 1.f) - m_matProj._32) / m_matProj._22;
+	m_ray.vDir.z = 1.f;
+
+	// world space 에서의 방향
+	m_ray.vDir = XMVector3TransformNormal(m_ray.vDir, m_matViewInv);
+	m_ray.vDir.Normalize();
 }
 
 void CCamera::SaveToFile(FILE* _File)
