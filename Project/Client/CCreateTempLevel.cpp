@@ -148,10 +148,10 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_PLAYER, false);
 
-	pObj = pObj->Clone();
-	pObj->MeshRender()->GetDynamicMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, 1);
-	pObj->Transform()->SetRelativePos(Vec3(500.f, 0.f, 500.f));
-	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_PLAYER, false);
+	//pObj = pObj->Clone();
+	//pObj->MeshRender()->GetDynamicMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_0, 1);
+	//pObj->Transform()->SetRelativePos(Vec3(500.f, 0.f, 500.f));
+	//pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_PLAYER, false);
 
 	// LandScape Object 생성
 	CGameObject* LandScape = new CGameObject;
