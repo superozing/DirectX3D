@@ -18,6 +18,7 @@ public:
     void SetGameObject(CGameObject* _Object);
     CGameObject* Instantiate();
 
+
     CLONE_DISABLE(CPrefab);
 public:
     virtual int Save(const wstring& _strRelativePath);
@@ -28,5 +29,7 @@ public:
     CPrefab(bool _Engine = false);
     CPrefab(CGameObject* _Proto, bool _Engine);
     ~CPrefab();
+
+    friend class PrefabUI;
 };
 

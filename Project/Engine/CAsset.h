@@ -47,6 +47,8 @@ public:
     virtual CAsset* Clone() = 0;
 
     friend class CAssetMgr;
+    friend class CRenderComponent;
+    friend class AssetUI;
     friend class CFBXLoader;
 
     template<typename T>
