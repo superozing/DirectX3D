@@ -10,6 +10,7 @@ private:
     Ptr<CTexture>      m_BrushArrTex;
     Vec2               m_BrushScale;
     int                m_BrushIdx;
+    float              m_fBrushPow;
     int                m_WeightIdx;
 
     int                m_Width;
@@ -27,6 +28,7 @@ public:
     void SetBrushArrTex(Ptr<CTexture> _pBrushTex) { m_BrushArrTex = _pBrushTex; }
     void SetBrushScale(Vec2 _vScale) { m_BrushScale = _vScale; }
     void SetBrushIndex(int _iIdx) { m_BrushIdx = _iIdx; }
+    void SetBrushPow(float _Pow) { m_fBrushPow = _Pow; }
     void SetWeightIdx(int _iIdx) { m_WeightIdx = _iIdx; }
 
 public:

@@ -53,6 +53,10 @@ public:
     void MakePrefab();
     void SavePrefab(const string& _Directory, const string& _FileName);
 
+    ComponentUI* GetComponentUI(COMPONENT_TYPE ComType);
+
+    void ResetComponent();
+
 private:
     void CreateChildUI();
     void CreateComponentUI();

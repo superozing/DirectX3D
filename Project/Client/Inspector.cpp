@@ -15,6 +15,8 @@
 #include "Light2DUI.h"
 #include "Animator2DUI.h"
 #include "ScriptUI.h"
+#include "SkyBoxUI.h"
+#include "ParticleSystemUI.h"
 
 #include "AssetUI.h"
 
@@ -467,3 +469,20 @@ void Inspector::DeleteTargetScript(ScriptUI* _ScriptUI)
 
 	SetTargetObject(GetTargetObject());
 }
+
+ComponentUI* Inspector::GetComponentUI(COMPONENT_TYPE ComType)
+{
+	return this->m_arrComUI[(UINT)ComType];
+}
+
+void Inspector::ResetComponent()
+{
+	for (int i = 0; i < (UINT)COMPONENT_TYPE::END; ++i)
+	{
+		ComponentUI* pUI = this->GetComponentUI((COMPONENT_TYPE)i);
+
+		if (pUI != nullptr)
+			pUI->ResetUIinfo();
+	}
+}
+

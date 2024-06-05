@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "CRenderComponent.h"
 
 #include "CParticleUpdate.h"
@@ -22,6 +22,17 @@ private:
     Ptr<CTexture>           m_ParticleTex;
 
     float                   m_Time;
+
+public:
+    Ptr<CTexture> GetParticleTex() { return m_ParticleTex; }
+    void SetParticleTex(Ptr<CTexture> Texture) { m_ParticleTex = Texture; }
+    
+    int GetMaxParticleCount() { return (int)m_MaxParticleCount; }
+    void SetMaxParticleCount(UINT Count) { m_MaxParticleCount = Count; }
+
+    tParticleModule GetParticleModule() { return m_Module; }
+    void SetModule(tParticleModule _Module) { m_Module = _Module; }
+
 
 public:
     virtual void UpdateData() override;

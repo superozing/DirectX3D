@@ -26,6 +26,7 @@ int CWeightMapShader::UpdateData()
     m_Const.iArr[1] = (int)m_Height;
     m_Const.iArr[2] = m_BrushIdx;
     m_Const.iArr[3] = m_WeightIdx;
+    m_Const.fArr[0] = m_fBrushPow;
     m_Const.v2Arr[0] = m_BrushScale;
 
     m_WeightMap->UpdateData_CS_UAV(0);
