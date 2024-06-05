@@ -18,6 +18,10 @@
 #include "CCameraShake.h"
 #include "CLight3D.h"
 
+#include "CLogMgr.h"
+
+ConvertCoord CCamera::ViewportConvertFunc = nullptr;
+
 CCamera::CCamera()
 	: CComponent(COMPONENT_TYPE::CAMERA)
 	, m_ProjType(PROJ_TYPE::ORTHOGRAPHIC)
@@ -373,6 +377,9 @@ void CCamera::CalculateRay()
 
 	//  현재 마우스 좌표
 	Vec2 vMousePos = CKeyMgr::GetInst()->GetMousePos();
+
+	if (ViewportConvertFunc != nullptr)
+	vMousePos = ViewportConvertFunc();
 
 	// 직선은 카메라의 좌표를 반드시 지난다.
 	m_ray.vStart = Transform()->GetWorldPos();

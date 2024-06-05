@@ -16,7 +16,7 @@ typedef void (*CALL_BACK_2)(DWORD_PTR, DWORD_PTR);
 enum class STATIC_BTN_TYPE
 {
     TITLE,
-
+    SUBTITLE,
     END
 };
 

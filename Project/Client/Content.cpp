@@ -8,6 +8,9 @@
 #include "Inspector.h"
 #include "TreeUI.h"
 
+#include "SkyBoxUI.h"
+#include "ParticleSystemUI.h"
+
 Content::Content()
 	: UI("Content", "##Content")
 {

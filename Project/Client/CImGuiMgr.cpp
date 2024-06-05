@@ -16,6 +16,7 @@
 #include "imgui_impl_dx11.h"
 
 #include "Inspector.h"
+#include "ComponentUI.h"
 #include "Content.h"
 #include "Outliner.h"
 #include "MenuUI.h"
@@ -147,6 +148,15 @@ void CImGuiMgr::init(HWND _hMainWnd, ComPtr<ID3D11Device> _Device
     for (UINT i = 0; i < m_vecEnumShaderDomain.size(); ++i)
         m_vecEnumShaderDomain[i] = ToString(magic_enum::enum_name((SHADER_DOMAIN)i));
 
+    tColor.ColBtnColor = (ImVec4)ImColor::HSV(0.9f, 0.8f, 0.8f);
+    tColor.ColBtnHoveredColor = (ImVec4)ImColor::HSV(0.9f, 0.8f, 0.8f);
+    tColor.ColBtnActiveColor = (ImVec4)ImColor::HSV(0.9f, 0.8f, 0.8f);
+
+    m_vecStaticBtn[(UINT)STATIC_BTN_TYPE::SUBTITLE] = tColor;
+
+
+    RTViewPort* pViewport = (RTViewPort*)CImGuiMgr::GetInst()->FindUI("##Viewport");
+    pViewport->SetCamera(CRenderMgr::GetInst()->GetEditorCam());
 }
 
 void CImGuiMgr::progress()
@@ -342,6 +352,12 @@ void CImGuiMgr::observe_content()
         // ContentUI �� Reload �۾� ����
         Content* pContentUI = (Content*)FindUI("##Content");
         pContentUI->ResetContent();
+
+        // InspectorUI Reload
+        Inspector* pInspectorUI = (Inspector*)FindUI("##Inspector");
+        pInspectorUI->ResetComponent();
+       
+      
     }
 }
 

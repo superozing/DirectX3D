@@ -9,6 +9,7 @@
 #include <Engine\CDevice.h>
 #include <Engine/CPrefab.h>
 #include <Engine/CKeyMgr.h>
+#include <Engine\CCamera.h>
 
 #include "CLevelSaveLoad.h"
 
@@ -69,7 +70,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     MSG msg;
 
     // CEngine 초기화 실패 -> 프로그램 종료
-    if (FAILED(CEngine::GetInst()->init(hWnd, Vec2(1910, 960))))
+    if (FAILED(CEngine::GetInst()->init(hWnd, Vec2(1366, 720))))
     {
         MessageBox(nullptr, L"CEngine 초기화 실패", L"초기화 실패", MB_OK);
         return 0;
@@ -78,6 +79,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     CPrefab::GAMEOBJECT_SAVE = &CLevelSaveLoad::SaveGameObject;
     CPrefab::GAMEOBJECT_LOAD = &CLevelSaveLoad::LoadGameObject;
     CRenderMgr::CameraChange = &RTViewPort::SetCamera;
+    CCamera::ViewportConvertFunc = &RTViewPort::ConvertCoord;
 
     
 #ifndef _RELEASE_GAME

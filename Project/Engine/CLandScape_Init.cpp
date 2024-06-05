@@ -27,6 +27,8 @@ void CLandScape::Init()
 	//m_TileArrTex = CAssetMgr::GetInst()->LoadTexture(L"texture\\tile\\TILE_ARRR.dds", L"texture\\tile\\TILE_ARRR.dds", 8);
 	m_TileArrTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_ARRR.dds");
 	m_TileArrTex->GenerateMip(8);
+
+
 }
 
 void CLandScape::CreateMesh()
@@ -81,6 +83,7 @@ void CLandScape::CreateMesh()
 
 	// 지형 전용 재질 적용
 	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"LandScapeMtrl"), 0);
+
 }
 
 void CLandScape::CreateComputeShader()
@@ -125,6 +128,7 @@ void CLandScape::CreateTexture()
 														, DXGI_FORMAT_R32_FLOAT
 														, D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS
 														, D3D11_USAGE_DEFAULT);
+
 
 	m_BrushTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\brush\\Brush_02.png");
 

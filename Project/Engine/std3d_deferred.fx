@@ -68,15 +68,17 @@ PS_OUT PS_Std3D_Deferred(VS_OUT _in) : SV_Target
     
     float4 vOutColor = float4(1.f, 0.f, 1.f, 1.f);
     
+    float3 vViewNormal = (float3) 0.f;
+    
     if (ColorTextureCheck)
     {
         vOutColor = ColorTexture.Sample(g_sam_0, _in.vUV);
     }
     
-    output.vColor = vOutColor;  
+    output.vColor = vOutColor;
     output.vPosition = float4(_in.vViewPos, 1.f);
     
-    float3 vViewNormal = _in.vViewNormal;
+    vViewNormal = _in.vViewNormal;
     
     if (NormalMapCheck)
     {
@@ -86,8 +88,8 @@ PS_OUT PS_Std3D_Deferred(VS_OUT _in) : SV_Target
         float3x3 matRot =
         {
             _in.vViewTangent,
-            _in.vViewBinormal,
-            _in.vViewNormal,
+              _in.vViewBinormal,
+              _in.vViewNormal,
         };
         
         vViewNormal = normalize(mul(vNormal, matRot));

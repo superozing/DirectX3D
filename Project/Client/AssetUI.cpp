@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "AssetUI.h"
 
 AssetUI::AssetUI(const string& _strName, const string& _ID, ASSET_TYPE _Type)
@@ -13,6 +13,7 @@ AssetUI::~AssetUI()
 {
 }
 
+
 void AssetUI::render_update()
 {
 	ImGui::PushID(0);
@@ -23,16 +24,30 @@ void AssetUI::render_update()
 	ImGui::Button(ASSET_TYPE_STRING[(UINT)m_Type]);
 
 	ImGui::PopStyleColor(3);
-	ImGui::PopID();
-}
 
+	ImGui::PopID();
+
+	if (ImGui::Button("Save Edit"))
+	{
+
+	} 
+	
+	ImGui::SameLine();
+
+	if (ImGui::Button("Create Instance"))
+	{
+		CreateAssetInstance(m_Asset);
+	}
+
+	ImGui::Separator();
+}
 
 
 void AssetUI::SetAsset(Ptr<CAsset> _Asset)
 {
 	m_Asset = _Asset;
 
-	// ÀÔ·ÂµÈ Asset ÀÌ nullptr ÀÌ¸é ÇØ´ç AssetUI ¸¦ ºñÈ°¼ºÈ­ ÇÑ´Ù.
+	// ì…ë ¥ëœ Asset ì´ nullptr ì´ë©´ í•´ë‹¹ AssetUI ë¥¼ ë¹„í™œì„±í™” í•œë‹¤.
 	if (nullptr == m_Asset)
 	{
 		Deactivate();
@@ -40,8 +55,8 @@ void AssetUI::SetAsset(Ptr<CAsset> _Asset)
 
 	else
 	{
-		// Á¤»óÀûÀÎ ¿¡¼Â ÁÖ¼Ò°¡ µé¾î¿Â °æ¿ì, ÀÌ ¿¡¼ÂUI ÀÇ Å¸ÀÔ°ú ½ÇÁ¦ ¿¡¼ÂÀÇ Å¸ÀÔÀÌ ÀÏÄ¡ÇÏ¸é
-		// ÇØ´ç ¿¡¼ÂUI ¸¦ È°¼ºÈ­ ½ÃÅ°°í ¾Æ´Ï¸é ºñÈ°¼ºÈ­ ½ÃÅ²´Ù.
+		// ì •ìƒì ì¸ ì—ì…‹ ì£¼ì†Œê°€ ë“¤ì–´ì˜¨ ê²½ìš°, ì´ ì—ì…‹UI ì˜ íƒ€ì…ê³¼ ì‹¤ì œ ì—ì…‹ì˜ íƒ€ì…ì´ ì¼ì¹˜í•˜ë©´
+		// í•´ë‹¹ ì—ì…‹UI ë¥¼ í™œì„±í™” ì‹œí‚¤ê³  ì•„ë‹ˆë©´ ë¹„í™œì„±í™” ì‹œí‚¨ë‹¤.
 		if (_Asset->GetType() == m_Type)
 		{
 			Activate();
@@ -50,5 +65,69 @@ void AssetUI::SetAsset(Ptr<CAsset> _Asset)
 		{
 			Deactivate();
 		}
+	}
+}
+
+
+void AssetUI::SetAssetKey(Ptr<CAsset> _Asset, const wstring& _Key)
+{
+	_Asset->SetKey(_Key);
+}
+
+void AssetUI::CreateAssetInstance(Ptr<CAsset> _Asset)
+{
+	wstring strKey = _Asset->GetKey();
+
+	filesystem::path pathObj(strKey);
+
+	wstring ParentPath = pathObj.parent_path().wstring();
+	wstring AssetName = pathObj.stem().wstring();
+	wstring AssetType = pathObj.extension().wstring();
+
+	wchar_t szPath[255] = {};
+	wstring FilePath = CPathMgr::GetContentPath();
+	int num = 0;
+	while (true)
+	{
+		swprintf_s(szPath, (ParentPath + L"\\" + AssetName + L"_Inst_%d" + AssetType).c_str(), num);
+		if (!exists(FilePath + szPath))
+			break;
+
+		++num;
+	}
+
+	ASSET_TYPE type = _Asset->GetType();
+	CAsset* pNewAsset = nullptr;
+	switch (type)
+	{
+	case ASSET_TYPE::MATERIAL:
+		_Asset->Save(szPath);
+		pNewAsset = new CMaterial;
+		pNewAsset->Load(szPath);
+		GamePlayStatic::AddAsset(pNewAsset);
+		break;
+	case ASSET_TYPE::GRAPHICS_SHADER:
+		_Asset->Save(szPath);
+		pNewAsset = new CGraphicsShader;
+		pNewAsset->Load(szPath);
+		GamePlayStatic::AddAsset(pNewAsset);
+		break;
+	default:
+		MessageBox(nullptr, L"ì§€ì›í•˜ì§€ ì•ŠëŠ” ê¸°ëŠ¥ì…ë‹ˆë‹¤", L"ì§€ì›í•˜ì§€ ì•ŠëŠ” ê¸°ëŠ¥ì…ë‹ˆë‹¤", MB_OK);
+		break;
+	}
+}
+
+void AssetUI::ChangeAssetName(const string& _OriginRelativePath, const string& _NewRelativePath)
+{
+	wstring strPath = CPathMgr::GetContentPath();
+	strPath += ToWString(_OriginRelativePath);
+
+	wstring NstrPath = CPathMgr::GetContentPath();
+	NstrPath += ToWString(_NewRelativePath);
+
+	if (exists(strPath))
+	{
+		filesystem::rename(strPath, NstrPath);
 	}
 }
