@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "AssetUI.h"
 class MaterialUI :
     public AssetUI
@@ -13,6 +13,7 @@ public:
 public:
     void SelectTexture(DWORD_PTR _dwData);
 
+    void PayloadShaderEvent(CAsset* _Ptr);
 public:
     MaterialUI();
     ~MaterialUI();

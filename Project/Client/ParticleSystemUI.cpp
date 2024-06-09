@@ -16,7 +16,7 @@ ParticleSystemUI::ParticleSystemUI()
 	m_ModuleButtonColor[0] = { 0.5f, 0.5f, 0.5f, 1.0f }; // normal
 	m_ModuleButtonColor[1] = { 1.0f, 1.0f, 0.0f, 1.0f }; // hover
 
-	SetDelegateUI(this);
+	SetDelegateFunc(this);
 
 	AddPayLoadEvent(std::bind(&ParticleSystemUI::PayloadParticleEvent, this, std::placeholders::_1, std::placeholders::_2));
 

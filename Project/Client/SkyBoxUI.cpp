@@ -10,7 +10,7 @@ SkyBoxUI::SkyBoxUI()
 
 	GetSkyBoxFileName();
 
-	SetDelegateUI(this);
+	SetDelegateFunc(this);
 
 	AddPayLoadEvent(std::bind(&SkyBoxUI::PayloadSphereEvent, this, std::placeholders::_1, std::placeholders::_2));
 	AddPayLoadEvent(std::bind(&SkyBoxUI::PayloadCubeEvent, this, std::placeholders::_1, std::placeholders::_2));

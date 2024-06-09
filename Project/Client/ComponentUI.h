@@ -3,7 +3,7 @@
 
 #include <Engine/CGameObject.h>
 
-typedef std::function<void(CAsset*, ASSET_TYPE)> PayloadEvent;
+typedef std::function<void(CAsset*, ASSET_TYPE)> ComponentPayloadEvent;
 
 class ComponentUI :
     public UI
@@ -15,8 +15,8 @@ private:
 
 protected:
 
-   ComponentUI*                     m_DelegateUI;
-    vector<PayloadEvent>         m_vecPayloadEvent;
+   ComponentUI*                           m_DelegateUI;
+    vector<ComponentPayloadEvent>         m_vecPayloadEvent;
 
 public:
     virtual void render_update() override;
@@ -29,8 +29,8 @@ public:
     COMPONENT_TYPE GetType() { return m_Type; }
     
     void CheckPayLoadData(ASSET_TYPE _Type , int iFuncArrNum);
-    void SetDelegateUI(ComponentUI* _pUI) { m_DelegateUI = _pUI; }
-    void AddPayLoadEvent(const PayloadEvent& _Func);
+    void SetDelegateFunc(ComponentUI* _pUI) { m_DelegateUI = _pUI; }
+    void AddPayLoadEvent(const ComponentPayloadEvent& _Func) { m_vecPayloadEvent.push_back(_Func); }
 
 public:
     ComponentUI(const string& _strName, const string& _ID, COMPONENT_TYPE _Type);

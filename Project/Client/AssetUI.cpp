@@ -1,5 +1,7 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "AssetUI.h"
+
+
 
 AssetUI::AssetUI(const string& _strName, const string& _ID, ASSET_TYPE _Type)
 	: UI(_strName, _ID)
@@ -26,13 +28,11 @@ void AssetUI::render_update()
 	ImGui::PopID();
 }
 
-
-
 void AssetUI::SetAsset(Ptr<CAsset> _Asset)
 {
 	m_Asset = _Asset;
 
-	// ÀÔ·ÂµÈ Asset ÀÌ nullptr ÀÌ¸é ÇØ´ç AssetUI ¸¦ ºñÈ°¼ºÈ­ ÇÑ´Ù.
+	// ì…ë ¥ëœ Asset ì´ nullptr ì´ë©´ í•´ë‹¹ AssetUI ë¥¼ ë¹„í™œì„±í™” í•œë‹¤.
 	if (nullptr == m_Asset)
 	{
 		Deactivate();
@@ -40,8 +40,8 @@ void AssetUI::SetAsset(Ptr<CAsset> _Asset)
 
 	else
 	{
-		// Á¤»óÀûÀÎ ¿¡¼Â ÁÖ¼Ò°¡ µé¾î¿Â °æ¿ì, ÀÌ ¿¡¼ÂUI ÀÇ Å¸ÀÔ°ú ½ÇÁ¦ ¿¡¼ÂÀÇ Å¸ÀÔÀÌ ÀÏÄ¡ÇÏ¸é
-		// ÇØ´ç ¿¡¼ÂUI ¸¦ È°¼ºÈ­ ½ÃÅ°°í ¾Æ´Ï¸é ºñÈ°¼ºÈ­ ½ÃÅ²´Ù.
+		// ì •ìƒì ì¸ ì—ì…‹ ì£¼ì†Œê°€ ë“¤ì–´ì˜¨ ê²½ìš°, ì´ ì—ì…‹UI ì˜ íƒ€ì…ê³¼ ì‹¤ì œ ì—ì…‹ì˜ íƒ€ì…ì´ ì¼ì¹˜í•˜ë©´
+		// í•´ë‹¹ ì—ì…‹UI ë¥¼ í™œì„±í™” ì‹œí‚¤ê³  ì•„ë‹ˆë©´ ë¹„í™œì„±í™” ì‹œí‚¨ë‹¤.
 		if (_Asset->GetType() == m_Type)
 		{
 			Activate();
@@ -52,3 +52,25 @@ void AssetUI::SetAsset(Ptr<CAsset> _Asset)
 		}
 	}
 }
+
+void AssetUI::CheckPayLoadData(int iFuncArrNum)
+{
+	if (ImGui::BeginDragDropTarget())
+	{
+		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ContentTree");
+		if (payload)
+		{
+			DWORD_PTR* data = ((DWORD_PTR*)payload->Data);
+			CAsset* pAsset = (CAsset*)data;
+
+			if (m_DelegateUI && m_vecPayloadEvent[iFuncArrNum])
+			{
+				(m_DelegateUI->m_vecPayloadEvent[iFuncArrNum])(pAsset);
+			}
+
+		}
+
+		ImGui::EndDragDropTarget();
+	}
+}
+

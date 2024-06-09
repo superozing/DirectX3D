@@ -29,7 +29,7 @@ LandScapeUI::LandScapeUI()
 		m_vecLanderScapeMode.push_back(ToString(magic_enum::enum_name((LANDSCAPE_MODE)i)));
 	}
 	
-	SetDelegateUI(this);
+	SetDelegateFunc(this);
 
 	AddPayLoadEvent(std::bind(&LandScapeUI::PayloadHeightMapEvent, this, std::placeholders::_1, std::placeholders::_2));
 	AddPayLoadEvent(std::bind(&LandScapeUI::PayloadBrushEvent, this, std::placeholders::_1, std::placeholders::_2));

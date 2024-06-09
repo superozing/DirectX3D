@@ -70,10 +70,3 @@ void ComponentUI::CheckPayLoadData(ASSET_TYPE _Type, int iFuncArrNum)
 	}
 }
 
-
-void ComponentUI::AddPayLoadEvent(const PayloadEvent& _Func)
-{
-
-	m_vecPayloadEvent.push_back(_Func);
-
-}

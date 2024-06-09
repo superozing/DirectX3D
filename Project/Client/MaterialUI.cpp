@@ -11,6 +11,10 @@
 MaterialUI::MaterialUI()
 	: AssetUI("Material", "##Material", ASSET_TYPE::MATERIAL)
 {
+
+    SetDelegateFunc(this);
+
+    AddPayLoadEvent(std::bind(&MaterialUI::PayloadShaderEvent, this, std::placeholders::_1));
 }
 
 MaterialUI::~MaterialUI()
@@ -41,6 +45,8 @@ void MaterialUI::render_update()
     ImGui::SameLine();
     ImGui::InputText("##ShaderName", (char*)strShaderName.c_str(), strShaderName.length(), ImGuiInputTextFlags_ReadOnly);
     
+    CheckPayLoadData(0);
+
 
     ImGui::Spacing(); ImGui::Spacing(); ImGui::Spacing(); ImGui::Spacing();
     ImGui::Text("Material Parameter");
@@ -114,4 +120,18 @@ void MaterialUI::SelectTexture(DWORD_PTR _dwData)
     Ptr<CTexture> pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(strTexName);
     Ptr<CMaterial> pMtrl = (CMaterial*)GetAsset().Get();
     pMtrl->SetTexParam(m_SelectTexParam, pTex);    
+}
+
+void MaterialUI::PayloadShaderEvent(CAsset* _Ptr)
+{
+    CGraphicsShader* pShader = (CGraphicsShader*)_Ptr;
+
+    //Ptr<CGraphicsShader> p2Shader = CAssetMgr::GetAsset()
+
+    if (pShader != nullptr)
+    {
+        Ptr<CMaterial> pMtrl = (CMaterial*)GetAsset().Get();
+        pMtrl.Get()->SetShader(pShader);
+    }
+        
 }
