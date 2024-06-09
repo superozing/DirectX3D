@@ -75,12 +75,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)External\Library\Engine\</OutDir>
     <TargetName>$(ProjectName)_d</TargetName>
-    <ExternalIncludePath>$(SolutionDir)External\Include\;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)External\Include\;$(SolutionDir)External\Include\FBXLoader\;$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>$(SolutionDir)External\Library\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)External\Library\Engine\</OutDir>
-    <ExternalIncludePath>$(SolutionDir)External\Include\;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)External\Include\;$(SolutionDir)External\Include\FBXLoader\;$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>$(SolutionDir)External\Library\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -139,7 +139,9 @@
     </Link>
     <PreBuildEvent>
       <Command>cd $(SolutionDir)
-call EngineCopy.bat</Command>
+call EngineCopy.bat
+cd $(SolutionDir)CodeGen\
+call CodeGen.exe</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -166,7 +168,9 @@ call EngineCopy.bat</Command>
     </Link>
     <PreBuildEvent>
       <Command>cd $(SolutionDir)
-call EngineCopy.bat</Command>
+call EngineCopy.bat
+cd $(SolutionDir)CodeGen\
+call CodeGen.exe</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -186,6 +190,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CEngine.h" />
     <ClInclude Include="CEntity.h" />
     <ClInclude Include="CAnimator2D.h" />
+    <ClInclude Include="CFBXLoader.h" />
     <ClInclude Include="CFontMgr.h" />
     <ClInclude Include="CFrustum.h" />
     <ClInclude Include="CFSM.h" />
@@ -204,6 +209,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CManager.h" />
     <ClInclude Include="CMaterial.h" />
     <ClInclude Include="CMesh.h" />
+    <ClInclude Include="CMeshData.h" />
     <ClInclude Include="CMeshRender.h" />
     <ClInclude Include="CMRT.h" />
     <ClInclude Include="components.h" />
@@ -263,6 +269,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CEngine.cpp" />
     <ClCompile Include="CEntity.cpp" />
     <ClCompile Include="CAnimator2D.cpp" />
+    <ClCompile Include="CFBXLoader.cpp" />
     <ClCompile Include="CFontMgr.cpp" />
     <ClCompile Include="CFrustum.cpp" />
     <ClCompile Include="CFSM.cpp" />
@@ -282,6 +289,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CManager.cpp" />
     <ClCompile Include="CMaterial.cpp" />
     <ClCompile Include="CMesh.cpp" />
+    <ClCompile Include="CMeshData.cpp" />
     <ClCompile Include="CMeshRender.cpp" />
     <ClCompile Include="CMRT.cpp" />
     <ClCompile Include="CParticleSystem.cpp" />

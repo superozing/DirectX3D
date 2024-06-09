@@ -10,9 +10,12 @@ class CSkyBox :
     public CRenderComponent
 {
 private:
-    SKYBOX_TYPE m_SkyBoxType;
-    Ptr<CTexture> m_SphereTex;
-    Ptr<CTexture> m_CubeTex;
+    SKYBOX_TYPE     m_SkyBoxType;
+
+    Ptr<CMaterial>  m_SkyBoxMtrl;
+    
+    Ptr<CTexture>   m_SphereTex;
+    Ptr<CTexture>   m_CubeTex;
 
 public:
     void SetSkyBoxType(SKYBOX_TYPE _Type);

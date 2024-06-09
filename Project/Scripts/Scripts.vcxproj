@@ -71,13 +71,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)External\Include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)External\Include\;$(SolutionDir)External\Include\FBXLoader\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)External\Library\;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)External\Library\Scripts\</OutDir>
     <TargetName>$(ProjectName)_d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)External\Include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)External\Include\;$(SolutionDir)External\Include\FBXLoader\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)External\Library\;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)External\Library\Scripts\</OutDir>
   </PropertyGroup>
@@ -134,9 +134,7 @@
     </Link>
     <PreBuildEvent>
       <Command>cd $(SolutionDir)
-call ScriptsCopy.bat
-cd $(SolutionDir)CodeGen\
-call CodeGen.exe</Command>
+call ScriptsCopy.bat</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -160,9 +158,7 @@ call CodeGen.exe</Command>
     </Link>
     <PreBuildEvent>
       <Command>cd $(SolutionDir)
-call ScriptsCopy.bat
-cd $(SolutionDir)CodeGen\
-call CodeGen.exe</Command>
+call ScriptsCopy.bat</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

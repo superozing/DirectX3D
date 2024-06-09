@@ -17,7 +17,7 @@ CParticleSystem::CParticleSystem()
 {
 	// 전용 메쉬와 전용 재질 사용
 	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHpoint));
-	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ParticleMtrl"));
+	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ParticleMtrl"), 0);
 
 	// 렌더링 해상도
 	Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
@@ -175,9 +175,9 @@ void CParticleSystem::render()
 
 	// 모든 파티클 렌더링
 	// 파티클 개별 랜더링 -> 인스턴싱
-	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, 0);
-	GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_ParticleTex);
-	GetMaterial()->UpdateData();
+	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_0, 0);
+	GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_ParticleTex);
+	GetMaterial(0)->UpdateData();
 	
 	GetMesh()->render_asparticle(m_MaxParticleCount);
 
