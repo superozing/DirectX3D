@@ -72,9 +72,9 @@ void LandScapeUI::render_update()
 
 	//동적 재질은 현재 play일때만 얻어올 수 있다.
 	if (CLevelMgr::GetInst()->GetCurrentLevel()->GetState() == LEVEL_STATE::PLAY)
-		m_pTargetObjMtrl = GetTargetObject()->GetRenderComponent()->GetDynamicMaterial();
+		m_pTargetObjMtrl = GetTargetObject()->GetRenderComponent()->GetDynamicMaterial(0);
 	else
-		m_pTargetObjMtrl = GetTargetObject()->GetRenderComponent()->GetMaterial();
+		m_pTargetObjMtrl = GetTargetObject()->GetRenderComponent()->GetMaterial(0);
 
 	static bool use_text_color_for_tint = false;
 	ImVec2 uv_min = ImVec2(0.0f, 0.0f);                 // Top-left

@@ -80,6 +80,8 @@ public:
     /// 애셋 타입과 키로 애셋을 가져옵니다.
     /// </summary>
     Ptr<CAsset> GetAsset(ASSET_TYPE _type, string _key);
+
+    void SaveDefaultGraphicsShader();
  
 private:
     // 지정된 에셋을 삭제한다.

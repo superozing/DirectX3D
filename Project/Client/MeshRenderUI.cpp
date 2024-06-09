@@ -7,6 +7,7 @@
 #include "CImGuiMgr.h"
 #include "ListUI.h"
 #include "Inspector.h"
+#include "ParamUI.h"
 
 
 MeshRenderUI::MeshRenderUI()
@@ -29,7 +30,7 @@ void MeshRenderUI::render_update()
 	CMeshRender* pMeshRender = pTarget->MeshRender();
 
 	Ptr<CMesh> pMesh = pMeshRender->GetMesh();
-	Ptr<CMaterial> pMtrl = pMeshRender->GetMaterial(0);
+	Ptr<CMaterial> pMtrl = pMeshRender->GetDynamicMaterial(0);
 
 	string meshname, mtrlname;
 
@@ -117,6 +118,61 @@ void MeshRenderUI::render_update()
 		pListUI->AddString(vecMtrlName);
 		pListUI->SetDbClickDelegate(this, (Delegate_1)&MeshRenderUI::MaterialSelect);
 		pListUI->Activate();
+	}
+
+	ImGui::Separator(); ImGui::Spacing();
+	ImGui::Text("Material Parameter"); ImGui::Spacing();
+
+	if (GetTargetObject()->MeshRender() && GetTargetObject()->MeshRender()->GetMaterial(0).Get())
+	{
+		Ptr<CGraphicsShader> pShader = GetTargetObject()->MeshRender()->GetMaterial(0)->GetShader();
+
+		// Shader Parameter
+		if (nullptr == pShader)
+			return;
+
+		const auto& vecScalarParam = pShader->GetScalarParam();
+		for (size_t i = 0; i < (UINT)SCALAR_PARAM::END; ++i)
+		{
+			switch (vecScalarParam[i].Type)
+			{
+			case SCALAR_PARAM::BOOL_0:
+			case SCALAR_PARAM::BOOL_1:
+			case SCALAR_PARAM::BOOL_2:
+			case SCALAR_PARAM::BOOL_3:
+				ParamUI::Param_BOOL((bool*)GetTargetObject()->MeshRender()->GetMaterial(0)->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, vecScalarParam[i].View, vecScalarParam[i].Tooltip);
+				break;
+			case SCALAR_PARAM::INT_0:
+			case SCALAR_PARAM::INT_1:
+			case SCALAR_PARAM::INT_2:
+			case SCALAR_PARAM::INT_3:
+				ParamUI::Param_INT((int*)GetTargetObject()->MeshRender()->GetMaterial(0)->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, vecScalarParam[i].Min, vecScalarParam[i].Max, vecScalarParam[i].View, vecScalarParam[i].Tooltip);
+				break;
+			case SCALAR_PARAM::FLOAT_0:
+			case SCALAR_PARAM::FLOAT_1:
+			case SCALAR_PARAM::FLOAT_2:
+			case SCALAR_PARAM::FLOAT_3:
+				ParamUI::Param_FLOAT((float*)GetTargetObject()->MeshRender()->GetMaterial(0)->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, vecScalarParam[i].Min, vecScalarParam[i].Max, vecScalarParam[i].View, vecScalarParam[i].Tooltip);
+				break;
+			case SCALAR_PARAM::VEC2_0:
+			case SCALAR_PARAM::VEC2_1:
+			case SCALAR_PARAM::VEC2_2:
+			case SCALAR_PARAM::VEC2_3:
+				ParamUI::Param_VEC2((Vec2*)GetTargetObject()->MeshRender()->GetMaterial(0)->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, vecScalarParam[i].Min, vecScalarParam[i].Max, vecScalarParam[i].View, vecScalarParam[i].Tooltip);
+				break;
+			case SCALAR_PARAM::VEC4_0:
+			case SCALAR_PARAM::VEC4_1:
+			case SCALAR_PARAM::VEC4_2:
+			case SCALAR_PARAM::VEC4_3:
+				ParamUI::Param_VEC4((Vec4*)GetTargetObject()->MeshRender()->GetMaterial(0)->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, vecScalarParam[i].Min, vecScalarParam[i].Max, vecScalarParam[i].View, vecScalarParam[i].Tooltip);
+				break;
+			case SCALAR_PARAM::MAT_0:
+			case SCALAR_PARAM::MAT_1:
+			case SCALAR_PARAM::MAT_2:
+			case SCALAR_PARAM::MAT_3:
+				break;
+			}
+		}
 	}
 }
 

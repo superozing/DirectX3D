@@ -7,6 +7,7 @@
 #define MTRL_pointlight L"PointLightMtrl"
 #define MTRL_spotlight L"SpotLightMtrl"
 #define MTRL_merge L"MergeMtrl"
+#define MTRL_decal L"DecalMtrl"
 #define MTRL_background L"BackgroundMtrl"
 #define MTRL_tilemap L"TileMapMtrl"
 #define MTRL_particle L"ParticleMtrl"

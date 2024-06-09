@@ -15,6 +15,7 @@ AssetUI::~AssetUI()
 {
 }
 
+
 void AssetUI::render_update()
 {
 	ImGui::PushID(0);
@@ -25,8 +26,24 @@ void AssetUI::render_update()
 	ImGui::Button(ASSET_TYPE_STRING[(UINT)m_Type]);
 
 	ImGui::PopStyleColor(3);
+
 	ImGui::PopID();
+
+	if (ImGui::Button("Save Edit"))
+	{
+
+	} 
+	
+	ImGui::SameLine();
+
+	if (ImGui::Button("Create Instance"))
+	{
+		CreateAssetInstance(m_Asset);
+	}
+
+	ImGui::Separator();
 }
+
 
 void AssetUI::SetAsset(Ptr<CAsset> _Asset)
 {
@@ -50,6 +67,70 @@ void AssetUI::SetAsset(Ptr<CAsset> _Asset)
 		{
 			Deactivate();
 		}
+	}
+}
+
+
+void AssetUI::SetAssetKey(Ptr<CAsset> _Asset, const wstring& _Key)
+{
+	_Asset->SetKey(_Key);
+}
+
+void AssetUI::CreateAssetInstance(Ptr<CAsset> _Asset)
+{
+	wstring strKey = _Asset->GetKey();
+
+	filesystem::path pathObj(strKey);
+
+	wstring ParentPath = pathObj.parent_path().wstring();
+	wstring AssetName = pathObj.stem().wstring();
+	wstring AssetType = pathObj.extension().wstring();
+
+	wchar_t szPath[255] = {};
+	wstring FilePath = CPathMgr::GetContentPath();
+	int num = 0;
+	while (true)
+	{
+		swprintf_s(szPath, (ParentPath + L"\\" + AssetName + L"_Inst_%d" + AssetType).c_str(), num);
+		if (!exists(FilePath + szPath))
+			break;
+
+		++num;
+	}
+
+	ASSET_TYPE type = _Asset->GetType();
+	CAsset* pNewAsset = nullptr;
+	switch (type)
+	{
+	case ASSET_TYPE::MATERIAL:
+		_Asset->Save(szPath);
+		pNewAsset = new CMaterial;
+		pNewAsset->Load(szPath);
+		GamePlayStatic::AddAsset(pNewAsset);
+		break;
+	case ASSET_TYPE::GRAPHICS_SHADER:
+		_Asset->Save(szPath);
+		pNewAsset = new CGraphicsShader;
+		pNewAsset->Load(szPath);
+		GamePlayStatic::AddAsset(pNewAsset);
+		break;
+	default:
+		MessageBox(nullptr, L"지원하지 않는 기능입니다", L"지원하지 않는 기능입니다", MB_OK);
+		break;
+	}
+}
+
+void AssetUI::ChangeAssetName(const string& _OriginRelativePath, const string& _NewRelativePath)
+{
+	wstring strPath = CPathMgr::GetContentPath();
+	strPath += ToWString(_OriginRelativePath);
+
+	wstring NstrPath = CPathMgr::GetContentPath();
+	NstrPath += ToWString(_NewRelativePath);
+
+	if (exists(strPath))
+	{
+		filesystem::rename(strPath, NstrPath);
 	}
 }
 

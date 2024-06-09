@@ -268,6 +268,11 @@ void MenuUI::Asset()
             ContentSaveAll();
         }
 
+        if (ImGui::MenuItem("Create Default GraphicsShader"))
+        {
+            CAssetMgr::GetInst()->SaveDefaultGraphicsShader();
+        }
+
         ImGui::EndMenu();
     }
 }
@@ -325,6 +330,13 @@ void MenuUI::ContentSaveAll()
             pLevel = CLevelSaveLoad::LoadLevel(strRelativePath);
             CLevelSaveLoad::SaveLevel(pLevel, strRelativePath);
             delete pLevel;
+        }
+        else if (extension == ".gs")
+        {
+            CGraphicsShader* shader = new CGraphicsShader;
+            shader->Load(strPath);
+            shader->Save(strRelativePath);
+            delete shader;
         }
     }
 }

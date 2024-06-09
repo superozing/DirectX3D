@@ -92,8 +92,7 @@ void Inspector::render_update()
 
 			if (ImGui::Button("Spawn Prefab"))
 			{
-				Vec3 vPos = m_TargetObject->Transform()->GetRelativePos();
-				m_TargetObject->Transform()->SetRelativePos(vPos);
+				m_TargetObject = m_TargetObject->Clone();
 				GamePlayStatic::SpawnGameObject(m_TargetObject, LayerIdx);
 			}
 		}

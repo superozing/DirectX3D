@@ -18,8 +18,11 @@ TreeNode::~TreeNode()
 
 void TreeNode::GenericTreeRender(UINT _flag, const string& _id)
 {
-	if (!m_bFilter)
-		return;
+	if (m_Owner && "OutlinerTree" == m_Owner->GetID())
+	{
+		if (!m_bFilter)
+			return;
+	}
 
 	if (ImGui::TreeNodeEx(_id.c_str(), _flag))
 	{
