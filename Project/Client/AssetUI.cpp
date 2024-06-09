@@ -141,7 +141,7 @@ void AssetUI::CheckPayLoadData(int iFuncArrNum)
 		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ContentTree");
 		if (payload)
 		{
-			DWORD_PTR* data = ((DWORD_PTR*)payload->Data);
+			DWORD_PTR data = *((DWORD_PTR*)payload->Data);
 			CAsset* pAsset = (CAsset*)data;
 
 			if (m_DelegateUI && m_vecPayloadEvent[iFuncArrNum])

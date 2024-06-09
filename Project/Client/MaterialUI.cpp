@@ -82,6 +82,9 @@ void MaterialUI::render_update()
     ImGui::InputText("##ShaderName", (char*)strShaderName.c_str(), strShaderName.length(), ImGuiInputTextFlags_ReadOnly);
     ImGui::SameLine();
 
+    CheckPayLoadData(0);
+
+
     if (ImGui::Button("##MtrlBtn", ImVec2(20, 20)))
     {
         // 리스트 UI
@@ -190,8 +193,6 @@ void MaterialUI::ShaderSelect(DWORD_PTR _ptr)
 void MaterialUI::PayloadShaderEvent(CAsset* _Ptr)
 {
     CGraphicsShader* pShader = (CGraphicsShader*)_Ptr;
-
-    //Ptr<CGraphicsShader> p2Shader = CAssetMgr::GetAsset()
 
     if (pShader != nullptr)
     {
