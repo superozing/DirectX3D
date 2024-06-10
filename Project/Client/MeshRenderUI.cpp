@@ -120,7 +120,7 @@ void MeshRenderUI::render_update()
 				CAssetMgr::GetInst()->GetAssetName(ASSET_TYPE::MATERIAL, vecMtrlName);
 
 				pListUI->AddString(vecMtrlName);
-				pListUI->SetDbClickDelegate(this, (Delegate_1)&MeshRenderUI::MaterialSelect);
+				pListUI->SetDbClickDelegate(this, (Delegate_3)&MeshRenderUI::MaterialSelect, i);
 				pListUI->Activate();
 			}
 

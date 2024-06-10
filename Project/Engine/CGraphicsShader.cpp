@@ -445,6 +445,40 @@ int CGraphicsShader::Load(const wstring& _strFilePath)
 	for (UINT i = 0; i < (UINT)SCALAR_PARAM::END; ++i)
 	{
 		getline(fin, strEnumBuf);
+		if (strEnumBuf.empty()) break;
+
+		auto EnumVal = magic_enum::enum_cast<SCALAR_PARAM>(strEnumBuf);
+		if (!EnumVal.has_value()) continue;
+
+		SCALAR_PARAM paramType = EnumVal.value();
+		UINT index = static_cast<UINT>(paramType);
+
+		if (index >= static_cast<UINT>(SCALAR_PARAM::END)) continue;
+
+		Utils::GetLineUntilString(fin, TagIsUse);
+		fin >> m_ScalarParam[index].IsUse;
+		fin.ignore();
+
+		if (!m_ScalarParam[index].IsUse) continue;
+
+		m_ScalarParam[index].Type = paramType;
+
+		Utils::GetLineUntilString(fin, TagDesc);
+		getline(fin, m_ScalarParam[index].Desc);
+		Utils::GetLineUntilString(fin, TagMin);
+		fin >> m_ScalarParam[index].Min;
+		fin.ignore();
+		Utils::GetLineUntilString(fin, TagMax);
+		fin >> m_ScalarParam[index].Max;
+		fin.ignore();
+		Utils::GetLineUntilString(fin, TagView);
+		fin >> m_ScalarParam[index].View;
+		fin.ignore();
+		Utils::GetLineUntilString(fin, TagTooltip);
+		getline(fin, m_ScalarParam[index].Tooltip);
+
+
+		/*getline(fin, strEnumBuf);
 		{
 			auto EnumVal = magic_enum::enum_cast<SCALAR_PARAM>(strEnumBuf);
 			if (EnumVal.has_value())
@@ -463,7 +497,7 @@ int CGraphicsShader::Load(const wstring& _strFilePath)
 		Utils::GetLineUntilString(fin, TagView);
 		fin >> m_ScalarParam[i].View;
 		Utils::GetLineUntilString(fin, TagTooltip);
-		getline(fin, m_ScalarParam[i].Tooltip);
+		getline(fin, m_ScalarParam[i].Tooltip);*/
 	}
 
 	Utils::GetLineUntilString(fin, TagTexParam);
