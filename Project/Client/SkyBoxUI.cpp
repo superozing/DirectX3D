@@ -105,7 +105,6 @@ void SkyBoxUI::render_update()
 	if (ImGui::BeginCombo("##comboSkyBoxSphere", cSelectSphere))
 	{
 
-
 		for (int n = 0; n < m_vecSkyBoxKey.size(); n++)
 		{
 			bool is_selected = (cSelectSphere == m_vecSkyBoxKey[n].c_str()); 
@@ -126,7 +125,7 @@ void SkyBoxUI::render_update()
 		ImGui::EndCombo();
 	}
 
-	//
+	// 구 텍스쳐 payload
 	CTexture* pTex = nullptr;
 	if (PayloadCheck(&pTex))
 	{
@@ -208,6 +207,7 @@ void SkyBoxUI::render_update()
 		ImGui::EndCombo();
 	}
 
+	// 큐브 텍스쳐 payload
 	pTex = nullptr;
 	if (PayloadCheck(&pTex))
 	{

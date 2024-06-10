@@ -109,6 +109,13 @@ void LandScapeUI::render_update()
 		ImGui::EndCombo();
 	}
 
+	//랜드스케이프 height texture payload
+	CTexture* pTex = nullptr;
+	if (PayloadCheck(&pTex))
+	{
+		GetTargetObject()->LandScape()->SetHeightMapTex(pTex);
+	}
+
 	ImGui::Text("Texture Size"); ImGui::SameLine();
 	ImGui::InputFloat2("##Texture Size", fImageSize, nullptr, ImGuiInputTextFlags_ReadOnly);
 
@@ -240,7 +247,6 @@ void LandScapeUI::render_update()
 		ImGui::EndCombo();
 	}
 
-
 	ImGui::Text("Brush Texture "); ImGui::SameLine();
 
 	if (ImGui::BeginCombo("##ComboBrushTex", strBrush.c_str()))
@@ -263,6 +269,13 @@ void LandScapeUI::render_update()
 			}
 		}
 		ImGui::EndCombo();
+	}
+
+	//랜드스케이프 brush texture payload
+	CTexture* pTex = nullptr;
+	if (PayloadCheck(&pTex))
+	{
+		GetTargetObject()->LandScape()->SetBrushTex(pTex);
 	}
 
 	ImGui::Text("Brush Scale"); ImGui::SameLine();
@@ -327,18 +340,6 @@ void LandScapeUI::GetLandScapeFileName()
 
 	this->m_vecBrushTextureKey = strFileName;
 
-}
-
-void LandScapeUI::PayloadHeightMapEvent(CAsset* _Asset, ASSET_TYPE _Type)
-{
-	if (_Asset->GetType() == _Type)
-		GetTargetObject()->LandScape()->SetHeightMapTex((CTexture*)_Asset);
-}
-
-void LandScapeUI::PayloadBrushEvent(CAsset* _Asset, ASSET_TYPE _Type)
-{
-	if (_Asset->GetType() == _Type)
-		GetTargetObject()->LandScape()->SetBrushTex((CTexture*)_Asset);
 }
 
 

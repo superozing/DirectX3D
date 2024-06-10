@@ -17,9 +17,6 @@ MaterialUI::MaterialUI()
     , m_SelectTexParam(TEX_PARAM::END)
 {
 
-    SetDelegateFunc(this);
-
-    AddPayLoadEvent(std::bind(&MaterialUI::PayloadShaderEvent, this, std::placeholders::_1));
 }
 
 MaterialUI::~MaterialUI()
@@ -81,9 +78,6 @@ void MaterialUI::render_update()
     ImGui::Text("Shader  "); ImGui::SameLine();
     ImGui::InputText("##ShaderName", (char*)strShaderName.c_str(), strShaderName.length(), ImGuiInputTextFlags_ReadOnly);
     ImGui::SameLine();
-
-    CheckPayLoadData(0);
-
 
     if (ImGui::Button("##MtrlBtn", ImVec2(20, 20)))
     {
@@ -188,16 +182,4 @@ void MaterialUI::ShaderSelect(DWORD_PTR _ptr)
 
     m_TargetMtrl = (CMaterial*)GetAsset().Get();
     m_TargetMtrl->SetShader(pShader);
-}
-
-void MaterialUI::PayloadShaderEvent(CAsset* _Ptr)
-{
-    CGraphicsShader* pShader = (CGraphicsShader*)_Ptr;
-
-    if (pShader != nullptr)
-    {
-        Ptr<CMaterial> pMtrl = (CMaterial*)GetAsset().Get();
-        pMtrl.Get()->SetShader(pShader);
-    }
-        
 }

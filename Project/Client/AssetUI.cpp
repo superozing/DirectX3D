@@ -134,24 +134,3 @@ void AssetUI::ChangeAssetName(const string& _OriginRelativePath, const string& _
 	}
 }
 
-void AssetUI::CheckPayLoadData(int iFuncArrNum)
-{
-	if (ImGui::BeginDragDropTarget())
-	{
-		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ContentTree");
-		if (payload)
-		{
-			DWORD_PTR data = *((DWORD_PTR*)payload->Data);
-			CAsset* pAsset = (CAsset*)data;
-
-			if (m_DelegateUI && m_vecPayloadEvent[iFuncArrNum])
-			{
-				(m_DelegateUI->m_vecPayloadEvent[iFuncArrNum])(pAsset);
-			}
-
-		}
-
-		ImGui::EndDragDropTarget();
-	}
-}
-

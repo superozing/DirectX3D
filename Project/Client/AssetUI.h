@@ -4,8 +4,6 @@
 #include <Engine/Ptr.h>
 #include <Engine/CAsset.h>
 
-typedef std::function<void(CAsset*)> AssetPayloadEvent;
-
 class AssetUI :
     public UI
 {
@@ -21,16 +19,11 @@ public:
 
     void SetAssetKey(Ptr<CAsset> _Asset, const wstring& _Key);
 
-    AssetUI* m_DelegateUI;
-    vector<AssetPayloadEvent>   m_vecPayloadEvent;
-
 public:
     virtual void render_update() override;
 
 public:
-    void CheckPayLoadData(int iFuncArrNum);
-    void SetDelegateFunc(AssetUI* _pUI) { m_DelegateUI = _pUI; }
-    void AddPayLoadEvent(const AssetPayloadEvent& _Func) { m_vecPayloadEvent.push_back(_Func);}
+
     virtual void CreateAssetInstance(Ptr<CAsset> _Asset);
     virtual void ChangeAssetName(const string& _OriginRelativePath, const string& _NewRelativePath);
 

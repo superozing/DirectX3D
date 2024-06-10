@@ -15,7 +15,6 @@ public:
     void SelectTexture(DWORD_PTR _dwData);
     void ShaderSelect(DWORD_PTR _ptr);
 
-    void PayloadShaderEvent(CAsset* _Ptr);
 public:
     MaterialUI();
     ~MaterialUI();
