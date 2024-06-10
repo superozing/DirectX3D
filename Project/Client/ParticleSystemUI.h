@@ -19,8 +19,6 @@ public:
     
     void GetParticleFileName();
 
-    void PayloadParticleEvent(CAsset* _Asset, ASSET_TYPE _Type);
-
 public:
     ParticleSystemUI();
     ~ParticleSystemUI();

@@ -10,11 +10,6 @@ SkyBoxUI::SkyBoxUI()
 
 	GetSkyBoxFileName();
 
-	SetDelegateFunc(this);
-
-	AddPayLoadEvent(std::bind(&SkyBoxUI::PayloadSphereEvent, this, std::placeholders::_1, std::placeholders::_2));
-	AddPayLoadEvent(std::bind(&SkyBoxUI::PayloadCubeEvent, this, std::placeholders::_1, std::placeholders::_2));
-
 }
 
 SkyBoxUI::~SkyBoxUI()
@@ -131,8 +126,12 @@ void SkyBoxUI::render_update()
 		ImGui::EndCombo();
 	}
 
-	CheckPayLoadData(ASSET_TYPE::TEXTURE, 0);
-
+	//
+	CTexture* pTex = nullptr;
+	if (PayloadCheck(&pTex))
+	{
+		GetTargetObject()->SkyBox()->m_SphereTex = pTex;
+	}
 
 	ImGui::Spacing();
 
@@ -209,8 +208,11 @@ void SkyBoxUI::render_update()
 		ImGui::EndCombo();
 	}
 
-	CheckPayLoadData(ASSET_TYPE::TEXTURE, 1);
-
+	pTex = nullptr;
+	if (PayloadCheck(&pTex))
+	{
+		GetTargetObject()->SkyBox()->m_CubeTex = pTex;
+	}
 }
 
 void SkyBoxUI::ResetUIinfo()
@@ -238,15 +240,4 @@ void SkyBoxUI::GetSkyBoxFileName()
 	m_vecSkyBoxKey = strFileName;
 }
 
-void SkyBoxUI::PayloadCubeEvent(CAsset* _Asset, ASSET_TYPE _Type)
-{
-	if (_Asset->GetType() == _Type)
-		GetTargetObject()->SkyBox()->m_CubeTex = (CTexture*)_Asset;
 
-}
-
-void SkyBoxUI::PayloadSphereEvent(CAsset* _Asset, ASSET_TYPE _Type)
-{
-	if (_Asset->GetType() == _Type)
-		GetTargetObject()->SkyBox()->m_SphereTex = (CTexture*)_Asset;
-}

@@ -19,9 +19,6 @@ public:
     
     void GetSkyBoxFileName();
 
-    void PayloadCubeEvent(CAsset* _Asset, ASSET_TYPE _Type);
-    void PayloadSphereEvent(CAsset* _Asset, ASSET_TYPE _Type);
-
 public:
     SkyBoxUI();
     ~SkyBoxUI();
