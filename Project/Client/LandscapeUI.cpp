@@ -272,7 +272,8 @@ void LandScapeUI::render_update()
 	}
 
 	//랜드스케이프 brush texture payload
-	CTexture* pTex = nullptr;
+	pTex = nullptr;
+	
 	if (PayloadCheck(&pTex))
 	{
 		GetTargetObject()->LandScape()->SetBrushTex(pTex);

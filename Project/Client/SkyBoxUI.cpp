@@ -126,10 +126,10 @@ void SkyBoxUI::render_update()
 	}
 
 	// 구 텍스쳐 payload
-	CTexture* pTex = nullptr;
-	if (PayloadCheck(&pTex))
+	CTexture* PayloadTex = nullptr;
+	if (PayloadCheck(&PayloadTex))
 	{
-		GetTargetObject()->SkyBox()->m_SphereTex = pTex;
+		GetTargetObject()->SkyBox()->m_SphereTex = PayloadTex;
 	}
 
 	ImGui::Spacing();
@@ -208,10 +208,10 @@ void SkyBoxUI::render_update()
 	}
 
 	// 큐브 텍스쳐 payload
-	pTex = nullptr;
-	if (PayloadCheck(&pTex))
+	PayloadTex = nullptr;
+	if (PayloadCheck(&PayloadTex))
 	{
-		GetTargetObject()->SkyBox()->m_CubeTex = pTex;
+		GetTargetObject()->SkyBox()->m_CubeTex = PayloadTex;
 	}
 }
 

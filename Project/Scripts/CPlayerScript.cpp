@@ -8,7 +8,6 @@
 #include <Engine/CMaterial.h>
 #include <Engine/CRenderComponent.h>
 
-#include <Engine\CLogMgr.h>
 
 
 CPlayerScript::CPlayerScript()

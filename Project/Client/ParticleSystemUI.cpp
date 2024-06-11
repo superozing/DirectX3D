@@ -74,10 +74,10 @@ void ParticleSystemUI::render_update()
 	}
 
 	//파티클 texture payload
-	CTexture* pTex = nullptr;
-	if (PayloadCheck(&pTex))
+	CTexture* PayloadTex = nullptr;
+	if (PayloadCheck(&PayloadTex))
 	{
-		GetTargetObject()->ParticleSystem()->SetParticleTex(pTex);
+		GetTargetObject()->ParticleSystem()->SetParticleTex(PayloadTex);
 	}
 
 

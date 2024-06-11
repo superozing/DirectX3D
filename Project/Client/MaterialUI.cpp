@@ -11,6 +11,7 @@
 #include "ParamUI.h"
 #include "ListUI.h"
 
+
 MaterialUI::MaterialUI()
 	: AssetUI("Material", "##Material", ASSET_TYPE::MATERIAL)
     , m_TargetMtrl(nullptr)
@@ -64,6 +65,7 @@ void MaterialUI::render_update()
     }
 
 
+
     Ptr<CGraphicsShader> pShader = m_TargetMtrl->GetShader();
     string strShaderName;
     if (nullptr != pShader)
@@ -78,6 +80,12 @@ void MaterialUI::render_update()
     ImGui::Text("Shader  "); ImGui::SameLine();
     ImGui::InputText("##ShaderName", (char*)strShaderName.c_str(), strShaderName.length(), ImGuiInputTextFlags_ReadOnly);
     ImGui::SameLine();
+
+    CGraphicsShader* PayloadShader = nullptr;
+    if (PayloadCheck(&PayloadShader))
+    {
+        m_TargetMtrl->SetShader(PayloadShader);
+    }
 
     if (ImGui::Button("##MtrlBtn", ImVec2(20, 20)))
     {

@@ -3,7 +3,6 @@
 #include "imgui.h"
 #include "CImGuiMgr.h"
 
-#include <Engine\CLogMgr.h>
 
 class ScriptUI;
 
@@ -83,7 +82,6 @@ inline bool UI::PayloadCheck(T** _Ptr)
 			DWORD_PTR data = *((DWORD_PTR*)payload->Data);
 			CAsset* ptrData = (CAsset*)data;
 			
-
 			//레벨 들어가면 터짐
 			T* Res = dynamic_cast<T*>(ptrData);
 			
