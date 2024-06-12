@@ -17,6 +17,8 @@ private:
 
 public:
     virtual void render_update() override;
+    virtual void enter() override;
+
     TreeUI* GetTree() { return m_Tree; }
 
 public:

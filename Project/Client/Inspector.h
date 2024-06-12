@@ -32,6 +32,7 @@ private:
 public:
     virtual void tick() override;
     virtual void render_update() override;
+    virtual void enter() override;
 
 public:
     void SetTargetObject(CGameObject* _Object, bool _bPrefab = false);
