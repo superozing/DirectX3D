@@ -259,6 +259,9 @@
     <ClInclude Include="strFBX.h">
       <Filter>01. Header\GenString</Filter>
     </ClInclude>
+    <ClInclude Include="PhysXMgr.h">
+      <Filter>04. Manager\PhysXMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -467,6 +470,9 @@
     </ClCompile>
     <ClCompile Include="CMeshData.cpp">
       <Filter>06. Asset\MeshData</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysXMgr.cpp">
+      <Filter>04. Manager\PhysXMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -679,6 +685,9 @@
     </Filter>
     <Filter Include="Module\FBXLoader">
       <UniqueIdentifier>{81e92f5f-7347-4b4b-9815-eb45c0544dfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\PhysXMgr">
+      <UniqueIdentifier>{263d4c6c-38b6-450d-b372-fa32dbe97c2f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
