@@ -26,7 +26,11 @@ public:
     const vector<CGameObject*>& GetLayerObjects() { return m_vecObjects; }
 
     void AddObject(CGameObject* _Object, bool _bMove);    
-    
+
+private:
+    // 레이어의 오브젝트를 상수화가 아닌 채로 반환해요.
+    vector<CGameObject*>& AccessParentObjects() { return  m_vecParent; }
+
 public:
     CLONE(CLayer);
     CLayer();
@@ -34,5 +38,6 @@ public:
     ~CLayer();
 
     friend class CLevel;
+    friend class CUIMgr;
 };
 
