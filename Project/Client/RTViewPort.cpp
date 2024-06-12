@@ -77,10 +77,9 @@ void RTViewPort::render_update()
         ImGui::EndDragDropTarget();
     }
 
-
     ImGui::GetWindowDrawList()->AddImage(
         m_ViewPortTexture->GetSRV().Get(),
-        ImVec2(0, 0),
+        ImGui::GetWindowPos(),
         ImGui::GetWindowPos() + ImGui::GetWindowSize(),
         ImVec2(0, 0), ImVec2(1, 1));
 
