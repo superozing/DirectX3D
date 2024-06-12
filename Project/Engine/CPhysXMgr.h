@@ -4,10 +4,10 @@
 
 using namespace physx;
 
-class PhysXMgr :
-    public CManager<PhysXMgr>
+class CPhysXMgr :
+    public CManager<CPhysXMgr>
 {
-	SINGLE(PhysXMgr);
+	SINGLE(CPhysXMgr);
 
 private:
 	PxDefaultAllocator      gAllocator;

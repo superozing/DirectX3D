@@ -259,7 +259,7 @@
     <ClInclude Include="strFBX.h">
       <Filter>01. Header\GenString</Filter>
     </ClInclude>
-    <ClInclude Include="PhysXMgr.h">
+    <ClInclude Include="CPhysXMgr.h">
       <Filter>04. Manager\PhysXMgr</Filter>
     </ClInclude>
   </ItemGroup>
@@ -471,7 +471,7 @@
     <ClCompile Include="CMeshData.cpp">
       <Filter>06. Asset\MeshData</Filter>
     </ClCompile>
-    <ClCompile Include="PhysXMgr.cpp">
+    <ClCompile Include="CPhysXMgr.cpp">
       <Filter>04. Manager\PhysXMgr</Filter>
     </ClCompile>
   </ItemGroup>

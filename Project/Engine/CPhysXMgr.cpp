@@ -1,8 +1,8 @@
 ﻿#include "pch.h"
-#include "PhysXMgr.h"
+#include "CPhysXMgr.h"
 #include "CTimeMgr.h"
 
-void PhysXMgr::init()
+void CPhysXMgr::init()
 {
     // PhysX 초기화
     gFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, gAllocator, gErrorCallback);
@@ -15,13 +15,13 @@ void PhysXMgr::init()
     gScene = gPhysics->createScene(sceneDesc);
 }
 
-void PhysXMgr::tick()
+void CPhysXMgr::tick()
 {
     gScene->simulate(DT);
     gScene->fetchResults(true);
 }
 
-PhysXMgr::~PhysXMgr()
+CPhysXMgr::~CPhysXMgr()
 {
     gScene->release();
     gDispatcher->release();
