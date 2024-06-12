@@ -135,6 +135,9 @@ void CRenderMgr::render_play()
 	// 추가 보조카메라 시점 렌더링
 	for (int i = 1; i < m_vecCam.size(); ++i)
 	{
+		// 보조카메라 시점 기준 SortObject
+		m_vecCam[i]->SortObject();
+
 		// Foward 렌더링
 		m_vecCam[i]->render_forward();
 	}
