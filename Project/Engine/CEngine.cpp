@@ -15,7 +15,7 @@
 #include "CFontMgr.h"
 
 #include "CSound.h"
-
+#include "CPhysXMgr.h"
 
 CEngine::CEngine()
 	: m_hMainWnd(nullptr)
@@ -57,6 +57,7 @@ int CEngine::init(HWND _hWnd, Vec2 _vResolution)
 	CAssetMgr::GetInst()->init();
 	CLevelMgr::GetInst()->init();
 	CFontMgr::GetInst()->init();
+	CPhysXMgr::GetInst()->init();
 
 	return S_OK;
 }

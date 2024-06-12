@@ -2,6 +2,8 @@
 #include "CPhysXMgr.h"
 #include "CTimeMgr.h"
 
+CPhysXMgr::CPhysXMgr() {}
+
 void CPhysXMgr::init()
 {
     // PhysX 초기화
