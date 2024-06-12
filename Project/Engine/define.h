@@ -96,6 +96,8 @@ enum class COMPONENT_TYPE
 
 	STATEMACHINE, // 상태머신
 
+	PHYSX,
+
 	// Render Component
 	MESHRENDER,
 	TILEMAP,

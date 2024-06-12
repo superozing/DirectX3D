@@ -220,6 +220,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CParticleSystem.h" />
     <ClInclude Include="CParticleUpdate.h" />
     <ClInclude Include="CPathMgr.h" />
+    <ClInclude Include="CPhysX.h" />
     <ClInclude Include="CPrefab.h" />
     <ClInclude Include="CRandomMgr.h" />
     <ClInclude Include="CRaycastShader.h" />
@@ -310,6 +311,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CParticleSystem.cpp" />
     <ClCompile Include="CParticleUpdate.cpp" />
     <ClCompile Include="CPathMgr.cpp" />
+    <ClCompile Include="CPhysX.cpp" />
     <ClCompile Include="CPrefab.cpp" />
     <ClCompile Include="CRandomMgr.cpp" />
     <ClCompile Include="CRaycastShader.cpp" />

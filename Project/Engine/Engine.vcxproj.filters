@@ -262,6 +262,9 @@
     <ClInclude Include="CPhysXMgr.h">
       <Filter>04. Manager\PhysXMgr</Filter>
     </ClInclude>
+    <ClInclude Include="CPhysX.h">
+      <Filter>08. Component\10. PhysX</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -473,6 +476,9 @@
     </ClCompile>
     <ClCompile Include="CPhysXMgr.cpp">
       <Filter>04. Manager\PhysXMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CPhysX.cpp">
+      <Filter>08. Component\10. PhysX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -688,6 +694,9 @@
     </Filter>
     <Filter Include="04. Manager\PhysXMgr">
       <UniqueIdentifier>{263d4c6c-38b6-450d-b372-fa32dbe97c2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\10. PhysX">
+      <UniqueIdentifier>{f78ce992-961a-46dc-aed7-da0246b89182}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
