@@ -182,11 +182,12 @@ void CRenderComponent::LoadFromFile(ifstream& fin)
 	Utils::GetLineUntilString(fin, TagMtrlCount);
 	UINT iMtrlCount = GetMtrlCount();
 	fin >> iMtrlCount;
+	m_vecMtrls.resize(iMtrlCount);
 
 	for (UINT i = 0; i < iMtrlCount; ++i)
 	{
 		LoadAssetRef(m_vecMtrls[i].pSharedMtrl, fin);
-    SetMaterial(m_vecMtrls[i].pSharedMtrl.Get(), i);
+		SetMaterial(m_vecMtrls[i].pSharedMtrl.Get(), i);
 	}
 
 	fin >> m_DrawShadowMap;
