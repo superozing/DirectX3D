@@ -106,7 +106,7 @@ Ptr<CMaterial> CRenderComponent::GetDynamicMaterial(UINT _idx)
 		m_vecMtrls[_idx].pDynamicMtrl->SetName(m_vecMtrls[_idx].pSharedMtrl->GetName() + L"_Clone");
 		m_vecMtrls[_idx].pCurMtrl = m_vecMtrls[_idx].pDynamicMtrl;
     
-    m_vecMtrls[_idx].pDynamicMtrl->SetKey(m_vecMtrls[_idx].pSharedMtrl->GetKey());
+		m_vecMtrls[_idx].pDynamicMtrl->SetKey(m_vecMtrls[_idx].pSharedMtrl->GetKey());
 		m_vecMtrls[_idx].pDynamicMtrl->SetRelativePath(m_vecMtrls[_idx].pSharedMtrl->GetRelativePath());
 
 		m_vecMtrls[_idx].pCurMtrl->SetKey(m_vecMtrls[_idx].pSharedMtrl->GetKey());
@@ -182,6 +182,8 @@ void CRenderComponent::LoadFromFile(ifstream& fin)
 	Utils::GetLineUntilString(fin, TagMtrlCount);
 	UINT iMtrlCount = GetMtrlCount();
 	fin >> iMtrlCount;
+	m_vecMtrls.resize(iMtrlCount);
+
 	m_vecMtrls.resize(iMtrlCount);
 
 	for (UINT i = 0; i < iMtrlCount; ++i)

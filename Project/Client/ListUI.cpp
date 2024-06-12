@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "ListUI.h"
 
 ListUI::ListUI()
@@ -28,26 +28,30 @@ void ListUI::render_update()
             if (ImGui::Selectable(m_vecStr[i].c_str(), is_selected))
                 item_current_idx = i;
 
-            // ¸®½ºÆ® Áß ÇØ´ç Ç×¸ñÀÌ Å¬¸¯µÇ¸é ÇÏÀÌ¶óÀÌÆ® °É¾îÁÜ
+            // ë¦¬ìŠ¤íŠ¸ ì¤‘ í•´ë‹¹ í•­ëª©ì´ í´ë¦­ë˜ë©´ í•˜ì´ë¼ì´íŠ¸ ê±¸ì–´ì¤Œ
             if (is_selected)
                 ImGui::SetItemDefaultFocus();
 
-            // ¸®½ºÆ® Ç×¸ñ Áß ´õºíÅ¬¸¯ÀÌ ¹ß»ýÇÑ´Ù¸é            
+            // ë¦¬ìŠ¤íŠ¸ í•­ëª© ì¤‘ ë”ë¸”í´ë¦­ì´ ë°œìƒí•œë‹¤ë©´            
             if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
             {
                 m_strDBClicked = m_vecStr[i];
 
-                // µî·ÏµÈ CallBack ÀÌ ÀÖÀ¸¸é È£Ãâ
+                // ë“±ë¡ëœ CallBack ì´ ìžˆìœ¼ë©´ í˜¸ì¶œ
                 if (nullptr != m_CallBackFunc)
                 {
                     m_CallBackFunc((DWORD_PTR)m_strDBClicked.c_str());
                 }
 
-                // µî·ÏµÈ Delegate °¡ ÀÖÀ¸¸é È£Ãâ
+                // ë“±ë¡ëœ Delegate ê°€ ìžˆìœ¼ë©´ í˜¸ì¶œ
                 if (m_pUI && m_Func)
                 {
                     (m_pUI->*m_Func)((DWORD_PTR)m_strDBClicked.c_str());
-                }                 
+                }
+                else if (m_pUI && m_Func3)
+                {
+                    (m_pUI->*m_Func3)((DWORD_PTR)m_strDBClicked.c_str(), m_Idx);
+                }
 
                 Deactivate();
             }
