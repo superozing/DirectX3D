@@ -17,3 +17,12 @@
   https://ko.dll-files.com/libfbxsdk.dll.html
 
 ---
+
+
+## vcpkg 사용한 라이브러리 추가
+
+- DirectXTex
+  vcpkg install directxtex[openexr]:x64-windows
+
+---
+
