@@ -11,7 +11,7 @@ void CAssetMgr::init()
 
 	CreateDefaultMesh();
 
-	//CreateDefaultGraphicsShader();
+	CreateDefaultGraphicsShader();
 
 	CreateDefaultComputeShader();
 

@@ -30,6 +30,8 @@ public:
     Ptr<CMaterial> GetSharedMaterial(UINT _idx);
     Ptr<CMaterial> GetDynamicMaterial(UINT _idx);
 
+    vector<tMtrlSet> GetVecMtrls() { return m_vecMtrls; }
+
     UINT GetMtrlCount() { return (UINT)m_vecMtrls.size(); }
 
     bool IsDrawShadow() { return m_DrawShadowMap; }

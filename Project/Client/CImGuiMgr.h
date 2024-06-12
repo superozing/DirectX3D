@@ -8,6 +8,7 @@ enum class FOCUS_STATE;
 typedef void(UI::* Delegate_0)();
 typedef void(UI::* Delegate_1)(DWORD_PTR);
 typedef void(UI::* Delegate_2)(DWORD_PTR, DWORD_PTR);
+typedef void(UI::* Delegate_3)(DWORD_PTR, UINT);
 
 typedef void (*CALL_BACK_0)(void);
 typedef void (*CALL_BACK_1)(DWORD_PTR);
