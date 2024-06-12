@@ -1,6 +1,9 @@
 ﻿#include "pch.h"
 #include "CPhysXMgr.h"
 #include "CTimeMgr.h"
+#include "CGameObject.h"
+#include "CTransform.h"
+#include "CPhysX.h"
 
 CPhysXMgr::CPhysXMgr() {}
 
@@ -21,6 +24,17 @@ void CPhysXMgr::tick()
 {
     gScene->simulate(DT);
     gScene->fetchResults(true);
+}
+
+void CPhysXMgr::addGameObject(CGameObject* object)
+{
+    // 게임 오브젝트의 물리 객체 생성 및 Scene에 추가
+    PxTransform transform(PxVec3(object->Transform()->GetWorldPos().x, object->Transform()->GetWorldPos().y, object->Transform()->GetWorldPos().z),
+        PxQuat(object->Transform()->GetWorldRot().x, object->Transform()->GetWorldRot().y, object->Transform()->GetWorldRot().z, 1.f));// object->transform->getRotation().w));
+    PxRigidDynamic* actor = gPhysics->createRigidDynamic(transform);
+    // Collider 추가 등
+    gScene->addActor(*actor);
+    object->AddComponent(new CPhysX);
 }
 
 CPhysXMgr::~CPhysXMgr()

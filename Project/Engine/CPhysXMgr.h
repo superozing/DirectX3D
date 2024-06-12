@@ -21,6 +21,7 @@ public:
 	virtual void init() override;
 	virtual void tick() override;
 	virtual void enter() override {}
+	void addGameObject(CGameObject* object);
 
 private:
 	void Clear() {};
