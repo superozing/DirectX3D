@@ -37,6 +37,12 @@
     <ClInclude Include="CSpringArm.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CBtnUIScript.h">
+      <Filter>Scripts\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CPanelUIScript.h">
+      <Filter>Scripts\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -75,6 +81,12 @@
     <ClCompile Include="CSpringArm.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="CBtnUIScript.cpp">
+      <Filter>Scripts\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CPanelUIScript.cpp">
+      <Filter>Scripts\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -100,6 +112,9 @@
     </Filter>
     <Filter Include="Scripts\Manager\Time">
       <UniqueIdentifier>{9b5c2bf2-2681-42e9-b790-8b4aba881373}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI">
+      <UniqueIdentifier>{949d4c11-e4a8-4d1b-8d31-20202e70f9dc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
