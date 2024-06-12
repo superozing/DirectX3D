@@ -184,7 +184,7 @@ FOCUS_STATE CImGuiMgr::GetFocus_debug()
     }
 
     // 현재 포커싱이 뷰포트일 경우
-    if (GetFocus() == CEngine::GetInst()->GetMainWind() && isViewportFocused)
+    if (GetFocus() == CEngine::GetInst()->GetMainWind() && IsViewportFocused())
     {
         isViewportFocused = false;
         return FOCUS_STATE::MAIN;

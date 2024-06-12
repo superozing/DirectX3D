@@ -55,7 +55,8 @@ public:
 
     virtual void enter() override;
 
-    bool& GetbViewportFocused() { return isViewportFocused; }
+    static bool IsViewportFocused() { return isViewportFocused; }
+    static void SetViewportFocused(bool _focus) { isViewportFocused = _focus; }
 
     const tStaticBtnColor& GetStaticButtonColor(STATIC_BTN_TYPE _type)
     {
