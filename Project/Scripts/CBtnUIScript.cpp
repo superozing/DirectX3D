@@ -34,6 +34,7 @@ CBtnUIScript::~CBtnUIScript()
 void CBtnUIScript::begin()
 {
 	m_CurImg = m_NormalImg;
+	GetOwner()->MeshRender()->GetDynamicMaterial(0);
 }
 
 void CBtnUIScript::tick()
@@ -45,7 +46,7 @@ void CBtnUIScript::OnHovered()
 {
 	m_CurImg = m_HoverImg;
 	if (m_AllowTexSet && m_CurImg.Get())
-		GetOwner()->MeshRender()->GetDynamicMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_CurImg);
+		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_CurImg);
 
 }
 
@@ -53,7 +54,7 @@ void CBtnUIScript::OnUnHovered()
 {
 	m_CurImg = m_NormalImg;
 	if (m_AllowTexSet && m_CurImg.Get())
-		GetOwner()->MeshRender()->GetDynamicMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_CurImg);
+		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_CurImg);
 
 }
 
@@ -65,7 +66,7 @@ void CBtnUIScript::LBtnDown()
 {
 	m_CurImg = m_PressedImg;
 	if (m_AllowTexSet && m_CurImg.Get())
-		GetOwner()->MeshRender()->GetDynamicMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_CurImg);
+		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_CurImg);
 
 }
 
@@ -73,7 +74,7 @@ void CBtnUIScript::LBtnUp()
 {
 	m_CurImg = m_NormalImg;
 	if (m_AllowTexSet && m_CurImg.Get())
-		GetOwner()->MeshRender()->GetDynamicMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_CurImg);
+		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_CurImg);
 
 }
 
@@ -81,7 +82,7 @@ void CBtnUIScript::LBtnClicked()
 {
 	m_CurImg = m_NormalImg;
 	if (m_AllowTexSet && m_CurImg.Get())
-		GetOwner()->MeshRender()->GetDynamicMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_CurImg);
+		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_CurImg);
 
 	// CallBack
 	if (m_CallBackFunc)
