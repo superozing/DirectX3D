@@ -11,7 +11,7 @@ void CAssetMgr::init()
 
 	CreateDefaultMesh();
 
-	//CreateDefaultGraphicsShader();
+	CreateDefaultGraphicsShader();
 
 	CreateDefaultComputeShader();
 
@@ -918,6 +918,24 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->SetTopology(D3D_PRIMITIVE_TOPOLOGY_3_CONTROL_POINT_PATCHLIST);
 
 	AddAsset(L"LandScapeShader", pShader.Get());
+
+
+	// ================
+	// UI Shader
+	// ================
+	pShader = new CGraphicsShader;
+	pShader->CreateVertexShader(L"shader\\ui.fx", "VS_UI");
+	pShader->CreatePixelShader(L"shader\\ui.fx", "PS_UI");
+
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+	pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+	pShader->SetTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	pShader->AddTexParam(TEX_PARAM::TEX_0, "UI Texture");
+
+	AddAsset(L"UIShader", pShader.Get());
 }
 
 
@@ -1062,6 +1080,11 @@ void CAssetMgr::CreateDefaultMaterial()
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"LandScapeShader"));
 	AddAsset(L"LandScapeMtrl", pMtrl);
+
+	// UIMtrl
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"UIShader"));
+	AddAsset(L"UIMtrl", pMtrl);
 }
 
 
