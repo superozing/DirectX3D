@@ -15,6 +15,7 @@ extern vector<string> g_vecPrefNames;
 extern vector<string> g_vecAnimNames;
 extern vector<string> g_vecTxtNames;
 extern vector<string> g_vecGraphicsShaderNames;
+extern vector<string> g_vecFBXNames;
 
 extern vector<string> g_excepts;
 

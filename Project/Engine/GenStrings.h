@@ -8,3 +8,4 @@
 #include "strAnim.h"
 #include "strTxt.h"
 #include "strGrpShader.h"
+#include "strFBX.h"

@@ -246,6 +246,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="singleton.h" />
     <ClInclude Include="strAnim.h" />
     <ClInclude Include="strEngineMtrl.h" />
+    <ClInclude Include="strFBX.h" />
     <ClInclude Include="strFnShader.h" />
     <ClInclude Include="strFx.h" />
     <ClInclude Include="strGrpShader.h" />
