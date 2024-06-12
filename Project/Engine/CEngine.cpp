@@ -13,6 +13,7 @@
 #include "CRenderMgr.h"
 #include "CCollisionMgr.h"
 #include "CFontMgr.h"
+#include "CUIMgr.h"
 
 #include "CSound.h"
 
@@ -69,6 +70,9 @@ void CEngine::progress()
 
 	// FMOD Update
 	CSound::g_pFMOD->update();
+
+	// UI Update
+	CUIMgr::GetInst()->tick();
 
 	// Level Update	
 	CLevelMgr::GetInst()->tick();
