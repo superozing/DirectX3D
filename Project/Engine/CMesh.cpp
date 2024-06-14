@@ -182,11 +182,11 @@ CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
 		}
 
 		pMesh->m_pBoneOffset = new CStructuredBuffer;
-		pMesh->m_pBoneOffset->Create(sizeof(Matrix), (UINT)vecOffset.size(), SB_TYPE::READ_ONLY, false, vecOffset.data());
+		pMesh->m_pBoneOffset->Create(sizeof(Matrix), (UINT)vecOffset.size(), SB_READ_TYPE::READ_ONLY, false, vecOffset.data());
 
 		pMesh->m_pBoneFrameData = new CStructuredBuffer;
 		pMesh->m_pBoneFrameData->Create(sizeof(tFrameTrans), (UINT)vecOffset.size() * iFrameCount
-			, SB_TYPE::READ_ONLY, false, vecFrameTrans.data());
+			, SB_READ_TYPE::READ_ONLY, false, vecFrameTrans.data());
 	}
 
 	return pMesh;
@@ -483,11 +483,11 @@ int CMesh::Load(const wstring& _strFilePath)
 		}
 
 		m_pBoneOffset = new CStructuredBuffer;
-		m_pBoneOffset->Create(sizeof(Matrix), (UINT)vecOffset.size(), SB_TYPE::READ_ONLY, false, vecOffset.data());
+		m_pBoneOffset->Create(sizeof(Matrix), (UINT)vecOffset.size(), SB_READ_TYPE::READ_ONLY, false, vecOffset.data());
 
 		m_pBoneFrameData = new CStructuredBuffer;
 		m_pBoneFrameData->Create(sizeof(tFrameTrans), (UINT)vecOffset.size() * (UINT)_iFrameCount
-			, SB_TYPE::READ_ONLY, false, vecFrameTrans.data());
+			, SB_READ_TYPE::READ_ONLY, false, vecFrameTrans.data());
 	}
 
 	fclose(pFile);
