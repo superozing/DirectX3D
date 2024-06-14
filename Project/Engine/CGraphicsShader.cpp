@@ -49,7 +49,7 @@ int CGraphicsShader::CreateVertexShader(const wstring& _strRelativePath, const s
 	m_VSFuncName = ToString(_strFuncName);
 
 	// 정점 구조정보(Layout) 생성
-	D3D11_INPUT_ELEMENT_DESC arrElement[6] = {};
+	D3D11_INPUT_ELEMENT_DESC arrElement[8] = {};
 
 	arrElement[0].InputSlot = 0;
 	arrElement[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
@@ -99,9 +99,24 @@ int CGraphicsShader::CreateVertexShader(const wstring& _strRelativePath, const s
 	arrElement[5].AlignedByteOffset = 60;
 	arrElement[5].Format = DXGI_FORMAT_R32G32B32_FLOAT;
 
+	arrElement[6].SemanticName = "BLENDWEIGHT";
+	arrElement[6].SemanticIndex = 0;
+	arrElement[6].AlignedByteOffset = 72;
+	arrElement[6].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	arrElement[6].InputSlot = 0;
+	arrElement[6].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+	arrElement[6].InstanceDataStepRate = 0;
+
+	arrElement[7].SemanticName = "BLENDINDICES";
+	arrElement[7].SemanticIndex = 0;
+	arrElement[7].AlignedByteOffset = 88;
+	arrElement[7].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	arrElement[7].InputSlot = 0;
+	arrElement[7].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+	arrElement[7].InstanceDataStepRate = 0;
 
 	// Layout 생성
-	DEVICE->CreateInputLayout(arrElement, 6
+	DEVICE->CreateInputLayout(arrElement, 8
 							, m_VSBlob->GetBufferPointer()
 							, m_VSBlob->GetBufferSize()
 							, m_Layout.GetAddressOf());
@@ -445,25 +460,56 @@ int CGraphicsShader::Load(const wstring& _strFilePath)
 	for (UINT i = 0; i < (UINT)SCALAR_PARAM::END; ++i)
 	{
 		getline(fin, strEnumBuf);
-		{
-			auto EnumVal = magic_enum::enum_cast<SCALAR_PARAM>(strEnumBuf);
-			if (EnumVal.has_value())
-				m_ScalarParam[i].Type = EnumVal.value();
-		}
+		if (strEnumBuf.empty()) break;
+
+		auto EnumVal = magic_enum::enum_cast<SCALAR_PARAM>(strEnumBuf);
+		if (!EnumVal.has_value()) continue;
+
+		SCALAR_PARAM paramType = EnumVal.value();
+		UINT index = static_cast<UINT>(paramType);
+
+		if (index >= static_cast<UINT>(SCALAR_PARAM::END)) continue;
+
 		Utils::GetLineUntilString(fin, TagIsUse);
-		fin >> m_ScalarParam[i].IsUse;
-		if (!m_ScalarParam[i].IsUse) continue;
+		fin >> m_ScalarParam[index].IsUse;
+		fin.ignore();
+
+		if (!m_ScalarParam[index].IsUse) continue;
+
+		m_ScalarParam[index].Type = paramType;
 
 		Utils::GetLineUntilString(fin, TagDesc);
-		getline(fin, m_ScalarParam[i].Desc);
+		getline(fin, m_ScalarParam[index].Desc);
 		Utils::GetLineUntilString(fin, TagMin);
-		fin >> m_ScalarParam[i].Min;
+		fin >> m_ScalarParam[index].Min;
 		Utils::GetLineUntilString(fin, TagMax);
-		fin >> m_ScalarParam[i].Max;
+		fin >> m_ScalarParam[index].Max;
 		Utils::GetLineUntilString(fin, TagView);
-		fin >> m_ScalarParam[i].View;
+		fin >> m_ScalarParam[index].View;
 		Utils::GetLineUntilString(fin, TagTooltip);
-		getline(fin, m_ScalarParam[i].Tooltip);
+		getline(fin, m_ScalarParam[index].Tooltip);
+
+
+		//getline(fin, strEnumBuf);
+		//{
+		//	auto EnumVal = magic_enum::enum_cast<SCALAR_PARAM>(strEnumBuf);
+		//	if (EnumVal.has_value())
+		//		m_ScalarParam[i].Type = EnumVal.value();
+		//}
+		//Utils::GetLineUntilString(fin, TagIsUse);
+		//fin >> m_ScalarParam[i].IsUse;
+		//if (!m_ScalarParam[i].IsUse) continue;
+
+		//Utils::GetLineUntilString(fin, TagDesc);
+		//getline(fin, m_ScalarParam[i].Desc);
+		//Utils::GetLineUntilString(fin, TagMin);
+		//fin >> m_ScalarParam[i].Min;
+		//Utils::GetLineUntilString(fin, TagMax);
+		//fin >> m_ScalarParam[i].Max;
+		//Utils::GetLineUntilString(fin, TagView);
+		//fin >> m_ScalarParam[i].View;
+		//Utils::GetLineUntilString(fin, TagTooltip);
+		//getline(fin, m_ScalarParam[i].Tooltip);
 	}
 
 	Utils::GetLineUntilString(fin, TagTexParam);

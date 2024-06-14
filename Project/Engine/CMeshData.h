@@ -15,7 +15,7 @@ public:
 	CGameObject* Instantiate();
 
 	// 파일로 저장
-	virtual int Save(const wstring&) override;
+	virtual int Save(const wstring& _strRelativePath) override;
 
 	// 파일로부터 로딩
 	virtual int Load(const wstring& _strFilePath) override;
