@@ -50,6 +50,21 @@ void CMeshRender::render()
 		Animator2D()->Clear();
 	}
 
+	// Animator3D 업데이트
+	if (Animator3D())
+	{
+		Animator3D()->UpdateData();
+
+		for (UINT i = 0; i < GetMtrlCount(); ++i)
+		{
+			if (nullptr == GetMaterial(i))
+				continue;
+
+			GetMaterial(i)->SetAnim3D(true); // Animation Mesh 알리기
+			GetMaterial(i)->SetBoneCount(Animator3D()->GetBoneCount());
+		}
+	}
+
 	Transform()->UpdateData();
 
 	// 메쉬의 모든 부위를 렌더링한다.

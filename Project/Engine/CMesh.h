@@ -2,6 +2,9 @@
 #include "CAsset.h"
 
 #include "CFBXLoader.h"
+
+class CStructuredBuffer;
+
 struct tIndexInfo
 {
     ComPtr<ID3D11Buffer>    pIB;
@@ -26,9 +29,24 @@ private:
     // 하나의 버텍스버퍼에 여러개의 인덱스버퍼가 연결
     vector<tIndexInfo>		m_vecIdxInfo;
 
+    // Animation3D 정보
+    vector<tMTAnimClip>		m_vecAnimClip;
+    vector<tMTBone>			m_vecBones;
+
+    CStructuredBuffer* m_pBoneFrameData;   // 전체 본 프레임 정보(크기, 이동, 회전) (프레임 개수만큼)
+    CStructuredBuffer* m_pBoneOffset;	    // 각 뼈의 offset 행렬(각 뼈의 위치를 되돌리는 행렬) (1행 짜리)
+
 public:
     Vtx* GetVtxSysMem() { return (Vtx*)m_VtxSysMem; }
     UINT GetSubsetCount() { return (UINT)m_vecIdxInfo.size(); }
+
+    const vector<tMTBone>* GetBones() { return &m_vecBones; }
+    UINT GetBoneCount() { return (UINT)m_vecBones.size(); }
+    const vector<tMTAnimClip>* GetAnimClip() { return &m_vecAnimClip; }
+    bool IsAnimMesh() { return !m_vecAnimClip.empty(); }
+
+    CStructuredBuffer* GetBoneFrameDataBuffer() { return m_pBoneFrameData; } // 전체 본 프레임 정보
+    CStructuredBuffer* GetBoneOffsetBuffer() { return  m_pBoneOffset; }	   // 각 뼈의 offset 행렬
 
 private:
     void UpdateData(UINT _iSubset);
@@ -40,9 +58,9 @@ public:
     void render_asparticle(UINT _ParticleCount);
 
 private:
-    virtual int Load(const wstring& _strFilePath) override { return S_OK; }
+    virtual int Load(const wstring& _strFilePath) override;
 public:
-    virtual int Save(const wstring& _strRelativePath) override { return S_OK; }
+    virtual int Save(const wstring& _strRelativePath) override;
 
     CLONE_DISABLE(CMesh);
 public:
