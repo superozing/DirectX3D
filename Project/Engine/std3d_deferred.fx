@@ -24,6 +24,8 @@ struct VS_IN
     float3 vNormal : NORMAL;
     float3 vBinormal : BINORMAL;
     
+    float4 vWeights : BLENDWEIGHT;
+    float4 vIndices : BLENDINDICES;
 };
 
 struct VS_OUT
@@ -65,6 +67,12 @@ struct PS_OUT
 PS_OUT PS_Std3D_Deferred(VS_OUT _in) : SV_Target
 {
     PS_OUT output = (PS_OUT) 0.f;
+    
+    if (g_iAnim)
+    {
+        Skinning(_in.vPos, _in.vTangent, _in.vBinormal, _in.vNormal
+              , _in.vWeights, _in.vIndices, 0);
+    }
     
     float4 vOutColor = float4(1.f, 0.f, 1.f, 1.f);
     

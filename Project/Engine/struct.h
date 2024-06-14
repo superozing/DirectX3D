@@ -11,6 +11,9 @@ struct Vtx
 	Vec3 vTangent;	// 접선 벡터
 	Vec3 vNormal;	// 법선 벡터
 	Vec3 vBinormal;	// 종법선 벡터
+
+	Vec4 vWeights;  // Bone 가중치
+	Vec4 vIndices;  // Bone 인덱스
 };
 
 struct tDebugShapeInfo
@@ -140,6 +143,50 @@ struct tSpawnCount
 	int iPadding[3];
 };
 
+// ============
+// Animation 3D
+// ============
+struct tFrameTrans
+{
+	Vec4	vTranslate;
+	Vec4	vScale;
+	Vec4	qRot;
+};
+
+struct tMTKeyFrame
+{
+	double	dTime;
+	int		iFrame;
+	Vec3	vTranslate;
+	Vec3	vScale;
+	Vec4	qRot;
+};
+
+
+struct tMTBone
+{
+	wstring				strBoneName;
+	int					iDepth;
+	int					iParentIndx;
+	Matrix				matOffset;	// Offset 행렬(뼈 -> 루트 까지의 행렬)
+	Matrix				matBone;   // 이거 안씀
+	vector<tMTKeyFrame>	vecKeyFrame;
+};
+
+struct tMTAnimClip
+{
+	wstring			strAnimName;
+	int				iStartFrame;
+	int				iEndFrame;
+	int				iFrameLength;
+
+	double			dStartTime;
+	double			dEndTime;
+	double			dTimeLength;
+	float			fUpdateTime; // 이거 안씀
+
+	FbxTime::EMode	eMode;
+};
 
 // ==================
 // 상수버퍼 대응 구조체
@@ -180,7 +227,9 @@ struct tMtrlConst
 	Vec4 v4Arr[4];
 	Matrix matArr[4];
 	int	bTex[(UINT)TEX_PARAM::END];
-	int iPadding[2];
+
+	// 3D Animation 정보
+	int	arrAnimData[2];
 
 	friend ofstream& operator<<(ofstream& fout, const tMtrlConst& _mtrlConst);
 	friend ifstream& operator>>(ifstream& fin, tMtrlConst& _mtrlConst);

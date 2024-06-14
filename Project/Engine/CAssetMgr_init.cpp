@@ -1069,6 +1069,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
 #include "CSetColorShader.h"
 #include "CParticleUpdate.h"
+#include "CAnimation3DShader.h"
 void CAssetMgr::CreateDefaultComputeShader()
 {
 	Ptr<CComputeShader> pShader = nullptr;
@@ -1080,6 +1081,10 @@ void CAssetMgr::CreateDefaultComputeShader()
 	// ParticleUpdateShader
 	pShader = new CParticleUpdate;
 	AddAsset(SHADER_particleupdate, pShader.Get());
+
+	// Animation3DUpdateShader
+	pShader = new CAnimation3DShader;
+	AddAsset(L"Animation3DUpdateCS", pShader.Get());
 }
 
 
