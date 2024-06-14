@@ -65,7 +65,11 @@ CMeshData* CMeshData::LoadFromFBX(const wstring& _RelativePath)
 		wstring strMeshKey = L"mesh\\";
 		strMeshKey += path(strFullPath).stem();
 		strMeshKey += L".mesh";
-		CAssetMgr::GetInst()->AddAsset<CMesh>(strMeshKey, pMesh);
+
+		if (nullptr == CAssetMgr::GetInst()->FindAsset<CMesh>(strMeshKey))
+		{
+			CAssetMgr::GetInst()->AddAsset<CMesh>(strMeshKey, pMesh);
+		}
 
 		// 메시를 실제 파일로 저장
 		pMesh->Save(strMeshKey);

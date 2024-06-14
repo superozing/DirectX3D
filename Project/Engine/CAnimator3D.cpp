@@ -53,7 +53,7 @@ void CAnimator3D::finaltick()
 {
 	m_dCurTime = 0.f;
 	// 현재 재생중인 Clip 의 시간을 진행한다.
-	m_vecClipUpdateTime[m_iCurClip] += DT;
+	m_vecClipUpdateTime[m_iCurClip] += DTd_ENGINE;
 
 	if (m_vecClipUpdateTime[m_iCurClip] >= m_pVecClip->at(m_iCurClip).dTimeLength)
 	{
@@ -144,7 +144,7 @@ void CAnimator3D::check_mesh(Ptr<CMesh> _pMesh)
 	UINT iBoneCount = _pMesh->GetBoneCount();
 	if (m_pBoneFinalMatBuffer->GetElementCount() != iBoneCount)
 	{
-		m_pBoneFinalMatBuffer->Create(sizeof(Matrix), iBoneCount, SB_TYPE::READ_WRITE, false, nullptr);
+		m_pBoneFinalMatBuffer->Create(sizeof(Matrix), iBoneCount, SB_READ_TYPE::READ_WRITE, false, nullptr);
 	}
 }
 
@@ -152,6 +152,14 @@ void CAnimator3D::SaveToFile(FILE* _pFile)
 {
 }
 
+void CAnimator3D::SaveToFile(ofstream& fout)
+{
+}
+
 void CAnimator3D::LoadFromFile(FILE* _pFile)
+{
+}
+
+void CAnimator3D::LoadFromFile(ifstream& fin)
 {
 }

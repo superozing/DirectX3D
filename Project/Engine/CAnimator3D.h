@@ -46,7 +46,9 @@ private:
 
 public:
     virtual void SaveToFile(FILE* _pFile) override;
+    virtual void SaveToFile(ofstream& fout) override;
     virtual void LoadFromFile(FILE* _pFile) override;
+    virtual void LoadFromFile(ifstream& fin) override;
     CLONE(CAnimator3D);
 
 public:
