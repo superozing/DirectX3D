@@ -20,7 +20,7 @@ VS_OUT VS_UI(VS_IN _in)
 {
     VS_OUT output = (VS_OUT) 0;
 
-    output.vPosition = float4(_in.vPos, 1);
+    output.vPosition = mul(float4(_in.vPos, 1.f), g_matWVP);
     output.vUV = _in.vUV;
 
     return output;
@@ -36,7 +36,7 @@ float4 PS_UI(VS_OUT _in) : SV_Target
         discard;
 
     if (vColor.a < 0.1f)
-        discard; //clip(-1);            
+        discard;          
 
     return vColor;
 }
