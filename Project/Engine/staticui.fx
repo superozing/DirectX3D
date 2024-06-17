@@ -1,5 +1,5 @@
-#ifndef _UIFX
-#define _UIFX
+#ifndef _STATICUI
+#define _STATICUI
 
 #include "value.fx"
 #include "func.fx"
@@ -16,7 +16,7 @@ struct VS_OUT
     float2 vUV : TEXCOORD;
 };
 
-VS_OUT VS_UI(VS_IN _in)
+VS_OUT VS_StaticUI(VS_IN _in)
 {
     VS_OUT output = (VS_OUT) 0;
 
@@ -26,7 +26,7 @@ VS_OUT VS_UI(VS_IN _in)
     return output;
 }
 
-float4 PS_UI(VS_OUT _in) : SV_Target
+float4 PS_StaticUI(VS_OUT _in) : SV_Target
 {
     float4 vColor = (float4) 0.f;
 
