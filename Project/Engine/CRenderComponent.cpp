@@ -113,10 +113,24 @@ Ptr<CMaterial> CRenderComponent::GetDynamicMaterial(UINT _idx)
 		m_vecMtrls[_idx].pCurMtrl->SetRelativePath(m_vecMtrls[_idx].pSharedMtrl->GetRelativePath());
 	}
 
-	return nullptr;
+	return m_vecMtrls[_idx].pCurMtrl;
 }
 
-void CRenderComponent::SaveToFile(FILE* _File)
+ULONG64 CRenderComponent::GetInstID(UINT _iMtrlIdx)
+{
+	if (m_Mesh == nullptr || m_vecMtrls[_iMtrlIdx].pCurMtrl == nullptr)
+		return 0;
+
+	uInstID id{(UINT)m_Mesh->GetID(), (WORD)m_vecMtrls[_iMtrlIdx].pCurMtrl->GetID(), (WORD)_iMtrlIdx};
+		return id.llID;
+}
+
+void CRenderComponent::render(UINT _iSubset)
+{
+	render();
+}
+
+void CRenderComponent::SaveToFile(FILE *_File)
 {
 	// 메쉬 참조정보 저장
 	SaveAssetRef(m_Mesh, _File);

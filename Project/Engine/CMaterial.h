@@ -35,6 +35,7 @@ public:
 	Ptr<CTexture> GetTexParam(TEX_PARAM _ParamType) { return m_arrTex[(UINT)_ParamType]; }
 
     void UpdateData();
+	void UpdateData_Inst();
 
 	void operator = (const CMaterial& _OtherMtrl)
 	{
