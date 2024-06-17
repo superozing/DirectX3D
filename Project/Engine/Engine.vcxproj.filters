@@ -767,8 +767,11 @@
     <FxCompile Include="weightmap.fx">
       <Filter>ShaderCode\03. Compute\LandScape\WeightMap</Filter>
     </FxCompile>
-    <FxCompile Include="ui.fx">
+    <FxCompile Include="staticui.fx">
       <Filter>ShaderCode\02. Render\2DShader</Filter>
+    </FxCompile>
+    <FxCompile Include="dynamicui.fx">
+      <Filter>ShaderCode\02. Render</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
