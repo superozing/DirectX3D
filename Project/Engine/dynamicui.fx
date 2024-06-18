@@ -65,6 +65,10 @@ void GS_DynamicUI(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStream)
     output[2].vPosition = float4((vWorldScale.x * 0.5f),  (vWorldScale.y * -0.5f), 0.f, 1.f);
     output[3].vPosition = float4((vWorldScale.x * -0.5f), (vWorldScale.y * -0.5f), 0.f, 1.f);
     
+    output[0].vUV = float2(0.f, 0.f);
+    output[1].vUV = float2(1.f, 0.f);
+    output[2].vUV = float2(1.f, 1.f);
+    output[3].vUV = float2(0.f, 1.f);
     
     // 파티클의 ViewSpace 상에서의 중심 포지션 구하기
     float4 vViewPos = mul(float4(vWorldPos, 1.f), g_matView);
@@ -96,7 +100,6 @@ void GS_DynamicUI(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStream)
 
 float4 PS_DynamicUI(GS_OUT _in) : SV_Target
 {
-    
     // 출력 색상
     float4 vOutColor = (float4)0.f;
     
@@ -110,8 +113,6 @@ float4 PS_DynamicUI(GS_OUT _in) : SV_Target
     
     return vOutColor;
 }
-
-
 
 
 #endif
