@@ -33,6 +33,7 @@
 #include "CImGuiMgr.h"
 #include "CEditorObjMgr.h"
 #include "CCreateTempLevel.h"
+#include "CCreatePlayerTestLevel.h"
 
 #include <Engine/CRenderMgr.h>
 #include "RTViewPort.h"
@@ -84,10 +85,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     
 #ifndef _RELEASE_GAME
     // 임시 레벨 생성
-    CCreateTempLevel::Init();
+    //CCreateTempLevel::Init();
 
-    CCreateTempLevel::CreateTempLevel();
-
+    //CCreateTempLevel::CreateTempLevel();
+	CCreatePlayerTestLevel::CreateTempLevel();
     // ImGui 초기화
     CImGuiMgr::GetInst()->init(hWnd, DEVICE, CONTEXT);
 

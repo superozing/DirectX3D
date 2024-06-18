@@ -302,6 +302,9 @@
       <Filter>02. UI\3. Inspector\ComponentUI\Landscape</Filter>
     </ClInclude>
     <ClInclude Include="ImGuizmo.h" />
+    <ClInclude Include="CCreatePlayerTestLevel.h">
+      <Filter>01. Manager\03. CreateTempLevel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -463,5 +466,8 @@
       <Filter>02. UI\3. Inspector\ComponentUI\Landscape</Filter>
     </ClCompile>
     <ClCompile Include="ImGuizmo.cpp" />
+    <ClCompile Include="CCreatePlayerTestLevel.cpp">
+      <Filter>01. Manager\03. CreateTempLevel</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
