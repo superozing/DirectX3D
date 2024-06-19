@@ -50,12 +50,14 @@ public:
 
 private:
     void UpdateData(UINT _iSubset);
+    void UpdateData_Inst(UINT _iSubset);
 
 public:
     static CMesh* CreateFromContainer(CFBXLoader& _loader);
     int Create(void* _Vtx, UINT _VtxCount, void* _Idx, UINT _IdxCount);
     void render(UINT _iSubset);
     void render_asparticle(UINT _ParticleCount);
+	void render_instancing(UINT _iSubset);
 
 private:
     virtual int Load(const wstring& _strFilePath) override;

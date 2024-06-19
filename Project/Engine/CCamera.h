@@ -47,7 +47,12 @@ private:
     tRay                    m_ray;      // 마우스 방향을 향하는 직선
 
     // 물체 분류
-    vector<CGameObject*>    m_vecDeferred;
+	map<ULONG64, vector<tInstObj>> m_mapInstGroup_D; // Deferred
+	map<ULONG64, vector<tInstObj>> m_mapInstGroup_F; // Foward ( Opaque, Mask )
+	map<INT_PTR, vector<tInstObj>> m_mapSingleObj;	 // Single Object
+
+    // 물체 분류
+    //vector<CGameObject*>    m_vecDeferred;
     vector<CGameObject*>    m_vecDecal;
     vector<CGameObject*>    m_vecOpaque;
     vector<CGameObject*>    m_vecMasked;
