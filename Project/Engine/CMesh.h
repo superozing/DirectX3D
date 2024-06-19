@@ -33,8 +33,11 @@ private:
     vector<tMTAnimClip>		m_vecAnimClip;
     vector<tMTBone>			m_vecBones;
 
-    CStructuredBuffer* m_pBoneFrameData;   // 전체 본 프레임 정보(크기, 이동, 회전) (프레임 개수만큼)
+    //CStructuredBuffer* m_pBoneFrameData;   // 전체 본 프레임 정보(크기, 이동, 회전) (프레임 개수만큼)
     CStructuredBuffer* m_pBoneOffset;	    // 각 뼈의 offset 행렬(각 뼈의 위치를 되돌리는 행렬) (1행 짜리)
+
+    vector<CStructuredBuffer*> m_vecBoneFrameData;
+	//vector<CStructuredBuffer*> m_vecBoneOffset;
 
 public:
     Vtx* GetVtxSysMem() { return (Vtx*)m_VtxSysMem; }
@@ -45,8 +48,11 @@ public:
     const vector<tMTAnimClip>* GetAnimClip() { return &m_vecAnimClip; }
     bool IsAnimMesh() { return !m_vecAnimClip.empty(); }
 
-    CStructuredBuffer* GetBoneFrameDataBuffer() { return m_pBoneFrameData; } // 전체 본 프레임 정보
+    //CStructuredBuffer* GetBoneFrameDataBuffer() { return m_pBoneFrameData; } // 전체 본 프레임 정보
     CStructuredBuffer* GetBoneOffsetBuffer() { return  m_pBoneOffset; }	   // 각 뼈의 offset 행렬
+
+    vector<CStructuredBuffer*> GetBoneFrameDataBuffer() { return m_vecBoneFrameData; }
+    //vector<CStructuredBuffer*> GetBoneOffsetBuffer() { return m_vecBoneOffset; }
 
 private:
     void UpdateData(UINT _iSubset);

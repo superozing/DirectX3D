@@ -132,11 +132,13 @@ void CCreatePlayerTestLevel::CreateTempLevel()
 		Ptr<CMeshData> pMeshData = nullptr;
 		CGameObject *pObj = nullptr;
 
-		pMeshData = CAssetMgr::GetInst()->LoadFBX(L"fbx\\serika_better2.fbx");
+		pMeshData = CAssetMgr::GetInst()->LoadFBX(L"fbx\\serika_better3.fbx");
+		//pMeshData = CAssetMgr::GetInst()->LoadFBX(L"fbx\\serika_Merge.fbx");
 		pObj = pMeshData->Instantiate();
 		pObj->SetName(pMeshData->GetKey());
-		pObj->Transform()->SetRelativePos(Vec3(0.f, -300.f, 100.f));
+		pObj->Transform()->SetRelativePos(Vec3(-100.f, -40.f, 100.f));
 		pObj->Transform()->SetRelativeScale(Vec3(300.f, 300.f, 300.f));
+		pObj->Transform()->SetRelativeRotation(Vec3(0.f, -XM_PI / 2.f, 0.f));
 
 		pTempLevel->AddObject(pObj, 0, false);
 	}
@@ -145,11 +147,12 @@ void CCreatePlayerTestLevel::CreateTempLevel()
 	//	Ptr<CMeshData> pMeshData = nullptr;
 	//	CGameObject* pObj = nullptr;
 
-	//	pMeshData = CAssetMgr::GetInst()->LoadFBX(L"fbx\\CharacterMouth.fbx");
+	//	pMeshData = CAssetMgr::GetInst()->LoadFBX(L"fbx\\serika_Merge.fbx");
 	//	pObj = pMeshData->Instantiate();
 	//	pObj->SetName(pMeshData->GetKey());
-	//	pObj->Transform()->SetRelativePos(Vec3(300.f, -300.f, 100.f));
+	//	pObj->Transform()->SetRelativePos(Vec3(200.f, -40.f, 100.f));
 	//	pObj->Transform()->SetRelativeScale(Vec3(300.f, 300.f, 300.f));
+	//	pObj->Transform()->SetRelativeRotation(Vec3(0.f, -XM_PI / 2.f, 0.f));
 
 	//	pTempLevel->AddObject(pObj, 0, false);
 	//}

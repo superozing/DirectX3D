@@ -21,7 +21,7 @@ private:
     UINT                                m_ElementSize;
     UINT                                m_ElementCount;
 
-    SB_READ_TYPE                             m_Type;
+    SB_READ_TYPE                        m_Type;
     bool                                m_bSysMemMove;
 
     UINT                                m_RegentSRV;    // 최근에 바인딩한 t레지스터 번호
