@@ -94,14 +94,31 @@ void CTransform::SetWorldMat(const Matrix& _matWorld)
 	m_matWorld = _matWorld;
 	Vec3 vScale, vRot, vPos;
 	Quaternion Quat;
+	Matrix matrix = m_matWorld;
 
-	m_matWorld.Decompose(vScale, Quat, vPos);
+	if (GetOwner()->GetParent())
+	{
+		const Matrix& matParentWorldInv = GetOwner()->GetParent()->Transform()->GetWorldInvMat();
+		if (m_bAbsolute)
+		{
+			// m_matWorld = m_matWorld * matParentScaleInv * matParentWorld + matParentWorldInv * matParentScale;
+			Vec3 vParentScale = GetOwner()->GetParent()->Transform()->GetRelativeScale();
+			Matrix matParentScale = XMMatrixScaling(vParentScale.x, vParentScale.y, vParentScale.z);
+
+			matrix = matrix * matParentWorldInv * matParentScale;
+		}
+		else {
+			matrix *= matParentWorldInv;
+		}
+	}
+
+	matrix.Decompose(vScale, Quat, vPos);
 	auto mat = XMMatrixRotationQuaternion(Quat);
 	vRot = DecomposeRotMat(mat);
 
 	SetRelativePos(vPos);
-	SetRelativeScale(vScale);
 	SetRelativeRotation(vRot);
+	SetRelativeScale(vScale);
 }
 
 Vec3 CTransform::GetWorldScale()
