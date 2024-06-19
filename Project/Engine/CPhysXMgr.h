@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include "CManager.h"
-#include "physx/PxPhysicsAPI.h"
 
 using namespace physx;
 
