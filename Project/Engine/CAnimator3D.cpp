@@ -51,6 +51,44 @@ CAnimator3D::~CAnimator3D()
 
 void CAnimator3D::finaltick()
 {
+	// 디버그용
+	if (KEY_TAP(M))
+	{
+		//if (nullptr != m_pBoneFinalMatBuffer)
+		//	delete m_pBoneFinalMatBuffer;
+
+		//m_pBoneFinalMatBuffer = new CStructuredBuffer;
+
+		m_iCurClip = 0;
+
+		//m_vecClipUpdateTime[m_iCurClip] = 0.f;
+		//m_iFrameIdx = 0;
+	}
+	else if (KEY_TAP(N))
+	{
+		//if (nullptr != m_pBoneFinalMatBuffer)
+		//	delete m_pBoneFinalMatBuffer;
+
+		//m_pBoneFinalMatBuffer = new CStructuredBuffer;
+
+		m_iCurClip = 1;
+
+		//m_vecClipUpdateTime[m_iCurClip] = 0.f;
+		//m_iFrameIdx = 0;
+	}
+	else if (KEY_TAP(B))
+	{
+		//if (nullptr != m_pBoneFinalMatBuffer)
+		//	delete m_pBoneFinalMatBuffer;
+
+		//m_pBoneFinalMatBuffer = new CStructuredBuffer;
+
+		m_iCurClip = 2;
+
+		//m_vecClipUpdateTime[m_iCurClip] = 0.f;
+		//m_iFrameIdx = 0;
+	}
+
 	m_dCurTime = 0.f;
 	// 현재 재생중인 Clip 의 시간을 진행한다.
 	m_vecClipUpdateTime[m_iCurClip] += DTd_ENGINE;
@@ -67,8 +105,8 @@ void CAnimator3D::finaltick()
 	m_iFrameIdx = (int)(dFrameIdx);
 
 	// 다음 프레임 인덱스
-	if (m_iFrameIdx >= m_pVecClip->at(0).iFrameLength - 1)
-		m_iNextFrameIdx = m_iFrameIdx;	// 끝이면 현재 인덱스를 유지
+	if (m_iFrameIdx >= m_pVecClip->at(m_iCurClip).iFrameLength - 1)
+		m_iNextFrameIdx = m_iFrameIdx = m_pVecClip->at(m_iCurClip).iFrameLength - 2; // 끝이면 현재 인덱스를 유지
 	else
 		m_iNextFrameIdx = m_iFrameIdx + 1;
 
@@ -102,7 +140,13 @@ void CAnimator3D::UpdateData()
 		Ptr<CMesh> pMesh = MeshRender()->GetMesh();
 		check_mesh(pMesh);
 
-		pUpdateShader->SetFrameDataBuffer(pMesh->GetBoneFrameDataBuffer());
+		//pUpdateShader->SetFrameDataBuffer(pMesh->GetBoneFrameDataBuffer());
+		//pUpdateShader->SetOffsetMatBuffer(pMesh->GetBoneOffsetBuffer());
+		//pUpdateShader->SetOutputBuffer(m_pBoneFinalMatBuffer);
+
+		auto vBoneFrameData = pMesh->GetBoneFrameDataBuffer();
+
+		pUpdateShader->SetFrameDataBuffer(vBoneFrameData[m_iCurClip]);
 		pUpdateShader->SetOffsetMatBuffer(pMesh->GetBoneOffsetBuffer());
 		pUpdateShader->SetOutputBuffer(m_pBoneFinalMatBuffer);
 

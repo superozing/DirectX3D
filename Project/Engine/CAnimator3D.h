@@ -12,8 +12,8 @@ class CAnimator3D :
     public CComponent
 {
 private:
-    const vector<tMTBone>* m_pVecBones;
-    const vector<tMTAnimClip>* m_pVecClip;
+    const vector<tMTBone>*      m_pVecBones;
+    const vector<tMTAnimClip>*  m_pVecClip;
 
     vector<float>				m_vecClipUpdateTime;
     vector<Matrix>				m_vecFinalBoneMat; // 텍스쳐에 전달할 최종 행렬정보
@@ -25,7 +25,7 @@ private:
     int							m_iNextFrameIdx; // 클립의 다음 프레임
     float						m_fRatio;	// 프레임 사이 비율
 
-    CStructuredBuffer* m_pBoneFinalMatBuffer;  // 특정 프레임의 최종 행렬
+    CStructuredBuffer*          m_pBoneFinalMatBuffer;  // 특정 프레임의 최종 행렬
     bool						m_bFinalMatUpdate; // 최종행렬 연산 수행여부
 
 public:

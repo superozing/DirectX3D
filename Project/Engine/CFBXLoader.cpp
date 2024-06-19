@@ -601,7 +601,7 @@ void CFBXLoader::LoadAnimationData(FbxMesh* _pMesh, tContainer* _pContainer)
 		return;
 
 	_pContainer->bAnimation = true;
-
+	
 	// Skin 개수만큼 반복을하며 읽는다.	
 	for (int i = 0; i < iSkinCount; ++i)
 	{
@@ -715,27 +715,36 @@ void CFBXLoader::LoadKeyframeTransform(FbxNode* _pNode, FbxCluster* _pCluster
 	matReflect.mData[3] = v4;
 
 	m_vecBone[_iBoneIdx]->matBone = _matNodeTransform;
-
+	m_vecBone[_iBoneIdx]->vecKeyFrame.resize(m_vecAnimClip.size());
 	FbxTime::EMode eTimeMode = m_pScene->GetGlobalSettings().GetTimeMode();
-
-	FbxLongLong llStartFrame = m_vecAnimClip[0]->tStartTime.GetFrameCount(eTimeMode);
-	FbxLongLong llEndFrame = m_vecAnimClip[0]->tEndTime.GetFrameCount(eTimeMode);
-
-	for (FbxLongLong i = llStartFrame; i < llEndFrame; ++i)
+	
+	for (size_t i = 0; i < m_vecAnimClip.size(); ++i)
 	{
-		tKeyFrame tFrame = {};
-		FbxTime   tTime = 0;
+		// AnimClip 이름으로 AnimStack 을 가져온다.
+		string strAnimName = string(m_vecAnimClip[i]->strName.begin(), m_vecAnimClip[i]->strName.end());
+		FbxAnimStack* pAnimStack = m_pScene->FindMember<FbxAnimStack>(strAnimName.c_str());
 
-		tTime.SetFrame(i, eTimeMode);
+		// 애니메이션 행렬 정보를 받아올 AnimStack 을 설정한다.      
+		m_pScene->SetCurrentAnimationStack(pAnimStack);
 
-		FbxAMatrix matFromNode = _pNode->EvaluateGlobalTransform(tTime) * _matNodeTransform;
-		FbxAMatrix matCurTrans = matFromNode.Inverse() * _pCluster->GetLink()->EvaluateGlobalTransform(tTime);
-		matCurTrans = matReflect * matCurTrans * matReflect;
+		FbxLongLong llStartFrame = m_vecAnimClip[i]->tStartTime.GetFrameCount(eTimeMode);
+		FbxLongLong llEndFrame = m_vecAnimClip[i]->tEndTime.GetFrameCount(eTimeMode);
 
-		tFrame.dTime = tTime.GetSecondDouble();
-		tFrame.matTransform = matCurTrans;
+		for (FbxLongLong j = llStartFrame; j < llEndFrame; ++j)
+		{
+			tKeyFrame tFrame = {};
+			FbxTime   tTime = 0;
 
-		m_vecBone[_iBoneIdx]->vecKeyFrame.push_back(tFrame);
+			tTime.SetFrame(j, eTimeMode);
+			FbxAMatrix matFromNode = _pNode->EvaluateGlobalTransform(tTime) * _matNodeTransform;
+			FbxAMatrix matCurTrans = matFromNode.Inverse() * _pCluster->GetLink()->EvaluateGlobalTransform(tTime);
+			matCurTrans = matReflect * matCurTrans * matReflect;
+
+			tFrame.dTime = tTime.GetSecondDouble();
+			tFrame.matTransform = matCurTrans;
+
+			m_vecBone[_iBoneIdx]->vecKeyFrame[i].push_back(tFrame);
+		}
 	}
 }
 

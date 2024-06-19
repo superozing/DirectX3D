@@ -170,7 +170,7 @@ struct tMTBone
 	int					iParentIndx;
 	Matrix				matOffset;	// Offset 행렬(뼈 -> 루트 까지의 행렬)
 	Matrix				matBone;   // 이거 안씀
-	vector<tMTKeyFrame>	vecKeyFrame;
+	vector<vector<tMTKeyFrame>>	vecKeyFrame;
 };
 
 struct tMTAnimClip

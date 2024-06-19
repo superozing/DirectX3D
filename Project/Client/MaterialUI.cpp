@@ -39,7 +39,7 @@ void MaterialUI::render_update()
     {
         filesystem::path pathObj(FullPath);
 
-        strcpy(MtrlKey, pathObj.stem().string().c_str());
+        strcpy_s(MtrlKey, pathObj.stem().string().c_str());
     }
 
     string strPath = string(m_TargetMtrl->GetKey().begin(), m_TargetMtrl->GetKey().end());
