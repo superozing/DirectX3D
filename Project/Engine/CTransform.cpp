@@ -284,20 +284,19 @@ void CTransform::CalWorldMat()
 
 
 	// 쿼터니언구하기
-		// 월드 행렬에서 회전 행렬을 추출
-	Matrix rotationMatrix = m_matWorld;
-	rotationMatrix._41 = rotationMatrix._42 = rotationMatrix._43 = 0.0f; // 평행 이동 성분 제거
+	// 월드 행렬에서 회전 행렬을 추출
+	//Matrix rotationMatrix = m_matWorld;
+	//rotationMatrix._41 = rotationMatrix._42 = rotationMatrix._43 = 0.0f; // 평행 이동 성분 제거
 
-	// 행렬의 축을 정규화
-	rotationMatrix.Right().Normalize();
-	rotationMatrix.Up().Normalize();
-	rotationMatrix.Forward().Normalize();
+	//// 행렬의 축을 정규화
+	//rotationMatrix.Right().Normalize();
+	//rotationMatrix.Up().Normalize();
+	//rotationMatrix.Forward().Normalize();
 
-	// 회전 행렬을 쿼터니언으로 변환
-	auto q = Quaternion::CreateFromRotationMatrix(rotationMatrix);
-	m_vWorldRotQuat.x = q.x;
-	m_vWorldRotQuat.y = q.y;
-	m_vWorldRotQuat.z = q.z;
-	m_vWorldRotQuat.w = q.w;
-
+	//// 회전 행렬을 쿼터니언으로 변환
+	//auto q = Quaternion::CreateFromRotationMatrix(rotationMatrix);
+	//m_vWorldRotQuat.x = q.x;
+	//m_vWorldRotQuat.y = q.y;
+	//m_vWorldRotQuat.z = q.z;
+	//m_vWorldRotQuat.w = q.w;
 }
