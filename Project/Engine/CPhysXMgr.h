@@ -16,12 +16,14 @@ private:
 	PxPhysics* gPhysics = nullptr;
 	PxDefaultCpuDispatcher* gDispatcher = nullptr;
 	PxScene* gScene = nullptr;
+	PxMaterial* gMaterial = nullptr;
 
 public:
 	virtual void init() override;
 	virtual void tick() override;
 	virtual void enter() override {}
-	void addGameObject(CGameObject* object);
+	void addDynamicGameObject(CGameObject* object);
+	void addStaticGameObject(CGameObject* object);
 
 private:
 	void Clear() {};

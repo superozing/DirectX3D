@@ -18,6 +18,7 @@ void CPhysXMgr::init()
     sceneDesc.cpuDispatcher = gDispatcher;
     sceneDesc.filterShader = PxDefaultSimulationFilterShader;
     gScene = gPhysics->createScene(sceneDesc);
+    gMaterial = gPhysics->createMaterial(0.5f, 0.5f, 0.1f); // (정지 마찰 계수, 동적 마찰 계수, 반발 계수)
 }
 
 void CPhysXMgr::tick()
@@ -26,15 +27,55 @@ void CPhysXMgr::tick()
     gScene->fetchResults(true);
 }
 
-void CPhysXMgr::addGameObject(CGameObject* object)
+void CPhysXMgr::addDynamicGameObject(CGameObject* object)
 {
+    auto Rot = object->Transform()->GetWorldRot();
+    Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(Rot.z, Rot.y, Rot.x);
+
     // 게임 오브젝트의 물리 객체 생성 및 Scene에 추가
     PxTransform transform(PxVec3(object->Transform()->GetWorldPos().x, object->Transform()->GetWorldPos().y, object->Transform()->GetWorldPos().z),
-        PxQuat(object->Transform()->GetWorldRot().x, object->Transform()->GetWorldRot().y, object->Transform()->GetWorldRot().z, 1.f));// object->transform->getRotation().w));
+        PxQuat(quaternion.x, quaternion.y, quaternion.z, quaternion.w));
     PxRigidDynamic* actor = gPhysics->createRigidDynamic(transform);
+
+    // 게임 오브젝트의 스케일 정보
+    auto scale = object->Transform()->GetWorldScale();
+
+    // Collider 추가 (여기서는 예시로 Box Collider를 사용)
+    PxShape* shape = gPhysics->createShape(PxBoxGeometry(scale.x / 2, scale.y / 2, scale.z / 2), *gMaterial);
+    actor->attachShape(*shape);
+    actor->setMass(1.0f);
+
     // Collider 추가 등
     gScene->addActor(*actor);
-    object->AddComponent(new CPhysX);
+
+    // 액터 추가
+    object->PhysX()->m_Actor = actor;
+}
+
+void CPhysXMgr::addStaticGameObject(CGameObject* object)
+{
+    auto Rot = object->Transform()->GetWorldRot();
+    Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(Rot.z, Rot.y, Rot.x);
+
+    // 게임 오브젝트의 위치와 회전 정보
+    PxTransform transform(PxVec3(object->Transform()->GetWorldPos().x, object->Transform()->GetWorldPos().y, object->Transform()->GetWorldPos().z),
+        PxQuat(quaternion.x, quaternion.y, quaternion.z, quaternion.w));
+
+    // 고정된 물리 객체 생성
+    PxRigidStatic* actor = gPhysics->createRigidStatic(transform);
+
+    // 게임 오브젝트의 스케일 정보
+    auto scale = object->Transform()->GetWorldScale();
+
+    // Collider 추가 (여기서는 예시로 Box Collider를 사용)
+    PxShape* shape = gPhysics->createShape(PxBoxGeometry(scale.x / 2, scale.y / 2, scale.z / 2), *gMaterial);
+    actor->attachShape(*shape);
+
+    // Collider 추가 후, 씬에 배우 추가
+    gScene->addActor(*actor);
+
+    // 액터 추가
+    object->PhysX()->m_Actor = actor;
 }
 
 CPhysXMgr::~CPhysXMgr()
@@ -43,5 +84,6 @@ CPhysXMgr::~CPhysXMgr()
     gDispatcher->release();
     gPhysics->release();
     gFoundation->release();
+    //gMaterial->release();
 }
 
