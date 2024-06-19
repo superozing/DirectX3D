@@ -58,6 +58,7 @@ void CPhysX::updateFromPhysics()
 		Transform()->m_arrWorldDir[i] = Transform()->m_arrLocalDir[i].Normalize();
 	}
 
+	Transform()->SetWorldMat(Transform()->m_matWorld);
 	Transform()->m_matWorldInv = XMMatrixInverse(nullptr, Transform()->m_matWorld);
 }
 
@@ -82,6 +83,7 @@ void CPhysX::begin()
 
 void CPhysX::finaltick()
 {
+	updateFromPhysics();
 }
 
 void CPhysX::SaveToFile(FILE* _File)
