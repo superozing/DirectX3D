@@ -498,6 +498,24 @@ void RoRMath::Float16ToMatrix(Matrix& _dest, const float _src[16])
 	_dest._44 = _src[15];
 }
 
+Vec3 RoRMath::QuaternionToEulerAngles(const XMFLOAT4& _Quaternion)
+{
+	// 쿼터니언을 XMVECTOR로 로드
+	XMVECTOR q = XMLoadFloat4(&_Quaternion);
+
+	// 쿼터니언을 행렬로 변환
+	XMMATRIX rotationMatrix = XMMatrixRotationQuaternion(q);
+
+	// 행렬에서 오일러 각도를 추출
+	float pitch, yaw, roll;
+	XMStoreFloat(&pitch, XMVector3Dot(rotationMatrix.r[1], XMVector3Rotate(XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f), q)));
+	XMStoreFloat(&yaw, XMVector3Dot(rotationMatrix.r[2], XMVector3Rotate(XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), q)));
+	XMStoreFloat(&roll, XMVector3Dot(rotationMatrix.r[0], XMVector3Rotate(XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), q)));
+
+	// 오일러 각도를 반환
+	return Vec3(pitch, yaw, roll);
+}
+
 
 bool closeEnough(const float& a, const float& b
 	, const float& epsilon = std::numeric_limits<float>::epsilon())

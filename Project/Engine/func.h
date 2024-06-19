@@ -23,6 +23,8 @@ namespace RoRMath
 
 	void MatrixToFloat16(float _dest[16], const Matrix& _src);
 	void Float16ToMatrix(Matrix& _dest, const float _src[16]);
+
+	Vec3 QuaternionToEulerAngles(const XMFLOAT4& _Quaternion);
 }
 
 class CLevel;
