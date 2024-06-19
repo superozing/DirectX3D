@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "CComponent.h"
 
-
 #include "PxPhysicsAPI.h"
 using namespace physx;
 
@@ -9,7 +8,9 @@ class CPhysX :
     public CComponent
 {
 private:
-    PxRigidActor* mActor;
+    PxRigidActor* m_Actor = nullptr;
+    bool m_bStaticActor = false;
+
     void updateFromPhysics();
     void updateToPhysics();
 
@@ -26,7 +27,7 @@ public:
     PxTransform getTransform() const;
 
     PxRigidActor* getActor() const {
-        return mActor;
+        return m_Actor;
     }
 
 public:
@@ -34,4 +35,7 @@ public:
     CPhysX();
     //CPhysX(PxRigidActor* actor) : mActor(actor) {}
     ~CPhysX();
+
+    friend class CPhysXMgr;
+    friend class CScript;
 };

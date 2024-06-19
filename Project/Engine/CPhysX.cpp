@@ -3,6 +3,7 @@
 
 #include "CTransform.h"
 #include <DirectXMath.h>
+#include "CPhysXMgr.h"
 
 CPhysX::CPhysX()
 	: CComponent(COMPONENT_TYPE::PHYSX)
@@ -15,6 +16,9 @@ CPhysX::~CPhysX()
 
 void CPhysX::updateFromPhysics()
 {
+	if (nullptr == m_Actor)
+		return;
+
     PxTransform physTransform = getTransform();
 
 	auto tempmat = XMMatrixIdentity();
@@ -59,7 +63,6 @@ void CPhysX::updateFromPhysics()
 
 void CPhysX::updateToPhysics()
 {
-
     PxTransform physTransform(PxVec3(Transform()->GetWorldPos().x, Transform()->GetWorldPos().y, Transform()->GetWorldPos().z),
         PxQuat(Transform()->GetWorldRot().x, Transform()->GetWorldRot().y, Transform()->GetWorldRot().z, 1.f));
     setTransform(physTransform);
@@ -67,6 +70,14 @@ void CPhysX::updateToPhysics()
 
 void CPhysX::begin()
 {
+	if (true == m_bStaticActor)
+	{
+		CPhysXMgr::GetInst()->addStaticGameObject(GetOwner());
+	}
+	else
+	{
+		CPhysXMgr::GetInst()->addDynamicGameObject(GetOwner());
+	}
 }
 
 void CPhysX::finaltick()
@@ -83,11 +94,11 @@ void CPhysX::LoadFromFile(FILE* _File)
 
 void CPhysX::setTransform(const PxTransform& transform)
 {
-    mActor->setGlobalPose(transform);
+    m_Actor->setGlobalPose(transform);
 }
 
 PxTransform CPhysX::getTransform() const
 {
-    return mActor->getGlobalPose();
+    return m_Actor->getGlobalPose();
 }
 
