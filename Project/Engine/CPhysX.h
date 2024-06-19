@@ -1,20 +1,17 @@
 ﻿#pragma once
 #include "CComponent.h"
 
-#include "PxPhysicsAPI.h"
-using namespace physx;
-
 class CPhysX :
     public CComponent
 {
 private:
     PxRigidActor* m_Actor = nullptr;
-    bool m_bStaticActor = false;
 
     void updateFromPhysics();
     void updateToPhysics();
 
 public:
+    bool m_bStaticActor = false;
     virtual void begin() override;
     virtual void finaltick() override;
 
