@@ -262,7 +262,9 @@
     <ClInclude Include="strLevel.h">
       <Filter>01. Header\GenString</Filter>
     </ClInclude>
-    <ClInclude Include="CUIMgr.h" />
+    <ClInclude Include="CUIMgr.h">
+      <Filter>04. Manager\UIMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -475,7 +477,9 @@
     <ClCompile Include="CUIScript.cpp">
       <Filter>08. Component\Script\UIScript</Filter>
     </ClCompile>
-    <ClCompile Include="CUIMgr.cpp" />
+    <ClCompile Include="CUIMgr.cpp">
+      <Filter>04. Manager\UIMgr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
