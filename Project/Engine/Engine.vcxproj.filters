@@ -199,7 +199,7 @@
     <ClInclude Include="strFnShader.h">
       <Filter>01. Header\UserString</Filter>
     </ClInclude>
-    <ClInclude Include="strMesh.h">
+    <ClInclude Include="strEngineMesh.h">
       <Filter>01. Header\UserString</Filter>
     </ClInclude>
     <ClInclude Include="strShader.h">
@@ -270,6 +270,9 @@
     </ClInclude>
     <ClInclude Include="CInstancingBuffer.h">
       <Filter>04. Manager\Instancing</Filter>
+    </ClInclude>
+    <ClInclude Include="strMesh.h">
+      <Filter>01. Header\GenString</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

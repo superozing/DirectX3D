@@ -2,5 +2,5 @@
 
 #include "strEngineMtrl.h"
 #include "strFnShader.h"
-#include "strMesh.h"
+#include "strEngineMesh.h"
 #include "strShader.h"
