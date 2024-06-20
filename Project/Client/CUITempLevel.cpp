@@ -27,6 +27,7 @@
 #include <Scripts/CRenderMgrScript.h>
 
 #include <Scripts/CBtnUIScript.h>
+#include <Scripts/CpanelUIScript.h>
 #include <Engine/CDevice.h>
 
 void CUITempLevel::Init()
@@ -144,6 +145,8 @@ void CUITempLevel::CreateTempLevel()
 	auto pBtnTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Background.jpg", L"texture\\Background.jpg");
 
 	// StaticBtnUI Object 생성
+	// MESHrect
+	// StaticUIMtrl
 	pObj = new CGameObject;
 	pObj->SetName(L"StaticBtnUI");
 
@@ -165,9 +168,13 @@ void CUITempLevel::CreateTempLevel()
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 
-	// UI Object 생성
+	// DynamicUI Object 생성
+	// MESHpoint
+	// DynamicUIMtrl
+	// btnUI2->DisableMouseInput(); -> 카메라의 영향을 받는 UI는 이걸 반드시 꺼주어야 해요.
+	
 	pObj = new CGameObject;
-	pObj->SetName(L"UI2");
+	pObj->SetName(L"DynamicUI");
 
 	pObj->AddComponent(new CTransform);
 	pObj->AddComponent(new CMeshRender);
@@ -189,6 +196,34 @@ void CUITempLevel::CreateTempLevel()
 	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, pBtnTex);
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
+
+
+	// PanelUI Object 생성
+	// MESHrect
+	// StaticUIMtrl
+	pObj = new CGameObject;
+	pObj->SetName(L"PanelUI");
+
+	pObj->AddComponent(new CTransform);
+	pObj->AddComponent(new CMeshRender);
+
+	auto PanelUI1 = new CPanelUIScript;
+	pObj->AddComponent(PanelUI1);
+
+	PanelUI1->AllowTexSet();
+	PanelUI1->SetPanelTex(pBtnTex);
+	PanelUI1->AllowDragAndDrop();
+
+	pObj->Transform()->SetRelativePos(Vec3(-500, 200, 100.f));
+	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+
+	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect)); // pointMesh일 때, 동작하지 않음. 무엇의 문제인지는 모르겠네요.
+	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
+	pObj->MeshRender()->GetDynamicMaterial(0);
+	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, pBtnTex);
+
+	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+
 
 
 	GamePlayStatic::ChangeLevel(pTempLevel, LEVEL_STATE::STOP);
