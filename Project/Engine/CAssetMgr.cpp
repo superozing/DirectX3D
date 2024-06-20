@@ -441,6 +441,10 @@ Ptr<CMeshData> CAssetMgr::LoadFBX(const wstring &_strPath)
 	if (nullptr != pMeshData)
 		return pMeshData;
 
+	wstring message = path(strName).stem();
+	message += L" 매쉬데이터 로드 실패! \n매쉬 데이터를 만듭니다.";
+	MessageBox(nullptr, message.c_str(), L"LoadFBX", 0);
+
 	pMeshData = CMeshData::LoadFromFBX(_strPath);
 	pMeshData->SetKey(strName);
 	pMeshData->SetRelativePath(strName);
