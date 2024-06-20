@@ -12,11 +12,23 @@ private:
 
     bool            m_AllowDragAndDrop;
 
+
+    // 임시
+    bool isFirstTick = true;
+
 public:
     virtual void tick() override;
 
 public:
     virtual void LBtnDown() override;
+
+    void AllowDragAndDrop() { m_AllowDragAndDrop = true; }
+    void DisallowDragAndDrop() { m_AllowDragAndDrop = false; }
+    
+    void AllowTexSet() { m_AllowTexSet = true; }
+    void DisallowTexSet() { m_AllowTexSet = false; }
+
+    void SetPanelTex(Ptr<CTexture> _PanelTex) { m_PanelTex = _PanelTex; }
 
 public:
     CLONE(CPanelUIScript);
