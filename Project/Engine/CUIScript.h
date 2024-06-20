@@ -9,6 +9,8 @@ private:
     vector<CUIScript*>  m_vecChildUI;
     Vec2                m_vFinalPos;
 
+    bool                m_bMouseCheckAble = true;
+
     bool                m_bMouseOn;
     bool                m_bMouseOn_Prev;
 

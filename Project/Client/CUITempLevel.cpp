@@ -175,6 +175,8 @@ void CUITempLevel::CreateTempLevel()
 	auto btnUI2 = new CBtnUIScript;
 	pObj->AddComponent(btnUI2);
 
+	btnUI2->DisableMouseInput();
+
 	btnUI2->AllowTexSet();
 	btnUI2->SetNormalImg(pBtnTex);
 

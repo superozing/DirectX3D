@@ -55,6 +55,11 @@ void CUIMgr::tick()
 			continue;
 		}
 
+		// 만약 마우스 상태를 체크하지 않는 UI일 경우
+		if (!pUI->IsMouseInputEnabled())
+		{
+			continue;
+		}
 
 		if (pUI->m_bMouseOn)
 		{
