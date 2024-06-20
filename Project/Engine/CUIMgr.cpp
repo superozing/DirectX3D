@@ -8,6 +8,7 @@
 #include "CLayer.h"
 
 #include "CLogMgr.h"
+#include "CDevice.h"
 
 #include "CUIScript.h"
 #include "CGameObject.h"
@@ -119,6 +120,9 @@ void CUIMgr::tick()
 			}
 		}
 	}
+
+	// UI의 m_bMouseOn 멤버 조절에 사용될 좌표 계산
+	CalWorldMousePos();
 }
 
 CUIScript* CUIMgr::GetPriorityCheck(CUIScript* _ParentUI)
@@ -147,4 +151,21 @@ CUIScript* CUIMgr::GetPriorityCheck(CUIScript* _ParentUI)
 	}
 
 	return pPriorityUI;
+}
+
+void CUIMgr::CalWorldMousePos()
+{
+#ifndef _RELEASE_GAME
+
+	Vec2 vMousePos = CCamera::ViewportConvertFunc();
+
+#else
+
+	// 마우스 좌표를 UI카메라 기준 월드로 변환
+	Vec2 vMousePos = CKeyMgr::GetInst()->GetMousePos();
+#endif
+
+	Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
+	m_vWorldMousePos.x = vMousePos.x - vResol.x / 2.f;
+	m_vWorldMousePos.y = -vMousePos.y + vResol.y / 2.f;
 }

@@ -34,8 +34,13 @@ public:
     virtual void LBtnClicked() {}
 
 public:
+    void EnableMouseInput() { m_bMouseCheckAble = true; }
+    void DisableMouseInput() { m_bMouseCheckAble = false; }
+
     Vec2 GetFinalPos() const { return m_vFinalPos; }
     bool IsLBtnDown() const { return m_bMouseLBtnDown; }
+
+    bool IsMouseInputEnabled() const { return m_bMouseCheckAble; }
 
 protected:
     CUIScript(UINT _ScriptType);

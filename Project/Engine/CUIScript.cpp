@@ -2,6 +2,8 @@
 #include "CUIScript.h"
 
 #include "CDevice.h"
+#include "CCamera.h"
+#include "CUIMgr.h"
 
 CUIScript::CUIScript()
 	: CScript(NULL)
@@ -40,26 +42,16 @@ CUIScript::~CUIScript()
 
 void CUIScript::tick()
 {
-	Vec2 vWorldMousePos;
-
 	// 최종 좌표 연산하기
 	m_vFinalPos = Transform()->GetWorldPos();
+
+	// UIMgr tick()에서 계산된 월드 마우스 좌표를 가지고 오기
+	Vec2 vWorldMousePos = CUIMgr::GetInst()->GetWorldMousePos();
 
 	// 이전 마우스 상태 저장
 	m_bMouseOn_Prev = m_bMouseOn;
 
-	//#ifndef _RELEASE_GAME
-		// Debug일 경우 뷰포트 내부에 클릭된 위치를 받아오도록 예외 처리가 필요해요.////////////////////////
-
-	//#else
-
-		// 마우스 좌표를 UI카메라 기준 월드로 변환
-	Vec2 vMousePos = CKeyMgr::GetInst()->GetMousePos();
-	Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
-	vWorldMousePos.x = vMousePos.x - vResol.x / 2.f;
-	vWorldMousePos.y = -vMousePos.y + vResol.y / 2.f;
-	//#endif
-
+	// WorldScale 사용해서 마우스 위치와 겹치는지 체크
 	Vec3 vWorldScale = Transform()->GetWorldScale();
 
 	Vec2 vLT = Vec2(m_vFinalPos.x - vWorldScale.x / 2, m_vFinalPos.y - vWorldScale.y / 2);
