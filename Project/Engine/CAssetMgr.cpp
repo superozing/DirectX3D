@@ -9,19 +9,17 @@
 
 CAssetMgr::CAssetMgr()
 {
-	
 }
 
 CAssetMgr::~CAssetMgr()
 {
-	
 }
 
 void CAssetMgr::exit()
 {
 	for (UINT i = 0; i < (UINT)ASSET_TYPE::END; ++i)
 	{
-		for (auto it = m_mapAsset[i].begin(); it != m_mapAsset[i].end(); )
+		for (auto it = m_mapAsset[i].begin(); it != m_mapAsset[i].end();)
 		{
 			// 엔진 에셋이 아닌 에셋을 맵에서 제거
 			if (!it->second->IsEngineAsset())
@@ -30,10 +28,9 @@ void CAssetMgr::exit()
 				++it;
 		}
 	}
-
 }
 
-void CAssetMgr::AddAsset(const wstring& _strKey, CAsset* _Asset)
+void CAssetMgr::AddAsset(const wstring &_strKey, CAsset *_Asset)
 {
 	ASSET_TYPE Type = _Asset->GetType();
 
@@ -51,12 +48,11 @@ void CAssetMgr::AddAsset(const wstring& _strKey, CAsset* _Asset)
 	m_mapAsset[(UINT)Type].insert(make_pair(_strKey, _Asset));
 }
 
-Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey
-									 , UINT _Width, UINT _Height, DXGI_FORMAT _Format
-									 , UINT _Flag, D3D11_USAGE _Usage)
+Ptr<CTexture> CAssetMgr::CreateTexture(const wstring &_strKey, UINT _Width, UINT _Height, DXGI_FORMAT _Format,
+									   UINT _Flag, D3D11_USAGE _Usage)
 {
 	// 생성하려는 텍스쳐와 동일한 키의 텍스쳐가 이미 AssetMgr 에 있다면
-	Ptr<CTexture> pTex = FindAsset<CTexture>(_strKey);	
+	Ptr<CTexture> pTex = FindAsset<CTexture>(_strKey);
 	assert(!pTex.Get());
 
 	pTex = new CTexture(true);
@@ -72,7 +68,7 @@ Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey
 	return pTex;
 }
 
-Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, ComPtr<ID3D11Texture2D> _tex2D)
+Ptr<CTexture> CAssetMgr::CreateTexture(const wstring &_strKey, ComPtr<ID3D11Texture2D> _tex2D)
 {
 	// 생성하려는 텍스쳐와 동일한 키의 텍스쳐가 이미 AssetMgr 에 있다면
 	Ptr<CTexture> pTex = FindAsset<CTexture>(_strKey);
@@ -91,7 +87,7 @@ Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, ComPtr<ID3D11Text
 	return pTex;
 }
 
-void CAssetMgr::DeleteAsset(ASSET_TYPE _Type, const wstring& _strKey)
+void CAssetMgr::DeleteAsset(ASSET_TYPE _Type, const wstring &_strKey)
 {
 	map<wstring, Ptr<CAsset>>::iterator iter = m_mapAsset[(UINT)_Type].find(_strKey);
 
@@ -100,15 +96,15 @@ void CAssetMgr::DeleteAsset(ASSET_TYPE _Type, const wstring& _strKey)
 	m_mapAsset[(UINT)_Type].erase(iter);
 }
 
-void CAssetMgr::GetAssetName(ASSET_TYPE _Type, vector<string>& _Out)
+void CAssetMgr::GetAssetName(ASSET_TYPE _Type, vector<string> &_Out)
 {
-	for (const auto& pair : m_mapAsset[(UINT)_Type])
+	for (const auto &pair : m_mapAsset[(UINT)_Type])
 	{
 		_Out.push_back(ToString(pair.first));
 	}
 }
 
-ASSET_TYPE CAssetMgr::GetAssetTypeByExt(const path& _relativePath)
+ASSET_TYPE CAssetMgr::GetAssetTypeByExt(const path &_relativePath)
 {
 	if (_relativePath.extension() == L".mesh")
 		return ASSET_TYPE::MESH;
@@ -121,17 +117,13 @@ ASSET_TYPE CAssetMgr::GetAssetTypeByExt(const path& _relativePath)
 	if (_relativePath.extension() == L".gs")
 		return ASSET_TYPE::GRAPHICS_SHADER;
 
-	if (_relativePath.extension() == L".png"
-		|| _relativePath.extension() == L".bmp"
-		|| _relativePath.extension() == L".jpg"
-		|| _relativePath.extension() == L".jpeg"
-		|| _relativePath.extension() == L".dds"
-		|| _relativePath.extension() == L".tga")
+	if (_relativePath.extension() == L".png" || _relativePath.extension() == L".bmp" ||
+		_relativePath.extension() == L".jpg" || _relativePath.extension() == L".jpeg" ||
+		_relativePath.extension() == L".dds" || _relativePath.extension() == L".tga")
 		return ASSET_TYPE::TEXTURE;
 
-	if (_relativePath.extension() == L".wav"
-		|| _relativePath.extension() == L".mp3"
-		|| _relativePath.extension() == L".ogg")
+	if (_relativePath.extension() == L".wav" || _relativePath.extension() == L".mp3" ||
+		_relativePath.extension() == L".ogg")
 		return ASSET_TYPE::SOUND;
 
 	if (_relativePath.extension() == L".mesh")
@@ -147,32 +139,32 @@ Ptr<CAsset> CAssetMgr::GetAsset(ASSET_TYPE _type, string _key)
 	switch (_type)
 	{
 	case ASSET_TYPE::MESH:
-		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CMesh>(_key).Get();
+		pAsset = (CAsset *)CAssetMgr::GetInst()->Load<CMesh>(_key).Get();
 		break;
 	case ASSET_TYPE::MESHDATA:
-		//pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CMeshData>(key).Get();
+		// pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CMeshData>(key).Get();
 		break;
 	case ASSET_TYPE::PREFAB:
-		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CPrefab>(_key).Get();
+		pAsset = (CAsset *)CAssetMgr::GetInst()->Load<CPrefab>(_key).Get();
 		break;
 	case ASSET_TYPE::TEXTURE:
-		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CTexture>(_key).Get();
+		pAsset = (CAsset *)CAssetMgr::GetInst()->Load<CTexture>(_key).Get();
 		break;
 	case ASSET_TYPE::MATERIAL:
-		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CMaterial>(_key).Get();
+		pAsset = (CAsset *)CAssetMgr::GetInst()->Load<CMaterial>(_key).Get();
 		break;
 	case ASSET_TYPE::SOUND:
-		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CSound>(_key).Get();
+		pAsset = (CAsset *)CAssetMgr::GetInst()->Load<CSound>(_key).Get();
 		break;
 		// 이건 제외해야 함
-	//case ASSET_TYPE::COMPUTE_SHADER:
+	// case ASSET_TYPE::COMPUTE_SHADER:
 	//	pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CComputeShader>(key).Get();
 	//	break;
 	case ASSET_TYPE::GRAPHICS_SHADER:
-		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CGraphicsShader>(_key).Get();
+		pAsset = (CAsset *)CAssetMgr::GetInst()->Load<CGraphicsShader>(_key).Get();
 		break;
 	case ASSET_TYPE::FSM:
-		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CFSM>(_key).Get();
+		pAsset = (CAsset *)CAssetMgr::GetInst()->Load<CFSM>(_key).Get();
 		break;
 	case ASSET_TYPE::END:
 		break;
@@ -200,7 +192,7 @@ void CAssetMgr::SaveDefaultGraphicsShader()
 	pShader->SetBSType(BS_TYPE::DEFAULT);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
 
-	// Parameter	
+	// Parameter
 	pShader->AddScalarParam(SCALAR_PARAM::INT_0, "Test Param");
 	pShader->AddTexParam(TEX_PARAM::TEX_0, "Output Texture 1");
 
@@ -214,7 +206,7 @@ void CAssetMgr::SaveDefaultGraphicsShader()
 	pShader->CreatePixelShader(FXstd3d, FN_PS_std3d);
 
 	pShader->SetRSType(RS_TYPE::CULL_BACK);
-	//pShader->SetRSType(RS_TYPE::WIRE_FRAME);
+	// pShader->SetRSType(RS_TYPE::WIRE_FRAME);
 	pShader->SetDSType(DS_TYPE::LESS);
 	pShader->SetBSType(BS_TYPE::DEFAULT);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
@@ -327,7 +319,6 @@ void CAssetMgr::SaveDefaultGraphicsShader()
 
 	pShader->Save(path + SHADER_effect + ext);
 
-
 	// =============
 	// TileMapShader
 	// =============
@@ -353,7 +344,7 @@ void CAssetMgr::SaveDefaultGraphicsShader()
 
 	pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
-	pShader->SetDSType(DS_TYPE::NO_WRITE);		// 깊이 테스트는 진행, 깊이는 기록 X
+	pShader->SetDSType(DS_TYPE::NO_WRITE); // 깊이 테스트는 진행, 깊이는 기록 X
 	pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
 
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
@@ -395,7 +386,7 @@ void CAssetMgr::SaveDefaultGraphicsShader()
 	pShader->Save(path + SHADER_skybox + ext);
 
 	// =================================
-	// Distortion Shader	
+	// Distortion Shader
 	// RS_TYPE		: CULL_BACK
 	// DS_TYPE		: NO_TEST_NO_WRITE
 	// BS_TYPE		: Default
@@ -438,14 +429,14 @@ void CAssetMgr::SaveDefaultGraphicsShader()
 	pShader->Save(path + L"ShadowMapShader" + ext);
 }
 
-Ptr<CMeshData> CAssetMgr::LoadFBX(const wstring& _strPath)
+Ptr<CMeshData> CAssetMgr::LoadFBX(const wstring &_strPath)
 {
 	wstring strFileName = path(_strPath).stem();
 
 	wstring strName = L"meshdata\\";
 	strName += strFileName + L".mdat";
 
-	Ptr<CMeshData> pMeshData = FindAsset<CMeshData>(strName);
+	Ptr<CMeshData> pMeshData = Load<CMeshData>(strName);
 
 	if (nullptr != pMeshData)
 		return pMeshData;
