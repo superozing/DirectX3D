@@ -21,6 +21,8 @@ CAnimator3D::CAnimator3D()
 	, m_iFrameIdx(0)
 	, m_iNextFrameIdx(0)
 	, m_fRatio(0.f)
+	, m_bPlay(false)
+	, m_bRepeat(false)
 	, CComponent(COMPONENT_TYPE::ANIMATOR3D)
 {
 	m_pBoneFinalMatBuffer = new CStructuredBuffer;
@@ -37,6 +39,8 @@ CAnimator3D::CAnimator3D(const CAnimator3D& _origin)
 	, m_iFrameIdx(_origin.m_iFrameIdx)
 	, m_iNextFrameIdx(_origin.m_iNextFrameIdx)
 	, m_fRatio(_origin.m_fRatio)
+	, m_bPlay(false)
+	, m_bRepeat(false)
 	, CComponent(COMPONENT_TYPE::ANIMATOR3D)
 {
 	m_pBoneFinalMatBuffer = new CStructuredBuffer;
@@ -51,13 +55,30 @@ CAnimator3D::~CAnimator3D()
 
 void CAnimator3D::finaltick()
 {
+	if (KEY_TAP(M))
+		Play(0);
+	else if (KEY_TAP(N))
+		Play(1);
+	else if (KEY_TAP(B))
+		Play(2);
+	else if (KEY_TAP(C))
+		Play(3);
+	else if (KEY_TAP(V))
+		Stop();
+
+	if (!m_bPlay)
+		return;
+
 	m_dCurTime = 0.f;
 	// 현재 재생중인 Clip 의 시간을 진행한다.
 	m_vecClipUpdateTime[m_iCurClip] += DTd_ENGINE;
 
 	if (m_vecClipUpdateTime[m_iCurClip] >= m_pVecClip->at(m_iCurClip).dTimeLength)
 	{
-		m_vecClipUpdateTime[m_iCurClip] = 0.f;
+		if (m_bRepeat)
+			m_vecClipUpdateTime[m_iCurClip] = 0.f;
+		else
+			Stop();
 	}
 
 	m_dCurTime = m_pVecClip->at(m_iCurClip).dStartTime + m_vecClipUpdateTime[m_iCurClip];
@@ -143,6 +164,45 @@ void CAnimator3D::check_mesh(Ptr<CMesh> _pMesh)
 	{
 		m_pBoneFinalMatBuffer->Create(sizeof(Matrix), iBoneCount, SB_READ_TYPE::READ_WRITE, false, nullptr);
 	}
+}
+
+void CAnimator3D::Play(int _iClipIdx, bool _bRepeat)
+{
+	if (_iClipIdx >= (int)m_pVecClip->size())
+	{
+		MessageBox(nullptr, L"해당하는 애니메이션 클립이 없습니다", L"Out of Range AnimationClip", MB_OK);
+		return;
+	}
+
+	m_bPlay = true;
+	m_bRepeat = _bRepeat;
+
+	m_iCurClip = _iClipIdx;
+
+	SetClipTime(m_iCurClip, 0.f);
+}
+
+void CAnimator3D::Play(const wstring& _AnimName, bool _bRepeat)
+{
+	auto iter = find(m_pVecClip->begin(), m_pVecClip->end(), _AnimName);
+
+	if (iter != m_pVecClip->end())
+	{
+		int ClipIdx = distance(m_pVecClip->begin(), iter);
+		Play(ClipIdx, _bRepeat);
+	}
+	else
+	{
+		MessageBox(nullptr, L"해당하는 애니메이션 클립이 없습니다", L"Out of Range AnimationClip", MB_OK);
+		return;
+	}
+}
+
+void CAnimator3D::Stop()
+{
+	m_bPlay = false;
+
+	SetClipTime(m_iCurClip, 0.f);
 }
 
 void CAnimator3D::SaveToFile(FILE* _pFile)

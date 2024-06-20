@@ -6,6 +6,7 @@
 #include "CStateMachine.h"
 #include "CCollider2D.h"
 #include "CAnimator2D.h"
+#include "CAnimator3D.h"
 #include "CLight3D.h"
 #include "CLight2D.h"
 #include "CTileMap.h"
@@ -15,5 +16,4 @@
 #include "CLandscape.h"
 
 //#include "CCollider3D.h"
-//#include "CAnimator3D.h"
 

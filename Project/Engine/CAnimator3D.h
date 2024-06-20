@@ -28,6 +28,9 @@ private:
     CStructuredBuffer*          m_pBoneFinalMatBuffer;  // 특정 프레임의 최종 행렬
     bool						m_bFinalMatUpdate; // 최종행렬 연산 수행여부
 
+    bool                        m_bPlay;
+    bool                        m_bRepeat;
+
 public:
     virtual void finaltick() override;
     void UpdateData();
@@ -40,6 +43,11 @@ public:
     CStructuredBuffer* GetFinalBoneMat() { return m_pBoneFinalMatBuffer; }
     UINT GetBoneCount() { return (UINT)m_pVecBones->size(); }
     void ClearData();
+
+public:
+	void Play(int _iClipIdx, bool _bRepeat = true);
+    void Play(const wstring& _AnimName, bool _bRepeat = true);
+    void Stop();
 
 private:
     void check_mesh(Ptr<CMesh> _pMesh);
