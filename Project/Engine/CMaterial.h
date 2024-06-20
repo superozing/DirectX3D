@@ -28,10 +28,14 @@ public:
 		m_Const.mtrl.vEmv = _vEmis;
 	}
 
+	void SetAnim3D(bool _bTrue) { m_Const.arrAnimData[0] = (int)_bTrue; }
+	void SetBoneCount(int _iBoneCount) { m_Const.arrAnimData[1] = _iBoneCount; }
+
 	void* GetScalarParam(SCALAR_PARAM _ParamType);
 	Ptr<CTexture> GetTexParam(TEX_PARAM _ParamType) { return m_arrTex[(UINT)_ParamType]; }
 
     void UpdateData();
+	void UpdateData_Inst();
 
 	void operator = (const CMaterial& _OtherMtrl)
 	{

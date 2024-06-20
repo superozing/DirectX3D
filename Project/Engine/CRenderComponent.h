@@ -36,10 +36,13 @@ public:
 
     bool IsDrawShadow() { return m_DrawShadowMap; }
 
+    ULONG64 GetInstID(UINT _iMtrlIdx);
+
 public:
     virtual void finaltick() {};
     virtual void UpdateData() = 0;
     virtual void render() = 0;
+	virtual void render(UINT _iSubset);
 
 
 public:
