@@ -200,7 +200,7 @@ void CCreateTempLevel::CreateTempLevel()
 		CGameObject* pObj = nullptr;
 
 		pMeshData = CAssetMgr::GetInst()->LoadFBX(L"fbx\\house.fbx");
-		pMeshData = CAssetMgr::GetInst()->FindAsset<CMeshData>(L"meshdata\\house.mdat");
+		//pMeshData = CAssetMgr::GetInst()->FindAsset<CMeshData>(L"meshdata\\house.mdat");
 		pObj = pMeshData->Instantiate();
 		pObj->SetName(L"House");
 

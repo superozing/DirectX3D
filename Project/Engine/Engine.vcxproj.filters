@@ -208,10 +208,7 @@
     <ClInclude Include="UserStrings.h">
       <Filter>01. Header\UserString</Filter>
     </ClInclude>
-    <ClInclude Include="strGrpShader.h">
-      <Filter>01. Header\GenString</Filter>
-	</ClInclude>
-	<ClInclude Include="CFrustum.h">
+    <ClInclude Include="CFrustum.h">
       <Filter>Module\Frustum</Filter>
     </ClInclude>
     <ClInclude Include="CLandScape.h">
@@ -231,6 +228,36 @@
     </ClInclude>
     <ClInclude Include="CMeshData.h">
       <Filter>06. Asset\MeshData</Filter>
+    </ClInclude>
+    <ClInclude Include="strLevel.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strFx.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strGrpShader.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strMtrl.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strPref.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strSnd.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strTex.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strTxt.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strAnim.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strFBX.h">
+      <Filter>01. Header\GenString</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

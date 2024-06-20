@@ -69,7 +69,7 @@ void CSkyBox::LoadFromFile(ifstream& fin)
 
 	auto SkyboxType = magic_enum::enum_cast<SKYBOX_TYPE>(strSkyBoxType);
 
-	m_SkyBoxType = SkyboxType.value();
+	SetSkyBoxType(SkyboxType.value());
 
 	Utils::GetLineUntilString(fin, TagSphere);
 	LoadAssetRef(m_SphereTex, fin);

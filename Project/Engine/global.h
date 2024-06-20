@@ -51,14 +51,8 @@ using namespace DirectX;
 #pragma comment(lib, "d3dcompiler")
 
 // DirectxTex
-#include <DirectXTex/DirectXTex.h>
-
-#ifdef _DEBUG
-#pragma comment(lib, "DirectXTex\\DirectXTex_debug")
-#else
-#pragma comment(lib, "DirectXTex\\DirectXTex")
-#endif
-
+// vcpkg install directxtex[openexr]:x64-windows
+#include <DirectXTex.h>
 
 // SimpleMath
 #include "SimpleMath.h"

@@ -77,14 +77,13 @@ void RTViewPort::render_update()
         ImGui::EndDragDropTarget();
     }
 
-
     ImGui::GetWindowDrawList()->AddImage(
         m_ViewPortTexture->GetSRV().Get(),
-        ImVec2(0, 0),
+        ImGui::GetWindowPos(),
         ImGui::GetWindowPos() + ImGui::GetWindowSize(),
         ImVec2(0, 0), ImVec2(1, 1));
 
-    CImGuiMgr::GetInst()->GetbViewportFocused() = ImGui::IsWindowFocused(ImGuiFocusedFlags_None);
+    CImGuiMgr::GetInst()->SetViewportFocused(ImGui::IsWindowFocused(ImGuiFocusedFlags_None));
 
     // IMGUIZMO
     Gizmo();
@@ -93,6 +92,13 @@ void RTViewPort::render_update()
         MoveCameraToObject();
     }
 }
+
+void RTViewPort::enter()
+{
+    SetCamera(CRenderMgr::GetInst()->GetEditorCam());
+    SetTargetObject(nullptr);
+}
+
 void EditTransform(float* cameraView, float* cameraProjection, float* matrix, bool editTransformDecomposition, float _distance);
 
 void RTViewPort::Gizmo()
@@ -104,7 +110,7 @@ void RTViewPort::Gizmo()
     ImGui::SetCursorPos(ImVec2(10, 30));
     auto cameraViewMat = g_Transform.matView;
     auto cameraProjMat = g_Transform.matProj;
-    if (m_pTarget == nullptr) return;
+    if (m_pTarget == nullptr || !m_pTarget->Transform()) return;
     auto objmat = m_pTarget->Transform()->GetWorldMat();
     Vec3 objPos = m_pTarget->Transform()->GetWorldPos();
     Vec3 cameraPos = m_pCamera->Transform()->GetWorldPos();
@@ -203,7 +209,7 @@ void EditTransform(float* cameraView, float* cameraProjection, float* matrix, bo
 
 void RTViewPort::SetTargetObject(CGameObject* _target)
 {
-    if (!_target->Transform()|| _target->Camera()) {
+    if (!_target || !_target->Transform()|| _target->Camera()) {
         m_pTarget = nullptr;
         return;
     }

@@ -122,12 +122,16 @@ void CLandScape::CreateComputeShader()
 
 void CLandScape::CreateTexture()
 {
-	// 높이맵 텍스쳐		
-	m_HeightMapTex = CAssetMgr::GetInst()->CreateTexture(L"HeightMapTex"
-														, 2048, 2048
-														, DXGI_FORMAT_R32_FLOAT
-														, D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS
-														, D3D11_USAGE_DEFAULT);
+	// 높이맵 텍스쳐
+	if (!CAssetMgr::GetInst()->FindAsset<CTexture>(L"HeightMapTex").Get())
+	{
+		m_HeightMapTex = CAssetMgr::GetInst()->CreateTexture(L"HeightMapTex"
+			, 2048, 2048
+			, DXGI_FORMAT_R32_FLOAT
+			, D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS
+			, D3D11_USAGE_DEFAULT);
+	}
+	
 
 
 	m_BrushTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\brush\\Brush_02.png");

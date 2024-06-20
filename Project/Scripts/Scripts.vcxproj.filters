@@ -34,6 +34,9 @@
     <ClInclude Include="CCameraEffect.h">
       <Filter>Scripts\Manager\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="CSpringArm.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -68,6 +71,9 @@
     </ClCompile>
     <ClCompile Include="CCameraEffect.cpp">
       <Filter>Scripts\Manager\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CSpringArm.cpp">
+      <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

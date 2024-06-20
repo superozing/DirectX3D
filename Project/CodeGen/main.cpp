@@ -25,6 +25,7 @@ int main()
 	MakeStrHeader("Project\\Engine\\strAnim.h", "ANIM", g_vecAnimNames);
 	MakeStrHeader("Project\\Engine\\strTxt.h", "TXT", g_vecTxtNames);
 	MakeStrHeader("Project\\Engine\\strGrpShader.h", "GRPSHADER", g_vecGraphicsShaderNames);
+	MakeStrHeader("Project\\Engine\\strFBX.h", "FBX", g_vecFBXNames);
 
 	PrintError();
 

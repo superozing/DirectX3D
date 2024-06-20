@@ -73,6 +73,11 @@ void Outliner::render_update()
 	IsFilteredNode(m_Tree->GetRootNode());
 }
 
+void Outliner::enter()
+{
+	ResetCurrentLevel();
+}
+
 void Outliner::ResetCurrentLevel()
 {
 	unordered_map<string, bool> stateMap;

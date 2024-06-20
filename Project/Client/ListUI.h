@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "UI.h"
 
 
@@ -13,6 +13,8 @@ private:
 
     UI*                 m_pUI;
     Delegate_1          m_Func;
+    Delegate_3          m_Func3;
+    UINT                m_Idx;
     
 
 public:
@@ -27,6 +29,15 @@ public:
     {
         m_pUI = _Inst;
         m_Func = _MemFunc;
+        m_Func3 = nullptr;
+    }
+
+    void SetDbClickDelegate(UI* _Inst, Delegate_3 _MemFunc, UINT _Idx = 0)
+    {
+        m_pUI = _Inst;
+        m_Func3 = _MemFunc;
+        m_Idx = _Idx;
+        m_Func = nullptr;
     }
 
     string GetDoubleClicked() { return m_strDBClicked; }

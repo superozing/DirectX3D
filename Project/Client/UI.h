@@ -58,6 +58,7 @@ public:
 	void DeleteHeaderScript(ScriptUI* _ScriptUI);
 
 public:
+	virtual void enter() {}
 	virtual void tick();
 	virtual void render();
 	virtual void render_update() = 0;

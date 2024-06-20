@@ -8,6 +8,7 @@ enum class FOCUS_STATE;
 typedef void(UI::* Delegate_0)();
 typedef void(UI::* Delegate_1)(DWORD_PTR);
 typedef void(UI::* Delegate_2)(DWORD_PTR, DWORD_PTR);
+typedef void(UI::* Delegate_3)(DWORD_PTR, UINT);
 
 typedef void (*CALL_BACK_0)(void);
 typedef void (*CALL_BACK_1)(DWORD_PTR);
@@ -55,7 +56,8 @@ public:
 
     virtual void enter() override;
 
-    bool& GetbViewportFocused() { return isViewportFocused; }
+    static bool IsViewportFocused() { return isViewportFocused; }
+    static void SetViewportFocused(bool _focus) { isViewportFocused = _focus; }
 
     const tStaticBtnColor& GetStaticButtonColor(STATIC_BTN_TYPE _type)
     {
@@ -83,8 +85,5 @@ private:
 public:
     UI* FindUI(const string& _strUIName);   
     void AddUI(const string& _strKey, UI* _UI);
-
-private:
-    void ResetInspectorTarget();
 };
 

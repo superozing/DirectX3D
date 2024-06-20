@@ -170,14 +170,9 @@ void CImGuiMgr::progress()
 
 void CImGuiMgr::enter()
 {
-    ResetInspectorTarget();
-
-    // ContentUI �� Reload �۾� ����
-    Outliner* pOutlinerUI = (Outliner*)FindUI("##Outliner");
-    pOutlinerUI->ResetCurrentLevel();
-
-    RTViewPort* pViewport = (RTViewPort*)CImGuiMgr::GetInst()->FindUI("##Viewport");
-    pViewport->SetCamera(CRenderMgr::GetInst()->GetEditorCam());
+    for (auto iter = m_mapUI.begin(); iter != m_mapUI.end(); ++iter) {
+        iter->second->enter();
+    }
 }
 
 FOCUS_STATE CImGuiMgr::GetFocus_debug()
@@ -189,7 +184,7 @@ FOCUS_STATE CImGuiMgr::GetFocus_debug()
     }
 
     // 현재 포커싱이 뷰포트일 경우
-    if (GetFocus() == CEngine::GetInst()->GetMainWind() && isViewportFocused)
+    if (GetFocus() == CEngine::GetInst()->GetMainWind() && IsViewportFocused())
     {
         isViewportFocused = false;
         return FOCUS_STATE::MAIN;
@@ -287,23 +282,6 @@ void CImGuiMgr::AddUI(const string& _strKey, UI* _UI)
     assert(!pUI);
     m_mapUI.insert(make_pair(_strKey, _UI));
 }
-
-void CImGuiMgr::ResetInspectorTarget()
-{
-    auto pUI =  FindUI("##Inspector");
-
-    if (nullptr == pUI)
-        assert(pUI);
-
-    auto pInspectUI = dynamic_cast<Inspector*>(pUI);
-
-    if (nullptr == pInspectUI)
-        assert(pInspectUI);
-
-    pInspectUI->ResetTargetObject();
-    pInspectUI->ResetTargetAsset();
-}
-
 
 #include <Engine\CLevelMgr.h>
 void CImGuiMgr::create_ui()
