@@ -8122,7 +8122,11 @@ ImVec2 ImGui::GetWindowPos()
 {
     ImGuiContext& g = *GImGui;
     ImGuiWindow* window = g.CurrentWindow;
+   
+    if(window != nullptr)
     return window->Pos;
+
+    return ImVec2{ 0.f, 0.f };
 }
 
 void ImGui::SetWindowPos(ImGuiWindow* window, const ImVec2& pos, ImGuiCond cond)

@@ -16,6 +16,7 @@
 #include "imgui_impl_dx11.h"
 
 #include "Inspector.h"
+#include "ComponentUI.h"
 #include "Content.h"
 #include "Outliner.h"
 #include "MenuUI.h"
@@ -125,6 +126,37 @@ void CImGuiMgr::init(HWND _hMainWnd, ComPtr<ID3D11Device> _Device
 
     m_vecStaticBtn[(UINT)STATIC_BTN_TYPE::TITLE] = tColor;
 
+
+    // Enum String Init
+    m_vecEnumTopology.resize((UINT)D3D11_PRIMITIVE_TOPOLOGY::D3D_PRIMITIVE_TOPOLOGY_32_CONTROL_POINT_PATCHLIST);
+    for (UINT i = 0; i < m_vecEnumTopology.size(); ++i)
+        m_vecEnumTopology[i] = ToString(magic_enum::enum_name((D3D11_PRIMITIVE_TOPOLOGY)i));
+
+    m_vecEnumRS.resize((UINT)RS_TYPE::END - 1);
+    for (UINT i = 0; i < m_vecEnumRS.size(); ++i)
+        m_vecEnumRS[i] = ToString(magic_enum::enum_name((RS_TYPE)i));
+
+    m_vecEnumDS.resize((UINT)DS_TYPE::END - 1);
+    for (UINT i = 0; i < m_vecEnumDS.size(); ++i)
+        m_vecEnumDS[i] = ToString(magic_enum::enum_name((DS_TYPE)i));
+
+    m_vecEnumBS.resize((UINT)BS_TYPE::END - 1);
+    for (UINT i = 0; i < m_vecEnumBS.size(); ++i)
+        m_vecEnumBS[i] = ToString(magic_enum::enum_name((BS_TYPE)i));
+
+    m_vecEnumShaderDomain.resize((UINT)SHADER_DOMAIN::DOMAIN_DEBUG);
+    for (UINT i = 0; i < m_vecEnumShaderDomain.size(); ++i)
+        m_vecEnumShaderDomain[i] = ToString(magic_enum::enum_name((SHADER_DOMAIN)i));
+
+    tColor.ColBtnColor = (ImVec4)ImColor::HSV(0.9f, 0.8f, 0.8f);
+    tColor.ColBtnHoveredColor = (ImVec4)ImColor::HSV(0.9f, 0.8f, 0.8f);
+    tColor.ColBtnActiveColor = (ImVec4)ImColor::HSV(0.9f, 0.8f, 0.8f);
+
+    m_vecStaticBtn[(UINT)STATIC_BTN_TYPE::SUBTITLE] = tColor;
+
+
+    RTViewPort* pViewport = (RTViewPort*)CImGuiMgr::GetInst()->FindUI("##Viewport");
+    pViewport->SetCamera(CRenderMgr::GetInst()->GetEditorCam());
 }
 
 void CImGuiMgr::progress()
@@ -138,14 +170,9 @@ void CImGuiMgr::progress()
 
 void CImGuiMgr::enter()
 {
-    ResetInspectorTarget();
-
-    // ContentUI �� Reload �۾� ����
-    Outliner* pOutlinerUI = (Outliner*)FindUI("##Outliner");
-    pOutlinerUI->ResetCurrentLevel();
-
-    RTViewPort* pViewport = (RTViewPort*)CImGuiMgr::GetInst()->FindUI("##Viewport");
-    pViewport->SetCamera(CRenderMgr::GetInst()->GetEditorCam());
+    for (auto iter = m_mapUI.begin(); iter != m_mapUI.end(); ++iter) {
+        iter->second->enter();
+    }
 }
 
 FOCUS_STATE CImGuiMgr::GetFocus_debug()
@@ -157,7 +184,7 @@ FOCUS_STATE CImGuiMgr::GetFocus_debug()
     }
 
     // 현재 포커싱이 뷰포트일 경우
-    if (GetFocus() == CEngine::GetInst()->GetMainWind() && isViewportFocused)
+    if (GetFocus() == CEngine::GetInst()->GetMainWind() && IsViewportFocused())
     {
         isViewportFocused = false;
         return FOCUS_STATE::MAIN;
@@ -256,23 +283,6 @@ void CImGuiMgr::AddUI(const string& _strKey, UI* _UI)
     m_mapUI.insert(make_pair(_strKey, _UI));
 }
 
-void CImGuiMgr::ResetInspectorTarget()
-{
-    auto pUI =  FindUI("##Inspector");
-
-    if (nullptr == pUI)
-        assert(pUI);
-
-    auto pInspectUI = dynamic_cast<Inspector*>(pUI);
-
-    if (nullptr == pInspectUI)
-        assert(pInspectUI);
-
-    pInspectUI->ResetTargetObject();
-    pInspectUI->ResetTargetAsset();
-}
-
-
 #include <Engine\CLevelMgr.h>
 void CImGuiMgr::create_ui()
 {
@@ -320,6 +330,12 @@ void CImGuiMgr::observe_content()
         // ContentUI �� Reload �۾� ����
         Content* pContentUI = (Content*)FindUI("##Content");
         pContentUI->ResetContent();
+
+        // InspectorUI Reload
+        Inspector* pInspectorUI = (Inspector*)FindUI("##Inspector");
+        pInspectorUI->ResetComponent();
+       
+      
     }
 }
 

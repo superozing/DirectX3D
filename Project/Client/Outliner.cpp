@@ -18,6 +18,8 @@
 
 Outliner::Outliner()
 	: UI("Outliner", "##Outliner")
+	, m_Filter()
+	, m_CopyTarget(nullptr)
 {
 	m_Tree = new TreeUI("OutlinerTree");
 	m_Tree->ShowRootNode(false);
@@ -39,6 +41,15 @@ Outliner::~Outliner()
 
 void Outliner::render_update()
 {
+	m_Filter.Draw("##NodeFilter");
+
+	if (ImGui::Button("Collapse All"))
+	{
+		CollapseAllNode();
+	}
+
+	ImGui::Separator();
+
 	if (CTaskMgr::GetInst()->GetObjectEvent())
 	{
 		ResetCurrentLevel();
@@ -51,12 +62,27 @@ void Outliner::render_update()
 		{
 			CGameObject* pSelectObj = (CGameObject*)pNode->GetData();
 			GamePlayStatic::DestroyGameObject(pSelectObj);
+
+			Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
+			pInspector->SetTargetObject(nullptr);
 		}
 	}
+
+	CheckCopy();
+
+	IsFilteredNode(m_Tree->GetRootNode());
+}
+
+void Outliner::enter()
+{
+	ResetCurrentLevel();
 }
 
 void Outliner::ResetCurrentLevel()
 {
+	unordered_map<string, bool> stateMap;
+	SaveNodeState(m_Tree->GetRootNode(), stateMap);
+
 	// 트리 내용을 삭제
 	m_Tree->ClearNode();
 
@@ -88,7 +114,12 @@ void Outliner::ResetCurrentLevel()
 		AddObjectToTree(pEditorRootNode, vecEditorObj[i]);
 	}
 
+	RestoreNodeState(m_Tree->GetRootNode(), stateMap);
+}
 
+void Outliner::CollapseAllNode()
+{
+	CollapseNode(m_Tree->GetRootNode());
 }
 
 void Outliner::AddObjectToTree(TreeNode* _Node, CGameObject* _Object)
@@ -152,4 +183,115 @@ void Outliner::DragDropObject(DWORD_PTR _Dest, DWORD_PTR _Source)
 	}
 
 	ResetCurrentLevel();
+}
+
+void Outliner::SaveNodeState(TreeNode* _Node, unordered_map<string, bool>& _StateMap)
+{
+	if (nullptr == _Node)
+		return;
+
+	_StateMap[_Node->GetName()] = _Node->m_bOpen;
+
+	for (auto& child : _Node->GetChildNode())
+	{
+		SaveNodeState(child, _StateMap);
+	}
+}
+
+void Outliner::RestoreNodeState(TreeNode* _Node, const unordered_map<string, bool>& _StateMap)
+{
+	if (nullptr == _Node)
+		return;
+
+	auto it = _StateMap.find(_Node->GetName());
+	if (it != _StateMap.end())
+	{
+		_Node->m_bOpen = it->second;
+	}
+
+	for (auto& child : _Node->GetChildNode())
+	{
+		RestoreNodeState(child, _StateMap);
+	}
+}
+
+void Outliner::CollapseNode(TreeNode* _Node)
+{
+	if (_Node == nullptr)
+		return;
+
+	_Node->m_bOpen = false;
+
+	for (auto& child : _Node->GetChildNode())
+	{
+		CollapseNode(child);
+	}
+}
+
+bool Outliner::IsFilteredNode(TreeNode* _Node)
+{
+	if (m_Filter.IsActive())
+	{
+		bool bFilter = m_Filter.PassFilter(_Node->GetName().c_str());
+
+		for (auto& child : _Node->GetChildNode())
+		{
+			bFilter |= IsFilteredNode(child);
+		}
+
+		_Node->SetFilterState(bFilter);
+
+		if (bFilter)
+		{
+			TreeNode* ParentNode = _Node;
+			while (nullptr != ParentNode)
+			{
+				ParentNode->m_bOpen = true;
+				ParentNode = ParentNode->GetParent();
+			}
+		}
+
+		return bFilter;
+	}
+	else
+	{
+		_Node->SetFilterState(true);
+
+		for (auto& child : _Node->GetChildNode())
+		{
+			IsFilteredNode(child);
+		}
+
+		return true;
+	}
+}
+
+void Outliner::CheckCopy()
+{
+	if (KEY_PRESSED_EDITOR(KEY::LCTRL))
+	{
+		if (KEY_TAP_EDITOR(KEY::C))
+		{
+			TreeNode* pNode = m_Tree->GetSelectedNode();
+
+			if (nullptr != pNode)
+			{
+				m_CopyTarget = (CGameObject*)pNode->GetData();
+			}
+		}
+		else if (KEY_TAP_EDITOR(KEY::V))
+		{
+			if (nullptr != m_CopyTarget)
+			{
+				int LayerIdx = m_CopyTarget->GetLayerIdx();
+				CGameObject* pClone = m_CopyTarget->Clone();
+				GamePlayStatic::SpawnGameObject(pClone, LayerIdx);
+
+				Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
+				pInspector->SetTargetObject(pClone);
+				RTViewPort* pViewport = (RTViewPort*)CImGuiMgr::GetInst()->FindUI("##Viewport");
+				pViewport->SetTargetObject(pClone);
+			}
+		}
+	}
 }

@@ -4,6 +4,7 @@
 #include <Engine\CGameObject.h>
 #include <Engine\CTransform.h>
 
+
 #include "Inspector.h"
 
 PrefabUI::PrefabUI()
@@ -23,8 +24,7 @@ void PrefabUI::render_update()
 
 	Ptr<CPrefab> pPrefab = (CPrefab*)GetAsset().Get();
 	string strPath = ToString(pPrefab->GetRelativePath());
-	CGameObject* pObj = pPrefab->Instantiate();
 	
 	Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
-	pInspector->SetTargetObject(pObj, true);
+	pInspector->SetTargetObject(pPrefab->m_ProtoObj, true);
 }

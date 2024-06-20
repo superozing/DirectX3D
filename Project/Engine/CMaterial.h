@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "CAsset.h"
 
 #include "CTexture.h"
@@ -20,10 +20,22 @@ public:
     void SetScalarParam(SCALAR_PARAM _ParamType, const T& _Value);
 	void SetTexParam(TEX_PARAM _Param, Ptr<CTexture> _pTex);
 
+	void SetMaterialCoefficient(Vec4 _vDiff, Vec4 _vSpec, Vec4 _vAmb, Vec4 _vEmis)
+	{
+		m_Const.mtrl.vDiff = _vDiff;
+		m_Const.mtrl.vAmb = _vAmb;
+		m_Const.mtrl.vSpec = _vSpec;
+		m_Const.mtrl.vEmv = _vEmis;
+	}
+
+	void SetAnim3D(bool _bTrue) { m_Const.arrAnimData[0] = (int)_bTrue; }
+	void SetBoneCount(int _iBoneCount) { m_Const.arrAnimData[1] = _iBoneCount; }
+
 	void* GetScalarParam(SCALAR_PARAM _ParamType);
 	Ptr<CTexture> GetTexParam(TEX_PARAM _ParamType) { return m_arrTex[(UINT)_ParamType]; }
 
     void UpdateData();
+	void UpdateData_Inst();
 
 	void operator = (const CMaterial& _OtherMtrl)
 	{

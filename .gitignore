@@ -3,8 +3,8 @@ unity*.cpp
 
 External/Include/Engine
 External/Include/Scripts
-OutputFile/content/level/temp.lv
-OutputFile/content/shader/*.fx
+OutputFile/content/
+ 
 
 *.cso
 *.idb
@@ -448,7 +448,6 @@ FodyWeavers.xsd
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio,c++
 /OutputFile/content/level/temp.lv
-/Project/Engine/strLevel.h
 /Project/Engine/strFx.h
 /Project/Engine/strSnd.h
 /Project/Engine/strTex.h
@@ -456,3 +455,5 @@ FodyWeavers.xsd
 /Project/Engine/strPref.h
 /Project/Engine/strAnim.h
 /Project/Engine/strTxt.h
+/Project/Engine/strGrpShader.h
+/Project/Engine/strFBX.h

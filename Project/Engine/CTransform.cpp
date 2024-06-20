@@ -71,63 +71,7 @@ void CTransform::tick()
 
 void CTransform::finaltick()
 {	
-	m_matWorld = XMMatrixIdentity();
-
-	Matrix matScale = XMMatrixScaling(m_vRelativeScale.x, m_vRelativeScale.y, m_vRelativeScale.z);
-	
-	Matrix matRotX = XMMatrixRotationX(m_vRelativeRotation.x);
-	Matrix matRotY = XMMatrixRotationY(m_vRelativeRotation.y);
-	Matrix matRotZ = XMMatrixRotationZ(m_vRelativeRotation.z);
-
-	Matrix matTranslation = XMMatrixTranslation(m_vRelativePos.x, m_vRelativePos.y, m_vRelativePos.z);
-
-	m_matWorld = matScale * matRotX * matRotY * matRotZ * matTranslation;
-
-	// 물체의 방향값을 다시 계산한다.
-	static const Vec3 arrAxis[3] =
-	{
-		Vec3(1.f, 0.f, 0.f),
-		Vec3(0.f, 1.f, 0.f),
-		Vec3(0.f, 0.f, 1.f)
-	};
-
-	// Vec3 를 Vec4 타입으로 확장해서 행렬을 적용시켜야 함
-	// XMVector3TransformCoord	- w 를 1로 확장
-	// XMVector3TransformNormal - w 를 0으로 확장
-	// mul(float4(_in.vPos, 1 or 0), g_matWorld); 
-	// 적용 받을 상태행렬의 이동을 적용할지 말지 결정
-	for (int i = 0; i < 3; ++i)
-	{
-		// m_matWorld 행렬에 크기정보가 있을 수 있기 때문에 다시 길이를 1로 정규화 시킨다.
-		m_arrLocalDir[i] = XMVector3TransformNormal(arrAxis[i], m_matWorld);
-		m_arrWorldDir[i] = m_arrLocalDir[i].Normalize();
-	}
-
-	// 부모 오브젝트가 있다면
-	if (GetOwner()->GetParent())
-	{
-		const Matrix& matParentWorld = GetOwner()->GetParent()->Transform()->GetWorldMat();
-
-		if (m_bAbsolute)
-		{
-			Vec3 vParentScale = GetOwner()->GetParent()->Transform()->GetRelativeScale();
-
-			Matrix matParentScaleInv = XMMatrixScaling(1.f / vParentScale.x, 1.f / vParentScale.y, 1.f / vParentScale.z);
-
-			m_matWorld = m_matWorld * matParentScaleInv* matParentWorld;
-		}
-		else
-		{
-			m_matWorld *= matParentWorld;
-		}		
-
-		for (int i = 0; i < 3; ++i)
-		{
-			// m_matWorld 행렬에 크기정보가 있을 수 있기 때문에 다시 길이를 1로 정규화 시킨다.
-			m_arrWorldDir[i] = XMVector3TransformNormal(arrAxis[i], m_matWorld);
-			m_arrWorldDir[i].Normalize();
-		}
-	}
+	CalWorldMat();
 
 	// 역행렬 구하기
 	m_matWorldInv = XMMatrixInverse(nullptr, m_matWorld);
@@ -150,14 +94,31 @@ void CTransform::SetWorldMat(const Matrix& _matWorld)
 	m_matWorld = _matWorld;
 	Vec3 vScale, vRot, vPos;
 	Quaternion Quat;
+	Matrix matrix = m_matWorld;
 
-	m_matWorld.Decompose(vScale, Quat, vPos);
+	if (GetOwner()->GetParent()) 
+	{
+		const Matrix& matParentWorldInv = GetOwner()->GetParent()->Transform()->GetWorldInvMat();
+		if (m_bAbsolute)
+		{
+			// m_matWorld = m_matWorld * matParentScaleInv * matParentWorld + matParentWorldInv * matParentScale;
+			Vec3 vParentScale = GetOwner()->GetParent()->Transform()->GetRelativeScale();
+			Matrix matParentScale = XMMatrixScaling(vParentScale.x, vParentScale.y, vParentScale.z);
+
+			matrix = matrix * matParentWorldInv * matParentScale;
+		}
+		else {
+			matrix *= matParentWorldInv;
+		}
+	}
+
+	matrix.Decompose(vScale, Quat, vPos);
 	auto mat = XMMatrixRotationQuaternion(Quat);
 	vRot = DecomposeRotMat(mat);
 
 	SetRelativePos(vPos);
-	SetRelativeScale(vScale);
 	SetRelativeRotation(vRot);
+	SetRelativeScale(vScale);
 }
 
 Vec3 CTransform::GetWorldScale()
@@ -257,4 +218,67 @@ void CTransform::LoadFromFile(ifstream& fin)
 
 	Utils::GetLineUntilString(fin, TagAbsolute);
 	fin >> m_bAbsolute;
+}
+
+void CTransform::CalWorldMat()
+{
+	m_matWorld = XMMatrixIdentity();
+
+	Matrix matScale = XMMatrixScaling(m_vRelativeScale.x, m_vRelativeScale.y, m_vRelativeScale.z);
+
+	Matrix matRotX = XMMatrixRotationX(m_vRelativeRotation.x);
+	Matrix matRotY = XMMatrixRotationY(m_vRelativeRotation.y);
+	Matrix matRotZ = XMMatrixRotationZ(m_vRelativeRotation.z);
+
+	Matrix matTranslation = XMMatrixTranslation(m_vRelativePos.x, m_vRelativePos.y, m_vRelativePos.z);
+
+	m_matWorld = matScale * matRotX * matRotY * matRotZ * matTranslation;
+
+	// 물체의 방향값을 다시 계산한다.
+	static const Vec3 arrAxis[3] =
+	{
+		Vec3(1.f, 0.f, 0.f),
+		Vec3(0.f, 1.f, 0.f),
+		Vec3(0.f, 0.f, 1.f)
+	};
+
+	// Vec3 를 Vec4 타입으로 확장해서 행렬을 적용시켜야 함
+	// XMVector3TransformCoord	- w 를 1로 확장
+	// XMVector3TransformNormal - w 를 0으로 확장
+	// mul(float4(_in.vPos, 1 or 0), g_matWorld); 
+	// 적용 받을 상태행렬의 이동을 적용할지 말지 결정
+	for (int i = 0; i < 3; ++i)
+	{
+		// m_matWorld 행렬에 크기정보가 있을 수 있기 때문에 다시 길이를 1로 정규화 시킨다.
+		m_arrLocalDir[i] = XMVector3TransformNormal(arrAxis[i], m_matWorld);
+		m_arrWorldDir[i] = m_arrLocalDir[i].Normalize();
+	}
+
+	// 부모 오브젝트가 있다면
+	if (GetOwner()->GetParent())
+	{
+		const Matrix& matParentWorld = GetOwner()->GetParent()->Transform()->GetWorldMat();
+
+		if (m_bAbsolute)
+		{
+			Vec3 vParentScale = GetOwner()->GetParent()->Transform()->GetRelativeScale();
+
+			Matrix matParentScaleInv = XMMatrixScaling(1.f / vParentScale.x, 1.f / vParentScale.y, 1.f / vParentScale.z);
+
+			m_matWorld = m_matWorld * matParentScaleInv * matParentWorld;
+		}
+		else
+		{
+			m_matWorld *= matParentWorld;
+		}
+
+		for (int i = 0; i < 3; ++i)
+		{
+			// m_matWorld 행렬에 크기정보가 있을 수 있기 때문에 다시 길이를 1로 정규화 시킨다.
+			m_arrWorldDir[i] = XMVector3TransformNormal(arrAxis[i], m_matWorld);
+			m_arrWorldDir[i].Normalize();
+		}
+	}
+
+	m_matWorldInv = XMMatrixInverse(nullptr, m_matWorld);
 }

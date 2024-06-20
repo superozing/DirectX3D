@@ -75,12 +75,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)External\Library\Engine\</OutDir>
     <TargetName>$(ProjectName)_d</TargetName>
-    <ExternalIncludePath>$(SolutionDir)External\Include\;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)External\Include\;$(SolutionDir)External\Include\FBXLoader\;$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>$(SolutionDir)External\Library\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)External\Library\Engine\</OutDir>
-    <ExternalIncludePath>$(SolutionDir)External\Include\;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)External\Include\;$(SolutionDir)External\Include\FBXLoader\;$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>$(SolutionDir)External\Library\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -174,6 +174,8 @@ call CodeGen.exe</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CAnimation3DShader.h" />
+    <ClInclude Include="CAnimator3D.h" />
     <ClInclude Include="CCameraShake.h" />
     <ClInclude Include="CAnim.h" />
     <ClInclude Include="CAsset.h" />
@@ -185,11 +187,13 @@ call CodeGen.exe</Command>
     <ClInclude Include="CComponent.h" />
     <ClInclude Include="CComputeShader.h" />
     <ClInclude Include="CConstBuffer.h" />
+    <ClInclude Include="CCopyBoneShader.h" />
     <ClInclude Include="CDecal.h" />
     <ClInclude Include="CDevice.h" />
     <ClInclude Include="CEngine.h" />
     <ClInclude Include="CEntity.h" />
     <ClInclude Include="CAnimator2D.h" />
+    <ClInclude Include="CFBXLoader.h" />
     <ClInclude Include="CFontMgr.h" />
     <ClInclude Include="CFrustum.h" />
     <ClInclude Include="CFSM.h" />
@@ -197,6 +201,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CGC.h" />
     <ClInclude Include="CGraphicsShader.h" />
     <ClInclude Include="CHeightMapShader.h" />
+    <ClInclude Include="CInstancingBuffer.h" />
     <ClInclude Include="CKeyMgr.h" />
     <ClInclude Include="CLandScape.h" />
     <ClInclude Include="CLayer.h" />
@@ -208,6 +213,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CManager.h" />
     <ClInclude Include="CMaterial.h" />
     <ClInclude Include="CMesh.h" />
+    <ClInclude Include="CMeshData.h" />
     <ClInclude Include="CMeshRender.h" />
     <ClInclude Include="CMRT.h" />
     <ClInclude Include="components.h" />
@@ -242,14 +248,26 @@ call CodeGen.exe</Command>
     <ClInclude Include="Ptr.h" />
     <ClInclude Include="SimpleMath.h" />
     <ClInclude Include="singleton.h" />
+    <ClInclude Include="strAnim.h" />
     <ClInclude Include="strEngineMtrl.h" />
+    <ClInclude Include="strFBX.h" />
     <ClInclude Include="strFnShader.h" />
+    <ClInclude Include="strFx.h" />
+    <ClInclude Include="strGrpShader.h" />
+    <ClInclude Include="strLevel.h" />
     <ClInclude Include="strMesh.h" />
+    <ClInclude Include="strMtrl.h" />
+    <ClInclude Include="strPref.h" />
     <ClInclude Include="strShader.h" />
+    <ClInclude Include="strSnd.h" />
+    <ClInclude Include="strTex.h" />
+    <ClInclude Include="strTxt.h" />
     <ClInclude Include="struct.h" />
     <ClInclude Include="UserStrings.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CAnimation3DShader.cpp" />
+    <ClCompile Include="CAnimator3D.cpp" />
     <ClCompile Include="CCameraShake.cpp" />
     <ClCompile Include="CAnim.cpp" />
     <ClCompile Include="CAsset.cpp" />
@@ -262,11 +280,13 @@ call CodeGen.exe</Command>
     <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CComputeShader.cpp" />
     <ClCompile Include="CConstBuffer.cpp" />
+    <ClCompile Include="CCopyBoneShader.cpp" />
     <ClCompile Include="CDecal.cpp" />
     <ClCompile Include="CDevice.cpp" />
     <ClCompile Include="CEngine.cpp" />
     <ClCompile Include="CEntity.cpp" />
     <ClCompile Include="CAnimator2D.cpp" />
+    <ClCompile Include="CFBXLoader.cpp" />
     <ClCompile Include="CFontMgr.cpp" />
     <ClCompile Include="CFrustum.cpp" />
     <ClCompile Include="CFSM.cpp" />
@@ -274,6 +294,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CGC.cpp" />
     <ClCompile Include="CGraphicsShader.cpp" />
     <ClCompile Include="CHeightMapShader.cpp" />
+    <ClCompile Include="CInstancingBuffer.cpp" />
     <ClCompile Include="CKeyMgr.cpp" />
     <ClCompile Include="CLandScape.cpp" />
     <ClCompile Include="CLandScape_Init.cpp" />
@@ -286,6 +307,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CManager.cpp" />
     <ClCompile Include="CMaterial.cpp" />
     <ClCompile Include="CMesh.cpp" />
+    <ClCompile Include="CMeshData.cpp" />
     <ClCompile Include="CMeshRender.cpp" />
     <ClCompile Include="CMRT.cpp" />
     <ClCompile Include="CParticleSystem.cpp" />
@@ -327,6 +349,20 @@ call CodeGen.exe</Command>
     <None Include="SimpleMath.inl" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="animation.fx">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Effect</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="copybone.fx">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="debug.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>

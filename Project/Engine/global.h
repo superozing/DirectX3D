@@ -51,14 +51,8 @@ using namespace DirectX;
 #pragma comment(lib, "d3dcompiler")
 
 // DirectxTex
-#include <DirectXTex/DirectXTex.h>
-
-#ifdef _DEBUG
-#pragma comment(lib, "DirectXTex\\DirectXTex_debug")
-#else
-#pragma comment(lib, "DirectXTex\\DirectXTex")
-#endif
-
+// vcpkg install directxtex[openexr]:x64-windows
+#include <DirectXTex.h>
 
 // SimpleMath
 #include "SimpleMath.h"
@@ -68,8 +62,13 @@ typedef Vector2 Vec2;
 typedef Vector3 Vec3;
 typedef Vector4 Vec4;
 
-
-
+// Fbx Loader
+#include <FBXLoader/fbxsdk.h>
+#ifdef _DEBUG
+#pragma comment(lib, "FBXLoader/x64/debug/libfbxsdk-md.lib")
+#else
+#pragma comment(lib, "FBXLoader/x64/release/libfbxsdk-md.lib")
+#endif
 
 // 엔진 헤더 참조
 #include "singleton.h"

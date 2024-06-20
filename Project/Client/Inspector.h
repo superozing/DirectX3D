@@ -32,6 +32,7 @@ private:
 public:
     virtual void tick() override;
     virtual void render_update() override;
+    virtual void enter() override;
 
 public:
     void SetTargetObject(CGameObject* _Object, bool _bPrefab = false);
@@ -52,6 +53,10 @@ public:
     void DeleteTargetScript(ScriptUI* _Script);
     void MakePrefab();
     void SavePrefab(const string& _Directory, const string& _FileName);
+
+    ComponentUI* GetComponentUI(COMPONENT_TYPE ComType);
+
+    void ResetComponent();
 
 private:
     void CreateChildUI();

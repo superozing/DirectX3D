@@ -9,6 +9,7 @@
 #include <Engine\CDevice.h>
 #include <Engine/CPrefab.h>
 #include <Engine/CKeyMgr.h>
+#include <Engine\CCamera.h>
 
 #include "CLevelSaveLoad.h"
 
@@ -32,6 +33,7 @@
 #include "CImGuiMgr.h"
 #include "CEditorObjMgr.h"
 #include "CCreateTempLevel.h"
+#include "CCreatePlayerTestLevel.h"
 
 #include <Engine/CRenderMgr.h>
 #include "RTViewPort.h"
@@ -78,14 +80,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     CPrefab::GAMEOBJECT_SAVE = &CLevelSaveLoad::SaveGameObject;
     CPrefab::GAMEOBJECT_LOAD = &CLevelSaveLoad::LoadGameObject;
     CRenderMgr::CameraChange = &RTViewPort::SetCamera;
+    CCamera::ViewportConvertFunc = &RTViewPort::ConvertCoord;
 
     
 #ifndef _RELEASE_GAME
     // 임시 레벨 생성
-    CCreateTempLevel::Init();
+    //CCreateTempLevel::Init();
 
-    CCreateTempLevel::CreateTempLevel();
-
+    //CCreateTempLevel::CreateTempLevel();
+	CCreatePlayerTestLevel::CreateTempLevel();
     // ImGui 초기화
     CImGuiMgr::GetInst()->init(hWnd, DEVICE, CONTEXT);
 

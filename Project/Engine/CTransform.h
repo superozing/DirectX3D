@@ -16,6 +16,7 @@ private:
     Matrix  m_matWorldInv;  // 월드 역행렬
     bool    m_bAbsolute;
     bool    m_IsDynamic;    // 정적물체 or 동적물체
+    bool    m_bDirty;
     //bool    m_FrustumCheck;
 
     // =========================
@@ -42,9 +43,9 @@ public:
     virtual void UpdateData() override;
 
 public:
-    void SetRelativePos(Vec3 _Pos) {m_vRelativePos = _Pos;}
-    void SetRelativeScale(Vec3 _Scale) {m_vRelativeScale = _Scale;}
-    void SetRelativeRotation(Vec3 _Rotation) { m_vRelativeRotation = _Rotation; }
+    void SetRelativePos(Vec3 _Pos) { m_vRelativePos = _Pos; m_bDirty = true; }
+    void SetRelativeScale(Vec3 _Scale) { m_vRelativeScale = _Scale; m_bDirty = true; }
+    void SetRelativeRotation(Vec3 _Rotation) { m_vRelativeRotation = _Rotation; m_bDirty = true; }
 
     void SetWorldMat(const Matrix& _matWorld);
 
@@ -64,7 +65,13 @@ public:
     void SetDynamicObject(bool _Dynamic) { m_IsDynamic = _Dynamic; }
     bool IsDynamic() { return m_IsDynamic; }
 
-    const Matrix& GetWorldMat() { return m_matWorld; }
+    const Matrix& GetWorldMat() 
+    { 
+        if(m_bDirty)
+            CalWorldMat(); 
+        m_bDirty = false;
+        return m_matWorld; 
+    }
     const Matrix& GetWorldInvMat() { return m_matWorldInv; }
 
     Vec3 GetLocalDir(DIR_TYPE _type) const { return m_arrLocalDir[(UINT)_type]; }
@@ -77,8 +84,13 @@ public:
     virtual void SaveToFile(ofstream& fout) override;
     virtual void LoadFromFile(FILE* _File) override;
     virtual void LoadFromFile(ifstream& fin) override;
-    CLONE(CTransform);
+
 public:
+    CLONE(CTransform);
     CTransform();    
     ~CTransform();
+
+private:
+    void CalWorldMat();
+
 };

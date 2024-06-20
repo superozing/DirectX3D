@@ -223,6 +223,54 @@
     <ClInclude Include="CWeightMapShader.h">
       <Filter>ShaderCode\03. Compute\LandScape\WeightMap</Filter>
     </ClInclude>
+    <ClInclude Include="CFBXLoader.h">
+      <Filter>Module\FBXLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="CMeshData.h">
+      <Filter>06. Asset\MeshData</Filter>
+    </ClInclude>
+    <ClInclude Include="strLevel.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strFx.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strGrpShader.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strMtrl.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strPref.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strSnd.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strTex.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strTxt.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strAnim.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strFBX.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="CAnimator3D.h">
+      <Filter>08. Component\05. Animator3D</Filter>
+    </ClInclude>
+    <ClInclude Include="CAnimation3DShader.h">
+      <Filter>ShaderCode\03. Compute\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="CCopyBoneShader.h">
+      <Filter>ShaderCode\03. Compute\CopyBone</Filter>
+    </ClInclude>
+    <ClInclude Include="CInstancingBuffer.h">
+      <Filter>04. Manager\Instancing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -425,6 +473,24 @@
     </ClCompile>
     <ClCompile Include="CWeightMapShader.cpp">
       <Filter>ShaderCode\03. Compute\LandScape\WeightMap</Filter>
+    </ClCompile>
+    <ClCompile Include="CFBXLoader.cpp">
+      <Filter>Module\FBXLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="CMeshData.cpp">
+      <Filter>06. Asset\MeshData</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimator3D.cpp">
+      <Filter>08. Component\05. Animator3D</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimation3DShader.cpp">
+      <Filter>ShaderCode\03. Compute\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="CCopyBoneShader.cpp">
+      <Filter>ShaderCode\03. Compute\CopyBone</Filter>
+    </ClCompile>
+    <ClCompile Include="CInstancingBuffer.cpp">
+      <Filter>04. Manager\Instancing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -635,6 +701,21 @@
     <Filter Include="ShaderCode\03. Compute\LandScape\WeightMap">
       <UniqueIdentifier>{95edad59-4602-4fa1-b2a1-6de5f8f4d2e9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Module\FBXLoader">
+      <UniqueIdentifier>{81e92f5f-7347-4b4b-9815-eb45c0544dfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\05. Animator3D">
+      <UniqueIdentifier>{2605de3c-e5b1-4a58-ae2f-2d0f3190a6c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\03. Compute\Animation">
+      <UniqueIdentifier>{719ce4cc-0827-4657-b832-8a035be32951}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\03. Compute\CopyBone">
+      <UniqueIdentifier>{fd317bd7-361d-4fa1-a0f0-d2d124781117}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\Instancing">
+      <UniqueIdentifier>{7bf1cd61-beb8-4c25-aed0-fb8664e6ded0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -707,6 +788,12 @@
     </FxCompile>
     <FxCompile Include="weightmap.fx">
       <Filter>ShaderCode\03. Compute\LandScape\WeightMap</Filter>
+    </FxCompile>
+    <FxCompile Include="animation.fx">
+      <Filter>ShaderCode\03. Compute\Animation</Filter>
+    </FxCompile>
+    <FxCompile Include="copybone.fx">
+      <Filter>ShaderCode\03. Compute\CopyBone</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

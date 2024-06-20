@@ -214,6 +214,8 @@ enum class SCALAR_PARAM
 	MAT_1,
 	MAT_2,
 	MAT_3,
+
+	END,
 };
 
 enum class TEX_PARAM
@@ -343,6 +345,14 @@ struct tWeight_4
 {
 	float arrWeight[4];
 };
+
+enum class LANDSCAPE_MODE
+{
+	HEIGHT_MAP,
+	SPLAT,
+	NONE,
+};
+
 
 enum class Log_Level
 {
