@@ -424,7 +424,7 @@ void CFBXLoader::LoadTexture()
 					copy(path_origin, path_dest);
 				}
 
-				path_dest = CPathMgr::GetRelativePath(path_dest);
+ 				path_dest = CPathMgr::GetRelativePath(path_dest);
 				CAssetMgr::GetInst()->Load<CTexture>(path_dest, path_dest);
 
 				switch (k)
@@ -437,7 +437,7 @@ void CFBXLoader::LoadTexture()
 			}
 		}
 		path_origin = path_origin.parent_path();
-		remove_all(path_origin);
+		//remove_all(path_origin);
 	}
 }
 
