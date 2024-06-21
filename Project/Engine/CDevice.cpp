@@ -4,6 +4,7 @@
 #include "CConstBuffer.h"
 #include "CStructuredBuffer.h"
 #include "CAssetMgr.h"
+#include "CRenderMgr.h"
 
 CDevice::CDevice()
 	: m_hRenderWnd(nullptr)	
@@ -104,7 +105,38 @@ void CDevice::Present()
 	m_SwapChain->Present(0, 0);
 }
 
-int CDevice::CreateSwapChain()
+int CDevice::RenewResolution(Vec2 _vResolution, bool bFullScreen)
+{
+	m_vRenderResolution = _vResolution;
+	m_SwapChain->Release();
+
+	CreateSwapChain(bFullScreen);
+	
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"RenderTargetTex");
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"DepthStencilTex");
+
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"ColorTargetTex");
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"PositionTargetTex");
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"NormalTargetTex");
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"EmissiveTargetTex");
+
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"DiffuseTargetTex");
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"SpecularTargetTex");
+
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"ShadowDepthTargetTex");
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"ShadowDepthStencilTex");
+
+	//CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"CopyRTtex");
+
+	CreateTargetView();
+
+	CRenderMgr::GetInst()->ResetMRT();
+	CRenderMgr::GetInst()->CreateMRT();
+
+	return S_OK;
+}
+
+int CDevice::CreateSwapChain(bool _bFullscreen)
 {
 	// SwapChain 생성 구조체
 	DXGI_SWAP_CHAIN_DESC tDesc = {};
@@ -124,7 +156,7 @@ int CDevice::CreateSwapChain()
 	tDesc.SampleDesc.Count = 1;
 	tDesc.SampleDesc.Quality = 0;
 
-	tDesc.Windowed = true; // 창모드
+	tDesc.Windowed = _bFullscreen;	   // 창모드
 	tDesc.OutputWindow = m_hRenderWnd; // SwapChain 의 출력 윈도우 지정
 	
 

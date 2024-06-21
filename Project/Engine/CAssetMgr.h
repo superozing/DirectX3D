@@ -83,14 +83,15 @@ public:
 
     void SaveDefaultGraphicsShader();
  
-private:
+	private:
     // 지정된 에셋을 삭제한다.
     template<typename T>
     void DeleteAsset(const wstring& _strKey);
     void DeleteAsset(ASSET_TYPE _Type, const wstring& _strKey);
-
+	
 
     friend class CTaskMgr;
+	friend class CDevice;
 };
 
 template<typename T>
@@ -209,8 +210,7 @@ inline Ptr<T> CAssetMgr::Load(string& _strSameKeyPath)
     return Load<T>(ToWString(_strSameKeyPath));
 }
 
-template<typename T>
-inline void CAssetMgr::DeleteAsset(const wstring& _strKey)
+template <typename T> inline void CAssetMgr::DeleteAsset(const wstring& _strKey)
 {
     ASSET_TYPE AssetType = GetAssetType<T>();
 

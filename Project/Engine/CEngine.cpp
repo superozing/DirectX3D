@@ -84,6 +84,19 @@ void CEngine::progress()
 	DebugFunctionCheck();
 
 	TestFunction();
+
+	if (KEY_TAP(KEY::F10))
+	{
+		RECT rt = {0, 0, (int)1920, (int)1080};
+		AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, false);
+		SetWindowPos(m_hMainWnd, nullptr, 0, 0, rt.right - rt.left, rt.bottom - rt.top, 0);
+
+		if (FAILED(CDevice::GetInst()->RenewResolution(Vec2(1910, 960), true)))
+		{
+			MessageBox(nullptr, L"해상도 변경 실패", L"해상도 변경 실패", MB_OK);
+			assert(true);
+		}
+	}
 }
 
 

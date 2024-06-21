@@ -107,6 +107,8 @@ private:
     void CreateMRT();
     void ClearMRT();
 
+    void ResetMRT();
+
     void render_play();
     void render_editor();
 
@@ -119,5 +121,6 @@ private:
     void Clear();
 
     friend class CRenderMgrScript;
+	friend class CDevice;
 };
 

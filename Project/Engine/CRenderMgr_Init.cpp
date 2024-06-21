@@ -45,6 +45,7 @@ void CRenderMgr::init()
 
 void CRenderMgr::CreateMRT()
 {
+
 	Vec2 vResolution = CDevice::GetInst()->GetRenderResolution();
 
 	// =============
@@ -55,7 +56,9 @@ void CRenderMgr::CreateMRT()
 		Ptr<CTexture> DSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
 		Vec4 vClearColor = (Vec4(0.3f, 0.3f, 0.3f, 1.f));
 
+		if (m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN] == nullptr)
 		m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN] = new CMRT;
+
 		m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->Create(&RTTex, 1, DSTex);
 		m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->SetClearColor(&vClearColor, 1);
 	}
@@ -93,7 +96,9 @@ void CRenderMgr::CreateMRT()
 
 		Ptr<CTexture> DSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
 
+		if (m_arrMRT[(UINT)MRT_TYPE::DEFERRED] == nullptr)
 		m_arrMRT[(UINT)MRT_TYPE::DEFERRED] = new CMRT;
+
 		m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->Create(pRTTex, 4, DSTex);
 		m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->SetClearColor(arrClearColor, 4);
 	}
@@ -119,7 +124,9 @@ void CRenderMgr::CreateMRT()
 			Vec4(0.f, 0.f, 0.f, 1.f),
 		};
 
+		if (m_arrMRT[(UINT)MRT_TYPE::LIGHT] == nullptr)
 		m_arrMRT[(UINT)MRT_TYPE::LIGHT] = new CMRT;
+
 		m_arrMRT[(UINT)MRT_TYPE::LIGHT]->Create(pRTTex, 2, nullptr);
 		m_arrMRT[(UINT)MRT_TYPE::LIGHT]->SetClearColor(arrClearColor, 2);
 	}
@@ -139,7 +146,9 @@ void CRenderMgr::CreateMRT()
 			Vec4(0.f, 0.f, 0.f, 1.f),
 		};
 
+		if (m_arrMRT[(UINT)MRT_TYPE::DECAL] == nullptr)
 		m_arrMRT[(UINT)MRT_TYPE::DECAL] = new CMRT;
+
 		m_arrMRT[(UINT)MRT_TYPE::DECAL]->Create(pRTTex, 2, nullptr);
 		m_arrMRT[(UINT)MRT_TYPE::DECAL]->SetClearColor(arrClearColor, 2);
 	}
@@ -162,8 +171,10 @@ void CRenderMgr::CreateMRT()
 		Ptr<CTexture> pDepthTex = CAssetMgr::GetInst()->CreateTexture(L"ShadowDepthStencilTex"
 								 , 8192, 8192, DXGI_FORMAT_D32_FLOAT
 								 , D3D11_BIND_DEPTH_STENCIL);
-								 
+					
+		if (m_arrMRT[(UINT)MRT_TYPE::SHADOW_DEPTH] == nullptr)
 		m_arrMRT[(UINT)MRT_TYPE::SHADOW_DEPTH] = new CMRT;
+
 		m_arrMRT[(UINT)MRT_TYPE::SHADOW_DEPTH]->Create(pRTTex, 1, pDepthTex);
 		m_arrMRT[(UINT)MRT_TYPE::SHADOW_DEPTH]->SetClearColor(arrClearColor, 1);
 	}

@@ -31,6 +31,8 @@ public:
 	int init(HWND _hWnd, Vec2 _vResolution);
 	void Present();
 
+	int RenewResolution(Vec2 _vResolutio, bool bFullScreen);
+
 	ID3D11Device* GetDevice() { return m_Device.Get(); }
 	ID3D11DeviceContext* GetContext() { return m_Context.Get(); }
 	CConstBuffer* GetConstBuffer(CB_TYPE _type) { return m_arrCB[(UINT)_type]; }
@@ -41,8 +43,10 @@ public:
 	ComPtr<ID3D11DepthStencilState> GetDSState(DS_TYPE _Type) { return m_arrDS[(UINT)_Type]; }
 	ComPtr<ID3D11BlendState> GetBSState(BS_TYPE _Type) { return m_arrBS[(UINT)_Type]; }
 
+
+
 private:
-	int CreateSwapChain();
+	int CreateSwapChain(bool _bFullscreen = true);
 	int CreateTargetView();
 	int CreateRasterizerState();
 	int CreateDepthStencilState();
@@ -51,5 +55,6 @@ private:
 
 	int CreateConstBuffer();
 	int CreateStructuredBuffer();
+
 };
 
