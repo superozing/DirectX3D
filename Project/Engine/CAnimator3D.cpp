@@ -22,7 +22,8 @@ CAnimator3D::CAnimator3D()
 	, m_iNextFrameIdx(0)
 	, m_fRatio(0.f)
 	, m_bPlay(false)
-	, m_bRepeat(false)
+	, m_iLoopCount(-1)
+	, m_iCurLoopCount(0)
 	, CComponent(COMPONENT_TYPE::ANIMATOR3D)
 {
 	m_pBoneFinalMatBuffer = new CStructuredBuffer;
@@ -40,7 +41,8 @@ CAnimator3D::CAnimator3D(const CAnimator3D& _origin)
 	, m_iNextFrameIdx(_origin.m_iNextFrameIdx)
 	, m_fRatio(_origin.m_fRatio)
 	, m_bPlay(false)
-	, m_bRepeat(false)
+	, m_iLoopCount(-1)
+	, m_iCurLoopCount(0)
 	, CComponent(COMPONENT_TYPE::ANIMATOR3D)
 {
 	m_pBoneFinalMatBuffer = new CStructuredBuffer;
@@ -66,19 +68,28 @@ void CAnimator3D::finaltick()
 	else if (KEY_TAP(V))
 		Stop();
 
-	if (!m_bPlay)
-		return;
-
 	m_dCurTime = 0.f;
+
 	// 현재 재생중인 Clip 의 시간을 진행한다.
-	m_vecClipUpdateTime[m_iCurClip] += DTd_ENGINE;
+	if (m_bPlay)
+		m_vecClipUpdateTime[m_iCurClip] += DTd_ENGINE;
 
 	if (m_vecClipUpdateTime[m_iCurClip] >= m_pVecClip->at(m_iCurClip).dTimeLength)
 	{
-		if (m_bRepeat)
+		if (m_iLoopCount == -1)
+		{
 			m_vecClipUpdateTime[m_iCurClip] = 0.f;
-		else
+		}
+		else if (m_iLoopCount == 0)
 			Stop();
+		else if (m_iLoopCount > 0)
+		{
+			m_vecClipUpdateTime[m_iCurClip] = 0.f;
+			++m_iCurLoopCount;
+
+			if (m_iCurLoopCount >= m_iLoopCount)
+				Stop();
+		}
 	}
 
 	m_dCurTime = m_pVecClip->at(m_iCurClip).dStartTime + m_vecClipUpdateTime[m_iCurClip];
@@ -175,9 +186,8 @@ void CAnimator3D::Play(int _iClipIdx, bool _bRepeat)
 	}
 
 	m_bPlay = true;
-	m_bRepeat = _bRepeat;
-
 	m_iCurClip = _iClipIdx;
+	m_iCurLoopCount = 0;
 
 	SetClipTime(m_iCurClip, 0.f);
 }
@@ -201,7 +211,7 @@ void CAnimator3D::Play(const wstring& _AnimName, bool _bRepeat)
 void CAnimator3D::Stop()
 {
 	m_bPlay = false;
-
+	m_iCurLoopCount = 0;
 	SetClipTime(m_iCurClip, 0.f);
 }
 
