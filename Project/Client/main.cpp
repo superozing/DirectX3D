@@ -13,6 +13,8 @@
 
 #include "CLevelSaveLoad.h"
 
+#include <Engine\CLogMgr.h>
+
 #ifdef _DEBUG
 #pragma comment(lib, "Engine\\Engine_d.lib")
 #else
@@ -203,6 +205,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam))
         return true;
 
+    string s;
+
     switch (message)
     {
     case WM_COMMAND:
@@ -242,6 +246,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             ::SetWindowPos(hWnd, nullptr, suggested_rect->left, suggested_rect->top, suggested_rect->right - suggested_rect->left, suggested_rect->bottom - suggested_rect->top, SWP_NOZORDER | SWP_NOACTIVATE);
         }
         break;
+	case WM_EXITSIZEMOVE:
+		 s = "action";
+		CLogMgr::GetInst()->AddLog(Log_Level::INFO, s);
+		break;
 #include <Engine\CKeyMgr.h>
     case WM_MOUSEWHEEL:
         if ((SHORT)HIWORD(wParam) > 0)
