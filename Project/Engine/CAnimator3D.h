@@ -29,7 +29,7 @@ private:
     bool						m_bFinalMatUpdate; // 최종행렬 연산 수행여부
 
     bool                        m_bPlay;    // 애니메이션 재생 여부
-    int                         m_iLoopCount;   // 애니메이션 반복 횟수 (-1 : 무한반복, 0 : 반복 X, 1~ : 수치만큼 반복)
+    int                         m_iLoopCount;   // 애니메이션 반복 횟수 (-1 : 무한반복, 0 : 한번만 재생, 1~ : 수치만큼 추가 반복 재생)
     int                         m_iCurLoopCount;
 
 public:
@@ -61,8 +61,8 @@ public:
     float GetClipUpdateTime(int _idx) { return m_vecClipUpdateTime[_idx]; }
 
 public:
-	void Play(int _iClipIdx, bool _bRepeat = true);
-    void Play(const wstring& _AnimName, bool _bRepeat = true);
+	void Play(int _iClipIdx, int _iLoopCount = -1);
+    void Play(const wstring &_AnimName, int _iLoopCount = -1);
     void Stop();
 
 private:

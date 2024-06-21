@@ -87,7 +87,7 @@ void CAnimator3D::finaltick()
 			m_vecClipUpdateTime[m_iCurClip] = 0.f;
 			++m_iCurLoopCount;
 
-			if (m_iCurLoopCount >= m_iLoopCount)
+			if (m_iCurLoopCount > m_iLoopCount)
 				Stop();
 		}
 	}
@@ -177,7 +177,7 @@ void CAnimator3D::check_mesh(Ptr<CMesh> _pMesh)
 	}
 }
 
-void CAnimator3D::Play(int _iClipIdx, bool _bRepeat)
+void CAnimator3D::Play(int _iClipIdx, int _iLoopCount)
 {
 	if (_iClipIdx >= (int)m_pVecClip->size())
 	{
@@ -187,19 +187,21 @@ void CAnimator3D::Play(int _iClipIdx, bool _bRepeat)
 
 	m_bPlay = true;
 	m_iCurClip = _iClipIdx;
+
+	m_iLoopCount = _iLoopCount;
 	m_iCurLoopCount = 0;
 
 	SetClipTime(m_iCurClip, 0.f);
 }
 
-void CAnimator3D::Play(const wstring& _AnimName, bool _bRepeat)
+void CAnimator3D::Play(const wstring &_AnimName, int _iLoopCount)
 {
 	auto iter = find(m_pVecClip->begin(), m_pVecClip->end(), _AnimName);
 
 	if (iter != m_pVecClip->end())
 	{
 		int ClipIdx = distance(m_pVecClip->begin(), iter);
-		Play(ClipIdx, _bRepeat);
+		Play(ClipIdx, _iLoopCount);
 	}
 	else
 	{

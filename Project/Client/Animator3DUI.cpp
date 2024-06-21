@@ -21,13 +21,13 @@ void Animator3DUI::render_update()
 
 	auto AnimClip = GetTargetObject()->Animator3D()->GetAnimClip();
 	int CurAnimIdx = GetTargetObject()->Animator3D()->GetCurClip();
-	bool bPlayable = GetTargetObject()->Animator3D()->IsPlayable();
 	int iLoopCount = GetTargetObject()->Animator3D()->GetLoopCount();
 	float ClipTime = GetTargetObject()->Animator3D()->GetClipUpdateTime(CurAnimIdx);
 
 	string CurAnimName = ToString(AnimClip->at(CurAnimIdx).strAnimName);
+	float fEndTime = (float)AnimClip->at(CurAnimIdx).dEndTime;
 
-	ImGui::Text("AnimClip");
+	ImGui::Text("AnimClip "); ImGui::SameLine();
 	if (ImGui::BeginCombo("##AnimClip", CurAnimName.c_str()))
 	{
 		for (size_t i = 0; i < AnimClip->size(); ++i)
@@ -45,19 +45,25 @@ void Animator3DUI::render_update()
 
 		ImGui::EndCombo();
 	}
-
-	ImGui::Text("AnimPlay");
-	ImGui::Checkbox("##AnimPlay", &bPlayable);
 	
-	ImGui::Text("LoopCount");
+	ImGui::Text("LoopCount"); ImGui::SameLine();
 	ImGui::DragInt("##LoopCount", &iLoopCount);
 	if (iLoopCount < -1)
 		iLoopCount = -1;
 
+	ImGui::Text("ClipTime "); ImGui::SameLine();
+	ImGui::SliderFloat("##AnimTime", &ClipTime, 0.f, fEndTime, "%.2f");
+
 	GetTargetObject()->Animator3D()->SetCurClip(CurAnimIdx);
-	GetTargetObject()->Animator3D()->SetPlayable(bPlayable);
 	GetTargetObject()->Animator3D()->SetLoopCount(iLoopCount);
 	
-	if (!bPlayable)
+	if (!(GetTargetObject()->Animator3D()->IsPlayable()))
 		GetTargetObject()->Animator3D()->SetClipTime(CurAnimIdx, ClipTime);
+
+	
+	if (ImGui::Button("Play"))
+		GetTargetObject()->Animator3D()->Play(CurAnimIdx, iLoopCount);
+	ImGui::SameLine();	
+	if (ImGui::Button("Stop"))
+		GetTargetObject()->Animator3D()->Stop();
 }

@@ -140,8 +140,6 @@ void CCreatePlayerTestLevel::CreateTempLevel()
 		pObj->Transform()->SetRelativeScale(Vec3(300.f, 300.f, 300.f));
 		pObj->Transform()->SetRelativeRotation(Vec3(0.f, -XM_PI / 2.f, 0.f));
 
-		pObj->Animator3D()->Play(0);
-		//pObj->Animator3D()->Play(L"STAND_RELOAD", false);
 		pTempLevel->AddObject(pObj, 0, false);
 	}
 
