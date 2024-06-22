@@ -508,9 +508,21 @@ Vec3 RoRMath::QuaternionToEulerAngles(const XMFLOAT4& _Quaternion)
 
 	// 행렬에서 오일러 각도를 추출
 	float pitch, yaw, roll;
-	XMStoreFloat(&pitch, XMVector3Dot(rotationMatrix.r[1], XMVector3Rotate(XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f), q)));
-	XMStoreFloat(&yaw, XMVector3Dot(rotationMatrix.r[2], XMVector3Rotate(XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), q)));
-	XMStoreFloat(&roll, XMVector3Dot(rotationMatrix.r[0], XMVector3Rotate(XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), q)));
+
+	// Y축 회전 (Yaw)
+	yaw = atan2(rotationMatrix.r[0].m128_f32[2], rotationMatrix.r[2].m128_f32[2]);
+
+	// X축 회전 (Pitch)
+	float sinPitch = -rotationMatrix.r[1].m128_f32[2];
+	if (sinPitch >= 1.0f)
+		pitch = XM_PI / 2; // 90도
+	else if (sinPitch <= -1.0f)
+		pitch = -XM_PI / 2; // -90도
+	else
+		pitch = asin(sinPitch);
+
+	// Z축 회전 (Roll)
+	roll = atan2(rotationMatrix.r[1].m128_f32[0], rotationMatrix.r[1].m128_f32[1]);
 
 	// 오일러 각도를 반환
 	return Vec3(pitch, yaw, roll);

@@ -30,9 +30,9 @@ void CPhysX::updateFromPhysics()
 
 	Vec3 AxisAngle = RoRMath::QuaternionToEulerAngles(q);
 
-	Matrix matRotX = XMMatrixRotationX(AxisAngle.x);
+	Matrix matRotX = XMMatrixRotationX(-AxisAngle.z);
 	Matrix matRotY = XMMatrixRotationY(AxisAngle.y);
-	Matrix matRotZ = XMMatrixRotationZ(AxisAngle.z);
+	Matrix matRotZ = XMMatrixRotationZ(AxisAngle.x);
 
 	Matrix matTranslation = XMMatrixTranslation(physTransform.p.x, physTransform.p.y, physTransform.p.z);
 
