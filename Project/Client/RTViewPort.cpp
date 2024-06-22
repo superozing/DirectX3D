@@ -45,6 +45,13 @@ void RTViewPort::tick()
 
 void RTViewPort::render_update()
 {
+
+    if (m_ViewPortTexture.Get()->GetWidth() != CDevice::GetInst()->GetRenderResolution().x ||
+        m_ViewPortTexture.Get()->GetHeight() != CDevice::GetInst()->GetRenderResolution().y)
+    {
+		m_ViewPortTexture = CAssetMgr::GetInst()->FindAsset<CTexture>(L"CopyRTtex");
+    }
+
     CRenderMgr::GetInst()->CopyRTTex(m_ViewPortTexture);
 
     m_fTapHeight = ImGui::GetFrameHeightWithSpacing();

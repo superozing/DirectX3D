@@ -155,8 +155,8 @@ void CImGuiMgr::init(HWND _hMainWnd, ComPtr<ID3D11Device> _Device
     m_vecStaticBtn[(UINT)STATIC_BTN_TYPE::SUBTITLE] = tColor;
 
 
-    RTViewPort* pViewport = (RTViewPort*)CImGuiMgr::GetInst()->FindUI("##Viewport");
-    pViewport->SetCamera(CRenderMgr::GetInst()->GetEditorCam());
+   RTViewPort* pViewport = (RTViewPort*)CImGuiMgr::GetInst()->FindUI("##Viewport");
+   pViewport->SetCamera(CRenderMgr::GetInst()->GetEditorCam());
 }
 
 void CImGuiMgr::progress()

@@ -73,7 +73,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     MSG msg;
 
     // CEngine 초기화 실패 -> 프로그램 종료
-    if (FAILED(CEngine::GetInst()->init(hWnd, Vec2(1910, 960))))
+    if (FAILED(CEngine::GetInst()->init(hWnd, Vec2(1366, 720))))
     {
         MessageBox(nullptr, L"CEngine 초기화 실패", L"초기화 실패", MB_OK);
         return 0;
@@ -247,9 +247,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         break;
 	case WM_EXITSIZEMOVE:
-		 s = "action";
-		CLogMgr::GetInst()->AddLog(Log_Level::INFO, s);
-		break;
+        //if (FAILED(CDevice::GetInst()->RenewResolution(Vec2(1910, 960), true)))
+        //{
+		//	MessageBox(nullptr, L"해상도 변경 실패", L"해상도 변경 실패", MB_OK);
+		//	return E_FAIL;
+        //}
+		//break;
 #include <Engine\CKeyMgr.h>
     case WM_MOUSEWHEEL:
         if ((SHORT)HIWORD(wParam) > 0)

@@ -83,7 +83,7 @@ public:
 
     void SaveDefaultGraphicsShader();
  
-	private:
+	//private:
     // 지정된 에셋을 삭제한다.
     template<typename T>
     void DeleteAsset(const wstring& _strKey);
