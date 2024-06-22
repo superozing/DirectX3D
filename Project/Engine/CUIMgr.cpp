@@ -127,26 +127,48 @@ void CUIMgr::tick()
 
 CUIScript* CUIMgr::GetPriorityCheck(CUIScript* _ParentUI)
 {
+	// 현재 구조: UIScript가 다른 UIScript를 들고 있을 것을 가정한 구조
+	// 수정이 완료될 경우의 구조: 상위 오브젝트를 인자로 받아와서 자식 오브젝트에게 PriorityCheck를 해주어야 하는 구조.
+	// 인자로 받아오는 것이 스크립트여도 괜찮은가? -> 괜찮다. GetOwner()함수로 가져올 수는 있다. 
+	// 하지만 구조 상 올바른 행동인지는 고민을 해보아야 한다.
+	
+	// GetScript() 할 때 비용이 조금 큰 느낌이 있는데...
+
+
+	// 반환할 우선 순위 UI
 	CUIScript* pPriorityUI = nullptr;
 
-	static list<CUIScript*> queue;
-	queue.clear();
+	// BFS - queue 사용
+	static list<CGameObject*> q; // static으로 비용 아끼기
+	q.clear();
 
-	queue.push_back(_ParentUI);
+	// 1. 인자로 받아은  UIScript에게서 Owner Object 가져오기
+	q.push_back(_ParentUI->GetOwner());
 
-	while (!queue.empty())
+	// 2. 오브젝트의 자식 오브젝트 vector 가져오며 BFS로 자식UI 끝까지 탐색
+	while (!q.empty())
 	{
-		CUIScript* pUI = queue.front();
-		queue.pop_front();
+		CGameObject* pObj = q.front();
+		q.pop_front();
 
-		for (size_t i = 0; i < pUI->m_vecChildUI.size(); ++i)
+		auto& vecChildUI = pObj->GetChild();
+
+		for (size_t i = 0; i < vecChildUI.size(); ++i)
 		{
-			queue.push_back(pUI->m_vecChildUI[i]);
+			q.push_back(vecChildUI[i]);
 		}
 
-		if (pUI->m_bMouseOn)
+		CUIScript* pUIScript = pObj->GetScript<CUIScript>();
+
+		if (!pUIScript)
 		{
-			pPriorityUI = pUI;
+			CLogMgr::GetInst()->AddLog(Log_Level::ERR, "UI Layer Contains Non - UI Objects");
+			continue;
+		}
+
+		if (pUIScript->m_bMouseOn)
+		{
+			pPriorityUI = pUIScript;
 		}
 	}
 
@@ -168,4 +190,6 @@ void CUIMgr::CalWorldMousePos()
 	Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
 	m_vWorldMousePos.x = vMousePos.x - vResol.x / 2.f;
 	m_vWorldMousePos.y = -vMousePos.y + vResol.y / 2.f;
+
+	//CLogMgr::GetInst()->AddLog(Log_Level::INFO, std::to_wstring(m_vWorldMousePos.x) + std::to_wstring(m_vWorldMousePos.y));
 }

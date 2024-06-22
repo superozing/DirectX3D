@@ -1,5 +1,6 @@
 ﻿#include "pch.h"
 #include "CBtnUIScript.h"
+#include <Engine/CLogMgr.h>
 
 CBtnUIScript::CBtnUIScript()
 	: CUIScript((UINT)SCRIPT_TYPE::BTNUISCRIPT)
@@ -40,6 +41,8 @@ void CBtnUIScript::begin()
 void CBtnUIScript::tick()
 {
 	CUIScript::tick();
+
+	//CLogMgr::GetInst()->AddLog(Log_Level::INFO, to_wstring(Transform()->GetWorldPos().x) + to_wstring(Transform()->GetWorldPos().y));
 }
 
 void CBtnUIScript::OnHovered()
