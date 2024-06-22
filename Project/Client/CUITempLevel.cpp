@@ -144,29 +144,7 @@ void CUITempLevel::CreateTempLevel()
 
 	auto pBtnTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Background.jpg", L"texture\\Background.jpg");
 
-	// StaticBtnUI Object 생성
-	// MESHrect
-	// StaticUIMtrl
-	pObj = new CGameObject;
-	pObj->SetName(L"StaticBtnUI");
 
-	pObj->AddComponent(new CTransform);
-	pObj->AddComponent(new CMeshRender);
-
-	auto btnUI = new CBtnUIScript;
-	pObj->AddComponent(btnUI);
-	btnUI->AllowTexSet();
-	btnUI->SetNormalImg(pBtnTex);
-
-	pObj->Transform()->SetRelativePos(Vec3(0, 0, 100.f));
-	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
-
-	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
-	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
-	pObj->MeshRender()->GetDynamicMaterial(0);
-	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, pBtnTex);
-
-	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 
 	// DynamicUI Object 생성
 	// MESHpoint
@@ -201,21 +179,71 @@ void CUITempLevel::CreateTempLevel()
 	// PanelUI Object 생성
 	// MESHrect
 	// StaticUIMtrl
-	pObj = new CGameObject;
-	pObj->SetName(L"PanelUI");
+	auto Panel1 = new CGameObject;
+	Panel1->SetName(L"PanelUI");
 
-	pObj->AddComponent(new CTransform);
-	pObj->AddComponent(new CMeshRender);
+	Panel1->AddComponent(new CTransform);
+	Panel1->AddComponent(new CMeshRender);
 
 	auto PanelUI1 = new CPanelUIScript;
-	pObj->AddComponent(PanelUI1);
+	Panel1->AddComponent(PanelUI1);
 
 	PanelUI1->AllowTexSet();
 	PanelUI1->SetPanelTex(pBtnTex);
 	PanelUI1->AllowDragAndDrop();
 
-	pObj->Transform()->SetRelativePos(Vec3(-500, 200, 100.f));
+	Panel1->Transform()->SetRelativePos(Vec3(-500, 200, 100.f));
+	Panel1->Transform()->SetRelativeScale(Vec3(1000.f, 1000.f, 1.f));
+
+	Panel1->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect)); // pointMesh일 때, 동작하지 않음. 무엇의 문제인지는 모르겠네요.
+	Panel1->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
+	Panel1->MeshRender()->GetDynamicMaterial(0);
+	Panel1->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, pBtnTex);
+
+	pTempLevel->AddObject(Panel1, (UINT)LAYER::LAYER_UI, false);
+
+	// StaticBtnUI Object 생성
+	// MESHrect
+	// StaticUIMtrl
+	pObj = new CGameObject;
+	pObj->SetName(L"StaticBtnUI");
+
+	pObj->AddComponent(new CTransform);
+	pObj->AddComponent(new CMeshRender);
+
+	auto btnUI = new CBtnUIScript;
+	pObj->AddComponent(btnUI);
+	btnUI->AllowTexSet();
+	btnUI->SetNormalImg(pBtnTex);
+
+	pObj->Transform()->SetRelativePos(Vec3(0, 0, 100.f));
 	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+
+	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
+	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
+	pObj->MeshRender()->GetDynamicMaterial(0);
+	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, pBtnTex);
+
+	Panel1->AddChild(pObj);
+
+	// PanelUI Object 생성
+	// MESHrect
+	// StaticUIMtrl
+	pObj = new CGameObject;
+	pObj->SetName(L"PanelUI2");
+
+	pObj->AddComponent(new CTransform);
+	pObj->AddComponent(new CMeshRender);
+
+	auto PanelUI2 = new CPanelUIScript;
+	pObj->AddComponent(PanelUI2);
+
+	PanelUI2->AllowTexSet();
+	PanelUI2->SetPanelTex(pBtnTex);
+	PanelUI2->AllowDragAndDrop();
+
+	pObj->Transform()->SetRelativePos(Vec3(-500, 200, 100.f));
+	pObj->Transform()->SetRelativeScale(Vec3(1000.f, 1000.f, 1.f));
 
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect)); // pointMesh일 때, 동작하지 않음. 무엇의 문제인지는 모르겠네요.
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
