@@ -13,12 +13,12 @@ void CPhysXMgr::init()
     gFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, gAllocator, gErrorCallback);
     gPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *gFoundation, PxTolerancesScale(), true);
     PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
-    sceneDesc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
+    sceneDesc.gravity = PxVec3(0.0f, -981.f, 0.0f);
     gDispatcher = PxDefaultCpuDispatcherCreate(2);
     sceneDesc.cpuDispatcher = gDispatcher;
     sceneDesc.filterShader = PxDefaultSimulationFilterShader;
     gScene = gPhysics->createScene(sceneDesc);
-    gMaterial = gPhysics->createMaterial(0.5f, 0.5f, 0.1f); // (정지 마찰 계수, 동적 마찰 계수, 반발 계수)
+    gMaterial = gPhysics->createMaterial(0.5f, 0.5f, 0.000f); // (정지 마찰 계수, 동적 마찰 계수, 반발 계수)
 }
 
 void CPhysXMgr::tick()
