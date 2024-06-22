@@ -226,7 +226,7 @@ void CUITempLevel::CreateTempLevel()
 
 	Panel1->AddChild(pObj);
 
-	// PanelUI Object 생성
+	// PanelUI2 Object 생성
 	// MESHrect
 	// StaticUIMtrl
 	pObj = new CGameObject;

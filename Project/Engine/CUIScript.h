@@ -5,8 +5,6 @@ class CUIScript :
     public CScript
 {
 private:
-    CUIScript* m_ParentUI;
-    vector<CUIScript*>  m_vecChildUI;
     Vec2                m_vFinalPos;
 
     bool                m_bMouseCheckAble = true;
@@ -18,12 +16,6 @@ private:
 
 public:
     virtual void tick() override;
-
-    void AddChildUI(CUIScript* _ChildUI)
-    {
-        m_vecChildUI.push_back(_ChildUI);
-        _ChildUI->m_ParentUI = this;
-    }
 
     virtual void OnHovered() {}
     virtual void MouseOn() {}

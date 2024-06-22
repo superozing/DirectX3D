@@ -7,7 +7,6 @@
 
 CUIScript::CUIScript()
 	: CScript(NULL)
-	, m_ParentUI(nullptr)
 	, m_bMouseOn(false)
 	, m_bMouseOn_Prev(false)
 	, m_bMouseLBtnDown(false)
@@ -16,7 +15,6 @@ CUIScript::CUIScript()
 
 CUIScript::CUIScript(UINT _ScriptType)
 	: CScript(_ScriptType)
-	, m_ParentUI(nullptr)
 	, m_bMouseOn(false)
 	, m_bMouseOn_Prev(false)
 	, m_bMouseLBtnDown(false)
@@ -25,15 +23,11 @@ CUIScript::CUIScript(UINT _ScriptType)
 
 CUIScript::CUIScript(const CUIScript& _Other)
 	: CScript(_Other.GetScriptType())
-	, m_ParentUI(nullptr)
 	, m_bMouseOn(false)
 	, m_bMouseOn_Prev(false)
 	, m_bMouseLBtnDown(false)
 {
-	for (size_t i = 0; i < _Other.m_vecChildUI.size(); ++i)
-	{
-		AddChildUI(_Other.m_vecChildUI[i]->Clone());
-	}
+
 }
 
 CUIScript::~CUIScript()
@@ -43,7 +37,7 @@ CUIScript::~CUIScript()
 void CUIScript::tick()
 {
 	// 최종 좌표 연산하기
-	m_vFinalPos = Transform()->GetWorldPos();
+	m_vFinalPos = Transform()->GetWorldPos().XY();
 
 	// UIMgr tick()에서 계산된 월드 마우스 좌표를 가지고 오기
 	Vec2 vWorldMousePos = CUIMgr::GetInst()->GetWorldMousePos();
@@ -67,9 +61,4 @@ void CUIScript::tick()
 		m_bMouseOn = false;
 	}
 
-	// 자식 UI 들 Tick 호출
-	//for (size_t i = 0; i < m_vecChildUI.size(); ++i)
-	//{
-	//	m_vecChildUI[i]->tick(_DT);
-	//}
 }
