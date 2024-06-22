@@ -92,3 +92,51 @@ void CBtnUIScript::LBtnClicked()
 	if (m_Inst && m_Delegate)
 		(m_Inst->*m_Delegate)();
 }
+
+void CBtnUIScript::SaveToFile(FILE* _File)
+{
+
+}
+
+void CBtnUIScript::LoadFromFile(FILE* _File)
+{
+
+}
+
+#define TagNormalImg	"[NormalImg]"
+#define TagPressedImg	"[PressedImg]"
+#define TagHoverImg		"[HoverImg]"
+#define TagAllowTexSet	"[AllowTexSet]"
+
+// 콜백은 어떻게 저장해야 할까?
+
+void CBtnUIScript::SaveToFile(ofstream& fout)
+{
+	fout << TagNormalImg << endl;
+	SaveAssetRef(m_NormalImg, fout);
+	
+	fout << TagPressedImg << endl;
+	SaveAssetRef(m_PressedImg, fout);
+	
+	fout << TagHoverImg << endl;
+	SaveAssetRef(m_HoverImg, fout);
+	
+	fout << TagAllowTexSet << endl;
+	fout << m_AllowTexSet << endl;
+}
+
+void CBtnUIScript::LoadFromFile(ifstream& fin)
+{
+	Utils::GetLineUntilString(fin, TagNormalImg);
+	LoadAssetRef(m_NormalImg, fin);
+	
+	Utils::GetLineUntilString(fin, TagPressedImg);
+	LoadAssetRef(m_PressedImg, fin);
+	
+	Utils::GetLineUntilString(fin, TagHoverImg);
+	LoadAssetRef(m_HoverImg, fin);
+
+	Utils::GetLineUntilString(fin, TagAllowTexSet);
+	fin >> m_AllowTexSet;
+
+}

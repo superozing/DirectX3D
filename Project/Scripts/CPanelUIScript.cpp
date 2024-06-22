@@ -53,3 +53,43 @@ void CPanelUIScript::LBtnDown()
 	// 마우스 왼쪽 버튼이 눌렸을 때 마우스의 위치를 기록
 	m_vLbtnDownPos = CUIMgr::GetInst()->GetWorldMousePos();
 }
+
+void CPanelUIScript::SaveToFile(FILE* _File)
+{
+
+}
+
+void CPanelUIScript::LoadFromFile(FILE* _File)
+{
+
+}
+
+#define TagPanelImg			"[PanelImg]"
+#define TagAllowTexSet		"[AllowTexSet]"
+#define TagAllowDragAndDrop	"[AllowDragAndDrop]"
+
+// 콜백은 어떻게 저장해야 할까?
+
+void CPanelUIScript::SaveToFile(ofstream& fout)
+{
+	fout << TagPanelImg << endl;
+	SaveAssetRef(m_PanelTex, fout);
+
+	fout << TagAllowTexSet << endl;
+	fout << m_AllowTexSet << endl;
+
+	fout << TagAllowDragAndDrop << endl;
+	fout << m_AllowDragAndDrop << endl;
+}
+
+void CPanelUIScript::LoadFromFile(ifstream& fin)
+{
+	Utils::GetLineUntilString(fin, TagPanelImg);
+	LoadAssetRef(m_PanelTex, fin);
+
+	Utils::GetLineUntilString(fin, TagAllowTexSet);
+	fin >> m_AllowTexSet;
+	
+	Utils::GetLineUntilString(fin, TagAllowDragAndDrop);
+	fin >> m_AllowDragAndDrop;
+}
