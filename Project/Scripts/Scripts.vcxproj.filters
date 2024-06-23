@@ -43,6 +43,9 @@
     <ClInclude Include="CPanelUIScript.h">
       <Filter>Scripts\UI</Filter>
     </ClInclude>
+    <ClInclude Include="CImageUIScript.h">
+      <Filter>Scripts\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -85,6 +88,9 @@
       <Filter>Scripts\UI</Filter>
     </ClCompile>
     <ClCompile Include="CPanelUIScript.cpp">
+      <Filter>Scripts\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CImageUIScript.cpp">
       <Filter>Scripts\UI</Filter>
     </ClCompile>
   </ItemGroup>
