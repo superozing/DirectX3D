@@ -113,30 +113,15 @@ int CDevice::RenewResolution(Vec2 _vResolution, bool bFullScreen)
 
 	CreateSwapChain(bFullScreen);
 	
-	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"RenderTargetTex");
-	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"DepthStencilTex");
-
-	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"ColorTargetTex");
-	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"PositionTargetTex");
-	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"NormalTargetTex");
-	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"EmissiveTargetTex");
-
-	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"DiffuseTargetTex");
-	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"SpecularTargetTex");
-
-	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"ShadowDepthTargetTex");
-	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"ShadowDepthStencilTex");
-
-	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"CopyRTtex");
-	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"PostProcessTex");
-
-
+	DeleteTexturesForResolutionChange();
 
 	CreateTargetView();
 
 	CRenderMgr::GetInst()->ResetMRT();
 	CRenderMgr::GetInst()->CreateMRT();
 
+
+	//지우고서 따로 만들어줘야 하는 texture 생성
 	CAssetMgr::GetInst()->CreateTexture(L"CopyRTtex", m_vRenderResolution.x, m_vRenderResolution.y,
 										DXGI_FORMAT_R8G8B8A8_UNORM,
 										D3D11_BIND_SHADER_RESOURCE);
@@ -144,29 +129,8 @@ int CDevice::RenewResolution(Vec2 _vResolution, bool bFullScreen)
 	CRenderMgr::GetInst()->m_PostProcessTex =
 		CAssetMgr::GetInst()->CreateTexture(L"PostProcessTex", (UINT)m_vRenderResolution.x, (UINT)m_vRenderResolution.y,
 											DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE);
-	
-	Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(MTRL_dirlight);
-	pMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
-	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex"));
-	pMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"ShadowDepthTargetTex"));
 
-	pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(MTRL_pointlight);
-	pMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
-	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex"));
-	pMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"ShadowDepthTargetTex"));
-
-	pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(MTRL_spotlight);
-	pMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
-	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex"));
-
-	pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(MTRL_merge);
-	pMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"ColorTargetTex"));
-	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"DiffuseTargetTex"));
-	pMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"SpecularTargetTex"));
-	pMtrl->SetTexParam(TEX_PARAM::TEX_3, CAssetMgr::GetInst()->FindAsset<CTexture>(L"EmissiveTargetTex"));
-
-	pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(MTRL_decal);
-	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
+	RematchMtrlTexParam();
 
 	return S_OK;
 }
@@ -510,3 +474,48 @@ int CDevice::CreateStructuredBuffer()
 	return S_OK;
 }
 
+void CDevice::DeleteTexturesForResolutionChange()
+{
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"RenderTargetTex");
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"DepthStencilTex");
+
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"ColorTargetTex");
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"PositionTargetTex");
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"NormalTargetTex");
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"EmissiveTargetTex");
+
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"DiffuseTargetTex");
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"SpecularTargetTex");
+
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"ShadowDepthTargetTex");
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"ShadowDepthStencilTex");
+
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"CopyRTtex");
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"PostProcessTex");
+}
+
+void CDevice::RematchMtrlTexParam()
+{
+	Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(MTRL_dirlight);
+	pMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"ShadowDepthTargetTex"));
+
+	pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(MTRL_pointlight);
+	pMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"ShadowDepthTargetTex"));
+
+	pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(MTRL_spotlight);
+	pMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex"));
+
+	pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(MTRL_merge);
+	pMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"ColorTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"DiffuseTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"SpecularTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_3, CAssetMgr::GetInst()->FindAsset<CTexture>(L"EmissiveTargetTex"));
+
+	pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(MTRL_decal);
+	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
+}

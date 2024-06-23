@@ -87,18 +87,27 @@ void CEngine::progress()
 
 	if (KEY_TAP(KEY::F10))
 	{
-		RECT rt = {0, 0, (int)1920, (int)1080};
-		AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, false);
-		SetWindowPos(m_hMainWnd, nullptr, 0, 0, rt.right - rt.left, rt.bottom - rt.top, 0);
+		ResizeScreenResolution(Vec2{800.f, 400.f}, true);
+	}
 
-		if (FAILED(CDevice::GetInst()->RenewResolution(Vec2(1910, 960), true)))
-		{
-			MessageBox(nullptr, L"해상도 변경 실패", L"해상도 변경 실패", MB_OK);
-			assert(true);
-		}
+	if (KEY_TAP(KEY::F11))
+	{
+		ResizeScreenResolution(Vec2{1920.f, 1080.f}, true);
 	}
 }
 
+void CEngine::ResizeScreenResolution(Vec2 NewResolution, bool bFullScreen)
+{
+	RECT rt = {0, 0, (int)NewResolution.x, (int)NewResolution.y};
+	AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, false);
+	SetWindowPos(m_hMainWnd, nullptr, 0, 0, rt.right - rt.left, rt.bottom - rt.top, 0);
+
+	if (FAILED(CDevice::GetInst()->RenewResolution(NewResolution, bFullScreen)))
+	{
+		MessageBox(nullptr, L"해상도 변경 실패", L"해상도 변경 실패", MB_OK);
+		assert(true);
+	}
+}
 
 void CEngine::DebugFunctionCheck()
 {
