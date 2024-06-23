@@ -142,7 +142,7 @@ Ptr<CAsset> CAssetMgr::GetAsset(ASSET_TYPE _type, string _key)
 		pAsset = (CAsset *)CAssetMgr::GetInst()->Load<CMesh>(_key).Get();
 		break;
 	case ASSET_TYPE::MESHDATA:
-		// pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CMeshData>(key).Get();
+		pAsset = (CAsset *)CAssetMgr::GetInst()->Load<CMeshData>(_key).Get();
 		break;
 	case ASSET_TYPE::PREFAB:
 		pAsset = (CAsset *)CAssetMgr::GetInst()->Load<CPrefab>(_key).Get();
