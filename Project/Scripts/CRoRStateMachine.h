@@ -1,11 +1,12 @@
 ﻿#pragma once
 class Coroutine;
 
+// 템플릿 클래스 : 스크립트별로 정의된 함수를 할당,호출하기위함
 template <class T> class CRoRStateMachine
 {
 	private:
-	// 멤버는 int변수 밖에없지만
-	// 직접 접근을 방지하기위한(setter강제) innerclass
+	// 이너클래스 : 멤버는 int변수 밖에없지만
+	// 직접 접근을 방지하기위함(setter강제)
 	class StateManager
 	{
 		private:
@@ -73,6 +74,12 @@ template <class T> class CRoRStateMachine
 	vector<void (T::*)()> m_vecBegins;
 	vector<int (T::*)()> m_vecUpdates;
 	vector<void (T::*)()> m_vecEnds;
+	////////////////////////////////////////////////////////////////////////////////////
+	// About Coroutines:
+	// Don't use or Don't care about coroutine functions.
+	// If the original code (to migrate) contains any coroutine functions,
+	// use accumulate trigger in [Update function] to divide code or control call timing.
+	////////////////////////////////////////////////////////////////////////////////////
 	vector<void (T::*)()> m_vecCoroutines;
 	vector<string> m_vecStateStrings;
 	Coroutine *currentCoroutine;
