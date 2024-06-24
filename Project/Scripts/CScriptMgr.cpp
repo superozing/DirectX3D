@@ -11,7 +11,9 @@
 #include "CCameraEffect.h"
 #include "CSpringArm.h"
 #include "CBtnUIScript.h"
+#include "CImageUIScript.h"
 #include "CPanelUIScript.h"
+#include "CProgressBar.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -25,7 +27,9 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CCameraEffect");
 	_vec.push_back(L"CSpringArm");
 	_vec.push_back(L"CBtnUIScript");
+	_vec.push_back(L"CImageUIScript");
 	_vec.push_back(L"CPanelUIScript");
+	_vec.push_back(L"CProgressBar");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -50,8 +54,12 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CSpringArm;
 	if (L"CBtnUIScript" == _strScriptName)
 		return new CBtnUIScript;
+	if (L"CImageUIScript" == _strScriptName)
+		return new CImageUIScript;
 	if (L"CPanelUIScript" == _strScriptName)
 		return new CPanelUIScript;
+	if (L"CProgressBar" == _strScriptName)
+		return new CProgressBar;
 	return nullptr;
 }
 
@@ -89,8 +97,14 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::BTNUISCRIPT:
 		return new CBtnUIScript;
 		break;
+	case (UINT)SCRIPT_TYPE::IMAGEUISCRIPT:
+		return new CImageUIScript;
+		break;
 	case (UINT)SCRIPT_TYPE::PANELUISCRIPT:
 		return new CPanelUIScript;
+		break;
+	case (UINT)SCRIPT_TYPE::PROGRESSBAR:
+		return new CProgressBar;
 		break;
 	}
 	return nullptr;
@@ -140,8 +154,16 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CBtnUIScript";
 		break;
 
+	case SCRIPT_TYPE::IMAGEUISCRIPT:
+		return L"CImageUIScript";
+		break;
+
 	case SCRIPT_TYPE::PANELUISCRIPT:
 		return L"CPanelUIScript";
+		break;
+
+	case SCRIPT_TYPE::PROGRESSBAR:
+		return L"CProgressBar";
 		break;
 
 	}
