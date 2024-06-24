@@ -200,9 +200,11 @@ void Inspector::ObjectName()
 
 void Inspector::ObjectLayer()
 {
+	CLevel* CurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+
 	// 오브젝트 레이어
 	int LayerIdx = m_TargetObject->GetLayerIdx();
-	string LayerName = ToString(CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(LayerIdx)->GetName());
+	string LayerName = ToString(CurLevel->GetLayer(LayerIdx)->GetName());
 	int PrevIdx = LayerIdx;
 
 	if (-1 != LayerIdx)
@@ -217,7 +219,7 @@ void Inspector::ObjectLayer()
 			for (int i = 0; i < 32; ++i)
 			{
 				int CurLayer = i;
-				string CurLayerName = ToString(CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(CurLayer)->GetName());
+				string CurLayerName = ToString(CurLevel->GetLayer(CurLayer)->GetName());
 				
 				if (!magic_enum::enum_cast<LAYER>(CurLayerName).has_value())
 					continue;
@@ -239,8 +241,7 @@ void Inspector::ObjectLayer()
 
 			if (PrevIdx != LayerIdx)
 			{
-				CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-				pCurLevel->AddObject(m_TargetObject, LayerIdx);
+				CurLevel->AddObject(m_TargetObject, LayerIdx);
 			}
 		}
 	}
@@ -252,7 +253,10 @@ int Inspector::PrefabLayer()
 	static int PrevIdx = LayerIdx;
 
 	ImGui::Text("Layer"); ImGui::SameLine();
-	string strLayer = ToString(CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(LayerIdx)->GetName());
+
+	CLevel* CurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+
+	string strLayer = ToString(CurLevel->GetLayer(LayerIdx)->GetName());
 
 	if (ImGui::BeginCombo("##ObjLayer", strLayer.c_str()))
 	{
@@ -260,7 +264,7 @@ int Inspector::PrefabLayer()
 		{
 			int CurLayer = i;
 
-			string CurLayerName = ToString(CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(CurLayer)->GetName());
+			string CurLayerName = ToString(CurLevel->GetLayer(CurLayer)->GetName());
 
 			if (!magic_enum::enum_cast<LAYER>(CurLayerName).has_value())
 				continue;
@@ -282,8 +286,7 @@ int Inspector::PrefabLayer()
 
 		if (PrevIdx != LayerIdx)
 		{
-			CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-			pCurLevel->AddObject(m_TargetObject, LayerIdx);
+			CurLevel->AddObject(m_TargetObject, LayerIdx);
 		}
 	}
 
