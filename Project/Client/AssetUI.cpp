@@ -1,6 +1,8 @@
 ﻿#include "pch.h"
 #include "AssetUI.h"
 
+
+
 AssetUI::AssetUI(const string& _strName, const string& _ID, ASSET_TYPE _Type)
 	: UI(_strName, _ID)
 	, m_Type(_Type)
@@ -131,3 +133,4 @@ void AssetUI::ChangeAssetName(const string& _OriginRelativePath, const string& _
 		filesystem::rename(strPath, NstrPath);
 	}
 }
+
