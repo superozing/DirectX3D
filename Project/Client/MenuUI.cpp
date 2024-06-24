@@ -349,6 +349,8 @@ void MenuUI::ContentSaveAll()
     }
 }
 
+#include <Engine\CEngine.h>
+
 void MenuUI::ScreenControl()
 {
 	int ResolutionX = int(CDevice::GetInst()->GetRenderResolution().x);
@@ -361,12 +363,40 @@ void MenuUI::ScreenControl()
 	
     if (ImGui::BeginMenu(Resolution.c_str()))
 	{
+		static bool IsWindowMode = true; 
+        ImGui::Checkbox("Window Mode", &IsWindowMode);
+        
 
-
-		if (ImGui::MenuItem("Change Resolution"))
+		if (ImGui::MenuItem("1366 X 720"))
 		{
-			ImGui::Text("Test");
+			CEngine::GetInst()->ResizeScreenResolution(Vec2(1366.f, 720.f), IsWindowMode);
 		}
+
+         if (ImGui::MenuItem("1910 X 960"))
+		{
+			CEngine::GetInst()->ResizeScreenResolution(Vec2(1910.f, 960.f), IsWindowMode);
+		}
+
+        if (ImGui::MenuItem("1920 X 1080"))
+		{
+			CEngine::GetInst()->ResizeScreenResolution(Vec2(1920.f, 1080.f), IsWindowMode);
+		}
+
+        if (ImGui::MenuItem("2560 X 1440"))
+		{
+			CEngine::GetInst()->ResizeScreenResolution(Vec2(2560.f, 1440.f), IsWindowMode);
+		}
+
+        static int Resolution[2] = {0, 0};
+
+        ImGui::InputInt2("##Custom Resolution", Resolution);
+		ImGui::SameLine();
+        
+        if (ImGui::Button("Change"))
+        {
+			Vec2 CustomRes = {Resolution[0], Resolution[1]};
+			CEngine::GetInst()->ResizeScreenResolution(CustomRes, IsWindowMode);
+        }
 
 		ImGui::EndMenu();
 	}
