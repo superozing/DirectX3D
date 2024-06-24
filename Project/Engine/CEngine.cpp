@@ -92,12 +92,29 @@ void CEngine::progress()
 
 	if (KEY_TAP(KEY::F11))
 	{
-		ResizeScreenResolution(Vec2{1920.f, 1080.f}, true);
+		ResizeScreenResolution(Vec2{1600.f, 800.f}, true);
+	}
+
+	if (KEY_TAP(KEY::F9))
+	{
+		ResizeScreenResolution(Vec2{2560.f, 1440.f}, false);
 	}
 }
 
 void CEngine::ResizeScreenResolution(Vec2 NewResolution, bool bFullScreen)
 {
+	//if (!bFullScreen)
+	//{
+	//	// 현재 창 스타일 가져오기
+	//	LONG_PTR exStyle = GetWindowLongPtr(m_hMainWnd, GWL_EXSTYLE);
+	//
+	//	// DXGI 요구 사항에 맞는 스타일 추가
+	//	exStyle |= ~WS_EX_TOPMOST; // WS_EX_TOPMOST 포함
+	//
+	//	SetWindowLongPtr(m_hMainWnd, GWL_EXSTYLE, exStyle);
+	//}
+	
+
 	RECT rt = {0, 0, (int)NewResolution.x, (int)NewResolution.y};
 	AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, false);
 	SetWindowPos(m_hMainWnd, nullptr, 0, 0, rt.right - rt.left, rt.bottom - rt.top, 0);

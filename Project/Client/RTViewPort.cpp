@@ -17,6 +17,7 @@
 #include "ImGuizmo.h"
 
 #include "imgui_internal.h"
+
 #include <Engine\CLogMgr.h>
 
 RTViewPort::RTViewPort()
@@ -46,17 +47,25 @@ void RTViewPort::tick()
 void RTViewPort::render_update()
 {
 
-    if (m_ViewPortTexture.Get()->GetWidth() != CDevice::GetInst()->GetRenderResolution().x ||
-        m_ViewPortTexture.Get()->GetHeight() != CDevice::GetInst()->GetRenderResolution().y)
-    {
+	if (m_ViewPortTexture.Get()->GetWidth() != CDevice::GetInst()->GetRenderResolution().x ||
+		m_ViewPortTexture.Get()->GetHeight() != CDevice::GetInst()->GetRenderResolution().y)
+	{
 		m_ViewPortTexture = CAssetMgr::GetInst()->FindAsset<CTexture>(L"CopyRTtex");
-    }
+	}
 
-    CRenderMgr::GetInst()->CopyRTTex(m_ViewPortTexture);
+	CRenderMgr::GetInst()->CopyRTTex(m_ViewPortTexture);
 
-    m_fTapHeight = ImGui::GetFrameHeightWithSpacing();
-    m_ViewportSize.x = (float)ImGui::GetWindowSize().x;
-    m_ViewportSize.y = (float)ImGui::GetWindowSize().y - m_fTapHeight;
+	m_fTapHeight = ImGui::GetFrameHeightWithSpacing();
+	m_ViewportSize.x = 600.f; //(float)ImGui::GetWindowSize().x;
+	m_ViewportSize.y = 600.f; //(float)ImGui::GetWindowSize().y - m_fTapHeight;
+
+
+    ImVec2 Winpos = ImGui::GetWindowSize();
+	Vec2 ViewPortSize = Vec2((float)Winpos.x, (float)Winpos.y);
+
+   //string log = "X : " + to_string(ViewPortSize.x) + " " + "Y : " + to_string(ViewPortSize.y);
+   //CLogMgr::GetInst()->AddLog(Log_Level::WARN, log);
+
 
     m_ViewportPos = Vec2((float)ImGui::GetWindowPos().x, (float)ImGui::GetWindowPos().y);
     m_MouseCoord = Vec2((float)ImGui::GetIO().MousePos.x, (float)ImGui::GetIO().MousePos.y);
