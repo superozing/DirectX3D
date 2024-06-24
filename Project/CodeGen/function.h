@@ -16,6 +16,7 @@ extern vector<string> g_vecAnimNames;
 extern vector<string> g_vecTxtNames;
 extern vector<string> g_vecGraphicsShaderNames;
 extern vector<string> g_vecFBXNames;
+extern vector<string> g_vecMeshNames;
 
 extern vector<string> g_excepts;
 
@@ -25,11 +26,11 @@ void MakeScriptMgrCPP();
 
 void GetAllContents();
 
-void FindAllFiles(const wstring& path);
+void FindAllFiles(const wstring &path);
 
-void SortExtention(const string& path, const string& extention);
+void SortExtention(const string &path, const string &extention);
 
 void InitStrHeader();
-void MakeStrHeader(const string& path, const string& symbol, const vector<string>& vec);
+void MakeStrHeader(const string &path, const string &symbol, const vector<string> &vec);
 
 void PrintError();

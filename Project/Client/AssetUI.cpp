@@ -6,13 +6,11 @@ AssetUI::AssetUI(const string& _strName, const string& _ID, ASSET_TYPE _Type)
 	, m_Type(_Type)
 {
 	Deactivate();
-
 }
 
 AssetUI::~AssetUI()
 {
 }
-
 
 void AssetUI::render_update()
 {
@@ -29,9 +27,8 @@ void AssetUI::render_update()
 
 	if (ImGui::Button("Save Edit"))
 	{
+	}
 
-	} 
-	
 	ImGui::SameLine();
 
 	if (ImGui::Button("Create Instance"))
@@ -41,7 +38,6 @@ void AssetUI::render_update()
 
 	ImGui::Separator();
 }
-
 
 void AssetUI::SetAsset(Ptr<CAsset> _Asset)
 {
@@ -68,7 +64,6 @@ void AssetUI::SetAsset(Ptr<CAsset> _Asset)
 	}
 }
 
-
 void AssetUI::SetAssetKey(Ptr<CAsset> _Asset, const wstring& _Key)
 {
 	_Asset->SetKey(_Key);
@@ -81,12 +76,12 @@ void AssetUI::CreateAssetInstance(Ptr<CAsset> _Asset)
 	filesystem::path pathObj(strKey);
 
 	wstring ParentPath = pathObj.parent_path().wstring();
-	wstring AssetName = pathObj.stem().wstring();
-	wstring AssetType = pathObj.extension().wstring();
+	wstring AssetName  = pathObj.stem().wstring();
+	wstring AssetType  = pathObj.extension().wstring();
 
 	wchar_t szPath[255] = {};
-	wstring FilePath = CPathMgr::GetContentPath();
-	int num = 0;
+	wstring FilePath	= CPathMgr::GetContentPath();
+	int		num			= 0;
 	while (true)
 	{
 		swprintf_s(szPath, (ParentPath + L"\\" + AssetName + L"_Inst_%d" + AssetType).c_str(), num);
@@ -96,8 +91,8 @@ void AssetUI::CreateAssetInstance(Ptr<CAsset> _Asset)
 		++num;
 	}
 
-	ASSET_TYPE type = _Asset->GetType();
-	CAsset* pNewAsset = nullptr;
+	ASSET_TYPE type		 = _Asset->GetType();
+	CAsset*	   pNewAsset = nullptr;
 	switch (type)
 	{
 	case ASSET_TYPE::MATERIAL:

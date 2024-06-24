@@ -1,12 +1,11 @@
-#pragma once
+ï»¿#pragma once
 #include <Engine/CScript.h>
 
-class CTimeMgrScript :
-	public CScript
+class CTimeMgrScript : public CScript
 {
 private:
-	float	m_DTScale;
-	int		m_DTLock; // ¿ø·¡¶ó¸é bool Çü½ÄÀ» »ç¿ëÇØ¾ß ÇÏÁö¸¸, ÇöÀç ½ºÅ©¸³Æ® ÆÄ¶÷¿¡ boolÀÌ ¾ø±â¿¡ int¸¦ »ç¿ëÇÔ.
+	float m_DTScale;
+	int m_DTLock; // ì›ë˜ë¼ë©´ bool í˜•ì‹ì„ ì‚¬ìš©í•´ì•¼ í•˜ì§€ë§Œ, í˜„ì¬ ìŠ¤í¬ë¦½íŠ¸ íŒŒëŒì— boolì´ ì—†ê¸°ì— intë¥¼ ì‚¬ìš©í•¨.
 
 public:
 	void SetDTScale(float _DTScale);
@@ -24,4 +23,3 @@ public:
 	CTimeMgrScript();
 	~CTimeMgrScript();
 };
-

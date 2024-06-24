@@ -5,46 +5,43 @@
 
 class TreeUI;
 
-class Content :
-    public UI
+class Content : public UI
 {
 private:
-    TreeUI* m_DirectoryTree;
-    TreeUI* m_EngineTree;
-    TreeUI* m_ContentTree;
-    
+	TreeUI* m_DirectoryTree;
+	TreeUI* m_EngineTree;
+	TreeUI* m_ContentTree;
 
-    vector<wstring>     m_vecAssetFileName;
-    string m_strCurDirectory;
+	vector<wstring> m_vecAssetFileName;
+	string			m_strCurDirectory;
 
-    vector<string> m_strData;
+	vector<string> m_strData;
 
 public:
-    void ResetBrowser();
-    void SelectBrowser(DWORD_PTR _Node);
+	void ResetBrowser();
+	void SelectBrowser(DWORD_PTR _Node);
 
-    void ResetEngineAsset();
-    void SelectEngineAssetBrowser(DWORD_PTR _Node);
+	void ResetEngineAsset();
+	void SelectEngineAssetBrowser(DWORD_PTR _Node);
 
-    void ResetEngineContent(ASSET_TYPE _type);
+	void ResetEngineContent(ASSET_TYPE _type);
 
-    void ResetContent();
-    void SelectAsset(DWORD_PTR _Node);
-    void SelectEngineAsset(DWORD_PTR _Node);
-    void SetTargetDirectory(const string & _path);
-
+	void ResetContent();
+	void SelectAsset(DWORD_PTR _Node);
+	void SelectEngineAsset(DWORD_PTR _Node);
+	void SetTargetDirectory(const string& _path);
 
 private:
-    void DirectoryUI();
-    void EngineAssetUI();
-    void ContentUI();
+	void DirectoryUI();
+	void EngineAssetUI();
+	void ContentUI();
 
-    void AddDirectoryNode(class TreeNode* _parent, const wstring& _path);
-public:
-    virtual void render_update() override;
+	void AddDirectoryNode(class TreeNode* _parent, const wstring& _path);
 
 public:
-    Content();
-    ~Content();
+	virtual void render_update() override;
+
+public:
+	Content();
+	~Content();
 };
-

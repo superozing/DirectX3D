@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "MeshUI.h"
 
 MeshUI::MeshUI()
@@ -9,7 +9,6 @@ MeshUI::MeshUI()
 MeshUI::~MeshUI()
 {
 }
-
 
 void MeshUI::render_update()
 {

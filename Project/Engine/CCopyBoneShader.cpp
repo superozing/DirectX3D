@@ -1,7 +1,7 @@
 ﻿#include "pch.h"
 #include "CCopyBoneShader.h"
 
-CCopyBoneShader::CCopyBoneShader() 
+CCopyBoneShader::CCopyBoneShader()
 	: CComputeShader(256, 1, 1)
 	, m_SrcBuffer(nullptr)
 	, m_DestBuffer(nullptr)

@@ -23,16 +23,17 @@ void CRenderMgr::init()
 	m_pDebugObj->AddComponent(new CMeshRender);
 
 	Vec2 vRenderResolution = CDevice::GetInst()->GetRenderResolution();
-	m_PostProcessTex = CAssetMgr::GetInst()->CreateTexture(L"PostProcessTex"
-		, (UINT)vRenderResolution.x
-		, (UINT)vRenderResolution.y
-		, DXGI_FORMAT_R8G8B8A8_UNORM
-		, D3D11_BIND_SHADER_RESOURCE);
+	m_PostProcessTex =
+		CAssetMgr::GetInst()->CreateTexture(L"PostProcessTex", (UINT)vRenderResolution.x, (UINT)vRenderResolution.y,
+											DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE);
 
 	// Noise Texture Load
-	m_vecNoiseTex.push_back(CAssetMgr::GetInst()->Load<CTexture>(L"texture\\noise\\noise_01.png", L"texture\\noise\\noise_01.png"));
-	m_vecNoiseTex.push_back(CAssetMgr::GetInst()->Load<CTexture>(L"texture\\noise\\noise_02.png", L"texture\\noise\\noise_02.png"));
-	m_vecNoiseTex.push_back(CAssetMgr::GetInst()->Load<CTexture>(L"texture\\noise\\noise_03.jpg", L"texture\\noise\\noise_03.jpg"));
+	m_vecNoiseTex.push_back(
+		CAssetMgr::GetInst()->Load<CTexture>(L"texture\\noise\\noise_01.png", L"texture\\noise\\noise_01.png"));
+	m_vecNoiseTex.push_back(
+		CAssetMgr::GetInst()->Load<CTexture>(L"texture\\noise\\noise_02.png", L"texture\\noise\\noise_02.png"));
+	m_vecNoiseTex.push_back(
+		CAssetMgr::GetInst()->Load<CTexture>(L"texture\\noise\\noise_03.jpg", L"texture\\noise\\noise_03.jpg"));
 
 	m_vecNoiseTex[2]->UpdateData(14);
 	m_vecNoiseTex[2]->UpdateData_CS_SRV(14);
@@ -41,7 +42,6 @@ void CRenderMgr::init()
 	// MRT Create
 	CreateMRT();
 }
-
 
 void CRenderMgr::CreateMRT()
 {
@@ -52,9 +52,9 @@ void CRenderMgr::CreateMRT()
 	// SwapChain MRT
 	// =============
 	{
-		Ptr<CTexture> RTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
-		Ptr<CTexture> DSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
-		Vec4 vClearColor = (Vec4(0.3f, 0.3f, 0.3f, 1.f));
+		Ptr<CTexture> RTTex		  = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
+		Ptr<CTexture> DSTex		  = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
+		Vec4		  vClearColor = (Vec4(0.3f, 0.3f, 0.3f, 1.f));
 
 		if (m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN] == nullptr)
 		m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN] = new CMRT;
@@ -67,24 +67,19 @@ void CRenderMgr::CreateMRT()
 	// Deferred MRT
 	// ============
 	{
-		Ptr<CTexture> pRTTex[4] =
-		{
-			CAssetMgr::GetInst()->CreateTexture(L"ColorTargetTex"
-											  , vResolution.x, vResolution.y
-											  , DXGI_FORMAT_R8G8B8A8_UNORM
-											  , D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE),
-			CAssetMgr::GetInst()->CreateTexture(L"PositionTargetTex"
-											  , vResolution.x, vResolution.y
-											  , DXGI_FORMAT_R32G32B32A32_FLOAT
-											  , D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE),
-			CAssetMgr::GetInst()->CreateTexture(L"NormalTargetTex"
-											  , vResolution.x, vResolution.y
-											  , DXGI_FORMAT_R32G32B32A32_FLOAT
-											  , D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE),
-			CAssetMgr::GetInst()->CreateTexture(L"EmissiveTargetTex"
-											  , vResolution.x, vResolution.y
-											  , DXGI_FORMAT_R32G32B32A32_FLOAT
-											  , D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE),
+		Ptr<CTexture> pRTTex[4] = {
+			CAssetMgr::GetInst()->CreateTexture(L"ColorTargetTex", vResolution.x, vResolution.y,
+												DXGI_FORMAT_R8G8B8A8_UNORM,
+												D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE),
+			CAssetMgr::GetInst()->CreateTexture(L"PositionTargetTex", vResolution.x, vResolution.y,
+												DXGI_FORMAT_R32G32B32A32_FLOAT,
+												D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE),
+			CAssetMgr::GetInst()->CreateTexture(L"NormalTargetTex", vResolution.x, vResolution.y,
+												DXGI_FORMAT_R32G32B32A32_FLOAT,
+												D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE),
+			CAssetMgr::GetInst()->CreateTexture(L"EmissiveTargetTex", vResolution.x, vResolution.y,
+												DXGI_FORMAT_R32G32B32A32_FLOAT,
+												D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE),
 		};
 
 		Vec4 arrClearColor[4] = {
@@ -107,16 +102,13 @@ void CRenderMgr::CreateMRT()
 	// Light MRT
 	// ============
 	{
-		Ptr<CTexture> pRTTex[2] =
-		{
-			CAssetMgr::GetInst()->CreateTexture(L"DiffuseTargetTex"
-											  , vResolution.x, vResolution.y
-											  , DXGI_FORMAT_R8G8B8A8_UNORM
-											  , D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE),
-			CAssetMgr::GetInst()->CreateTexture(L"SpecularTargetTex"
-											  , vResolution.x, vResolution.y
-											  , DXGI_FORMAT_R8G8B8A8_UNORM
-											  , D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE),
+		Ptr<CTexture> pRTTex[2] = {
+			CAssetMgr::GetInst()->CreateTexture(L"DiffuseTargetTex", vResolution.x, vResolution.y,
+												DXGI_FORMAT_R8G8B8A8_UNORM,
+												D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE),
+			CAssetMgr::GetInst()->CreateTexture(L"SpecularTargetTex", vResolution.x, vResolution.y,
+												DXGI_FORMAT_R8G8B8A8_UNORM,
+												D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE),
 		};
 
 		Vec4 arrClearColor[2] = {
@@ -135,8 +127,7 @@ void CRenderMgr::CreateMRT()
 	// Decal MRT
 	// =========
 	{
-		Ptr<CTexture> pRTTex[2] =
-		{
+		Ptr<CTexture> pRTTex[2] = {
 			CAssetMgr::GetInst()->FindAsset<CTexture>(L"ColorTargetTex"),
 			CAssetMgr::GetInst()->FindAsset<CTexture>(L"EmissiveTargetTex"),
 		};
@@ -157,15 +148,12 @@ void CRenderMgr::CreateMRT()
 	// SHADOW_DEPTH
 	// ============
 	{
-		Ptr<CTexture> pRTTex[1] =
-		{
-			CAssetMgr::GetInst()->CreateTexture(L"ShadowDepthTargetTex"
-							    , 8192, 8192, DXGI_FORMAT_R32_FLOAT
-							    , D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE)
-		};
+		Ptr<CTexture> pRTTex[1] = {
+			CAssetMgr::GetInst()->CreateTexture(L"ShadowDepthTargetTex", 8192, 8192, DXGI_FORMAT_R32_FLOAT,
+												D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE)};
 
 		Vec4 arrClearColor[1] = {
-			Vec4(0.f, 0.f, 0.f, 0.f),			
+			Vec4(0.f, 0.f, 0.f, 0.f),
 		};
 
 		Ptr<CTexture> pDepthTex = CAssetMgr::GetInst()->CreateTexture(L"ShadowDepthStencilTex"
@@ -196,4 +184,3 @@ Ptr<CTexture> CRenderMgr::CopyRTTex(Ptr<CTexture> pTexture)
 
 	return pTexture;
 }
-

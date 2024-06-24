@@ -1,11 +1,10 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CPrefab.h"
 
 #include "CGameObject.h"
 
 SAVE_TYPE CPrefab::GAMEOBJECT_SAVE = nullptr;
 LOAD_TYPE CPrefab::GAMEOBJECT_LOAD = nullptr;
-
 
 CPrefab::CPrefab(bool _Engine)
 	: CAsset(ASSET_TYPE::PREFAB, _Engine)
@@ -46,7 +45,8 @@ int CPrefab::Save(const wstring& _strRelativePath)
 	strContentPath += _strRelativePath;
 
 	ofstream fout(strContentPath);
-	if (!fout.is_open()) return E_FAIL;
+	if (!fout.is_open())
+		return E_FAIL;
 
 	GAMEOBJECT_SAVE(m_ProtoObj, fout);
 
@@ -58,7 +58,8 @@ int CPrefab::Load(const wstring& _strFilePath)
 	assert(GAMEOBJECT_LOAD);
 
 	ifstream fin(_strFilePath);
-	if (!fin.is_open()) return E_FAIL;
+	if (!fin.is_open())
+		return E_FAIL;
 
 	m_ProtoObj = GAMEOBJECT_LOAD(fin);
 

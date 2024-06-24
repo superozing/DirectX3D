@@ -3,17 +3,15 @@
 
 #include <Engine/CGameObject.h>
 
-class PrefabUI :
-    public AssetUI
+class PrefabUI : public AssetUI
 {
 private:
-    CGameObject* m_TargetObject;
+	CGameObject* m_TargetObject;
 
 public:
-    virtual void render_update() override;
+	virtual void render_update() override;
 
 public:
-    PrefabUI();
-    ~PrefabUI();
+	PrefabUI();
+	~PrefabUI();
 };
-

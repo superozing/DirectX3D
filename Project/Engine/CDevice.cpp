@@ -7,7 +7,7 @@
 #include "CRenderMgr.h"
 
 CDevice::CDevice()
-	: m_hRenderWnd(nullptr)	
+	: m_hRenderWnd(nullptr)
 	, m_arrCB{}
 	, m_arrSB{}
 	, m_arrRS{}
@@ -19,7 +19,7 @@ CDevice::CDevice()
 }
 
 CDevice::~CDevice()
-{	
+{
 	Delete_Array(m_arrCB);
 
 	Delete_Array(m_arrSB);
@@ -30,24 +30,20 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution)
 	// 출력 윈도우
 	m_hRenderWnd = _hWnd;
 
-	// 버퍼 해상도 
+	// 버퍼 해상도
 	m_vRenderResolution = _vResolution;
-
 
 	// 장치 초기화
 	D3D_FEATURE_LEVEL eLevel = D3D_FEATURE_LEVEL_11_0;
 
-	if (FAILED(D3D11CreateDevice( nullptr
-								, D3D_DRIVER_TYPE_HARDWARE, nullptr
-								, D3D11_CREATE_DEVICE_DEBUG
-								, nullptr, 0, D3D11_SDK_VERSION
-								, m_Device.GetAddressOf(), &eLevel, m_Context.GetAddressOf())))
+	if (FAILED(D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, D3D11_CREATE_DEVICE_DEBUG, nullptr, 0,
+								 D3D11_SDK_VERSION, m_Device.GetAddressOf(), &eLevel, m_Context.GetAddressOf())))
 	{
 		MessageBox(nullptr, L"Device, Context 생성 실패", L"Device 초기화 실패", MB_OK);
 		return E_FAIL;
-	}	
+	}
 
-	// 스왚체인 생성 
+	// 스왚체인 생성
 	if (FAILED(CreateSwapChain()))
 	{
 		MessageBox(nullptr, L"SwapChain 생성 실패", L"Device 초기화 실패", MB_OK);
@@ -73,13 +69,12 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution)
 		return E_FAIL;
 	}
 
-
 	if (FAILED(CreateBlendState()))
 	{
 		MessageBox(nullptr, L"Blend State 생성 실패", L"Device 초기화 실패", MB_OK);
 		return E_FAIL;
 	}
-	
+
 	if (FAILED(CreateSamplerState()))
 	{
 		MessageBox(nullptr, L"Sampler State 생성 실패", L"Device 초기화 실패", MB_OK);
@@ -91,7 +86,7 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution)
 		MessageBox(nullptr, L"상수버퍼 생성 실패", L"Device 초기화 실패", MB_OK);
 		return E_FAIL;
 	}
-	
+
 	if (FAILED(CreateStructuredBuffer()))
 	{
 		MessageBox(nullptr, L"구조화 버퍼 생성 실패", L"Device 초기화 실패", MB_OK);
@@ -141,28 +136,27 @@ int CDevice::CreateSwapChain(bool _bFullscreen)
 	DXGI_SWAP_CHAIN_DESC tDesc = {};
 
 	// SwapChain 이 관리하는 Buffer(RenderTarget) 의 구성 정보
-	tDesc.BufferCount = 1;
-	tDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	tDesc.BufferDesc.Width = (UINT)m_vRenderResolution.x;
-	tDesc.BufferDesc.Height = (UINT)m_vRenderResolution.y;
-	tDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	tDesc.BufferDesc.RefreshRate.Denominator = 1; 
-	tDesc.BufferDesc.RefreshRate.Numerator = 60;
-	tDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-	tDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-	tDesc.Flags = 0;
+	tDesc.BufferCount						 = 1;
+	tDesc.BufferUsage						 = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+	tDesc.BufferDesc.Width					 = (UINT)m_vRenderResolution.x;
+	tDesc.BufferDesc.Height					 = (UINT)m_vRenderResolution.y;
+	tDesc.BufferDesc.Format					 = DXGI_FORMAT_R8G8B8A8_UNORM;
+	tDesc.BufferDesc.RefreshRate.Denominator = 1;
+	tDesc.BufferDesc.RefreshRate.Numerator	 = 60;
+	tDesc.BufferDesc.Scaling				 = DXGI_MODE_SCALING_UNSPECIFIED;
+	tDesc.BufferDesc.ScanlineOrdering		 = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+	tDesc.Flags								 = 0;
 
-	tDesc.SampleDesc.Count = 1;
+	tDesc.SampleDesc.Count	 = 1;
 	tDesc.SampleDesc.Quality = 0;
 
 	tDesc.Windowed = _bFullscreen;	   // 창모드
 	tDesc.OutputWindow = m_hRenderWnd; // SwapChain 의 출력 윈도우 지정
-	
 
 	// 스왚체인 생성기능을 가지고 있는 Factory 에 접근한다.
-	ComPtr<IDXGIDevice>		pIdxgiDevice = nullptr;
-	ComPtr<IDXGIAdapter>	pAdapter = nullptr;
-	ComPtr<IDXGIFactory>	pFactory = nullptr;
+	ComPtr<IDXGIDevice>	 pIdxgiDevice = nullptr;
+	ComPtr<IDXGIAdapter> pAdapter	  = nullptr;
+	ComPtr<IDXGIFactory> pFactory	  = nullptr;
 
 	m_Device->QueryInterface(__uuidof(IDXGIDevice), (void**)pIdxgiDevice.GetAddressOf());
 	pIdxgiDevice->GetParent(__uuidof(IDXGIAdapter), (void**)pAdapter.GetAddressOf());
@@ -176,7 +170,7 @@ int CDevice::CreateSwapChain(bool _bFullscreen)
 
 	// 전역 데이터에 렌더링 해상도 기록
 	g_global.g_RenderResolution = m_vRenderResolution;
-	
+
 	return S_OK;
 }
 
@@ -190,11 +184,8 @@ int CDevice::CreateTargetView()
 	CAssetMgr::GetInst()->CreateTexture(L"RenderTargetTex", tex2D);
 
 	// DepthStencilTexture 생성
-	CAssetMgr::GetInst()->CreateTexture( L"DepthStencilTex"
-										, (UINT)m_vRenderResolution.x
-										, (UINT)m_vRenderResolution.y
-										, DXGI_FORMAT_D24_UNORM_S8_UINT
-										, D3D11_BIND_DEPTH_STENCIL );
+	CAssetMgr::GetInst()->CreateTexture(L"DepthStencilTex", (UINT)m_vRenderResolution.x, (UINT)m_vRenderResolution.y,
+										DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_DEPTH_STENCIL);
 
 	return S_OK;
 }
@@ -209,22 +200,22 @@ int CDevice::CreateRasterizerState()
 
 	tDesc.CullMode = D3D11_CULL_FRONT;
 	tDesc.FillMode = D3D11_FILL_SOLID;
-	result = DEVICE->CreateRasterizerState(&tDesc, m_arrRS[(UINT)RS_TYPE::CULL_FRONT].GetAddressOf());
+	result		   = DEVICE->CreateRasterizerState(&tDesc, m_arrRS[(UINT)RS_TYPE::CULL_FRONT].GetAddressOf());
 	if (FAILED(result))
 		return E_FAIL;
 
 	tDesc.CullMode = D3D11_CULL_NONE;
 	tDesc.FillMode = D3D11_FILL_SOLID;
-	result = DEVICE->CreateRasterizerState(&tDesc, m_arrRS[(UINT)RS_TYPE::CULL_NONE].GetAddressOf());
+	result		   = DEVICE->CreateRasterizerState(&tDesc, m_arrRS[(UINT)RS_TYPE::CULL_NONE].GetAddressOf());
 	if (FAILED(result))
 		return E_FAIL;
 
 	tDesc.CullMode = D3D11_CULL_NONE;
 	tDesc.FillMode = D3D11_FILL_WIREFRAME;
-	result = DEVICE->CreateRasterizerState(&tDesc, m_arrRS[(UINT)RS_TYPE::WIRE_FRAME].GetAddressOf());
+	result		   = DEVICE->CreateRasterizerState(&tDesc, m_arrRS[(UINT)RS_TYPE::WIRE_FRAME].GetAddressOf());
 	if (FAILED(result))
 		return E_FAIL;
-	
+
 	return S_OK;
 }
 
@@ -237,92 +228,95 @@ int CDevice::CreateDepthStencilState()
 	D3D11_DEPTH_STENCIL_DESC tDesc = {};
 
 	// Less Equal
-	tDesc.DepthEnable = true;
-	tDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+	tDesc.DepthEnable	 = true;
+	tDesc.DepthFunc		 = D3D11_COMPARISON_LESS_EQUAL;
 	tDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-	tDesc.StencilEnable = false;
+	tDesc.StencilEnable	 = false;
 
 	hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::LESS_EQUAL].GetAddressOf());
-	if (FAILED(hr)) return E_FAIL;
+	if (FAILED(hr))
+		return E_FAIL;
 
 	// Greater
-	tDesc.DepthEnable = true;
-	tDesc.DepthFunc = D3D11_COMPARISON_GREATER;
+	tDesc.DepthEnable	 = true;
+	tDesc.DepthFunc		 = D3D11_COMPARISON_GREATER;
 	tDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-	tDesc.StencilEnable = false;
-	hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::GRATER].GetAddressOf());
-	if (FAILED(hr)) return E_FAIL;
+	tDesc.StencilEnable	 = false;
+	hr					 = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::GRATER].GetAddressOf());
+	if (FAILED(hr))
+		return E_FAIL;
 
 	// Greater Equal
-	tDesc.DepthEnable = true;
-	tDesc.DepthFunc = D3D11_COMPARISON_GREATER_EQUAL;
+	tDesc.DepthEnable	 = true;
+	tDesc.DepthFunc		 = D3D11_COMPARISON_GREATER_EQUAL;
 	tDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-	tDesc.StencilEnable = false;
-	hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::GRATER_EQUAL].GetAddressOf());
-	if (FAILED(hr)) return E_FAIL;
+	tDesc.StencilEnable	 = false;
+	hr					 = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::GRATER_EQUAL].GetAddressOf());
+	if (FAILED(hr))
+		return E_FAIL;
 
 	// No Test
-	tDesc.DepthEnable = false;
-	tDesc.DepthFunc = D3D11_COMPARISON_NEVER;
+	tDesc.DepthEnable	 = false;
+	tDesc.DepthFunc		 = D3D11_COMPARISON_NEVER;
 	tDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-	tDesc.StencilEnable = false;
-	hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::NO_TEST].GetAddressOf());
+	tDesc.StencilEnable	 = false;
+	hr					 = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::NO_TEST].GetAddressOf());
 
 	// No Write
-	tDesc.DepthEnable = true;
-	tDesc.DepthFunc = D3D11_COMPARISON_LESS;
+	tDesc.DepthEnable	 = true;
+	tDesc.DepthFunc		 = D3D11_COMPARISON_LESS;
 	tDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-	tDesc.StencilEnable = false;
-	hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::NO_WRITE].GetAddressOf());
-	if (FAILED(hr)) return E_FAIL;
+	tDesc.StencilEnable	 = false;
+	hr					 = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::NO_WRITE].GetAddressOf());
+	if (FAILED(hr))
+		return E_FAIL;
 
 	// NoTest NoWrite
-	tDesc.DepthEnable = false;
-	tDesc.DepthFunc = D3D11_COMPARISON_NEVER;
+	tDesc.DepthEnable	 = false;
+	tDesc.DepthFunc		 = D3D11_COMPARISON_NEVER;
 	tDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-	tDesc.StencilEnable = false;
+	tDesc.StencilEnable	 = false;
 	hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::NO_TEST_NO_WRITE].GetAddressOf());
-	if (FAILED(hr)) return E_FAIL;
-
-
+	if (FAILED(hr))
+		return E_FAIL;
 
 	//// BackFace Check
-	//tDesc.DepthEnable = true;
-	//tDesc.DepthFunc = D3D11_COMPARISON_GREATER;
-	//tDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-	//tDesc.StencilEnable = true;
+	// tDesc.DepthEnable = true;
+	// tDesc.DepthFunc = D3D11_COMPARISON_GREATER;
+	// tDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	// tDesc.StencilEnable = true;
 
-	//tDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-	//tDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_INCR;
+	// tDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+	// tDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_INCR;
 
-	//hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::BACKFACE_CHECK].GetAddressOf());
-	//if (FAILED(hr)) return E_FAIL;
+	// hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::BACKFACE_CHECK].GetAddressOf());
+	// if (FAILED(hr)) return E_FAIL;
 
 	//// FrontFace Check
-	//tDesc.DepthEnable = true;
-	//tDesc.DepthFunc = D3D11_COMPARISON_LESS;
-	//tDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-	//tDesc.StencilEnable = true;
+	// tDesc.DepthEnable = true;
+	// tDesc.DepthFunc = D3D11_COMPARISON_LESS;
+	// tDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	// tDesc.StencilEnable = true;
 
-	//tDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-	//tDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_INCR;
-	//tDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_DECR;
+	// tDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+	// tDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_INCR;
+	// tDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_DECR;
 
-	//hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::FRONTFACE_CHECK].GetAddressOf());
-	//if (FAILED(hr)) return E_FAIL;
+	// hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::FRONTFACE_CHECK].GetAddressOf());
+	// if (FAILED(hr)) return E_FAIL;
 
 	//// Stencil Check
-	//tDesc.DepthEnable = false;
-	//tDesc.DepthFunc = D3D11_COMPARISON_NEVER;
-	//tDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-	//tDesc.StencilEnable = true;
+	// tDesc.DepthEnable = false;
+	// tDesc.DepthFunc = D3D11_COMPARISON_NEVER;
+	// tDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	// tDesc.StencilEnable = true;
 
-	//tDesc.FrontFace.StencilFunc = D3D11_COMPARISON_EQUAL;
-	//tDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_ZERO;
-	//tDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_ZERO;
+	// tDesc.FrontFace.StencilFunc = D3D11_COMPARISON_EQUAL;
+	// tDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_ZERO;
+	// tDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_ZERO;
 
-	//hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::STENCIL_CHECK].GetAddressOf());
-	//if (FAILED(hr)) return E_FAIL;
+	// hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::STENCIL_CHECK].GetAddressOf());
+	// if (FAILED(hr)) return E_FAIL;
 
 	return S_OK;
 }
@@ -331,64 +325,63 @@ int CDevice::CreateBlendState()
 {
 	m_arrBS[(UINT)BS_TYPE::DEFAULT] = nullptr;
 
-
 	D3D11_BLEND_DESC tDesc = {};
 
 	// AlphaBlend
-	tDesc.AlphaToCoverageEnable = false;
+	tDesc.AlphaToCoverageEnable	 = false;
 	tDesc.IndependentBlendEnable = false;
 
 	tDesc.RenderTarget[0].BlendEnable = true;
-	tDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-	tDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-	tDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
-	
-	tDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-	tDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	tDesc.RenderTarget[0].BlendOp	  = D3D11_BLEND_OP_ADD;
+	tDesc.RenderTarget[0].SrcBlend	  = D3D11_BLEND_SRC_ALPHA;
+	tDesc.RenderTarget[0].DestBlend	  = D3D11_BLEND_INV_SRC_ALPHA;
+
+	tDesc.RenderTarget[0].BlendOpAlpha	 = D3D11_BLEND_OP_ADD;
+	tDesc.RenderTarget[0].SrcBlendAlpha	 = D3D11_BLEND_ONE;
 	tDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
 
 	tDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
 	DEVICE->CreateBlendState(&tDesc, m_arrBS[(UINT)BS_TYPE::ALPHA_BLEND].GetAddressOf());
 
-	tDesc.AlphaToCoverageEnable = false;
+	tDesc.AlphaToCoverageEnable	 = false;
 	tDesc.IndependentBlendEnable = false;
 
 	tDesc.RenderTarget[0].BlendEnable = true;
-	tDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-	tDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
-	tDesc.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
+	tDesc.RenderTarget[0].BlendOp	  = D3D11_BLEND_OP_ADD;
+	tDesc.RenderTarget[0].SrcBlend	  = D3D11_BLEND_ONE;
+	tDesc.RenderTarget[0].DestBlend	  = D3D11_BLEND_ONE;
 
-	tDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-	tDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	tDesc.RenderTarget[0].BlendOpAlpha	 = D3D11_BLEND_OP_ADD;
+	tDesc.RenderTarget[0].SrcBlendAlpha	 = D3D11_BLEND_ONE;
 	tDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
 
 	tDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
 	DEVICE->CreateBlendState(&tDesc, m_arrBS[(UINT)BS_TYPE::ONE_ONE].GetAddressOf());
 
-	// Decal 
-	tDesc.AlphaToCoverageEnable = false;
+	// Decal
+	tDesc.AlphaToCoverageEnable	 = false;
 	tDesc.IndependentBlendEnable = true;
 
 	tDesc.RenderTarget[0].BlendEnable = true;
-	tDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-	tDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-	tDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	tDesc.RenderTarget[0].BlendOp	  = D3D11_BLEND_OP_ADD;
+	tDesc.RenderTarget[0].SrcBlend	  = D3D11_BLEND_SRC_ALPHA;
+	tDesc.RenderTarget[0].DestBlend	  = D3D11_BLEND_INV_SRC_ALPHA;
 
-	tDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-	tDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-	tDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
+	tDesc.RenderTarget[0].BlendOpAlpha			= D3D11_BLEND_OP_ADD;
+	tDesc.RenderTarget[0].SrcBlendAlpha			= D3D11_BLEND_ONE;
+	tDesc.RenderTarget[0].DestBlendAlpha		= D3D11_BLEND_ONE;
 	tDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
 	tDesc.RenderTarget[1].BlendEnable = true;
-	tDesc.RenderTarget[1].BlendOp = D3D11_BLEND_OP_ADD;
-	tDesc.RenderTarget[1].SrcBlend = D3D11_BLEND_ONE;
-	tDesc.RenderTarget[1].DestBlend = D3D11_BLEND_ONE;
-					   
-	tDesc.RenderTarget[1].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-	tDesc.RenderTarget[1].SrcBlendAlpha = D3D11_BLEND_ONE;
-	tDesc.RenderTarget[1].DestBlendAlpha = D3D11_BLEND_ONE;
+	tDesc.RenderTarget[1].BlendOp	  = D3D11_BLEND_OP_ADD;
+	tDesc.RenderTarget[1].SrcBlend	  = D3D11_BLEND_ONE;
+	tDesc.RenderTarget[1].DestBlend	  = D3D11_BLEND_ONE;
+
+	tDesc.RenderTarget[1].BlendOpAlpha			= D3D11_BLEND_OP_ADD;
+	tDesc.RenderTarget[1].SrcBlendAlpha			= D3D11_BLEND_ONE;
+	tDesc.RenderTarget[1].DestBlendAlpha		= D3D11_BLEND_ONE;
 	tDesc.RenderTarget[1].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
 	DEVICE->CreateBlendState(&tDesc, m_arrBS[(UINT)BS_TYPE::DECAL].GetAddressOf());
@@ -403,18 +396,17 @@ int CDevice::CreateSamplerState()
 	tDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 	tDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 	tDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-	tDesc.Filter = D3D11_FILTER_ANISOTROPIC;
+	tDesc.Filter   = D3D11_FILTER_ANISOTROPIC;
 
 	tDesc.MinLOD = 0;
 	tDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
 	DEVICE->CreateSamplerState(&tDesc, m_arrSampler[0].GetAddressOf());
 
-
 	tDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 	tDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 	tDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-	tDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+	tDesc.Filter   = D3D11_FILTER_MIN_MAG_MIP_POINT;
 
 	tDesc.MinLOD = 0;
 	tDesc.MaxLOD = D3D11_FLOAT32_MAX;
@@ -470,7 +462,7 @@ int CDevice::CreateStructuredBuffer()
 
 	m_arrSB[(UINT)SB_TYPE::WEIGHTMAP] = new CStructuredBuffer;
 	m_arrSB[(UINT)SB_TYPE::WEIGHTMAP]->Create(sizeof(tWeight_4), 1024 * 1024, SB_READ_TYPE::READ_WRITE, false);
-	
+
 	return S_OK;
 }
 

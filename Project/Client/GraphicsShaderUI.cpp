@@ -11,11 +11,10 @@ GraphicsShader::~GraphicsShader()
 {
 }
 
-
 void GraphicsShader::render_update()
 {
 	AssetUI::render_update();
-	
+
 	Ptr<CGraphicsShader> pShader = (CGraphicsShader*)GetAsset().Get();
 
 	ImGui::SameLine();
@@ -31,7 +30,7 @@ void GraphicsShader::render_update()
 
 	ImGui::Text("Graphics Shader ");
 	ImGui::SameLine();
-	
+
 	using namespace std::filesystem;
 
 	path filePath = strShaderName;
@@ -39,8 +38,8 @@ void GraphicsShader::render_update()
 	// 확장자 제거 - stem() 함수를 사용하면 파일 명만 가져올 수 있어요.
 	string strFileName = filePath.stem().string();
 
-	ImGui::InputText("##GraphicsShaderName", (char*)strFileName.c_str(), strFileName.length(), ImGuiInputTextFlags_ReadOnly);
-
+	ImGui::InputText("##GraphicsShaderName", (char*)strFileName.c_str(), strFileName.length(),
+					 ImGuiInputTextFlags_ReadOnly);
 
 	ImGui::SeparatorText("Shader Info");
 
@@ -107,11 +106,7 @@ void GraphicsShader::render_update()
 		ImGui::InputText("##PS_Func", (char*)strFuncName.c_str(), strFuncName.length(), ImGuiInputTextFlags_ReadOnly);
 	}
 
-
-
 	ImGui::SeparatorText("Shader State ");
-
-
 
 	string strEnum = ToString(magic_enum::enum_name(pShader->GetTopology()));
 	if (!strEnum.empty())
@@ -131,8 +126,8 @@ void GraphicsShader::render_update()
 
 				bool isSelected = (topologyBuffer == SelectedTopology);
 
-				if (vecTopologyNames[(UINT)topologyBuffer] != "" 
-					&& ImGui::Selectable(vecTopologyNames[(UINT)topologyBuffer].c_str(), isSelected))
+				if (vecTopologyNames[(UINT)topologyBuffer] != "" &&
+					ImGui::Selectable(vecTopologyNames[(UINT)topologyBuffer].c_str(), isSelected))
 				{
 					SelectedTopology = topologyBuffer;
 				}
@@ -170,8 +165,8 @@ void GraphicsShader::render_update()
 
 				bool isSelected = (TypeBuffer == SelectedType);
 
-				if (vecTypeNames[(UINT)TypeBuffer] != ""
-					&& ImGui::Selectable(vecTypeNames[(UINT)TypeBuffer].c_str(), isSelected))
+				if (vecTypeNames[(UINT)TypeBuffer] != "" &&
+					ImGui::Selectable(vecTypeNames[(UINT)TypeBuffer].c_str(), isSelected))
 				{
 					SelectedType = TypeBuffer;
 				}
@@ -196,7 +191,7 @@ void GraphicsShader::render_update()
 	{
 		ImGui::Text("Depth Stancil State");
 		ImGui::SameLine();
-	
+
 		DS_TYPE SelectedType = pShader->GetDSType();
 
 		const vector<string>& vecTypeNames = CImGuiMgr::GetInst()->GetVecEnumDS();
@@ -209,8 +204,8 @@ void GraphicsShader::render_update()
 
 				bool isSelected = (TypeBuffer == SelectedType);
 
-				if (vecTypeNames[(UINT)TypeBuffer] != ""
-					&& ImGui::Selectable(vecTypeNames[(UINT)TypeBuffer].c_str(), isSelected))
+				if (vecTypeNames[(UINT)TypeBuffer] != "" &&
+					ImGui::Selectable(vecTypeNames[(UINT)TypeBuffer].c_str(), isSelected))
 				{
 					SelectedType = TypeBuffer;
 				}
@@ -248,8 +243,8 @@ void GraphicsShader::render_update()
 
 				bool isSelected = (TypeBuffer == SelectedType);
 
-				if (vecTypeNames[(UINT)TypeBuffer] != ""
-					&& ImGui::Selectable(vecTypeNames[(UINT)TypeBuffer].c_str(), isSelected))
+				if (vecTypeNames[(UINT)TypeBuffer] != "" &&
+					ImGui::Selectable(vecTypeNames[(UINT)TypeBuffer].c_str(), isSelected))
 				{
 					SelectedType = TypeBuffer;
 				}
@@ -286,8 +281,8 @@ void GraphicsShader::render_update()
 
 				bool isSelected = (TypeBuffer == SelectedType);
 
-				if (vecTypeNames[(UINT)TypeBuffer] != ""
-					&& ImGui::Selectable(vecTypeNames[(UINT)TypeBuffer].c_str(), isSelected))
+				if (vecTypeNames[(UINT)TypeBuffer] != "" &&
+					ImGui::Selectable(vecTypeNames[(UINT)TypeBuffer].c_str(), isSelected))
 				{
 					SelectedType = TypeBuffer;
 				}
@@ -307,7 +302,6 @@ void GraphicsShader::render_update()
 		}
 	}
 
-
 	ImGui::SeparatorText("");
 
 	if (TitleCollapse("Scalar Param"))
@@ -318,7 +312,7 @@ void GraphicsShader::render_update()
 		{
 			// 1. 사용 여부 (체크 박스)
 			auto& Scalar = pScalarParam[i];
-			bool IsUse = Scalar.IsUse;
+			bool  IsUse	 = Scalar.IsUse;
 
 			ImGui::Checkbox(ToString(magic_enum::enum_name(SCALAR_PARAM(i))).c_str(), &IsUse);
 
@@ -333,22 +327,24 @@ void GraphicsShader::render_update()
 				pShader->DeleteScalarParam(SCALAR_PARAM(i));
 			}
 
-			// 2. 사용 여부에 따른 정보 표시 
+			// 2. 사용 여부에 따른 정보 표시
 			if (Scalar.IsUse)
 			{
 				char cdesc[100]{};
 				strcpy_s(cdesc, Scalar.Desc.c_str());
-				ImGui::Text("Param Name");			ImGui::SameLine();
+				ImGui::Text("Param Name");
+				ImGui::SameLine();
 				ImGui::InputText(("##Scalar" + to_string(i)).c_str(), cdesc, 100, ImGuiInputTextFlags_None);
 
 				char cscalar[100]{};
 				strcpy_s(cscalar, Scalar.Tooltip.c_str());
-				ImGui::Text("Tooltip");			ImGui::SameLine();
+				ImGui::Text("Tooltip");
+				ImGui::SameLine();
 				ImGui::InputText(("##ScalarTooltip" + to_string(i)).c_str(), cscalar, 100, ImGuiInputTextFlags_None);
 
-				pShader->AddScalarParam(SCALAR_PARAM(i), string(cdesc), Scalar.Min, Scalar.Max, Scalar.View, string(cscalar));
+				pShader->AddScalarParam(SCALAR_PARAM(i), string(cdesc), Scalar.Min, Scalar.Max, Scalar.View,
+										string(cscalar));
 			}
-
 
 			ImGui::Separator();
 		}
@@ -361,8 +357,8 @@ void GraphicsShader::render_update()
 		for (UINT i = 0; i < (UINT)TEX_PARAM::END; ++i)
 		{
 			// 1. 사용 여부 (체크 박스)
-			auto& Tex = pTexParam[i];
-			bool IsUse = Tex.IsUse;
+			auto& Tex	= pTexParam[i];
+			bool  IsUse = Tex.IsUse;
 
 			ImGui::Checkbox(ToString(magic_enum::enum_name(TEX_PARAM(i))).c_str(), &IsUse);
 
@@ -374,13 +370,13 @@ void GraphicsShader::render_update()
 			else if (!IsUse && Tex.IsUse)
 				pShader->DeleteTexParam(TEX_PARAM(i));
 
-
-			// 2. 사용 여부에 따른 정보 표시 
+			// 2. 사용 여부에 따른 정보 표시
 			if (Tex.IsUse)
 			{
 				char cdesc[100]{};
 				strcpy_s(cdesc, Tex.Desc.c_str());
-				ImGui::Text("Param Name");			ImGui::SameLine();
+				ImGui::Text("Param Name");
+				ImGui::SameLine();
 				ImGui::InputText(("##Scalar" + to_string(i)).c_str(), cdesc, 100, ImGuiInputTextFlags_None);
 
 				pShader->AddTexParam(TEX_PARAM(i), string(cdesc));

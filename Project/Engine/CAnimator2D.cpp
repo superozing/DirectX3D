@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CAnimator2D.h"
 
 #include "CAnim.h"
@@ -6,7 +6,6 @@
 CAnimator2D::CAnimator2D()
 	: CComponent(COMPONENT_TYPE::ANIMATOR2D)
 {
-
 }
 
 CAnimator2D::CAnimator2D(const CAnimator2D& _OriginAnimator)
@@ -31,7 +30,7 @@ CAnimator2D::CAnimator2D(const CAnimator2D& _OriginAnimator)
 
 CAnimator2D::~CAnimator2D()
 {
-	Delete_Map(m_mapAnim);	
+	Delete_Map(m_mapAnim);
 }
 
 void CAnimator2D::finaltick()
@@ -56,17 +55,17 @@ void CAnimator2D::UpdateData()
 }
 
 void CAnimator2D::Clear()
-{	
+{
 	CAnim::Clear();
 }
 
-void CAnimator2D::Create(const wstring& _strKey, Ptr<CTexture> _AltasTex, Vec2 _LeftTop
-	, Vec2 _vSliceSize, Vec2 _OffsetSize, Vec2 _Background, int _FrmCount, float _FPS)
+void CAnimator2D::Create(const wstring& _strKey, Ptr<CTexture> _AltasTex, Vec2 _LeftTop, Vec2 _vSliceSize,
+						 Vec2 _OffsetSize, Vec2 _Background, int _FrmCount, float _FPS)
 {
 	CAnim* pAnim = FindAnim(_strKey);
 	assert(!pAnim);
 
-	pAnim = new CAnim;	
+	pAnim = new CAnim;
 	pAnim->Create(this, _AltasTex, _LeftTop, _vSliceSize, _OffsetSize, _Background, _FrmCount, _FPS);
 	auto name = std::filesystem::path(_strKey).filename();
 	pAnim->SetName(name);
@@ -97,7 +96,7 @@ void CAnimator2D::Play(const wstring& _strAnimName, bool _bRepeat)
 
 void CAnimator2D::SaveToFile(FILE* _File)
 {
-	// ¾Ö´Ï¸ŞÀÌ¼Ç °³¼ö ÀúÀå
+	// ì• ë‹ˆë©”ì´ì…˜ ê°œìˆ˜ ì €ì¥
 	size_t AnimCount = m_mapAnim.size();
 	fwrite(&AnimCount, sizeof(size_t), 1, _File);
 
@@ -105,8 +104,8 @@ void CAnimator2D::SaveToFile(FILE* _File)
 	{
 		pair.second->SaveToFile(_File);
 	}
-	
-	// ÇÃ·¹ÀÌ ÁßÀÌ´ø ¾Ö´Ï¸ŞÀÌ¼ÇÀÇ Å°¸¦ ÀúÀåÇÑ´Ù.
+
+	// í”Œë ˆì´ ì¤‘ì´ë˜ ì• ë‹ˆë©”ì´ì…˜ì˜ í‚¤ë¥¼ ì €ì¥í•œë‹¤.
 	wstring PlayAnimName;
 
 	if (nullptr != m_CurAnim)
@@ -125,11 +124,12 @@ void CAnimator2D::SaveToFile(FILE* _File)
 
 void CAnimator2D::SaveToFile(ofstream& fout)
 {
-	// ¾Ö´Ï¸ŞÀÌ¼Ç °³¼ö ÀúÀå
+	// ì• ë‹ˆë©”ì´ì…˜ ê°œìˆ˜ ì €ì¥
 	size_t AnimCount = m_mapAnim.size();
 	fout << TagAnimCount << endl;
 	fout << AnimCount << endl;
-	if (AnimCount == 0) return;
+	if (AnimCount == 0)
+		return;
 
 	fout << TagAnimNames << endl;
 	for (const auto& pair : m_mapAnim)
@@ -137,7 +137,7 @@ void CAnimator2D::SaveToFile(ofstream& fout)
 		fout << ToString(pair.first) << endl;
 	}
 
-	// ÇÃ·¹ÀÌ ÁßÀÌ´ø ¾Ö´Ï¸ŞÀÌ¼ÇÀÇ Å°¸¦ ÀúÀåÇÑ´Ù.
+	// í”Œë ˆì´ ì¤‘ì´ë˜ ì• ë‹ˆë©”ì´ì…˜ì˜ í‚¤ë¥¼ ì €ì¥í•œë‹¤.
 	wstring PlayAnimName;
 	fout << TagPlayingAnimName << endl;
 
@@ -154,20 +154,20 @@ void CAnimator2D::SaveToFile(ofstream& fout)
 
 void CAnimator2D::LoadFromFile(FILE* _File)
 {
-	// ¾Ö´Ï¸ŞÀÌ¼Ç °³¼ö ·Îµå
+	// ì• ë‹ˆë©”ì´ì…˜ ê°œìˆ˜ ë¡œë“œ
 	size_t AnimCount = 0;
 	fread(&AnimCount, sizeof(size_t), 1, _File);
-		
+
 	for (size_t i = 0; i < AnimCount; ++i)
 	{
 		CAnim* pAnim = new CAnim;
 		pAnim->LoadFromFile(_File);
 
 		pAnim->m_Animator = this;
-		m_mapAnim.insert(make_pair(pAnim->GetName(), pAnim));		
+		m_mapAnim.insert(make_pair(pAnim->GetName(), pAnim));
 	}
 
-	// ÇÃ·¹ÀÌ ÁßÀÌ´ø ¾Ö´Ï¸ŞÀÌ¼ÇÀÇ Å°¸¦ ºÒ·¯¿Â´Ù
+	// í”Œë ˆì´ ì¤‘ì´ë˜ ì• ë‹ˆë©”ì´ì…˜ì˜ í‚¤ë¥¼ ë¶ˆëŸ¬ì˜¨ë‹¤
 	wstring PlayAnimName;
 	LoadWString(PlayAnimName, _File);
 
@@ -185,7 +185,8 @@ void CAnimator2D::LoadFromFile(ifstream& fin)
 	Utils::GetLineUntilString(fin, TagAnimCount);
 	fin >> animcount;
 
-	if (animcount == 0) return;
+	if (animcount == 0)
+		return;
 
 	Utils::GetLineUntilString(fin, TagAnimNames);
 
@@ -201,9 +202,9 @@ void CAnimator2D::LoadFromFile(ifstream& fin)
 		getline(fin, animName);
 
 		bool isFind = false;
-		for (int i = 0; i < files.size(); i++) 
+		for (int i = 0; i < files.size(); i++)
 		{
-			if (files[i].find(animName) != string::npos) 
+			if (files[i].find(animName) != string::npos)
 			{
 				isFind = true;
 
@@ -218,9 +219,9 @@ void CAnimator2D::LoadFromFile(ifstream& fin)
 			}
 		}
 
-		if (!isFind) 
+		if (!isFind)
 		{
-			MessageBox(nullptr, L"¾ø´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÔ´Ï´Ù.", L"¾Ö´Ï¸ŞÀÌ¼Ç ·Îµå ½ÇÆĞ", 0);
+			MessageBox(nullptr, L"ì—†ëŠ” ì• ë‹ˆë©”ì´ì…˜ì…ë‹ˆë‹¤.", L"ì• ë‹ˆë©”ì´ì…˜ ë¡œë“œ ì‹¤íŒ¨", 0);
 		}
 	}
 
@@ -237,7 +238,8 @@ void CAnimator2D::LoadFromFile(ifstream& fin)
 
 void CAnimator2D::SaveAllAnim(const wstring& path)
 {
-	for (auto iter : m_mapAnim) {
+	for (auto iter : m_mapAnim)
+	{
 		string animPath = ToString(path + iter.second->GetName());
 		animPath += ExtensionAnim;
 		ofstream fout(animPath);

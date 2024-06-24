@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CMonsterScript.h"
 
 #include <Engine/CLevelMgr.h>
@@ -22,7 +22,7 @@ void CMonsterScript::begin()
 		StateMachine()->AddBlackboardData(L"DetectRange", BB_DATA::FLOAT, &m_DetectRange);
 		StateMachine()->AddBlackboardData(L"Speed", BB_DATA::FLOAT, &m_Speed);
 
-		// ÇÃ·¹ÀÌ¾î¸¦ Ã£¾Æ¼­ Object Å¸ÀÔÀ¸·Î ºí·¢º¸µå¿¡ ±â·ÏÇÑ´Ù.
+		// í”Œë ˆì´ì–´ë¥¼ ì°¾ì•„ì„œ Object íƒ€ìž…ìœ¼ë¡œ ë¸”ëž™ë³´ë“œì— ê¸°ë¡í•œë‹¤.
 		CGameObject* pPlayer = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Player");
 		if (pPlayer)
 		{
@@ -47,4 +47,3 @@ void CMonsterScript::SaveToFile(FILE* _File)
 void CMonsterScript::LoadFromFile(FILE* _File)
 {
 }
-

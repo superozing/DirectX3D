@@ -1,13 +1,11 @@
 ﻿#pragma once
 #include "UI.h"
 
-
-class MenuUI :
-    public UI
+class MenuUI : public UI
 {
 public:
-    virtual void render() override;
-    virtual void render_update() override;
+	virtual void render() override;
+	virtual void render_update() override;
 
 private:
     void File();
@@ -17,10 +15,9 @@ private:
 	void ScreenControl();
 
 private:
-    void ContentSaveAll();
+	void ContentSaveAll();
 
 public:
-    MenuUI();
-    ~MenuUI();
+	MenuUI();
+	~MenuUI();
 };
-

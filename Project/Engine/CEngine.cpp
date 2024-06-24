@@ -13,15 +13,14 @@
 #include "CRenderMgr.h"
 #include "CCollisionMgr.h"
 #include "CFontMgr.h"
+#include "CUIMgr.h"
 #include "CInstancingBuffer.h"
 #include "CSound.h"
-
 
 CEngine::CEngine()
 	: m_hMainWnd(nullptr)
 	, m_vResolution()
 {
-
 }
 
 CEngine::~CEngine()
@@ -33,13 +32,12 @@ CEngine::~CEngine()
 	}
 }
 
-
 int CEngine::init(HWND _hWnd, Vec2 _vResolution)
 {
-	m_hMainWnd = _hWnd;
+	m_hMainWnd	  = _hWnd;
 	m_vResolution = _vResolution;
 
-	RECT rt = { 0, 0, (int)m_vResolution.x, (int)m_vResolution.y };
+	RECT rt = {0, 0, (int)m_vResolution.x, (int)m_vResolution.y};
 	AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, false);
 	SetWindowPos(m_hMainWnd, nullptr, 0, 0, rt.right - rt.left, rt.bottom - rt.top, 0);
 
@@ -48,7 +46,7 @@ int CEngine::init(HWND _hWnd, Vec2 _vResolution)
 		MessageBox(nullptr, L"Device 초기화 실패", L"초기화 실패", MB_OK);
 		return E_FAIL;
 	}
-	
+
 	// Manager 초기화
 	CPathMgr::init();
 	CTimeMgr::GetInst()->init();
@@ -71,7 +69,10 @@ void CEngine::progress()
 	// FMOD Update
 	CSound::g_pFMOD->update();
 
-	// Level Update	
+	// UI Update
+	CUIMgr::GetInst()->tick();
+
+	// Level Update
 	CLevelMgr::GetInst()->tick();
 	CTimeMgr::GetInst()->render();
 
@@ -79,7 +80,7 @@ void CEngine::progress()
 	CGC::GetInst()->tick();
 
 	// Task
-	CTaskMgr::GetInst()->tick();	
+	CTaskMgr::GetInst()->tick();
 
 	DebugFunctionCheck();
 
@@ -130,7 +131,8 @@ void CEngine::DebugFunctionCheck()
 {
 	if (KEY_TAP(KEY::O))
 	{
-		CRenderMgr::GetInst()->IsDebugPosition() ? CRenderMgr::GetInst()->SetDebugPosition(false) : CRenderMgr::GetInst()->SetDebugPosition(true);		
+		CRenderMgr::GetInst()->IsDebugPosition() ? CRenderMgr::GetInst()->SetDebugPosition(false)
+												 : CRenderMgr::GetInst()->SetDebugPosition(true);
 	}
 }
 
@@ -138,7 +140,7 @@ void CEngine::DebugFunctionCheck()
 
 void CEngine::TestFunction()
 {
-	//if (KEY_TAP(KEY::Y)) {
+	// if (KEY_TAP(KEY::Y)) {
 	//	CRandomMgr::GetInst()->Test();
-	//}
+	// }
 }

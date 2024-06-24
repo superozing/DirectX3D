@@ -1,6 +1,5 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CMissileScript.h"
-
 
 CMissileScript::CMissileScript()
 	: m_fSpeed(1500.f)
@@ -20,7 +19,7 @@ void CMissileScript::tick()
 
 	vPos.y += m_fSpeed * DT;
 
-	Transform()->SetRelativePos(vPos);	
+	Transform()->SetRelativePos(vPos);
 }
 
 void CMissileScript::SaveToFile(FILE* _File)

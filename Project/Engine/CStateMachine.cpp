@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CStateMachine.h"
 
 CStateMachine::CStateMachine()
@@ -10,12 +10,11 @@ CStateMachine::~CStateMachine()
 {
 }
 
-
 void CStateMachine::begin()
 {
-	// ¿øº» FSM ¿¡¼ÂÀÇ Instance ¸¦ »ý¼ºÇØµÐ´Ù.
+	// ì›ë³¸ FSM ì—ì…‹ì˜ Instance ë¥¼ ìƒì„±í•´ë‘”ë‹¤.
 	if (m_FSM.Get())
-	{		
+	{
 		m_FSM_Inst = m_FSM->GetFSMIstance();
 		m_FSM_Inst->SetStateMachine(this);
 	}
@@ -23,13 +22,13 @@ void CStateMachine::begin()
 
 void CStateMachine::finaltick()
 {
-	if(m_FSM_Inst.Get())
+	if (m_FSM_Inst.Get())
 		m_FSM_Inst->finaltick();
 }
 
 void CStateMachine::SetFSM(Ptr<CFSM> _FSM)
 {
-	m_FSM = _FSM;
+	m_FSM	   = _FSM;
 	m_FSM_Inst = nullptr;
 }
 
@@ -45,11 +44,10 @@ void* CStateMachine::GetBlackboardData(const wstring& _strKey)
 
 void CStateMachine::SaveToFile(FILE* _File)
 {
-	SaveAssetRef(m_FSM, _File);	
+	SaveAssetRef(m_FSM, _File);
 }
 
 void CStateMachine::LoadFromFile(FILE* _File)
 {
 	LoadAssetRef(m_FSM, _File);
 }
-

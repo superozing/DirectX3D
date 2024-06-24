@@ -1,17 +1,13 @@
-#pragma once
+﻿#pragma once
 #include "AssetUI.h"
 
-class MeshUI :
-    public AssetUI
+class MeshUI : public AssetUI
 {
 private:
-
+public:
+	virtual void render_update() override;
 
 public:
-    virtual void render_update() override;
-
-public:
-    MeshUI();
-    ~MeshUI();
+	MeshUI();
+	~MeshUI();
 };
-

@@ -12,7 +12,6 @@
 
 #include "CRenderMgr.h"
 
-
 CMeshRender::CMeshRender()
 	: CRenderComponent(COMPONENT_TYPE::MESHRENDER)
 {
@@ -22,19 +21,17 @@ CMeshRender::~CMeshRender()
 {
 }
 
-
 void CMeshRender::UpdateData()
 {
-
 }
 
 void CMeshRender::finaltick()
 {
-	//if (CRenderMgr::GetInst()->IsDebugPosition())
+	// if (CRenderMgr::GetInst()->IsDebugPosition())
 	//{
 	//	// Depth Test 추가
 	//	GamePlayStatic::DrawDebugCross(Transform()->GetWorldPos(), 100.f, Vec3(0.f, 1.f, 0.f), false);
-	//}
+	// }
 }
 
 void CMeshRender::render()
@@ -78,7 +75,7 @@ void CMeshRender::render()
 		GetMesh()->render(i);
 	}
 
-		// Animation 관련 정보 제거
+	// Animation 관련 정보 제거
 	if (Animator2D())
 		Animator2D()->Clear();
 

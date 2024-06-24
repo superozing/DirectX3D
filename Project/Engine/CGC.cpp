@@ -4,7 +4,8 @@
 #include "CEntity.h"
 
 CGC::CGC()
-{}
+{
+}
 
 CGC::~CGC()
 {

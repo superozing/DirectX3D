@@ -3,8 +3,6 @@
 
 #include "ScriptUI.h"
 
-
-
 void Inspector::CreateChildUI()
 {
 	CreateComponentUI();
@@ -12,12 +10,12 @@ void Inspector::CreateChildUI()
 	CreateAssetUI();
 }
 
-
 #include "TransformUI.h"
 #include "MeshRenderUI.h"
 #include "Collider2DUI.h"
 #include "Light2DUI.h"
 #include "Animator2DUI.h"
+#include "Animator3DUI.h"
 #include "PrefabUI.h"
 #include "CameraUI.h"
 #include "Light3DUI.h"
@@ -35,14 +33,10 @@ void Inspector::CreateComponentUI()
 	m_arrComUI[(UINT)COMPONENT_TYPE::COLLIDER2D]->Deactivate();
 	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::COLLIDER2D]);
 
-	m_arrComUI[(UINT)COMPONENT_TYPE::ANIMATOR2D] = new Animator2DUI;
-	m_arrComUI[(UINT)COMPONENT_TYPE::ANIMATOR2D]->Deactivate();
-	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::ANIMATOR2D]);
-
 	m_arrComUI[(UINT)COMPONENT_TYPE::LIGHT2D] = new Light2DUI;
 	m_arrComUI[(UINT)COMPONENT_TYPE::LIGHT2D]->Deactivate();
 	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::LIGHT2D]);
-	
+
 	m_arrComUI[(UINT)COMPONENT_TYPE::LIGHT3D] = new Light3DUI;
 	m_arrComUI[(UINT)COMPONENT_TYPE::LIGHT3D]->Deactivate();
 	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::LIGHT3D]);
@@ -66,6 +60,14 @@ void Inspector::CreateComponentUI()
 	m_arrComUI[(UINT)COMPONENT_TYPE::LANDSCAPE] = new LandScapeUI;
 	m_arrComUI[(UINT)COMPONENT_TYPE::LANDSCAPE]->Deactivate();
 	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::LANDSCAPE]);
+
+	m_arrComUI[(UINT)COMPONENT_TYPE::ANIMATOR2D] = new Animator2DUI;
+	m_arrComUI[(UINT)COMPONENT_TYPE::ANIMATOR2D]->Deactivate();
+	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::ANIMATOR2D]);
+
+	m_arrComUI[(UINT)COMPONENT_TYPE::ANIMATOR3D] = new Animator3DUI;
+	m_arrComUI[(UINT)COMPONENT_TYPE::ANIMATOR3D]->Deactivate();
+	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::ANIMATOR3D]);
 }
 
 #include "TextureUI.h"
@@ -118,7 +120,6 @@ void Inspector::ResizeScriptUI(UINT _Size)
 		m_vecScriptUI.push_back(pScriptUI);
 	}
 }
-
 
 void Inspector::RefreshScriptUI()
 {

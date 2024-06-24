@@ -3,8 +3,6 @@
 
 #include <Engine/CTimeMgr.h>
 
-
-
 #define TIMEMGR CTimeMgr::GetInst()
 
 CTimeMgrScript::CTimeMgrScript()
@@ -12,7 +10,6 @@ CTimeMgrScript::CTimeMgrScript()
 	, m_DTLock(0)
 	, m_DTScale(1.f)
 {
-
 }
 
 CTimeMgrScript::~CTimeMgrScript()

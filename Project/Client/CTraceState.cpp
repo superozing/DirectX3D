@@ -1,6 +1,5 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CTraceState.h"
-
 
 #include <Engine/CGameObject.h>
 #include <Engine/CStateMachine.h>
@@ -16,13 +15,12 @@ CTraceState::~CTraceState()
 {
 }
 
-
 void CTraceState::finaltick()
 {
-	// ÇÃ·¹ÀÌ¾î°¡ ±ÙÃ³¿¡ ÀÖÀ¸¸é, Trace »óÅÂ·Î º¯°æÇÑ´Ù.	
-	float Speed = *((float*)GetBlackboardData(L"Speed"));
+	// í”Œë ˆì´ì–´ê°€ ê·¼ì²˜ì— ìžˆìœ¼ë©´, Trace ìƒíƒœë¡œ ë³€ê²½í•œë‹¤.
+	float		 Speed	 = *((float*)GetBlackboardData(L"Speed"));
 	CGameObject* pTarget = ((CGameObject*)GetBlackboardData(L"TargetObject"));
-	CGameObject* pSelf = GetFSM()->GetStateMachine()->GetOwner();
+	CGameObject* pSelf	 = GetFSM()->GetStateMachine()->GetOwner();
 
 	Vec3 vDir = pTarget->Transform()->GetWorldPos() - pSelf->Transform()->GetWorldPos();
 	vDir.Normalize();

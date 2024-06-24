@@ -3,41 +3,38 @@
 
 enum class FACE
 {
-    F_NEAR,
-    F_FAR,
-    F_TOP,
-    F_BOT,
-    F_LEFT,
-    F_RIGHT,
-    END
+	F_NEAR,
+	F_FAR,
+	F_TOP,
+	F_BOT,
+	F_LEFT,
+	F_RIGHT,
+	END
 };
-
 
 class CCamera;
 
-class CFrustum :
-    public CEntity
+class CFrustum : public CEntity
 {
 private:
-    CCamera*        m_Owner;
-    Vec3            m_ProjPos[8];
-    Vec4            m_arrFace[(UINT)FACE::END];
+	CCamera* m_Owner;
+	Vec3	 m_ProjPos[8];
+	Vec4	 m_arrFace[(UINT)FACE::END];
 
 public:
-    bool FrustumCheck(Vec3 _Center);
-    bool FrustumCheck(Vec3 _Center, float _Radius);
+	bool FrustumCheck(Vec3 _Center);
+	bool FrustumCheck(Vec3 _Center, float _Radius);
 
 public:
-    void finaltick();
+	void finaltick();
 
 private:
-    void SetOwner(CCamera* _Cam) { m_Owner = _Cam; }
+	void SetOwner(CCamera* _Cam) { m_Owner = _Cam; }
 
 public:
-    CLONE(CFrustum);
-    CFrustum();
-    ~CFrustum();
+	CLONE(CFrustum);
+	CFrustum();
+	~CFrustum();
 
-    friend class CCamera;
+	friend class CCamera;
 };
-

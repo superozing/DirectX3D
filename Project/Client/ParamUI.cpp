@@ -94,7 +94,8 @@ bool ParamUI::Param_FLOAT(float* _Data, const string& _Desc, float _min, float _
 		{
 			ImGui::SetTooltip(_Tooltip.c_str());
 		}
-		if (ImGui::DragFloat(szID, _Data, 0.f, 0.f, 0.f, "%.1f", ImGuiSliderFlags_Logarithmic | ImGuiSliderFlags_NoInput))
+		if (ImGui::DragFloat(szID, _Data, 0.f, 0.f, 0.f, "%.1f",
+							 ImGuiSliderFlags_Logarithmic | ImGuiSliderFlags_NoInput))
 		{
 			return true;
 		}
@@ -114,13 +115,47 @@ bool ParamUI::Param_FLOAT(float* _Data, const string& _Desc, float _min, float _
 	return false;
 }
 
+bool ParamUI::Param_STRING(string* _Data, const string& _Desc, float _min, float _Max, bool _View,
+						   const string& _Tooltip)
+{
+	ImGui::Text(_Desc.c_str());
+	ImGui::SameLine();
+
+	char szID[256] = {};
+	sprintf_s(szID, "##float%d", g_ID++);
+
+	if (_View)
+	{
+		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !_Tooltip.empty())
+		{
+			ImGui::SetTooltip(_Tooltip.c_str());
+		}
+		ImGui::Text(_Data->c_str());
+	}
+	else
+	{
+		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !_Tooltip.empty())
+		{
+			ImGui::SetTooltip(_Tooltip.c_str());
+		}
+		char buffer[255];
+		strcpy_s(buffer, _Data->c_str());
+		if (ImGui::InputText(_Desc.c_str(), buffer, IM_ARRAYSIZE(buffer)))
+		{
+			(*_Data) = buffer;
+		}
+	}
+
+	return false;
+}
+
 bool ParamUI::Param_VEC2(Vec2* _Data, const string& _Desc, float _min, float _Max, bool _View, const string& _Tooltip)
 {
 	ImGui::Text(_Desc.c_str());
 	ImGui::SameLine();
 
-	float arrFloat[2] = { _Data->x, _Data->y };
-	char szID[256] = {};
+	float arrFloat[2] = {_Data->x, _Data->y};
+	char  szID[256]	  = {};
 	sprintf_s(szID, "##Vec2%d", g_ID++);
 
 	if (_View)
@@ -129,7 +164,8 @@ bool ParamUI::Param_VEC2(Vec2* _Data, const string& _Desc, float _min, float _Ma
 		{
 			ImGui::SetTooltip(_Tooltip.c_str());
 		}
-		if (ImGui::DragFloat2(szID, arrFloat, 0.f, 0.f, 0.f, "%.1f", ImGuiSliderFlags_Logarithmic | ImGuiSliderFlags_NoInput))
+		if (ImGui::DragFloat2(szID, arrFloat, 0.f, 0.f, 0.f, "%.1f",
+							  ImGuiSliderFlags_Logarithmic | ImGuiSliderFlags_NoInput))
 		{
 			_Data->x = arrFloat[0];
 			_Data->y = arrFloat[1];
@@ -167,7 +203,8 @@ bool ParamUI::Param_VEC3(Vec3* _Data, const string& _Desc, float _min, float _Ma
 		{
 			ImGui::SetTooltip(_Tooltip.c_str());
 		}
-		if (ImGui::DragFloat3(szID, *_Data, 0.f, 0.f, 0.f, "%.1f", ImGuiSliderFlags_Logarithmic | ImGuiSliderFlags_NoInput))
+		if (ImGui::DragFloat3(szID, *_Data, 0.f, 0.f, 0.f, "%.1f",
+							  ImGuiSliderFlags_Logarithmic | ImGuiSliderFlags_NoInput))
 		{
 			return true;
 		}
@@ -201,7 +238,8 @@ bool ParamUI::Param_VEC4(Vec4* _Data, const string& _Desc, float _min, float _Ma
 		{
 			ImGui::SetTooltip(_Tooltip.c_str());
 		}
-		if (ImGui::DragFloat4(szID, *_Data, 0.f, 0.f, 0.f, "%.1f", ImGuiSliderFlags_Logarithmic | ImGuiSliderFlags_NoInput))
+		if (ImGui::DragFloat4(szID, *_Data, 0.f, 0.f, 0.f, "%.1f",
+							  ImGuiSliderFlags_Logarithmic | ImGuiSliderFlags_NoInput))
 		{
 			return true;
 		}
@@ -220,7 +258,6 @@ bool ParamUI::Param_VEC4(Vec4* _Data, const string& _Desc, float _min, float _Ma
 
 	return false;
 }
-
 
 bool ParamUI::Param_COLOR(Vec4* _Data, const string& _Desc, bool _View, const string& _Tooltip)
 {
@@ -256,7 +293,6 @@ bool ParamUI::Param_COLOR(Vec4* _Data, const string& _Desc, bool _View, const st
 	return false;
 }
 
-
 bool ParamUI::Param_TEXTURE(Ptr<CTexture>& _Texture, const string& _Desc, UI* _Inst, Delegate_1 _Func)
 {
 	// 파라미터의 Description 정보 출력
@@ -266,12 +302,12 @@ bool ParamUI::Param_TEXTURE(Ptr<CTexture>& _Texture, const string& _Desc, UI* _I
 	// Texture 이름 출력 InputText 의 ID 만들기
 	char szID[256] = {};
 	sprintf_s(szID, "##Texture%d", g_ID++);
-	
+
 	ImTextureID texid = nullptr;
-	string strTexKey;
+	string		strTexKey;
 	if (nullptr != _Texture)
 	{
-		texid = _Texture->GetSRV().Get();
+		texid	  = _Texture->GetSRV().Get();
 		strTexKey = string(_Texture->GetKey().begin(), _Texture->GetKey().end());
 	}
 
@@ -284,8 +320,8 @@ bool ParamUI::Param_TEXTURE(Ptr<CTexture>& _Texture, const string& _Desc, UI* _I
 
 		if (payload)
 		{
-			DWORD_PTR data = *((DWORD_PTR*)payload->Data);
-			CAsset* pAsset = (CAsset*)data;
+			DWORD_PTR data	 = *((DWORD_PTR*)payload->Data);
+			CAsset*	  pAsset = (CAsset*)data;
 			if (ASSET_TYPE::TEXTURE == pAsset->GetType())
 			{
 				_Texture = (CTexture*)pAsset;
@@ -295,15 +331,15 @@ bool ParamUI::Param_TEXTURE(Ptr<CTexture>& _Texture, const string& _Desc, UI* _I
 		ImGui::EndDragDropTarget();
 	}
 
-
 	// 텍스쳐 이미지 출력
 	static bool use_text_color_for_tint = false;
-	ImVec2 uv_min = ImVec2(0.0f, 0.0f);
-	ImVec2 uv_max = ImVec2(1.0f, 1.0f);
-	ImVec4 tint_col = use_text_color_for_tint ? ImGui::GetStyleColorVec4(ImGuiCol_Text) : ImVec4(1.0f, 1.0f, 1.0f, 1.0f); // No tint
-	ImVec4 border_col = ImGui::GetStyleColorVec4(ImGuiCol_Border);		
+	ImVec2		uv_min					= ImVec2(0.0f, 0.0f);
+	ImVec2		uv_max					= ImVec2(1.0f, 1.0f);
+	ImVec4		tint_col =
+		 use_text_color_for_tint ? ImGui::GetStyleColorVec4(ImGuiCol_Text) : ImVec4(1.0f, 1.0f, 1.0f, 1.0f); // No tint
+	ImVec4 border_col = ImGui::GetStyleColorVec4(ImGuiCol_Border);
 	ImGui::Image(texid, ImVec2(150, 150), uv_min, uv_max, tint_col, border_col);
-	
+
 	// 입력된 델리게이트가 있다면
 	if (_Inst && _Func)
 	{
@@ -327,7 +363,6 @@ bool ParamUI::Param_TEXTURE(Ptr<CTexture>& _Texture, const string& _Desc, UI* _I
 
 	return false;
 }
-
 
 bool ParamUI::Param_FUNC_STATIC(StaticFuncPtr _Func, const string& _Desc)
 {
