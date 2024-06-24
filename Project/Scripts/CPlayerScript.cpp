@@ -34,11 +34,11 @@ CPlayerScript::~CPlayerScript()
 	}
 }
 
-static int state = 0;
+static string state = "";
 void CPlayerScript::begin()
 {
 	m_FSM->Begin();
-	AppendScriptParam("CurState", SCRIPT_PARAM::INT, (void *)&state);
+	AppendScriptParam("CurState", SCRIPT_PARAM::STRING, (void *)&state);
 	//Ptr<CTexture> pAltasTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\link.png", L"texture\\link.png");
 	//Animator2D()->Create(L"IDLE_LEFT", pAltasTex, Vec2(0.f, 130.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 3, 10);
 	//Animator2D()->Create(L"IDLE_RIGHT", pAltasTex, Vec2(0.f, 390.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 3, 10);
@@ -57,7 +57,7 @@ void CPlayerScript::begin()
 void CPlayerScript::tick()
 {
 	m_FSM->Update();
-	state = m_FSM->GetCurState();
+	state = magic_enum::enum_name((PLAYER_STATE)m_FSM->GetCurState());
 
 	Vec3 vPos = Transform()->GetRelativePos();
 	Vec3 vRot = Transform()->GetRelativeRotation();

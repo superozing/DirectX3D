@@ -104,7 +104,7 @@ void CCreatePlayerTestLevel::CreateTempLevel()
 
 	// Player Object 생성
 	pObj = new CGameObject;
-	pObj->SetName(L"Plain");
+	pObj->SetName(L"Player");
 
 	pObj->AddComponent(new CTransform);
 	pObj->AddComponent(new CMeshRender);
