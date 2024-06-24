@@ -171,6 +171,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CMonsterScript.h" />
     <ClInclude Include="CPanelUIScript.h" />
     <ClInclude Include="CPlayerScript.h" />
+    <ClInclude Include="CProgressBar.h" />
     <ClInclude Include="CRenderMgrScript.h" />
     <ClInclude Include="CScriptMgr.h" />
     <ClInclude Include="CSpringArm.h" />
@@ -188,6 +189,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CMonsterScript.cpp" />
     <ClCompile Include="CPanelUIScript.cpp" />
     <ClCompile Include="CPlayerScript.cpp" />
+    <ClCompile Include="CProgressBar.cpp" />
     <ClCompile Include="CRenderMgrScript.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
     <ClCompile Include="CSpringArm.cpp" />
