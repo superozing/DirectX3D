@@ -1,8 +1,6 @@
 ﻿#include "pch.h"
 #include "CCameraMoveScript.h"
 
-
-
 CCameraMoveScript::CCameraMoveScript()
 	: CScript((UINT)SCRIPT_TYPE::CAMERAMOVESCRIPT)
 	, m_CamSpeed(500.f)
@@ -25,9 +23,8 @@ void CCameraMoveScript::tick()
 		{
 			Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
 			Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
-		}	
+		}
 	}
-
 
 	if (Camera()->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)
 	{
@@ -40,11 +37,13 @@ void CCameraMoveScript::tick()
 	}
 
 	// 줌 인, 줌 아웃
-	if (WHEEL_CHECK(WHEEL_UP)) {
+	if (WHEEL_CHECK(WHEEL_UP))
+	{
 		Camera()->SetFOV(Camera()->GetFOV() - m_fZoomSpeed * DT_ENGINE);
 	}
 
-	if (WHEEL_CHECK(WHEEL_DOWN)) {
+	if (WHEEL_CHECK(WHEEL_DOWN))
+	{
 		Camera()->SetFOV(Camera()->GetFOV() + m_fZoomSpeed * DT_ENGINE);
 	}
 }
@@ -82,7 +81,7 @@ void CCameraMoveScript::MovePerspective()
 
 	Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
 	Vec3 vRight = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
-	Vec3 vUp = Transform()->GetWorldDir(DIR_TYPE::UP);
+	Vec3 vUp	= Transform()->GetWorldDir(DIR_TYPE::UP);
 
 	float camspeed = m_CamSpeed;
 
@@ -124,9 +123,9 @@ void CCameraMoveScript::MovePerspective()
 	if (KEY_PRESSED(KEY::RBTN))
 	{
 		Vec2 vDrag = CKeyMgr::GetInst()->GetMouseDrag();
-		Vec3 vRot = Transform()->GetRelativeRotation();
+		Vec3 vRot  = Transform()->GetRelativeRotation();
 		vRot.y += vDrag.x * DT_ENGINE * XM_PI * 4.f;
 		vRot.x += vDrag.y * DT_ENGINE * XM_PI * 4.f;
 		Transform()->SetRelativeRotation(vRot);
-	}	
+	}
 }

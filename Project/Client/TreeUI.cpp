@@ -3,7 +3,10 @@
 
 #include <Engine/CKeyMgr.h>
 
-TreeNode::TreeNode() : m_bFrame(false), m_bOpen(false), m_bFilter(false)
+TreeNode::TreeNode()
+	: m_bFrame(false)
+	, m_bOpen(false)
+	, m_bFilter(false)
 {
 }
 
@@ -12,7 +15,7 @@ TreeNode::~TreeNode()
 	Delete_Vec(m_vecChildNode);
 }
 
-void TreeNode::GenericTreeRender(UINT _flag, const string &_id)
+void TreeNode::GenericTreeRender(UINT _flag, const string& _id)
 {
 	if (m_Owner && "OutlinerTree" == m_Owner->GetID())
 	{
@@ -35,7 +38,7 @@ void TreeNode::GenericTreeRender(UINT _flag, const string &_id)
 
 		else if (ImGui::BeginDragDropTarget())
 		{
-			const ImGuiPayload *payload = ImGui::AcceptDragDropPayload(m_Owner->GetID().c_str());
+			const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(m_Owner->GetID().c_str());
 			if (payload)
 			{
 				m_Owner->SetDropNode(this);
@@ -81,7 +84,7 @@ void TreeNode::GenericTreeRender(UINT _flag, const string &_id)
 	}
 }
 
-void TreeNode::ImageListRender(UINT _flag, const string &_id)
+void TreeNode::ImageListRender(UINT _flag, const string& _id)
 {
 	string treeId = _id;
 
@@ -109,7 +112,7 @@ void TreeNode::ImageListRender(UINT _flag, const string &_id)
 	// 애셋일 경우
 	else
 	{
-		auto pAsset = dynamic_cast<CAsset *>((CAsset *)m_Data);
+		auto pAsset = dynamic_cast<CAsset*>((CAsset*)m_Data);
 		if (pAsset)
 		{
 			auto type = pAsset->GetType();
@@ -125,7 +128,7 @@ void TreeNode::ImageListRender(UINT _flag, const string &_id)
 				thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconPrefab);
 				break;
 			case ASSET_TYPE::TEXTURE:
-				thumb = (CTexture *)pAsset;
+				thumb = (CTexture*)pAsset;
 				break;
 			case ASSET_TYPE::MATERIAL:
 				thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconMaterial);
@@ -163,7 +166,7 @@ void TreeNode::ImageListRender(UINT _flag, const string &_id)
 
 	else if (ImGui::BeginDragDropTarget())
 	{
-		const ImGuiPayload *payload = ImGui::AcceptDragDropPayload(m_Owner->GetID().c_str());
+		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(m_Owner->GetID().c_str());
 		if (payload)
 		{
 			m_Owner->SetDropNode(this);
@@ -192,7 +195,7 @@ void TreeNode::ImageListRender(UINT _flag, const string &_id)
 
 	else if (ImGui::BeginDragDropTarget())
 	{
-		const ImGuiPayload *payload = ImGui::AcceptDragDropPayload(m_Owner->GetID().c_str());
+		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(m_Owner->GetID().c_str());
 		if (payload)
 		{
 			m_Owner->SetDropNode(this);
@@ -240,7 +243,10 @@ void TreeNode::render_update()
 
 UINT TreeUI::NodeID = 0;
 
-TreeUI::TreeUI(const string &_ID) : UI("", _ID), m_bShowRoot(true), m_bDragDrop(false)
+TreeUI::TreeUI(const string& _ID)
+	: UI("", _ID)
+	, m_bShowRoot(true)
+	, m_bDragDrop(false)
 {
 }
 
@@ -260,8 +266,8 @@ void TreeUI::render_update()
 	}
 	else
 	{
-		float winX = ImGui::GetWindowSize().x - 40.f;
-		int colCnt = 0;
+		float winX	 = ImGui::GetWindowSize().x - 40.f;
+		int	  colCnt = 0;
 		for (size_t i = 0; i < m_Root->m_vecChildNode.size(); ++i)
 		{
 			if (m_bImageTree)
@@ -319,14 +325,14 @@ void TreeUI::render_update()
 		m_DragNode = nullptr;
 	}
 
-	m_bSelectEvent = false;
+	m_bSelectEvent	 = false;
 	m_bDragDropEvent = false;
 }
 
-TreeNode *TreeUI::AddTreeNode(TreeNode *_Parent, string _strName, DWORD_PTR _dwData)
+TreeNode* TreeUI::AddTreeNode(TreeNode* _Parent, string _strName, DWORD_PTR _dwData)
 {
-	TreeNode *pNewNode = new TreeNode;
-	pNewNode->m_Data = _dwData;
+	TreeNode* pNewNode = new TreeNode;
+	pNewNode->m_Data   = _dwData;
 	pNewNode->SetName(_strName);
 
 	// 노드마다 겹치지않는 숫자를 ## 뒤에 ID 로 붙인다.
@@ -352,7 +358,7 @@ TreeNode *TreeUI::AddTreeNode(TreeNode *_Parent, string _strName, DWORD_PTR _dwD
 	return pNewNode;
 }
 
-void TreeUI::SetSelectedNode(TreeNode *_SelectedNode)
+void TreeUI::SetSelectedNode(TreeNode* _SelectedNode)
 {
 	if (m_Selected)
 	{
@@ -369,13 +375,13 @@ void TreeUI::SetSelectedNode(TreeNode *_SelectedNode)
 	m_bSelectEvent = true;
 }
 
-void TreeUI::SetDragNode(TreeNode *_DragNode)
+void TreeUI::SetDragNode(TreeNode* _DragNode)
 {
 	m_DragNode = _DragNode;
 }
 
-void TreeUI::SetDropNode(TreeNode *_DropNode)
+void TreeUI::SetDropNode(TreeNode* _DropNode)
 {
-	m_DropNode = _DropNode;
+	m_DropNode		 = _DropNode;
 	m_bDragDropEvent = true;
 }

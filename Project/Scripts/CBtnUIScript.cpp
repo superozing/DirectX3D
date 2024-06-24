@@ -42,7 +42,8 @@ void CBtnUIScript::tick()
 {
 	CUIScript::tick();
 
-	//CLogMgr::GetInst()->AddLog(Log_Level::INFO, to_wstring(Transform()->GetWorldPos().x) + to_wstring(Transform()->GetWorldPos().y));
+	// CLogMgr::GetInst()->AddLog(Log_Level::INFO, to_wstring(Transform()->GetWorldPos().x) +
+	// to_wstring(Transform()->GetWorldPos().y));
 }
 
 void CBtnUIScript::OnHovered()
@@ -50,7 +51,6 @@ void CBtnUIScript::OnHovered()
 	m_CurImg = m_HoverImg;
 	if (m_AllowTexSet && m_CurImg.Get())
 		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_CurImg);
-
 }
 
 void CBtnUIScript::OnUnHovered()
@@ -58,7 +58,6 @@ void CBtnUIScript::OnUnHovered()
 	m_CurImg = m_NormalImg;
 	if (m_AllowTexSet && m_CurImg.Get())
 		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_CurImg);
-
 }
 
 void CBtnUIScript::MouseOn()
@@ -70,7 +69,6 @@ void CBtnUIScript::LBtnDown()
 	m_CurImg = m_PressedImg;
 	if (m_AllowTexSet && m_CurImg.Get())
 		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_CurImg);
-
 }
 
 void CBtnUIScript::LBtnUp()
@@ -78,7 +76,6 @@ void CBtnUIScript::LBtnUp()
 	m_CurImg = m_NormalImg;
 	if (m_AllowTexSet && m_CurImg.Get())
 		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_CurImg);
-
 }
 
 void CBtnUIScript::LBtnClicked()
@@ -98,18 +95,16 @@ void CBtnUIScript::LBtnClicked()
 
 void CBtnUIScript::SaveToFile(FILE* _File)
 {
-
 }
 
 void CBtnUIScript::LoadFromFile(FILE* _File)
 {
-
 }
 
-#define TagNormalImg	"[NormalImg]"
-#define TagPressedImg	"[PressedImg]"
-#define TagHoverImg		"[HoverImg]"
-#define TagAllowTexSet	"[AllowTexSet]"
+#define TagNormalImg "[NormalImg]"
+#define TagPressedImg "[PressedImg]"
+#define TagHoverImg "[HoverImg]"
+#define TagAllowTexSet "[AllowTexSet]"
 
 // 콜백은 어떻게 저장해야 할까?
 
@@ -117,13 +112,13 @@ void CBtnUIScript::SaveToFile(ofstream& fout)
 {
 	fout << TagNormalImg << endl;
 	SaveAssetRef(m_NormalImg, fout);
-	
+
 	fout << TagPressedImg << endl;
 	SaveAssetRef(m_PressedImg, fout);
-	
+
 	fout << TagHoverImg << endl;
 	SaveAssetRef(m_HoverImg, fout);
-	
+
 	fout << TagAllowTexSet << endl;
 	fout << m_AllowTexSet << endl;
 }
@@ -132,14 +127,13 @@ void CBtnUIScript::LoadFromFile(ifstream& fin)
 {
 	Utils::GetLineUntilString(fin, TagNormalImg);
 	LoadAssetRef(m_NormalImg, fin);
-	
+
 	Utils::GetLineUntilString(fin, TagPressedImg);
 	LoadAssetRef(m_PressedImg, fin);
-	
+
 	Utils::GetLineUntilString(fin, TagHoverImg);
 	LoadAssetRef(m_HoverImg, fin);
 
 	Utils::GetLineUntilString(fin, TagAllowTexSet);
 	fin >> m_AllowTexSet;
-
 }

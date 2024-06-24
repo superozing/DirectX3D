@@ -13,7 +13,6 @@
 
 CEditorObjMgr::CEditorObjMgr()
 {
-
 }
 
 CEditorObjMgr::~CEditorObjMgr()
@@ -30,8 +29,8 @@ void CEditorObjMgr::init()
 	m_EditorCam->AddComponent(new CCamera);
 	m_EditorCam->AddComponent(new CCameraMoveScript);
 	m_EditorCam->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
-	m_EditorCam->Transform()->SetRelativeRotation(Vec3(.0f,0.f,0.f));
-	
+	m_EditorCam->Transform()->SetRelativeRotation(Vec3(.0f, 0.f, 0.f));
+
 	m_EditorCam->Camera()->LayerCheckAll();
 	m_EditorCam->Camera()->LayerCheck(31, false);
 	m_EditorCam->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
@@ -42,8 +41,8 @@ void CEditorObjMgr::init()
 	m_EditorCam->AddComponent(pComp);
 	pComp->begin();
 	m_vecEditorObj.push_back(m_EditorCam);
-  
-  // Editor 용 카메라로서 렌더매니저에 등록
+
+	// Editor 용 카메라로서 렌더매니저에 등록
 	CRenderMgr::GetInst()->RegisterEditorCamera(m_EditorCam->Camera());
 }
 

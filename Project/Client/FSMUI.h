@@ -1,16 +1,13 @@
-#pragma once
+﻿#pragma once
 #include "AssetUI.h"
 
-class FSMUI :
-    public AssetUI
+class FSMUI : public AssetUI
 {
 public:
-    virtual void render_update() override;
+	virtual void render_update() override;
 
 public:
-
 public:
-    FSMUI();
-    ~FSMUI();
+	FSMUI();
+	~FSMUI();
 };
-

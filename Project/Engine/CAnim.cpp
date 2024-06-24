@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CAnim.h"
 
 #include "CTimeMgr.h"
@@ -29,7 +29,7 @@ CAnim::~CAnim()
 }
 
 void CAnim::finaltick()
-{	
+{
 	m_AccTime += DT;
 
 	if (m_vecFrm[m_CurFrmIdx].Duration < m_AccTime)
@@ -38,7 +38,7 @@ void CAnim::finaltick()
 		if (m_vecFrm.size() <= m_CurFrmIdx)
 		{
 			m_CurFrmIdx = (int)m_vecFrm.size() - 1;
-			m_bFinish = true;
+			m_bFinish	= true;
 		}
 		m_AccTime = 0.f;
 	}
@@ -46,34 +46,34 @@ void CAnim::finaltick()
 
 void CAnim::UpdateData()
 {
-	// ÇöÀç ÇÁ·¹ÀÓ Á¤º¸¸¦ »ó¼ö¹öÆÛ·Î ¿Å±â°í b2 ·¹Áö½ºÅÍ·Î ¹ÙÀÎµù
-	static CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::ANIM2D_DATA);
-	tAnimData2D data = {};
-	data.UseAnim2D = 1;
-	data.vLeftTop = m_vecFrm[m_CurFrmIdx].vLeftTop;
-	data.vOffset = m_vecFrm[m_CurFrmIdx].vOffset;
-	data.vSlizeSize = m_vecFrm[m_CurFrmIdx].vSlice;
-	data.vBackGround = m_vecFrm[m_CurFrmIdx].vBackground;
+	// í˜„ì¬ í”„ë ˆì„ ì •ë³´ë¥¼ ìƒìˆ˜ë²„í¼ë¡œ ì˜®ê¸°ê³  b2 ë ˆì§€ìŠ¤í„°ë¡œ ë°”ì¸ë”©
+	static CConstBuffer* pCB  = CDevice::GetInst()->GetConstBuffer(CB_TYPE::ANIM2D_DATA);
+	tAnimData2D			 data = {};
+	data.UseAnim2D			  = 1;
+	data.vLeftTop			  = m_vecFrm[m_CurFrmIdx].vLeftTop;
+	data.vOffset			  = m_vecFrm[m_CurFrmIdx].vOffset;
+	data.vSlizeSize			  = m_vecFrm[m_CurFrmIdx].vSlice;
+	data.vBackGround		  = m_vecFrm[m_CurFrmIdx].vBackground;
 
 	pCB->SetData(&data);
 	pCB->UpdateData();
 
-	// ¾ÆÆ²¶ó½º ÅØ½ºÃÄ t10 ¿¡ ¹ÙÀÎµù
+	// ì•„í‹€ë¼ìŠ¤ í…ìŠ¤ì³ t10 ì— ë°”ì¸ë”©
 	m_AtlasTex->UpdateData(10);
 }
 
 void CAnim::Clear()
 {
-	static CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::ANIM2D_DATA);
-	tAnimData2D data = {};
-	data.UseAnim2D = 0;
+	static CConstBuffer* pCB  = CDevice::GetInst()->GetConstBuffer(CB_TYPE::ANIM2D_DATA);
+	tAnimData2D			 data = {};
+	data.UseAnim2D			  = 0;
 
 	pCB->SetData(&data);
 	pCB->UpdateData();
 }
 
-void CAnim::Create(CAnimator2D* _Animator, Ptr<CTexture> _Atlas, Vec2 _vLeftTop
-	, Vec2 _vSliceSize, Vec2 _vOffset, Vec2 _vBackground, int _FrmCount, float _FPS)
+void CAnim::Create(CAnimator2D* _Animator, Ptr<CTexture> _Atlas, Vec2 _vLeftTop, Vec2 _vSliceSize, Vec2 _vOffset,
+				   Vec2 _vBackground, int _FrmCount, float _FPS)
 {
 	m_Animator = _Animator;
 	m_AtlasTex = _Atlas;
@@ -81,16 +81,16 @@ void CAnim::Create(CAnimator2D* _Animator, Ptr<CTexture> _Atlas, Vec2 _vLeftTop
 	for (int i = 0; i < _FrmCount; ++i)
 	{
 		tAnimFrm frm = {};
-				
+
 		frm.vSlice = Vec2(_vSliceSize.x / (float)_Atlas->GetWidth(), _vSliceSize.y / (float)_Atlas->GetHeight());
 
-		frm.vLeftTop = Vec2(_vLeftTop.x / (float)_Atlas->GetWidth() + frm.vSlice.x * i, _vLeftTop.y / (float)_Atlas->GetHeight());
+		frm.vLeftTop =
+			Vec2(_vLeftTop.x / (float)_Atlas->GetWidth() + frm.vSlice.x * i, _vLeftTop.y / (float)_Atlas->GetHeight());
 
-		frm.vOffset = Vec2(_vOffset.x / (float)_Atlas->GetWidth(), _vOffset.y / (float)_Atlas->GetHeight());
+		frm.vOffset	 = Vec2(_vOffset.x / (float)_Atlas->GetWidth(), _vOffset.y / (float)_Atlas->GetHeight());
 		frm.Duration = 1.f / _FPS;
 
 		frm.vBackground = Vec2(_vBackground.x / (float)_Atlas->GetWidth(), _vBackground.y / (float)_Atlas->GetHeight());
-	
 
 		m_vecFrm.push_back(frm);
 	}
@@ -98,15 +98,15 @@ void CAnim::Create(CAnimator2D* _Animator, Ptr<CTexture> _Atlas, Vec2 _vLeftTop
 
 void CAnim::SaveToFile(FILE* _File)
 {
-	// ¾Ö´Ï¸ŞÀÌ¼Ç ÀÌ¸§ ÀúÀå
+	// ì• ë‹ˆë©”ì´ì…˜ ì´ë¦„ ì €ì¥
 	SaveWString(GetName(), _File);
-	
-	// ¸ğµç ÇÁ·¹ÀÓ Á¤º¸ ÀúÀå
+
+	// ëª¨ë“  í”„ë ˆì„ ì •ë³´ ì €ì¥
 	size_t FrmSize = m_vecFrm.size();
 	fwrite(&FrmSize, sizeof(size_t), 1, _File);
 	fwrite(m_vecFrm.data(), sizeof(tAnimFrm), m_vecFrm.size(), _File);
 
-	// ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ÂüÁ¶ÇÏ´ø ÅØ½ºÃÄ Á¤º¸ ÀúÀå
+	// ì• ë‹ˆë©”ì´ì…˜ì´ ì°¸ì¡°í•˜ë˜ í…ìŠ¤ì³ ì •ë³´ ì €ì¥
 	SaveAssetRef(m_AtlasTex, _File);
 }
 
@@ -116,18 +116,20 @@ void CAnim::SaveToFile(FILE* _File)
 
 void CAnim::SaveToFile(ofstream& fout)
 {
-	// ¾Ö´Ï¸ŞÀÌ¼Ç ÀÌ¸§ ÀúÀå
+	// ì• ë‹ˆë©”ì´ì…˜ ì´ë¦„ ì €ì¥
 	fout << TagAnimName << endl;
 	fout << ToString(GetName()) << endl;
 
-	// ¸ğµç ÇÁ·¹ÀÓ Á¤º¸ ÀúÀå
+	// ëª¨ë“  í”„ë ˆì„ ì •ë³´ ì €ì¥
 	fout << TagFrmCount << endl;
 	fout << m_vecFrm.size() << endl;
 
-	if (m_vecFrm.size() == 0) return;
-	
+	if (m_vecFrm.size() == 0)
+		return;
+
 	fout << TagFrmInfo << endl;
-	for (size_t i = 0; i < m_vecFrm.size(); ++i) {
+	for (size_t i = 0; i < m_vecFrm.size(); ++i)
+	{
 		fout << m_vecFrm[i] << endl;
 	}
 
@@ -136,18 +138,18 @@ void CAnim::SaveToFile(ofstream& fout)
 
 void CAnim::LoadFromFile(FILE* _File)
 {
-	// ¾Ö´Ï¸ŞÀÌ¼Ç ÀÌ¸§ ·Îµå
+	// ì• ë‹ˆë©”ì´ì…˜ ì´ë¦„ ë¡œë“œ
 	wstring strName;
 	LoadWString(strName, _File);
 	SetName(strName);
-	
-	// ¸ğµç ÇÁ·¹ÀÓ Á¤º¸ ·Îµå
+
+	// ëª¨ë“  í”„ë ˆì„ ì •ë³´ ë¡œë“œ
 	size_t FrmSize = 0;
 	fread(&FrmSize, sizeof(size_t), 1, _File);
 	m_vecFrm.resize(FrmSize);
 	fread(m_vecFrm.data(), sizeof(tAnimFrm), m_vecFrm.size(), _File);
 
-	// ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ÂüÁ¶ÇÏ´ø ÅØ½ºÃÄ Á¤º¸ ·Îµå
+	// ì• ë‹ˆë©”ì´ì…˜ì´ ì°¸ì¡°í•˜ë˜ í…ìŠ¤ì³ ì •ë³´ ë¡œë“œ
 	LoadAssetRef(m_AtlasTex, _File);
 }
 
@@ -163,10 +165,12 @@ void CAnim::LoadFromFile(ifstream& fin)
 	Utils::GetLineUntilString(fin, TagFrmCount);
 	fin >> frmCnt;
 
-	if (frmCnt == 0) return;
+	if (frmCnt == 0)
+		return;
 
 	Utils::GetLineUntilString(fin, TagFrmInfo);
-	for (size_t i = 0; i < frmCnt; ++i) {
+	for (size_t i = 0; i < frmCnt; ++i)
+	{
 		tAnimFrm frm;
 		fin >> frm;
 		m_vecFrm.push_back(frm);

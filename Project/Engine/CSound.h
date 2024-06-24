@@ -1,6 +1,5 @@
-#pragma once
+ï»¿#pragma once
 #include "CAsset.h"
-
 
 #include <FMOD/fmod.h>
 #include <FMOD/fmod.hpp>
@@ -12,46 +11,40 @@
 #pragma comment(lib, "FMOD/fmod64_vc.lib")
 #endif
 
-
-class CSound :
-    public CAsset
+class CSound : public CAsset
 {
 public:
-    static FMOD::System* g_pFMOD; // FMOD °ü¸®ÀÚ Å¬·¡½º
+	static FMOD::System* g_pFMOD; // FMOD ê´€ë¦¬ì í´ë˜ìŠ¤
 
 public:
-    FMOD::Sound*            m_pSound;       // ·ÎµùµÈ »ç¿îµå °´Ã¼
-    list<FMOD::Channel*>	m_listChannel;  // »ç¿îµå°¡ Àç»ıµÇ°í ÀÖ´Â Ã¤³Î
-
+	FMOD::Sound*		 m_pSound;		// ë¡œë”©ëœ ì‚¬ìš´ë“œ ê°ì²´
+	list<FMOD::Channel*> m_listChannel; // ì‚¬ìš´ë“œê°€ ì¬ìƒë˜ê³  ìˆëŠ” ì±„ë„
 
 public:
-	// _iRoopCount : 0 (¹«ÇÑ¹İº¹),  _fVolume : 0 ~ 1(Volume), _bOverlap : ¼Ò¸® ÁßÃ¸ °¡´É¿©ºÎ
-	int Play(int _iRoopCount, float _fVolume = 1.f, bool _bOverlap = false);
+	// _iRoopCount : 0 (ë¬´í•œë°˜ë³µ),  _fVolume : 0 ~ 1(Volume), _bOverlap : ì†Œë¦¬ ì¤‘ì²© ê°€ëŠ¥ì—¬ë¶€
+	int	 Play(int _iRoopCount, float _fVolume = 1.f, bool _bOverlap = false);
 	void Stop();
 
 	// 0 ~ 1
 	void SetVolume(float _f, int _iChannelIdx);
 
 private:
-	void RemoveChannel(FMOD::Channel* _pTargetChannel);
-	friend FMOD_RESULT CHANNEL_CALLBACK(FMOD_CHANNELCONTROL* channelcontrol, FMOD_CHANNELCONTROL_TYPE controltype
-		, FMOD_CHANNELCONTROL_CALLBACK_TYPE callbacktype
-		, void* commanddata1, void* commanddata2);
+	void			   RemoveChannel(FMOD::Channel* _pTargetChannel);
+	friend FMOD_RESULT CHANNEL_CALLBACK(FMOD_CHANNELCONTROL* channelcontrol, FMOD_CHANNELCONTROL_TYPE controltype,
+										FMOD_CHANNELCONTROL_CALLBACK_TYPE callbacktype, void* commanddata1,
+										void* commanddata2);
 
 public:
 	virtual void UpdateData() {}
 
-	// ÆÄÀÏ·Î ÀúÀå
+	// íŒŒì¼ë¡œ ì €ì¥
 	virtual int Save(const wstring&) override { return S_OK; }
 
-	// ÆÄÀÏ·ÎºÎÅÍ ·Îµù
+	// íŒŒì¼ë¡œë¶€í„° ë¡œë”©
 	virtual int Load(const wstring& _strFilePath) override;
 
-
-
 public:
-    CLONE_DISABLE(CSound);
-    CSound(bool _Engine = false);
-    ~CSound();
+	CLONE_DISABLE(CSound);
+	CSound(bool _Engine = false);
+	~CSound();
 };
-

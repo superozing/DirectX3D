@@ -85,9 +85,7 @@ void CUITempLevel::CreateTempLevel()
 
 	pTempLevel->AddObject(pCamObj, (UINT)LAYER::LAYER_DEFAULT);
 
-
 	CGameObject* pObj = nullptr;
-
 
 	// 3D Light 추가
 	pObj = new CGameObject;
@@ -118,7 +116,8 @@ void CUITempLevel::CreateTempLevel()
 	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
 
 	pObj->SkyBox()->SetSkyBoxType(SKYBOX_TYPE::SPHERE);
-	pObj->SkyBox()->SetSphereTexture(CAssetMgr::GetInst()->Load<CTexture>(L"texture\\skybox\\Sky02.jpg", L"texture\\skybox\\Sky02.jpg"));
+	pObj->SkyBox()->SetSphereTexture(
+		CAssetMgr::GetInst()->Load<CTexture>(L"texture\\skybox\\Sky02.jpg", L"texture\\skybox\\Sky02.jpg"));
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
@@ -131,23 +130,25 @@ void CUITempLevel::CreateTempLevel()
 
 	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
 	pObj->Transform()->SetRelativeScale(Vec3(500.f, 500.f, 500.f));
-	//pObj->Transform()->SetDir(Vec3(0.f, -1.f, 0.f));
+	// pObj->Transform()->SetDir(Vec3(0.f, -1.f, 0.f));
 
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHsphere));
 
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std3D_DeferredMtrl"), 0);
-	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_01.tga", L"texture\\tile\\TILE_01.tga"));
-	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_01_N.tga", L"texture\\tile\\TILE_01_N.tga"));
+	pObj->MeshRender()->GetMaterial(0)->SetTexParam(
+		TEX_PARAM::TEX_0,
+		CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_01.tga", L"texture\\tile\\TILE_01.tga"));
+	pObj->MeshRender()->GetMaterial(0)->SetTexParam(
+		TEX_PARAM::TEX_1,
+		CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_01_N.tga", L"texture\\tile\\TILE_01_N.tga"));
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_PLAYER, false);
 
 #pragma endregion
 
-
-
 #pragma region how to add UI Script
 
-	//auto pBtnTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Background.jpg", L"texture\\Background.jpg");
+	// auto pBtnTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Background.jpg", L"texture\\Background.jpg");
 	//
 	//
 	//// DynamicUI Object 생성
@@ -155,115 +156,115 @@ void CUITempLevel::CreateTempLevel()
 	//// DynamicUIMtrl
 	//// btnUI2->DisableMouseInput(); -> 카메라의 영향을 받는 UI는 이걸 반드시 꺼주어야 해요.
 	//
-	//pObj = new CGameObject;
-	//pObj->SetName(L"DynamicUI");
+	// pObj = new CGameObject;
+	// pObj->SetName(L"DynamicUI");
 
-	//pObj->AddComponent(new CTransform);
-	//pObj->AddComponent(new CMeshRender);
+	// pObj->AddComponent(new CTransform);
+	// pObj->AddComponent(new CMeshRender);
 
-	//auto btnUI2 = new CBtnUIScript;
-	//pObj->AddComponent(btnUI2);
+	// auto btnUI2 = new CBtnUIScript;
+	// pObj->AddComponent(btnUI2);
 
-	//btnUI2->DisableMouseInput();
+	// btnUI2->DisableMouseInput();
 
-	//btnUI2->AllowTexSet();
-	//btnUI2->SetNormalImg(pBtnTex);
+	// btnUI2->AllowTexSet();
+	// btnUI2->SetNormalImg(pBtnTex);
 
-	//pObj->Transform()->SetRelativePos(Vec3(0, 0, 100.f));
-	//pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+	// pObj->Transform()->SetRelativePos(Vec3(0, 0, 100.f));
+	// pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
 
-	//pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHpoint)); // pointMesh일 때, 동작하지 않음. 무엇의 문제인지는 모르겠네요.
-	//pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DynamicUIMtrl"), 0);
-	//pObj->MeshRender()->GetDynamicMaterial(0);
-	//pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, pBtnTex);
+	// pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHpoint)); // pointMesh일 때, 동작하지 않음.
+	// 무엇의 문제인지는 모르겠네요.
+	// pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DynamicUIMtrl"), 0);
+	// pObj->MeshRender()->GetDynamicMaterial(0);
+	// pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, pBtnTex);
 
-	//pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
-
+	// pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
 	//// PanelUI Object 생성
 	//// MESHrect
 	//// StaticUIMtrl
-	//auto Panel1 = new CGameObject;
-	//Panel1->SetName(L"PanelUI");
+	// auto Panel1 = new CGameObject;
+	// Panel1->SetName(L"PanelUI");
 
-	//Panel1->AddComponent(new CTransform);
-	//Panel1->AddComponent(new CMeshRender);
+	// Panel1->AddComponent(new CTransform);
+	// Panel1->AddComponent(new CMeshRender);
 
-	//auto PanelUI1 = new CPanelUIScript;
-	//Panel1->AddComponent(PanelUI1);
+	// auto PanelUI1 = new CPanelUIScript;
+	// Panel1->AddComponent(PanelUI1);
 
-	//PanelUI1->AllowTexSet();
-	//PanelUI1->SetPanelTex(pBtnTex);
-	//PanelUI1->AllowDragAndDrop();
+	// PanelUI1->AllowTexSet();
+	// PanelUI1->SetPanelTex(pBtnTex);
+	// PanelUI1->AllowDragAndDrop();
 
-	//Panel1->Transform()->SetRelativePos(Vec3(-500, 200, 100.f));
-	//Panel1->Transform()->SetRelativeScale(Vec3(1000.f, 1000.f, 1.f));
+	// Panel1->Transform()->SetRelativePos(Vec3(-500, 200, 100.f));
+	// Panel1->Transform()->SetRelativeScale(Vec3(1000.f, 1000.f, 1.f));
 
-	//Panel1->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect)); // pointMesh일 때, 동작하지 않음. 무엇의 문제인지는 모르겠네요.
-	//Panel1->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
-	//Panel1->MeshRender()->GetDynamicMaterial(0);
-	//Panel1->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, pBtnTex);
+	// Panel1->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect)); // pointMesh일 때, 동작하지
+	// 않음. 무엇의 문제인지는 모르겠네요.
+	// Panel1->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
+	// Panel1->MeshRender()->GetDynamicMaterial(0);
+	// Panel1->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, pBtnTex);
 
-	//pTempLevel->AddObject(Panel1, (UINT)LAYER::LAYER_UI, false);
+	// pTempLevel->AddObject(Panel1, (UINT)LAYER::LAYER_UI, false);
 
 	//// StaticBtnUI Object 생성
 	//// MESHrect
 	//// StaticUIMtrl
-	//pObj = new CGameObject;
-	//pObj->SetName(L"StaticBtnUI");
+	// pObj = new CGameObject;
+	// pObj->SetName(L"StaticBtnUI");
 
-	//pObj->AddComponent(new CTransform);
-	//pObj->AddComponent(new CMeshRender);
+	// pObj->AddComponent(new CTransform);
+	// pObj->AddComponent(new CMeshRender);
 
-	//auto btnUI = new CBtnUIScript;
-	//pObj->AddComponent(btnUI);
-	//btnUI->AllowTexSet();
-	//btnUI->SetNormalImg(pBtnTex);
+	// auto btnUI = new CBtnUIScript;
+	// pObj->AddComponent(btnUI);
+	// btnUI->AllowTexSet();
+	// btnUI->SetNormalImg(pBtnTex);
 
-	//pObj->Transform()->SetRelativePos(Vec3(0, 0, 100.f));
-	//pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+	// pObj->Transform()->SetRelativePos(Vec3(0, 0, 100.f));
+	// pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
 
-	//pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
-	//pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
-	//pObj->MeshRender()->GetDynamicMaterial(0);
-	//pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, pBtnTex);
+	// pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
+	// pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
+	// pObj->MeshRender()->GetDynamicMaterial(0);
+	// pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, pBtnTex);
 
-	//Panel1->AddChild(pObj);
+	// Panel1->AddChild(pObj);
 
 	//// PanelUI2 Object 생성
 	//// MESHrect
 	//// StaticUIMtrl
-	//pObj = new CGameObject;
-	//pObj->SetName(L"PanelUI2");
+	// pObj = new CGameObject;
+	// pObj->SetName(L"PanelUI2");
 
-	//pObj->AddComponent(new CTransform);
-	//pObj->AddComponent(new CMeshRender);
+	// pObj->AddComponent(new CTransform);
+	// pObj->AddComponent(new CMeshRender);
 
-	//auto PanelUI2 = new CPanelUIScript;
-	//pObj->AddComponent(PanelUI2);
+	// auto PanelUI2 = new CPanelUIScript;
+	// pObj->AddComponent(PanelUI2);
 
-	//PanelUI2->AllowTexSet();
-	//PanelUI2->SetPanelTex(pBtnTex);
-	//PanelUI2->AllowDragAndDrop();
+	// PanelUI2->AllowTexSet();
+	// PanelUI2->SetPanelTex(pBtnTex);
+	// PanelUI2->AllowDragAndDrop();
 
-	//pObj->Transform()->SetRelativePos(Vec3(-500, 200, 100.f));
-	//pObj->Transform()->SetRelativeScale(Vec3(1000.f, 1000.f, 1.f));
+	// pObj->Transform()->SetRelativePos(Vec3(-500, 200, 100.f));
+	// pObj->Transform()->SetRelativeScale(Vec3(1000.f, 1000.f, 1.f));
 
-	//pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect)); // pointMesh일 때, 동작하지 않음. 무엇의 문제인지는 모르겠네요.
-	//pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
-	//pObj->MeshRender()->GetDynamicMaterial(0);
-	//pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, pBtnTex);
+	// pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect)); // pointMesh일 때, 동작하지 않음.
+	// 무엇의 문제인지는 모르겠네요.
+	// pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
+	// pObj->MeshRender()->GetDynamicMaterial(0);
+	// pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, pBtnTex);
 
-	//pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+	// pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 
 #pragma endregion
-
-
 
 #pragma region progress bar
 
 	// Progress Bar
-	auto BarObj = new CGameObject;
+	auto BarObj		 = new CGameObject;
 	auto progressbar = new CProgressBar;
 
 	BarObj->SetName(L"Progress Bar");
@@ -274,16 +275,13 @@ void CUITempLevel::CreateTempLevel()
 	progressbar->SetMaxHP(2000);
 	progressbar->SetCurHP(2000);
 
-	progressbar->SetImgFontTex(
-		CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/ImageFont_Raidboss.png"));
-	progressbar->SetPortraitTex(
-		CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Portrait_Raidboss_KaitenRanger.png"));
+	progressbar->SetImgFontTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/ImageFont_Raidboss.png"));
+	progressbar->SetPortraitTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Portrait_Raidboss_KaitenRanger.png"));
 
 	BarObj->Transform()->SetRelativePos(Vec3(0.f, 300.f, 100.f));
 	BarObj->Transform()->SetRelativeScale(Vec3(1, 1, 1.f));
 
 	pTempLevel->AddObject(BarObj, (UINT)LAYER::LAYER_UI, false);
-
 
 	// Add HP Btn
 	pObj = new CGameObject;
@@ -304,12 +302,11 @@ void CUITempLevel::CreateTempLevel()
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
 	pObj->MeshRender()->GetDynamicMaterial(0);
-	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0
-		, CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Red.png"));
+	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0,
+													CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Red.png"));
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 
-	
 	// Sub HP Btn
 	pObj = new CGameObject;
 	pObj->SetName(L"Sub HP Btn");
@@ -329,8 +326,8 @@ void CUITempLevel::CreateTempLevel()
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
 	pObj->MeshRender()->GetDynamicMaterial(0);
-	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0
-		, CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
+	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0,
+													CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 
@@ -339,5 +336,4 @@ void CUITempLevel::CreateTempLevel()
 	GamePlayStatic::ChangeLevel(pTempLevel, LEVEL_STATE::STOP);
 
 	CLevelSaveLoad::SaveLevel(pTempLevel, L"level\\UITest.lv");
-
 }

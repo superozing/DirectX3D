@@ -96,7 +96,7 @@ void Outliner::ResetCurrentLevel()
 
 	for (UINT i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)
 	{
-		CLayer* pLayer = pCurLevel->GetLayer(i);
+		CLayer*						pLayer	  = pCurLevel->GetLayer(i);
 		const vector<CGameObject*>& vecParent = pLayer->GetParentObjects();
 
 		for (size_t i = 0; i < vecParent.size(); ++i)
@@ -124,7 +124,8 @@ void Outliner::CollapseAllNode()
 
 void Outliner::AddObjectToTree(TreeNode* _Node, CGameObject* _Object)
 {
-	TreeNode* pNode = m_Tree->AddTreeNode(_Node, string(_Object->GetName().begin(), _Object->GetName().end()), (DWORD_PTR)_Object);
+	TreeNode* pNode =
+		m_Tree->AddTreeNode(_Node, string(_Object->GetName().begin(), _Object->GetName().end()), (DWORD_PTR)_Object);
 
 	const vector<CGameObject*>& vecChild = _Object->GetChild();
 
@@ -136,14 +137,14 @@ void Outliner::AddObjectToTree(TreeNode* _Node, CGameObject* _Object)
 
 void Outliner::SelectObject(DWORD_PTR _Node)
 {
-	TreeNode* pNode = (TreeNode*)_Node;
+	TreeNode*	 pNode	 = (TreeNode*)_Node;
 	CGameObject* pObject = (CGameObject*)pNode->GetData();
 
 	if (nullptr == pObject)
 		return;
 
 	Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
-	pInspector->SetTargetObject(pObject);	
+	pInspector->SetTargetObject(pObject);
 	RTViewPort* pViewport = (RTViewPort*)CImGuiMgr::GetInst()->FindUI("##Viewport");
 	pViewport->SetTargetObject(pObject);
 }
@@ -153,11 +154,11 @@ void Outliner::DragDropObject(DWORD_PTR _Dest, DWORD_PTR _Source)
 	if (0 == _Source)
 		return;
 
-	TreeNode* pDestNode = (TreeNode*)_Dest;
+	TreeNode* pDestNode	  = (TreeNode*)_Dest;
 	TreeNode* pSourceNode = (TreeNode*)_Source;
 
 	CGameObject* pDestObj = nullptr;
-	if(nullptr != pDestNode)
+	if (nullptr != pDestNode)
 		pDestObj = (CGameObject*)pDestNode->GetData();
 
 	CGameObject* pSourceObj = (CGameObject*)pSourceNode->GetData();
@@ -178,7 +179,7 @@ void Outliner::DragDropObject(DWORD_PTR _Dest, DWORD_PTR _Source)
 		pCurLevel->AddObject(pSourceObj, LayerIdx, false);
 	}
 	else
-	{		
+	{
 		pDestObj->AddChild(pSourceObj);
 	}
 
@@ -247,7 +248,7 @@ bool Outliner::IsFilteredNode(TreeNode* _Node)
 			while (nullptr != ParentNode)
 			{
 				ParentNode->m_bOpen = true;
-				ParentNode = ParentNode->GetParent();
+				ParentNode			= ParentNode->GetParent();
 			}
 		}
 
@@ -283,8 +284,8 @@ void Outliner::CheckCopy()
 		{
 			if (nullptr != m_CopyTarget)
 			{
-				int LayerIdx = m_CopyTarget->GetLayerIdx();
-				CGameObject* pClone = m_CopyTarget->Clone();
+				int			 LayerIdx = m_CopyTarget->GetLayerIdx();
+				CGameObject* pClone	  = m_CopyTarget->Clone();
 				GamePlayStatic::SpawnGameObject(pClone, LayerIdx);
 
 				Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");

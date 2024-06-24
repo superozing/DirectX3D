@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 
 #define TagLightType "[LightType]"
 #define TagLightColor "[LightColor]"
@@ -36,7 +36,7 @@ ofstream& operator<<(ofstream& fout, const tLightInfo& info)
 	fout << TagAngle << endl;
 	fout << info.fAngle;
 
-    return fout;
+	return fout;
 }
 
 ifstream& operator>>(ifstream& fin, tLightInfo& info)
@@ -47,7 +47,7 @@ ifstream& operator>>(ifstream& fin, tLightInfo& info)
 	auto type = magic_enum::enum_cast<LIGHT_TYPE>(str);
 	if (!type.has_value())
 	{
-		MessageBox(nullptr, L"¾ø´Â Enum Å¸ÀÔÀÔ´Ï´Ù.", L"Light 3D Load", 0);
+		MessageBox(nullptr, L"ì—†ëŠ” Enum íƒ€ìž…ìž…ë‹ˆë‹¤.", L"Light 3D Load", 0);
 		assert(0);
 	}
 	info.LightType = (int)type.value();
@@ -109,7 +109,7 @@ ifstream& operator>>(ifstream& fin, tLightInfo& info)
 
 ofstream& operator<<(ofstream& fout, const tParticleModule& module)
 {
-	// Sapwn ¸ðµâ
+	// Sapwn ëª¨ë“ˆ
 	fout << TagModuleName(SPAWN) << endl;
 	fout << module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPAWN] << endl;
 
@@ -157,7 +157,7 @@ ofstream& operator<<(ofstream& fout, const tParticleModule& module)
 	fout << module.MinSpeed << endl;
 	fout << TagMaxSpeed << endl;
 	fout << module.MaxSpeed << endl;
-	
+
 	fout << TagFixedAngle << endl;
 	fout << module.FixedAngle << endl;
 
@@ -204,7 +204,7 @@ ofstream& operator<<(ofstream& fout, const tParticleModule& module)
 
 ifstream& operator>>(ifstream& fin, tParticleModule& module)
 {
-	// ½ºÆù ¸ðµâ
+	// ìŠ¤í° ëª¨ë“ˆ
 	Utils::GetLineUntilString(fin, TagModuleName(SPAWN));
 	fin >> module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPAWN];
 
@@ -312,21 +312,26 @@ ifstream& operator>>(ifstream& fin, tParticleModule& module)
 ofstream& operator<<(ofstream& fout, const tMtrlConst& _mtrlConst)
 {
 	fout << TagIntArr << endl;
-	for (auto& num : _mtrlConst.iArr) fout << num << " ";
+	for (auto& num : _mtrlConst.iArr)
+		fout << num << " ";
 	fout << endl;
 
 	fout << TagFloatArr << endl;
-	for (auto& num : _mtrlConst.fArr) fout << num << " ";
+	for (auto& num : _mtrlConst.fArr)
+		fout << num << " ";
 	fout << endl;
 
 	fout << TagVec2Arr << endl;
-	for (auto& vec : _mtrlConst.v2Arr) fout << vec << endl;
+	for (auto& vec : _mtrlConst.v2Arr)
+		fout << vec << endl;
 
 	fout << TagVec4Arr << endl;
-	for (auto& vec : _mtrlConst.v4Arr) fout << vec << endl;
+	for (auto& vec : _mtrlConst.v4Arr)
+		fout << vec << endl;
 
 	fout << TagMatrixArr << endl;
-	for (const Matrix& mat : _mtrlConst.matArr) fout << mat << endl;
+	for (const Matrix& mat : _mtrlConst.matArr)
+		fout << mat << endl;
 
 	return fout;
 }
@@ -334,19 +339,24 @@ ofstream& operator<<(ofstream& fout, const tMtrlConst& _mtrlConst)
 ifstream& operator>>(ifstream& fin, tMtrlConst& _mtrlConst)
 {
 	Utils::GetLineUntilString(fin, TagIntArr);
-	for (auto& num : _mtrlConst.iArr) fin >> num;
+	for (auto& num : _mtrlConst.iArr)
+		fin >> num;
 
 	Utils::GetLineUntilString(fin, TagFloatArr);
-	for (auto& num : _mtrlConst.fArr) fin >> num;
+	for (auto& num : _mtrlConst.fArr)
+		fin >> num;
 
 	Utils::GetLineUntilString(fin, TagVec2Arr);
-	for (auto& vec : _mtrlConst.v2Arr) fin >> vec;
+	for (auto& vec : _mtrlConst.v2Arr)
+		fin >> vec;
 
 	Utils::GetLineUntilString(fin, TagVec4Arr);
-	for (auto& vec : _mtrlConst.v4Arr) fin >> vec;
+	for (auto& vec : _mtrlConst.v4Arr)
+		fin >> vec;
 
 	Utils::GetLineUntilString(fin, TagMatrixArr);
-	for (Matrix& mat : _mtrlConst.matArr) fin >> mat;
+	for (Matrix& mat : _mtrlConst.matArr)
+		fin >> mat;
 
 	return fin;
 }

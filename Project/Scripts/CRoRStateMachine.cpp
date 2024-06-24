@@ -1,7 +1,7 @@
 ﻿#include "pch.h"
 #include "CRoRStateMachine.h"
 
-template <class T> void CRoRStateMachine<T>::ReflectState(CGameObject *from, int index, string name)
+template <class T> void CRoRStateMachine<T>::ReflectState(CGameObject* from, int index, string name)
 {
 }
 
@@ -21,8 +21,8 @@ template <class T> void CRoRStateMachine<T>::StateManager::ForceSetCurState(int 
 		return;
 	}
 	m_Outer->m_bChangedStates = true;
-	m_PrevState = m_CurState;
-	m_CurState = _ToState;
+	m_PrevState				  = m_CurState;
+	m_CurState				  = _ToState;
 	if (m_PrevState != -1 && m_Outer->m_vecEnds[m_PrevState] != nullptr)
 	{
 		(m_Outer->m_vecEnds[m_PrevState])();

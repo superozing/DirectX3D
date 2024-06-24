@@ -9,7 +9,6 @@
 #include "CAnimation3DShader.h"
 #include "CKeyMgr.h"
 
-
 CAnimator3D::CAnimator3D()
 	: m_pVecBones(nullptr)
 	, m_pVecClip(nullptr)
@@ -54,7 +53,6 @@ CAnimator3D::~CAnimator3D()
 		delete m_pBoneFinalMatBuffer;
 }
 
-
 void CAnimator3D::finaltick()
 {
 	if (KEY_TAP(M))
@@ -96,7 +94,7 @@ void CAnimator3D::finaltick()
 
 	// 현재 프레임 인덱스 구하기
 	double dFrameIdx = m_dCurTime * (double)m_iFrameCount;
-	m_iFrameIdx = (int)(dFrameIdx);
+	m_iFrameIdx		 = (int)(dFrameIdx);
 
 	// 다음 프레임 인덱스
 	if (m_iFrameIdx >= m_pVecClip->at(m_iCurClip).iFrameLength - 1)
@@ -117,13 +115,13 @@ void CAnimator3D::SetAnimClip(const vector<tMTAnimClip>* _vecAnimClip)
 	m_vecClipUpdateTime.resize(m_pVecClip->size());
 }
 
-
 void CAnimator3D::UpdateData()
 {
 	if (!m_bFinalMatUpdate)
 	{
 		// Animation3D Update Compute Shader
-		CAnimation3DShader* pUpdateShader = (CAnimation3DShader*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"Animation3DUpdateCS").Get();
+		CAnimation3DShader* pUpdateShader =
+			(CAnimation3DShader*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"Animation3DUpdateCS").Get();
 
 		// Bone Data
 		Ptr<CMesh> pMesh = MeshRender()->GetMesh();
@@ -147,7 +145,7 @@ void CAnimator3D::UpdateData()
 		m_bFinalMatUpdate = true;
 	}
 
-	// t30 레지스터에 최종행렬 데이터(구조버퍼) 바인딩		
+	// t30 레지스터에 최종행렬 데이터(구조버퍼) 바인딩
 	m_pBoneFinalMatBuffer->UpdateData(30);
 }
 
@@ -155,8 +153,8 @@ void CAnimator3D::ClearData()
 {
 	m_pBoneFinalMatBuffer->Clear(30);
 
-	UINT iMtrlCount = MeshRender()->GetMtrlCount();
-	Ptr<CMaterial> pMtrl = nullptr;
+	UINT		   iMtrlCount = MeshRender()->GetMtrlCount();
+	Ptr<CMaterial> pMtrl	  = nullptr;
 	for (UINT i = 0; i < iMtrlCount; ++i)
 	{
 		pMtrl = MeshRender()->GetSharedMaterial(i);
@@ -185,16 +183,16 @@ void CAnimator3D::Play(int _iClipIdx, int _iLoopCount)
 		return;
 	}
 
-	m_bPlay = true;
+	m_bPlay	   = true;
 	m_iCurClip = _iClipIdx;
 
-	m_iLoopCount = _iLoopCount;
+	m_iLoopCount	= _iLoopCount;
 	m_iCurLoopCount = 0;
 
 	SetClipTime(m_iCurClip, 0.f);
 }
 
-void CAnimator3D::Play(const wstring &_AnimName, int _iLoopCount)
+void CAnimator3D::Play(const wstring& _AnimName, int _iLoopCount)
 {
 	auto iter = find(m_pVecClip->begin(), m_pVecClip->end(), _AnimName);
 
@@ -212,7 +210,7 @@ void CAnimator3D::Play(const wstring &_AnimName, int _iLoopCount)
 
 void CAnimator3D::Stop()
 {
-	m_bPlay = false;
+	m_bPlay			= false;
 	m_iCurLoopCount = 0;
 	SetClipTime(m_iCurClip, 0.f);
 }

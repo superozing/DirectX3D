@@ -22,8 +22,11 @@
 #include "Inspector.h"
 
 RTViewPort::RTViewPort()
-	: UI("Viewport", "##Viewport"), m_pTarget(nullptr), m_pCamera(nullptr), m_ViewportPos(0.f, 0.f),
-	  m_MouseCoord(0.f, 0.f)
+	: UI("Viewport", "##Viewport")
+	, m_pTarget(nullptr)
+	, m_pCamera(nullptr)
+	, m_ViewportPos(0.f, 0.f)
+	, m_MouseCoord(0.f, 0.f)
 {
 
 	m_ViewPortTexture = CAssetMgr::GetInst()->CreateTexture(L"CopyRTtex", CDevice::GetInst()->GetRenderResolution().x,
@@ -43,29 +46,29 @@ void RTViewPort::render_update()
 {
 	CRenderMgr::GetInst()->CopyRTTex(m_ViewPortTexture);
 
-	m_fTapHeight = ImGui::GetFrameHeightWithSpacing();
+	m_fTapHeight	 = ImGui::GetFrameHeightWithSpacing();
 	m_ViewportSize.x = (float)ImGui::GetWindowSize().x;
 	m_ViewportSize.y = (float)ImGui::GetWindowSize().y - m_fTapHeight;
 
 	m_ViewportPos = Vec2((float)ImGui::GetWindowPos().x, (float)ImGui::GetWindowPos().y);
-	m_MouseCoord = Vec2((float)ImGui::GetIO().MousePos.x, (float)ImGui::GetIO().MousePos.y);
+	m_MouseCoord  = Vec2((float)ImGui::GetIO().MousePos.x, (float)ImGui::GetIO().MousePos.y);
 
 	ImGui::Dummy(ImVec2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y - 40));
 
 	// 레벨 파일 드랍 체크
 	if (ImGui::BeginDragDropTarget())
 	{
-		const ImGuiPayload *payload = ImGui::AcceptDragDropPayload("ContentTree");
+		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ContentTree");
 		if (payload)
 		{
-			DWORD_PTR data = *((DWORD_PTR *)payload->Data);
+			DWORD_PTR data = *((DWORD_PTR*)payload->Data);
 			if (data == 0)
 				return;
-			string &str = *(string *)data;
-			auto extension = path(str).extension().string();
+			string& str		  = *(string*)data;
+			auto	extension = path(str).extension().string();
 			if (extension == ".lv")
 			{
-				auto pLevel = CLevelSaveLoad::LoadLevel(str);
+				auto	pLevel	  = CLevelSaveLoad::LoadLevel(str);
 				wstring levelname = path(str).stem().wstring();
 				pLevel->SetName(levelname);
 				GamePlayStatic::ChangeLevel(pLevel, LEVEL_STATE::STOP);
@@ -73,24 +76,24 @@ void RTViewPort::render_update()
 			else
 			{
 				// FBX, MeshData일 경우 오브젝트 로드
-				CAsset *pAsset = (CAsset *)data;
+				CAsset* pAsset = (CAsset*)data;
 				if (ASSET_TYPE::MESHDATA == pAsset->GetType())
 				{
-					Ptr<CMeshData> pMD = (CMeshData *)pAsset;
-					CGameObject *pGO = pMD->Instantiate();
+					Ptr<CMeshData> pMD = (CMeshData*)pAsset;
+					CGameObject*   pGO = pMD->Instantiate();
 					pGO->SetName(pAsset->GetKey());
 
 					// 카메라 위치에 맞춰서 위치 설정하기
-					CCamera *pCam = CRenderMgr::GetInst()->GetMainCam();
-					Vec3 vDir = pCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-					Vec3 vPos = pCam->Transform()->GetWorldPos();
-					float fDist = 500.f;
-					Vec3 vSpawnPos = vPos + vDir * fDist;
+					CCamera* pCam	   = CRenderMgr::GetInst()->GetMainCam();
+					Vec3	 vDir	   = pCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+					Vec3	 vPos	   = pCam->Transform()->GetWorldPos();
+					float	 fDist	   = 500.f;
+					Vec3	 vSpawnPos = vPos + vDir * fDist;
 					pGO->Transform()->SetRelativePos(vSpawnPos);
 
 					GamePlayStatic::SpawnGameObject(pGO, 0);
 
-					auto pInspector = (Inspector *)CImGuiMgr::GetInst()->FindUI("##Inspector");
+					auto pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
 					pInspector->SetTargetObject(pGO);
 					SetTargetObject(pGO);
 				}
@@ -121,12 +124,12 @@ void RTViewPort::enter()
 	SetTargetObject(nullptr);
 }
 
-void EditTransform(float *cameraView, float *cameraProjection, float *matrix, bool editTransformDecomposition,
+void EditTransform(float* cameraView, float* cameraProjection, float* matrix, bool editTransformDecomposition,
 				   float _distance);
 
 void RTViewPort::Gizmo()
 {
-	ImGuiIO &io = ImGui::GetIO();
+	ImGuiIO& io = ImGui::GetIO();
 
 	ImGuizmo::SetDrawlist();
 
@@ -135,8 +138,8 @@ void RTViewPort::Gizmo()
 	auto cameraProjMat = g_Transform.matProj;
 	if (m_pTarget == nullptr || !m_pTarget->Transform())
 		return;
-	auto objmat = m_pTarget->Transform()->GetWorldMat();
-	Vec3 objPos = m_pTarget->Transform()->GetWorldPos();
+	auto objmat	   = m_pTarget->Transform()->GetWorldMat();
+	Vec3 objPos	   = m_pTarget->Transform()->GetWorldPos();
 	Vec3 cameraPos = m_pCamera->Transform()->GetWorldPos();
 
 	auto projType = m_pCamera->Camera()->GetProjType();
@@ -144,9 +147,9 @@ void RTViewPort::Gizmo()
 
 	float distance = Vec3::Distance(objPos, cameraPos);
 
-	float cameraView[16] = {};
+	float cameraView[16]	   = {};
 	float cameraProjection[16] = {};
-	float objectMatrix[16] = {};
+	float objectMatrix[16]	   = {};
 
 	RoRMath::MatrixToFloat16(cameraView, cameraViewMat);
 	RoRMath::MatrixToFloat16(cameraProjection, cameraProjMat);
@@ -161,16 +164,16 @@ void RTViewPort::Gizmo()
 	m_pTarget->Transform()->SetWorldMat(objmat);
 }
 
-void EditTransform(float *cameraView, float *cameraProjection, float *matrix, bool editTransformDecomposition,
+void EditTransform(float* cameraView, float* cameraProjection, float* matrix, bool editTransformDecomposition,
 				   float _distance)
 {
-	static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::LOCAL);
-	static bool useSnap = false;
-	static float snap[3] = {1.f, 1.f, 1.f};
-	static float bounds[] = {-0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f};
-	static float boundsSnap[] = {0.1f, 0.1f, 0.1f};
-	static bool boundSizing = false;
-	static bool boundSizingSnap = false;
+	static ImGuizmo::MODE	   mCurrentGizmoMode(ImGuizmo::LOCAL);
+	static bool				   useSnap		   = false;
+	static float			   snap[3]		   = {1.f, 1.f, 1.f};
+	static float			   bounds[]		   = {-0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f};
+	static float			   boundsSnap[]	   = {0.1f, 0.1f, 0.1f};
+	static bool				   boundSizing	   = false;
+	static bool				   boundSizingSnap = false;
 	static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
 
 	if (editTransformDecomposition)
@@ -218,10 +221,10 @@ void EditTransform(float *cameraView, float *cameraProjection, float *matrix, bo
 		}
 	}
 
-	ImGuiIO &io = ImGui::GetIO();
-	float viewManipulateRight = ImGui::GetWindowSize().x;
-	float viewManipulateTop = ImGui::GetWindowPos().y;
-	static ImGuiWindowFlags gizmoWindowFlags = 0;
+	ImGuiIO&				io					= ImGui::GetIO();
+	float					viewManipulateRight = ImGui::GetWindowSize().x;
+	float					viewManipulateTop	= ImGui::GetWindowPos().y;
+	static ImGuiWindowFlags gizmoWindowFlags	= 0;
 
 	auto size = ImGui::GetWindowSize();
 	ImGuizmo::SetRect(0, 0, size.x, size.y);
@@ -233,7 +236,7 @@ void EditTransform(float *cameraView, float *cameraProjection, float *matrix, bo
 	// 128), 0x10101010);
 }
 
-void RTViewPort::SetTargetObject(CGameObject *_target)
+void RTViewPort::SetTargetObject(CGameObject* _target)
 {
 	if (!_target || !_target->Transform() || _target->Camera())
 	{
@@ -243,15 +246,15 @@ void RTViewPort::SetTargetObject(CGameObject *_target)
 	m_pTarget = _target;
 }
 
-void RTViewPort::SetTargetCamera(CCamera *_camera)
+void RTViewPort::SetTargetCamera(CCamera* _camera)
 {
 	if (_camera != nullptr)
 		m_pCamera = _camera->GetOwner();
 }
 
-void RTViewPort::SetCamera(CCamera *_camera)
+void RTViewPort::SetCamera(CCamera* _camera)
 {
-	RTViewPort *pViewport = (RTViewPort *)CImGuiMgr::GetInst()->FindUI("##Viewport");
+	RTViewPort* pViewport = (RTViewPort*)CImGuiMgr::GetInst()->FindUI("##Viewport");
 	if (!pViewport)
 		return;
 	pViewport->SetTargetCamera(_camera);
@@ -262,7 +265,7 @@ void RTViewPort::MoveCameraToObject()
 	if (!m_pTarget || !m_pCamera)
 		return;
 
-	Vec3 vPos = m_pTarget->Transform()->GetRelativePos();
+	Vec3  vPos	   = m_pTarget->Transform()->GetRelativePos();
 	float distance = 500.f;
 
 	Vec3 vDir = m_pCamera->Transform()->GetWorldDir(DIR_TYPE::FRONT);
@@ -273,11 +276,11 @@ void RTViewPort::MoveCameraToObject()
 
 Vec2 RTViewPort::ConvertCoord()
 {
-	RTViewPort *Viewport = dynamic_cast<RTViewPort *>(CImGuiMgr::GetInst()->FindUI("##Viewport"));
+	RTViewPort* Viewport = dynamic_cast<RTViewPort*>(CImGuiMgr::GetInst()->FindUI("##Viewport"));
 
-	Vec2 OriginResolution = CDevice::GetInst()->GetRenderResolution();
-	Vec2 Mousepos = Viewport->GetMouseCoord();
-	float fTapHeight = Viewport->GetTapHeight();
+	Vec2  OriginResolution = CDevice::GetInst()->GetRenderResolution();
+	Vec2  Mousepos		   = Viewport->GetMouseCoord();
+	float fTapHeight	   = Viewport->GetTapHeight();
 
 	Mousepos.x = Mousepos.x - Viewport->GetViewPortPos().x;
 	Mousepos.y = Mousepos.y - Viewport->GetViewPortPos().y - fTapHeight;

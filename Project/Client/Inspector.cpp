@@ -20,7 +20,6 @@
 
 #include "AssetUI.h"
 
-
 void Inspector::ResetTargetObject()
 {
 	SetTargetObject(nullptr);
@@ -42,7 +41,6 @@ Inspector::Inspector()
 
 Inspector::~Inspector()
 {
-
 }
 
 void Inspector::tick()
@@ -57,7 +55,7 @@ void Inspector::render_update()
 	if (nullptr != m_TargetObject)
 	{
 		ObjectName();
-		
+
 		if (!m_bPrefab)
 		{
 			ImGui::SameLine();
@@ -88,7 +86,8 @@ void Inspector::render_update()
 				SavePrefab(ToString(ContentPath), ToString(FileName));
 			}
 
-			int LayerIdx = PrefabLayer(); ImGui::SameLine();
+			int LayerIdx = PrefabLayer();
+			ImGui::SameLine();
 
 			if (ImGui::Button("Spawn Prefab"))
 			{
@@ -137,7 +136,6 @@ void Inspector::SetTargetObject(CGameObject* _Object, bool _bPrefab)
 
 	RefreshScriptUI();
 
-
 	// AssetUI 비활성화
 	for (UINT i = 0; i < (UINT)ASSET_TYPE::END; ++i)
 	{
@@ -157,21 +155,20 @@ void Inspector::SetTargetAsset(Ptr<CAsset> _Asset)
 	{
 		m_arrAssetUI[i]->Deactivate();
 	}
-		
-	if(nullptr != m_TargetAsset)
+
+	if (nullptr != m_TargetAsset)
 	{
 		m_arrAssetUI[(UINT)m_TargetAsset->GetType()]->Activate();
 		m_arrAssetUI[(UINT)m_TargetAsset->GetType()]->SetAsset(_Asset);
-	}	
+	}
 }
-
 
 void Inspector::ObjectName()
 {
 	// 오브젝트 이름
-	char ObjName[255] = {};
-	string strName = string(m_TargetObject->GetName().begin(), m_TargetObject->GetName().end());
-	string prevName = strName;
+	char   ObjName[255] = {};
+	string strName		= string(m_TargetObject->GetName().begin(), m_TargetObject->GetName().end());
+	string prevName		= strName;
 
 	for (size_t i = 0; i < strName.length(); ++i)
 	{
@@ -203,13 +200,14 @@ void Inspector::ObjectLayer()
 	CLevel* CurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
 
 	// 오브젝트 레이어
-	int LayerIdx = m_TargetObject->GetLayerIdx();
+	int	   LayerIdx	 = m_TargetObject->GetLayerIdx();
 	string LayerName = ToString(CurLevel->GetLayer(LayerIdx)->GetName());
-	int PrevIdx = LayerIdx;
+	int	   PrevIdx	 = LayerIdx;
 
 	if (-1 != LayerIdx)
 	{
-		ImGui::Text("Layer"); ImGui::SameLine();
+		ImGui::Text("Layer");
+		ImGui::SameLine();
 		auto LayerVal = magic_enum::enum_cast<LAYER>(LayerName);
 
 		string strLayer = LayerName;
@@ -218,9 +216,9 @@ void Inspector::ObjectLayer()
 		{
 			for (int i = 0; i < 32; ++i)
 			{
-				int CurLayer = i;
+				int	   CurLayer		= i;
 				string CurLayerName = ToString(CurLevel->GetLayer(CurLayer)->GetName());
-				
+
 				if (!magic_enum::enum_cast<LAYER>(CurLayerName).has_value())
 					continue;
 
@@ -250,9 +248,10 @@ void Inspector::ObjectLayer()
 int Inspector::PrefabLayer()
 {
 	static int LayerIdx = 0;
-	static int PrevIdx = LayerIdx;
+	static int PrevIdx	= LayerIdx;
 
-	ImGui::Text("Layer"); ImGui::SameLine();
+	ImGui::Text("Layer");
+	ImGui::SameLine();
 
 	CLevel* CurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
 
@@ -296,7 +295,7 @@ int Inspector::PrefabLayer()
 void Inspector::ObjectComponent()
 {
 	auto ComponentList = magic_enum::enum_names<COMPONENT_TYPE>();
-	
+
 	for (size_t i = 0; i < ComponentList.size() - 2; ++i)
 	{
 		if (ImGui::MenuItem(string(ComponentList[i]).c_str()))
@@ -308,10 +307,11 @@ void Inspector::ObjectComponent()
 
 void Inspector::ObjectScript()
 {
-	static int CurSciprt = 0;
+	static int			   CurSciprt = 0;
 	static ImGuiTextFilter filter;
-	vector<string> filteredScripts;
-	ImGui::Text("Script Filter"); ImGui::SameLine();
+	vector<string>		   filteredScripts;
+	ImGui::Text("Script Filter");
+	ImGui::SameLine();
 	filter.Draw("##Script Filter");
 
 	auto ScriptList = magic_enum::enum_names<SCRIPT_TYPE>();
@@ -374,16 +374,18 @@ void Inspector::CheckTargetComponent(COMPONENT_TYPE _type)
 {
 	if (nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE)_type))
 	{
-		MessageBoxA(nullptr, "Already contains the same component", "Can't add the same component multiple times!", MB_OK);
+		MessageBoxA(nullptr, "Already contains the same component", "Can't add the same component multiple times!",
+					MB_OK);
 		return;
 	}
-	
+
 	// 두 개 이상의 렌더 컴포넌트를 추가하려고 할 시
 	if (CComponent::IsRenderComponent(_type))
 	{
 		if (nullptr != m_TargetObject->GetRenderComponent())
 		{
-			MessageBoxA(nullptr, "Already contains the other render component", "Can't add more than one render component!", MB_OK);
+			MessageBoxA(nullptr, "Already contains the other render component",
+						"Can't add more than one render component!", MB_OK);
 			return;
 		}
 	}
@@ -452,9 +454,9 @@ void Inspector::CheckTargetComponent(COMPONENT_TYPE _type)
 void Inspector::MakePrefab()
 {
 	CGameObject* pObj = GetTargetObject();
-	pObj = pObj->Clone();
+	pObj			  = pObj->Clone();
 	wstring Key;
-	Key = L"prefab\\" + m_TargetObject->GetName() + L".pref";
+	Key					 = L"prefab\\" + m_TargetObject->GetName() + L".pref";
 	Ptr<CPrefab> pPrefab = new CPrefab(pObj, false);
 	CAssetMgr::GetInst()->AddAsset<CPrefab>(Key, pPrefab.Get());
 	pPrefab->Save(Key);
@@ -505,4 +507,3 @@ void Inspector::ResetComponent()
 			pUI->ResetUIinfo();
 	}
 }
-

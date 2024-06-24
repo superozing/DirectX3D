@@ -8,15 +8,15 @@ enum class TASK_TYPE
 	// Param1 : Object Adress
 	DELETE_OBJECT,
 
-	// Param1 : Asset Adress 
+	// Param1 : Asset Adress
 	ADD_ASSET,
-	
+
 	// Param1 : AssetType, Param2 : Asset Adress
-	DELETE_ASSET, 
+	DELETE_ASSET,
 
 	// Param1 : Level, Param2 : LEVEL_STATE
 	CHANGE_LEVELSTATE,
-		
+
 	// Param1 : Level Adress, Param2 : Next Level Start State
 	CHANGE_LEVEL,
 
@@ -34,20 +34,18 @@ struct tTask
 	UINT_PTR  Param_2;
 };
 
-
-class CTaskMgr
-	: public CManager<CTaskMgr>
+class CTaskMgr : public CManager<CTaskMgr>
 {
 	SINGLE(CTaskMgr);
 
 private:
-	vector<tTask>	m_vecTask;
+	vector<tTask> m_vecTask;
 
-	bool			m_bCreateObject;
-	bool			m_bDeleteObject;
-	bool			m_bAssetChange;
+	bool m_bCreateObject;
+	bool m_bDeleteObject;
+	bool m_bAssetChange;
 
-	int				m_DeleteFrameCount;
+	int m_DeleteFrameCount;
 
 public:
 	virtual void tick() override;
@@ -60,4 +58,3 @@ public:
 private:
 	void Clear();
 };
-

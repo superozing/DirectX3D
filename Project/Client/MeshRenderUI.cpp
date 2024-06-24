@@ -9,7 +9,6 @@
 #include "Inspector.h"
 #include "ParamUI.h"
 
-
 MeshRenderUI::MeshRenderUI()
 	: ComponentUI("MeshRender", "##MeshRender", COMPONENT_TYPE::MESHRENDER)
 {
@@ -24,13 +23,14 @@ void MeshRenderUI::render_update()
 {
 	ComponentUI::render_update();
 
-	if (!TitleCollapse("MeshRender")) return;
+	if (!TitleCollapse("MeshRender"))
+		return;
 
-	CGameObject* pTarget = GetTargetObject();
+	CGameObject* pTarget	 = GetTargetObject();
 	CMeshRender* pMeshRender = pTarget->MeshRender();
 
 	vector<tMtrlSet> vMtrl = pMeshRender->GetVecMtrls();
-	Ptr<CMesh> pMesh = pMeshRender->GetMesh();
+	Ptr<CMesh>		 pMesh = pMeshRender->GetMesh();
 
 	string meshname, mtrlname;
 
@@ -38,9 +38,9 @@ void MeshRenderUI::render_update()
 	{
 		meshname = ToString(pMesh->GetKey()).c_str();
 	}
-		
+
 	ImGui::Text("Mesh    ");
-	ImGui::SameLine(); 
+	ImGui::SameLine();
 	ImGui::InputText("##MeshName", (char*)meshname.c_str(), meshname.length(), ImGuiInputTextFlags_ReadOnly);
 
 	// Mesh payload 체크
@@ -48,7 +48,6 @@ void MeshRenderUI::render_update()
 	if (PayloadCheck(&PayloadMesh))
 	{
 		GetTargetObject()->MeshRender()->SetMesh((CMesh*)PayloadMesh);
-
 	}
 
 	ImGui::SameLine();
@@ -61,7 +60,7 @@ void MeshRenderUI::render_update()
 		CAssetMgr::GetInst()->GetAssetName(ASSET_TYPE::MESH, vecMeshName);
 
 		pListUI->AddString(vecMeshName);
-		//pListUI->SetDbClickCallBack(MeshSelect);
+		// pListUI->SetDbClickCallBack(MeshSelect);
 		pListUI->SetDbClickDelegate(this, (Delegate_1)&MeshRenderUI::MeshSelect);
 		pListUI->Activate();
 	}
@@ -89,7 +88,6 @@ void MeshRenderUI::render_update()
 			if (PayloadCheck(&PayloadMaterial))
 			{
 				GetTargetObject()->MeshRender()->SetMaterial((CMaterial*)PayloadMaterial, i);
-				
 			}
 
 			if (ImGui::Button("##MtrlBtn", ImVec2(20, 20)))
@@ -105,8 +103,10 @@ void MeshRenderUI::render_update()
 				pListUI->Activate();
 			}
 
-			ImGui::Separator(); ImGui::Spacing();
-			ImGui::Text("Material Parameter"); ImGui::Spacing();
+			ImGui::Separator();
+			ImGui::Spacing();
+			ImGui::Text("Material Parameter");
+			ImGui::Spacing();
 
 			if (GetTargetObject()->MeshRender() && GetTargetObject()->MeshRender()->GetMaterial(i).Get())
 			{
@@ -127,31 +127,50 @@ void MeshRenderUI::render_update()
 							case SCALAR_PARAM::BOOL_1:
 							case SCALAR_PARAM::BOOL_2:
 							case SCALAR_PARAM::BOOL_3:
-								ParamUI::Param_BOOL((bool*)GetTargetObject()->MeshRender()->GetMaterial(i)->GetScalarParam(vecScalarParam[j].Type), vecScalarParam[j].Desc, vecScalarParam[j].View, vecScalarParam[j].Tooltip);
+								ParamUI::Param_BOOL(
+									(bool*)GetTargetObject()->MeshRender()->GetMaterial(i)->GetScalarParam(
+										vecScalarParam[j].Type),
+									vecScalarParam[j].Desc, vecScalarParam[j].View, vecScalarParam[j].Tooltip);
 								break;
 							case SCALAR_PARAM::INT_0:
 							case SCALAR_PARAM::INT_1:
 							case SCALAR_PARAM::INT_2:
 							case SCALAR_PARAM::INT_3:
-								ParamUI::Param_INT((int*)GetTargetObject()->MeshRender()->GetMaterial(i)->GetScalarParam(vecScalarParam[j].Type), vecScalarParam[j].Desc, vecScalarParam[j].Min, vecScalarParam[j].Max, vecScalarParam[j].View, vecScalarParam[j].Tooltip);
+								ParamUI::Param_INT(
+									(int*)GetTargetObject()->MeshRender()->GetMaterial(i)->GetScalarParam(
+										vecScalarParam[j].Type),
+									vecScalarParam[j].Desc, vecScalarParam[j].Min, vecScalarParam[j].Max,
+									vecScalarParam[j].View, vecScalarParam[j].Tooltip);
 								break;
 							case SCALAR_PARAM::FLOAT_0:
 							case SCALAR_PARAM::FLOAT_1:
 							case SCALAR_PARAM::FLOAT_2:
 							case SCALAR_PARAM::FLOAT_3:
-								ParamUI::Param_FLOAT((float*)GetTargetObject()->MeshRender()->GetMaterial(i)->GetScalarParam(vecScalarParam[j].Type), vecScalarParam[j].Desc, vecScalarParam[j].Min, vecScalarParam[j].Max, vecScalarParam[j].View, vecScalarParam[j].Tooltip);
+								ParamUI::Param_FLOAT(
+									(float*)GetTargetObject()->MeshRender()->GetMaterial(i)->GetScalarParam(
+										vecScalarParam[j].Type),
+									vecScalarParam[j].Desc, vecScalarParam[j].Min, vecScalarParam[j].Max,
+									vecScalarParam[j].View, vecScalarParam[j].Tooltip);
 								break;
 							case SCALAR_PARAM::VEC2_0:
 							case SCALAR_PARAM::VEC2_1:
 							case SCALAR_PARAM::VEC2_2:
 							case SCALAR_PARAM::VEC2_3:
-								ParamUI::Param_VEC2((Vec2*)GetTargetObject()->MeshRender()->GetMaterial(i)->GetScalarParam(vecScalarParam[j].Type), vecScalarParam[j].Desc, vecScalarParam[j].Min, vecScalarParam[j].Max, vecScalarParam[j].View, vecScalarParam[j].Tooltip);
+								ParamUI::Param_VEC2(
+									(Vec2*)GetTargetObject()->MeshRender()->GetMaterial(i)->GetScalarParam(
+										vecScalarParam[j].Type),
+									vecScalarParam[j].Desc, vecScalarParam[j].Min, vecScalarParam[j].Max,
+									vecScalarParam[j].View, vecScalarParam[j].Tooltip);
 								break;
 							case SCALAR_PARAM::VEC4_0:
 							case SCALAR_PARAM::VEC4_1:
 							case SCALAR_PARAM::VEC4_2:
 							case SCALAR_PARAM::VEC4_3:
-								ParamUI::Param_VEC4((Vec4*)GetTargetObject()->MeshRender()->GetMaterial(i)->GetScalarParam(vecScalarParam[j].Type), vecScalarParam[j].Desc, vecScalarParam[j].Min, vecScalarParam[j].Max, vecScalarParam[j].View, vecScalarParam[j].Tooltip);
+								ParamUI::Param_VEC4(
+									(Vec4*)GetTargetObject()->MeshRender()->GetMaterial(i)->GetScalarParam(
+										vecScalarParam[j].Type),
+									vecScalarParam[j].Desc, vecScalarParam[j].Min, vecScalarParam[j].Max,
+									vecScalarParam[j].View, vecScalarParam[j].Tooltip);
 								break;
 							case SCALAR_PARAM::MAT_0:
 							case SCALAR_PARAM::MAT_1:
@@ -168,14 +187,13 @@ void MeshRenderUI::render_update()
 		}
 	}
 
-
-	//ImGui::Text("Material"); 
-	//ImGui::SameLine(); 
-	//ImGui::InputText("##MtrlName", (char*)mtrlname.c_str(), mtrlname.length(), ImGuiInputTextFlags_ReadOnly);
-	//ImGui::SameLine();
+	// ImGui::Text("Material");
+	// ImGui::SameLine();
+	// ImGui::InputText("##MtrlName", (char*)mtrlname.c_str(), mtrlname.length(), ImGuiInputTextFlags_ReadOnly);
+	// ImGui::SameLine();
 
 	//// Material Drop 체크
-	//if (ImGui::BeginDragDropTarget())
+	// if (ImGui::BeginDragDropTarget())
 	//{
 	//	const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ContentTree");
 
@@ -191,8 +209,7 @@ void MeshRenderUI::render_update()
 	//	ImGui::EndDragDropTarget();
 	//}
 
-
-	//if (ImGui::Button("##MtrlBtn", ImVec2(20, 20)))
+	// if (ImGui::Button("##MtrlBtn", ImVec2(20, 20)))
 	//{
 	//	// 리스트 UI
 	//	ListUI* pListUI = (ListUI*)CImGuiMgr::GetInst()->FindUI("##List");
@@ -208,7 +225,7 @@ void MeshRenderUI::render_update()
 
 void MeshRenderUI::MeshSelect(DWORD_PTR _ptr)
 {
-	string strMesh = (char*)_ptr;
+	string	strMesh		= (char*)_ptr;
 	wstring strMeshName = ToWString(strMesh);
 
 	Ptr<CMesh> pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(strMeshName);
@@ -218,7 +235,7 @@ void MeshRenderUI::MeshSelect(DWORD_PTR _ptr)
 
 void MeshRenderUI::MaterialSelect(DWORD_PTR _ptr, UINT _idx)
 {
-	string strMtrl = (char*)_ptr;
+	string	strMtrl		= (char*)_ptr;
 	wstring strMtrlName = ToWString(strMtrl);
 
 	Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(strMtrlName);

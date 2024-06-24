@@ -16,14 +16,14 @@ CIdleState::~CIdleState()
 void CIdleState::finaltick()
 {
 	// 플레이어가 근처에 있으면, Trace 상태로 변경한다.
-	float DetectRange = *((float*)GetBlackboardData(L"DetectRange"));
-	CGameObject * pTarget = ((CGameObject*)GetBlackboardData(L"TargetObject"));
+	float		 DetectRange = *((float*)GetBlackboardData(L"DetectRange"));
+	CGameObject* pTarget	 = ((CGameObject*)GetBlackboardData(L"TargetObject"));
 
 	CGameObject* pSelf = GetFSM()->GetStateMachine()->GetOwner();
 
 	Vec3 vDist = pTarget->Transform()->GetWorldPos() - pSelf->Transform()->GetWorldPos();
 
-	//GamePlayStatic::DrawDebugCircle(pSelf->Transform()->GetWorldPos(), DetectRange, Vec3(0.1f, 1.f, 0.1f), 0.f);
+	// GamePlayStatic::DrawDebugCircle(pSelf->Transform()->GetWorldPos(), DetectRange, Vec3(0.1f, 1.f, 0.1f), 0.f);
 
 	if (vDist.Length() <= DetectRange)
 	{
@@ -34,10 +34,8 @@ void CIdleState::finaltick()
 
 void CIdleState::Enter()
 {
-
 }
 
 void CIdleState::Exit()
 {
-
 }

@@ -11,7 +11,8 @@
 #include "SkyBoxUI.h"
 #include "ParticleSystemUI.h"
 
-Content::Content() : UI("Content", "##Content")
+Content::Content()
+	: UI("Content", "##Content")
 {
 	m_DirectoryTree = new TreeUI("DirectoryTree");
 	m_DirectoryTree->ShowRootNode(false);
@@ -57,10 +58,10 @@ Content::~Content()
 	}
 }
 
-void Content::AddDirectoryNode(TreeNode *_parent, const wstring &_path)
+void Content::AddDirectoryNode(TreeNode* _parent, const wstring& _path)
 {
 	namespace fs = std::filesystem;
-	for (const fs::directory_entry &entry : fs::directory_iterator(_path))
+	for (const fs::directory_entry& entry : fs::directory_iterator(_path))
 	{
 		if (entry.is_directory())
 		{
@@ -78,7 +79,7 @@ void Content::render_update()
 	}
 
 	static float w = 200.0f;
-	float h = ImGui::GetWindowSize().y - 40.f;
+	float		 h = ImGui::GetWindowSize().y - 40.f;
 	if (h < 1.f)
 		h = 1.f;
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
@@ -115,7 +116,7 @@ void Content::ResetBrowser()
 	m_DirectoryTree->ClearNode();
 
 	// 루트노드 추가
-	TreeNode *RootNode = m_DirectoryTree->AddTreeNode(nullptr, "Root", 0);
+	TreeNode* RootNode = m_DirectoryTree->AddTreeNode(nullptr, "Root", 0);
 
 	wstring contentPath = CPathMgr::GetContentPath();
 	AddDirectoryNode(RootNode, contentPath);
@@ -123,12 +124,12 @@ void Content::ResetBrowser()
 
 void Content::SelectBrowser(DWORD_PTR _Node)
 {
-	TreeNode *pNode = (TreeNode *)_Node;
-	string name = pNode->GetName();
+	TreeNode* pNode = (TreeNode*)_Node;
+	string	  name	= pNode->GetName();
 	while (pNode->GetParent() && pNode->GetParent()->GetName() != "Root")
 	{
 		pNode = pNode->GetParent();
-		name = pNode->GetName() + "\\" + name;
+		name  = pNode->GetName() + "\\" + name;
 	}
 
 	SetTargetDirectory(name);
@@ -143,8 +144,8 @@ void Content::ResetEngineAsset()
 	m_EngineTree->ClearNode();
 
 	// 루트노드 추가
-	TreeNode *RootNode = m_EngineTree->AddTreeNode(nullptr, "Root", 0);
-	TreeNode *root = m_EngineTree->AddTreeNode(RootNode, "Engine Assets", 0);
+	TreeNode* RootNode = m_EngineTree->AddTreeNode(nullptr, "Root", 0);
+	TreeNode* root	   = m_EngineTree->AddTreeNode(RootNode, "Engine Assets", 0);
 	for (int i = 0; i < (int)ASSET_TYPE::END; i++)
 	{
 		m_EngineTree->AddTreeNode(root, ToString(magic_enum::enum_name((ASSET_TYPE)i)), 0);
@@ -153,8 +154,8 @@ void Content::ResetEngineAsset()
 
 void Content::SelectEngineAssetBrowser(DWORD_PTR _Node)
 {
-	TreeNode *pNode = (TreeNode *)_Node;
-	string name = pNode->GetName();
+	TreeNode* pNode = (TreeNode*)_Node;
+	string	  name	= pNode->GetName();
 
 	auto type = magic_enum::enum_cast<ASSET_TYPE>(name);
 	if (!type.has_value())
@@ -173,7 +174,7 @@ void Content::ResetEngineContent(ASSET_TYPE _type)
 	m_ContentTree->ClearNode();
 
 	// 루트노드 추가
-	TreeNode *RootNode = m_ContentTree->AddTreeNode(nullptr, "Root", 0);
+	TreeNode* RootNode = m_ContentTree->AddTreeNode(nullptr, "Root", 0);
 
 	auto assetMap = CAssetMgr::GetInst()->GetAssets(_type);
 	for (auto iter = assetMap.begin(); iter != assetMap.end(); ++iter)
@@ -193,20 +194,20 @@ void Content::ResetContent()
 	m_strData.reserve(100);
 
 	// 루트노드 추가
-	TreeNode *RootNode = m_ContentTree->AddTreeNode(nullptr, "Root", 0);
+	TreeNode* RootNode = m_ContentTree->AddTreeNode(nullptr, "Root", 0);
 
-	string path = ToString(CPathMgr::GetContentPath()) + m_strCurDirectory;
+	string path	 = ToString(CPathMgr::GetContentPath()) + m_strCurDirectory;
 	namespace fs = std::filesystem;
 
 	int idx = 0;
 
-	for (const fs::directory_entry &entry : fs::directory_iterator(path))
+	for (const fs::directory_entry& entry : fs::directory_iterator(path))
 	{
 		if (!entry.is_directory())
 		{
-			auto filename = entry.path().filename().string();
-			auto extension = entry.path().extension().string();
-			auto type = CAssetMgr::GetInst()->GetAssetTypeByExt(filename);
+			auto		filename  = entry.path().filename().string();
+			auto		extension = entry.path().extension().string();
+			auto		type	  = CAssetMgr::GetInst()->GetAssetTypeByExt(filename);
 			Ptr<CAsset> pAsset;
 			if (type != ASSET_TYPE::END)
 			{
@@ -243,16 +244,16 @@ void Content::ResetContent()
 
 void Content::SelectAsset(DWORD_PTR _Node)
 {
-	TreeNode *pNode = (TreeNode *)_Node;
+	TreeNode* pNode = (TreeNode*)_Node;
 
 	if (nullptr == pNode)
 		return;
 
-	auto name = pNode->GetName();
-	string key = m_strCurDirectory + "\\" + name;
+	auto   name = pNode->GetName();
+	string key	= m_strCurDirectory + "\\" + name;
 
 	// 선택한 에셋을 Inspector 에게 알려준다.
-	Inspector *pInspector = (Inspector *)CImGuiMgr::GetInst()->FindUI("##Inspector");
+	Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
 
 	// asset 일 경우
 	ASSET_TYPE assetType = CAssetMgr::GetInst()->GetAssetTypeByExt(name);
@@ -267,7 +268,7 @@ void Content::SelectAsset(DWORD_PTR _Node)
 
 void Content::SelectEngineAsset(DWORD_PTR _Node)
 {
-	TreeNode *pNode = (TreeNode *)_Node;
+	TreeNode* pNode = (TreeNode*)_Node;
 
 	if (nullptr == pNode)
 		return;
@@ -275,7 +276,7 @@ void Content::SelectEngineAsset(DWORD_PTR _Node)
 	auto name = pNode->GetName();
 
 	// 선택한 에셋을 Inspector 에게 알려준다.
-	Inspector *pInspector = (Inspector *)CImGuiMgr::GetInst()->FindUI("##Inspector");
+	Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
 
 	Ptr<CAsset> pAsset =
 		CAssetMgr::GetInst()->GetAsset(magic_enum::enum_cast<ASSET_TYPE>(m_strCurDirectory).value(), name);
@@ -285,7 +286,7 @@ void Content::SelectEngineAsset(DWORD_PTR _Node)
 	return;
 }
 
-void Content::SetTargetDirectory(const string &_path)
+void Content::SetTargetDirectory(const string& _path)
 {
 	m_strCurDirectory = _path;
 	ResetContent();
@@ -309,18 +310,18 @@ void Content::DirectoryUI()
 		// 팝업 창 내부 UI 구현
 		if (ImGui::MenuItem("Create Empty Object", ""))
 		{
-			CGameObject *pNewObj = new CGameObject;
+			CGameObject* pNewObj = new CGameObject;
 			pNewObj->SetName(L"New GameObject");
 			GamePlayStatic::SpawnGameObject(pNewObj, 0);
 
 			// Inspector 의 타겟정보를 새로 만든걸로 갱신
-			Inspector *pInspector = (Inspector *)CImGuiMgr::GetInst()->FindUI("##Inspector");
+			Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
 			pInspector->SetTargetObject(pNewObj);
 		}
 		if (ImGui::MenuItem("Create Empty Material"))
 		{
 			wchar_t szPath[255] = {};
-			wstring FilePath = CPathMgr::GetContentPath();
+			wstring FilePath	= CPathMgr::GetContentPath();
 
 			int num = 0;
 			while (true)
@@ -331,7 +332,7 @@ void Content::DirectoryUI()
 				++num;
 			}
 
-			CMaterial *pMtrl = new CMaterial;
+			CMaterial* pMtrl = new CMaterial;
 			pMtrl->SetName(szPath);
 			pMtrl->Save(szPath);
 			GamePlayStatic::AddAsset(pMtrl);
@@ -353,16 +354,16 @@ void Content::DirectoryUI()
 
 			OPENFILENAME ofn = {};
 
-			ofn.lStructSize = sizeof(ofn);
-			ofn.hwndOwner = nullptr;
-			ofn.lpstrFile = szSelect;
-			ofn.lpstrFile[0] = '\0';
-			ofn.nMaxFile = sizeof(szSelect);
-			ofn.lpstrFilter = L"ALL\0*.*\0Level\0*.lv";
-			ofn.lpstrDefExt = L"lv";
-			ofn.nFilterIndex = 1;
+			ofn.lStructSize	   = sizeof(ofn);
+			ofn.hwndOwner	   = nullptr;
+			ofn.lpstrFile	   = szSelect;
+			ofn.lpstrFile[0]   = '\0';
+			ofn.nMaxFile	   = sizeof(szSelect);
+			ofn.lpstrFilter	   = L"ALL\0*.*\0Level\0*.lv";
+			ofn.lpstrDefExt	   = L"lv";
+			ofn.nFilterIndex   = 1;
 			ofn.lpstrFileTitle = NULL;
-			ofn.nMaxFileTitle = 0;
+			ofn.nMaxFileTitle  = 0;
 
 			// 탐색창 초기 위치 지정
 			wstring strInitPath = CPathMgr::GetContentPath();
@@ -379,7 +380,7 @@ void Content::DirectoryUI()
 					ImGui::EndPopup();
 					return;
 				}
-				CLevel *pLevel = new CLevel;
+				CLevel* pLevel = new CLevel;
 				pLevel->SetName(szSelect);
 				CLevelSaveLoad::SaveLevel(pLevel, CPathMgr::GetRelativePath(szSelect));
 				GamePlayStatic::ChangeLevel(pLevel, LEVEL_STATE::STOP);
@@ -458,16 +459,16 @@ void Content::DirectoryUI()
 
 			OPENFILENAME ofn = {};
 
-			ofn.lStructSize = sizeof(ofn);
-			ofn.hwndOwner = nullptr;
-			ofn.lpstrFile = szSelect;
-			ofn.lpstrFile[0] = '\0';
-			ofn.nMaxFile = sizeof(szSelect);
-			ofn.lpstrFilter = L"ALL\0*.*\GraphicsShader\0*.gs";
-			ofn.lpstrDefExt = L"gs";
-			ofn.nFilterIndex = 1;
+			ofn.lStructSize	   = sizeof(ofn);
+			ofn.hwndOwner	   = nullptr;
+			ofn.lpstrFile	   = szSelect;
+			ofn.lpstrFile[0]   = '\0';
+			ofn.nMaxFile	   = sizeof(szSelect);
+			ofn.lpstrFilter	   = L"ALL\0*.*\GraphicsShader\0*.gs";
+			ofn.lpstrDefExt	   = L"gs";
+			ofn.nFilterIndex   = 1;
 			ofn.lpstrFileTitle = NULL;
-			ofn.nMaxFileTitle = 0;
+			ofn.nMaxFileTitle  = 0;
 
 			// 탐색창 초기 위치 지정
 			wstring strInitPath = CPathMgr::GetContentPath();
@@ -478,8 +479,8 @@ void Content::DirectoryUI()
 
 			if (GetSaveFileName(&ofn))
 			{
-				path shaderPath = szSelect;
-				Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+				path				 shaderPath = szSelect;
+				Ptr<CGraphicsShader> pShader	= new CGraphicsShader;
 
 				if (!strVSPath.empty() && !strVSFuncName.empty())
 					pShader->CreateVertexShader(ToWString(strVSPath), strVSFuncName);

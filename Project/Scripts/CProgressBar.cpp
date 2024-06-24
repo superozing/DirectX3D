@@ -12,7 +12,7 @@
 #define BAR_YPOS -10
 
 CProgressBar::CProgressBar()
-	:CScript((UINT)SCRIPT_TYPE::PROGRESSBAR)
+	: CScript((UINT)SCRIPT_TYPE::PROGRESSBAR)
 {
 }
 
@@ -39,7 +39,6 @@ void CProgressBar::tick()
 		m_pOddLineHPUI->Transform()->SetRelativeScale(Vec3(fHPRatio * BAR_XSCALE, BAR_YSCALE, 1));
 		m_pOddLineHPUI->Transform()->SetRelativePos(Vec3(BAR_XPOS - ((1 - fHPRatio) * BAR_XSCALE) / 2, BAR_YPOS, 0));
 	}
-
 }
 
 void CProgressBar::SetLineHP(int _LineHP)
@@ -56,7 +55,7 @@ void CProgressBar::SetLineHP(int _LineHP)
 void CProgressBar::SetPortraitTex(Ptr<CTexture> _PortraitTex)
 {
 	m_PortraitTex = _PortraitTex;
-	
+
 	if (m_pPortrait)
 	{
 		m_pPortrait->SetUIImg(m_PortraitTex);
@@ -87,8 +86,8 @@ void CProgressBar::MakeChildObjects()
 {
 	// m_pGauge
 	CGameObject* pObj = nullptr;
-	pObj = new CGameObject;
-	m_pGauge = new CImageUIScript;
+	pObj			  = new CGameObject;
+	m_pGauge		  = new CImageUIScript;
 
 	pObj->SetName(L"GaugeImg");
 	pObj->AddComponent(new CTransform);
@@ -105,11 +104,10 @@ void CProgressBar::MakeChildObjects()
 	m_pGauge->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Ingame_Raid_Boss_Gauge.png"));
 	m_pGauge->AllowBindTexPerFrame();
 
-
 	GetOwner()->AddChild(pObj);
 
 	// m_pPortrait
-	pObj = new CGameObject;
+	pObj		= new CGameObject;
 	m_pPortrait = new CImageUIScript;
 
 	pObj->SetName(L"PortraitImg");
@@ -127,12 +125,10 @@ void CProgressBar::MakeChildObjects()
 	m_pPortrait->SetUIImg(m_PortraitTex);
 	m_pPortrait->AllowBindTexPerFrame();
 
-
 	GetOwner()->AddChild(pObj);
 
-
 	// m_pImgFont
-	pObj = new CGameObject;
+	pObj	   = new CGameObject;
 	m_pImgFont = new CImageUIScript;
 
 	pObj->SetName(L"FontImg");
@@ -152,29 +148,23 @@ void CProgressBar::MakeChildObjects()
 
 	GetOwner()->AddChild(pObj);
 
-
-
 	// m_pOddLineHPUI
-	pObj = new CGameObject;
+	pObj		   = new CGameObject;
 	m_pOddLineHPUI = new CImageUIScript;
 	pObj->SetName(L"OddLineHP");
 	pObj->AddComponent(new CTransform);
 	pObj->AddComponent(new CMeshRender);
 	pObj->AddComponent(m_pOddLineHPUI);
 
-
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
 	pObj->MeshRender()->GetDynamicMaterial(0);
-	
-	m_pOddLineHPUI->SetUIImg(
-		CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Red.png"));
+
+	m_pOddLineHPUI->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Red.png"));
 	m_pOddLineHPUI->AllowBindTexPerFrame();
 
 	pObj->Transform()->SetRelativePos(Vec3(100, -10, 0.f));
 	pObj->Transform()->SetRelativeScale(Vec3(1100.f, 44.f, 1.f));
 
-
 	GetOwner()->AddChild(pObj);
-	
 }

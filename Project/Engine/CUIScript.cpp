@@ -27,7 +27,6 @@ CUIScript::CUIScript(const CUIScript& _Other)
 	, m_bMouseOn_Prev(false)
 	, m_bMouseLBtnDown(false)
 {
-
 }
 
 CUIScript::~CUIScript()
@@ -51,8 +50,7 @@ void CUIScript::tick()
 	Vec2 vLT = Vec2(m_vFinalPos.x - vWorldScale.x / 2, m_vFinalPos.y - vWorldScale.y / 2);
 	Vec2 vRB = Vec2(m_vFinalPos.x + vWorldScale.x / 2, m_vFinalPos.y + vWorldScale.y / 2);
 
-	if (vLT.x < vWorldMousePos.x && vWorldMousePos.x < vRB.x &&
-		vLT.y < vWorldMousePos.y && vWorldMousePos.y < vRB.y)
+	if (vLT.x < vWorldMousePos.x && vWorldMousePos.x < vRB.x && vLT.y < vWorldMousePos.y && vWorldMousePos.y < vRB.y)
 	{
 		m_bMouseOn = true;
 	}
@@ -60,5 +58,4 @@ void CUIScript::tick()
 	{
 		m_bMouseOn = false;
 	}
-
 }

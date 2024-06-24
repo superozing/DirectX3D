@@ -7,19 +7,16 @@
 
 #include "CTimeMgr.h"
 
+#define TagLogInfo "[Log_Level::INFO  ]"
+#define TagLogWarn "[Log_Level::WARN]"
+#define TagLogError "[Log_Level::ERROR]"
 
-#define TagLogInfo		"[Log_Level::INFO  ]"
-#define TagLogWarn		"[Log_Level::WARN]"
-#define TagLogError		"[Log_Level::ERROR]"
-
-#define TagOpen			"["
-#define TagTimedevide	":"
-#define TagClose		"}"
-
+#define TagOpen "["
+#define TagTimedevide ":"
+#define TagClose "}"
 
 CLogMgr::CLogMgr()
 {
-
 }
 
 CLogMgr::~CLogMgr()
@@ -45,8 +42,8 @@ void CLogMgr::exit()
 void CLogMgr::AddLog(Log_Level Lv, string msg)
 {
 	tLog Log;
-	
-	Log.m_LogLv = Lv;
+
+	Log.m_LogLv	 = Lv;
 	Log.m_strMsg = msg;
 
 	Log.m_dTime = CTimeMgr::GetInst()->GetAccLevelTime();
@@ -70,23 +67,24 @@ string CLogMgr::GetTimeMsg(double time)
 {
 	string strTime;
 
-	double iTotalSec = time;;
-	int iMinute = iTotalSec / (int)60;
-	int iSecond = (int)(iTotalSec - (iMinute * 60)) % 60;
-	double iMSecond = floor((iTotalSec -(iMinute * 60 + iSecond)) * 1000);
+	double iTotalSec = time;
+	;
+	int	   iMinute	= iTotalSec / (int)60;
+	int	   iSecond	= (int)(iTotalSec - (iMinute * 60)) % 60;
+	double iMSecond = floor((iTotalSec - (iMinute * 60 + iSecond)) * 1000);
 
-
-	strTime = "[M:" + std::to_string(iMinute) + " S:" + std::to_string(iSecond) + " MS:" + std::to_string((int)iMSecond)+ "]";
+	strTime = "[M:" + std::to_string(iMinute) + " S:" + std::to_string(iSecond) +
+			  " MS:" + std::to_string((int)iMSecond) + "]";
 
 	return strTime;
 }
 
 void CLogMgr::CopyLog()
 {
-	wstring strLogSavepath =CPathMgr::GetLogPath();
+	wstring strLogSavepath = CPathMgr::GetLogPath();
 	strLogSavepath += L"\\Log.txt";
 
-	//Log 폴더가 없다면 폴더 생성
+	// Log 폴더가 없다면 폴더 생성
 	if (!std::filesystem::exists(CPathMgr::GetLogPath()))
 	{
 		std::filesystem::create_directories(CPathMgr::GetLogPath());
@@ -94,7 +92,8 @@ void CLogMgr::CopyLog()
 
 	ofstream fout(strLogSavepath, ofstream::out | ofstream::trunc);
 
-	if (!fout.is_open()) {
+	if (!fout.is_open())
+	{
 		MessageBox(nullptr, L"Log copy fail!", L"Log copy fail!", 0);
 	}
 
@@ -113,7 +112,7 @@ void CLogMgr::CopyLog()
 		case Log_Level::WARN:
 			Log += TagLogWarn;
 			break;
-			case Log_Level::ERR:
+		case Log_Level::ERR:
 			Log += TagLogError;
 			break;
 		default:

@@ -1,14 +1,12 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CLayer.h"
 
 #include "CGameObject.h"
 #include "CGC.h"
 
-
 CLayer::CLayer()
 	: m_iLayerIdx(-1)
 {
-
 }
 
 CLayer::CLayer(const CLayer& _OriginLayer)
@@ -23,10 +21,8 @@ CLayer::CLayer(const CLayer& _OriginLayer)
 
 CLayer::~CLayer()
 {
-	Delete_Vec(m_vecParent);	
+	Delete_Vec(m_vecParent);
 }
-
-
 
 void CLayer::begin()
 {
@@ -48,7 +44,7 @@ void CLayer::finaltick()
 {
 	vector<CGameObject*>::iterator iter = m_vecParent.begin();
 
-	for (; iter != m_vecParent.end(); )
+	for (; iter != m_vecParent.end();)
 	{
 		(*iter)->finaltick();
 
@@ -66,29 +62,30 @@ void CLayer::finaltick()
 
 void CLayer::AddObject(CGameObject* _Object, bool _bMove)
 {
-	// _bMove : true  - ·¹ÀÌ¾î¿¡ ÀÔ·ÂµÇ´Â Object°¡ ÀÚ½ÄÀÌ ÀÖ´Â °æ¿ì, ÀÚ½Ä±îÁö ¸ğµÎ ÇØ´ç ·¹ÀÌ¾î·Î ³Ñ¾î¿Â´Ù.
-	// _bMove : false - ·¹ÀÌ¾î¿¡ ÀÔ·ÂµÇ´Â ObjectÀÇ ÀÚ½ÄÀº ÇØ´ç ·¹ÀÌ¾î·Î °°ÀÌ ³Ñ¾î¿ÀÁö ¾Ê´Â´Ù. ´Ü ÀÚ½Ä¿ÀºêÁ§Æ®°¡ ·¹ÀÌ¾î ¼Ò¼ÓÀÌ ¾ø´Â °æ¿ì(-1)¿¡¸¸ °°ÀÌ º¯°æÇÑ´Ù.      AssortRock
+	// _bMove : true  - ë ˆì´ì–´ì— ì…ë ¥ë˜ëŠ” Objectê°€ ìì‹ì´ ìˆëŠ” ê²½ìš°, ìì‹ê¹Œì§€ ëª¨ë‘ í•´ë‹¹ ë ˆì´ì–´ë¡œ ë„˜ì–´ì˜¨ë‹¤.
+	// _bMove : false - ë ˆì´ì–´ì— ì…ë ¥ë˜ëŠ” Objectì˜ ìì‹ì€ í•´ë‹¹ ë ˆì´ì–´ë¡œ ê°™ì´ ë„˜ì–´ì˜¤ì§€ ì•ŠëŠ”ë‹¤. ë‹¨ ìì‹ì˜¤ë¸Œì íŠ¸ê°€ ë ˆì´ì–´
+	// ì†Œì†ì´ ì—†ëŠ” ê²½ìš°(-1)ì—ë§Œ ê°™ì´ ë³€ê²½í•œë‹¤.      AssortRock
 
-	// ÃÖ»óÀ§ ºÎ¸ğ ¿ÀºêÁ§Æ®¿´´Ù.
+	// ìµœìƒìœ„ ë¶€ëª¨ ì˜¤ë¸Œì íŠ¸ì˜€ë‹¤.
 	if (nullptr == _Object->GetParent())
 	{
-		// ´Ù¸¥ ·¹ÀÌ¾î ¼Ò¼ÓÀÌ¾ú´Ù
+		// ë‹¤ë¥¸ ë ˆì´ì–´ ì†Œì†ì´ì—ˆë‹¤
 		if (-1 != _Object->m_iLayerIdx)
 		{
-			// ±âÁ¸ ·¹ÀÌ¾îÀÇ Parent º¤ÅÍ¿¡¼­ Á¦°ÅµÇ¾î¾ß ÇÑ´Ù.
+			// ê¸°ì¡´ ë ˆì´ì–´ì˜ Parent ë²¡í„°ì—ì„œ ì œê±°ë˜ì–´ì•¼ í•œë‹¤.
 			_Object->DisconnectWithLayer();
 		}
 
-		// ÃÖ»óÀ§ ºÎ¸ğ ¿ÀºêÁ§Æ®´Â m_vecParent ¿¡¼­ °¡¸®Å°µµ·Ï ÇÑ´Ù.
+		// ìµœìƒìœ„ ë¶€ëª¨ ì˜¤ë¸Œì íŠ¸ëŠ” m_vecParent ì—ì„œ ê°€ë¦¬í‚¤ë„ë¡ í•œë‹¤.
 		m_vecParent.push_back(_Object);
 	}
-	
-	// ¿ÀºêÁ§Æ®ÀÇ ·¹ÀÌ¾î ¼Ò¼ÓÀ» ÇöÀç ·¹ÀÌ¾î·Î º¯°æ
-	// ÀÚ½Ä ¿ÀºêÁ§Æ®µéÀÇ ·¹ÀÌ¾î ¼Ò¼ÓÀ» º¯°æ	
+
+	// ì˜¤ë¸Œì íŠ¸ì˜ ë ˆì´ì–´ ì†Œì†ì„ í˜„ì¬ ë ˆì´ì–´ë¡œ ë³€ê²½
+	// ìì‹ ì˜¤ë¸Œì íŠ¸ë“¤ì˜ ë ˆì´ì–´ ì†Œì†ì„ ë³€ê²½
 	list<CGameObject*> queue;
 	queue.push_back(_Object);
-	
-	// ·¹ÀÌ¾î¿¡ ÀÔ·ÂµÇ´Â ¿ÀºêÁ§Æ® Æ÷ÇÔ, ±× ¹Ø¿¡ ´Ş¸° ÀÚ½Äµé±îÁö ¸ğµÎ È®ÀÎ
+
+	// ë ˆì´ì–´ì— ì…ë ¥ë˜ëŠ” ì˜¤ë¸Œì íŠ¸ í¬í•¨, ê·¸ ë°‘ì— ë‹¬ë¦° ìì‹ë“¤ê¹Œì§€ ëª¨ë‘ í™•ì¸
 	while (!queue.empty())
 	{
 		CGameObject* pObject = queue.front();
@@ -97,18 +94,18 @@ void CLayer::AddObject(CGameObject* _Object, bool _bMove)
 		for (size_t i = 0; i < pObject->m_vecChild.size(); ++i)
 		{
 			queue.push_back(pObject->m_vecChild[i]);
-		}		
+		}
 
-		// ÃÖÃÊ ÀÔ·Â ¿ÀºêÁ§Æ®´Â ¹«Á¶°Ç ÇØ´ç ·¹ÀÌ¾î ¼Ò¼ÓÀ¸·Î º¯°æ
-		if(pObject == _Object)
+		// ìµœì´ˆ ì…ë ¥ ì˜¤ë¸Œì íŠ¸ëŠ” ë¬´ì¡°ê±´ í•´ë‹¹ ë ˆì´ì–´ ì†Œì†ìœ¼ë¡œ ë³€ê²½
+		if (pObject == _Object)
 			pObject->m_iLayerIdx = m_iLayerIdx;
 		else
 		{
-			// ÀÚ½Ä ¿ÀºêÁ§Æ®µéÀº _bMove °¡ true ÀÎ °æ¿ì, ºÎ¸ğ¸¦ µû¶ó¼­ ÇØ´ç ·¹ÀÌ¾î¼Ò¼ÓÀ¸·Î º¯°æ
-			if(_bMove)
+			// ìì‹ ì˜¤ë¸Œì íŠ¸ë“¤ì€ _bMove ê°€ true ì¸ ê²½ìš°, ë¶€ëª¨ë¥¼ ë”°ë¼ì„œ í•´ë‹¹ ë ˆì´ì–´ì†Œì†ìœ¼ë¡œ ë³€ê²½
+			if (_bMove)
 				pObject->m_iLayerIdx = m_iLayerIdx;
-			// _bMove °¡ false °æ¿ì¿¡µµ, ÀÚ½Ä ¿ÀºêÁ§Æ®ÀÇ ·¹ÀÌ¾î¼Ò¼ÓÀÌ ¾ø´Ù¸é ºÎ¸ğ¸¦ µû¶ó¼­ º¯°æ
-			else if(-1 == pObject->m_iLayerIdx)
+			// _bMove ê°€ false ê²½ìš°ì—ë„, ìì‹ ì˜¤ë¸Œì íŠ¸ì˜ ë ˆì´ì–´ì†Œì†ì´ ì—†ë‹¤ë©´ ë¶€ëª¨ë¥¼ ë”°ë¼ì„œ ë³€ê²½
+			else if (-1 == pObject->m_iLayerIdx)
 				pObject->m_iLayerIdx = m_iLayerIdx;
 		}
 	}
@@ -117,14 +114,14 @@ void CLayer::AddObject(CGameObject* _Object, bool _bMove)
 void CLayer::DetachGameObject(CGameObject* _Object)
 {
 	assert(!(-1 == _Object->m_iLayerIdx || _Object->m_iLayerIdx != m_iLayerIdx));
-	
-	// ºÎ¸ğ ¿ÀºêÁ§Æ®°¡ ÀÖ´Â °æ¿ì
+
+	// ë¶€ëª¨ ì˜¤ë¸Œì íŠ¸ê°€ ìˆëŠ” ê²½ìš°
 	if (nullptr != _Object->GetParent())
 	{
 		_Object->m_iLayerIdx = -1;
 	}
 
-	// ÃÖ»óÀ§ ºÎ¸ğ ¿ÀºêÁ§Æ®ÀÎ °æ¿ì
+	// ìµœìƒìœ„ ë¶€ëª¨ ì˜¤ë¸Œì íŠ¸ì¸ ê²½ìš°
 	else
 	{
 		vector<CGameObject*>::iterator iter = m_vecParent.begin();
@@ -135,7 +132,7 @@ void CLayer::DetachGameObject(CGameObject* _Object)
 				m_vecParent.erase(iter);
 				_Object->m_iLayerIdx = -1;
 				return;
-			}			
+			}
 		}
 	}
 

@@ -1,62 +1,58 @@
-#pragma once
+Ôªø#pragma once
 #include "CRenderComponent.h"
 
 class CStructuredBuffer;
 
 struct tTileInfo
 {
-    Vec2 vLeftTopUV;    
-    int  bRender;
-    int  padding;
+	Vec2 vLeftTopUV;
+	int	 bRender;
+	int	 padding;
 
-    friend ofstream& operator<<(ofstream& fout, const tTileInfo& info);
-    friend ifstream& operator>>(ifstream& fin, tTileInfo& info);
+	friend ofstream& operator<<(ofstream& fout, const tTileInfo& info);
+	friend ifstream& operator>>(ifstream& fin, tTileInfo& info);
 };
 
-
-class CTileMap :
-    public CRenderComponent
+class CTileMap : public CRenderComponent
 {
 private:
-    UINT                m_FaceX;            // ∞°∑Œ ≈∏¿œ ∞≥ºˆ
-    UINT                m_FaceY;            // ºº∑Œ ≈∏¿œ ∞≥ºˆ
-    Vec2                m_vTileRenderSize;  // ≈∏¿œ 1ƒ≠ ªÁ¿Ã¡Ó
+	UINT m_FaceX;			// Í∞ÄÎ°ú ÌÉÄÏùº Í∞úÏàò
+	UINT m_FaceY;			// ÏÑ∏Î°ú ÌÉÄÏùº Í∞úÏàò
+	Vec2 m_vTileRenderSize; // ÌÉÄÏùº 1Ïπ∏ ÏÇ¨Ïù¥Ï¶à
 
-    Ptr<CTexture>       m_TileAtlas;
-    Vec2                m_vTilePixelSize;
-    Vec2                m_vSliceSizeUV;
+	Ptr<CTexture> m_TileAtlas;
+	Vec2		  m_vTilePixelSize;
+	Vec2		  m_vSliceSizeUV;
 
-    UINT                m_MaxCol;
-    UINT                m_MaxRow;
+	UINT m_MaxCol;
+	UINT m_MaxRow;
 
-    vector<tTileInfo>   m_vecTileInfo;
-    CStructuredBuffer*  m_TileInfoBuffer;
-
-public:
-    void SetTileAtlas(Ptr<CTexture> _Atlas, Vec2 _TilePixelSize);
-    Ptr<CTexture> GetTileAtlas() { return m_TileAtlas; }
-
-    void SetFace(UINT _FaceX, UINT _FaceY);
-    UINT GetFaceX() { return m_FaceX; }
-    UINT GetFaceY() { return m_FaceY; }
-
-    void SetTileIndex(UINT _Row, UINT _Col, UINT _ImgIdx);
-
+	vector<tTileInfo>  m_vecTileInfo;
+	CStructuredBuffer* m_TileInfoBuffer;
 
 public:
-    virtual void finaltick() override;
-    virtual void UpdateData() override;
-    virtual void render() override;
+	void		  SetTileAtlas(Ptr<CTexture> _Atlas, Vec2 _TilePixelSize);
+	Ptr<CTexture> GetTileAtlas() { return m_TileAtlas; }
 
-    virtual void SaveToFile(FILE* _File) override;
-    virtual void SaveToFile(ofstream& fout) override;
-    virtual void LoadFromFile(FILE* _File) override;
-    virtual void LoadFromFile(ifstream& fin) override;
+	void SetFace(UINT _FaceX, UINT _FaceY);
+	UINT GetFaceX() { return m_FaceX; }
+	UINT GetFaceY() { return m_FaceY; }
+
+	void SetTileIndex(UINT _Row, UINT _Col, UINT _ImgIdx);
 
 public:
-    CLONE(CTileMap);
-    CTileMap();
-    CTileMap(const CTileMap& _OriginTileMap);
-    ~CTileMap();
+	virtual void finaltick() override;
+	virtual void UpdateData() override;
+	virtual void render() override;
+
+	virtual void SaveToFile(FILE* _File) override;
+	virtual void SaveToFile(ofstream& fout) override;
+	virtual void LoadFromFile(FILE* _File) override;
+	virtual void LoadFromFile(ifstream& fin) override;
+
+public:
+	CLONE(CTileMap);
+	CTileMap();
+	CTileMap(const CTileMap& _OriginTileMap);
+	~CTileMap();
 };
-

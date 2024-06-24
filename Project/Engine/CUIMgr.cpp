@@ -15,8 +15,8 @@
 
 void CUIMgr::tick()
 {
-	Vec2 vMousePos = CKeyMgr::GetInst()->GetMousePos();
-	bool bLBtnTap = KEY_TAP(KEY::LBTN);
+	Vec2 vMousePos	   = CKeyMgr::GetInst()->GetMousePos();
+	bool bLBtnTap	   = KEY_TAP(KEY::LBTN);
 	bool bLbtnReleased = KEY_RELEASED(KEY::LBTN);
 
 	CLevel* pLevel = CLevelMgr::GetInst()->GetCurrentLevel();
@@ -35,7 +35,7 @@ void CUIMgr::tick()
 
 	// 상위 UI 오브젝트가 자식 UI 오브젝트를 들고 있는 구조에요.
 	auto& vecUI = pUILayer->AccessParentObjects();
-	auto iter = vecUI.rbegin();
+	auto  iter	= vecUI.rbegin();
 
 	for (; iter != vecUI.rend(); ++iter)
 	{
@@ -65,7 +65,7 @@ void CUIMgr::tick()
 		if (pUI->m_bMouseOn)
 		{
 			m_FocusedObject = *iter;
-			m_FocusedUI = pUI;
+			m_FocusedUI		= pUI;
 
 			pUI = GetPriorityCheck(pUI);
 
@@ -129,11 +129,10 @@ CUIScript* CUIMgr::GetPriorityCheck(CUIScript* _ParentUI)
 {
 	// 현재 구조: UIScript가 다른 UIScript를 들고 있을 것을 가정한 구조
 	// 수정이 완료될 경우의 구조: 상위 오브젝트를 인자로 받아와서 자식 오브젝트에게 PriorityCheck를 해주어야 하는 구조.
-	// 인자로 받아오는 것이 스크립트여도 괜찮은가? -> 괜찮다. GetOwner()함수로 가져올 수는 있다. 
+	// 인자로 받아오는 것이 스크립트여도 괜찮은가? -> 괜찮다. GetOwner()함수로 가져올 수는 있다.
 	// 하지만 구조 상 올바른 행동인지는 고민을 해보아야 한다.
-	
-	// GetScript() 할 때 비용이 조금 큰 느낌이 있는데...
 
+	// GetScript() 할 때 비용이 조금 큰 느낌이 있는데...
 
 	// 반환할 우선 순위 UI
 	CUIScript* pPriorityUI = nullptr;
@@ -187,9 +186,10 @@ void CUIMgr::CalWorldMousePos()
 	Vec2 vMousePos = CKeyMgr::GetInst()->GetMousePos();
 #endif
 
-	Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
+	Vec2 vResol		   = CDevice::GetInst()->GetRenderResolution();
 	m_vWorldMousePos.x = vMousePos.x - vResol.x / 2.f;
 	m_vWorldMousePos.y = -vMousePos.y + vResol.y / 2.f;
 
-	//CLogMgr::GetInst()->AddLog(Log_Level::INFO, std::to_wstring(m_vWorldMousePos.x) + std::to_wstring(m_vWorldMousePos.y));
+	// CLogMgr::GetInst()->AddLog(Log_Level::INFO, std::to_wstring(m_vWorldMousePos.x) +
+	// std::to_wstring(m_vWorldMousePos.y));
 }

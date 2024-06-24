@@ -1,14 +1,14 @@
 ﻿#pragma once
 #include "ComponentUI.h"
-class CameraUI :
-    public ComponentUI
+class CameraUI : public ComponentUI
 {
 public:
-    virtual void render_update() override;
+	virtual void render_update() override;
+
 public:
-    CameraUI();
-    ~CameraUI();
+	CameraUI();
+	~CameraUI();
 
 private:
-    void ShakeUI();
+	void ShakeUI();
 };

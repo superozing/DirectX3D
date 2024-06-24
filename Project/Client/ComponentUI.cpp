@@ -48,6 +48,3 @@ void ComponentUI::SetTargetObject(CGameObject* _Target)
 		}
 	}
 }
-
-
-

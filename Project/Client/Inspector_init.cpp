@@ -3,15 +3,12 @@
 
 #include "ScriptUI.h"
 
-
-
 void Inspector::CreateChildUI()
 {
 	CreateComponentUI();
 
 	CreateAssetUI();
 }
-
 
 #include "TransformUI.h"
 #include "MeshRenderUI.h"
@@ -39,7 +36,7 @@ void Inspector::CreateComponentUI()
 	m_arrComUI[(UINT)COMPONENT_TYPE::LIGHT2D] = new Light2DUI;
 	m_arrComUI[(UINT)COMPONENT_TYPE::LIGHT2D]->Deactivate();
 	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::LIGHT2D]);
-	
+
 	m_arrComUI[(UINT)COMPONENT_TYPE::LIGHT3D] = new Light3DUI;
 	m_arrComUI[(UINT)COMPONENT_TYPE::LIGHT3D]->Deactivate();
 	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::LIGHT3D]);
@@ -63,7 +60,7 @@ void Inspector::CreateComponentUI()
 	m_arrComUI[(UINT)COMPONENT_TYPE::LANDSCAPE] = new LandScapeUI;
 	m_arrComUI[(UINT)COMPONENT_TYPE::LANDSCAPE]->Deactivate();
 	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::LANDSCAPE]);
-	
+
 	m_arrComUI[(UINT)COMPONENT_TYPE::ANIMATOR2D] = new Animator2DUI;
 	m_arrComUI[(UINT)COMPONENT_TYPE::ANIMATOR2D]->Deactivate();
 	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::ANIMATOR2D]);
@@ -123,7 +120,6 @@ void Inspector::ResizeScriptUI(UINT _Size)
 		m_vecScriptUI.push_back(pScriptUI);
 	}
 }
-
 
 void Inspector::RefreshScriptUI()
 {

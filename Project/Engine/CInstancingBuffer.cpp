@@ -5,7 +5,7 @@
 #include "CMaterial.h"
 #include "CAssetMgr.h"
 
-CInstancingBuffer::CInstancingBuffer() 
+CInstancingBuffer::CInstancingBuffer()
 	: m_MaxCount(10)
 	, m_AnimInstCount(0)
 	, m_BoneBuffer(nullptr)
@@ -23,9 +23,9 @@ void CInstancingBuffer::init()
 {
 	D3D11_BUFFER_DESC tDesc = {};
 
-	tDesc.ByteWidth = sizeof(tInstancingData) * m_MaxCount;
-	tDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	tDesc.Usage = D3D11_USAGE_DYNAMIC;
+	tDesc.ByteWidth		 = sizeof(tInstancingData) * m_MaxCount;
+	tDesc.BindFlags		 = D3D11_BIND_VERTEX_BUFFER;
+	tDesc.Usage			 = D3D11_USAGE_DYNAMIC;
 	tDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
 	if (FAILED(DEVICE->CreateBuffer(&tDesc, NULL, &m_InstancingBuffer)))
@@ -55,7 +55,8 @@ void CInstancingBuffer::SetData()
 	if (m_BoneBuffer->GetBufferSize() < iBufferSize)
 	{
 		m_BoneBuffer->Create(m_vecBoneMat[0]->GetElementSize(),
-					 m_vecBoneMat[0]->GetElementCount() * (UINT)m_vecBoneMat.size(), SB_READ_TYPE::READ_WRITE, false, nullptr);
+							 m_vecBoneMat[0]->GetElementCount() * (UINT)m_vecBoneMat.size(), SB_READ_TYPE::READ_WRITE,
+							 false, nullptr);
 	}
 
 	// 복사용 컴퓨트 쉐이더 실행
@@ -74,7 +75,7 @@ void CInstancingBuffer::SetData()
 	m_BoneBuffer->UpdateData(30);
 }
 
-void CInstancingBuffer::AddInstancingBoneMat(CStructuredBuffer *_pBuffer)
+void CInstancingBuffer::AddInstancingBoneMat(CStructuredBuffer* _pBuffer)
 {
 	++m_AnimInstCount;
 	m_vecBoneMat.push_back(_pBuffer);
@@ -88,9 +89,9 @@ void CInstancingBuffer::Resize(UINT _iCount)
 
 	D3D11_BUFFER_DESC tDesc = {};
 
-	tDesc.ByteWidth = sizeof(tInstancingData) * m_MaxCount;
-	tDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	tDesc.Usage = D3D11_USAGE_DYNAMIC;
+	tDesc.ByteWidth		 = sizeof(tInstancingData) * m_MaxCount;
+	tDesc.BindFlags		 = D3D11_BIND_VERTEX_BUFFER;
+	tDesc.Usage			 = D3D11_USAGE_DYNAMIC;
 	tDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
 	if (FAILED(DEVICE->CreateBuffer(&tDesc, NULL, &m_InstancingBuffer)))

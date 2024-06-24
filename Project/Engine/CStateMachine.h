@@ -1,45 +1,42 @@
-#pragma once
+﻿#pragma once
 #include "CComponent.h"
 
 #include "CFSM.h"
 #include "CBlackboard.h"
 
-class CStateMachine :
-    public CComponent
+class CStateMachine : public CComponent
 {
 private:
-    Ptr<CFSM>       m_FSM;
-    Ptr<CFSM>       m_FSM_Inst;
+	Ptr<CFSM> m_FSM;
+	Ptr<CFSM> m_FSM_Inst;
 
-    CBlackboard     m_Blackboard;
-
-public:
-    void SetFSM(Ptr<CFSM> _FSM);
-    Ptr<CFSM> GetFSM() 
-    { 
-        if (m_FSM_Inst.Get())
-            return m_FSM_Inst;
-        else
-            m_FSM;
-    };
-
-    void AddBlackboardData(const wstring& _strKey, BB_DATA _Type, void* _pData);
-    void* GetBlackboardData(const wstring& _strKey);
-
+	CBlackboard m_Blackboard;
 
 public:
-    virtual void begin() override;
-    virtual void finaltick() override;
+	void	  SetFSM(Ptr<CFSM> _FSM);
+	Ptr<CFSM> GetFSM()
+	{
+		if (m_FSM_Inst.Get())
+			return m_FSM_Inst;
+		else
+			m_FSM;
+	};
 
-    virtual void SaveToFile(FILE* _File) override;
-    virtual void SaveToFile(ofstream& fout) {};
-    virtual void LoadFromFile(FILE* _File) override;
-    virtual void LoadFromFile(ifstream& fin) {};
+	void  AddBlackboardData(const wstring& _strKey, BB_DATA _Type, void* _pData);
+	void* GetBlackboardData(const wstring& _strKey);
 
 public:
-    CLONE(CStateMachine);
-    CStateMachine();
+	virtual void begin() override;
+	virtual void finaltick() override;
 
-    ~CStateMachine();
+	virtual void SaveToFile(FILE* _File) override;
+	virtual void SaveToFile(ofstream& fout){};
+	virtual void LoadFromFile(FILE* _File) override;
+	virtual void LoadFromFile(ifstream& fin){};
+
+public:
+	CLONE(CStateMachine);
+	CStateMachine();
+
+	~CStateMachine();
 };
-

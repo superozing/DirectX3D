@@ -4,7 +4,7 @@
 #include <Engine\CRenderMgr.h>
 
 CSpringArm::CSpringArm()
-	:CScript((UINT)SCRIPT_TYPE::SPRINGARM)
+	: CScript((UINT)SCRIPT_TYPE::SPRINGARM)
 {
 }
 
@@ -20,14 +20,11 @@ void CSpringArm::begin()
 
 void CSpringArm::tick()
 {
-	if (!GetOwner()
-		|| !Transform()
-		|| !GetOwner()->GetParent()
-		|| !GetOwner()->GetParent()->Transform()
-		|| !m_pTargetCam) return;
+	if (!GetOwner() || !Transform() || !GetOwner()->GetParent() || !GetOwner()->GetParent()->Transform() ||
+		!m_pTargetCam)
+		return;
 
-	//Transform()->SetRelativePos(Vec3(0, 0, 0));
-
+	// Transform()->SetRelativePos(Vec3(0, 0, 0));
 }
 
 void CSpringArm::SetTargetCamera(CCamera* _cam)

@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CComputeShader.h"
 
 #include "CDevice.h"
@@ -24,14 +24,12 @@ CComputeShader::~CComputeShader()
 int CComputeShader::Create(const wstring& _strRelativePath, const string& _strFuncName)
 {
 	wstring strContentPath = CPathMgr::GetContentPath();
-	wstring strFilePath = strContentPath + _strRelativePath;
+	wstring strFilePath	   = strContentPath + _strRelativePath;
 
-	// ÇÈ¼¿ ½¦ÀÌ´õ »ý¼º
-	// ÇÈ¼¿ ½¦ÀÌ´õ ÄÄÆÄÀÏ
-	if (FAILED(D3DCompileFromFile(strFilePath.c_str()
-		, nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE
-		, _strFuncName.c_str(), "cs_5_0", D3DCOMPILE_DEBUG, 0
-		, m_CSBlob.GetAddressOf(), m_ErrBlob.GetAddressOf())))
+	// í”½ì…€ ì‰ì´ë” ìƒì„±
+	// í”½ì…€ ì‰ì´ë” ì»´íŒŒì¼
+	if (FAILED(D3DCompileFromFile(strFilePath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, _strFuncName.c_str(),
+								  "cs_5_0", D3DCOMPILE_DEBUG, 0, m_CSBlob.GetAddressOf(), m_ErrBlob.GetAddressOf())))
 	{
 		if (nullptr != m_ErrBlob)
 		{
@@ -46,9 +44,7 @@ int CComputeShader::Create(const wstring& _strRelativePath, const string& _strFu
 		return E_FAIL;
 	}
 
-	DEVICE->CreateComputeShader(m_CSBlob->GetBufferPointer()
-		, m_CSBlob->GetBufferSize(), nullptr
-		, m_CS.GetAddressOf());
+	DEVICE->CreateComputeShader(m_CSBlob->GetBufferPointer(), m_CSBlob->GetBufferSize(), nullptr, m_CS.GetAddressOf());
 
 	return S_OK;
 }
@@ -60,12 +56,12 @@ void CComputeShader::Execute()
 
 	UpdateGroupCount();
 
-	// »ó¼ö µ¥ÀÌÅÍ ¹ÙÀÎµù
+	// ìƒìˆ˜ ë°ì´í„° ë°”ì¸ë”©
 	static CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::MATERIAL_CONST);
 	pCB->SetData(&m_Const);
 	pCB->UpdateData_CS();
 
-	// ÄÄÇ»Æ® ½¦ÀÌ´õ ½ÇÇà
+	// ì»´í“¨íŠ¸ ì‰ì´ë” ì‹¤í–‰
 	CONTEXT->CSSetShader(m_CS.Get(), 0, 0);
 	CONTEXT->Dispatch(m_GroupX, m_GroupY, m_GroupZ);
 

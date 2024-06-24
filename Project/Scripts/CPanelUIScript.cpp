@@ -24,7 +24,6 @@ void CPanelUIScript::tick()
 		MeshRender()->GetDynamicMaterial(0);
 	}
 
-
 	if (IsLBtnDown())
 	{
 		// 패널 드래그 앤 드롭
@@ -43,7 +42,6 @@ void CPanelUIScript::tick()
 
 	CUIScript::tick();
 
-
 	if (m_AllowTexSet)
 		MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_PanelTex);
 }
@@ -56,17 +54,15 @@ void CPanelUIScript::LBtnDown()
 
 void CPanelUIScript::SaveToFile(FILE* _File)
 {
-
 }
 
 void CPanelUIScript::LoadFromFile(FILE* _File)
 {
-
 }
 
-#define TagPanelImg			"[PanelImg]"
-#define TagAllowTexSet		"[AllowTexSet]"
-#define TagAllowDragAndDrop	"[AllowDragAndDrop]"
+#define TagPanelImg "[PanelImg]"
+#define TagAllowTexSet "[AllowTexSet]"
+#define TagAllowDragAndDrop "[AllowDragAndDrop]"
 
 // 콜백은 어떻게 저장해야 할까?
 
@@ -89,7 +85,7 @@ void CPanelUIScript::LoadFromFile(ifstream& fin)
 
 	Utils::GetLineUntilString(fin, TagAllowTexSet);
 	fin >> m_AllowTexSet;
-	
+
 	Utils::GetLineUntilString(fin, TagAllowDragAndDrop);
 	fin >> m_AllowDragAndDrop;
 }

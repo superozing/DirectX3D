@@ -19,7 +19,6 @@
 CLevelMgr::CLevelMgr()
 	: m_CurLevel(nullptr)
 {
-
 }
 
 CLevelMgr::~CLevelMgr()
@@ -30,7 +29,6 @@ CLevelMgr::~CLevelMgr()
 
 void CLevelMgr::init()
 {
-
 }
 
 void CLevelMgr::tick()
@@ -46,7 +44,7 @@ void CLevelMgr::tick()
 	{
 		m_CurLevel->tick();
 	}
-	
+
 	m_CurLevel->finaltick();
 
 	// 충돌 처리
@@ -60,8 +58,8 @@ void CLevelMgr::tick()
 	acctime += DTd_ENGINE;
 	if (1.f <= acctime)
 	{
-		//wchar_t szText[50] = {};
-		//swprintf_s(szText, 50, L"%s", ToString( m_CurLevel->GetName()));
+		// wchar_t szText[50] = {};
+		// swprintf_s(szText, 50, L"%s", ToString( m_CurLevel->GetName()));
 		SetWindowText(CEngine::GetInst()->GetMainWind(), m_CurLevel->GetName().c_str());
 		acctime = 0.f;
 	}
@@ -79,7 +77,7 @@ void CLevelMgr::ChangeLevelState(LEVEL_STATE _State)
 {
 	tTask task = {};
 
-	task.Type = TASK_TYPE::CHANGE_LEVELSTATE;
+	task.Type	 = TASK_TYPE::CHANGE_LEVELSTATE;
 	task.Param_1 = (DWORD_PTR)m_CurLevel;
 	task.Param_2 = (DWORD_PTR)_State;
 
@@ -97,7 +95,6 @@ void CLevelMgr::ChangeLevel_Task(CLevel* _NextLevel, LEVEL_STATE _NextLevelState
 	CCollisionMgr::GetInst()->exit();
 	CGC::GetInst()->exit();
 
-		
 	if (nullptr != m_CurLevel)
 		delete m_CurLevel;
 
@@ -108,7 +105,6 @@ void CLevelMgr::ChangeLevel_Task(CLevel* _NextLevel, LEVEL_STATE _NextLevelState
 
 	CLevelMgr::GetInst()->enter();
 	m_MapClientFunc[Client_Function_Type::CIMGUIMGR_ENTER]();
-
 }
 
 void CLevelMgr::RegisterClientFunction(Client_Function_Type _Type, std::function<void()> _MemberFunction)

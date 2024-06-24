@@ -32,8 +32,8 @@ void CImageUIScript::BindUIImgOnTexParam()
 		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_UIImg);
 }
 
-#define TagUIImg				"[UIImg]"
-#define TagAllowBindTexPerFrame	"[AllowBindTexPerFrame]"
+#define TagUIImg "[UIImg]"
+#define TagAllowBindTexPerFrame "[AllowBindTexPerFrame]"
 
 void CImageUIScript::SaveToFile(FILE* _File)
 {
@@ -51,7 +51,6 @@ void CImageUIScript::SaveToFile(ofstream& fout)
 	fout << TagAllowBindTexPerFrame << endl;
 	fout << m_bAllowBindTexPerFrame << endl;
 }
-
 
 void CImageUIScript::LoadFromFile(ifstream& fin)
 {

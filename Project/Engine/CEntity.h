@@ -1,5 +1,4 @@
-#pragma once
-
+﻿#pragma once
 
 class CEntity
 {
@@ -7,14 +6,14 @@ private:
 	static UINT g_NextID;
 
 private:
-	const UINT	m_ID;
-	wstring		m_strName;
+	const UINT m_ID;
+	wstring	   m_strName;
 
 public:
-	void SetName(const wstring& _strName) { m_strName = _strName; }
-	void SetName(const string& _strName) { m_strName = ToWString(_strName); }
+	void		   SetName(const wstring& _strName) { m_strName = _strName; }
+	void		   SetName(const string& _strName) { m_strName = ToWString(_strName); }
 	const wstring& GetName() const { return m_strName; }
-	UINT GetID() const { return m_ID; }
+	UINT		   GetID() const { return m_ID; }
 
 	virtual CEntity* Clone() = 0;
 
@@ -22,4 +21,4 @@ public:
 	CEntity();
 	CEntity(const CEntity& _Origin);
 	virtual ~CEntity();
-}; 
+};
