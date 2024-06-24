@@ -32,12 +32,14 @@ public:
     virtual void LoadFromFile(FILE* _File) override;
     CLONE(CPlayerScript);
 
+#pragma region About State
     void NormalBegin();
 	int NormalUpdate();
 	void NormalEnd();
 	void AttackBegin();
 	int AttackUpdate();
 	void AttackEnd();
+#pragma endregion
 
 	public:
     CPlayerScript();
