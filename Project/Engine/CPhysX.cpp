@@ -83,7 +83,14 @@ void CPhysX::begin()
 
 void CPhysX::finaltick()
 {
-	updateFromPhysics();
+	if (m_bStaticActor)
+	{
+
+	}
+	else
+	{
+		updateFromPhysics();
+	}
 }
 
 void CPhysX::SaveToFile(FILE* _File)
