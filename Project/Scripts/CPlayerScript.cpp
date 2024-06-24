@@ -38,6 +38,7 @@ static int state = 0;
 void CPlayerScript::begin()
 {
 	m_FSM->Begin();
+	AppendScriptParam("CurState", SCRIPT_PARAM::INT, (void *)&state);
 	//Ptr<CTexture> pAltasTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\link.png", L"texture\\link.png");
 	//Animator2D()->Create(L"IDLE_LEFT", pAltasTex, Vec2(0.f, 130.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 3, 10);
 	//Animator2D()->Create(L"IDLE_RIGHT", pAltasTex, Vec2(0.f, 390.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 3, 10);
@@ -51,7 +52,6 @@ void CPlayerScript::begin()
 
 	//m_Missile = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"MissilePrefab");
 	//m_Missile = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\missile.pref", L"prefab\\missile.pref");
-	AppendScriptParam("CurState", SCRIPT_PARAM::INT, (void *)&state);
 }
 
 void CPlayerScript::tick()
