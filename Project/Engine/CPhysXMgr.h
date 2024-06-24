@@ -16,6 +16,7 @@ private:
 	PxDefaultCpuDispatcher* gDispatcher = nullptr;
 	PxScene* gScene = nullptr;
 	PxMaterial* gMaterial = nullptr;
+	class RoRCollisionCallback* gCollisionCalback = nullptr;
 
 public:
 	virtual void init() override;

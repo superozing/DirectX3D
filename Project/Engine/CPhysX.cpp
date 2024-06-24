@@ -4,6 +4,7 @@
 #include "CTransform.h"
 #include <DirectXMath.h>
 #include "CPhysXMgr.h"
+#include "CScript.h"
 
 CPhysX::CPhysX()
 	: CComponent(COMPONENT_TYPE::PHYSX)
@@ -114,5 +115,35 @@ void CPhysX::setTransform(const PxTransform& transform)
 PxTransform CPhysX::getTransform() const
 {
     return m_Actor->getGlobalPose();
+}
+
+void CPhysX::BeginOverlap(CGameObject* other)
+{
+	++m_CollisionCount;
+
+	const vector<CScript*>& vecScript = GetOwner()->GetScripts();
+	for (size_t i = 0; i < vecScript.size(); ++i)
+	{
+		vecScript[i]->BeginOverlap(this, other, other->PhysX());
+	}
+}
+
+void CPhysX::Overlap(CGameObject* other)
+{
+	const vector<CScript*>& vecScript = GetOwner()->GetScripts();
+	for (size_t i = 0; i < vecScript.size(); ++i)
+	{
+		vecScript[i]->Overlap(this, other, other->PhysX());
+	}
+}
+
+void CPhysX::EndOverlap(CGameObject* other)
+{
+	--m_CollisionCount;
+	const vector<CScript*>& vecScript = GetOwner()->GetScripts();
+	for (size_t i = 0; i < vecScript.size(); ++i)
+	{
+		vecScript[i]->EndOverlap(this, other, other->PhysX());
+	}
 }
 

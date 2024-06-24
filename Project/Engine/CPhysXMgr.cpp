@@ -4,8 +4,19 @@
 #include "CGameObject.h"
 #include "CTransform.h"
 #include "CPhysX.h"
+#include "RoRCollisionCallback.h"
 
 CPhysXMgr::CPhysXMgr() {}
+
+PxFilterFlags CustomFilterShader(
+    PxFilterObjectAttributes attributes0, PxFilterData filterData0,
+    PxFilterObjectAttributes attributes1, PxFilterData filterData1,
+    PxPairFlags& pairFlags, const void* constantBlock, PxU32 constantBlockSize)
+{
+    // 모든 충돌에 대해 충돌 보고 활성화
+    pairFlags = PxPairFlag::eCONTACT_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_FOUND | PxPairFlag::eNOTIFY_TOUCH_PERSISTS | PxPairFlag::eNOTIFY_TOUCH_LOST;
+    return PxFilterFlag::eDEFAULT;
+}
 
 void CPhysXMgr::init()
 {
@@ -16,9 +27,13 @@ void CPhysXMgr::init()
     sceneDesc.gravity = PxVec3(0.0f, -981.f, 0.0f);
     gDispatcher = PxDefaultCpuDispatcherCreate(2);
     sceneDesc.cpuDispatcher = gDispatcher;
-    sceneDesc.filterShader = PxDefaultSimulationFilterShader;
+    sceneDesc.filterShader = CustomFilterShader;
+
     gScene = gPhysics->createScene(sceneDesc);
     gMaterial = gPhysics->createMaterial(0.5f, 0.5f, 0.000f); // (정지 마찰 계수, 동적 마찰 계수, 반발 계수)
+
+    gCollisionCalback = new RoRCollisionCallback;
+    gScene->setSimulationEventCallback(gCollisionCalback);
 }
 
 void CPhysXMgr::tick()
@@ -42,14 +57,23 @@ void CPhysXMgr::addDynamicGameObject(CGameObject* object)
 
     // Collider 추가 (여기서는 예시로 Box Collider를 사용)
     PxShape* shape = gPhysics->createShape(PxBoxGeometry(scale.x / 2, scale.y / 2, scale.z / 2), *gMaterial);
+    //필터링 설정
+    //PxFilterData filterData;
+    //filterData.word0 = 1; // group
+    //filterData.word1 = 1; // mask
+    //actor->getShapes(&shape, 1);
+    //shape->setSimulationFilterData(filterData);
+
     actor->attachShape(*shape);
     actor->setMass(1.0f);
 
     // Collider 추가 등
     gScene->addActor(*actor);
 
+
     // 액터 추가
     object->PhysX()->m_Actor = actor;
+    actor->userData = object;
 }
 
 void CPhysXMgr::addStaticGameObject(CGameObject* object)
@@ -85,5 +109,10 @@ CPhysXMgr::~CPhysXMgr()
     gPhysics->release();
     gFoundation->release();
     //gMaterial->release();
+    if (nullptr != gCollisionCalback)
+    {
+        delete gCollisionCalback;
+        gCollisionCalback = nullptr;
+    }
 }
 

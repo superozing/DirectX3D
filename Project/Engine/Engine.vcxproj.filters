@@ -265,6 +265,10 @@
     <ClInclude Include="CPhysX.h">
       <Filter>08. Component\10. PhysX</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="RoRCollisionCallback.h">
+      <Filter>04. Manager\PhysXMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -479,6 +483,9 @@
     </ClCompile>
     <ClCompile Include="CPhysX.cpp">
       <Filter>08. Component\10. PhysX</Filter>
+    </ClCompile>
+    <ClCompile Include="RoRCollisionCallback.cpp">
+      <Filter>04. Manager\PhysXMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -771,5 +778,8 @@
     <FxCompile Include="weightmap.fx">
       <Filter>ShaderCode\03. Compute\LandScape\WeightMap</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Engine.rc" />
   </ItemGroup>
 </Project>

@@ -6,6 +6,7 @@ class CPhysX :
 {
 private:
     PxRigidActor* m_Actor = nullptr;
+    int m_CollisionCount = 0;
 
     void updateFromPhysics();
     void updateToPhysics();
@@ -26,6 +27,10 @@ public:
     PxRigidActor* getActor() const {
         return m_Actor;
     }
+
+    void BeginOverlap(CGameObject* other);
+    void Overlap(CGameObject* other);
+    void EndOverlap(CGameObject* other);
 
 public:
     CLONE(CPhysX);
