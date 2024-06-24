@@ -9,6 +9,7 @@ SkyBoxUI::SkyBoxUI()
 	SetComponentTitle("SkyBox");
 
 	GetSkyBoxFileName();
+
 }
 
 SkyBoxUI::~SkyBoxUI()
@@ -27,6 +28,7 @@ void SkyBoxUI::render_update()
 
 	static const char* cSelectSphere = NULL;
 	static const char* cSelectCube = NULL;
+
 
 	// 타입 선택
 	ImGui::Text("SkyBoxType");
@@ -102,6 +104,7 @@ void SkyBoxUI::render_update()
 
 	if (ImGui::BeginCombo("##comboSkyBoxSphere", cSelectSphere))
 	{
+
 		for (int n = 0; n < m_vecSkyBoxKey.size(); n++)
 		{
 			bool is_selected = (cSelectSphere == m_vecSkyBoxKey[n].c_str()); 
@@ -122,6 +125,12 @@ void SkyBoxUI::render_update()
 		ImGui::EndCombo();
 	}
 
+	// 구 텍스쳐 payload
+	CTexture* PayloadTex = nullptr;
+	if (PayloadCheck(&PayloadTex))
+	{
+		GetTargetObject()->SkyBox()->m_SphereTex = PayloadTex;
+	}
 
 	ImGui::Spacing();
 
@@ -140,10 +149,12 @@ void SkyBoxUI::render_update()
 		//ImGui::Image(pCubeTex->GetSRV().Get(), ImVec2(SkyBoxUISize.x, 150), uv_min, uv_max, tint_col, border_col);
 		
 		m_strTextureName[1] = ToString(pCubeTex.Get()->GetKey());
+		char* CubeKey = (char*)m_strTextureName[1].c_str();
+
 
 		ImGui::Text("Texture Key  ");
 		ImGui::SameLine();
-		ImGui::InputText("##Texture Key Cube", (char*)m_strTextureName->c_str(), m_strTextureName->length(), ImGuiInputTextFlags_ReadOnly);
+		ImGui::InputText("##Texture Key Cube", CubeKey, m_strTextureName->length(), ImGuiInputTextFlags_ReadOnly);
 
 
 		// 해상도 정보 출력
@@ -196,6 +207,12 @@ void SkyBoxUI::render_update()
 		ImGui::EndCombo();
 	}
 
+	// 큐브 텍스쳐 payload
+	PayloadTex = nullptr;
+	if (PayloadCheck(&PayloadTex))
+	{
+		GetTargetObject()->SkyBox()->m_CubeTex = PayloadTex;
+	}
 }
 
 void SkyBoxUI::ResetUIinfo()
@@ -222,3 +239,5 @@ void SkyBoxUI::GetSkyBoxFileName()
 
 	m_vecSkyBoxKey = strFileName;
 }
+
+

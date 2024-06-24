@@ -3,7 +3,12 @@
 #include "imgui.h"
 #include "CImGuiMgr.h"
 
+
 class ScriptUI;
+
+
+typedef std::function<void()> SetFunc;
+
 
 class UI
 {
@@ -24,6 +29,9 @@ protected:
 	void StaticButton(const char* _content, STATIC_BTN_TYPE _type = STATIC_BTN_TYPE::TITLE);
 
 	bool TitleCollapse(const char* _content);
+
+	template <typename T>
+	bool PayloadCheck(T** _Ptr);
 
 public:
 	void SetName(const string& _name) { m_strName = _name; }
@@ -63,3 +71,33 @@ public:
 	static bool ColorSelector(const char* _label, Vec4* _col);
 };
 
+template<typename T>
+inline bool UI::PayloadCheck(T** _Ptr)
+{
+	if (ImGui::BeginDragDropTarget())
+	{
+		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ContentTree");
+
+		if (payload)
+		{
+			DWORD_PTR data = *((DWORD_PTR*)payload->Data);
+			CAsset* ptrData = (CAsset*)data;
+			
+			//레벨 들어가면 터짐
+			T* Res = dynamic_cast<T*>(ptrData);
+			
+			if (Res != nullptr)
+			{
+				*_Ptr = Res;
+				ImGui::EndDragDropTarget();
+				return true;
+			}
+
+		}
+
+		ImGui::EndDragDropTarget();
+		
+	}
+
+	return false;
+}

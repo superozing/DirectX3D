@@ -173,6 +173,7 @@
     <ClInclude Include="LandscapeUI.h" />
     <ClInclude Include="ImGuizmo.h" />
     <ClInclude Include="Light3DUI.h" />
+    <ClInclude Include="MapTestLevel.h" />
     <ClInclude Include="ParticleSystemUI.h" />
     <ClInclude Include="LogUI.h" />
     <ClInclude Include="ScriptUI.h" />
@@ -230,6 +231,7 @@
     <ClCompile Include="ImGuizmo.cpp" />
     <ClCompile Include="Light3DUI.cpp" />
     <ClCompile Include="LogUI.cpp" />
+    <ClCompile Include="MapTestLevel.cpp" />
     <ClCompile Include="ParticleSystemUI.cpp" />
     <ClCompile Include="ScriptUI.cpp" />
     <ClCompile Include="CTraceState.cpp" />

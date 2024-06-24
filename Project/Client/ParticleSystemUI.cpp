@@ -73,6 +73,14 @@ void ParticleSystemUI::render_update()
 		ImGui::EndCombo();
 	}
 
+	//파티클 texture payload
+	CTexture* PayloadTex = nullptr;
+	if (PayloadCheck(&PayloadTex))
+	{
+		GetTargetObject()->ParticleSystem()->SetParticleTex(PayloadTex);
+	}
+
+
 	ImGui::Image(GetTargetObject()->ParticleSystem()->GetParticleTex()->GetSRV().Get(), ImVec2(UIsize.x - 10.f, 150.f), uv_min, uv_max, tint_col, border_col);
 
 	string strTextureName = ToString(GetTargetObject()->ParticleSystem()->GetParticleTex()->GetKey());
@@ -451,3 +459,4 @@ void ParticleSystemUI::GetParticleFileName()
 
 	this->m_vecParticleKey = strFileName;
 }
+

@@ -308,6 +308,9 @@
     <ClInclude Include="CCreatePlayerTestLevel.h">
       <Filter>01. Manager\03. CreateTempLevel</Filter>
     </ClInclude>
+    <ClInclude Include="MapTestLevel.h">
+      <Filter>01. Manager\03. CreateTempLevel</Filter>
+    </ClInclude>
     <ClInclude Include="Animator3DUI.h">
       <Filter>02. UI\3. Inspector\ComponentUI\Animator3D</Filter>
     </ClInclude>
@@ -473,6 +476,9 @@
     </ClCompile>
     <ClCompile Include="ImGuizmo.cpp" />
     <ClCompile Include="CCreatePlayerTestLevel.cpp">
+      <Filter>01. Manager\03. CreateTempLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="MapTestLevel.cpp">
       <Filter>01. Manager\03. CreateTempLevel</Filter>
     </ClCompile>
     <ClCompile Include="Animator3DUI.cpp">

@@ -37,6 +37,9 @@
     <ClInclude Include="CSpringArm.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CRoRStateMachine.h">
+      <Filter>RoRStateMachine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -75,6 +78,9 @@
     <ClCompile Include="CSpringArm.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="CRoRStateMachine.cpp">
+      <Filter>RoRStateMachine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -100,6 +106,9 @@
     </Filter>
     <Filter Include="Scripts\Manager\Time">
       <UniqueIdentifier>{9b5c2bf2-2681-42e9-b790-8b4aba881373}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RoRStateMachine">
+      <UniqueIdentifier>{86892923-b05a-4177-80fe-2f8aebe68887}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
