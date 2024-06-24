@@ -135,6 +135,14 @@ void CRenderMgr::render_play()
 	// 추가 보조카메라 시점 렌더링
 	for (int i = 1; i < m_vecCam.size(); ++i)
 	{
+		g_Transform.matView = m_vecCam[i]->GetViewMat();
+		g_Transform.matViewInv = m_vecCam[i]->GetViewInvMat();
+		g_Transform.matProj = m_vecCam[i]->GetProjMat();
+		g_Transform.matProjInv = m_vecCam[i]->GetProjInvMat();
+
+		// 보조카메라 시점 기준 SortObject
+		m_vecCam[i]->SortObject();
+
 		// Foward 렌더링
 		m_vecCam[i]->render_forward();
 	}

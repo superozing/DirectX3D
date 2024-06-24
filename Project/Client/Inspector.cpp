@@ -200,25 +200,33 @@ void Inspector::ObjectName()
 
 void Inspector::ObjectLayer()
 {
+	CLevel* CurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+
 	// 오브젝트 레이어
 	int LayerIdx = m_TargetObject->GetLayerIdx();
+	string LayerName = ToString(CurLevel->GetLayer(LayerIdx)->GetName());
 	int PrevIdx = LayerIdx;
 
 	if (-1 != LayerIdx)
 	{
 		ImGui::Text("Layer"); ImGui::SameLine();
-		auto Layer_Names = magic_enum::enum_names<LAYER>();
-		string strLayer = string(Layer_Names[LayerIdx]);
+		auto LayerVal = magic_enum::enum_cast<LAYER>(LayerName);
+
+		string strLayer = LayerName;
 
 		if (ImGui::BeginCombo("##ObjLayer", strLayer.c_str()))
 		{
-			for (int i = 0; i < (int)Layer_Names.size(); ++i)
+			for (int i = 0; i < 32; ++i)
 			{
 				int CurLayer = i;
+				string CurLayerName = ToString(CurLevel->GetLayer(CurLayer)->GetName());
+				
+				if (!magic_enum::enum_cast<LAYER>(CurLayerName).has_value())
+					continue;
 
 				bool isSelected = (CurLayer == LayerIdx);
 
-				if (ImGui::Selectable(string(Layer_Names[CurLayer]).c_str(), isSelected))
+				if (ImGui::Selectable(CurLayerName.c_str(), isSelected))
 				{
 					LayerIdx = CurLayer;
 				}
@@ -233,8 +241,7 @@ void Inspector::ObjectLayer()
 
 			if (PrevIdx != LayerIdx)
 			{
-				CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-				pCurLevel->AddObject(m_TargetObject, LayerIdx);
+				CurLevel->AddObject(m_TargetObject, LayerIdx);
 			}
 		}
 	}
@@ -246,18 +253,25 @@ int Inspector::PrefabLayer()
 	static int PrevIdx = LayerIdx;
 
 	ImGui::Text("Layer"); ImGui::SameLine();
-	auto Layer_Names = magic_enum::enum_names<LAYER>();
-	string strLayer = string(Layer_Names[LayerIdx]);
+
+	CLevel* CurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+
+	string strLayer = ToString(CurLevel->GetLayer(LayerIdx)->GetName());
 
 	if (ImGui::BeginCombo("##ObjLayer", strLayer.c_str()))
 	{
-		for (int i = 0; i < (int)Layer_Names.size(); ++i)
+		for (int i = 0; i < 32; ++i)
 		{
 			int CurLayer = i;
 
+			string CurLayerName = ToString(CurLevel->GetLayer(CurLayer)->GetName());
+
+			if (!magic_enum::enum_cast<LAYER>(CurLayerName).has_value())
+				continue;
+
 			bool isSelected = (CurLayer == LayerIdx);
 
-			if (ImGui::Selectable(string(Layer_Names[CurLayer]).c_str(), isSelected))
+			if (ImGui::Selectable(CurLayerName.c_str(), isSelected))
 			{
 				LayerIdx = CurLayer;
 			}
@@ -272,8 +286,7 @@ int Inspector::PrefabLayer()
 
 		if (PrevIdx != LayerIdx)
 		{
-			CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-			pCurLevel->AddObject(m_TargetObject, LayerIdx);
+			CurLevel->AddObject(m_TargetObject, LayerIdx);
 		}
 	}
 

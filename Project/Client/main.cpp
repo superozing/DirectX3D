@@ -33,6 +33,7 @@
 #include "CImGuiMgr.h"
 #include "CEditorObjMgr.h"
 #include "CCreateTempLevel.h"
+#include "CUITempLevel.h"
 #include "MapTestLevel.h"
 #include "CCreatePlayerTestLevel.h"
 
@@ -85,6 +86,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     
 #ifndef _RELEASE_GAME
+
     // 임시 레벨 생성 
     //CCreateTempLevel::Init();
     //CCreateTempLevel::CreateTempLevel();
