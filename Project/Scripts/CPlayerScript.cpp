@@ -8,6 +8,8 @@
 #include <Engine/CMaterial.h>
 #include <Engine/CRenderComponent.h>
 
+#include <Engine\CLogMgr.h>
+#include "CRoRStateMachine.h"
 
 
 CPlayerScript::CPlayerScript()
@@ -15,15 +17,28 @@ CPlayerScript::CPlayerScript()
 	, m_Speed(500.f)
 {
 	AppendScriptParam("Player Speed", SCRIPT_PARAM::FLOAT, &m_Speed);
+	m_FSM = new CRoRStateMachine<CPlayerScript>(this, (UINT)PLAYER_STATE::END);
+
+	m_FSM->SetCallbacks((UINT)PLAYER_STATE::NORMAL, ToString(magic_enum::enum_name(PLAYER_STATE::NORMAL)),
+						&CPlayerScript::NormalUpdate, &CPlayerScript::NormalBegin, &CPlayerScript::NormalEnd, nullptr);
+	m_FSM->SetCallbacks((UINT)PLAYER_STATE::ATTACK, ToString(magic_enum::enum_name(PLAYER_STATE::ATTACK)),
+						&CPlayerScript::AttackUpdate, &CPlayerScript::AttackBegin, &CPlayerScript::AttackEnd, nullptr);
 }
 
 CPlayerScript::~CPlayerScript()
 {
-
+	if (nullptr != m_FSM)
+	{
+		delete m_FSM;
+		m_FSM = nullptr;
+	}
 }
 
+static string state = "";
 void CPlayerScript::begin()
 {
+	m_FSM->Begin();
+	AppendScriptParam("CurState", SCRIPT_PARAM::STRING, (void *)&state);
 	//Ptr<CTexture> pAltasTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\link.png", L"texture\\link.png");
 	//Animator2D()->Create(L"IDLE_LEFT", pAltasTex, Vec2(0.f, 130.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 3, 10);
 	//Animator2D()->Create(L"IDLE_RIGHT", pAltasTex, Vec2(0.f, 390.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 3, 10);
@@ -41,6 +56,9 @@ void CPlayerScript::begin()
 
 void CPlayerScript::tick()
 {
+	m_FSM->Update();
+	state = magic_enum::enum_name((PLAYER_STATE)m_FSM->GetCurState());
+
 	Vec3 vPos = Transform()->GetRelativePos();
 	Vec3 vRot = Transform()->GetRelativeRotation();
 
@@ -147,4 +165,49 @@ void CPlayerScript::SaveToFile(FILE* _File)
 void CPlayerScript::LoadFromFile(FILE* _File)
 {
 	fread(&m_Speed, sizeof(float), 1, _File);
+}
+
+void CPlayerScript::NormalBegin()
+{
+}
+
+int CPlayerScript::NormalUpdate()
+{
+	if (KEY_TAP(KEY::C))
+	{
+		return (UINT)PLAYER_STATE::ATTACK;
+	}
+	else
+	{
+		return (UINT)PLAYER_STATE::NORMAL;
+	}
+}
+
+void CPlayerScript::NormalEnd()
+{
+}
+
+static float Att_Acctime = 0.f;
+static const float Att_duration = 1.f;
+
+void CPlayerScript::AttackBegin()
+{
+	Att_Acctime = 0.f;
+}
+
+int CPlayerScript::AttackUpdate()
+{
+	Att_Acctime += DT;
+	if (Att_duration < Att_Acctime)
+	{
+		return (UINT)PLAYER_STATE::NORMAL;
+	}
+	else
+	{
+		return (UINT)PLAYER_STATE::ATTACK;
+	}
+}
+
+void CPlayerScript::AttackEnd()
+{
 }

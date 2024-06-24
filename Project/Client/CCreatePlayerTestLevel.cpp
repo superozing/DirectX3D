@@ -104,10 +104,11 @@ void CCreatePlayerTestLevel::CreateTempLevel()
 
 	// Player Object 생성
 	pObj = new CGameObject;
-	pObj->SetName(L"Plain");
+	pObj->SetName(L"Player");
 
 	pObj->AddComponent(new CTransform);
 	pObj->AddComponent(new CMeshRender);
+	pObj->AddComponent(new CPlayerScript);
 
 	pObj->Transform()->SetRelativePos(Vec3(0.f, -500.f, 500.f));
 	pObj->Transform()->SetRelativeScale(Vec3(5000.f, 5000.f, 500.f));
