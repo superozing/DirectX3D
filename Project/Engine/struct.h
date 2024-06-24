@@ -186,6 +186,11 @@ struct tMTAnimClip
 	float			fUpdateTime; // 이거 안씀
 
 	FbxTime::EMode	eMode;
+
+	bool operator ==(const wstring& other) const
+	{
+		return strAnimName == other;
+	}
 };
 
 

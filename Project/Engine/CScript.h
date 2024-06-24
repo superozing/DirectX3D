@@ -35,7 +35,7 @@ private:
     vector<std::pair<string, tScriptParam>>    m_vScriptParam;
 
 public:
-    UINT GetScriptType() { return m_iScriptType; }
+    UINT GetScriptType() const { return m_iScriptType; }
     const auto& GetScriptParam() { return m_vScriptParam; }
 
 

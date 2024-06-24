@@ -19,7 +19,6 @@ public:
     
     void GetParticleFileName();
 
-
 public:
     ParticleSystemUI();
     ~ParticleSystemUI();

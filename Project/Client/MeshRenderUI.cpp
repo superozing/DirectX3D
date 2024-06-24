@@ -43,22 +43,12 @@ void MeshRenderUI::render_update()
 	ImGui::SameLine(); 
 	ImGui::InputText("##MeshName", (char*)meshname.c_str(), meshname.length(), ImGuiInputTextFlags_ReadOnly);
 
-	// Mesh Drop 체크
-	if (ImGui::BeginDragDropTarget())
+	// Mesh payload 체크
+	CMesh* PayloadMesh = nullptr;
+	if (PayloadCheck(&PayloadMesh))
 	{
-		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ContentTree");
+		GetTargetObject()->MeshRender()->SetMesh((CMesh*)PayloadMesh);
 
-		if (payload)
-		{
-			DWORD_PTR data = *((DWORD_PTR*)payload->Data);
-			CAsset* pAsset = (CAsset*)data;
-			if (ASSET_TYPE::MESH == pAsset->GetType())
-			{
-				GetTargetObject()->MeshRender()->SetMesh((CMesh*)pAsset);
-			}
-		}
-
-		ImGui::EndDragDropTarget();
 	}
 
 	ImGui::SameLine();
@@ -94,21 +84,12 @@ void MeshRenderUI::render_update()
 			ImGui::InputText("##MtrlName", (char*)mtrlname.c_str(), mtrlname.length(), ImGuiInputTextFlags_ReadOnly);
 			ImGui::SameLine();
 
-			// Material Drop 체크
-			if (ImGui::BeginDragDropTarget())
+			// Material payload 체크
+			CMaterial* PayloadMaterial = nullptr;
+			if (PayloadCheck(&PayloadMaterial))
 			{
-				const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ContentTree");
-
-				if (payload)
-				{
-					DWORD_PTR data = *((DWORD_PTR*)payload->Data);
-					CAsset* pAsset = (CAsset*)data;
-					if (ASSET_TYPE::MATERIAL == pAsset->GetType())
-					{
-						pMeshRender->SetMaterial((CMaterial*)pAsset, i);
-					}
-				}
-				ImGui::EndDragDropTarget();
+				GetTargetObject()->MeshRender()->SetMaterial((CMaterial*)PayloadMaterial, i);
+				
 			}
 
 			if (ImGui::Button("##MtrlBtn", ImVec2(20, 20)))

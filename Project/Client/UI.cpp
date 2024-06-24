@@ -101,6 +101,7 @@ bool UI::TitleCollapse(const char* _content)
 	}
 }
 
+
 void UI::tick()
 {
 
@@ -267,3 +268,6 @@ void UI::DeleteHeaderScript(ScriptUI* _ScriptUI)
 	Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
 	pInspector->DeleteTargetScript(_ScriptUI);
 }
+
+
+

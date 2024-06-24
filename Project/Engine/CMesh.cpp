@@ -22,9 +22,6 @@ CMesh::~CMesh()
 			delete m_vecIdxInfo[i].pIdxSysMem;
 	}
 
-	//if (nullptr != m_pBoneFrameData)
-	//	delete m_pBoneFrameData;
-
 	if (nullptr != m_pBoneOffset)
 		delete m_pBoneOffset;
 
@@ -212,35 +209,6 @@ CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
 			pMesh->m_vecBoneFrameData.push_back(pSB);
 		}
 	}
-
-	//// Animation 이 있는 Mesh 경우 structuredbuffer 만들어두기
-	//if (pMesh->IsAnimMesh())
-	//{
-	//	// BoneOffet 행렬
-	//	vector<Matrix> vecOffset;
-	//	vector<tFrameTrans> vecFrameTrans;
-	//	vecFrameTrans.resize((UINT)pMesh->m_vecBones.size() * iFrameCount);
-
-	//	for (size_t i = 0; i < pMesh->m_vecBones.size(); ++i)
-	//	{
-	//		vecOffset.push_back(pMesh->m_vecBones[i].matOffset);
-
-	//		for (size_t j = 0; j < pMesh->m_vecBones[i].vecKeyFrame.size(); ++j)
-	//		{
-	//			vecFrameTrans[(UINT)pMesh->m_vecBones.size() * j + i]
-	//				= tFrameTrans{ Vec4(pMesh->m_vecBones[i].vecKeyFrame[j].vTranslate, 0.f)
-	//				, Vec4(pMesh->m_vecBones[i].vecKeyFrame[j].vScale, 0.f)
-	//				, pMesh->m_vecBones[i].vecKeyFrame[j].qRot };
-	//		}
-	//	}
-
-	//	pMesh->m_pBoneOffset = new CStructuredBuffer;
-	//	pMesh->m_pBoneOffset->Create(sizeof(Matrix), (UINT)vecOffset.size(), SB_READ_TYPE::READ_ONLY, false, vecOffset.data());
-
-	//	pMesh->m_pBoneFrameData = new CStructuredBuffer;
-	//	pMesh->m_pBoneFrameData->Create(sizeof(tFrameTrans), (UINT)vecOffset.size() * iFrameCount
-	//		, SB_READ_TYPE::READ_ONLY, false, vecFrameTrans.data());
-	//}
 
 	return pMesh;
 }

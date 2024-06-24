@@ -50,7 +50,8 @@ enum class LAYER
 	LAYER_PLAYER,
 	LAYER_MONSTER,
 	LAYER_LIGHT,
-	LAYER_UI,
+
+	LAYER_UI = 31,
 	LAYER_MAX = 32,
 };
 
@@ -241,6 +242,7 @@ enum class SCRIPT_PARAM
 	BOOL,
 	INT,
 	FLOAT,
+	STRING,
 	VEC2,
 	VEC3,
 	VEC4,
