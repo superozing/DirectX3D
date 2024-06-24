@@ -28,18 +28,21 @@ class CGraphicsShader :
 {
 private:
     ComPtr<ID3DBlob>    m_VSBlob;
+    ComPtr<ID3DBlob>    m_VSInstBlob;
     ComPtr<ID3DBlob>    m_HSBlob;
     ComPtr<ID3DBlob>    m_DSBlob;
     ComPtr<ID3DBlob>    m_GSBlob;
     ComPtr<ID3DBlob>    m_PSBlob;
 
     ComPtr<ID3D11VertexShader>      m_VS;
+	ComPtr<ID3D11VertexShader>      m_VSInst;
     ComPtr<ID3D11HullShader>        m_HS;
     ComPtr<ID3D11DomainShader>      m_DS;
     ComPtr<ID3D11GeometryShader>    m_GS;
     ComPtr<ID3D11PixelShader>       m_PS;
 
     ComPtr<ID3D11InputLayout>       m_Layout;
+	ComPtr<ID3D11InputLayout>       m_LayoutInst;
     D3D11_PRIMITIVE_TOPOLOGY        m_Topology;
 
     // Rasterizer State
@@ -121,7 +124,7 @@ public:
     BS_TYPE GetBSType() const { return m_BSType; }
     SHADER_DOMAIN GetDomain() const { return m_Domain; }
 
-
+    ComPtr<ID3D11VertexShader> GetVSInst() { return m_VSInst; }
 
     void AddScalarParam(SCALAR_PARAM _Param, const string& _Desc, float _min = 0.f, float _Max = 0.f, bool _View = false, const string& _Tooltip = {})
     {
@@ -142,6 +145,7 @@ public:
 
 public:
     virtual int UpdateData();
+    virtual int UpdateData_Inst();
 
 public:
     CGraphicsShader();

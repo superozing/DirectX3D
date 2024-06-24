@@ -29,7 +29,6 @@ LandScapeUI::LandScapeUI()
 		m_vecLanderScapeMode.push_back(ToString(magic_enum::enum_name((LANDSCAPE_MODE)i)));
 	}
 	
-	int d = 0;
 }
 
 LandScapeUI::~LandScapeUI()
@@ -108,6 +107,13 @@ void LandScapeUI::render_update()
 			}
 		}
 		ImGui::EndCombo();
+	}
+
+	//랜드스케이프 height texture payload
+	CTexture* pTex = nullptr;
+	if (PayloadCheck(&pTex))
+	{
+		GetTargetObject()->LandScape()->SetHeightMapTex(pTex);
 	}
 
 	ImGui::Text("Texture Size"); ImGui::SameLine();
@@ -209,6 +215,7 @@ void LandScapeUI::render_update()
 		ImGui::EndTabBar();
 	}
 
+
 	GetTargetObject()->LandScape()->SetEdgeTexFactor(m_matTessFactor);
 
 	ImGui::Spacing();
@@ -240,7 +247,6 @@ void LandScapeUI::render_update()
 		ImGui::EndCombo();
 	}
 
-
 	ImGui::Text("Brush Texture "); ImGui::SameLine();
 
 	if (ImGui::BeginCombo("##ComboBrushTex", strBrush.c_str()))
@@ -263,6 +269,14 @@ void LandScapeUI::render_update()
 			}
 		}
 		ImGui::EndCombo();
+	}
+
+	//랜드스케이프 brush texture payload
+	pTex = nullptr;
+	
+	if (PayloadCheck(&pTex))
+	{
+		GetTargetObject()->LandScape()->SetBrushTex(pTex);
 	}
 
 	ImGui::Text("Brush Scale"); ImGui::SameLine();

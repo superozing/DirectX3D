@@ -14,7 +14,7 @@
 #include "CCollisionMgr.h"
 #include "CFontMgr.h"
 #include "CUIMgr.h"
-
+#include "CInstancingBuffer.h"
 #include "CSound.h"
 
 
@@ -58,6 +58,7 @@ int CEngine::init(HWND _hWnd, Vec2 _vResolution)
 	CAssetMgr::GetInst()->init();
 	CLevelMgr::GetInst()->init();
 	CFontMgr::GetInst()->init();
+	CInstancingBuffer::GetInst()->init();
 
 	return S_OK;
 }

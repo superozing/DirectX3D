@@ -11,11 +11,13 @@
 #include "ParamUI.h"
 #include "ListUI.h"
 
+
 MaterialUI::MaterialUI()
 	: AssetUI("Material", "##Material", ASSET_TYPE::MATERIAL)
     , m_TargetMtrl(nullptr)
     , m_SelectTexParam(TEX_PARAM::END)
 {
+
 }
 
 MaterialUI::~MaterialUI()
@@ -39,7 +41,7 @@ void MaterialUI::render_update()
     {
         filesystem::path pathObj(FullPath);
 
-        strcpy(MtrlKey, pathObj.stem().string().c_str());
+        strcpy_s(MtrlKey, pathObj.stem().string().c_str());
     }
 
     string strPath = string(m_TargetMtrl->GetKey().begin(), m_TargetMtrl->GetKey().end());
@@ -63,6 +65,7 @@ void MaterialUI::render_update()
     }
 
 
+
     Ptr<CGraphicsShader> pShader = m_TargetMtrl->GetShader();
     string strShaderName;
     if (nullptr != pShader)
@@ -78,6 +81,12 @@ void MaterialUI::render_update()
     ImGui::InputText("##ShaderName", (char*)strShaderName.c_str(), strShaderName.length(), ImGuiInputTextFlags_ReadOnly);
     ImGui::SameLine();
 
+    CGraphicsShader* PayloadShader = nullptr;
+    if (PayloadCheck(&PayloadShader))
+    {
+        m_TargetMtrl->SetShader(PayloadShader);
+    }
+
     if (ImGui::Button("##MtrlBtn", ImVec2(20, 20)))
     {
         // 리스트 UI
@@ -90,6 +99,7 @@ void MaterialUI::render_update()
         pListUI->SetDbClickDelegate(this, (Delegate_1)&MaterialUI::ShaderSelect);
         pListUI->Activate();
     }
+
 
     ImGui::Spacing(); ImGui::Spacing(); ImGui::Spacing(); ImGui::Spacing();
     ImGui::Text("Material Parameter");

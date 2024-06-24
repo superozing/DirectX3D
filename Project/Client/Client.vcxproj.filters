@@ -143,6 +143,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="02. UI\3. Inspector\ComponentUI\Animator3D">
+      <UniqueIdentifier>{1455b315-f8bc-444e-b046-add663fc9566}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -304,6 +307,15 @@
     <ClInclude Include="ImGuizmo.h" />
     <ClInclude Include="CUITempLevel.h">
       <Filter>01. Manager\03. CreateTempLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="CCreatePlayerTestLevel.h">
+      <Filter>01. Manager\03. CreateTempLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="MapTestLevel.h">
+      <Filter>01. Manager\03. CreateTempLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="Animator3DUI.h">
+      <Filter>02. UI\3. Inspector\ComponentUI\Animator3D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -468,6 +480,15 @@
     <ClCompile Include="ImGuizmo.cpp" />
     <ClCompile Include="CUITempLevel.cpp">
       <Filter>01. Manager\03. CreateTempLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="CCreatePlayerTestLevel.cpp">
+      <Filter>01. Manager\03. CreateTempLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="MapTestLevel.cpp">
+      <Filter>01. Manager\03. CreateTempLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="Animator3DUI.cpp">
+      <Filter>02. UI\3. Inspector\ComponentUI\Animator3D</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

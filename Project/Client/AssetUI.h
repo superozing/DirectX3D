@@ -22,6 +22,8 @@ public:
 public:
     virtual void render_update() override;
 
+public:
+
     virtual void CreateAssetInstance(Ptr<CAsset> _Asset);
     virtual void ChangeAssetName(const string& _OriginRelativePath, const string& _NewRelativePath);
 

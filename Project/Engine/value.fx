@@ -69,6 +69,11 @@ cbuffer MATERIAL_CONST : register(b1)
     int g_btexcube_1;
     int g_btexarr_0;
     int g_btexarr_1;
+    
+    // 3D Animation 정보
+    int g_iAnim;
+    int g_iBoneCount;
+    
 }
 
 cbuffer ANIM_DATA2D : register(b2)
@@ -124,5 +129,7 @@ Texture2D g_NoiseTex : register(t14);
 SamplerState g_sam_0 : register(s0);
 SamplerState g_sam_1 : register(s1);
 
+// Animation3D Bone Matrix Buffer
+StructuredBuffer<Matrix> g_arrBoneMat : register(t30);
 
 #endif
