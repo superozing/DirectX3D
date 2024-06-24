@@ -38,63 +38,19 @@ template <class T> class CRoRStateMachine
 
 			if (!m_Outer->m_bLocked && m_CurState != _ToState)
 			{
-#pragma region Enter Leaving State Log
-				// if (Log)
-				//{
-				//	Calc.Log(new object[]
-				//		{
-				//			string.Concat(new object[]
-				//			{
-				//				"Enter m_CurState ",
-				//				_CurState,
-				//				" (leaving ",
-				//				m_CurState,
-				//				")"
-				//			})
-				//		});
-				// }
-#pragma endregion
 				m_Outer->m_bChangedStates = true;
 				m_PrevState = m_CurState;
 				m_CurState = _ToState;
 				if (m_PrevState != -1 && m_Outer->m_vecEnds[m_PrevState] != nullptr)
 				{
-#pragma region Calling End Log
-					// if (Log)
-					//{
-					//	Calc.Log(new object[]
-					//		{
-					//			"Calling End " + PreviousState
-					//		});
-					// }
-#pragma endregion
 					(m_pOwner->*(m_Outer->m_vecEnds[m_PrevState]))();
 				}
 				if (m_Outer->m_vecBegins[m_CurState] != nullptr)
 				{
-#pragma region Calling Begin Log
-					// if (Log)
-					//{
-					//	Calc.Log(new object[]
-					//		{
-					//			"Calling Begin " + m_CurState
-					//		});
-					// }
-#pragma endregion
 					(m_pOwner->*(m_Outer->m_vecBegins[m_CurState]))();
 				}
 				if (m_Outer->m_vecCoroutines[m_CurState] != nullptr)
 				{
-#pragma region Calling Coroutine Log
-					// if (Log)
-					//{
-					//	Calc.Log(new object[]
-					//		{
-					//			"Starting Coroutine " + m_CurState
-					//		});
-					// }
-#pragma endregion
-					// m_Outer->currentCoroutine->Replace(m_Outer->m_vecCoroutines[m_CurState]());
 					return;
 				}
 				m_Outer->currentCoroutine->Cancel();
@@ -105,16 +61,6 @@ template <class T> class CRoRStateMachine
 		{
 			return m_Outer->m_pOwner;
 		}
-
-		// bool operator==(const StateManager& other) const
-		//{
-		//	return m_PrevState == other.m_PrevState && m_CurState == other.m_CurState && m_Outer == other.m_Outer;
-		// }
-
-		// StateManager(int m_PrevState, int m_CurState, CustomStateMachine* m_Outer)
-		//	: m_PrevState(m_PrevState), m_CurState(m_CurState), m_Outer(m_Outer)
-		//{
-		// }
 	};
 	StateManager m_StateMgr;
 	T *m_pOwner;
@@ -135,8 +81,6 @@ template <class T> class CRoRStateMachine
 	CRoRStateMachine() = delete;
 
 	public:
-	// void SetCallbacks(int _State, string _StateName , intRetFunc _Update, voidRetFunc _Begin = NULL, voidRetFunc _End
-	// = NULL, voidRetFunc CoRoutine = NULL)
 	void SetCallbacks(int _State, string _StateName, int (T::*_Update)(), void (T::*_Begin)() = nullptr,
 					  void (T::*_End)() = nullptr, void (T::*CoRoutine)() = nullptr)
 	{
@@ -156,19 +100,6 @@ template <class T> class CRoRStateMachine
 			int _toState = (m_pOwner->*m_vecUpdates[state])();
 			SetCurState(_toState);
 		}
-		//		if (currentCoroutine->Active)
-		//		{
-		//			currentCoroutine->Update();
-		// #pragma region Coroutine Finish Log
-		//			//if (!m_bChangedStates && Log && currentCoroutine->Finished)
-		//			//{
-		//			//	Calc.Log(new object[]
-		//			//		{
-		//			//			"Finished Coroutine " + state
-		//			//		});
-		//			//}
-		// #pragma endregion
-		//		}
 	}
 	void Begin()
 	{
@@ -196,7 +127,6 @@ template <class T> class CRoRStateMachine
 	void LogState(int index);
 	void LogAllStates();
 
-	// CCustomStateMachine(T* _pOwner, int maxStates = 1);
 	CRoRStateMachine(T *_pOwner, int maxStates = 1)
 		: m_pOwner(_pOwner), m_StateMgr(StateManager(this)), m_bChangedStates(false), m_bLog(false), m_bLocked(false),
 		  currentCoroutine(nullptr)
