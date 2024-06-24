@@ -196,17 +196,27 @@ void CCreateTempLevel::CreateTempLevel()
 	// FBX Loading
 	// ============	
 	{
+		// 인스턴싱 테스트
 		Ptr<CMeshData> pMeshData = nullptr;
-		CGameObject* pObj = nullptr;
+		CGameObject *pObj = nullptr;
 
-		pMeshData = CAssetMgr::GetInst()->LoadFBX(L"fbx\\house.fbx");
-		//pMeshData = CAssetMgr::GetInst()->FindAsset<CMeshData>(L"meshdata\\house.mdat");
-		pObj = pMeshData->Instantiate();
-		pObj->SetName(L"House");
-
-		pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 100.f));
-
-		pTempLevel->AddObject(pObj, 0, false);
+		/*pMeshData = CAssetMgr::GetInst()->LoadFBX(L"fbx\\House.fbx");
+		for (int i = 0; i < 100; ++i)
+		{
+			pObj = pMeshData->Instantiate();
+			pObj->SetName(L"House");
+			pObj->Transform()->SetRelativePos(Vec3((i + 1) * 300.f, 200.f, 500.f));
+			pTempLevel->AddObject(pObj, 0, false);
+		}*/
+		//pMeshData = CAssetMgr::GetInst()->LoadFBX(L"fbx\\Monster.fbx");
+		pMeshData = CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\Monster.mdat");
+		for (int i = 0; i < 10; ++i)
+		{
+			pObj = pMeshData->Instantiate();
+			pObj->SetName(L"Monster");
+			pObj->Transform()->SetRelativePos(Vec3((i + 1) * 50.f, 200.f, 500.f));
+			pTempLevel->AddObject(pObj, 0, false);
+		}
 	}
 
 	// 충돌 설정

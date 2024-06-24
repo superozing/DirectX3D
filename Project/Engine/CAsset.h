@@ -20,10 +20,11 @@ public:
     ASSET_TYPE GetType() { return m_Type; }
     bool IsEngineAsset() { return m_bEngineAsset; }
 
-private:
+protected:
     void SetKey(const wstring& _Key) { m_Key = _Key; }
     void SetRelativePath(const wstring& _RelativePath) { m_RelativePath = _RelativePath; }
 
+private:
     void AddRef()  {  ++m_RefCount;  }
     void Release() 
     { 

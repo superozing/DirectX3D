@@ -34,6 +34,7 @@
 #include "CEditorObjMgr.h"
 #include "CCreateTempLevel.h"
 #include "MapTestLevel.h"
+#include "CCreatePlayerTestLevel.h"
 
 #include <Engine/CRenderMgr.h>
 #include "RTViewPort.h"
@@ -84,13 +85,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     
 #ifndef _RELEASE_GAME
-    // 임시 레벨 생성
-    
-    //CCreateTempLevel::Init();
+    // 임시 레벨 생성 
+    CCreateTempLevel::Init();
+    CCreateTempLevel::CreateTempLevel();
+
+    //MapTestLevel::CreateMapTestLevel();
+
+
     //CCreateTempLevel::CreateTempLevel();
-
-    MapTestLevel::CreateMapTestLevel();
-
+	CCreatePlayerTestLevel::CreateTempLevel();
     // ImGui 초기화
     CImGuiMgr::GetInst()->init(hWnd, DEVICE, CONTEXT);
 

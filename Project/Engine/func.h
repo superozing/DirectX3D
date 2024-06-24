@@ -137,6 +137,7 @@ void LoadWString(wstring& _str, FILE* _FILE);
 
 Vec3 DecomposeRotMat(const Matrix& _matRot);
 
+Matrix GetMatrixFromFbxMatrix(FbxAMatrix& _mat);
 
 template<typename T>
 class Ptr;
