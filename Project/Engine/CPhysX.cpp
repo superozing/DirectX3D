@@ -64,9 +64,10 @@ void CPhysX::updateFromPhysics()
 
 void CPhysX::updateToPhysics()
 {
-    PxTransform physTransform(PxVec3(Transform()->GetWorldPos().x, Transform()->GetWorldPos().y, Transform()->GetWorldPos().z),
-        PxQuat(Transform()->GetWorldRot().x, Transform()->GetWorldRot().y, Transform()->GetWorldRot().z, 1.f));
-    setTransform(physTransform);
+	//TODO: 로직구현하기
+    //PxTransform physTransform(PxVec3(Transform()->GetWorldPos().x, Transform()->GetWorldPos().y, Transform()->GetWorldPos().z),
+    //    PxQuat(Transform()->GetWorldRot().x, Transform()->GetWorldRot().y, Transform()->GetWorldRot().z, 1.f));
+    //setTransform(physTransform);
 }
 
 void CPhysX::begin()
