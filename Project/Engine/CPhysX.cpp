@@ -92,6 +92,10 @@ void CPhysX::finaltick()
 	{
 		updateFromPhysics();
 	}
+
+	const auto& trans = Transform();
+
+	GamePlayStatic::DrawDebugCube(trans->GetWorldMat(), Vec3(0.3f, .3f, 0.3f), true);
 }
 
 void CPhysX::SaveToFile(FILE* _File)
