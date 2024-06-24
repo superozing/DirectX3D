@@ -126,6 +126,11 @@ void CImGuiMgr::init(HWND _hMainWnd, ComPtr<ID3D11Device> _Device
 
     m_vecStaticBtn[(UINT)STATIC_BTN_TYPE::TITLE] = tColor;
 
+    tColor.ColBtnColor = (ImVec4)ImColor::HSV(0.9f, 0.8f, 0.8f);
+	tColor.ColBtnHoveredColor = (ImVec4)ImColor::HSV(0.9f, 0.8f, 0.8f);
+	tColor.ColBtnActiveColor = (ImVec4)ImColor::HSV(0.9f, 0.8f, 0.8f);
+
+    m_vecStaticBtn[(UINT)STATIC_BTN_TYPE::SUBTITLE] = tColor;
 
     // Enum String Init
     m_vecEnumTopology.resize((UINT)D3D11_PRIMITIVE_TOPOLOGY::D3D_PRIMITIVE_TOPOLOGY_32_CONTROL_POINT_PATCHLIST);
@@ -147,13 +152,6 @@ void CImGuiMgr::init(HWND _hMainWnd, ComPtr<ID3D11Device> _Device
     m_vecEnumShaderDomain.resize((UINT)SHADER_DOMAIN::DOMAIN_DEBUG);
     for (UINT i = 0; i < m_vecEnumShaderDomain.size(); ++i)
         m_vecEnumShaderDomain[i] = ToString(magic_enum::enum_name((SHADER_DOMAIN)i));
-
-    tColor.ColBtnColor = (ImVec4)ImColor::HSV(0.9f, 0.8f, 0.8f);
-    tColor.ColBtnHoveredColor = (ImVec4)ImColor::HSV(0.9f, 0.8f, 0.8f);
-    tColor.ColBtnActiveColor = (ImVec4)ImColor::HSV(0.9f, 0.8f, 0.8f);
-
-    m_vecStaticBtn[(UINT)STATIC_BTN_TYPE::SUBTITLE] = tColor;
-
 
    RTViewPort* pViewport = (RTViewPort*)CImGuiMgr::GetInst()->FindUI("##Viewport");
    pViewport->SetCamera(CRenderMgr::GetInst()->GetEditorCam());

@@ -19,6 +19,8 @@
 #include "TreeUI.h"
 #include "CLevelSaveLoad.h"
 
+#include <Engine\CDevice.h>
+
 MenuUI::MenuUI()
 	: UI("Menu", "##Menu")
 {
@@ -47,6 +49,12 @@ void MenuUI::render_update()
     GameObject();
     
     Asset();
+
+    ImVec2 Blank = ImGui::GetContentRegionAvail();
+    ImGui::Dummy(ImVec2(Blank.x - 140.f, 0.f));
+
+    ScreenControl();
+
 }
 
 void MenuUI::File()
@@ -339,4 +347,40 @@ void MenuUI::ContentSaveAll()
             delete shader;
         }
     }
+}
+
+void MenuUI::ScreenControl()
+{
+	int ResolutionX = int(CDevice::GetInst()->GetRenderResolution().x);
+	int ResolutionY = int(CDevice::GetInst()->GetRenderResolution().y);
+
+	string Resolution = to_string(ResolutionX) + " X " + to_string(ResolutionY);
+
+    ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.2f, 0.4f, 0.8f, 1.0f)); // 메뉴 아이템의 배경색 변경
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));	// 메뉴 아이템의 글자색 변경
+	
+    if (ImGui::BeginMenu(Resolution.c_str()))
+	{
+
+
+		if (ImGui::MenuItem("Change Resolution"))
+		{
+			ImGui::Text("Test");
+		}
+
+		ImGui::EndMenu();
+	}
+	
+    ImGui::PopStyleColor(2); // Push한 스타일 변경을 원래대로 복원
+
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.4f, 0.4f, 0.4f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.6f, 0.6f, 0.6f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.8f, 0.8f, 0.8f, 1.0f));
+	
+	if (ImGui::Button("Exit"))
+	{
+		PostQuitMessage(0);
+	}
+
+	ImGui::PopStyleColor(3);
 }

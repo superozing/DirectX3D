@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "UI.h"
 
 
@@ -14,6 +14,7 @@ private:
     void Level();
     void GameObject();
     void Asset();
+	void ScreenControl();
 
 private:
     void ContentSaveAll();
