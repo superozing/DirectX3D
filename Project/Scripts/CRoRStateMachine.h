@@ -26,7 +26,7 @@ template <class T> class CRoRStateMachine
 		~StateManager(){};
 		int GetPrevStateInt()
 		{
-			return m_CurState;
+			return m_PrevState;
 		}
 		int GetCurStateInt()
 		{
