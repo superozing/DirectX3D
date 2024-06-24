@@ -221,8 +221,13 @@ void CAnimator3D::SaveToFile(FILE* _pFile)
 {
 }
 
+#define TagMesh "[Mesh]"
+
 void CAnimator3D::SaveToFile(ofstream& fout)
 {
+	// 메쉬 참조정보 저장
+	fout << TagMesh << endl;
+	SaveAssetRef(GetOwner()->GetRenderComponent()->GetMesh(), fout);
 }
 
 void CAnimator3D::LoadFromFile(FILE* _pFile)
@@ -231,4 +236,11 @@ void CAnimator3D::LoadFromFile(FILE* _pFile)
 
 void CAnimator3D::LoadFromFile(ifstream& fin)
 {
+	// 메쉬 참조정보 불러오기
+	Ptr<CMesh> mesh;
+	Utils::GetLineUntilString(fin, TagMesh);
+	LoadAssetRef(mesh, fin);
+
+	SetBones(mesh->GetBones());
+	SetAnimClip(mesh->GetAnimClip());
 }

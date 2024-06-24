@@ -251,13 +251,13 @@ call CodeGen.exe</Command>
     <ClInclude Include="SimpleMath.h" />
     <ClInclude Include="singleton.h" />
     <ClInclude Include="strAnim.h" />
+    <ClInclude Include="strEngineMesh.h" />
     <ClInclude Include="strEngineMtrl.h" />
     <ClInclude Include="strFBX.h" />
     <ClInclude Include="strFnShader.h" />
     <ClInclude Include="strFx.h" />
     <ClInclude Include="strGrpShader.h" />
     <ClInclude Include="strLevel.h" />
-    <ClInclude Include="strEngineMesh.h" />
     <ClInclude Include="strMesh.h" />
     <ClInclude Include="strMtrl.h" />
     <ClInclude Include="strPref.h" />

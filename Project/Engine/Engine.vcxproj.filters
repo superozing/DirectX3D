@@ -199,9 +199,6 @@
     <ClInclude Include="strFnShader.h">
       <Filter>01. Header\UserString</Filter>
     </ClInclude>
-    <ClInclude Include="strEngineMesh.h">
-      <Filter>01. Header\UserString</Filter>
-    </ClInclude>
     <ClInclude Include="strShader.h">
       <Filter>01. Header\UserString</Filter>
     </ClInclude>
@@ -279,6 +276,9 @@
     </ClInclude>
     <ClInclude Include="strMesh.h">
       <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strEngineMesh.h">
+      <Filter>01. Header\UserString</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

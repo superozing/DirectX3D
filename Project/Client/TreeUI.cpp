@@ -3,10 +3,7 @@
 
 #include <Engine/CKeyMgr.h>
 
-TreeNode::TreeNode()
-	: m_bFrame(false)
-	, m_bOpen(false)
-	, m_bFilter(false)
+TreeNode::TreeNode() : m_bFrame(false), m_bOpen(false), m_bFilter(false)
 {
 }
 
@@ -15,8 +12,7 @@ TreeNode::~TreeNode()
 	Delete_Vec(m_vecChildNode);
 }
 
-
-void TreeNode::GenericTreeRender(UINT _flag, const string& _id)
+void TreeNode::GenericTreeRender(UINT _flag, const string &_id)
 {
 	if (m_Owner && "OutlinerTree" == m_Owner->GetID())
 	{
@@ -39,7 +35,7 @@ void TreeNode::GenericTreeRender(UINT _flag, const string& _id)
 
 		else if (ImGui::BeginDragDropTarget())
 		{
-			const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(m_Owner->GetID().c_str());
+			const ImGuiPayload *payload = ImGui::AcceptDragDropPayload(m_Owner->GetID().c_str());
 			if (payload)
 			{
 				m_Owner->SetDropNode(this);
@@ -85,28 +81,37 @@ void TreeNode::GenericTreeRender(UINT _flag, const string& _id)
 	}
 }
 
-void TreeNode::ImageListRender(UINT _flag, const string& _id)
+void TreeNode::ImageListRender(UINT _flag, const string &_id)
 {
-	string treeId =  _id;
+	string treeId = _id;
 
 	// 임시 파일
 	Ptr<CTexture> thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconFile);
 
 	// 애셋이 아닐 경우
 	auto ext = path(m_Name).extension().string();
-	if (ext == ".fx") {
+	if (ext == ".fx")
+	{
 		thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconGraphicsShader);
 	}
-	else if (ext == ".lv") {
+	else if (ext == ".lv")
+	{
 		thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconLevel);
 	}
-	else if (ext == ".anim") {
+	else if (ext == ".anim")
+	{
 		thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconAnim);
 	}
+	else if (ext == ".fbx")
+	{
+		thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconFBX);
+	}
 	// 애셋일 경우
-	else {
-		auto pAsset = dynamic_cast<CAsset*>((CAsset*)m_Data);
-		if (pAsset) {
+	else
+	{
+		auto pAsset = dynamic_cast<CAsset *>((CAsset *)m_Data);
+		if (pAsset)
+		{
 			auto type = pAsset->GetType();
 			switch (type)
 			{
@@ -114,12 +119,13 @@ void TreeNode::ImageListRender(UINT _flag, const string& _id)
 				thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconMesh);
 				break;
 			case ASSET_TYPE::MESHDATA:
+				thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconFBX);
 				break;
 			case ASSET_TYPE::PREFAB:
 				thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconPrefab);
 				break;
 			case ASSET_TYPE::TEXTURE:
-				thumb = (CTexture*)pAsset;
+				thumb = (CTexture *)pAsset;
 				break;
 			case ASSET_TYPE::MATERIAL:
 				thumb = CAssetMgr::GetInst()->Load<CTexture>(TEXIconMaterial);
@@ -157,7 +163,7 @@ void TreeNode::ImageListRender(UINT _flag, const string& _id)
 
 	else if (ImGui::BeginDragDropTarget())
 	{
-		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(m_Owner->GetID().c_str());
+		const ImGuiPayload *payload = ImGui::AcceptDragDropPayload(m_Owner->GetID().c_str());
 		if (payload)
 		{
 			m_Owner->SetDropNode(this);
@@ -186,7 +192,7 @@ void TreeNode::ImageListRender(UINT _flag, const string& _id)
 
 	else if (ImGui::BeginDragDropTarget())
 	{
-		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(m_Owner->GetID().c_str());
+		const ImGuiPayload *payload = ImGui::AcceptDragDropPayload(m_Owner->GetID().c_str());
 		if (payload)
 		{
 			m_Owner->SetDropNode(this);
@@ -211,8 +217,8 @@ void TreeNode::render_update()
 
 	if (m_bFrame)
 		Flag |= ImGuiTreeNodeFlags_Framed;
-	if (m_vecChildNode.empty())	
-		Flag |= ImGuiTreeNodeFlags_Leaf;		
+	if (m_vecChildNode.empty())
+		Flag |= ImGuiTreeNodeFlags_Leaf;
 	if (m_bSelected)
 		Flag |= ImGuiTreeNodeFlags_Selected;
 
@@ -221,23 +227,21 @@ void TreeNode::render_update()
 	if (m_bFrame && m_vecChildNode.empty())
 		strID = "   " + strID;
 
-	if(!m_Owner->m_bImageTree){
+	if (!m_Owner->m_bImageTree)
+	{
 		GenericTreeRender(Flag, strID);
 	}
-	else {
+	else
+	{
 		strID = m_Name;
 		ImageListRender(Flag, strID);
 	}
-
 }
 
 UINT TreeUI::NodeID = 0;
 
-TreeUI::TreeUI(const string& _ID)
-	: UI("", _ID)
-	, m_bShowRoot(true)
-	, m_bDragDrop(false)
-{	
+TreeUI::TreeUI(const string &_ID) : UI("", _ID), m_bShowRoot(true), m_bDragDrop(false)
+{
 }
 
 TreeUI::~TreeUI()
@@ -256,27 +260,31 @@ void TreeUI::render_update()
 	}
 	else
 	{
-		float winX = ImGui::GetWindowSize().x-40.f;
+		float winX = ImGui::GetWindowSize().x - 40.f;
 		int colCnt = 0;
 		for (size_t i = 0; i < m_Root->m_vecChildNode.size(); ++i)
 		{
-			if (m_bImageTree) {
+			if (m_bImageTree)
+			{
 				string id = "##imagetree" + std::to_string(i);
-				ImGui::Dummy(ImVec2(8,0));
+				ImGui::Dummy(ImVec2(8, 0));
 				ImGui::SameLine();
 				ImGui::BeginChild(id.c_str(), ImVec2(80, 120));
 				m_Root->m_vecChildNode[i]->render_update();
 				ImGui::EndChild();
 
-				if ((colCnt + 3) >= winX / 80) {
+				if ((colCnt + 3) >= winX / 80)
+				{
 					colCnt = 0;
 				}
-				else {
+				else
+				{
 					ImGui::SameLine();
 					colCnt++;
 				}
 			}
-			else {
+			else
+			{
 				m_Root->m_vecChildNode[i]->render_update();
 			}
 		}
@@ -291,14 +299,13 @@ void TreeUI::render_update()
 		}
 	}
 
-
 	// 드래그 대상을 특정 노드가 아닌 공중드랍 시킨 경우
 	if (KEY_RELEASED_EDITOR(KEY::LBTN) && m_DragNode && !m_DropNode)
 	{
 		if (m_DragDropInst && m_DragDropFunc)
 		{
 			(m_DragDropInst->*m_DragDropFunc)((DWORD_PTR)m_DropNode, (DWORD_PTR)m_DragNode);
-		}		
+		}
 		m_DragNode = nullptr;
 	}
 	else if (m_bDragDropEvent)
@@ -316,9 +323,9 @@ void TreeUI::render_update()
 	m_bDragDropEvent = false;
 }
 
-TreeNode* TreeUI::AddTreeNode(TreeNode* _Parent, string _strName, DWORD_PTR _dwData)
+TreeNode *TreeUI::AddTreeNode(TreeNode *_Parent, string _strName, DWORD_PTR _dwData)
 {
-	TreeNode* pNewNode = new TreeNode;
+	TreeNode *pNewNode = new TreeNode;
 	pNewNode->m_Data = _dwData;
 	pNewNode->SetName(_strName);
 
@@ -339,17 +346,17 @@ TreeNode* TreeUI::AddTreeNode(TreeNode* _Parent, string _strName, DWORD_PTR _dwD
 	{
 		_Parent->AddChildNode(pNewNode);
 	}
-	
+
 	pNewNode->m_Owner = this;
 
 	return pNewNode;
 }
 
-void TreeUI::SetSelectedNode(TreeNode* _SelectedNode)
+void TreeUI::SetSelectedNode(TreeNode *_SelectedNode)
 {
 	if (m_Selected)
 	{
-		m_Selected->m_bSelected  = false;
+		m_Selected->m_bSelected = false;
 	}
 
 	m_Selected = _SelectedNode;
@@ -357,17 +364,17 @@ void TreeUI::SetSelectedNode(TreeNode* _SelectedNode)
 	if (nullptr != m_Selected)
 	{
 		m_Selected->m_bSelected = true;
-	}		
+	}
 
 	m_bSelectEvent = true;
 }
 
-void TreeUI::SetDragNode(TreeNode* _DragNode)
+void TreeUI::SetDragNode(TreeNode *_DragNode)
 {
 	m_DragNode = _DragNode;
 }
 
-void TreeUI::SetDropNode(TreeNode* _DropNode)
+void TreeUI::SetDropNode(TreeNode *_DropNode)
 {
 	m_DropNode = _DropNode;
 	m_bDragDropEvent = true;
