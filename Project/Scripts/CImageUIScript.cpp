@@ -2,10 +2,12 @@
 #include "CImageUIScript.h"
 
 CImageUIScript::CImageUIScript()
+	: CUIScript((UINT)SCRIPT_TYPE::IMAGEUISCRIPT)
 {
 }
 
 CImageUIScript::CImageUIScript(const CImageUIScript& _Other)
+	: CUIScript(_Other.GetScriptType())
 {
 }
 
@@ -20,16 +22,17 @@ void CImageUIScript::begin()
 
 void CImageUIScript::tick()
 {
-	if (m_bAllowBindTexPerFrame)
+	if (m_bAllowBindTexPerFrame && m_UIImg.Get())
 		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_UIImg);
 }
 
 void CImageUIScript::BindUIImgOnTexParam()
 {
-	GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_UIImg);
+	if (m_UIImg.Get())
+		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_UIImg);
 }
 
-#define TagUIImg	"[UIImg]"
+#define TagUIImg				"[UIImg]"
 #define TagAllowBindTexPerFrame	"[AllowBindTexPerFrame]"
 
 void CImageUIScript::SaveToFile(FILE* _File)
