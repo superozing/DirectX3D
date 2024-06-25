@@ -7,6 +7,8 @@
 #include "CGameObject.h"
 #include "CComponent.h"
 
+#include "CEngine.h"
+
 CTaskMgr::CTaskMgr()
 	: m_bCreateObject(false)
 	, m_bDeleteObject(false)
@@ -98,20 +100,30 @@ void CTaskMgr::tick()
 			LEVEL_STATE State	   = (LEVEL_STATE)m_vecTask[i].Param_2;
 			CLevelMgr::GetInst()->ChangeLevel_Task(pNextLevel, State);
 			m_bCreateObject = true;
-
-			break;
 		}
-		case TASK_TYPE::ADD_CHILD:
+		break;
 
-			break;
-
-		case TASK_TYPE::DISCONNECT_PARENT:
-
-			break;
+		case TASK_TYPE::ADD_CHILD: {
 		}
+		break;
+
+		case TASK_TYPE::DISCONNECT_PARENT: {
+		}
+		break;
+
+		case TASK_TYPE::CHANGE_RESOLUTION: {
+
+			float ResX = (float)(m_vecTask[i].Param_1);
+			float ResY = (float)m_vecTask[i].Param_2;
+
+			Vec2 vRes = {ResX, ResY};
+
+			CEngine::GetInst()->ResizeScreenResolution(vRes, false);
+		}
+		break;
+		}
+		m_vecTask.clear();
 	}
-
-	m_vecTask.clear();
 }
 
 void CTaskMgr::Clear()

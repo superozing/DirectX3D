@@ -11,7 +11,7 @@ private:
 public:
 	HWND GetMainWind() { return m_hMainWnd; }
 
-	void ResizeScreenResolution(Vec2 NewResolution, bool bFullScreen);
+	void ResizeScreenResolution(Vec2 NewResolution, bool bWindowMode);
 
 private:
 	void DebugFunctionCheck();

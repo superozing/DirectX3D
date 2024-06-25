@@ -6,6 +6,8 @@
 #include "CAssetMgr.h"
 #include "CRenderMgr.h"
 
+ResetImGui CDevice::ResetImGuiFunc = nullptr;
+
 CDevice::CDevice()
 	: m_hRenderWnd(nullptr)
 	, m_arrCB{}
@@ -104,22 +106,28 @@ void CDevice::Present()
 int CDevice::RenewResolution(Vec2 _vResolution, bool bFullScreen)
 {
 	m_vRenderResolution = _vResolution;
-	m_SwapChain->Release();
 
-	CreateSwapChain(bFullScreen);
-	
 	DeleteTexturesForResolutionChange();
 
-	CreateTargetView();
+	// 스왚체인 생성
+	if (FAILED(CreateSwapChain()))
+	{
+		MessageBox(nullptr, L"SwapChain 생성 실패", L"Device 초기화 실패", MB_OK);
+		return E_FAIL;
+	}
+
+	// 렌더타겟, 렌더타겟 뷰, 뎁스스텐실 타겟, 뎁스 스텐실 뷰 생성
+	if (FAILED(CreateTargetView()))
+	{
+		MessageBox(nullptr, L"타겟 및 View 생성 실패", L"Device 초기화 실패", MB_OK);
+		return E_FAIL;
+	}
 
 	CRenderMgr::GetInst()->ResetMRT();
 	CRenderMgr::GetInst()->CreateMRT();
 
-
-	//지우고서 따로 만들어줘야 하는 texture 생성
 	CAssetMgr::GetInst()->CreateTexture(L"CopyRTtex", m_vRenderResolution.x, m_vRenderResolution.y,
-										DXGI_FORMAT_R8G8B8A8_UNORM,
-										D3D11_BIND_SHADER_RESOURCE);
+										DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE);
 
 	CRenderMgr::GetInst()->m_PostProcessTex =
 		CAssetMgr::GetInst()->CreateTexture(L"PostProcessTex", (UINT)m_vRenderResolution.x, (UINT)m_vRenderResolution.y,
@@ -129,6 +137,8 @@ int CDevice::RenewResolution(Vec2 _vResolution, bool bFullScreen)
 
 	SetScreenMode(bFullScreen);
 
+	if (ResetImGuiFunc != nullptr)
+		ResetImGuiFunc();
 	return S_OK;
 }
 
@@ -138,7 +148,6 @@ int CDevice::CreateSwapChain(bool _bFullscreen)
 	{
 		m_SwapChain.Reset();
 	}
-
 
 	// SwapChain 생성 구조체
 	DXGI_SWAP_CHAIN_DESC tDesc = {};
@@ -159,7 +168,7 @@ int CDevice::CreateSwapChain(bool _bFullscreen)
 	tDesc.SampleDesc.Count	 = 1;
 	tDesc.SampleDesc.Quality = 0;
 
-	tDesc.Windowed = _bFullscreen;	   // 창모드
+	tDesc.Windowed	   = _bFullscreen; // 창모드
 	tDesc.OutputWindow = m_hRenderWnd; // SwapChain 의 출력 윈도우 지정
 
 	// 스왚체인 생성기능을 가지고 있는 Factory 에 접근한다.
@@ -521,6 +530,43 @@ void CDevice::RematchMtrlTexParam()
 	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
 }
 
+void CDevice::ReleaseGPU()
+{
+	for (int i = 0; i < (int)BS_TYPE::END; ++i)
+	{
+		if (m_arrBS[i] != nullptr)
+			m_arrBS[i]->Release();
+	}
+
+	for (int i = 0; i < (int)DS_TYPE::END; ++i)
+	{
+		if (m_arrDS[i] != nullptr)
+			m_arrDS[i]->Release();
+	}
+
+	for (int i = 0; i < (int)RS_TYPE::END; ++i)
+	{
+		if (m_arrRS[i] != nullptr)
+			m_arrRS[i]->Release();
+	}
+
+	for (int i = 0; i < 2; ++i)
+	{
+		if (m_arrSampler[i] != nullptr)
+			m_arrSampler[i]->Release();
+	}
+
+	for (int i = 0; i < (int)SB_TYPE::END; ++i)
+	{
+		if (m_arrSB[i] != nullptr)
+			m_arrSB[i] = nullptr;
+	}
+
+	m_SwapChain->Release();
+	m_Context->Release();
+	m_Device->Release();
+}
+
 #include <dxgidebug.h>
 #include <dxgi.h>
 
@@ -537,11 +583,11 @@ void CDevice::ReportLiveObjects()
 								   D3D11_SDK_VERSION,		  // SDK 버전
 								   m_Device.GetAddressOf(),	  // 생성된 디바이스
 								   &eLevel,					  // 피처 레벨
-								   m_Context.GetAddressOf()		// 생성된 디바이스 컨텍스트
+								   m_Context.GetAddressOf()	  // 생성된 디바이스 컨텍스트
 	);
 
 	ID3D11Debug* debugDevice = nullptr;
-	hr	 = m_Device->QueryInterface(__uuidof(ID3D11Debug), reinterpret_cast<void**>(&debugDevice));
+	hr						 = m_Device->QueryInterface(__uuidof(ID3D11Debug), reinterpret_cast<void**>(&debugDevice));
 	if (SUCCEEDED(hr))
 	{
 		debugDevice->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);

@@ -55,7 +55,7 @@ INT_PTR CALLBACK About(HWND, UINT, WPARAM, LPARAM);
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine,
 					  _In_ int nCmdShow)
 {
-    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	//_CrtSetBreakAlloc(412);
 
 	MyRegisterClass(hInstance);
@@ -69,17 +69,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));
 	MSG	   msg;
 
-    // CEngine 초기화 실패 -> 프로그램 종료
-    if (FAILED(CEngine::GetInst()->init(hWnd, Vec2(1910, 960))))
-    {
-        MessageBox(nullptr, L"CEngine 초기화 실패", L"초기화 실패", MB_OK);
-        return 0;
-    }
-        
-    CPrefab::GAMEOBJECT_SAVE = &CLevelSaveLoad::SaveGameObject;
-    CPrefab::GAMEOBJECT_LOAD = &CLevelSaveLoad::LoadGameObject;
-    CRenderMgr::CameraChange = &RTViewPort::SetCamera;
-    CCamera::ViewportConvertFunc = &RTViewPort::ConvertCoord;
+	// CEngine 초기화 실패 -> 프로그램 종료
+	if (FAILED(CEngine::GetInst()->init(hWnd, Vec2(1910, 960))))
+	{
+		MessageBox(nullptr, L"CEngine 초기화 실패", L"초기화 실패", MB_OK);
+		return 0;
+	}
+
+	CPrefab::GAMEOBJECT_SAVE	 = &CLevelSaveLoad::SaveGameObject;
+	CPrefab::GAMEOBJECT_LOAD	 = &CLevelSaveLoad::LoadGameObject;
+	CRenderMgr::CameraChange	 = &RTViewPort::SetCamera;
+	CCamera::ViewportConvertFunc = &RTViewPort::ConvertCoord;
 
 #ifndef _RELEASE_GAME
 

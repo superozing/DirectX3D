@@ -27,7 +27,7 @@ private:
 	ComPtr<ID3D11BlendState>		m_arrBS[(UINT)BS_TYPE::END];
 	ComPtr<ID3D11SamplerState>		m_arrSampler[2];
 
-	bool							bIsWindowMode;
+	bool bIsWindowMode;
 
 public:
 	int	 init(HWND _hWnd, Vec2 _vResolution);
@@ -35,7 +35,7 @@ public:
 
 	int RenewResolution(Vec2 _vResolutio, bool bFullScreen);
 
-	ID3D11Device* GetDevice() { return m_Device.Get(); }
+	ID3D11Device*		 GetDevice() { return m_Device.Get(); }
 	ID3D11DeviceContext* GetContext() { return m_Context.Get(); }
 	CConstBuffer*		 GetConstBuffer(CB_TYPE _type) { return m_arrCB[(UINT)_type]; }
 	CStructuredBuffer*	 GetStructuredBuffer(SB_TYPE _type) { return m_arrSB[(UINT)_type]; }
