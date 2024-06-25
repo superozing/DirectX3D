@@ -55,6 +55,9 @@
     <ClInclude Include="CCrosshair.h">
       <Filter>Scripts\UI\Crosshair</Filter>
     </ClInclude>
+    <ClInclude Include="CWeaponInfo.h">
+      <Filter>Scripts\UI\WeaponInfo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -111,6 +114,9 @@
     <ClCompile Include="CCrosshair.cpp">
       <Filter>Scripts\UI\Crosshair</Filter>
     </ClCompile>
+    <ClCompile Include="CWeaponInfo.cpp">
+      <Filter>Scripts\UI\WeaponInfo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -157,6 +163,9 @@
     </Filter>
     <Filter Include="Scripts\UI\Crosshair">
       <UniqueIdentifier>{34c9d88f-7a17-4733-81e3-09cf4048d6c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\WeaponInfo">
+      <UniqueIdentifier>{ed447ae9-d1c6-45b7-92af-d3e4daf01425}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

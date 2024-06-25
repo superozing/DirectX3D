@@ -32,6 +32,7 @@
 
 #include <Scripts/CProgressBar.h>
 #include <Scripts/CCrosshair.h>
+#include <Scripts/CWeaponInfo.h>
 
 void CUITempLevel::Init()
 {
@@ -333,6 +334,20 @@ void CUITempLevel::CreateTempLevel()
 	// pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 
 #pragma endregion
+
+	// CWeaponInfo
+	pObj = new CGameObject;
+	pObj->SetName(L"WeaponInfo");
+
+	pObj->AddComponent(new CTransform);
+
+	auto pWeaponInfo = new CWeaponInfo;
+	pObj->AddComponent(pWeaponInfo);
+
+	pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
+	pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
+
+	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 
 	// CCrosshair
 	pObj = new CGameObject;
