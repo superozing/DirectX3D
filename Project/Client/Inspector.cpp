@@ -201,46 +201,47 @@ void Inspector::ObjectLayer()
 
 	// 오브젝트 레이어
 	int	   LayerIdx	 = m_TargetObject->GetLayerIdx();
+
+	if (LayerIdx == -1)
+		return;
+
 	string LayerName = ToString(CurLevel->GetLayer(LayerIdx)->GetName());
 	int	   PrevIdx	 = LayerIdx;
 
-	if (-1 != LayerIdx)
+	ImGui::Text("Layer");
+	ImGui::SameLine();
+	auto LayerVal = magic_enum::enum_cast<LAYER>(LayerName);
+
+	string strLayer = LayerName;
+
+	if (ImGui::BeginCombo("##ObjLayer", strLayer.c_str()))
 	{
-		ImGui::Text("Layer");
-		ImGui::SameLine();
-		auto LayerVal = magic_enum::enum_cast<LAYER>(LayerName);
-
-		string strLayer = LayerName;
-
-		if (ImGui::BeginCombo("##ObjLayer", strLayer.c_str()))
+		for (int i = 0; i < 32; ++i)
 		{
-			for (int i = 0; i < 32; ++i)
+			int	   CurLayer		= i;
+			string CurLayerName = ToString(CurLevel->GetLayer(CurLayer)->GetName());
+
+			if (!magic_enum::enum_cast<LAYER>(CurLayerName).has_value())
+				continue;
+
+			bool isSelected = (CurLayer == LayerIdx);
+
+			if (ImGui::Selectable(CurLayerName.c_str(), isSelected))
 			{
-				int	   CurLayer		= i;
-				string CurLayerName = ToString(CurLevel->GetLayer(CurLayer)->GetName());
-
-				if (!magic_enum::enum_cast<LAYER>(CurLayerName).has_value())
-					continue;
-
-				bool isSelected = (CurLayer == LayerIdx);
-
-				if (ImGui::Selectable(CurLayerName.c_str(), isSelected))
-				{
-					LayerIdx = CurLayer;
-				}
-
-				if (isSelected)
-				{
-					ImGui::SetItemDefaultFocus();
-				}
+				LayerIdx = CurLayer;
 			}
 
-			ImGui::EndCombo();
-
-			if (PrevIdx != LayerIdx)
+			if (isSelected)
 			{
-				CurLevel->AddObject(m_TargetObject, LayerIdx);
+				ImGui::SetItemDefaultFocus();
 			}
+		}
+
+		ImGui::EndCombo();
+
+		if (PrevIdx != LayerIdx)
+		{
+			CurLevel->AddObject(m_TargetObject, LayerIdx);
 		}
 	}
 }
