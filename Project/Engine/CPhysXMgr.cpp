@@ -6,6 +6,8 @@
 #include "CPhysX.h"
 #include "RoRCollisionCallback.h"
 
+UINT CPhysXMgr::m_layerMasks[32] = { 0 };
+
 CPhysXMgr::CPhysXMgr() {}
 
 PxFilterFlags CustomFilterShader(
@@ -13,9 +15,32 @@ PxFilterFlags CustomFilterShader(
     PxFilterObjectAttributes attributes1, PxFilterData filterData1,
     PxPairFlags& pairFlags, const void* constantBlock, PxU32 constantBlockSize)
 {
+    UINT layer0 = filterData0.word0;
+    UINT layer1 = filterData1.word0;
+
+    if ((CPhysXMgr::m_layerMasks[layer0] & (1 << layer1)) == 0 && (CPhysXMgr::m_layerMasks[layer1] & (1 << layer0)) == 0)
+    {
+        // 충돌을 무시합니다.
+        return PxFilterFlag::eSUPPRESS;
+    }
+
     // 모든 충돌에 대해 충돌 보고 활성화
     pairFlags = PxPairFlag::eCONTACT_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_FOUND | PxPairFlag::eNOTIFY_TOUCH_PERSISTS | PxPairFlag::eNOTIFY_TOUCH_LOST;
     return PxFilterFlag::eDEFAULT;
+}
+
+void CPhysXMgr::LayerCheck(UINT _left, UINT _right)
+{
+    UINT iRow = _left;
+    UINT iCol = _right;
+
+    if (iRow > iCol)
+    {
+        std::swap(iRow, iCol);
+    }
+
+    m_layerMasks[iRow] |= (1 << iCol);
+    m_layerMasks[iCol] |= (1 << iRow);
 }
 
 void CPhysXMgr::init()
@@ -27,6 +52,10 @@ void CPhysXMgr::init()
     sceneDesc.gravity = PxVec3(0.0f, -981.f, 0.0f);
     gDispatcher = PxDefaultCpuDispatcherCreate(2);
     sceneDesc.cpuDispatcher = gDispatcher;
+
+    //필터
+    LayerCheck((UINT)LAYER::LAYER_DEFAULT, (UINT)LAYER::LAYER_PLAYER);
+
     sceneDesc.filterShader = CustomFilterShader;
 
     gScene = gPhysics->createScene(sceneDesc);
@@ -71,6 +100,12 @@ void CPhysXMgr::addGameObject(CGameObject* object, bool _bStatic)
 
     // Collider 추가 (여기서는 예시로 Box Collider를 사용)
     PxShape* shape = gPhysics->createShape(PxBoxGeometry(scale.x / 2, scale.y / 2, scale.z / 2), *gMaterial);
+    
+    // 객체에 필터 데이터 설정
+    PxFilterData filterData;
+    filterData.word0 = (UINT)object->GetLayerIdx(); // 레이어 번호 설정
+    shape->setSimulationFilterData(filterData);
+
     actor->attachShape(*shape);
 
     // Collider 추가 후, 씬에 배우 추가

@@ -18,7 +18,10 @@ private:
 	PxMaterial* gMaterial = nullptr;
 	class RoRCollisionCallback* gCollisionCalback = nullptr;
 
+	void LayerCheck(UINT _left, UINT _right);
+
 public:
+	static UINT m_layerMasks[static_cast<UINT>(LAYER::LAYER_MAX)];
 	virtual void init() override;
 	virtual void tick() override;
 	virtual void enter() override {}
