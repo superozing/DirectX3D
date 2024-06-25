@@ -22,8 +22,7 @@ public:
 	virtual void init() override;
 	virtual void tick() override;
 	virtual void enter() override {}
-	void addDynamicGameObject(CGameObject* object);
-	void addStaticGameObject(CGameObject* object);
+	void addGameObject(CGameObject* object, bool _bStatic);
 
 private:
 	void Clear() {};

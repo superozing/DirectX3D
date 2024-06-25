@@ -73,14 +73,7 @@ void CPhysX::updateToPhysics()
 
 void CPhysX::begin()
 {
-	if (true == m_bStaticActor)
-	{
-		CPhysXMgr::GetInst()->addStaticGameObject(GetOwner());
-	}
-	else
-	{
-		CPhysXMgr::GetInst()->addDynamicGameObject(GetOwner());
-	}
+	CPhysXMgr::GetInst()->addGameObject(GetOwner(), m_bStaticActor);
 }
 
 void CPhysX::finaltick()

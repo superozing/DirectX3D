@@ -42,41 +42,7 @@ void CPhysXMgr::tick()
     gScene->fetchResults(true);
 }
 
-void CPhysXMgr::addDynamicGameObject(CGameObject* object)
-{
-    auto Rot = object->Transform()->GetWorldRot();
-    Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(Rot.z, Rot.y, Rot.x);
-
-    // 게임 오브젝트의 물리 객체 생성 및 Scene에 추가
-    PxTransform transform(PxVec3(object->Transform()->GetWorldPos().x, object->Transform()->GetWorldPos().y, object->Transform()->GetWorldPos().z),
-        PxQuat(quaternion.x, quaternion.y, quaternion.z, quaternion.w));
-    PxRigidDynamic* actor = gPhysics->createRigidDynamic(transform);
-
-    // 게임 오브젝트의 스케일 정보
-    auto scale = object->Transform()->GetWorldScale();
-
-    // Collider 추가 (여기서는 예시로 Box Collider를 사용)
-    PxShape* shape = gPhysics->createShape(PxBoxGeometry(scale.x / 2, scale.y / 2, scale.z / 2), *gMaterial);
-    //필터링 설정
-    //PxFilterData filterData;
-    //filterData.word0 = 1; // group
-    //filterData.word1 = 1; // mask
-    //actor->getShapes(&shape, 1);
-    //shape->setSimulationFilterData(filterData);
-
-    actor->attachShape(*shape);
-    actor->setMass(1.0f);
-
-    // Collider 추가 등
-    gScene->addActor(*actor);
-
-
-    // 액터 추가
-    object->PhysX()->m_Actor = actor;
-    actor->userData = object;
-}
-
-void CPhysXMgr::addStaticGameObject(CGameObject* object)
+void CPhysXMgr::addGameObject(CGameObject* object, bool _bStatic)
 {
     auto Rot = object->Transform()->GetWorldRot();
     Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(Rot.z, Rot.y, Rot.x);
@@ -85,8 +51,20 @@ void CPhysXMgr::addStaticGameObject(CGameObject* object)
     PxTransform transform(PxVec3(object->Transform()->GetWorldPos().x, object->Transform()->GetWorldPos().y, object->Transform()->GetWorldPos().z),
         PxQuat(quaternion.x, quaternion.y, quaternion.z, quaternion.w));
 
-    // 고정된 물리 객체 생성
-    PxRigidStatic* actor = gPhysics->createRigidStatic(transform);
+    PxRigidActor* actor = nullptr;
+
+    if (_bStatic)
+    {
+        // 고정된 물리 객체 생성
+        actor = gPhysics->createRigidStatic(transform);
+    }
+    else
+    {
+        // 동적 물리 객체 생성
+        PxRigidDynamic* dynamicActor = gPhysics->createRigidDynamic(transform);
+        dynamicActor->setMass(1.0f);
+        actor = dynamicActor;
+    }
 
     // 게임 오브젝트의 스케일 정보
     auto scale = object->Transform()->GetWorldScale();
@@ -100,6 +78,7 @@ void CPhysXMgr::addStaticGameObject(CGameObject* object)
 
     // 액터 추가
     object->PhysX()->m_Actor = actor;
+    actor->userData = object;
 }
 
 CPhysXMgr::~CPhysXMgr()
