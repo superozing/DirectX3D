@@ -14,7 +14,7 @@ CDevice::CDevice()
 	, m_arrDS{}
 	, m_arrBS{}
 	, m_arrSampler{}
-	, bIsFullScreen(false)
+	, bIsWindowMode(false)
 {
 }
 
@@ -127,13 +127,22 @@ int CDevice::RenewResolution(Vec2 _vResolution, bool bFullScreen)
 
 	RematchMtrlTexParam();
 
+	SetScreenMode(bFullScreen);
+
 	return S_OK;
 }
 
 int CDevice::CreateSwapChain(bool _bFullscreen)
 {
+	if (m_SwapChain)
+	{
+		m_SwapChain.Reset();
+	}
+
+
 	// SwapChain 생성 구조체
 	DXGI_SWAP_CHAIN_DESC tDesc = {};
+	ZeroMemory(&tDesc, sizeof(tDesc));
 
 	// SwapChain 이 관리하는 Buffer(RenderTarget) 의 구성 정보
 	tDesc.BufferCount						 = 1;
@@ -510,4 +519,36 @@ void CDevice::RematchMtrlTexParam()
 
 	pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(MTRL_decal);
 	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
+}
+
+#include <dxgidebug.h>
+#include <dxgi.h>
+
+void CDevice::ReportLiveObjects()
+{
+	D3D_FEATURE_LEVEL eLevel = D3D_FEATURE_LEVEL_11_0;
+
+	HRESULT hr = D3D11CreateDevice(nullptr,					  // 기본 어댑터 사용
+								   D3D_DRIVER_TYPE_HARDWARE,  // 하드웨어 드라이버 사용
+								   nullptr,					  // 소프트웨어 드라이버 없음
+								   D3D11_CREATE_DEVICE_DEBUG, // 디버그 플래그
+								   nullptr,					  // 기본 피처 레벨 배열 사용
+								   0,						  // 피처 레벨 배열 크기
+								   D3D11_SDK_VERSION,		  // SDK 버전
+								   m_Device.GetAddressOf(),	  // 생성된 디바이스
+								   &eLevel,					  // 피처 레벨
+								   m_Context.GetAddressOf()		// 생성된 디바이스 컨텍스트
+	);
+
+	ID3D11Debug* debugDevice = nullptr;
+	hr	 = m_Device->QueryInterface(__uuidof(ID3D11Debug), reinterpret_cast<void**>(&debugDevice));
+	if (SUCCEEDED(hr))
+	{
+		debugDevice->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
+		debugDevice->Release();
+	}
+	else
+	{
+		std::cerr << "Failed to get D3D11 debug interface." << std::endl;
+	}
 }

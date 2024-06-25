@@ -27,7 +27,7 @@ private:
 	ComPtr<ID3D11BlendState>		m_arrBS[(UINT)BS_TYPE::END];
 	ComPtr<ID3D11SamplerState>		m_arrSampler[2];
 
-	bool							bIsFullScreen;
+	bool							bIsWindowMode;
 
 public:
 	int	 init(HWND _hWnd, Vec2 _vResolution);
@@ -45,11 +45,13 @@ public:
 	ComPtr<ID3D11DepthStencilState> GetDSState(DS_TYPE _Type) { return m_arrDS[(UINT)_Type]; }
 	ComPtr<ID3D11BlendState>		GetBSState(BS_TYPE _Type) { return m_arrBS[(UINT)_Type]; }
 
-	bool GetScreenMode() { return bIsFullScreen; }
-	void SetScreenMode(bool IsFullScreen) { bIsFullScreen = IsFullScreen; }
+	bool GetScreenMode() { return bIsWindowMode; }
+	void SetScreenMode(bool IsFullScreen) { bIsWindowMode = IsFullScreen; }
 
 	void DeleteTexturesForResolutionChange();
 	void RematchMtrlTexParam();
+
+	void ReportLiveObjects();
 
 private:
 	int CreateSwapChain(bool _bFullscreen = true);
