@@ -1,17 +1,33 @@
 ﻿#pragma once
 #include "CComponent.h"
 
+enum class eColType
+{
+    COL_NONE,
+    COL_BEGINE,
+    COL_ON,
+    COL_END,
+};
+
+struct tCollisionData
+{
+    CGameObject* Other;
+    eColType ColType;
+};
+
 class CPhysX :
     public CComponent
 {
 private:
     PxRigidActor* m_Actor = nullptr;
     int m_CollisionCount = 0;
-
     void updateFromPhysics();
     void updateToPhysics();
 
 public:
+    vector<tCollisionData> m_vThisFrameContact;
+    bool m_bImguiDirtyFlag = false;
+    bool m_bThisFrameImguiFocused = false;
     bool m_bStaticActor = false;
     virtual void begin() override;
     virtual void finaltick() override;
