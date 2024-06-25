@@ -35,6 +35,7 @@
 #include "CTraceState.h"
 #include <Scripts/CRenderMgrScript.h>
 #include <Engine/CPhysX.h>
+#include <Scripts\CPhysXMgrScript.h>
 
 
 void CCreateTempLevel::Init()
@@ -224,6 +225,7 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pObj->AddComponent(new CTimeMgrScript);
 	pObj->AddComponent(new CRenderMgrScript);
+	pObj->AddComponent(new CPhysXMgrScript);
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 #pragma endregion

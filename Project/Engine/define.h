@@ -250,6 +250,8 @@ enum class SCRIPT_PARAM
 	COLOR,
 	FUNC_STATIC,
 	FUNC_MEMBER,
+	//PhysXMgr 리플렉션용
+	MGR_PHYSX,
 };
 
 enum class FUNC_PARAM

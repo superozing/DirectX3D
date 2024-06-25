@@ -5,6 +5,7 @@
 
 #include "imgui.h"
 #include "ListUI.h"
+#include <Engine/CPhysXMgr.h>
 
 int ParamUI::g_ID = 0;
 
@@ -347,4 +348,52 @@ bool ParamUI::Param_FUNC_MEMBER(std::function<void()> _Func, const string& _Desc
 		return true;
 	}
 	return false;
+}
+
+bool ParamUI::Param_MGR_PHYSX(void* _pPhysXMgr)
+{
+	CPhysXMgr* pPhysXMgr = static_cast<CPhysXMgr*>(_pPhysXMgr);
+	if (nullptr == pPhysXMgr)
+	{
+		return false;
+	}
+
+	// 레이어 수를 정의합니다.
+	const int layerCount = static_cast<int>(LAYER::LAYER_MAX);
+
+	// 충돌 행렬을 N x N 체크박스로 표시합니다.
+	for (int i = 0; i < layerCount; ++i)
+	{
+		for (int j = 0; j < layerCount; ++j)
+		{
+			// 체크박스의 ID를 고유하게 설정합니다.
+			char buf[32];
+			_snprintf_s(buf, sizeof(buf), "##%d_%d", i, j);
+
+			// 현재 상태를 가져옵니다.
+			bool isColliding = (CPhysXMgr::m_layerMasks[i] & (1 << j)) != 0;
+
+			// 체크박스를 그립니다.
+			if (ImGui::Checkbox(buf, &isColliding))
+			{
+				// 체크 상태가 변경되면 충돌 정보를 업데이트합니다.
+				if (isColliding)
+				{
+					CPhysXMgr::m_layerMasks[i] |= (1 << j);
+				}
+				else
+				{
+					CPhysXMgr::m_layerMasks[i] &= ~(1 << j);
+				}
+			}
+
+			// 적절한 간격을 추가합니다.
+			if (j < layerCount - 1)
+				ImGui::SameLine();
+		}
+		// 다음 행으로 이동합니다.
+		ImGui::NewLine();
+	}
+
+	return true;
 }
