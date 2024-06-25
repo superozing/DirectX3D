@@ -237,6 +237,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 						   SWP_NOZORDER | SWP_NOACTIVATE);
 		}
 		break;
+	case WM_EXITSIZEMOVE: {
+		RECT rect;
+
+		if (GetWindowRect(hWnd, &rect))
+		{
+			// rect 구조체에 윈도우의 크기와 위치 정보가 저장됨
+			int width  = rect.right - rect.left;
+			int height = rect.bottom - rect.top;
+
+			CEngine::GetInst()->ResizeScreenResolution(Vec2{width, height}, true);
+		}
+	}
+	break;
 #include <Engine\CKeyMgr.h>
 	case WM_MOUSEWHEEL:
 		if ((SHORT)HIWORD(wParam) > 0)

@@ -66,8 +66,4 @@ texture\FBXTexture\SPR_Vill_Warehouse01_Spec.tga
 0
 [MtrlShader]
 [AssetExist]
-1
-[Key]
-Std3D_DeferredShader
-[Path]
-
+0
