@@ -85,28 +85,13 @@ void CEngine::progress()
 	DebugFunctionCheck();
 
 	TestFunction();
-
-	if (KEY_TAP(KEY::F10))
-	{
-		ResizeScreenResolution(Vec2{800.f, 400.f}, true);
-	}
-
-	if (KEY_TAP(KEY::F11))
-	{
-		ResizeScreenResolution(Vec2{1600.f, 800.f}, true);
-	}
-
-	if (KEY_TAP(KEY::F9))
-	{
-		ResizeScreenResolution(Vec2{2560.f, 1440.f}, false);
-	}
 }
 
 void CEngine::ResizeScreenResolution(Vec2 NewResolution, bool bWindowMode)
 {
 	// 현재 창 스타일 가져오기
 	LONG style = GetWindowLong(m_hMainWnd, GWL_STYLE);
-	
+
 	if (!bWindowMode)
 	{
 		// 전체화면 모드 설정
@@ -132,8 +117,8 @@ void CEngine::ResizeScreenResolution(Vec2 NewResolution, bool bWindowMode)
 			SetWindowLong(m_hMainWnd, GWL_STYLE, style);
 		}
 
-	RECT rt = {0, 0, (int)NewResolution.x, (int)NewResolution.y};
-	AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, false);
+		RECT rt = {0, 0, (int)NewResolution.x, (int)NewResolution.y};
+		AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, false);
 		SetWindowPos(m_hMainWnd, nullptr, 0, 0, rt.right - rt.left, rt.bottom - rt.top,
 					 SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
 	}
