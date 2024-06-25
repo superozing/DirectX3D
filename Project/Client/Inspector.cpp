@@ -427,6 +427,10 @@ void Inspector::CheckTargetComponent(COMPONENT_TYPE _type)
 		m_TargetObject->AddComponent(new CDecal);
 		SetTargetObject(GetTargetObject());
 		break;
+	//case COMPONENT_TYPE::PHYSX:
+	//	m_TargetObject->AddComponent(new CPhysX);
+	//	SetTargetObject(GetTargetObject());
+	//	break;
 	case COMPONENT_TYPE::LANDSCAPE:
 		break;
 	default:
