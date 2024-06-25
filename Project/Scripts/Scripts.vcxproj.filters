@@ -52,6 +52,9 @@
     <ClInclude Include="CRoRStateMachine.h">
       <Filter>RoRStateMachine</Filter>
     </ClInclude>
+    <ClInclude Include="CCrosshair.h">
+      <Filter>Scripts\UI\Crosshair</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -105,6 +108,9 @@
     <ClCompile Include="CRoRStateMachine.cpp">
       <Filter>RoRStateMachine</Filter>
     </ClCompile>
+    <ClCompile Include="CCrosshair.cpp">
+      <Filter>Scripts\UI\Crosshair</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -148,6 +154,9 @@
     </Filter>
     <Filter Include="RoRStateMachine">
       <UniqueIdentifier>{86892923-b05a-4177-80fe-2f8aebe68887}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\Crosshair">
+      <UniqueIdentifier>{34c9d88f-7a17-4733-81e3-09cf4048d6c9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

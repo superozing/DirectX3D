@@ -31,6 +31,7 @@
 #include <Engine/CDevice.h>
 
 #include <Scripts/CProgressBar.h>
+#include <Scripts/CCrosshair.h>
 
 void CUITempLevel::Init()
 {
@@ -263,53 +264,93 @@ void CUITempLevel::CreateTempLevel()
 
 #pragma region progress bar
 
-	// Progress Bar
-	auto BarObj		 = new CGameObject;
-	auto progressbar = new CProgressBar;
+	//// Progress Bar
+	// auto BarObj		 = new CGameObject;
+	// auto progressbar = new CProgressBar;
 
-	BarObj->SetName(L"Progress Bar");
+	// BarObj->SetName(L"Progress Bar");
 
-	BarObj->AddComponent(new CTransform);
-	BarObj->AddComponent(progressbar);
+	// BarObj->AddComponent(new CTransform);
+	// BarObj->AddComponent(progressbar);
 
-	progressbar->SetMaxHP(2000);
-	progressbar->SetCurHP(2000);
+	// progressbar->SetMaxHP(2000);
+	// progressbar->SetCurHP(2000);
 
-	progressbar->SetImgFontTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/ImageFont_Raidboss.png"));
-	progressbar->SetPortraitTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Portrait_Raidboss_KaitenRanger.png"));
+	// progressbar->SetImgFontTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/ImageFont_Raidboss.png"));
+	// progressbar->SetPortraitTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Portrait_Raidboss_KaitenRanger.png"));
 
-	BarObj->Transform()->SetRelativePos(Vec3(0.f, 300.f, 100.f));
-	BarObj->Transform()->SetRelativeScale(Vec3(1, 1, 1.f));
+	// BarObj->Transform()->SetRelativePos(Vec3(0.f, 300.f, 100.f));
+	// BarObj->Transform()->SetRelativeScale(Vec3(1, 1, 1.f));
 
-	pTempLevel->AddObject(BarObj, (UINT)LAYER::LAYER_UI, false);
+	// pTempLevel->AddObject(BarObj, (UINT)LAYER::LAYER_UI, false);
 
-	// Add HP Btn
+	//// Add HP Btn
+	// pObj = new CGameObject;
+	// pObj->SetName(L"Add HP Btn");
+
+	// pObj->AddComponent(new CTransform);
+	// pObj->AddComponent(new CMeshRender);
+
+	// auto AddHPbtnUI = new CBtnUIScript;
+	// pObj->AddComponent(AddHPbtnUI);
+	// AddHPbtnUI->AllowTexSet();
+	// AddHPbtnUI->SetNormalImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Red.png"));
+	// AddHPbtnUI->SetDeletage((CEntity*)progressbar, (DelegateFunc)&CProgressBar::Add100);
+
+	// pObj->Transform()->SetRelativePos(Vec3(680, -400, 100.f));
+	// pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+
+	// pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
+	// pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
+	// pObj->MeshRender()->GetDynamicMaterial(0);
+	// pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0,
+	//												CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Red.png"));
+
+	// pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+
+	//// Sub HP Btn
+	// pObj = new CGameObject;
+	// pObj->SetName(L"Sub HP Btn");
+
+	// pObj->AddComponent(new CTransform);
+	// pObj->AddComponent(new CMeshRender);
+
+	// auto SubHPbtnUI = new CBtnUIScript;
+	// pObj->AddComponent(SubHPbtnUI);
+	// SubHPbtnUI->AllowTexSet();
+	// SubHPbtnUI->SetNormalImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
+	// SubHPbtnUI->SetDeletage((CEntity*)progressbar, (DelegateFunc)&CProgressBar::Sub100);
+
+	// pObj->Transform()->SetRelativePos(Vec3(800, -400, 100.f));
+	// pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+
+	// pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
+	// pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
+	// pObj->MeshRender()->GetDynamicMaterial(0);
+	// pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0,
+	//												CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
+
+	// pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+
+#pragma endregion
+
+	// CCrosshair
 	pObj = new CGameObject;
-	pObj->SetName(L"Add HP Btn");
+	pObj->SetName(L"Crosshair");
 
 	pObj->AddComponent(new CTransform);
-	pObj->AddComponent(new CMeshRender);
 
-	auto AddHPbtnUI = new CBtnUIScript;
-	pObj->AddComponent(AddHPbtnUI);
-	AddHPbtnUI->AllowTexSet();
-	AddHPbtnUI->SetNormalImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Red.png"));
-	AddHPbtnUI->SetDeletage((CEntity*)progressbar, (DelegateFunc)&CProgressBar::Add100);
+	auto pCrosshair = new CCrosshair;
+	pObj->AddComponent(pCrosshair);
 
-	pObj->Transform()->SetRelativePos(Vec3(680, -400, 100.f));
+	pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
 	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
-
-	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
-	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
-	pObj->MeshRender()->GetDynamicMaterial(0);
-	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0,
-													CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Red.png"));
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 
-	// Sub HP Btn
+	// Fire Btn
 	pObj = new CGameObject;
-	pObj->SetName(L"Sub HP Btn");
+	pObj->SetName(L"Fire Btn");
 
 	pObj->AddComponent(new CTransform);
 	pObj->AddComponent(new CMeshRender);
@@ -318,7 +359,7 @@ void CUITempLevel::CreateTempLevel()
 	pObj->AddComponent(SubHPbtnUI);
 	SubHPbtnUI->AllowTexSet();
 	SubHPbtnUI->SetNormalImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
-	SubHPbtnUI->SetDeletage((CEntity*)progressbar, (DelegateFunc)&CProgressBar::Sub100);
+	SubHPbtnUI->SetDeletage((CEntity*)pCrosshair, (DelegateFunc)&CCrosshair::Fire);
 
 	pObj->Transform()->SetRelativePos(Vec3(800, -400, 100.f));
 	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
@@ -330,8 +371,6 @@ void CUITempLevel::CreateTempLevel()
 													CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
-
-#pragma endregion
 
 	GamePlayStatic::ChangeLevel(pTempLevel, LEVEL_STATE::STOP);
 
