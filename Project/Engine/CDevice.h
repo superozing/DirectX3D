@@ -63,5 +63,4 @@ private:
 
 	int CreateConstBuffer();
 	int CreateStructuredBuffer();
-
 };

@@ -6,8 +6,6 @@
 #include "CAssetMgr.h"
 #include "CRenderMgr.h"
 
-ResetImGui CDevice::ResetImGuiFunc = nullptr;
-
 CDevice::CDevice()
 	: m_hRenderWnd(nullptr)
 	, m_arrCB{}
@@ -137,8 +135,6 @@ int CDevice::RenewResolution(Vec2 _vResolution, bool bFullScreen)
 
 	SetScreenMode(bFullScreen);
 
-	if (ResetImGuiFunc != nullptr)
-		ResetImGuiFunc();
 	return S_OK;
 }
 
@@ -528,43 +524,6 @@ void CDevice::RematchMtrlTexParam()
 
 	pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(MTRL_decal);
 	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
-}
-
-void CDevice::ReleaseGPU()
-{
-	for (int i = 0; i < (int)BS_TYPE::END; ++i)
-	{
-		if (m_arrBS[i] != nullptr)
-			m_arrBS[i]->Release();
-	}
-
-	for (int i = 0; i < (int)DS_TYPE::END; ++i)
-	{
-		if (m_arrDS[i] != nullptr)
-			m_arrDS[i]->Release();
-	}
-
-	for (int i = 0; i < (int)RS_TYPE::END; ++i)
-	{
-		if (m_arrRS[i] != nullptr)
-			m_arrRS[i]->Release();
-	}
-
-	for (int i = 0; i < 2; ++i)
-	{
-		if (m_arrSampler[i] != nullptr)
-			m_arrSampler[i]->Release();
-	}
-
-	for (int i = 0; i < (int)SB_TYPE::END; ++i)
-	{
-		if (m_arrSB[i] != nullptr)
-			m_arrSB[i] = nullptr;
-	}
-
-	m_SwapChain->Release();
-	m_Context->Release();
-	m_Device->Release();
 }
 
 #include <dxgidebug.h>
