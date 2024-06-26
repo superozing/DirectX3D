@@ -296,3 +296,24 @@ struct tLog
 	Log_Level m_LogLv;
 	string	  m_strMsg;
 };
+
+#include <FontEngine/FW1FontWrapper.h>
+struct tFontInfo
+{
+	wstring WStr; // 출력할 문자열
+
+	float fPosX; // X Pos
+	float fPosY; // Y Pos
+
+	float fFontSize; // 폰트의 크기
+
+	UINT Color; // 폰트의 색상. FONT_RGBA 매크로 함수를 사용하세요.
+
+	FONT_TYPE FontType = FONT_TYPE::ARIAL; // 폰트 타입. 어떤 폰트를 사용할 것인지
+
+	// 텍스트 플래그.
+	// FW1_RESTORESTATE - 폰트를 그린 후 디바이스, 컨텍스트를 원래 상태로 만듦
+	// FW1_CENTER - 중앙 정렬
+	// FW1_LEFT - 왼 쪽 정렬
+	FW1_TEXT_FLAG TextFlag = FW1_RESTORESTATE;
+};
