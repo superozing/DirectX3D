@@ -946,6 +946,23 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->AddTexParam(TEX_PARAM::TEX_0, "DynamicUI Texture");
 
 	AddAsset(L"DynamicUIShader", pShader.Get());
+
+	// ================
+	// 3DImageWrap Shader
+	// ----------------
+	// Mesh: RectMesh
+	// RenderComp: MeshRender
+	// ================
+
+	pShader = new CGraphicsShader;
+	pShader->CreateVertexShader(FXImageWrap, "VS_ImageWrap");
+	pShader->CreatePixelShader(FXImageWrap, "PS_ImageWrap");
+
+	pShader->SetRSType(RS_TYPE::CULL_FRONT);
+	pShader->SetDSType(DS_TYPE::LESS);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
+
+	AddAsset(L"ImageWrapShader", pShader.Get());
 }
 
 void CAssetMgr::CreateDefaultMaterial()
@@ -1098,6 +1115,11 @@ void CAssetMgr::CreateDefaultMaterial()
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DynamicUIShader"));
 	AddAsset(L"DynamicUIMtrl", pMtrl);
+
+	// ImageWrapMtrl
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"ImageWrapShader"));
+	AddAsset(L"ImageWrapMtrl", pMtrl);
 }
 
 #include "CSetColorShader.h"

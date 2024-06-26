@@ -34,6 +34,7 @@
 #include "CCreateTempLevel.h"
 #include "CUITempLevel.h"
 #include "MapTestLevel.h"
+#include "MapTutorial.h"
 #include "CCreatePlayerTestLevel.h"
 
 #include <Engine/CRenderMgr.h>
@@ -85,9 +86,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	// CCreateTempLevel::Init();
 	// CCreateTempLevel::CreateTempLevel();
 
-	// MapTestLevel::CreateMapTestLevel();
+	MapTutorial::CreateMapTestLevel();
 
-	CCreatePlayerTestLevel::CreateTempLevel();
+	// CCreatePlayerTestLevel::CreateTempLevel();
 
 	// ImGui 초기화
 	CImGuiMgr::GetInst()->init(hWnd, DEVICE, CONTEXT);

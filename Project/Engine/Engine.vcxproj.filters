@@ -822,5 +822,8 @@
     <FxCompile Include="copybone.fx">
       <Filter>ShaderCode\03. Compute\CopyBone</Filter>
     </FxCompile>
+    <FxCompile Include="ImageWrap.fx">
+      <Filter>ShaderCode\02. Render\3DShader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
