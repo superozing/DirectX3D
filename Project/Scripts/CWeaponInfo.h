@@ -8,8 +8,11 @@ class CWeaponInfo : public CScript
 private:
 	CImageUIScript* m_pWeaponUI;
 
-	int m_MaxAmmo;
-	int m_CurAmmo;
+	int				m_MaxAmmo;
+	int				m_CurAmmo;
+
+	tFontInfo		m_AmmoFontInfo;
+	Vec2			m_AmmoFontOffset;
 
 public:
 	virtual void begin() override;

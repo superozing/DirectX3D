@@ -3,6 +3,7 @@
 
 #include <Engine/CAssetMgr.h>
 #include <Engine/CFontMgr.h>
+#include <Engine/CDevice.h>
 
 #include "CImageUIScript.h"
 
@@ -36,11 +37,34 @@ void CWeaponInfo::begin()
 	m_pWeaponUI->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Serika_Weapon.png"));
 
 	GetOwner()->AddChild(pObj);
+
+	// Font Info
+	m_AmmoFontInfo.fFontSize = 50.f;
+	m_AmmoFontInfo.FontType	 = FONT_TYPE::MAPLE;
+
+	m_AmmoFontOffset.x = 50.f;
+	m_AmmoFontOffset.y = 50.f;
 }
 
 void CWeaponInfo::tick()
 {
-	CFontMgr::GetInst()->DrawFont(to_wstring(m_CurAmmo).c_str(), 500, 500, 30, FONT_RGBA(255, 255, 255, 255));
+	// 폰트의 색상 설정
+	if (m_CurAmmo > 0)
+		m_AmmoFontInfo.Color = FONT_RGBA(255, 0, 0, 255);
+	else
+		m_AmmoFontInfo.Color = FONT_RGBA(255, 255, 255, 255);
+
+	// 폰트의 위치 설정
+
+	Vec3 vWorldPos = Transform()->GetWorldPos();
+	Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
+
+	m_AmmoFontInfo.fPosX = vWorldPos.x + (vResol.x / 2) + m_AmmoFontOffset.x;
+	m_AmmoFontInfo.fPosY = -vWorldPos.y + (vResol.y / 2) + m_AmmoFontOffset.y;
+	
+	m_AmmoFontInfo.WStr = to_wstring(m_CurAmmo) + L" /" + to_wstring(m_MaxAmmo);
+
+	CFontMgr::GetInst()->RegisterFont(m_AmmoFontInfo);
 }
 
 void CWeaponInfo::Fire()
