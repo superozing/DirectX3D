@@ -18,11 +18,11 @@ PxFilterFlags CustomFilterShader(
     UINT layer0 = filterData0.word0;
     UINT layer1 = filterData1.word0;
 
-    //if ((CPhysXMgr::m_layerMasks[layer0] & (1 << layer1)) == 0 && (CPhysXMgr::m_layerMasks[layer1] & (1 << layer0)) == 0)
-    //{
-    //    // 충돌을 무시합니다.
-    //    return PxFilterFlag::eSUPPRESS;
-    //}
+    if ((CPhysXMgr::m_layerMasks[layer0] & (1 << layer1)) == 0 && (CPhysXMgr::m_layerMasks[layer1] & (1 << layer0)) == 0)
+    {
+        // 충돌을 무시합니다.
+        return PxFilterFlag::eSUPPRESS;
+    }
 
     // 모든 충돌에 대해 충돌 보고 활성화
     pairFlags = PxPairFlag::eCONTACT_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_FOUND | PxPairFlag::eNOTIFY_TOUCH_PERSISTS | PxPairFlag::eNOTIFY_TOUCH_LOST;
