@@ -361,23 +361,98 @@ bool ParamUI::Param_MGR_PHYSX(void* _pPhysXMgr)
 	// 레이어 수를 정의합니다.
 	const int layerCount = static_cast<int>(LAYER::LAYER_MAX);
 
+	// 라벨의 최대 길이를 계산합니다.
+	size_t maxLabelLength = 0;
+	for (int i = 0; i < layerCount; ++i)
+	{
+		auto layerNameI = magic_enum::enum_name(static_cast<LAYER>(i));
+		if (!layerNameI.empty() && static_cast<LAYER>(i) != LAYER::LAYER_MAX)
+		{
+			maxLabelLength = max(maxLabelLength, layerNameI.size());
+		}
+	}
+
+	// 최대 라벨 길이에 맞게 왼쪽 여백을 설정합니다.
+	float labelWidth = ImGui::CalcTextSize(std::string(maxLabelLength, ' ').c_str()).x;
+
+	// 윗쪽에 인덱스를 세로로 표시합니다.
+	ImGui::Text(" "); // 첫 번째 빈 셀
+	ImGui::SameLine(0, labelWidth); // 왼쪽 여백을 설정합니다.
+
+	for (int j = 0; j < layerCount; ++j)
+	{
+		auto layerNameJ = magic_enum::enum_name(static_cast<LAYER>(j));
+
+		// 이름이 없거나 LAYER_MAX인 경우 제외
+		if (layerNameJ.empty() || static_cast<LAYER>(j) == LAYER::LAYER_MAX)
+			continue;
+
+		// 각 레이어 이름을 세로로 배치
+		ImGui::SameLine();
+
+		// 현재 위치를 가져옵니다.
+		float currentPosX = ImGui::GetCursorPosX();
+
+		// 숫자 라벨을 오른쪽으로 이동시킵니다.
+		float labelOffset;
+		if (0 == j)
+		{
+			labelOffset = 120.0f; // 원하는 만큼의 오프셋을 설정합니다.
+		}
+		else
+		{
+			labelOffset = 12.0f; // 원하는 만큼의 오프셋을 설정합니다.
+		}
+		ImGui::SetCursorPosX(currentPosX + labelOffset);
+		ImGui::Text("%s", std::to_string(j).c_str());
+	}
+	ImGui::NewLine();
+
 	// 충돌 행렬을 N x N 체크박스로 표시합니다.
 	for (int i = 0; i < layerCount; ++i)
 	{
+		auto layerNameI = magic_enum::enum_name(static_cast<LAYER>(i));
+
+		// 이름이 없거나 LAYER_MAX인 경우 제외
+		if (layerNameI.empty() || static_cast<LAYER>(i) == LAYER::LAYER_MAX)
+			continue;
+
+		// 왼쪽에 라벨을 일정한 길이로 맞추어 표시합니다.
+		std::string paddedLabel = layerNameI.data();
+		paddedLabel.append(maxLabelLength - paddedLabel.size(), ' ');
+		ImGui::Text("%s", paddedLabel.c_str());
+		ImGui::SameLine();
+
 		for (int j = 0; j < layerCount; ++j)
 		{
-			// 체크박스의 ID를 고유하게 설정합니다.
-			char buf[32];
+			auto layerNameJ = magic_enum::enum_name(static_cast<LAYER>(j));
+
+			// 이름이 없거나 LAYER_MAX인 경우 제외
+			if (layerNameJ.empty() || static_cast<LAYER>(j) == LAYER::LAYER_MAX)
+				continue;
+
+			// 체크박스의 고유 ID를 설정합니다.
+			char buf[64];
 			_snprintf_s(buf, sizeof(buf), "##%d_%d", i, j);
 
 			// 현재 상태를 가져옵니다.
 			bool isColliding = (CPhysXMgr::m_layerMasks[i] & (1 << j)) != 0;
 
-			// 체크박스를 그립니다.
-			if (ImGui::Checkbox(buf, &isColliding))
+			if (i <= j)
 			{
-				// 체크 상태가 변경되면 충돌 정보를 업데이트합니다.
-				pPhysXMgr->LayerCheckToggle((UINT)i, (UINT)j);
+				// 체크박스를 그립니다.
+				if (ImGui::Checkbox(buf, &isColliding))
+				{
+					// 체크 상태가 변경되면 충돌 정보를 업데이트합니다.
+					pPhysXMgr->LayerCheckToggle((UINT)i, (UINT)j);
+				}
+			}
+			else
+			{
+				// i == j 인 경우 체크박스를 비활성화하고 상태만 표시합니다.
+				ImGui::BeginDisabled();
+				ImGui::Checkbox(buf, &isColliding);
+				ImGui::EndDisabled();
 			}
 
 			// 적절한 간격을 추가합니다.
