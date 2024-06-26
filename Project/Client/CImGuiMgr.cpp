@@ -130,16 +130,16 @@ void CImGuiMgr::init(HWND _hMainWnd, ComPtr<ID3D11Device> _Device, ComPtr<ID3D11
 
 	m_vecStaticBtn[(UINT)STATIC_BTN_TYPE::TITLE] = tColor;
 
-    tColor.ColBtnColor = (ImVec4)ImColor::HSV(0.9f, 0.8f, 0.8f);
+	tColor.ColBtnColor		  = (ImVec4)ImColor::HSV(0.9f, 0.8f, 0.8f);
 	tColor.ColBtnHoveredColor = (ImVec4)ImColor::HSV(0.9f, 0.8f, 0.8f);
-	tColor.ColBtnActiveColor = (ImVec4)ImColor::HSV(0.9f, 0.8f, 0.8f);
+	tColor.ColBtnActiveColor  = (ImVec4)ImColor::HSV(0.9f, 0.8f, 0.8f);
 
-    m_vecStaticBtn[(UINT)STATIC_BTN_TYPE::SUBTITLE] = tColor;
+	m_vecStaticBtn[(UINT)STATIC_BTN_TYPE::SUBTITLE] = tColor;
 
-    // Enum String Init
-    m_vecEnumTopology.resize((UINT)D3D11_PRIMITIVE_TOPOLOGY::D3D_PRIMITIVE_TOPOLOGY_32_CONTROL_POINT_PATCHLIST);
-    for (UINT i = 0; i < m_vecEnumTopology.size(); ++i)
-        m_vecEnumTopology[i] = ToString(magic_enum::enum_name((D3D11_PRIMITIVE_TOPOLOGY)i));
+	// Enum String Init
+	m_vecEnumTopology.resize((UINT)D3D11_PRIMITIVE_TOPOLOGY::D3D_PRIMITIVE_TOPOLOGY_32_CONTROL_POINT_PATCHLIST);
+	for (UINT i = 0; i < m_vecEnumTopology.size(); ++i)
+		m_vecEnumTopology[i] = ToString(magic_enum::enum_name((D3D11_PRIMITIVE_TOPOLOGY)i));
 
 	m_vecEnumRS.resize((UINT)RS_TYPE::END - 1);
 	for (UINT i = 0; i < m_vecEnumRS.size(); ++i)
@@ -156,9 +156,6 @@ void CImGuiMgr::init(HWND _hMainWnd, ComPtr<ID3D11Device> _Device, ComPtr<ID3D11
 	m_vecEnumShaderDomain.resize((UINT)SHADER_DOMAIN::DOMAIN_DEBUG);
 	for (UINT i = 0; i < m_vecEnumShaderDomain.size(); ++i)
 		m_vecEnumShaderDomain[i] = ToString(magic_enum::enum_name((SHADER_DOMAIN)i));
-
-   RTViewPort* pViewport = (RTViewPort*)CImGuiMgr::GetInst()->FindUI("##Viewport");
-   pViewport->SetCamera(CRenderMgr::GetInst()->GetEditorCam());
 }
 
 void CImGuiMgr::progress()
