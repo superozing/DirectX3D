@@ -128,7 +128,7 @@ void CPhysXMgr::addGameObject(CGameObject* object, bool _bStatic)
     auto scale = object->Transform()->GetWorldScale();
 
     // Collider 추가 (여기서는 예시로 Box Collider를 사용)
-    PxShape* shape = gPhysics->createShape(PxBoxGeometry(scale.x / 2, scale.y / 2, scale.z / 2), *gMaterial);
+    PxShape* shape = gPhysics->createShape(PxBoxGeometry(scale.z / 2, scale.y / 2, scale.x / 2), *gMaterial);
     
     // 객체에 필터 데이터 설정
     PxFilterData filterData;
