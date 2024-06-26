@@ -40,6 +40,8 @@
 
 #include <Engine/CRenderMgr.h>
 #include "RTViewPort.h"
+
+#include "CEnvMgr.h"
 // #define _RELEASE_GAME
 
 HINSTANCE hInst;
@@ -69,8 +71,21 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));
 	MSG	   msg;
 
+	CPathMgr::init();
+	CEnvMgr::GetInst()->init();
+
+	Vec2 res;
+	res = CEnvMgr::GetInst()->GetResolutionData().res;
+	if (res.x <= 200.f || res.x >= 4000.f)
+	{
+		res.x = 1920.f;
+	}
+	if (res.y <= 200.f || res.y >= 4000.f)
+	{
+		res.y = 1080.f;
+	}
 	// CEngine 초기화 실패 -> 프로그램 종료
-	if (FAILED(CEngine::GetInst()->init(hWnd, Vec2(1910, 960))))
+	if (FAILED(CEngine::GetInst()->init(hWnd, res)))
 	{
 		MessageBox(nullptr, L"CEngine 초기화 실패", L"초기화 실패", MB_OK);
 		return 0;
@@ -88,8 +103,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	// CCreateTempLevel::CreateTempLevel();
 
 	// MapTestLevel::CreateMapTestLevel();
-
-	CCreatePlayerTestLevel::CreateTempLevel();
+	string levelPath = CEnvMgr::GetInst()->GetLevelRelativePath();
+	string abPath	 = ToString(CPathMgr::GetContentPath()) + levelPath;
+	if (levelPath == "" || !exists(abPath))
+	{
+		CCreatePlayerTestLevel::CreateTempLevel();
+	}
+	else
+	{
+		auto pLevel = CLevelSaveLoad::LoadLevel(CEnvMgr::GetInst()->GetLevelRelativePath());
+		GamePlayStatic::ChangeLevel(pLevel, LEVEL_STATE::STOP);
+	}
 
 	// ImGui 초기화
 	CImGuiMgr::GetInst()->init(hWnd, DEVICE, CONTEXT);
@@ -133,6 +157,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			CDevice::GetInst()->Present();
 		}
 	}
+
+	CEnvMgr::GetInst()->exit();
 
 	return (int)msg.wParam;
 }

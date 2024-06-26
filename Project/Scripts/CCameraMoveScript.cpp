@@ -36,16 +36,22 @@ void CCameraMoveScript::tick()
 		MovePerspective();
 	}
 
+	Vec3 vPos = Transform()->GetRelativePos();
+
+	Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+
 	// 줌 인, 줌 아웃
 	if (WHEEL_CHECK(WHEEL_UP))
 	{
-		Camera()->SetFOV(Camera()->GetFOV() - m_fZoomSpeed * DT_ENGINE);
+		vPos += DT_ENGINE * m_CamSpeed * vFront;
 	}
 
 	if (WHEEL_CHECK(WHEEL_DOWN))
 	{
-		Camera()->SetFOV(Camera()->GetFOV() + m_fZoomSpeed * DT_ENGINE);
+		vPos += DT_ENGINE * m_CamSpeed * -vFront;
 	}
+
+	Transform()->SetRelativePos(vPos);
 }
 
 void CCameraMoveScript::MoveOrthographic()

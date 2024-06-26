@@ -55,6 +55,7 @@ void MenuUI::render_update()
 
 	ScreenControl();
 }
+// #include <Engine/CLevel.h>
 
 void MenuUI::File()
 {
@@ -72,6 +73,7 @@ void MenuUI::File()
 			ofn.lpstrFile[0]   = '\0';
 			ofn.nMaxFile	   = sizeof(szSelect);
 			ofn.lpstrFilter	   = L"ALL\0*.*\0Level\0*.lv";
+			ofn.lpstrDefExt	   = L"lv";
 			ofn.nFilterIndex   = 1;
 			ofn.lpstrFileTitle = NULL;
 			ofn.nMaxFileTitle  = 0;
@@ -83,9 +85,14 @@ void MenuUI::File()
 
 			ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
 
+			CLevel* pLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+
 			if (GetSaveFileName(&ofn))
 			{
-				CLevelSaveLoad::SaveLevel(CLevelMgr::GetInst()->GetCurrentLevel(), CPathMgr::GetRelativePath(szSelect));
+				string name = ToString((wchar_t*)ofn.lpstrFile);
+				name		= path(name).stem().string();
+				pLevel->SetName(name);
+				CLevelSaveLoad::SaveLevel(pLevel, CPathMgr::GetRelativePath(szSelect));
 			}
 		}
 

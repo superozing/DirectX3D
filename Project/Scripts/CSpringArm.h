@@ -7,6 +7,7 @@ private:
 	class CCamera* m_pTargetCam;
 	float		   m_fDistance;
 	float		   m_fSpeed;
+	CGameObject*   m_target;
 
 public:
 	void SetTargetCamera(CCamera* _cam);

@@ -148,6 +148,9 @@ void Content::ResetEngineAsset()
 	TreeNode* root	   = m_EngineTree->AddTreeNode(RootNode, "Engine Assets", 0);
 	for (int i = 0; i < (int)ASSET_TYPE::END; i++)
 	{
+		if (i == (int)ASSET_TYPE::GRAPHICS_SHADER || i == (int)ASSET_TYPE::MESHDATA || i == (int)ASSET_TYPE::FSM ||
+			i == (int)ASSET_TYPE::SOUND || i == (int)ASSET_TYPE::PREFAB)
+			continue;
 		m_EngineTree->AddTreeNode(root, ToString(magic_enum::enum_name((ASSET_TYPE)i)), 0);
 	}
 }
@@ -347,8 +350,8 @@ void Content::DirectoryUI()
 
 		if (ImGui::MenuItem("Create New Level", ""))
 		{
-			wstring path = CPathMgr::GetContentPath();
-			path += L"level";
+			wstring wpath = CPathMgr::GetContentPath();
+			wpath += L"level";
 
 			wchar_t szSelect[256] = {};
 
@@ -381,7 +384,7 @@ void Content::DirectoryUI()
 					return;
 				}
 				CLevel* pLevel = new CLevel;
-				pLevel->SetName(szSelect);
+				pLevel->SetName(path(ToString(contentPath)).stem());
 				CLevelSaveLoad::SaveLevel(pLevel, CPathMgr::GetRelativePath(szSelect));
 				GamePlayStatic::ChangeLevel(pLevel, LEVEL_STATE::STOP);
 			}

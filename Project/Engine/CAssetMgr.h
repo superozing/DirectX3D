@@ -161,7 +161,9 @@ template <typename T> Ptr<T> CAssetMgr::Load(const wstring& _strKey, const wstri
 	pAsset = new T;
 	if (FAILED(pAsset->Load(strFilePath)))
 	{
-		MessageBox(nullptr, L"에셋 로딩 실패", L"에셋 로딩 실패", MB_OK);
+		wstring str = _strKey;
+		str += L" 에셋 로딩 실패";
+		MessageBox(nullptr, str.c_str(), L"에셋 로딩 실패", MB_OK);
 		pAsset = nullptr;
 		return nullptr;
 	}
