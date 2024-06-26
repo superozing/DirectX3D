@@ -1,6 +1,12 @@
 ﻿#pragma once
 #include "CManager.h"
 
+struct tRoRHitInfo
+{
+	CGameObject* pOtherObj = nullptr;
+	Vec3 vHitPos = Vec3();
+};
+
 using namespace physx;
 
 class CPhysXMgr :
@@ -22,11 +28,13 @@ private:
 	void LayerCheckToggle(UINT _left, UINT _right);
 
 public:
+	bool m_Debug = true;
 	static UINT m_layerMasks[static_cast<UINT>(LAYER::LAYER_MAX)];
 	virtual void init() override;
 	virtual void tick() override;
 	virtual void enter() override {}
 	void addGameObject(CGameObject* object, bool _bStatic);
+	bool PerfomRaycast(PxVec3 origin, PxVec3 direction , tRoRHitInfo& _HitInfo);
 
 private:
 	void Clear() {};

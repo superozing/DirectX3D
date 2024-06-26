@@ -18,11 +18,11 @@ PxFilterFlags CustomFilterShader(
     UINT layer0 = filterData0.word0;
     UINT layer1 = filterData1.word0;
 
-    if ((CPhysXMgr::m_layerMasks[layer0] & (1 << layer1)) == 0 && (CPhysXMgr::m_layerMasks[layer1] & (1 << layer0)) == 0)
-    {
-        // 충돌을 무시합니다.
-        return PxFilterFlag::eSUPPRESS;
-    }
+    //if ((CPhysXMgr::m_layerMasks[layer0] & (1 << layer1)) == 0 && (CPhysXMgr::m_layerMasks[layer1] & (1 << layer0)) == 0)
+    //{
+    //    // 충돌을 무시합니다.
+    //    return PxFilterFlag::eSUPPRESS;
+    //}
 
     // 모든 충돌에 대해 충돌 보고 활성화
     pairFlags = PxPairFlag::eCONTACT_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_FOUND | PxPairFlag::eNOTIFY_TOUCH_PERSISTS | PxPairFlag::eNOTIFY_TOUCH_LOST;
@@ -143,6 +143,42 @@ void CPhysXMgr::addGameObject(CGameObject* object, bool _bStatic)
     // 액터 추가
     object->PhysX()->m_Actor = actor;
     actor->userData = object;
+}
+
+bool CPhysXMgr::PerfomRaycast(PxVec3 origin, PxVec3 direction, tRoRHitInfo& _HitInfo)
+{
+    direction.normalize();
+    // TODO(JINYOUNG) : DrawDebugLine 함수추가
+    //if (true == m_Debug)
+    //{
+    //    GamePlayStatic::DrawDebugLine();
+    //}
+
+
+    PxRaycastBuffer hit;
+    bool status = gScene->raycast(origin, direction, PX_MAX_F32, hit);
+
+    if (true == status) 
+    {
+        // 충돌한 경우
+
+        PxRaycastHit hitInfo = hit.block;
+        PxVec3 hitPoint = hitInfo.position;
+        PxRigidActor* hitActor = hitInfo.actor;
+
+        auto pGO = hitActor->userData;
+        _HitInfo.pOtherObj = static_cast<CGameObject*>(pGO);
+        _HitInfo.vHitPos = Vec3(hitPoint.x, hitPoint.y, hitPoint.z);
+
+        // 충돌 지점과 충돌한 물체에 대한 정보를 처리
+        // 예: 충돌 지점 출력
+        GamePlayStatic::DrawDebugSphere(_HitInfo.vHitPos, 20.f, Vec4(0.f,0.8f,0.f,1.f) ,false);
+        return true;
+    }
+    else 
+    {
+        return false;
+    }
 }
 
 CPhysXMgr::~CPhysXMgr()
