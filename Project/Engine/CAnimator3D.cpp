@@ -45,6 +45,9 @@ CAnimator3D::CAnimator3D(const CAnimator3D& _origin)
 	, CComponent(COMPONENT_TYPE::ANIMATOR3D)
 {
 	m_pBoneFinalMatBuffer = new CStructuredBuffer;
+
+	SetBones(m_pVecBones);
+	SetAnimClip(m_pVecClip);
 }
 
 CAnimator3D::~CAnimator3D()
@@ -55,17 +58,6 @@ CAnimator3D::~CAnimator3D()
 
 void CAnimator3D::finaltick()
 {
-	if (KEY_TAP(M))
-		Play(0);
-	else if (KEY_TAP(N))
-		Play(1);
-	else if (KEY_TAP(B))
-		Play(2);
-	else if (KEY_TAP(C))
-		Play(3);
-	else if (KEY_TAP(V))
-		Stop();
-
 	m_dCurTime = 0.f;
 
 	// 현재 재생중인 Clip 의 시간을 진행한다.
@@ -115,6 +107,14 @@ void CAnimator3D::SetAnimClip(const vector<tMTAnimClip>* _vecAnimClip)
 	m_vecClipUpdateTime.resize(m_pVecClip->size());
 }
 
+void CAnimator3D::UpdateFinalBoneFrame(int _Idx)
+{
+	vector<CStructuredBuffer*> vBoneFrameData = MeshRender()->GetMesh()->GetBoneFrameDataBuffer();
+	m_vecFinalBoneFrame.resize(vBoneFrameData[_Idx]->GetElementCount());
+
+	vBoneFrameData[_Idx]->GetData(m_vecFinalBoneFrame.data());
+}
+
 void CAnimator3D::UpdateData()
 {
 	if (!m_bFinalMatUpdate)
@@ -127,7 +127,7 @@ void CAnimator3D::UpdateData()
 		Ptr<CMesh> pMesh = MeshRender()->GetMesh();
 		check_mesh(pMesh);
 
-		auto vBoneFrameData = pMesh->GetBoneFrameDataBuffer();
+		vector<CStructuredBuffer*> vBoneFrameData = pMesh->GetBoneFrameDataBuffer();
 
 		pUpdateShader->SetFrameDataBuffer(vBoneFrameData[m_iCurClip]);
 		pUpdateShader->SetOffsetMatBuffer(pMesh->GetBoneOffsetBuffer());

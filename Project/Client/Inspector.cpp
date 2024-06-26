@@ -407,7 +407,7 @@ void Inspector::CheckTargetComponent(COMPONENT_TYPE _type)
 		SetTargetObject(GetTargetObject());
 		break;
 	case COMPONENT_TYPE::ANIMATOR3D:
-		m_TargetObject->AddComponent(new CAnimator2D);
+		m_TargetObject->AddComponent(new CAnimator3D);
 		SetTargetObject(GetTargetObject());
 		break;
 	case COMPONENT_TYPE::LIGHT2D:

@@ -14,11 +14,13 @@ private:
 	const vector<tMTBone>*	   m_pVecBones;
 	const vector<tMTAnimClip>* m_pVecClip;
 
-	vector<float>  m_vecClipUpdateTime;
-	vector<Matrix> m_vecFinalBoneMat; // 텍스쳐에 전달할 최종 행렬정보
-	int			   m_iFrameCount;	  // 30
-	double		   m_dCurTime;
-	int			   m_iCurClip; // 클립 인덱스
+	vector<float>		m_vecClipUpdateTime;
+	vector<Matrix>		m_vecFinalBoneMat; // 텍스쳐에 전달할 최종 행렬정보
+	vector<tFrameTrans> m_vecFinalBoneFrame;
+
+	int	   m_iFrameCount; // 30
+	double m_dCurTime;
+	int	   m_iCurClip; // 클립 인덱스
 
 	int	  m_iFrameIdx;	   // 클립의 현재 프레임
 	int	  m_iNextFrameIdx; // 클립의 다음 프레임
@@ -43,10 +45,12 @@ public:
 	}
 	void SetAnimClip(const vector<tMTAnimClip>* _vecAnimClip);
 	void SetClipTime(int _iClipIdx, float _fTime) { m_vecClipUpdateTime[_iClipIdx] = _fTime; }
+	void UpdateFinalBoneFrame(int _Idx);
 
-	CStructuredBuffer* GetFinalBoneMat() { return m_pBoneFinalMatBuffer; }
-	UINT			   GetBoneCount() { return (UINT)m_pVecBones->size(); }
-	void			   ClearData();
+	vector<tFrameTrans> GetFinalBoneFrame() { return m_vecFinalBoneFrame; }
+	CStructuredBuffer*	GetFinalBoneMat() { return m_pBoneFinalMatBuffer; }
+	UINT				GetBoneCount() { return (UINT)m_pVecBones->size(); }
+	void				ClearData();
 
 public:
 	const vector<tMTAnimClip>* GetAnimClip() { return m_pVecClip; }

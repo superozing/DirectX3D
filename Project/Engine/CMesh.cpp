@@ -194,7 +194,6 @@ CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
 			{
 				for (size_t frameIdx = 0; frameIdx < pMesh->m_vecBones[i].vecKeyFrame[clipIdx].size(); ++frameIdx)
 				{
-					size_t globalFrameIdx = frameIdx;
 					vecFrameTrans[(UINT)pMesh->m_vecBones.size() * frameIdx + i] =
 						tFrameTrans{Vec4(pMesh->m_vecBones[i].vecKeyFrame[clipIdx][frameIdx].vTranslate, 0.f),
 									Vec4(pMesh->m_vecBones[i].vecKeyFrame[clipIdx][frameIdx].vScale, 0.f),
@@ -203,7 +202,7 @@ CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
 			}
 
 			CStructuredBuffer* pSB = new CStructuredBuffer;
-			pSB->Create(sizeof(tFrameTrans), (UINT)vecFrameTrans.size(), SB_READ_TYPE::READ_ONLY, false,
+			pSB->Create(sizeof(tFrameTrans), (UINT)vecFrameTrans.size(), SB_READ_TYPE::READ_ONLY, true,
 						vecFrameTrans.data());
 			pMesh->m_vecBoneFrameData.push_back(pSB);
 		}
@@ -507,48 +506,8 @@ int CMesh::Load(const wstring& _strFilePath)
 			{
 				fread(&m_vecBones[i].vecKeyFrame[j][k], sizeof(tMTKeyFrame), 1, pFile);
 			}
-
-			// if (jFrameCount == 0)
-			//	++_iFrameCount;
-			// else
-			//	_iFrameCount += jFrameCount;
 		}
 	}
-
-	//// Animation 이 있는 Mesh 경우 Bone StructuredBuffer 만들기
-	// if (m_vecAnimClip.size() > 0 && m_vecBones.size() > 0)
-	//{
-	//	wstring strBone = GetName();
-
-	//	// BoneOffet 행렬
-	//	vector<Matrix> vecOffset;
-	//	vector<tFrameTrans> vecFrameTrans;
-	//	vecFrameTrans.resize((UINT)m_vecBones.size() * _iFrameCount);
-
-	//	for (size_t i = 0; i < m_vecBones.size(); ++i)
-	//	{
-	//		vecOffset.push_back(m_vecBones[i].matOffset);
-
-	//		for (size_t j = 0; j < m_vecBones[i].vecKeyFrame.size(); ++j)
-	//		{
-	//			for (size_t k = 0; k < m_vecBones[i].vecKeyFrame[j].size(); ++k)
-	//			{
-	//				vecFrameTrans[(UINT)m_vecBones.size() * j + i]
-	//					= tFrameTrans{ Vec4(m_vecBones[i].vecKeyFrame[j][k].vTranslate, 0.f)
-	//					, Vec4(m_vecBones[i].vecKeyFrame[j][k].vScale, 0.f)
-	//					, m_vecBones[i].vecKeyFrame[j][k].qRot };
-	//			}
-	//		}
-
-	//		CStructuredBuffer *pSB = new CStructuredBuffer;
-	//		pSB->Create(sizeof(tFrameTrans), (UINT)vecFrameTrans.size(), SB_READ_TYPE::READ_ONLY, false,
-	//					vecFrameTrans.data());
-	//		m_vecBoneFrameData.push_back(pSB);
-	//	}
-
-	//	m_pBoneOffset = new CStructuredBuffer;
-	//	m_pBoneOffset->Create(sizeof(Matrix), (UINT)vecOffset.size(), SB_READ_TYPE::READ_ONLY, false, vecOffset.data());
-	//}
 
 	if (m_vecAnimClip.size() > 0 && m_vecBones.size() > 0)
 	{
@@ -578,7 +537,6 @@ int CMesh::Load(const wstring& _strFilePath)
 			{
 				for (size_t frameIdx = 0; frameIdx < m_vecBones[i].vecKeyFrame[clipIdx].size(); ++frameIdx)
 				{
-					size_t globalFrameIdx = frameIdx;
 					vecFrameTrans[(UINT)m_vecBones.size() * frameIdx + i] =
 						tFrameTrans{Vec4(m_vecBones[i].vecKeyFrame[clipIdx][frameIdx].vTranslate, 0.f),
 									Vec4(m_vecBones[i].vecKeyFrame[clipIdx][frameIdx].vScale, 0.f),
@@ -587,7 +545,7 @@ int CMesh::Load(const wstring& _strFilePath)
 			}
 
 			CStructuredBuffer* pSB = new CStructuredBuffer;
-			pSB->Create(sizeof(tFrameTrans), (UINT)vecFrameTrans.size(), SB_READ_TYPE::READ_ONLY, false,
+			pSB->Create(sizeof(tFrameTrans), (UINT)vecFrameTrans.size(), SB_READ_TYPE::READ_ONLY, true,
 						vecFrameTrans.data());
 			m_vecBoneFrameData.push_back(pSB);
 		}
