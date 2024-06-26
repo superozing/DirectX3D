@@ -44,6 +44,8 @@ void CPanelUIScript::tick()
 
 	if (m_AllowTexSet)
 		MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_PanelTex);
+	else
+		MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, nullptr);
 }
 
 void CPanelUIScript::LBtnDown()
