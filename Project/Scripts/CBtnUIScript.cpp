@@ -83,14 +83,17 @@ void CBtnUIScript::LBtnClicked()
 	m_CurImg = m_NormalImg;
 	if (m_AllowTexSet && m_CurImg.Get())
 		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_CurImg);
+	
+	if (m_AllowCallFunc)
+	{
+		// CallBack
+		if (m_CallBackFunc)
+			m_CallBackFunc();
 
-	// CallBack
-	if (m_CallBackFunc)
-		m_CallBackFunc();
-
-	// Delegate
-	if (m_Inst && m_Delegate)
-		(m_Inst->*m_Delegate)();
+		// Delegate
+		if (m_Inst && m_Delegate)
+			(m_Inst->*m_Delegate)();
+	}
 }
 
 void CBtnUIScript::SaveToFile(FILE* _File)

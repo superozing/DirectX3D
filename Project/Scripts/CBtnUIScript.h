@@ -13,6 +13,7 @@ private:
 	Ptr<CTexture> m_CurImg;
 
 	bool m_AllowTexSet;
+	bool m_AllowCallFunc = true;
 
 	// 콜백 (전역함수 포인터)
 	BtnCallBack m_CallBackFunc;
@@ -28,6 +29,9 @@ public:
 
 	void AllowTexSet() { m_AllowTexSet = true; }
 	void DisallowTexSet() { m_AllowTexSet = false; }
+
+	void AllowCallFunc() { m_AllowCallFunc = true; }
+	void DisallowCallFunc() { m_AllowCallFunc = false; }
 
 	void SetCallBack(BtnCallBack _CallBack) { m_CallBackFunc = _CallBack; }
 
