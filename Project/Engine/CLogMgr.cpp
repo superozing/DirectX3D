@@ -85,9 +85,9 @@ void CLogMgr::CopyLog()
 	strLogSavepath += L"\\Log.txt";
 
 	// Log 폴더가 없다면 폴더 생성
-	if (!std::filesystem::exists(CPathMgr::GetLogPath()))
+	if (!exists(CPathMgr::GetLogPath()))
 	{
-		std::filesystem::create_directories(CPathMgr::GetLogPath());
+		create_directories(CPathMgr::GetLogPath());
 	}
 
 	ofstream fout(strLogSavepath, ofstream::out | ofstream::trunc);

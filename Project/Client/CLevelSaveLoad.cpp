@@ -208,6 +208,7 @@ CLevel* CLevelSaveLoad::LoadLevel(const wstring& _strLevelPath)
 	Utils::GetLineUntilString(fin, TagLevelName);
 	getline(fin, strLevelName);
 	pLevel->SetName(strLevelName);
+	pLevel->SetRelativePath(ToString(_strLevelPath));
 
 	// Layer 로드
 	for (UINT i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)

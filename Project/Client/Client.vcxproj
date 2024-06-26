@@ -161,6 +161,7 @@
     <ClInclude Include="CCreatePlayerTestLevel.h" />
     <ClInclude Include="CCreateTempLevel.h" />
     <ClInclude Include="CEditorObjMgr.h" />
+    <ClInclude Include="CEnvMgr.h" />
     <ClInclude Include="CGameObjectEx.h" />
     <ClInclude Include="CIdleState.h" />
     <ClInclude Include="CImGuiMgr.h" />
@@ -220,6 +221,7 @@
     <ClCompile Include="CCreatePlayerTestLevel.cpp" />
     <ClCompile Include="CCreateTempLevel.cpp" />
     <ClCompile Include="CEditorObjMgr.cpp" />
+    <ClCompile Include="CEnvMgr.cpp" />
     <ClCompile Include="CGameObjectEx.cpp" />
     <ClCompile Include="CIdleState.cpp" />
     <ClCompile Include="CImGuiMgr.cpp" />

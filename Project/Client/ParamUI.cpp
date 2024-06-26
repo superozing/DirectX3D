@@ -364,6 +364,67 @@ bool ParamUI::Param_TEXTURE(Ptr<CTexture>& _Texture, const string& _Desc, UI* _I
 	return false;
 }
 
+#include <Engine/CGameObject.h>
+
+// bool ParamUI::Param_OBJECT(CGameObject* _Object, const string& _Desc, COMPONENT_TYPE _Ctype, SCRIPT_TYPE _Stype,
+//						   bool _View, const string& _Tooltip)
+//{
+//	ImGui::Text(_Desc.c_str());
+//	ImGui::SameLine();
+//
+//	char szID[256] = {};
+//	sprintf_s(szID, "##obj%d", g_ID++);
+//
+//	if (_View)
+//	{
+//		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !_Tooltip.empty())
+//		{
+//			ImGui::SetTooltip(_Tooltip.c_str());
+//		}
+//		if (ImGui::InputText(szID, (char*)_Object->GetName().c_str(), _Object->GetName().length(),
+//							 ImGuiInputTextFlags_ReadOnly))
+//		{
+//			return true;
+//		}
+//	}
+//	else
+//	{
+//		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !_Tooltip.empty())
+//		{
+//			ImGui::SetTooltip(_Tooltip.c_str());
+//		}
+//		if (ImGui::InputText(szID, (char*)_Object->GetName().c_str(), _Object->GetName().length(),
+//							 ImGuiInputTextFlags_ReadOnly))
+//		{
+//			return true;
+//		}
+//		if (ImGui::BeginDragDropTarget())
+//		{
+//			const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ContentTree");
+//
+//			if (payload)
+//			{
+//				DWORD_PTR data	  = *((DWORD_PTR*)payload->Data);
+//				CEntity*  ptrData = (CEntity*)data;
+//
+//				//	// 레벨 들어가면 터짐
+//				//	T* Res = dynamic_cast<T*>(ptrData);
+//
+//				//	if (Res != nullptr)
+//				//	{
+//				//		*_Ptr = Res;
+//				//		ImGui::EndDragDropTarget();
+//				//		return true;
+//				//	}
+//			}
+//
+//			ImGui::EndDragDropTarget();
+//		}
+//	}
+//
+//	return false;
+// }
+
 bool ParamUI::Param_FUNC_STATIC(StaticFuncPtr _Func, const string& _Desc)
 {
 	if (ImGui::Button(_Desc.c_str()))
