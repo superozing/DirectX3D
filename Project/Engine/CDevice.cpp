@@ -26,7 +26,7 @@ CDevice::~CDevice()
 	Delete_Array(m_arrSB);
 }
 
-int CDevice::init(HWND _hWnd, Vec2 _vResolution)
+int CDevice::init(HWND _hWnd, Vec2 _vResolution, bool bWindowMode)
 {
 	// 출력 윈도우
 	m_hRenderWnd = _hWnd;
@@ -45,7 +45,7 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution)
 	}
 
 	// 스왚체인 생성
-	if (FAILED(CreateSwapChain()))
+	if (FAILED(CreateSwapChain(bWindowMode)))
 	{
 		MessageBox(nullptr, L"SwapChain 생성 실패", L"Device 초기화 실패", MB_OK);
 		return E_FAIL;

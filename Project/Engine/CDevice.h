@@ -30,7 +30,7 @@ private:
 	bool bIsWindowMode;
 
 public:
-	int	 init(HWND _hWnd, Vec2 _vResolution);
+	int	 init(HWND _hWnd, Vec2 _vResolution, bool bWindowMode);
 	void Present();
 
 	int RenewResolution(Vec2 _vResolutio, bool bWindowMode);

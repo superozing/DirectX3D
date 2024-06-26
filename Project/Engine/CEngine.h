@@ -18,6 +18,6 @@ private:
 	void TestFunction();
 
 public:
-	int	 init(HWND _hWnd, Vec2 _vResolution);
+	int	 init(HWND _hWnd, Vec2 _vResolution, bool bWindowMode = true);
 	void progress();
 };
