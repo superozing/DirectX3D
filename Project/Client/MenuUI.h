@@ -8,14 +8,15 @@ public:
 	virtual void render_update() override;
 
 private:
-    void File();
-    void Level();
-    void GameObject();
-    void Asset();
+	void File();
+	void Level();
+	void GameObject();
+	void Asset();
 	void ScreenControl();
 
 private:
 	void ContentSaveAll();
+	void ScreenResize(Vec2 _Resolution, bool IsWindowMode);
 
 public:
 	MenuUI();

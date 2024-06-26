@@ -352,6 +352,19 @@ void MenuUI::ContentSaveAll()
 	}
 }
 
+void MenuUI::ScreenResize(Vec2 _Resolution, bool IsWindowMode)
+{
+
+	tTask Task;
+	Task.Type	 = TASK_TYPE::CHANGE_RESOLUTION;
+	Task.Param_1 = (UINT_PTR)_Resolution.x;
+	Task.Param_2 = (UINT_PTR)_Resolution.y;
+
+	CDevice::GetInst()->SetScreenMode(IsWindowMode);
+
+	CTaskMgr::GetInst()->AddTask(Task);
+}
+
 #include <Engine\CEngine.h>
 
 void MenuUI::ScreenControl()
@@ -371,50 +384,22 @@ void MenuUI::ScreenControl()
 
 		if (ImGui::MenuItem("1366 X 720"))
 		{
-			Vec2 Res = {1366.f, 720.f};
-
-			tTask Task;
-			Task.Type	 = TASK_TYPE::CHANGE_RESOLUTION;
-			Task.Param_1 = (UINT_PTR)Res.x;
-			Task.Param_2 = (UINT_PTR)Res.y;
-
-			CTaskMgr::GetInst()->AddTask(Task);
+			ScreenResize(Vec2(1366.f, 720.f), IsWindowMode);
 		}
 
 		if (ImGui::MenuItem("1910 X 960"))
 		{
-			Vec2 Res = {1910.f, 960.f};
-
-			tTask Task;
-			Task.Type	 = TASK_TYPE::CHANGE_RESOLUTION;
-			Task.Param_1 = (UINT_PTR)Res.x;
-			Task.Param_2 = (UINT_PTR)Res.y;
-
-			CTaskMgr::GetInst()->AddTask(Task);
+			ScreenResize(Vec2(1910.f, 960.f), IsWindowMode);
 		}
 
 		if (ImGui::MenuItem("1920 X 1080"))
 		{
-			Vec2 Res = {1920.f, 1080.f};
-
-			tTask Task;
-			Task.Type	 = TASK_TYPE::CHANGE_RESOLUTION;
-			Task.Param_1 = (UINT_PTR)Res.x;
-			Task.Param_2 = (UINT_PTR)Res.y;
-
-			CTaskMgr::GetInst()->AddTask(Task);
+			ScreenResize(Vec2(1920.f, 1080.f), IsWindowMode);
 		}
 
 		if (ImGui::MenuItem("2560 X 1440"))
 		{
-			Vec2 Res = {2560.f, 1440.f};
-
-			tTask Task;
-			Task.Type	 = TASK_TYPE::CHANGE_RESOLUTION;
-			Task.Param_1 = (UINT_PTR)Res.x;
-			Task.Param_2 = (UINT_PTR)Res.y;
-
-			CTaskMgr::GetInst()->AddTask(Task);
+			ScreenResize(Vec2(2560.f, 1440.f), IsWindowMode);
 		}
 
 		static int Resolution[2] = {0, 0};
