@@ -3,6 +3,7 @@
 
 #include <Engine\CRenderMgr.h>
 #include <Engine\CDevice.h>
+#include <Engine/CEngine.h>
 #include "CImGuiMgr.h"
 
 #include "CLevelSaveLoad.h"
@@ -234,8 +235,12 @@ void EditTransform(float* cameraView, float* cameraProjection, float* matrix, bo
 	float					viewManipulateTop	= ImGui::GetWindowPos().y;
 	static ImGuiWindowFlags gizmoWindowFlags	= 0;
 
+	HWND hWnd = CEngine::GetInst()->GetMainWind(); // 활성화된 창의 핸들 얻기
+	RECT rect;
+	GetWindowRect(hWnd, &rect);
+
 	auto size = ImGui::GetWindowSize();
-	ImGuizmo::SetRect(0, 0, size.x, size.y);
+	ImGuizmo::SetRect(rect.left, rect.top, size.x, size.y);
 
 	ImGuizmo::SetDrawlist();
 	ImGuizmo::Manipulate(cameraView, cameraProjection, mCurrentGizmoOperation, mCurrentGizmoMode, matrix, NULL,

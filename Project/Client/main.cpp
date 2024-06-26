@@ -266,13 +266,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_EXITSIZEMOVE: {
 		RECT rect;
 
-		if (GetWindowRect(hWnd, &rect))
+		if (GetClientRect(hWnd, &rect))
 		{
 			// rect 구조체에 윈도우의 크기와 위치 정보가 저장됨
-			int width  = rect.right - rect.left;
-			int height = rect.bottom - rect.top;
+			int	 width	= rect.right - rect.left;
+			int	 height = rect.bottom - rect.top;
+			Vec2 newRes(width, height);
+			auto vRes = CDevice::GetInst()->GetRenderResolution();
+			if (vRes == newRes)
+				break;
 
-			CEngine::GetInst()->ResizeScreenResolution(Vec2{width, height}, true);
+			CEngine::GetInst()->ResizeScreenResolution(newRes, true);
 		}
 	}
 	break;
