@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-class MapTestLevel
+class MapTutorial
 {
 public:
 	static void Init();
