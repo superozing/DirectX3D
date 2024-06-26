@@ -343,8 +343,10 @@ void CUITempLevel::CreateTempLevel()
 
 	auto pWeaponInfo = new CWeaponInfo;
 	pObj->AddComponent(pWeaponInfo);
+	pWeaponInfo->SetMaxAmmo(30);
+	pWeaponInfo->SetCurAmmo(30);
 
-	pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
+	pObj->Transform()->SetRelativePos(Vec3(700, -300, 0));
 	pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
@@ -359,7 +361,7 @@ void CUITempLevel::CreateTempLevel()
 	pObj->AddComponent(pCrosshair);
 
 	pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
-	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+	pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 
@@ -374,7 +376,7 @@ void CUITempLevel::CreateTempLevel()
 	pObj->AddComponent(SubHPbtnUI);
 	SubHPbtnUI->AllowTexSet();
 	SubHPbtnUI->SetNormalImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
-	SubHPbtnUI->SetDeletage((CEntity*)pCrosshair, (DelegateFunc)&CCrosshair::Fire);
+	SubHPbtnUI->SetDeletage((CEntity*)pWeaponInfo, (DelegateFunc)&CWeaponInfo::Fire);
 
 	pObj->Transform()->SetRelativePos(Vec3(800, -400, 100.f));
 	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));

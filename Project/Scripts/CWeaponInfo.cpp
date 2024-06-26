@@ -18,16 +18,19 @@ CWeaponInfo::~CWeaponInfo()
 
 void CWeaponInfo::begin()
 {
-	CGameObject* pObj = new CGameObject;
+
+	// Weapon ui
+	auto pObj = new CGameObject;
 	m_pWeaponUI		  = new CImageUIScript;
 
-	pObj->SetName("WeaponInfo");
+	pObj->SetName("Weapon UI");
 
 	pObj->AddComponent(new CTransform);
 	pObj->AddComponent(new CMeshRender);
 	pObj->AddComponent(m_pWeaponUI);
 
-	pObj->Transform()->SetRelativeScale(Vec3(958.f, 246.f, 1.f));
+	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 10.f));
+	pObj->Transform()->SetRelativeScale(Vec3(479.f, 123.f, 1.f));
 
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
@@ -41,8 +44,9 @@ void CWeaponInfo::begin()
 	// Font Info
 	m_AmmoFontInfo.fFontSize = 50.f;
 	m_AmmoFontInfo.FontType	 = FONT_TYPE::MAPLE;
+	m_AmmoFontInfo.TextFlag	 = FW1_RIGHT;
 
-	m_AmmoFontOffset.x = 50.f;
+	m_AmmoFontOffset.x = 200.f;
 	m_AmmoFontOffset.y = 50.f;
 }
 
@@ -50,9 +54,9 @@ void CWeaponInfo::tick()
 {
 	// 폰트의 색상 설정
 	if (m_CurAmmo > 0)
-		m_AmmoFontInfo.Color = FONT_RGBA(255, 0, 0, 255);
-	else
 		m_AmmoFontInfo.Color = FONT_RGBA(255, 255, 255, 255);
+	else
+		m_AmmoFontInfo.Color = FONT_RGBA(255, 60, 60, 255);
 
 	// 폰트의 위치 설정
 
