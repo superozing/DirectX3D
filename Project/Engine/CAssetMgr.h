@@ -71,16 +71,14 @@ public:
 	/// </summary>
 	Ptr<CAsset> GetAsset(ASSET_TYPE _type, string _key);
 
-    void SaveDefaultGraphicsShader();
- 
-	//private:
-    // 지정된 에셋을 삭제한다.
-    template<typename T>
-    void DeleteAsset(const wstring& _strKey);
-    void DeleteAsset(ASSET_TYPE _Type, const wstring& _strKey);
-	
+	void SaveDefaultGraphicsShader();
 
-    friend class CTaskMgr;
+private:
+	//  지정된 에셋을 삭제한다.
+	template <typename T> void DeleteAsset(const wstring& _strKey);
+	void					   DeleteAsset(ASSET_TYPE _Type, const wstring& _strKey);
+
+	friend class CTaskMgr;
 	friend class CDevice;
 };
 

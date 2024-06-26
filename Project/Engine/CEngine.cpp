@@ -123,6 +123,8 @@ void CEngine::ResizeScreenResolution(Vec2 NewResolution, bool bWindowMode)
 					 SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
 	}
 
+	CDevice::GetInst()->SetScreenMode(bWindowMode);
+
 	// 해상도 변경 시도
 	if (FAILED(CDevice::GetInst()->RenewResolution(NewResolution, bWindowMode)))
 	{

@@ -5,6 +5,7 @@
 #include "CStructuredBuffer.h"
 #include "CAssetMgr.h"
 #include "CRenderMgr.h"
+#include "CTaskMgr.h"
 
 CDevice::CDevice()
 	: m_hRenderWnd(nullptr)
@@ -101,7 +102,7 @@ void CDevice::Present()
 	m_SwapChain->Present(0, 0);
 }
 
-int CDevice::RenewResolution(Vec2 _vResolution, bool bFullScreen)
+int CDevice::RenewResolution(Vec2 _vResolution, bool bWindowMode)
 {
 	m_vRenderResolution = _vResolution;
 
@@ -124,6 +125,7 @@ int CDevice::RenewResolution(Vec2 _vResolution, bool bFullScreen)
 	CRenderMgr::GetInst()->ResetMRT();
 	CRenderMgr::GetInst()->CreateMRT();
 
+	// MRT와 연관없는 Texture 생성
 	CAssetMgr::GetInst()->CreateTexture(L"CopyRTtex", m_vRenderResolution.x, m_vRenderResolution.y,
 										DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE);
 
@@ -132,8 +134,6 @@ int CDevice::RenewResolution(Vec2 _vResolution, bool bFullScreen)
 											DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE);
 
 	RematchMtrlTexParam();
-
-	SetScreenMode(bFullScreen);
 
 	return S_OK;
 }

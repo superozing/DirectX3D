@@ -8,6 +8,7 @@
 #include "CComponent.h"
 
 #include "CEngine.h"
+#include "CDevice.h"
 
 CTaskMgr::CTaskMgr()
 	: m_bCreateObject(false)
@@ -118,7 +119,9 @@ void CTaskMgr::tick()
 
 			Vec2 vRes = {ResX, ResY};
 
-			CEngine::GetInst()->ResizeScreenResolution(vRes, false);
+			bool IsWidnowMode = CDevice::GetInst()->GetScreenMode();
+
+			CEngine::GetInst()->ResizeScreenResolution(vRes, IsWidnowMode);
 		}
 		break;
 		}

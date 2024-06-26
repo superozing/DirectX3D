@@ -33,7 +33,7 @@ public:
 	int	 init(HWND _hWnd, Vec2 _vResolution);
 	void Present();
 
-	int RenewResolution(Vec2 _vResolutio, bool bFullScreen);
+	int RenewResolution(Vec2 _vResolutio, bool bWindowMode);
 
 	ID3D11Device*		 GetDevice() { return m_Device.Get(); }
 	ID3D11DeviceContext* GetContext() { return m_Context.Get(); }
