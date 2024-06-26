@@ -200,12 +200,13 @@ void Inspector::ObjectLayer()
 	CLevel* CurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
 
 	// 오브젝트 레이어
-	int	   LayerIdx	 = m_TargetObject->GetLayerIdx();
-	string LayerName = ToString(CurLevel->GetLayer(LayerIdx)->GetName());
-	int	   PrevIdx	 = LayerIdx;
+	int LayerIdx = m_TargetObject->GetLayerIdx();
 
 	if (-1 != LayerIdx)
 	{
+		string LayerName = ToString(CurLevel->GetLayer(LayerIdx)->GetName());
+		int	   PrevIdx	 = LayerIdx;
+
 		ImGui::Text("Layer");
 		ImGui::SameLine();
 		auto LayerVal = magic_enum::enum_cast<LAYER>(LayerName);
