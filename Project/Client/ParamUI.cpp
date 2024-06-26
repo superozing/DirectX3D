@@ -377,14 +377,7 @@ bool ParamUI::Param_MGR_PHYSX(void* _pPhysXMgr)
 			if (ImGui::Checkbox(buf, &isColliding))
 			{
 				// 체크 상태가 변경되면 충돌 정보를 업데이트합니다.
-				if (isColliding)
-				{
-					CPhysXMgr::m_layerMasks[i] |= (1 << j);
-				}
-				else
-				{
-					CPhysXMgr::m_layerMasks[i] &= ~(1 << j);
-				}
+				pPhysXMgr->LayerCheckToggle((UINT)i, (UINT)j);
 			}
 
 			// 적절한 간격을 추가합니다.

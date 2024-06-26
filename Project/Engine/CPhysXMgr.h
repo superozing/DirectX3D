@@ -19,6 +19,7 @@ private:
 	class RoRCollisionCallback* gCollisionCalback = nullptr;
 
 	void LayerCheck(UINT _left, UINT _right);
+	void LayerCheckToggle(UINT _left, UINT _right);
 
 public:
 	static UINT m_layerMasks[static_cast<UINT>(LAYER::LAYER_MAX)];
@@ -29,4 +30,6 @@ public:
 
 private:
 	void Clear() {};
+
+	friend class ParamUI;
 };

@@ -34,6 +34,12 @@ void CPhysXMgr::LayerCheck(UINT _left, UINT _right)
     UINT iRow = _left;
     UINT iCol = _right;
 
+    if (iRow == iCol)
+    {
+        m_layerMasks[iRow] |= (1 << iCol);
+        return;
+    }
+
     if (iRow > iCol)
     {
         std::swap(iRow, iCol);
@@ -42,6 +48,29 @@ void CPhysXMgr::LayerCheck(UINT _left, UINT _right)
     m_layerMasks[iRow] |= (1 << iCol);
     m_layerMasks[iCol] |= (1 << iRow);
 }
+
+
+void CPhysXMgr::LayerCheckToggle(UINT _left, UINT _right)
+{
+    UINT iRow = _left;
+    UINT iCol = _right;
+
+    if (iRow == iCol)
+    {
+        m_layerMasks[_left] ^= (1 << _right);
+        return;
+    }
+
+    if (iRow > iCol)
+    {
+        std::swap(iRow, iCol);
+    }
+
+    // iRow와 iCol 위치의 비트를 반전시킴
+    m_layerMasks[iRow] ^= (1 << iCol);
+    m_layerMasks[iCol] ^= (1 << iRow);
+}
+
 
 void CPhysXMgr::init()
 {
