@@ -290,13 +290,16 @@ void CCamera::SortObject()
 		}
 	}
 
-	// Depth Sort
-	std::sort(m_vecOpaque.begin(), m_vecOpaque.end(), CmpAscending());
-	std::sort(m_vecMasked.begin(), m_vecMasked.end(), CmpAscending());
+	// Depth Sorting
 	std::sort(m_vecTransparent.begin(), m_vecTransparent.end(), CmpDescending());
 }
 
 void CCamera::render_deferred()
+{
+	render_Instance(m_mapInstGroup_D);
+}
+
+void CCamera::render_Instance(const map<ULONG64, vector<tInstObj>>& m_mapInstGroup)
 {
 	for (auto& pair : m_mapSingleObj)
 	{
@@ -306,7 +309,7 @@ void CCamera::render_deferred()
 	// Deferred object render
 	tInstancingData tInstData = {};
 
-	for (auto& pair : m_mapInstGroup_D)
+	for (auto& pair : m_mapInstGroup)
 	{
 		// 그룹 오브젝트가 없거나, 쉐이더가 없는 경우
 		if (pair.second.empty())
@@ -414,6 +417,8 @@ void CCamera::render_decal()
 
 void CCamera::render_forward()
 {
+	render_Instance(m_mapInstGroup_F);
+
 	for (size_t i = 0; i < m_vecTransparent.size(); ++i)
 	{
 		m_vecTransparent[i]->render();
