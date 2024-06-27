@@ -550,16 +550,16 @@ int CGraphicsShader::Load(const wstring& _strFilePath)
 	Utils::GetLineUntilString(fin, TagHSFuncName);
 	getline(fin, m_HSFuncName);
 
-	// if (!m_HSPath.empty() && !m_HSFuncName.empty())
-	// CreateHullShader(ToWString(m_HSPath), m_HSFuncName);
+	if (!m_HSPath.empty() && !m_HSFuncName.empty())
+		CreateHullShader(ToWString(m_HSPath), m_HSFuncName);
 
 	Utils::GetLineUntilString(fin, TagDSPath);
 	getline(fin, m_DSPath);
 	Utils::GetLineUntilString(fin, TagDSFuncName);
 	getline(fin, m_DSFuncName);
 
-	// if (!m_VSPath.empty() && !m_VSFuncName.empty())
-	// CreateDomainShader(ToWString(m_DSPath), m_DSFuncName);
+	if (!m_DSPath.empty() && !m_DSFuncName.empty())
+		CreateDomainShader(ToWString(m_DSPath), m_DSFuncName);
 
 	Utils::GetLineUntilString(fin, TagGSPath);
 	getline(fin, m_GSPath);
