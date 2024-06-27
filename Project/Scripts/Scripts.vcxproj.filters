@@ -105,6 +105,9 @@
     <ClCompile Include="CRoRStateMachine.cpp">
       <Filter>RoRStateMachine</Filter>
     </ClCompile>
+    <ClCompile Include="CPlayerScript_State.cpp">
+      <Filter>Scripts\Lecture</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
