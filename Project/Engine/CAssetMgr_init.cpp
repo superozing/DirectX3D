@@ -948,7 +948,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	AddAsset(L"DynamicUIShader", pShader.Get());
 
 	// ================
-	// 3DImageWrap Shader
+	// ImageWrap Shader
 	// ----------------
 	// Mesh: CubeMesh
 	// RenderComp: MeshRender
@@ -958,7 +958,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->CreateVertexShader(FXImageWrap, "VS_ImageWrap");
 	pShader->CreatePixelShader(FXImageWrap, "PS_ImageWrap");
 
-	pShader->SetRSType(RS_TYPE::CULL_BACK);
+	pShader->SetRSType(RS_TYPE::CULL_FRONT);
 	pShader->SetDSType(DS_TYPE::LESS);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
 
