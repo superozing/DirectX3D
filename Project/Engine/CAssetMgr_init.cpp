@@ -183,17 +183,17 @@ void CAssetMgr::CreateDefaultMesh()
 
 	arrCube[1].vPos	   = Vec3(0.5f, 0.5f, 0.5f);
 	arrCube[1].vColor  = Vec4(1.f, 1.f, 1.f, 1.f);
-	arrCube[1].vUV	   = Vec2(0.f, 0.f);
+	arrCube[1].vUV	   = Vec2(1.f, 0.f);
 	arrCube[1].vNormal = Vec3(0.f, 1.f, 0.f);
 
 	arrCube[2].vPos	   = Vec3(0.5f, 0.5f, -0.5f);
 	arrCube[2].vColor  = Vec4(1.f, 1.f, 1.f, 1.f);
-	arrCube[2].vUV	   = Vec2(0.f, 0.f);
+	arrCube[2].vUV	   = Vec2(1.f, 1.f);
 	arrCube[2].vNormal = Vec3(0.f, 1.f, 0.f);
 
 	arrCube[3].vPos	   = Vec3(-0.5f, 0.5f, -0.5f);
 	arrCube[3].vColor  = Vec4(1.f, 1.f, 1.f, 1.f);
-	arrCube[3].vUV	   = Vec2(0.f, 0.f);
+	arrCube[3].vUV	   = Vec2(0.f, 1.f);
 	arrCube[3].vNormal = Vec3(0.f, 1.f, 0.f);
 
 	// 아랫 면
@@ -204,17 +204,17 @@ void CAssetMgr::CreateDefaultMesh()
 
 	arrCube[5].vPos	   = Vec3(0.5f, -0.5f, -0.5f);
 	arrCube[5].vColor  = Vec4(1.f, 0.f, 0.f, 1.f);
-	arrCube[5].vUV	   = Vec2(0.f, 0.f);
+	arrCube[5].vUV	   = Vec2(1.f, 0.f);
 	arrCube[5].vNormal = Vec3(0.f, -1.f, 0.f);
 
 	arrCube[6].vPos	   = Vec3(0.5f, -0.5f, 0.5f);
 	arrCube[6].vColor  = Vec4(1.f, 0.f, 0.f, 1.f);
-	arrCube[6].vUV	   = Vec2(0.f, 0.f);
+	arrCube[6].vUV	   = Vec2(1.f, 1.f);
 	arrCube[6].vNormal = Vec3(0.f, -1.f, 0.f);
 
 	arrCube[7].vPos	   = Vec3(-0.5f, -0.5f, 0.5f);
 	arrCube[7].vColor  = Vec4(1.f, 0.f, 0.f, 1.f);
-	arrCube[7].vUV	   = Vec2(0.f, 0.f);
+	arrCube[7].vUV	   = Vec2(0.f, 1.f);
 	arrCube[7].vNormal = Vec3(0.f, -1.f, 0.f);
 
 	// 왼쪽 면
@@ -225,17 +225,17 @@ void CAssetMgr::CreateDefaultMesh()
 
 	arrCube[9].vPos	   = Vec3(-0.5f, 0.5f, -0.5f);
 	arrCube[9].vColor  = Vec4(0.f, 1.f, 0.f, 1.f);
-	arrCube[9].vUV	   = Vec2(0.f, 0.f);
+	arrCube[9].vUV	   = Vec2(1.f, 0.f);
 	arrCube[9].vNormal = Vec3(-1.f, 0.f, 0.f);
 
 	arrCube[10].vPos	= Vec3(-0.5f, -0.5f, -0.5f);
 	arrCube[10].vColor	= Vec4(0.f, 1.f, 0.f, 1.f);
-	arrCube[10].vUV		= Vec2(0.f, 0.f);
+	arrCube[10].vUV		= Vec2(1.f, 1.f);
 	arrCube[10].vNormal = Vec3(-1.f, 0.f, 0.f);
 
 	arrCube[11].vPos	= Vec3(-0.5f, -0.5f, 0.5f);
 	arrCube[11].vColor	= Vec4(0.f, 1.f, 0.f, 1.f);
-	arrCube[11].vUV		= Vec2(0.f, 0.f);
+	arrCube[11].vUV		= Vec2(0.f, 1.f);
 	arrCube[11].vNormal = Vec3(-1.f, 0.f, 0.f);
 
 	// 오른쪽 면
@@ -246,17 +246,17 @@ void CAssetMgr::CreateDefaultMesh()
 
 	arrCube[13].vPos	= Vec3(0.5f, 0.5f, 0.5f);
 	arrCube[13].vColor	= Vec4(0.f, 0.f, 1.f, 1.f);
-	arrCube[13].vUV		= Vec2(0.f, 0.f);
+	arrCube[13].vUV		= Vec2(1.f, 0.f);
 	arrCube[13].vNormal = Vec3(1.f, 0.f, 0.f);
 
 	arrCube[14].vPos	= Vec3(0.5f, -0.5f, 0.5f);
 	arrCube[14].vColor	= Vec4(0.f, 0.f, 1.f, 1.f);
-	arrCube[14].vUV		= Vec2(0.f, 0.f);
+	arrCube[14].vUV		= Vec2(1.f, 1.f);
 	arrCube[14].vNormal = Vec3(1.f, 0.f, 0.f);
 
 	arrCube[15].vPos	= Vec3(0.5f, -0.5f, -0.5f);
 	arrCube[15].vColor	= Vec4(0.f, 0.f, 1.f, 1.f);
-	arrCube[15].vUV		= Vec2(0.f, 0.f);
+	arrCube[15].vUV		= Vec2(0.f, 1.f);
 	arrCube[15].vNormal = Vec3(1.f, 0.f, 0.f);
 
 	// 뒷 면
@@ -267,17 +267,17 @@ void CAssetMgr::CreateDefaultMesh()
 
 	arrCube[17].vPos	= Vec3(-0.5f, 0.5f, 0.5f);
 	arrCube[17].vColor	= Vec4(1.f, 1.f, 0.f, 1.f);
-	arrCube[17].vUV		= Vec2(0.f, 0.f);
+	arrCube[17].vUV		= Vec2(1.f, 0.f);
 	arrCube[17].vNormal = Vec3(0.f, 0.f, 1.f);
 
 	arrCube[18].vPos	= Vec3(-0.5f, -0.5f, 0.5f);
 	arrCube[18].vColor	= Vec4(1.f, 1.f, 0.f, 1.f);
-	arrCube[18].vUV		= Vec2(0.f, 0.f);
+	arrCube[18].vUV		= Vec2(1.f, 1.f);
 	arrCube[18].vNormal = Vec3(0.f, 0.f, 1.f);
 
 	arrCube[19].vPos	= Vec3(0.5f, -0.5f, 0.5f);
 	arrCube[19].vColor	= Vec4(1.f, 1.f, 0.f, 1.f);
-	arrCube[19].vUV		= Vec2(0.f, 0.f);
+	arrCube[19].vUV		= Vec2(0.f, 1.f);
 	arrCube[19].vNormal = Vec3(0.f, 0.f, 1.f);
 
 	// 앞 면
@@ -289,17 +289,17 @@ void CAssetMgr::CreateDefaultMesh()
 
 	arrCube[21].vPos	= Vec3(0.5f, 0.5f, -0.5f);
 	arrCube[21].vColor	= Vec4(1.f, 0.f, 1.f, 1.f);
-	arrCube[21].vUV		= Vec2(0.f, 0.f);
+	arrCube[21].vUV		= Vec2(1.f, 0.f);
 	arrCube[21].vNormal = Vec3(0.f, 0.f, -1.f);
 
 	arrCube[22].vPos	= Vec3(0.5f, -0.5f, -0.5f);
 	arrCube[22].vColor	= Vec4(1.f, 0.f, 1.f, 1.f);
-	arrCube[22].vUV		= Vec2(0.f, 0.f);
+	arrCube[22].vUV		= Vec2(1.f, 1.f);
 	arrCube[22].vNormal = Vec3(0.f, 0.f, -1.f);
 
 	arrCube[23].vPos	= Vec3(-0.5f, -0.5f, -0.5f);
 	arrCube[23].vColor	= Vec4(1.f, 0.f, 1.f, 1.f);
-	arrCube[23].vUV		= Vec2(0.f, 0.f);
+	arrCube[23].vUV		= Vec2(0.f, 1.f);
 	arrCube[23].vNormal = Vec3(0.f, 0.f, -1.f);
 
 	// 인덱스
@@ -950,7 +950,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// ================
 	// 3DImageWrap Shader
 	// ----------------
-	// Mesh: RectMesh
+	// Mesh: CubeMesh
 	// RenderComp: MeshRender
 	// ================
 
@@ -958,9 +958,12 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->CreateVertexShader(FXImageWrap, "VS_ImageWrap");
 	pShader->CreatePixelShader(FXImageWrap, "PS_ImageWrap");
 
-	pShader->SetRSType(RS_TYPE::CULL_FRONT);
+	pShader->SetRSType(RS_TYPE::CULL_BACK);
 	pShader->SetDSType(DS_TYPE::LESS);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
+
+	pShader->AddTexParam(TEX_PARAM::TEX_0, "Output Texture");
+	pShader->AddScalarParam(SCALAR_PARAM::VEC2_0, "ImageSize");
 
 	AddAsset(L"ImageWrapShader", pShader.Get());
 }
