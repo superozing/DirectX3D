@@ -13,6 +13,7 @@
 #include <Engine/CMesh.h>
 #include <Engine/CGraphicsShader.h>
 #include <Engine/CTexture.h>
+#include <Engine/CFontRender.h>
 
 #include "CLevelSaveLoad.h"
 
@@ -34,6 +35,7 @@
 #include <Scripts/CCrosshair.h>
 #include <Scripts/CWeaponInfo.h>
 #include <Scripts/CPausePanel.h>
+#include <Engine/CFontMgr.h>
 
 void CUITempLevel::Init()
 {
@@ -424,6 +426,28 @@ void CUITempLevel::CreateTempLevel()
 	pObj->MeshRender()->GetDynamicMaterial(0);
 	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0,
 													CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
+	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+
+
+	// Test Font
+	pObj = new CGameObject;
+	pObj->SetName(L"Test Font");
+
+	pObj->AddComponent(new CTransform);
+	pObj->AddComponent(new CFontRender);
+
+	pObj->Transform()->SetRelativePos(Vec3(650, -400, 100.f));
+	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+
+	tFontInfo FontInfo{};
+	FontInfo.Color = FONT_RGBA(255, 255, 255, 255);
+	FontInfo.fFontSize = 50.f;
+	FontInfo.FontType  = FONT_TYPE::ARIAL;
+	FontInfo.WStr	   = L"ABCDEFGHIJKLMNOPQR";
+
+	pObj->FontRender()->SetFontInfo(FontInfo);
+	pObj->FontRender()->AllowConvertWorldPosToWindowPos(true);
+
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 
 

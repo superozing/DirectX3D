@@ -63,8 +63,8 @@ void CWeaponInfo::tick()
 	Vec3 vWorldPos = Transform()->GetWorldPos();
 	Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
 
-	m_AmmoFontInfo.fPosX = vWorldPos.x + (vResol.x / 2) + m_AmmoFontOffset.x;
-	m_AmmoFontInfo.fPosY = -vWorldPos.y + (vResol.y / 2) + m_AmmoFontOffset.y;
+	m_AmmoFontInfo.vPos	 = Vec2(vWorldPos.x + (vResol.x / 2) + m_AmmoFontOffset.x,
+								-vWorldPos.y + (vResol.y / 2) + m_AmmoFontOffset.y);
 	
 	m_AmmoFontInfo.WStr = to_wstring(m_CurAmmo) + L" /" + to_wstring(m_MaxAmmo);
 

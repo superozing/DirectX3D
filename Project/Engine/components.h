@@ -15,5 +15,6 @@
 #include "CDecal.h"
 #include "CLandscape.h"
 #include "CAnimator3D.h"
+#include "CFontRender.h"
 
 // #include "CCollider3D.h"

@@ -195,6 +195,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CAnimator2D.h" />
     <ClInclude Include="CFBXLoader.h" />
     <ClInclude Include="CFontMgr.h" />
+    <ClInclude Include="CFontRender.h" />
     <ClInclude Include="CFrustum.h" />
     <ClInclude Include="CFSM.h" />
     <ClInclude Include="CGameObject.h" />
@@ -291,6 +292,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CAnimator2D.cpp" />
     <ClCompile Include="CFBXLoader.cpp" />
     <ClCompile Include="CFontMgr.cpp" />
+    <ClCompile Include="CFontRender.cpp" />
     <ClCompile Include="CFrustum.cpp" />
     <ClCompile Include="CFSM.cpp" />
     <ClCompile Include="CGameObject.cpp" />

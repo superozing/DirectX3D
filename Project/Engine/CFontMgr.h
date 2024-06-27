@@ -28,6 +28,7 @@ public:
 
 	void DrawFont(const wchar_t* _pStr, float _fPosX, float _fPosY, float _fFontSize, UINT _Color, FONT_TYPE _FontType,
 				  FW1_TEXT_FLAG _TextFlag = FW1_RESTORESTATE);
+	void DrawFont(tFontInfo& _FontInfo);
 	
 	void RegisterFont(const tFontInfo& _tFontInfo) { m_VecRenderFont.push_back(_tFontInfo); }
 

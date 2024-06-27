@@ -73,8 +73,7 @@ void CPausePanel::begin()
 
 	m_PanelFontInfo.FontType  = FONT_TYPE::MAPLE;
 
-	m_PanelFontInfo.fPosX	  = vResol.x / 2;
-	m_PanelFontInfo.fPosY	  = -250.f + (vResol.y / 2);
+	m_PanelFontInfo.vPos  = Vec2(vResol.x / 2, -250.f + (vResol.y / 2));
 
 	m_PanelFontInfo.TextFlag = FW1_CENTER;
 	m_PanelFontInfo.WStr	 = L"일시 정지";
