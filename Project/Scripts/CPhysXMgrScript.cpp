@@ -32,7 +32,7 @@ void CPhysXMgrScript::begin()
 	AppendScriptParam("RayDir", SCRIPT_PARAM::VEC3, (void*)&RayDir);
 
 	AppendScriptParam("raycol_result", SCRIPT_PARAM::BOOL, (void*)&iscontact,0.f,0.f,true);
-	//AppendScriptParam("raycol_obj", SCRIPT_PARAM::string, (void*)&strobj,0.f,0.f,true);
+	AppendScriptParam("raycol_obj", SCRIPT_PARAM::STRING, (void*)&strobj,0.f,0.f,true);
 	AppendScriptParam("raycol_pos", SCRIPT_PARAM::VEC3, (void*)&contactpos, 0.f, 0.f, true);
 }
 
