@@ -52,6 +52,9 @@
     <ClInclude Include="CRoRStateMachine.h">
       <Filter>RoRStateMachine</Filter>
     </ClInclude>
+    <ClInclude Include="CWrapImage.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -104,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="CRoRStateMachine.cpp">
       <Filter>RoRStateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="CWrapImage.cpp">
+      <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -964,6 +964,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
 	pShader->AddTexParam(TEX_PARAM::TEX_0, "Output Texture");
 	pShader->AddScalarParam(SCALAR_PARAM::VEC2_0, "ImageSize");
+	pShader->AddScalarParam(SCALAR_PARAM::VEC2_1, "PlaneSize");
 
 	AddAsset(L"ImageWrapShader", pShader.Get());
 }

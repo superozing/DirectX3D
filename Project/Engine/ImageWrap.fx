@@ -15,8 +15,8 @@
 #define ColorTextureCheck   g_btex_0
 #define NormalMapCheck      g_btex_1
 
-#define WrapCount           g_int_0
-#define SizeRatio           g_float_0
+#define TextuerSIze         g_vec2_0
+#define PlaneScale          g_vec2_1
 // ======================
 
 struct VS_IN
@@ -42,12 +42,7 @@ struct VS_OUT
 {
     float4 vPosition : SV_Position;
     float2 vUV : TEXCOORD;
-    
-   // float4 vViewPos : POSITION;
-   // float4 vViewTangent : TANGENT;
-   // float4 vViewNormal : NORMAL;
-   // float4 vViewBinormal : BINORMAL;
-    
+        
     float3 vViewPos : POSITION;
     float3 vViewTangent : TANGENT;
     float3 vViewNormal : NORMAL;
@@ -112,10 +107,22 @@ PS_OUT PS_ImageWrap(VS_OUT _in) : SV_Target
     
     float3 vViewNormal = (float3) 0.f;
     
+    float2 iWrapUV;
+    
+    
+    float2 WrapTexture = PlaneScale / TextuerSIze;
+    
+    iWrapUV = WrapTexture;
+    
+
+    
+    float2 uv = _in.vUV * iWrapUV;
+    
     if (ColorTextureCheck)
     {
-        vOutColor = ColorTexture.Sample(g_sam_0, (_in.vUV / WrapCount) * SizeRatio);
+        vOutColor = ColorTexture.Sample(g_sam_0, uv);
     }
+    
     
     output.vColor = vOutColor;
     output.vPosition = float4(_in.vViewPos, 1.f);

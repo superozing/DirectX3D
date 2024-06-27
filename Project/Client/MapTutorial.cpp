@@ -34,6 +34,8 @@
 #include "CTraceState.h"
 #include <Scripts/CRenderMgrScript.h>
 
+#include <Engine\CLogMgr.h>
+
 void MapTutorial::Init()
 {
 }
@@ -102,13 +104,21 @@ void MapTutorial::CreateMapTestLevel()
 
 	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
 	pObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
-	pObj->Transform()->SetRelativeScale(Vec3(20.f, 20.f, 20.f));
+	pObj->Transform()->SetRelativeScale(Vec3(5000.f, 5000.f, 5000.f));
 
-	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
-	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std3D_DeferredMtrl"), 0);
+	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHcube));
+	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ImageWrapMtrl"), 0);
 	pObj->MeshRender()->GetMaterial(0)->SetTexParam(
 		TEX_PARAM::TEX_0,
-		CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TutorialTile.png", L"texture\\tile\\TutorialTile.png"));
+		CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TutorialCube.jpg", L"texture\\tile\\TutorialCube.jpg"));
+
+	Ptr<CTexture> pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"texture\\tile\\TutorialCube.jpg");
+
+	Vec2 TexSize = Vec2(pTex.Get()->GetWidth(), pTex.Get()->GetHeight());
+	pObj->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC2_0, TexSize);
+
+	Vec2 PlaneSize = Vec2(pObj->Transform()->GetRelativeScale().x, pObj->Transform()->GetRelativeScale().y);
+	pObj->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC2_1, PlaneSize);
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT);
 

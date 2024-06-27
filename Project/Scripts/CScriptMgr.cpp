@@ -14,6 +14,7 @@
 #include "CImageUIScript.h"
 #include "CPanelUIScript.h"
 #include "CProgressBar.h"
+#include "CWrapImage.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -30,6 +31,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CImageUIScript");
 	_vec.push_back(L"CPanelUIScript");
 	_vec.push_back(L"CProgressBar");
+	_vec.push_back(L"CWrapImage");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -60,6 +62,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPanelUIScript;
 	if (L"CProgressBar" == _strScriptName)
 		return new CProgressBar;
+	if (L"CWrapImage" == _strScriptName)
+		return new CWrapImage;
 	return nullptr;
 }
 
@@ -105,6 +109,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::PROGRESSBAR:
 		return new CProgressBar;
+		break;
+	case (UINT)SCRIPT_TYPE::WRAPIMAGE:
+		return new CWrapImage;
 		break;
 	}
 	return nullptr;
@@ -164,6 +171,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::PROGRESSBAR:
 		return L"CProgressBar";
+		break;
+
+	case SCRIPT_TYPE::WRAPIMAGE:
+		return L"CWrapImage";
 		break;
 
 	}
