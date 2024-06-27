@@ -6,7 +6,7 @@
 
 void CPlayerScript::NormalBegin()
 {
-	// 노말 애니메이션 시작
+	// 노말 애니메이션 시작(임시)
 	Animator3D()->Play(2);
 }
 
@@ -72,9 +72,11 @@ void CPlayerScript::AttackBegin()
 int CPlayerScript::AttackUpdate()
 {
 	// 기본 움직임
+	CGameObject* pCamera = CRenderMgr::GetInst()->GetMainCam()->GetOwner();
+
 	Vec3 vPos	= Transform()->GetRelativePos();
-	Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-	Vec3 vRight = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+	Vec3 vFront = pCamera->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+	Vec3 vRight = pCamera->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
 
 	if (KEY_PRESSED(W))
 	{
