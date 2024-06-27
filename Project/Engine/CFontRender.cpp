@@ -23,11 +23,12 @@ void CFontRender::finaltick()
 
 void CFontRender::render()
 {
-	Vec3 vWorldPos = Transform()->GetWorldPos();
+	Transform()->UpdateData();
 
-	//if (GetOwner()->GetLayerIdx() != 31)
-		//vWorldPos = Vector3::Transform(vWorldPos, g_Transform.matWVP);
-		//vWorldPos = g_Transform.matWVP.Translation();
+	Vec4 vWorldPos;
+	if (GetOwner()->GetLayerIdx() != 31)
+		//vWorldPos = Vector4::Transform(Vec4(Transform()->GetWorldPos(), 1), g_Transform.matWV);
+		vWorldPos = g_Transform.matWVP.Translation();
 
 	m_FontInfo.vPos = ConvertUIWorldPosToWindowPos(vWorldPos);
 
