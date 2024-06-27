@@ -50,6 +50,9 @@ void ScriptUI::render_update()
 		case SCRIPT_PARAM::FLOAT:
 			ParamUI::Param_FLOAT((float*)iter->second.pData, iter->first, iter->second.fmin, iter->second.fMax, iter->second.View, iter->second.Tooltip);
 			break;
+		case SCRIPT_PARAM::STRING:
+			ParamUI::Param_STRING((string*)iter->second.pData, iter->first, iter->second.fmin, iter->second.fMax, iter->second.View, iter->second.Tooltip);
+			break;
 		case SCRIPT_PARAM::VEC2:
 			ParamUI::Param_VEC2((Vec2*)iter->second.pData, iter->first, iter->second.fmin, iter->second.fMax, iter->second.View, iter->second.Tooltip);
 			break;

@@ -14,6 +14,7 @@ public:
 	static bool Param_BOOL(bool* _Data, const string& _Desc, bool _View, const string& _Tooltip);
 	static bool Param_INT(int* _Data, const string& _Desc, int _min, int _Max, bool _View, const string& _Tooltip);
 	static bool Param_FLOAT(float* _Data, const string& _Desc, float _min, float _Max, bool _View, const string& _Tooltip);
+	static bool Param_STRING(string* _Data, const string& _Desc, float _min, float _Max, bool _View, const string& _Tooltip);
 	static bool Param_VEC2(Vec2* _Data, const string& _Desc, float _min, float _Max, bool _View, const string& _Tooltip);
 	static bool Param_VEC3(Vec3* _Data, const string& _Desc, float _min, float _Max, bool _View, const string& _Tooltip);
 	static bool Param_VEC4(Vec4* _Data, const string& _Desc, float _min, float _Max, bool _View, const string& _Tooltip);

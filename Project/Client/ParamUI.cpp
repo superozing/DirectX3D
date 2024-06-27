@@ -115,6 +115,40 @@ bool ParamUI::Param_FLOAT(float* _Data, const string& _Desc, float _min, float _
 	return false;
 }
 
+bool ParamUI::Param_STRING(string* _Data, const string& _Desc, float _min, float _Max, bool _View,
+	const string& _Tooltip)
+{
+	ImGui::Text(_Desc.c_str());
+	ImGui::SameLine();
+
+	char szID[256] = {};
+	sprintf_s(szID, "##float%d", g_ID++);
+
+	if (_View)
+	{
+		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !_Tooltip.empty())
+		{
+			ImGui::SetTooltip(_Tooltip.c_str());
+		}
+		ImGui::Text(_Data->c_str());
+	}
+	else
+	{
+		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !_Tooltip.empty())
+		{
+			ImGui::SetTooltip(_Tooltip.c_str());
+		}
+		char buffer[255];
+		strcpy_s(buffer, _Data->c_str());
+		if (ImGui::InputText(_Desc.c_str(), buffer, IM_ARRAYSIZE(buffer)))
+		{
+			(*_Data) = buffer;
+		}
+	}
+
+	return false;
+}
+
 bool ParamUI::Param_VEC2(Vec2* _Data, const string& _Desc, float _min, float _Max, bool _View, const string& _Tooltip)
 {
 	ImGui::Text(_Desc.c_str());
