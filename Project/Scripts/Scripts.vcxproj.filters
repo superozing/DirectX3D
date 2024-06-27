@@ -58,6 +58,9 @@
     <ClInclude Include="CWeaponInfo.h">
       <Filter>Scripts\UI\WeaponInfo</Filter>
     </ClInclude>
+    <ClInclude Include="CPausePanel.h">
+      <Filter>Scripts\UI\PausePanel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -117,6 +120,9 @@
     <ClCompile Include="CWeaponInfo.cpp">
       <Filter>Scripts\UI\WeaponInfo</Filter>
     </ClCompile>
+    <ClCompile Include="CPausePanel.cpp">
+      <Filter>Scripts\UI\PausePanel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -166,6 +172,9 @@
     </Filter>
     <Filter Include="Scripts\UI\WeaponInfo">
       <UniqueIdentifier>{ed447ae9-d1c6-45b7-92af-d3e4daf01425}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\PausePanel">
+      <UniqueIdentifier>{78fd96b1-f585-4066-88dc-0a7b73c075a9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

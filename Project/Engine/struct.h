@@ -304,6 +304,7 @@ struct tFontInfo
 
 	float fPosX; // X Pos
 	float fPosY; // Y Pos
+	float fPosZ; // Z Pos
 
 	float fFontSize; // 폰트의 크기
 

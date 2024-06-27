@@ -16,6 +16,7 @@
 #include "CProgressBar.h"
 #include "CCrosshair.h"
 #include "CWeaponInfo.h"
+#include "CPausePanel.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -34,6 +35,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CProgressBar");
 	_vec.push_back(L"CCrosshair");
 	_vec.push_back(L"CWeaponInfo");
+	_vec.push_back(L"CPausePanel");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -68,6 +70,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CCrosshair;
 	if (L"CWeaponInfo" == _strScriptName)
 		return new CWeaponInfo;
+	if (L"CPausePanel" == _strScriptName)
+		return new CPausePanel;
 	return nullptr;
 }
 
@@ -119,6 +123,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::WEAPONINFO:
 		return new CWeaponInfo;
+		break;
+	case (UINT)SCRIPT_TYPE::PAUSEPANEL:
+		return new CPausePanel;
 		break;
 	}
 	return nullptr;
@@ -186,6 +193,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::WEAPONINFO:
 		return L"CWeaponInfo";
+		break;
+
+	case SCRIPT_TYPE::PAUSEPANEL:
+		return L"CPausePanel";
 		break;
 
 	}

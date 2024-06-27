@@ -33,6 +33,7 @@
 #include <Scripts/CProgressBar.h>
 #include <Scripts/CCrosshair.h>
 #include <Scripts/CWeaponInfo.h>
+#include <Scripts/CPausePanel.h>
 
 void CUITempLevel::Init()
 {
@@ -365,6 +366,20 @@ void CUITempLevel::CreateTempLevel()
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 
+	// CPausePanel
+	pObj = new CGameObject;
+	pObj->SetName(L"Pause Panel");
+
+	pObj->AddComponent(new CTransform);
+
+	auto pPausePanel = new CPausePanel;
+	pObj->AddComponent(pPausePanel);
+
+	pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
+	pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
+
+	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+
 	// Fire Btn
 	pObj = new CGameObject;
 	pObj->SetName(L"Fire Btn");
@@ -376,9 +391,9 @@ void CUITempLevel::CreateTempLevel()
 	pObj->AddComponent(SubHPbtnUI);
 	SubHPbtnUI->AllowTexSet();
 	SubHPbtnUI->SetNormalImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
-	SubHPbtnUI->SetDeletage((CEntity*)pWeaponInfo, (DelegateFunc)&CWeaponInfo::Fire);
+	SubHPbtnUI->SetDeletage((CEntity*)pPausePanel, (DelegateFunc)&CPausePanel::ActivePausePanel);
 
-	pObj->Transform()->SetRelativePos(Vec3(800, -400, 100.f));
+	pObj->Transform()->SetRelativePos(Vec3(890, 400, 100.f));
 	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
 
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
@@ -386,8 +401,31 @@ void CUITempLevel::CreateTempLevel()
 	pObj->MeshRender()->GetDynamicMaterial(0);
 	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0,
 													CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
-
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+	
+	// Fire Btn
+	pObj = new CGameObject;
+	pObj->SetName(L"Fire Btn2");
+
+	pObj->AddComponent(new CTransform);
+	pObj->AddComponent(new CMeshRender);
+
+	auto SubHPbtnUI2 = new CBtnUIScript;
+	pObj->AddComponent(SubHPbtnUI2);
+	SubHPbtnUI2->AllowTexSet();
+	SubHPbtnUI2->SetNormalImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
+	SubHPbtnUI2->SetDeletage((CEntity*)pPausePanel, (DelegateFunc)&CPausePanel::InactivePausePanel);
+
+	pObj->Transform()->SetRelativePos(Vec3(-650, -400, 100.f));
+	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+
+	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
+	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
+	pObj->MeshRender()->GetDynamicMaterial(0);
+	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0,
+													CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
+	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+
 
 	GamePlayStatic::ChangeLevel(pTempLevel, LEVEL_STATE::STOP);
 

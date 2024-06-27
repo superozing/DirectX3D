@@ -50,6 +50,8 @@ void CFontMgr::DrawFont(const wchar_t* _pStr, float _fPosX, float _fPosY, float 
 
 void CFontMgr::render()
 {
+	// 여기서 뎁스 소팅
+
 	for (auto& it : m_VecRenderFont)
 		DrawFont(it.WStr.c_str(), it.fPosX, it.fPosY, it.fFontSize, it.Color, it.FontType, it.TextFlag);
 
