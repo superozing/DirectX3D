@@ -436,7 +436,7 @@ void CUITempLevel::CreateTempLevel()
 	pObj->AddComponent(new CTransform);
 	pObj->AddComponent(new CFontRender);
 
-	pObj->Transform()->SetRelativePos(Vec3(650, -400, 100.f));
+	pObj->Transform()->SetRelativePos(Vec3(1, 1, -500.f));
 	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
 
 	tFontInfo FontInfo{};
@@ -444,11 +444,12 @@ void CUITempLevel::CreateTempLevel()
 	FontInfo.fFontSize = 50.f;
 	FontInfo.FontType  = FONT_TYPE::ARIAL;
 	FontInfo.WStr	   = L"ABCDEFGHIJKLMNOPQR";
+	FontInfo.TextFlag  = FW1_CENTER;
 
 	pObj->FontRender()->SetFontInfo(FontInfo);
 	pObj->FontRender()->AllowConvertWorldPosToWindowPos(true);
 
-	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
 
 	GamePlayStatic::ChangeLevel(pTempLevel, LEVEL_STATE::STOP);
