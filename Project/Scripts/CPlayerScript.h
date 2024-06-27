@@ -14,18 +14,35 @@ enum class PLAYER_STATE
 	END,
 };
 
+struct PlayerStatus
+{
+	int MaxHealth  = 100;
+	int curHealth  = MaxHealth;
+	int MaxStamina = 100;
+	int curStamina = MaxStamina;
+	int Damage	   = 5;
+	int Defensive  = 5;
+
+	float MoveSpeed		  = 500.f;
+	float AttackMoveSpeed = MoveSpeed * 0.02f;
+	float RotateSpeed	  = 20.f;
+
+	float AvoidPercent	  = 10.f;
+	float CriticalPercent = 0.f;
+};
+
 template <typename T> class CRoRStateMachine;
 
 class CPlayerScript : public CScript
 {
 private:
-	Ptr<CPrefab> m_Missile;
-	float		 m_Speed;
+	CRoRStateMachine<CPlayerScript>* m_FSM;
+
+	PlayerStatus m_tStatus;
 
 public:
-	virtual void					 begin() override;
-	virtual void					 tick() override;
-	CRoRStateMachine<CPlayerScript>* m_FSM;
+	virtual void begin() override;
+	virtual void tick() override;
 
 	virtual void BeginOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider);
 	virtual void Overlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider);

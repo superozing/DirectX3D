@@ -13,9 +13,9 @@
 
 CPlayerScript::CPlayerScript()
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
-	, m_Speed(500.f)
+	, m_tStatus{}
 {
-	AppendScriptParam("Player Speed", SCRIPT_PARAM::FLOAT, &m_Speed);
+	AppendScriptParam("Player Speed", SCRIPT_PARAM::FLOAT, &m_tStatus.MoveSpeed);
 
 	// 스테이트 초기화
 	m_FSM = new CRoRStateMachine<CPlayerScript>(this, (UINT)PLAYER_STATE::END);
@@ -77,10 +77,8 @@ void CPlayerScript::EndOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, C
 
 void CPlayerScript::SaveToFile(FILE* _File)
 {
-	fwrite(&m_Speed, sizeof(float), 1, _File);
 }
 
 void CPlayerScript::LoadFromFile(FILE* _File)
 {
-	fread(&m_Speed, sizeof(float), 1, _File);
 }

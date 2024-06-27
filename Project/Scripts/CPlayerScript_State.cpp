@@ -43,9 +43,8 @@ int CPlayerScript::NormalUpdate()
 	Vec3 vRight = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
 	if (vTargetDir != Vec3())
 	{
-		vPos += vFront * m_Speed * DT;
-		float fAngleSpeed = 20.f;
-		vTargetDir		  = Vec3::Lerp(Transform()->GetWorldDir(DIR_TYPE::FRONT), vTargetDir, DT * fAngleSpeed);
+		vPos += vFront * m_tStatus.MoveSpeed * DT;
+		vTargetDir = Vec3::Lerp(Transform()->GetWorldDir(DIR_TYPE::FRONT), vTargetDir, DT * m_tStatus.RotateSpeed);
 		Transform()->SetDir(vTargetDir);
 	}
 
@@ -79,19 +78,19 @@ int CPlayerScript::AttackUpdate()
 
 	if (KEY_PRESSED(W))
 	{
-		vPos += vFront * m_Speed * DT;
+		vPos += vFront * m_tStatus.AttackMoveSpeed * DT;
 	}
 	if (KEY_PRESSED(S))
 	{
-		vPos += -vFront * m_Speed * DT;
+		vPos += -vFront * m_tStatus.AttackMoveSpeed * DT;
 	}
 	if (KEY_PRESSED(D))
 	{
-		vPos += vRight * m_Speed * DT;
+		vPos += vRight * m_tStatus.AttackMoveSpeed * DT;
 	}
 	if (KEY_PRESSED(A))
 	{
-		vPos += -vRight * m_Speed * DT;
+		vPos += -vRight * m_tStatus.AttackMoveSpeed * DT;
 	}
 
 	Transform()->SetRelativePos(vPos);
