@@ -28,12 +28,14 @@ void CPhysXMgrScript::begin()
 {
 	AppendScriptParam("pPhysXMgr", SCRIPT_PARAM::MGR_PHYSX, (void*)CPhysXMgr::GetInst());
 
-	AppendScriptParam("RayOrigin", SCRIPT_PARAM::VEC3, (void*)&RayOrigin);
-	AppendScriptParam("RayDir", SCRIPT_PARAM::VEC3, (void*)&RayDir);
+	AppendScriptParam("[Mgr]Debug Line&Sphere", SCRIPT_PARAM::BOOL, (void*)&(CPhysXMgr::GetInst()->m_RayDebug));
 
-	AppendScriptParam("raycol_result", SCRIPT_PARAM::BOOL, (void*)&iscontact,0.f,0.f,true);
-	AppendScriptParam("raycol_obj", SCRIPT_PARAM::STRING, (void*)&strobj,0.f,0.f,true);
-	AppendScriptParam("raycol_pos", SCRIPT_PARAM::VEC3, (void*)&contactpos, 0.f, 0.f, true);
+	AppendScriptParam("[Script]RayOrigin", SCRIPT_PARAM::VEC3, (void*)&RayOrigin);
+	AppendScriptParam("[Script]RayDir", SCRIPT_PARAM::VEC3, (void*)&RayDir);
+
+	AppendScriptParam("[Script]raycol_result", SCRIPT_PARAM::BOOL, (void*)&iscontact,0.f,0.f,true);
+	AppendScriptParam("[Script]raycol_obj", SCRIPT_PARAM::STRING, (void*)&strobj,0.f,0.f,true);
+	AppendScriptParam("[Script]raycol_pos", SCRIPT_PARAM::VEC3, (void*)&contactpos, 0.f, 0.f, true);
 }
 
 

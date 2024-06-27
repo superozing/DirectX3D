@@ -15,6 +15,7 @@ class CPhysXMgr :
 	SINGLE(CPhysXMgr);
 
 private:
+	bool m_RayDebug = true;
 	PxDefaultAllocator      gAllocator;
 	PxDefaultErrorCallback  gErrorCallback;
 	PxFoundation* gFoundation = nullptr;
@@ -28,7 +29,6 @@ private:
 	void LayerCheckToggle(UINT _left, UINT _right);
 
 public:
-	bool m_Debug = true;
 	static UINT m_layerMasks[static_cast<UINT>(LAYER::LAYER_MAX)];
 	virtual void init() override;
 	virtual void tick() override;
@@ -40,4 +40,5 @@ private:
 	void Clear() {};
 
 	friend class ParamUI;
+	friend class CPhysXMgrScript;
 };

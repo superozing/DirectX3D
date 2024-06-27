@@ -497,5 +497,8 @@ bool ParamUI::Param_MGR_PHYSX(void* _pPhysXMgr)
 		ImGui::NewLine();
 	}
 
+	ImGui::Separator();
+	UI::StaticButton(string("RayCast Info"), STATIC_BTN_TYPE::SUBTITLE);
+
 	return true;
 }

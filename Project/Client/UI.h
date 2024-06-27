@@ -18,10 +18,10 @@ private:
 	vector<UI*>		m_vecChildUI;
 
 protected:
-	void StaticButton(const wstring& _content, STATIC_BTN_TYPE _type = STATIC_BTN_TYPE::TITLE);
-	void StaticButton(const string& _content, STATIC_BTN_TYPE _type = STATIC_BTN_TYPE::TITLE);
+	static void StaticButton(const wstring& _content, STATIC_BTN_TYPE _type = STATIC_BTN_TYPE::TITLE);
+	static void StaticButton(const string& _content, STATIC_BTN_TYPE _type = STATIC_BTN_TYPE::TITLE);
 											  
-	void StaticButton(const char* _content, STATIC_BTN_TYPE _type = STATIC_BTN_TYPE::TITLE);
+	static void StaticButton(const char* _content, STATIC_BTN_TYPE _type = STATIC_BTN_TYPE::TITLE);
 
 	bool TitleCollapse(const char* _content);
 
@@ -61,5 +61,7 @@ public:
 
 public:
 	static bool ColorSelector(const char* _label, Vec4* _col);
+
+	friend class ParamUI;
 };
 
