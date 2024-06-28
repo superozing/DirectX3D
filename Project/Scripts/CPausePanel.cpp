@@ -23,7 +23,7 @@ void CPausePanel::begin()
 	Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
 
 	// m_pModalBg
-	auto pObj	= new CGameObject;
+	auto pObj  = new CGameObject;
 	m_pModalBg = new CImageUIScript;
 
 	pObj->SetName("Modal Background");
@@ -46,7 +46,7 @@ void CPausePanel::begin()
 
 	// m_pPausePanel
 	m_pPausePanelObject = new CGameObject;
-	m_pPausePanel = new CPanelUIScript;
+	m_pPausePanel		= new CPanelUIScript;
 
 	m_pPausePanelObject->SetName("Pause Panel");
 
@@ -68,19 +68,19 @@ void CPausePanel::begin()
 	GetOwner()->AddChild(m_pPausePanelObject);
 
 	// m_PanelFontInfo
-	m_PanelFontInfo.Color = FONT_RGBA(20, 20, 180, 255);
+	m_PanelFontInfo.Color	  = FONT_RGBA(20, 20, 180, 255);
 	m_PanelFontInfo.fFontSize = 50.f;
 
-	m_PanelFontInfo.FontType  = FONT_TYPE::MAPLE;
+	m_PanelFontInfo.FontType = FONT_TYPE::MAPLE;
 
-	m_PanelFontInfo.fPosX	  = vResol.x / 2;
-	m_PanelFontInfo.fPosY	  = -250.f + (vResol.y / 2);
+	m_PanelFontInfo.fPosX = vResol.x / 2;
+	m_PanelFontInfo.fPosY = -250.f + (vResol.y / 2);
 
 	m_PanelFontInfo.TextFlag = FW1_CENTER;
 	m_PanelFontInfo.WStr	 = L"일시 정지";
 
 	// m_pExitBtn
-	pObj  = new CGameObject;
+	pObj	   = new CGameObject;
 	m_pExitBtn = new CBtnUIScript;
 
 	pObj->SetName("Modal Background");
@@ -105,14 +105,14 @@ void CPausePanel::begin()
 
 	// m_pFuncBtn
 
-	//for (int i = 0; i < 2; ++i)
+	// for (int i = 0; i < 2; ++i)
 	//{
 	//	auto pObj = new CGameObject;
 	//	m_pFuncBtn[i] = new CBtnUIScript;
-	//}
+	// }
 
 	// 1. 콜백 버튼을 추가할 함수 필요
-	// 2. 
+	// 2.
 }
 
 void CPausePanel::tick()
