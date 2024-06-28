@@ -1,5 +1,4 @@
-#pragma once
-
+﻿#pragma once
 
 class CLevel;
 class CLayer;
@@ -15,12 +14,10 @@ public:
 	static void SaveGameObject(CGameObject* _Obj, FILE* _File);
 	static void SaveGameObject(CGameObject* _Obj, ofstream& fout);
 
-
-	static CLevel* LoadLevel(const wstring& _strLevelPath);
-	static CLevel* LoadLevel(const string& _strLevelPath) { return LoadLevel(ToWString(_strLevelPath)); }
-	static void LoadLayer(CLayer* _Layer, FILE* _File);
-	static void LoadLayer(CLayer* _Layer, ifstream& fin);
+	static CLevel*		LoadLevel(const wstring& _strLevelPath);
+	static CLevel*		LoadLevel(const string& _strLevelPath) { return LoadLevel(ToWString(_strLevelPath)); }
+	static void			LoadLayer(CLayer* _Layer, FILE* _File);
+	static void			LoadLayer(CLayer* _Layer, ifstream& fin);
 	static CGameObject* LoadGameObject(FILE* _File);
 	static CGameObject* LoadGameObject(ifstream& fin);
 };
-

@@ -9,7 +9,6 @@
 #include "CAnimation3DShader.h"
 #include "CKeyMgr.h"
 
-
 CAnimator3D::CAnimator3D()
 	: m_pVecBones(nullptr)
 	, m_pVecClip(nullptr)
@@ -21,6 +20,9 @@ CAnimator3D::CAnimator3D()
 	, m_iFrameIdx(0)
 	, m_iNextFrameIdx(0)
 	, m_fRatio(0.f)
+	, m_bPlay(false)
+	, m_iLoopCount(-1)
+	, m_iCurLoopCount(0)
 	, CComponent(COMPONENT_TYPE::ANIMATOR3D)
 {
 	m_pBoneFinalMatBuffer = new CStructuredBuffer;
@@ -37,6 +39,9 @@ CAnimator3D::CAnimator3D(const CAnimator3D& _origin)
 	, m_iFrameIdx(_origin.m_iFrameIdx)
 	, m_iNextFrameIdx(_origin.m_iNextFrameIdx)
 	, m_fRatio(_origin.m_fRatio)
+	, m_bPlay(false)
+	, m_iLoopCount(-1)
+	, m_iCurLoopCount(0)
 	, CComponent(COMPONENT_TYPE::ANIMATOR3D)
 {
 	m_pBoneFinalMatBuffer = new CStructuredBuffer;
@@ -48,61 +53,48 @@ CAnimator3D::~CAnimator3D()
 		delete m_pBoneFinalMatBuffer;
 }
 
-
 void CAnimator3D::finaltick()
 {
-	// 디버그용
 	if (KEY_TAP(M))
-	{
-		//if (nullptr != m_pBoneFinalMatBuffer)
-		//	delete m_pBoneFinalMatBuffer;
-
-		//m_pBoneFinalMatBuffer = new CStructuredBuffer;
-
-		m_iCurClip = 0;
-
-		//m_vecClipUpdateTime[m_iCurClip] = 0.f;
-		//m_iFrameIdx = 0;
-	}
+		Play(0);
 	else if (KEY_TAP(N))
-	{
-		//if (nullptr != m_pBoneFinalMatBuffer)
-		//	delete m_pBoneFinalMatBuffer;
-
-		//m_pBoneFinalMatBuffer = new CStructuredBuffer;
-
-		m_iCurClip = 1;
-
-		//m_vecClipUpdateTime[m_iCurClip] = 0.f;
-		//m_iFrameIdx = 0;
-	}
+		Play(1);
 	else if (KEY_TAP(B))
-	{
-		//if (nullptr != m_pBoneFinalMatBuffer)
-		//	delete m_pBoneFinalMatBuffer;
-
-		//m_pBoneFinalMatBuffer = new CStructuredBuffer;
-
-		m_iCurClip = 2;
-
-		//m_vecClipUpdateTime[m_iCurClip] = 0.f;
-		//m_iFrameIdx = 0;
-	}
+		Play(2);
+	else if (KEY_TAP(C))
+		Play(3);
+	else if (KEY_TAP(V))
+		Stop();
 
 	m_dCurTime = 0.f;
+
 	// 현재 재생중인 Clip 의 시간을 진행한다.
-	m_vecClipUpdateTime[m_iCurClip] += DTd_ENGINE;
+	if (m_bPlay)
+		m_vecClipUpdateTime[m_iCurClip] += DTd_ENGINE;
 
 	if (m_vecClipUpdateTime[m_iCurClip] >= m_pVecClip->at(m_iCurClip).dTimeLength)
 	{
-		m_vecClipUpdateTime[m_iCurClip] = 0.f;
+		if (m_iLoopCount == -1)
+		{
+			m_vecClipUpdateTime[m_iCurClip] = 0.f;
+		}
+		else if (m_iLoopCount == 0)
+			Stop();
+		else if (m_iLoopCount > 0)
+		{
+			m_vecClipUpdateTime[m_iCurClip] = 0.f;
+			++m_iCurLoopCount;
+
+			if (m_iCurLoopCount > m_iLoopCount)
+				Stop();
+		}
 	}
 
 	m_dCurTime = m_pVecClip->at(m_iCurClip).dStartTime + m_vecClipUpdateTime[m_iCurClip];
 
 	// 현재 프레임 인덱스 구하기
 	double dFrameIdx = m_dCurTime * (double)m_iFrameCount;
-	m_iFrameIdx = (int)(dFrameIdx);
+	m_iFrameIdx		 = (int)(dFrameIdx);
 
 	// 다음 프레임 인덱스
 	if (m_iFrameIdx >= m_pVecClip->at(m_iCurClip).iFrameLength - 1)
@@ -121,28 +113,19 @@ void CAnimator3D::SetAnimClip(const vector<tMTAnimClip>* _vecAnimClip)
 {
 	m_pVecClip = _vecAnimClip;
 	m_vecClipUpdateTime.resize(m_pVecClip->size());
-
-	// 테스트 코드
-	static float fTime = 0.f;
-	fTime += 1.f;
-	m_vecClipUpdateTime[0] = fTime;
 }
-
 
 void CAnimator3D::UpdateData()
 {
 	if (!m_bFinalMatUpdate)
 	{
 		// Animation3D Update Compute Shader
-		CAnimation3DShader* pUpdateShader = (CAnimation3DShader*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"Animation3DUpdateCS").Get();
+		CAnimation3DShader* pUpdateShader =
+			(CAnimation3DShader*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"Animation3DUpdateCS").Get();
 
 		// Bone Data
 		Ptr<CMesh> pMesh = MeshRender()->GetMesh();
 		check_mesh(pMesh);
-
-		//pUpdateShader->SetFrameDataBuffer(pMesh->GetBoneFrameDataBuffer());
-		//pUpdateShader->SetOffsetMatBuffer(pMesh->GetBoneOffsetBuffer());
-		//pUpdateShader->SetOutputBuffer(m_pBoneFinalMatBuffer);
 
 		auto vBoneFrameData = pMesh->GetBoneFrameDataBuffer();
 
@@ -162,7 +145,7 @@ void CAnimator3D::UpdateData()
 		m_bFinalMatUpdate = true;
 	}
 
-	// t30 레지스터에 최종행렬 데이터(구조버퍼) 바인딩		
+	// t30 레지스터에 최종행렬 데이터(구조버퍼) 바인딩
 	m_pBoneFinalMatBuffer->UpdateData(30);
 }
 
@@ -170,8 +153,8 @@ void CAnimator3D::ClearData()
 {
 	m_pBoneFinalMatBuffer->Clear(30);
 
-	UINT iMtrlCount = MeshRender()->GetMtrlCount();
-	Ptr<CMaterial> pMtrl = nullptr;
+	UINT		   iMtrlCount = MeshRender()->GetMtrlCount();
+	Ptr<CMaterial> pMtrl	  = nullptr;
 	for (UINT i = 0; i < iMtrlCount; ++i)
 	{
 		pMtrl = MeshRender()->GetSharedMaterial(i);
@@ -190,6 +173,46 @@ void CAnimator3D::check_mesh(Ptr<CMesh> _pMesh)
 	{
 		m_pBoneFinalMatBuffer->Create(sizeof(Matrix), iBoneCount, SB_READ_TYPE::READ_WRITE, false, nullptr);
 	}
+}
+
+void CAnimator3D::Play(int _iClipIdx, int _iLoopCount)
+{
+	if (_iClipIdx >= (int)m_pVecClip->size())
+	{
+		MessageBox(nullptr, L"해당하는 애니메이션 클립이 없습니다", L"Out of Range AnimationClip", MB_OK);
+		return;
+	}
+
+	m_bPlay	   = true;
+	m_iCurClip = _iClipIdx;
+
+	m_iLoopCount	= _iLoopCount;
+	m_iCurLoopCount = 0;
+
+	SetClipTime(m_iCurClip, 0.f);
+}
+
+void CAnimator3D::Play(const wstring& _AnimName, int _iLoopCount)
+{
+	auto iter = find(m_pVecClip->begin(), m_pVecClip->end(), _AnimName);
+
+	if (iter != m_pVecClip->end())
+	{
+		int ClipIdx = distance(m_pVecClip->begin(), iter);
+		Play(ClipIdx, _iLoopCount);
+	}
+	else
+	{
+		MessageBox(nullptr, L"해당하는 애니메이션 클립이 없습니다", L"Out of Range AnimationClip", MB_OK);
+		return;
+	}
+}
+
+void CAnimator3D::Stop()
+{
+	m_bPlay			= false;
+	m_iCurLoopCount = 0;
+	SetClipTime(m_iCurClip, 0.f);
 }
 
 void CAnimator3D::SaveToFile(FILE* _pFile)

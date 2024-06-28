@@ -1,10 +1,8 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CLight2D.h"
 
 #include "CRenderMgr.h"
 #include "CTransform.h"
-
-
 
 CLight2D::CLight2D()
 	: CComponent(COMPONENT_TYPE::LIGHT2D)
@@ -13,23 +11,21 @@ CLight2D::CLight2D()
 
 CLight2D::~CLight2D()
 {
-
 }
 
 void CLight2D::finaltick()
 {
-	// ¿ùµå À§Ä¡°ªÀ» LightInfo ¸É¹ö¿¡ °»½ÅÇØ³õ´Â´Ù.
-	Vec3 vWorldPos = Transform()->GetWorldPos();
+	// ì›”ë“œ ìœ„ì¹˜ê°’ì„ LightInfo ë§´ë²„ì— ê°±ì‹ í•´ë†“ëŠ”ë‹¤.
+	Vec3 vWorldPos	 = Transform()->GetWorldPos();
 	m_Info.vWorldPos = vWorldPos;
 
-	// ±¤¿ø µî·Ï
+	// ê´‘ì› ë“±ë¡
 	CRenderMgr::GetInst()->RegisterLight2D(this);
 }
 
 void CLight2D::SetLightType(LIGHT_TYPE _type)
 {
-	m_Info.LightType = (int)_type; 
-
+	m_Info.LightType = (int)_type;
 }
 
 void CLight2D::SetRadius(float _Radius)

@@ -1,10 +1,10 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CFSM.h"
 
 CFSM::CFSM(bool _bEngine)
 	: CAsset(ASSET_TYPE::FSM, _bEngine)
 	, m_Master(nullptr)
-	, m_Blackboard(nullptr)	
+	, m_Blackboard(nullptr)
 {
 }
 
@@ -55,17 +55,17 @@ CFSM* CFSM::GetFSMIstance()
 {
 	CFSM* pFSMInst = new CFSM;
 
-	pFSMInst->m_mapState = m_mapState;
-	pFSMInst->m_Master = this;
+	pFSMInst->m_mapState   = m_mapState;
+	pFSMInst->m_Master	   = this;
 	pFSMInst->m_Blackboard = nullptr;
-	pFSMInst->m_CurState = nullptr;
+	pFSMInst->m_CurState   = nullptr;
 
 	return pFSMInst;
 }
 
 void CFSM::ChangeState(const wstring& _strStateName)
 {
-	if(nullptr != m_CurState)
+	if (nullptr != m_CurState)
 		m_CurState->Exit();
 
 	m_CurState = FindState(_strStateName);

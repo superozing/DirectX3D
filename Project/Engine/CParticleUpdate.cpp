@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CParticleUpdate.h"
 
 CParticleUpdate::CParticleUpdate()
@@ -15,8 +15,8 @@ int CParticleUpdate::UpdateData()
 {
 	if (nullptr == m_ParticleBuffer)
 		return E_FAIL;
-		
-	m_Const.iArr[0] = m_ParticleBuffer->GetElementCount();
+
+	m_Const.iArr[0]	 = m_ParticleBuffer->GetElementCount();
 	m_Const.v4Arr[0] = m_vParticleWorldPos;
 
 	m_ParticleBuffer->UpdateData_CS_UAV(0);

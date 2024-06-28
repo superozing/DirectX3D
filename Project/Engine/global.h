@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-
 #include <stdlib.h>
+#include <iostream>
 #include <Windows.h>
 #include <typeinfo>
 
@@ -12,20 +12,20 @@
 #include <map>
 #include <unordered_map>
 
-using std::vector;
 using std::list;
-using std::unordered_map;
-using std::map;
 using std::make_pair;
+using std::map;
+using std::unordered_map;
+using std::vector;
 
-using std::wstring;
 using std::string;
+using std::wstring;
 
 #include <memory>
-using std::shared_ptr;
 using std::make_shared;
-using std::unique_ptr;
 using std::make_unique;
+using std::shared_ptr;
+using std::unique_ptr;
 using std::weak_ptr;
 
 #include <wrl.h>
@@ -35,10 +35,9 @@ using namespace Microsoft::WRL;
 using namespace std::filesystem;
 
 #include <fstream>
-using std::ofstream;
-using std::ifstream;
 using std::endl;
-
+using std::ifstream;
+using std::ofstream;
 
 // Directx 11 헤더 및 라이브러리 참조
 #include <d3d11.h>
@@ -76,7 +75,6 @@ typedef Vector4 Vec4;
 #include "struct.h"
 #include "func.h"
 
-
 // Magic Enum 헤더 참조
 #include <Magic_Enum/magic_enum_all.hpp>
 
@@ -85,4 +83,3 @@ typedef Vector4 Vec4;
 
 // String Table(User)
 #include "UserStrings.h"
-

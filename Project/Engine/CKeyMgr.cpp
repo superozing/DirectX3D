@@ -2,6 +2,7 @@
 #include "CKeyMgr.h"
 #include "CEngine.h"
 
+// clang-format off
 int g_KeySync[KEY::KEY_END] =
 {
 	'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
@@ -21,7 +22,7 @@ int g_KeySync[KEY::KEY_END] =
 	VK_F1, VK_F2, VK_F3, VK_F4, VK_F5, VK_F6,
 	VK_F7, VK_F8, VK_F9, VK_F10, VK_F11, VK_F12,
 };
-
+// clang-format on
 
 CKeyMgr::CKeyMgr()
 {
@@ -38,11 +39,11 @@ void CKeyMgr::init()
 	m_vecKeyData.reserve(KEY::KEY_END);
 
 	// 데이터 개수를 늘림
-	//m_vecKeyData.resize(KEY::KEY_END);
+	// m_vecKeyData.resize(KEY::KEY_END);
 
 	for (UINT i = 0; i < KEY_END; ++i)
 	{
-		m_vecKeyData.push_back(FKeyData{(KEY)i, NONE, false});	
+		m_vecKeyData.push_back(FKeyData{(KEY)i, NONE, false});
 	}
 }
 
@@ -51,26 +52,25 @@ void CKeyMgr::tick()
 	// GetFocus()는 현재 포커싱 되어있는 윈도우를 반환한다.
 	// 메인 윈도우와 비교해서 메인 윈도우가 포커싱 되어있는지 판단한다.
 
-	//if (GetFocus() == nullptr)
+	// if (GetFocus() == nullptr)
 	//{
 	//	m_FocusState = FOCUS_STATE::NONE;
-	//}
-	//else if (GetFocus() == CEngine::GetInst()->GetMainWind())
+	// }
+	// else if (GetFocus() == CEngine::GetInst()->GetMainWind())
 	//{
 	//	m_FocusState = FOCUS_STATE::MAIN;
-	//}
-	//else
+	// }
+	// else
 	//{
 	//	m_FocusState = FOCUS_STATE::OTHER;
-	//}
+	// }
 
-	//Wheel
+	// Wheel
 	m_ThisFrameWheel = _inWheel;
-	_inWheel = WHEEL_NONE;
+	_inWheel		 = WHEEL_NONE;
 
 	// FOCUS_STATE 가져오기
 	m_FocusState = m_FocusCallback();
-
 
 	// 1. 포커싱 되어있는 창이 없을 경우
 	if (FOCUS_STATE::NONE == m_FocusState)
@@ -139,6 +139,5 @@ void CKeyMgr::tick()
 
 		// 마우스 이동 방향
 		m_vMouseDrag = m_vMousePos - m_vMousePrevPos;
-
 	}
 }

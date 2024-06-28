@@ -12,7 +12,7 @@ CTileMap::CTileMap()
 	: CRenderComponent(COMPONENT_TYPE::TILEMAP)
 	, m_FaceX(2)
 	, m_FaceY(2)
-	, m_vTileRenderSize(Vec2(128.f, 128.f))	
+	, m_vTileRenderSize(Vec2(128.f, 128.f))
 	, m_TileInfoBuffer(nullptr)
 {
 	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
@@ -27,7 +27,7 @@ CTileMap::CTileMap(const CTileMap& _OriginTileMap)
 	: CRenderComponent(_OriginTileMap)
 	, m_FaceX(_OriginTileMap.m_FaceX)
 	, m_FaceY(_OriginTileMap.m_FaceY)
-	, m_vTileRenderSize(_OriginTileMap.m_vTileRenderSize)	
+	, m_vTileRenderSize(_OriginTileMap.m_vTileRenderSize)
 	, m_TileAtlas(_OriginTileMap.m_TileAtlas)
 	, m_vTilePixelSize(_OriginTileMap.m_vTilePixelSize)
 	, m_vSliceSizeUV(_OriginTileMap.m_vSliceSizeUV)
@@ -39,7 +39,7 @@ CTileMap::CTileMap(const CTileMap& _OriginTileMap)
 	if (nullptr != _OriginTileMap.m_TileInfoBuffer)
 	{
 		m_TileInfoBuffer = _OriginTileMap.m_TileInfoBuffer->Clone();
-	}	
+	}
 }
 
 CTileMap::~CTileMap()
@@ -56,14 +56,14 @@ void CTileMap::finaltick()
 }
 
 void CTileMap::render()
-{	
+{
 	// 재질에 아틀라스 텍스쳐 전달.
 	GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_TileAtlas);
-	
+
 	// 타일의 가로 세로 개수
 	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_0, m_FaceX);
 	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_1, m_FaceY);
-		
+
 	// 아틀라스 이미지에서 타일 1개의 자르는 사이즈(UV 기준)
 	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC2_0, m_vSliceSizeUV);
 
@@ -74,30 +74,26 @@ void CTileMap::render()
 	m_TileInfoBuffer->UpdateData(20);
 
 	// 재질 업데이트
-	GetMaterial(0)->UpdateData();	
+	GetMaterial(0)->UpdateData();
 
 	Transform()->UpdateData();
 
 	GetMesh()->render(0);
 }
 
-
 void CTileMap::UpdateData()
 {
-
 }
-
 
 void CTileMap::SetTileAtlas(Ptr<CTexture> _Atlas, Vec2 _TilePixelSize)
 {
-	m_TileAtlas = _Atlas;
+	m_TileAtlas		 = _Atlas;
 	m_vTilePixelSize = _TilePixelSize;
 
 	m_MaxCol = m_TileAtlas->GetWidth() / (UINT)m_vTilePixelSize.x;
 	m_MaxRow = m_TileAtlas->GetHeight() / (UINT)m_vTilePixelSize.y;
 
-	m_vSliceSizeUV = Vec2(m_vTilePixelSize.x / m_TileAtlas->GetWidth()
-		, m_vTilePixelSize.y / m_TileAtlas->GetHeight());
+	m_vSliceSizeUV = Vec2(m_vTilePixelSize.x / m_TileAtlas->GetWidth(), m_vTilePixelSize.y / m_TileAtlas->GetHeight());
 }
 
 void CTileMap::SetFace(UINT _FaceX, UINT _FaceY)
@@ -117,14 +113,14 @@ void CTileMap::SetTileIndex(UINT _Row, UINT _Col, UINT _ImgIdx)
 	if (nullptr == m_TileAtlas)
 		return;
 
-	UINT idx = _Row* m_FaceX + _Col;
+	UINT idx = _Row * m_FaceX + _Col;
 
 	// 렌더링할 타일 정보
 	UINT iRow = _ImgIdx / m_MaxCol;
 	UINT iCol = _ImgIdx % m_MaxCol;
 
-	m_vecTileInfo[idx].vLeftTopUV = Vec2((iCol * m_vTilePixelSize.x) / m_TileAtlas->GetWidth()
-								  , (iRow * m_vTilePixelSize.y) / m_TileAtlas->GetHeight());
+	m_vecTileInfo[idx].vLeftTopUV = Vec2((iCol * m_vTilePixelSize.x) / m_TileAtlas->GetWidth(),
+										 (iRow * m_vTilePixelSize.y) / m_TileAtlas->GetHeight());
 
 	m_vecTileInfo[idx].bRender = 1;
 }
@@ -144,7 +140,7 @@ void CTileMap::SaveToFile(FILE* _File)
 
 	fwrite(&m_MaxCol, sizeof(UINT), 1, _File);
 	fwrite(&m_MaxRow, sizeof(UINT), 1, _File);
-	
+
 	size_t InfoCount = m_vecTileInfo.size();
 	fwrite(&InfoCount, sizeof(size_t), 1, _File);
 	fwrite(m_vecTileInfo.data(), sizeof(tTileInfo), InfoCount, _File);
@@ -177,7 +173,7 @@ void CTileMap::SaveToFile(ofstream& fout)
 
 	fout << TagPixelSize << endl;
 	fout << m_vTilePixelSize << endl;
-	
+
 	fout << TagSliceSize << endl;
 	fout << m_vSliceSizeUV << endl;
 
@@ -191,10 +187,12 @@ void CTileMap::SaveToFile(ofstream& fout)
 	fout << TagInfoCount << endl;
 	fout << InfoCount << endl;
 
-	if (InfoCount == 0) return;
+	if (InfoCount == 0)
+		return;
 
 	fout << TagTileInfo << endl;
-	for (int i = 0; i < m_vecTileInfo.size(); i++) {
+	for (int i = 0; i < m_vecTileInfo.size(); i++)
+	{
 		fout << m_vecTileInfo[i] << endl;
 	}
 }
@@ -251,10 +249,12 @@ void CTileMap::LoadFromFile(ifstream& fin)
 	Utils::GetLineUntilString(fin, TagInfoCount);
 	fin >> infoCnt;
 
-	if (infoCnt == 0) return;
+	if (infoCnt == 0)
+		return;
 
 	Utils::GetLineUntilString(fin, TagTileInfo);
-	for (int i = 0; i < m_vecTileInfo.size(); i++) {
+	for (int i = 0; i < m_vecTileInfo.size(); i++)
+	{
 		fin >> m_vecTileInfo[i];
 	}
 }
@@ -280,6 +280,6 @@ ifstream& operator>>(ifstream& fin, tTileInfo& info)
 
 	Utils::GetLineUntilString(fin, TagRender);
 	fin >> info.bRender;
-	
+
 	return fin;
 }

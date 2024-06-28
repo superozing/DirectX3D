@@ -1,15 +1,12 @@
-#pragma once
+﻿#pragma once
 #include "AssetUI.h"
-class ComputeShaderUI :
-    public AssetUI
+class ComputeShaderUI : public AssetUI
 {
 private:
+public:
+	virtual void render_update() override;
 
 public:
-    virtual void render_update() override;
-
-public:
-    ComputeShaderUI();
-    ~ComputeShaderUI();
+	ComputeShaderUI();
+	~ComputeShaderUI();
 };
-

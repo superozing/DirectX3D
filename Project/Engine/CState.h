@@ -1,33 +1,30 @@
-#pragma once
+﻿#pragma once
 #include "CEntity.h"
-
 
 class CFSM;
 class CStateMachine;
 
-class CState :
-    public CEntity
+class CState : public CEntity
 {
 private:
-    CFSM*       m_FSM;
+	CFSM* m_FSM;
 
 public:
-    virtual void finaltick() = 0;
-    virtual void Enter() = 0;
-    virtual void Exit() = 0;
+	virtual void finaltick() = 0;
+	virtual void Enter()	 = 0;
+	virtual void Exit()		 = 0;
 
 protected:
-    void* GetBlackboardData(const wstring& _strKey);
-    CFSM* GetFSM() { return m_FSM; }
+	void* GetBlackboardData(const wstring& _strKey);
+	CFSM* GetFSM() { return m_FSM; }
 
-    void ChangeState(const wstring& _strStateName);
-
+	void ChangeState(const wstring& _strStateName);
 
 public:
-    CLONE_DISABLE(CState);
+	CLONE_DISABLE(CState);
 
-    CState();
-    ~CState();
+	CState();
+	~CState();
 
-    friend class CFSM;
+	friend class CFSM;
 };

@@ -1,7 +1,6 @@
 ﻿#include "pch.h"
 #include "CCreateTempLevel.h"
 
-
 #include <Engine/CCollisionMgr.h>
 
 #include <Engine/CTaskMgr.h>
@@ -35,12 +34,11 @@
 #include "CTraceState.h"
 #include <Scripts/CRenderMgrScript.h>
 
-
 void CCreateTempLevel::Init()
 {
 
 	// 임시 FSM 객체 에셋 하나 생성하기
-	Ptr<CFSM>	pFSM = new CFSM(true);
+	Ptr<CFSM> pFSM = new CFSM(true);
 
 	pFSM->AddState(L"IdleState", new CIdleState);
 	pFSM->AddState(L"TraceState", new CTraceState);
@@ -86,9 +84,7 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pTempLevel->AddObject(pCamObj, (UINT)LAYER::LAYER_DEFAULT);
 
-
 	CGameObject* pObj = nullptr;
-
 
 	// 3D Light 추가
 	pObj = new CGameObject;
@@ -108,11 +104,11 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
-	//pObj = pObj->Clone();
-	//pObj->SetName(L"Light3D_Clone2");
-	//pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
-	//pObj->Light3D()->SetLightColor(Vec3(0.3f, 1.f, 0.3f));
-	//pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
+	// pObj = pObj->Clone();
+	// pObj->SetName(L"Light3D_Clone2");
+	// pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+	// pObj->Light3D()->SetLightColor(Vec3(0.3f, 1.f, 0.3f));
+	// pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
 	// SkyBox 용 오브젝트 추가
 	pObj = new CGameObject;
@@ -125,7 +121,8 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
 
 	pObj->SkyBox()->SetSkyBoxType(SKYBOX_TYPE::SPHERE);
-	pObj->SkyBox()->SetSphereTexture(CAssetMgr::GetInst()->Load<CTexture>(L"texture\\skybox\\Sky02.jpg", L"texture\\skybox\\Sky02.jpg"));
+	pObj->SkyBox()->SetSphereTexture(
+		CAssetMgr::GetInst()->Load<CTexture>(L"texture\\skybox\\Sky02.jpg", L"texture\\skybox\\Sky02.jpg"));
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
@@ -138,34 +135,37 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
 	pObj->Transform()->SetRelativeScale(Vec3(500.f, 500.f, 500.f));
-	//pObj->Transform()->SetDir(Vec3(0.f, -1.f, 0.f));
+	// pObj->Transform()->SetDir(Vec3(0.f, -1.f, 0.f));
 
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHsphere));
 
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std3D_DeferredMtrl"), 0);
-	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_01.tga", L"texture\\tile\\TILE_01.tga"));
-	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_01_N.tga", L"texture\\tile\\TILE_01_N.tga"));
+	pObj->MeshRender()->GetMaterial(0)->SetTexParam(
+		TEX_PARAM::TEX_0,
+		CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_01.tga", L"texture\\tile\\TILE_01.tga"));
+	pObj->MeshRender()->GetMaterial(0)->SetTexParam(
+		TEX_PARAM::TEX_1,
+		CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_01_N.tga", L"texture\\tile\\TILE_01_N.tga"));
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_PLAYER, false);
 
-	//pObj = pObj->Clone();
-	//pObj->MeshRender()->GetDynamicMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_0, 1);
-	//pObj->Transform()->SetRelativePos(Vec3(500.f, 0.f, 500.f));
-	//pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_PLAYER, false);
+	// pObj = pObj->Clone();
+	// pObj->MeshRender()->GetDynamicMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_0, 1);
+	// pObj->Transform()->SetRelativePos(Vec3(500.f, 0.f, 500.f));
+	// pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_PLAYER, false);
 
 	// LandScape Object 생성
 	CGameObject* LandScape = new CGameObject;
 	LandScape->SetName(L"LandScape");
-	
+
 	LandScape->AddComponent(new CTransform);
 	LandScape->AddComponent(new CLandScape);
-	
+
 	LandScape->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
 	LandScape->Transform()->SetRelativeScale(Vec3(200.f, 1000.f, 200.f));
-	
-	//LandScape->LandScape()->SetHeightMap(CAssetMgr::GetInst()->Load<CTexture>(L"texture\\HeightMap\\HeightMap_01.jpg"));
-	LandScape->LandScape()->SetHeightMap(CAssetMgr::GetInst()->FindAsset<CTexture>(L"HeightMapTex"));
 
+	// LandScape->LandScape()->SetHeightMap(CAssetMgr::GetInst()->Load<CTexture>(L"texture\\HeightMap\\HeightMap_01.jpg"));
+	LandScape->LandScape()->SetHeightMap(CAssetMgr::GetInst()->FindAsset<CTexture>(L"HeightMapTex"));
 
 	pTempLevel->AddObject(LandScape, (UINT)LAYER::LAYER_DEFAULT, false);
 
@@ -191,14 +191,13 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
-
 	// ============
 	// FBX Loading
-	// ============	
+	// ============
 	{
 		// 인스턴싱 테스트
 		Ptr<CMeshData> pMeshData = nullptr;
-		CGameObject *pObj = nullptr;
+		CGameObject*   pObj		 = nullptr;
 
 		/*pMeshData = CAssetMgr::GetInst()->LoadFBX(L"fbx\\House.fbx");
 		for (int i = 0; i < 100; ++i)
@@ -208,7 +207,7 @@ void CCreateTempLevel::CreateTempLevel()
 			pObj->Transform()->SetRelativePos(Vec3((i + 1) * 300.f, 200.f, 500.f));
 			pTempLevel->AddObject(pObj, 0, false);
 		}*/
-		//pMeshData = CAssetMgr::GetInst()->LoadFBX(L"fbx\\Monster.fbx");
+		// pMeshData = CAssetMgr::GetInst()->LoadFBX(L"fbx\\Monster.fbx");
 		pMeshData = CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\Monster.mdat");
 		for (int i = 0; i < 10; ++i)
 		{
@@ -227,6 +226,5 @@ void CCreateTempLevel::CreateTempLevel()
 
 	CLevelSaveLoad::SaveLevel(pTempLevel, L"level\\temp.lv");
 
-	//CTaskMgr::GetInst()->tick();
-
+	// CTaskMgr::GetInst()->tick();
 }

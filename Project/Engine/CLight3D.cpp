@@ -31,12 +31,11 @@ CLight3D::~CLight3D()
 		delete m_CamObj;
 }
 
-
 void CLight3D::finaltick()
 {
 	if (LIGHT_TYPE::SPOT != (LIGHT_TYPE)m_Info.LightType)
 		m_Info.vWorldDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-	
+
 	m_Info.vWorldPos = Transform()->GetWorldPos();
 
 	if (LIGHT_TYPE::POINT == (LIGHT_TYPE)m_Info.LightType)
@@ -44,7 +43,7 @@ void CLight3D::finaltick()
 	else if (LIGHT_TYPE::SPOT == (LIGHT_TYPE)m_Info.LightType)
 	{
 		float fHalfAngle = m_Info.fAngle / 2.f;
-		float fRange = m_Info.fRadius * tanf(fHalfAngle);
+		float fRange	 = m_Info.fRadius * tanf(fHalfAngle);
 		Transform()->SetRelativeScale(Vec3(fRange * 2.f, fRange * 2.f, m_Info.fRadius));
 		Transform()->SetDir(m_Info.vWorldDir);
 	}
@@ -60,8 +59,9 @@ void CLight3D::finaltick()
 	else if (m_Info.LightType == (int)LIGHT_TYPE::SPOT)
 	{
 		float fHalfAngle = m_Info.fAngle / 2.f;
-		float fRange = m_Info.fRadius * tanf(fHalfAngle);
-		GamePlayStatic::DrawDebugCone(m_Info.vWorldPos, Vec3(fRange * 2.f, fRange * 2.f, m_Info.fRadius), Transform()->GetRelativeRotation(), Vec3(0.f, 1.f, 0.1f), true);
+		float fRange	 = m_Info.fRadius * tanf(fHalfAngle);
+		GamePlayStatic::DrawDebugCone(m_Info.vWorldPos, Vec3(fRange * 2.f, fRange * 2.f, m_Info.fRadius),
+									  Transform()->GetRelativeRotation(), Vec3(0.f, 1.f, 0.1f), true);
 	}
 }
 
@@ -80,7 +80,7 @@ void CLight3D::render()
 		Matrix matVWInv = g_Transform.matViewInv * Transform()->GetWorldInvMat();
 		m_LightMtrl->SetScalarParam(SCALAR_PARAM::MAT_0, matVWInv);
 	}
-	
+
 	Transform()->UpdateData();
 	m_LightMtrl->UpdateData();
 	m_VolumeMesh->render(0);
@@ -109,22 +109,21 @@ void CLight3D::SetLightType(LIGHT_TYPE _type)
 	if (LIGHT_TYPE::DIRECTIONAL == (LIGHT_TYPE)m_Info.LightType)
 	{
 		m_VolumeMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect);
-		m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DirLightMtrl");
+		m_LightMtrl	 = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DirLightMtrl");
 	}
 
 	else if (LIGHT_TYPE::POINT == (LIGHT_TYPE)m_Info.LightType)
 	{
 		m_VolumeMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MESHsphere);
-		m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLightMtrl");
+		m_LightMtrl	 = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLightMtrl");
 	}
 
 	else if (LIGHT_TYPE::SPOT == (LIGHT_TYPE)m_Info.LightType)
 	{
 		m_VolumeMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MESHcone);
-		m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SpotLightMtrl");
+		m_LightMtrl	 = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SpotLightMtrl");
 	}
 }
-
 
 void CLight3D::SaveToFile(FILE* _File)
 {

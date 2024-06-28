@@ -49,14 +49,15 @@ bool UI::TitleCollapse(const char* _content)
 	ImGui::PushStyleColor(ImGuiCol_HeaderHovered, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
 	ImGui::PushStyleColor(ImGuiCol_HeaderActive, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
 
-	Ptr<CTexture> BtnTex = CAssetMgr::GetInst()->Load<CTexture>(TEXIconSetting);
-	ImTextureID BtnTexID = (ImTextureID)(BtnTex->GetSRV().Get());
+	Ptr<CTexture> BtnTex   = CAssetMgr::GetInst()->Load<CTexture>(TEXIconSetting);
+	ImTextureID	  BtnTexID = (ImTextureID)(BtnTex->GetSRV().Get());
 
-	float FrameHeight = ImGui::GetFrameHeight();
-	float padding = ImGui::GetFrameHeightWithSpacing() - ImGui::GetFrameHeight();
-	ImVec2 Btnsize = ImVec2(FrameHeight - padding, FrameHeight - padding);
+	float  FrameHeight = ImGui::GetFrameHeight();
+	float  padding	   = ImGui::GetFrameHeightWithSpacing() - ImGui::GetFrameHeight();
+	ImVec2 Btnsize	   = ImVec2(FrameHeight - padding, FrameHeight - padding);
 
-	if (ImGui::CollapsingHeader(_content, ImGuiTreeNodeFlags_AllowItemOverlap)) {
+	if (ImGui::CollapsingHeader(_content, ImGuiTreeNodeFlags_AllowItemOverlap))
+	{
 
 		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f, 0.f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f, 0.f));
@@ -67,7 +68,7 @@ bool UI::TitleCollapse(const char* _content)
 		{
 			ImGui::OpenPopup("HeaderSetting");
 		}
-		
+
 		if (ImGui::BeginPopup("HeaderSetting"))
 		{
 			HeaderSetting(this);
@@ -78,7 +79,8 @@ bool UI::TitleCollapse(const char* _content)
 		ImGui::PopStyleColor(3);
 		return true;
 	}
-	else {
+	else
+	{
 		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f, 0.f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f, 0.f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f, 0.f));
@@ -103,7 +105,6 @@ bool UI::TitleCollapse(const char* _content)
 
 void UI::tick()
 {
-
 }
 
 void UI::render()
@@ -170,13 +171,13 @@ void UI::render()
 						Deactivate();
 				}
 			}
-		}		
+		}
 	}
 
 	// Child UI 인 경우
 	else
 	{
-		ImGui::BeginChild(string(m_strName + m_strID).c_str(), ImVec2(0,0), ImGuiChildFlags_AutoResizeY);
+		ImGui::BeginChild(string(m_strName + m_strID).c_str(), ImVec2(0, 0), ImGuiChildFlags_AutoResizeY);
 
 		render_update();
 
@@ -191,7 +192,7 @@ void UI::render()
 
 bool UI::ColorSelector(const char* _label, Vec4* _col)
 {
-	auto items = GamePlayStatic::COLOR::GetColors();
+	auto	   items	   = GamePlayStatic::COLOR::GetColors();
 	static int selectedidx = 0;
 
 	if (0 != items.size())
@@ -201,22 +202,25 @@ bool UI::ColorSelector(const char* _label, Vec4* _col)
 			selectedidx = 0;
 		}
 		ImGui::SetNextItemWidth(150);
-		if (ImGui::BeginCombo("##comboColorPreset", items[selectedidx].first.c_str())) {
-			for (int i = 0; i < items.size(); i++) {
+		if (ImGui::BeginCombo("##comboColorPreset", items[selectedidx].first.c_str()))
+		{
+			for (int i = 0; i < items.size(); i++)
+			{
 				const bool isSelected = (selectedidx == i);
-				if (ImGui::Selectable(items[i].first.c_str(), isSelected)) {
-					*_col = items[i].second;
+				if (ImGui::Selectable(items[i].first.c_str(), isSelected))
+				{
+					*_col		= items[i].second;
 					selectedidx = i;
 				}
 
 				// 항목 선택 시 자동으로 스크롤
-				if (isSelected) {
+				if (isSelected)
+				{
 					ImGui::SetItemDefaultFocus();
 				}
 			}
 			ImGui::EndCombo();
 		}
-
 	}
 
 	if (ImGui::ColorEdit4(_label, *_col))
@@ -224,7 +228,6 @@ bool UI::ColorSelector(const char* _label, Vec4* _col)
 		return true;
 	}
 }
-
 
 void UI::HeaderSetting(UI* _SelectedHeader)
 {

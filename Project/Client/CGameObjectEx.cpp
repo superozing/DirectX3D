@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CGameObjectEx.h"
 
 #include <Engine/CLevelMgr.h>
@@ -18,7 +18,7 @@ void CGameObjectEx::finaltick()
 	}
 
 	vector<CGameObject*>::const_iterator iter = GetChild().begin();
-	for (; iter != GetChild().end(); 	++iter)
+	for (; iter != GetChild().end(); ++iter)
 	{
 		(*iter)->finaltick();
 	}

@@ -17,25 +17,26 @@ SkyBoxUI::~SkyBoxUI()
 
 void SkyBoxUI::render_update()
 {
-	if (!TitleCollapse("SkyBox")) return;
+	if (!TitleCollapse("SkyBox"))
+		return;
 
 	// 기본 세팅
 	Ptr<CTexture> pSphereTex = GetTargetObject()->SkyBox()->m_SphereTex;
-	Ptr<CTexture> pCubeTex = GetTargetObject()->SkyBox()->m_CubeTex;
+	Ptr<CTexture> pCubeTex	 = GetTargetObject()->SkyBox()->m_CubeTex;
 
 	ImVec2 SkyBoxUISize = ImGui::GetContentRegionAvail();
 
 	static const char* cSelectSphere = NULL;
-	static const char* cSelectCube = NULL;
+	static const char* cSelectCube	 = NULL;
 
 	// 타입 선택
 	ImGui::Text("SkyBoxType");
 	ImGui::SameLine();
 
 	ImGui::PushStyleColor(ImGuiCol_CheckMark, ImVec4(1.f, 1.f, 1.f, 1.f));
-	
+
 	static int iSkyBoxType = (UINT)(GetTargetObject()->SkyBox()->m_SkyBoxType);
-	
+
 	if (ImGui::RadioButton("Sphere Type", &iSkyBoxType, 0))
 	{
 		GetTargetObject()->SkyBox()->SetSkyBoxType(SKYBOX_TYPE::SPHERE);
@@ -49,32 +50,33 @@ void SkyBoxUI::render_update()
 	ImGui::SameLine();
 
 	ImGui::PopStyleColor();
-	ImGui::Spacing(); 
+	ImGui::Spacing();
 
 	// Sphere Type
 	ImGui::SeparatorText("Sphere Texture");
 
 	static bool use_text_color_for_tint = false;
-	ImVec2 uv_min = ImVec2(0.0f, 0.0f);                 // Top-left
-	ImVec2 uv_max = ImVec2(1.0f, 1.0f);                 // Lower-right
-	ImVec4 tint_col = use_text_color_for_tint ? ImGui::GetStyleColorVec4(ImGuiCol_Text) : ImVec4(1.0f, 1.0f, 1.0f, 1.0f); // No tint
+	ImVec2		uv_min					= ImVec2(0.0f, 0.0f); // Top-left
+	ImVec2		uv_max					= ImVec2(1.0f, 1.0f); // Lower-right
+	ImVec4		tint_col =
+		 use_text_color_for_tint ? ImGui::GetStyleColorVec4(ImGuiCol_Text) : ImVec4(1.0f, 1.0f, 1.0f, 1.0f); // No tint
 	ImVec4 border_col = ImGui::GetStyleColorVec4(ImGuiCol_Border);
 	ImVec2 vScreenPos = ImGui::GetCursorScreenPos();
-	
 
-	if(pSphereTex != nullptr)
-	{ 
+	if (pSphereTex != nullptr)
+	{
 		ImGui::Image(pSphereTex->GetSRV().Get(), ImVec2(SkyBoxUISize.x, 150), uv_min, uv_max, tint_col, border_col);
-		
+
 		m_strTextureName[0] = ToString(pSphereTex.Get()->GetKey());
-	
+
 		ImGui::Text("Texture Key  ");
 		ImGui::SameLine();
 		m_strTextureName[0] = ToString(pSphereTex.Get()->GetKey());
-		ImGui::InputText("##Texture Key Sphere", (char*)m_strTextureName->c_str(), m_strTextureName->length(), ImGuiInputTextFlags_ReadOnly);
+		ImGui::InputText("##Texture Key Sphere", (char*)m_strTextureName->c_str(), m_strTextureName->length(),
+						 ImGuiInputTextFlags_ReadOnly);
 
 		// 해상도 정보 출력
-		float Width = pSphereTex->GetWidth();
+		float Width	 = pSphereTex->GetWidth();
 		float Height = pSphereTex->GetHeight();
 
 		ImGui::Text("Width        ");
@@ -84,8 +86,6 @@ void SkyBoxUI::render_update()
 		ImGui::Text("Height       ");
 		ImGui::SameLine();
 		ImGui::InputFloat("##SphereTextureHeight", &Height, 0.f, 0.f, "%.3f", ImGuiInputTextFlags_ReadOnly);
-
-	
 	}
 	else
 	{
@@ -93,35 +93,43 @@ void SkyBoxUI::render_update()
 
 		ImGui::Text("Texture Key  ");
 		ImGui::SameLine();
-		ImGui::InputText("##Texture Key Sphere", (char*)m_strTextureName->c_str(), m_strTextureName->length(), ImGuiInputTextFlags_ReadOnly);
+		ImGui::InputText("##Texture Key Sphere", (char*)m_strTextureName->c_str(), m_strTextureName->length(),
+						 ImGuiInputTextFlags_ReadOnly);
 	}
 
-	//Sphere ComboBox
+	// Sphere ComboBox
 	ImGui::Text("Change Texture");
 	ImGui::SameLine();
 
 	if (ImGui::BeginCombo("##comboSkyBoxSphere", cSelectSphere))
 	{
+
 		for (int n = 0; n < m_vecSkyBoxKey.size(); n++)
 		{
-			bool is_selected = (cSelectSphere == m_vecSkyBoxKey[n].c_str()); 
+			bool is_selected = (cSelectSphere == m_vecSkyBoxKey[n].c_str());
 			if (ImGui::Selectable(m_vecSkyBoxKey[n].c_str(), is_selected))
 			{
 				cSelectSphere = m_vecSkyBoxKey[n].c_str();
-				
+
 				if (is_selected)
-					ImGui::SetItemDefaultFocus();  
+					ImGui::SetItemDefaultFocus();
 
-				string m_strCurDirectory = "texture\\skybox\\";
-				wstring SkyBoxKey = ToWString(m_strCurDirectory += m_vecSkyBoxKey[n].c_str());
+				string	m_strCurDirectory = "texture\\skybox\\";
+				wstring SkyBoxKey		  = ToWString(m_strCurDirectory += m_vecSkyBoxKey[n].c_str());
 
-				GetTargetObject()->SkyBox()->SetSphereTexture(CAssetMgr::GetInst()->Load<CTexture>(SkyBoxKey, SkyBoxKey));
-
+				GetTargetObject()->SkyBox()->SetSphereTexture(
+					CAssetMgr::GetInst()->Load<CTexture>(SkyBoxKey, SkyBoxKey));
 			}
 		}
 		ImGui::EndCombo();
 	}
 
+	// 구 텍스쳐 payload
+	CTexture* PayloadTex = nullptr;
+	if (PayloadCheck(&PayloadTex))
+	{
+		GetTargetObject()->SkyBox()->m_SphereTex = PayloadTex;
+	}
 
 	ImGui::Spacing();
 
@@ -129,25 +137,26 @@ void SkyBoxUI::render_update()
 	ImGui::SeparatorText("Cube Texture");
 
 	use_text_color_for_tint = false;
-	uv_min = ImVec2(0.0f, 0.0f);                 // Top-left
-	uv_max = ImVec2(1.0f, 1.0f);                 // Lower-right
-	tint_col = use_text_color_for_tint ? ImGui::GetStyleColorVec4(ImGuiCol_Text) : ImVec4(1.0f, 1.0f, 1.0f, 1.0f); // No tint
+	uv_min					= ImVec2(0.0f, 0.0f); // Top-left
+	uv_max					= ImVec2(1.0f, 1.0f); // Lower-right
+	tint_col =
+		use_text_color_for_tint ? ImGui::GetStyleColorVec4(ImGuiCol_Text) : ImVec4(1.0f, 1.0f, 1.0f, 1.0f); // No tint
 	border_col = ImGui::GetStyleColorVec4(ImGuiCol_Border);
 	vScreenPos = ImGui::GetCursorScreenPos();
-	
+
 	if (pCubeTex != nullptr)
-	{ 
-		//ImGui::Image(pCubeTex->GetSRV().Get(), ImVec2(SkyBoxUISize.x, 150), uv_min, uv_max, tint_col, border_col);
-		
+	{
+		// ImGui::Image(pCubeTex->GetSRV().Get(), ImVec2(SkyBoxUISize.x, 150), uv_min, uv_max, tint_col, border_col);
+
 		m_strTextureName[1] = ToString(pCubeTex.Get()->GetKey());
+		char* CubeKey		= (char*)m_strTextureName[1].c_str();
 
 		ImGui::Text("Texture Key  ");
 		ImGui::SameLine();
-		ImGui::InputText("##Texture Key Cube", (char*)m_strTextureName->c_str(), m_strTextureName->length(), ImGuiInputTextFlags_ReadOnly);
-
+		ImGui::InputText("##Texture Key Cube", CubeKey, m_strTextureName->length(), ImGuiInputTextFlags_ReadOnly);
 
 		// 해상도 정보 출력
-		float Width = pCubeTex->GetWidth();
+		float Width	 = pCubeTex->GetWidth();
 		float Height = pCubeTex->GetHeight();
 
 		ImGui::Text("Width        ");
@@ -157,45 +166,48 @@ void SkyBoxUI::render_update()
 		ImGui::Text("Height       ");
 		ImGui::SameLine();
 		ImGui::InputFloat("##CubeTextureHeight", &Height, 0.f, 0.f, "%.3f", ImGuiInputTextFlags_ReadOnly);
-
-
 	}
 	else
 	{
 		m_strTextureName[0] = "";
-		
+
 		ImGui::Text("Texture Key  ");
 		ImGui::SameLine();
-		ImGui::InputText("##Texture Key Cube", (char*)m_strTextureName->c_str(), m_strTextureName->length(), ImGuiInputTextFlags_ReadOnly);
-
+		ImGui::InputText("##Texture Key Cube", (char*)m_strTextureName->c_str(), m_strTextureName->length(),
+						 ImGuiInputTextFlags_ReadOnly);
 	}
 
-	//Rect ComboBox
+	// Rect ComboBox
 	ImGui::Text("Change Texture");
 	ImGui::SameLine();
 
-	if (ImGui::BeginCombo("##comboSkyBoxCube", cSelectCube)) 
+	if (ImGui::BeginCombo("##comboSkyBoxCube", cSelectCube))
 	{
 		for (int n = 0; n < m_vecSkyBoxKey.size(); n++)
 		{
-			bool is_selected = (cSelectCube == m_vecSkyBoxKey[n].c_str()); 
+			bool is_selected = (cSelectCube == m_vecSkyBoxKey[n].c_str());
 			if (ImGui::Selectable(m_vecSkyBoxKey[n].c_str(), is_selected))
 			{
 				cSelectCube = m_vecSkyBoxKey[n].c_str();
 
 				if (is_selected)
-					ImGui::SetItemDefaultFocus();   
+					ImGui::SetItemDefaultFocus();
 
-				string m_strCurDirectory = "texture\\skybox\\";
-				wstring SkyBoxKey = ToWString(m_strCurDirectory += m_vecSkyBoxKey[n].c_str());
+				string	m_strCurDirectory = "texture\\skybox\\";
+				wstring SkyBoxKey		  = ToWString(m_strCurDirectory += m_vecSkyBoxKey[n].c_str());
 
 				GetTargetObject()->SkyBox()->SetCubeTexture(CAssetMgr::GetInst()->Load<CTexture>(SkyBoxKey, SkyBoxKey));
-
 			}
 		}
 		ImGui::EndCombo();
 	}
 
+	// 큐브 텍스쳐 payload
+	PayloadTex = nullptr;
+	if (PayloadCheck(&PayloadTex))
+	{
+		GetTargetObject()->SkyBox()->m_CubeTex = PayloadTex;
+	}
 }
 
 void SkyBoxUI::ResetUIinfo()
@@ -208,12 +220,14 @@ void SkyBoxUI::GetSkyBoxFileName()
 	vector<string> strFileName;
 
 	string m_strCurDirectory = "texture\\skybox\\";
-	string path = ToString(CPathMgr::GetContentPath()) + m_strCurDirectory;
+	string path				 = ToString(CPathMgr::GetContentPath()) + m_strCurDirectory;
 
 	namespace fs = std::filesystem;
-	for (const fs::directory_entry& entry : fs::directory_iterator(path)) {
-		if (!entry.is_directory()) {
-			auto filename = entry.path().filename().string();
+	for (const fs::directory_entry& entry : fs::directory_iterator(path))
+	{
+		if (!entry.is_directory())
+		{
+			auto filename  = entry.path().filename().string();
 			auto extension = entry.path().extension().string();
 
 			strFileName.push_back(filename);

@@ -4,7 +4,6 @@
 #include "CLevelMgr.h"
 #include "CLevel.h"
 
-
 CRenderComponent::CRenderComponent(COMPONENT_TYPE _Type)
 	: CComponent(_Type)
 	, m_DrawShadowMap(true)
@@ -19,7 +18,7 @@ CRenderComponent::CRenderComponent(const CRenderComponent& _OriginRenderCom)
 
 	for (size_t i = 0; i < _OriginRenderCom.m_vecMtrls.size(); ++i)
 	{
-		m_vecMtrls[i].pCurMtrl = _OriginRenderCom.m_vecMtrls[i].pCurMtrl;
+		m_vecMtrls[i].pCurMtrl	  = _OriginRenderCom.m_vecMtrls[i].pCurMtrl;
 		m_vecMtrls[i].pSharedMtrl = _OriginRenderCom.m_vecMtrls[i].pSharedMtrl;
 
 		// 원본 오브젝트가 공유재질을 참조하고 있고, 현재 사용재질은 공유재질이 아닌경우
@@ -42,7 +41,6 @@ CRenderComponent::CRenderComponent(const CRenderComponent& _OriginRenderCom)
 
 CRenderComponent::~CRenderComponent()
 {
-
 }
 
 void CRenderComponent::SetMesh(Ptr<CMesh> _Mesh)
@@ -63,8 +61,8 @@ void CRenderComponent::SetMesh(Ptr<CMesh> _Mesh)
 void CRenderComponent::SetMaterial(Ptr<CMaterial> _Mtrl, UINT _idx)
 {
 	// 재질이 변경되면 기존에 복사본 받아둔 DynamicMaterial 을 삭제한다.
-	m_vecMtrls[_idx].pSharedMtrl = _Mtrl;
-	m_vecMtrls[_idx].pCurMtrl = _Mtrl;
+	m_vecMtrls[_idx].pSharedMtrl  = _Mtrl;
+	m_vecMtrls[_idx].pCurMtrl	  = _Mtrl;
 	m_vecMtrls[_idx].pDynamicMtrl = nullptr;
 }
 
@@ -88,14 +86,14 @@ Ptr<CMaterial> CRenderComponent::GetSharedMaterial(UINT _idx)
 
 Ptr<CMaterial> CRenderComponent::GetDynamicMaterial(UINT _idx)
 {
-	//CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-	//if (pCurLevel->GetState() != LEVEL_STATE::PLAY)
+	// CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+	// if (pCurLevel->GetState() != LEVEL_STATE::PLAY)
 	//	return nullptr;
 
 	// 원본 재질이 없다 -> Nullptr 반환
 	if (nullptr == m_vecMtrls[_idx].pSharedMtrl)
 	{
-		m_vecMtrls[_idx].pCurMtrl = nullptr;
+		m_vecMtrls[_idx].pCurMtrl	  = nullptr;
 		m_vecMtrls[_idx].pDynamicMtrl = nullptr;
 		return m_vecMtrls[_idx].pCurMtrl;
 	}
@@ -105,7 +103,7 @@ Ptr<CMaterial> CRenderComponent::GetDynamicMaterial(UINT _idx)
 		m_vecMtrls[_idx].pDynamicMtrl = m_vecMtrls[_idx].pSharedMtrl->Clone();
 		m_vecMtrls[_idx].pDynamicMtrl->SetName(m_vecMtrls[_idx].pSharedMtrl->GetName() + L"_Clone");
 		m_vecMtrls[_idx].pCurMtrl = m_vecMtrls[_idx].pDynamicMtrl;
-    
+
 		m_vecMtrls[_idx].pDynamicMtrl->SetKey(m_vecMtrls[_idx].pSharedMtrl->GetKey());
 		m_vecMtrls[_idx].pDynamicMtrl->SetRelativePath(m_vecMtrls[_idx].pSharedMtrl->GetRelativePath());
 
@@ -122,7 +120,7 @@ ULONG64 CRenderComponent::GetInstID(UINT _iMtrlIdx)
 		return 0;
 
 	uInstID id{(UINT)m_Mesh->GetID(), (WORD)m_vecMtrls[_iMtrlIdx].pCurMtrl->GetID(), (WORD)_iMtrlIdx};
-		return id.llID;
+	return id.llID;
 }
 
 void CRenderComponent::render(UINT _iSubset)
@@ -130,7 +128,7 @@ void CRenderComponent::render(UINT _iSubset)
 	render();
 }
 
-void CRenderComponent::SaveToFile(FILE *_File)
+void CRenderComponent::SaveToFile(FILE* _File)
 {
 	// 메쉬 참조정보 저장
 	SaveAssetRef(m_Mesh, _File);
@@ -155,7 +153,7 @@ void CRenderComponent::SaveToFile(ofstream& fout)
 	// 메쉬 참조정보 저장
 	fout << TagMesh << endl;
 	SaveAssetRef(m_Mesh, fout);
-	
+
 	// 재질 참조정보 저장
 	fout << TagMtrlCount << endl;
 	UINT iMtrlCount = GetMtrlCount();
@@ -191,7 +189,7 @@ void CRenderComponent::LoadFromFile(ifstream& fin)
 	// 메쉬 참조정보 불러오기
 	Utils::GetLineUntilString(fin, TagMesh);
 	LoadAssetRef(m_Mesh, fin);
-	
+
 	// 재질 참조정보 불러오기
 	Utils::GetLineUntilString(fin, TagMtrlCount);
 	UINT iMtrlCount = GetMtrlCount();

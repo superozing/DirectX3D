@@ -1,127 +1,126 @@
 ﻿#pragma once
 #include "UI.h"
 
-
 class TreeNode
 {
 private:
-    TreeUI*             m_Owner;
+	TreeUI* m_Owner;
 
-    string              m_Name;
-    string              m_ID;
-    vector<TreeNode*>   m_vecChildNode;
+	string			  m_Name;
+	string			  m_ID;
+	vector<TreeNode*> m_vecChildNode;
 
-    TreeNode*           m_ParentNode;
-    DWORD_PTR           m_Data;
+	TreeNode* m_ParentNode;
+	DWORD_PTR m_Data;
 
-    bool                m_bFrame;
-    bool                m_bSelected;
-    bool                m_bOpen;
-    bool                m_bFilter;
+	bool m_bFrame;
+	bool m_bSelected;
+	bool m_bOpen;
+	bool m_bFilter;
 
 public:
-    void SetName(string& _Name) { m_Name = _Name; }    
-    void SetFrame(bool _Frame) { m_bFrame = _Frame; }
+	void SetName(string& _Name) { m_Name = _Name; }
+	void SetFrame(bool _Frame) { m_bFrame = _Frame; }
 
-    void SetOpen(bool _Open) { m_bOpen = _Open; }
-    bool IsOpen() { return m_bOpen; }
+	void SetOpen(bool _Open) { m_bOpen = _Open; }
+	bool IsOpen() { return m_bOpen; }
 
-    void SetFilterState(bool _Filter) { m_bFilter = _Filter; }
-    bool IsFiltered() { return m_bFilter; }
+	void SetFilterState(bool _Filter) { m_bFilter = _Filter; }
+	bool IsFiltered() { return m_bFilter; }
 
-    const string& GetName() { return m_Name; }
-    DWORD_PTR GetData() { return m_Data; }
-    TreeNode* GetParent() { return m_ParentNode; }
-    vector<TreeNode*> GetChildNode() { return m_vecChildNode; }
+	const string&	  GetName() { return m_Name; }
+	DWORD_PTR		  GetData() { return m_Data; }
+	TreeNode*		  GetParent() { return m_ParentNode; }
+	vector<TreeNode*> GetChildNode() { return m_vecChildNode; }
 
 private:
-    void SetID(const string& _ID) { m_ID = _ID; }
-    void AddChildNode(TreeNode* _Node) 
-    { 
-        m_vecChildNode.push_back(_Node); 
-        _Node->m_ParentNode = this;
-    }
+	void SetID(const string& _ID) { m_ID = _ID; }
+	void AddChildNode(TreeNode* _Node)
+	{
+		m_vecChildNode.push_back(_Node);
+		_Node->m_ParentNode = this;
+	}
 
-    void GenericTreeRender(UINT _flag, const string& _id);
-    void ImageListRender(UINT _flag, const string& id);
-
-
-public:
-    void render_update();
+	void GenericTreeRender(UINT _flag, const string& _id);
+	void ImageListRender(UINT _flag, const string& id);
 
 public:
-    TreeNode();
-    ~TreeNode();
+	void render_update();
 
-    friend class TreeUI;
-    friend class Outliner;
+public:
+	TreeNode();
+	~TreeNode();
+
+	friend class TreeUI;
+	friend class Outliner;
 };
 
-
-
-class TreeUI :
-    public UI
+class TreeUI : public UI
 {
 private:
-    static  UINT    NodeID;
+	static UINT NodeID;
 
 private:
-    TreeNode*       m_Root;
-    TreeNode*       m_Selected;
+	TreeNode* m_Root;
+	TreeNode* m_Selected;
 
-    TreeNode*       m_DragNode;
-    TreeNode*       m_DropNode;
+	TreeNode* m_DragNode;
+	TreeNode* m_DropNode;
 
-    bool            m_bShowRoot;
-    bool            m_bDragDrop;
+	bool m_bShowRoot;
+	bool m_bDragDrop;
 
-    UI*             m_SelectInst;
-    Delegate_1      m_SelectFunc;
-    bool            m_bSelectEvent;
+	UI*		   m_SelectInst;
+	Delegate_1 m_SelectFunc;
+	bool	   m_bSelectEvent;
 
-    UI*             m_DragDropInst;
-    Delegate_2      m_DragDropFunc;
-    bool            m_bDragDropEvent;
+	UI*		   m_DragDropInst;
+	Delegate_2 m_DragDropFunc;
+	bool	   m_bDragDropEvent;
 
-    bool                m_bImageTree;
-
-public:
-    virtual void render_update() override;
+	bool m_bImageTree;
 
 public:
-    TreeNode* GetRootNode() { return m_Root; }
-    TreeNode* GetSelectedNode() { return m_Selected; }
+	virtual void render_update() override;
 
-    void AddSelectDelegate(UI* _Inst, Delegate_1 _pFunc) { m_SelectInst = _Inst; m_SelectFunc = _pFunc; }
-    void AddDragDropDelegate(UI* _Inst, Delegate_2 _pFunc) { m_DragDropInst = _Inst; m_DragDropFunc = _pFunc; }
+public:
+	TreeNode* GetRootNode() { return m_Root; }
+	TreeNode* GetSelectedNode() { return m_Selected; }
 
-    void ShowRootNode(bool _bShow) { m_bShowRoot = _bShow; }
-    void UseDragDrop(bool _Use) { m_bDragDrop = _Use; }
+	void AddSelectDelegate(UI* _Inst, Delegate_1 _pFunc)
+	{
+		m_SelectInst = _Inst;
+		m_SelectFunc = _pFunc;
+	}
+	void AddDragDropDelegate(UI* _Inst, Delegate_2 _pFunc)
+	{
+		m_DragDropInst = _Inst;
+		m_DragDropFunc = _pFunc;
+	}
 
-    TreeNode* AddTreeNode(TreeNode* _Parent, string _strName, DWORD_PTR _dwData);
-    void ClearNode()
-    {
-        if (nullptr != m_Root)
-        {
-            delete m_Root;
-            m_Root = nullptr;
-        }         
-    }
+	void ShowRootNode(bool _bShow) { m_bShowRoot = _bShow; }
+	void UseDragDrop(bool _Use) { m_bDragDrop = _Use; }
 
-    void SetImageTree(bool _setImage) { m_bImageTree = _setImage; }
+	TreeNode* AddTreeNode(TreeNode* _Parent, string _strName, DWORD_PTR _dwData);
+	void	  ClearNode()
+	{
+		if (nullptr != m_Root)
+		{
+			delete m_Root;
+			m_Root = nullptr;
+		}
+	}
+
+	void SetImageTree(bool _setImage) { m_bImageTree = _setImage; }
 
 private:
-    void SetSelectedNode(TreeNode* _SelectedNode);
-    void SetDragNode(TreeNode* _DragNode);
-    void SetDropNode(TreeNode* _DropNode);
-
-
-
+	void SetSelectedNode(TreeNode* _SelectedNode);
+	void SetDragNode(TreeNode* _DragNode);
+	void SetDropNode(TreeNode* _DropNode);
 
 public:
-    TreeUI(const string& _ID);
-    ~TreeUI();
+	TreeUI(const string& _ID);
+	~TreeUI();
 
-    friend class TreeNode;
+	friend class TreeNode;
 };
-

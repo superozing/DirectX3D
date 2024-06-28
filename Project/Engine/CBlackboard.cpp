@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CBlackboard.h"
 
 CBlackboard::CBlackboard()
@@ -21,7 +21,7 @@ void CBlackboard::AddBlackboardData(const wstring& _strKey, BB_DATA _Type, void*
 
 	assert(iter == m_mapBBData.end());
 
-	m_mapBBData.insert(make_pair(_strKey, tBlackboardData{ _Type , _Data }));
+	m_mapBBData.insert(make_pair(_strKey, tBlackboardData{_Type, _Data}));
 }
 
 void* CBlackboard::GetBlackboardData(const wstring& _strKey)

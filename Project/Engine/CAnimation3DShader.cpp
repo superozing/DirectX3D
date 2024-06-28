@@ -19,7 +19,7 @@ int CAnimation3DShader::UpdateData()
 	// 구조화버퍼 전달
 	m_pFrameDataBuffer->UpdateData_CS_SRV(16); // t16
 	m_pOffsetMatBuffer->UpdateData_CS_SRV(17); // t17
-	m_pOutputBuffer->UpdateData_CS_UAV(0);   // u0
+	m_pOutputBuffer->UpdateData_CS_UAV(0);	   // u0
 
 	return S_OK;
 }
@@ -41,5 +41,5 @@ void CAnimation3DShader::Clear()
 
 	m_pFrameDataBuffer = nullptr;
 	m_pOffsetMatBuffer = nullptr;
-	m_pOutputBuffer = nullptr;
+	m_pOutputBuffer	   = nullptr;
 }

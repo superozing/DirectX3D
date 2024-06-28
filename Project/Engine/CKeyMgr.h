@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+// clang-format off
 // Key Value
 enum KEY
 {
@@ -44,35 +45,36 @@ struct FKeyData
 	KEY_STATE	eState;
 	bool		bPressed;
 };
+// clang-format on
 
-typedef FOCUS_STATE(*FOCUS_CALLBACK)(void);
+typedef FOCUS_STATE (*FOCUS_CALLBACK)(void);
 
-class CKeyMgr
-	: public CManager<CKeyMgr>
+class CKeyMgr : public CManager<CKeyMgr>
 {
 	SINGLE(CKeyMgr);
+
 private:
-	vector<FKeyData>	m_vecKeyData;
+	vector<FKeyData> m_vecKeyData;
 
-	Vec2				m_vMousePos;
-	Vec2				m_vMousePrevPos;
+	Vec2 m_vMousePos;
+	Vec2 m_vMousePrevPos;
 
-	Vec2				m_vMouseDrag;
+	Vec2 m_vMouseDrag;
 
-	WHEEL_STATE			_inWheel;
-	WHEEL_STATE			m_ThisFrameWheel;
+	WHEEL_STATE _inWheel;
+	WHEEL_STATE m_ThisFrameWheel;
 
-	FOCUS_STATE			m_FocusState;
+	FOCUS_STATE m_FocusState;
 
 public:
-	FOCUS_CALLBACK		m_FocusCallback;
+	FOCUS_CALLBACK m_FocusCallback;
 
 public:
 	KEY_STATE GetKeyState(KEY _Key) { return m_vecKeyData[_Key].eState; }
-	Vec2 GetMousePos() const { return m_vMousePos; }
-	Vec2 GetMouseDrag() const { return m_vMouseDrag; }
+	Vec2	  GetMousePos() const { return m_vMousePos; }
+	Vec2	  GetMouseDrag() const { return m_vMouseDrag; }
 
-	void SetWheel(WHEEL_STATE _in) { _inWheel = _in; }
+	void		SetWheel(WHEEL_STATE _in) { _inWheel = _in; }
 	WHEEL_STATE GetWheel() { return m_ThisFrameWheel; }
 
 	FOCUS_STATE GetFocusState() const { return m_FocusState; }
@@ -82,4 +84,3 @@ public:
 	virtual void tick() override;
 	virtual void enter() override {}
 };
-

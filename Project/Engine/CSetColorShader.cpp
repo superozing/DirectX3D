@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CSetColorShader.h"
 
 CSetColorShader::CSetColorShader()
@@ -16,24 +16,24 @@ int CSetColorShader::UpdateData()
 	if (nullptr == m_TargetTex)
 		return E_FAIL;
 
-	// »ó¼ö ¼¼ÆÃ
-	m_Const.iArr[0] = m_TargetTex->GetWidth();
-	m_Const.iArr[1] = m_TargetTex->GetHeight();
+	// ìƒìˆ˜ ì„¸íŒ…
+	m_Const.iArr[0]	 = m_TargetTex->GetWidth();
+	m_Const.iArr[1]	 = m_TargetTex->GetHeight();
 	m_Const.v4Arr[0] = m_Color;
 
-	// ÅØ½ºÃÄ U0 ¿¡ ¹ÙÀÎµù
+	// í…ìŠ¤ì³ U0 ì— ë°”ì¸ë”©
 	if (FAILED(m_TargetTex->UpdateData_CS_UAV(0)))
 	{
 		return E_FAIL;
-	}	
+	}
 
 	return S_OK;
 }
 
 void CSetColorShader::UpdateGroupCount()
 {
-	// ½º·¹µå ±×·ì ¼ö Ã¼Å©
-	UINT width = m_TargetTex->GetWidth();
+	// ìŠ¤ë ˆë“œ ê·¸ë£¹ ìˆ˜ ì²´í¬
+	UINT width	= m_TargetTex->GetWidth();
 	UINT height = m_TargetTex->GetHeight();
 
 	SetGroupX(1 + width / m_ThreadX);
