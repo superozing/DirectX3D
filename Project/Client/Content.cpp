@@ -3,6 +3,7 @@
 
 #include <Engine/CAssetMgr.h>
 #include <Engine/CTaskMgr.h>
+#include <Engine/CKeyMgr.h>
 
 #include "CImGuiMgr.h"
 #include "Inspector.h"
@@ -108,6 +109,35 @@ void Content::render_update()
 	// ImGui::EndChild();
 
 	ImGui::PopStyleVar();
+
+	if (KEY_TAP_EDITOR(KEY::DEL))
+	{
+		TreeNode* pNode = m_ContentTree->GetSelectedNode();
+		if (nullptr != pNode)
+		{
+
+			int result = MessageBox(NULL,						 // 부모 윈도우 핸들 (없으면 NULL)
+									L"파일을 삭제하시겠습니까?", // 메시지 내용
+									L"확인/취소 대화상자",		 // 대화상자 제목
+									MB_OKCANCEL					 // 버튼 옵션 (확인/취소)
+			);
+
+			if (result == IDOK)
+			{
+				MessageBox(nullptr, L"삭제가 완료되었습니다.", L"컨텐츠 삭제", 0);
+
+				// 파일 삭제
+				string fullpath = ToString(CPathMgr::GetContentPath()) + m_strCurDirectory + "\\" + pNode->GetName();
+				remove(fullpath);
+
+				// 인스펙터 초기화
+				Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
+				pInspector->SetTargetObject(nullptr);
+
+				ResetContent();
+			}
+		}
+	}
 }
 
 void Content::ResetBrowser()
@@ -208,9 +238,17 @@ void Content::ResetContent()
 	{
 		if (!entry.is_directory())
 		{
-			auto		filename  = entry.path().filename().string();
-			auto		extension = entry.path().extension().string();
-			auto		type	  = CAssetMgr::GetInst()->GetAssetTypeByExt(filename);
+			auto filename  = entry.path().filename().string();
+			auto extension = entry.path().extension().string();
+			auto type	   = CAssetMgr::GetInst()->GetAssetTypeByExt(filename);
+
+			// 오류로 종료될 때 생기는 imgui.ini파일 제거
+			if (filename == "imgui.ini")
+			{
+				remove(entry);
+				continue;
+			}
+
 			Ptr<CAsset> pAsset;
 			if (type != ASSET_TYPE::END)
 			{

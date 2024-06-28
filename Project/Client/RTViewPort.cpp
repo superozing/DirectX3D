@@ -125,6 +125,13 @@ void RTViewPort::render_update()
 	{
 		MoveCameraToObject();
 	}
+
+	if (KEY_PRESSED(KEY::LCTRL) && KEY_PRESSED(KEY::S))
+	{
+		MessageBox(nullptr, L"레벨을 저장합니다.", L"저장 시스템", 0);
+		CLevelSaveLoad::SaveLevel(CLevelMgr::GetInst()->GetCurrentLevel(),
+								  CLevelMgr::GetInst()->GetCurrentLevel()->GetRelativePath());
+	}
 }
 
 void RTViewPort::enter()
