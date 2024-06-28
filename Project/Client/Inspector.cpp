@@ -325,6 +325,8 @@ void Inspector::ObjectScript()
 		}
 	}
 
+	if (CurSciprt >= filteredScripts.size())
+		CurSciprt = 0;
 	if (0 == filteredScripts.size())
 		CurSciprt = -1;
 
