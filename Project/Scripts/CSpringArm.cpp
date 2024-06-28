@@ -4,7 +4,11 @@
 #include <Engine\CRenderMgr.h>
 
 CSpringArm::CSpringArm()
-	: CScript((UINT)SCRIPT_TYPE::SPRINGARM), m_fDistance(300.f), m_vDir(1.f, 0.f, 0.f), m_vOffset(), m_bActive(true)
+	: CScript((UINT)SCRIPT_TYPE::SPRINGARM)
+	, m_fDistance(300.f)
+	, m_vDir(1.f, 0.f, 0.f)
+	, m_vOffset()
+	, m_bActive(true)
 {
 	AppendScriptParam("Active", SCRIPT_PARAM::BOOL, &m_bActive);
 	AppendScriptParam("Smooth", SCRIPT_PARAM::BOOL, &m_bType);
@@ -70,7 +74,7 @@ void CSpringArm::tick()
 	// GetOwner()->Transform()->SetRelativePos(vPos);
 }
 
-void CSpringArm::SetTargetCamera(CCamera *_cam)
+void CSpringArm::SetTargetCamera(CCamera* _cam)
 {
 	m_pTargetCam = _cam;
 }

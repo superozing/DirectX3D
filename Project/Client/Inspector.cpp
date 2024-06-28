@@ -120,7 +120,7 @@ void Inspector::enter()
 	ResetTargetAsset();
 }
 
-void Inspector::SetTargetObject(CGameObject *_Object, bool _bPrefab)
+void Inspector::SetTargetObject(CGameObject* _Object, bool _bPrefab)
 {
 	// Target 오브젝트 설정
 	m_TargetObject = _Object;
@@ -166,9 +166,9 @@ void Inspector::SetTargetAsset(Ptr<CAsset> _Asset)
 void Inspector::ObjectName()
 {
 	// 오브젝트 이름
-	char ObjName[255] = {};
-	string strName = string(m_TargetObject->GetName().begin(), m_TargetObject->GetName().end());
-	string prevName = strName;
+	char   ObjName[255] = {};
+	string strName		= string(m_TargetObject->GetName().begin(), m_TargetObject->GetName().end());
+	string prevName		= strName;
 
 	for (size_t i = 0; i < strName.length(); ++i)
 	{
@@ -185,7 +185,7 @@ void Inspector::ObjectName()
 			m_TargetObject->SetName(ToWString(string(ObjName)));
 			prevName = ObjName;
 
-			Outliner *pOutliner = (Outliner *)CImGuiMgr::GetInst()->FindUI("##Outliner");
+			Outliner* pOutliner = (Outliner*)CImGuiMgr::GetInst()->FindUI("##Outliner");
 			pOutliner->ResetCurrentLevel();
 		}
 		else if (KEY_TAP_EDITOR(ESC))
@@ -199,14 +199,14 @@ void Inspector::ObjectLayer()
 {
 	// 오브젝트 레이어
 	int LayerIdx = m_TargetObject->GetLayerIdx();
-	int PrevIdx = LayerIdx;
+	int PrevIdx	 = LayerIdx;
 
 	if (-1 != LayerIdx)
 	{
 		ImGui::Text("Layer");
 		ImGui::SameLine();
-		auto Layer_Names = magic_enum::enum_names<LAYER>();
-		string strLayer = string(Layer_Names[LayerIdx]);
+		auto   Layer_Names = magic_enum::enum_names<LAYER>();
+		string strLayer	   = string(Layer_Names[LayerIdx]);
 
 		if (ImGui::BeginCombo("##ObjLayer", strLayer.c_str()))
 		{
@@ -231,7 +231,7 @@ void Inspector::ObjectLayer()
 
 			if (PrevIdx != LayerIdx)
 			{
-				CLevel *pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+				CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
 				pCurLevel->AddObject(m_TargetObject, LayerIdx);
 			}
 		}
@@ -241,12 +241,12 @@ void Inspector::ObjectLayer()
 int Inspector::PrefabLayer()
 {
 	static int LayerIdx = 0;
-	static int PrevIdx = LayerIdx;
+	static int PrevIdx	= LayerIdx;
 
 	ImGui::Text("Layer");
 	ImGui::SameLine();
-	auto Layer_Names = magic_enum::enum_names<LAYER>();
-	string strLayer = string(Layer_Names[LayerIdx]);
+	auto   Layer_Names = magic_enum::enum_names<LAYER>();
+	string strLayer	   = string(Layer_Names[LayerIdx]);
 
 	if (ImGui::BeginCombo("##ObjLayer", strLayer.c_str()))
 	{
@@ -271,7 +271,7 @@ int Inspector::PrefabLayer()
 
 		if (PrevIdx != LayerIdx)
 		{
-			CLevel *pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+			CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
 			pCurLevel->AddObject(m_TargetObject, LayerIdx);
 		}
 	}
@@ -294,15 +294,15 @@ void Inspector::ObjectComponent()
 
 void Inspector::ObjectScript()
 {
-	static int CurSciprt = 0;
+	static int			   CurSciprt = 0;
 	static ImGuiTextFilter filter;
-	vector<string> filteredScripts;
+	vector<string>		   filteredScripts;
 	ImGui::Text("Script Filter");
 	ImGui::SameLine();
 	filter.Draw("##Script Filter");
 
 	auto ScriptList = magic_enum::enum_names<SCRIPT_TYPE>();
-	for (const auto &script : ScriptList)
+	for (const auto& script : ScriptList)
 	{
 		// PassFilter : filter에 입력된 문자열과 비교하여 현재 텍스트가 필터를 통과하는지 확인하는
 		// 함수
@@ -362,8 +362,8 @@ void Inspector::CheckTargetComponent(COMPONENT_TYPE _type)
 {
 	if (nullptr != m_TargetObject->GetComponent((COMPONENT_TYPE)_type))
 	{
-		MessageBoxA(nullptr, "Already contains the same component",
-					"Can't add the same component multiple times!", MB_OK);
+		MessageBoxA(nullptr, "Already contains the same component", "Can't add the same component multiple times!",
+					MB_OK);
 		return;
 	}
 
@@ -439,16 +439,16 @@ void Inspector::CheckTargetComponent(COMPONENT_TYPE _type)
 
 void Inspector::MakePrefab()
 {
-	CGameObject *pObj = GetTargetObject();
-	pObj = pObj->Clone();
+	CGameObject* pObj = GetTargetObject();
+	pObj			  = pObj->Clone();
 	wstring Key;
-	Key = L"prefab\\" + m_TargetObject->GetName() + L".pref";
+	Key					 = L"prefab\\" + m_TargetObject->GetName() + L".pref";
 	Ptr<CPrefab> pPrefab = new CPrefab(pObj, false);
 	CAssetMgr::GetInst()->AddAsset<CPrefab>(Key, pPrefab.Get());
 	pPrefab->Save(Key);
 }
 
-void Inspector::SavePrefab(const string &_Directory, const string &_FileName)
+void Inspector::SavePrefab(const string& _Directory, const string& _FileName)
 {
 	filesystem::path file_path = filesystem::path(_Directory) / _FileName;
 
@@ -470,15 +470,15 @@ void Inspector::DeleteTargetComponent(COMPONENT_TYPE _type)
 	SetTargetObject(GetTargetObject());
 }
 
-void Inspector::DeleteTargetScript(ScriptUI *_ScriptUI)
+void Inspector::DeleteTargetScript(ScriptUI* _ScriptUI)
 {
-	CScript *pScript = _ScriptUI->GetTargetScript();
+	CScript* pScript = _ScriptUI->GetTargetScript();
 	m_TargetObject->DeleteScript(pScript);
 
 	SetTargetObject(GetTargetObject());
 }
 
-ComponentUI *Inspector::GetComponentUI(COMPONENT_TYPE ComType)
+ComponentUI* Inspector::GetComponentUI(COMPONENT_TYPE ComType)
 {
 	return this->m_arrComUI[(UINT)ComType];
 }
@@ -487,7 +487,7 @@ void Inspector::ResetComponent()
 {
 	for (int i = 0; i < (UINT)COMPONENT_TYPE::END; ++i)
 	{
-		ComponentUI *pUI = this->GetComponentUI((COMPONENT_TYPE)i);
+		ComponentUI* pUI = this->GetComponentUI((COMPONENT_TYPE)i);
 
 		if (pUI != nullptr)
 			pUI->ResetUIinfo();

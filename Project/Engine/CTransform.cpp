@@ -18,19 +18,18 @@ CTransform::~CTransform()
 {
 }
 
-void CTransform::Lerp(Vec3 _pos, bool _bMoveRot, Vec3 _rot, bool _bMoveScale, Vec3 _scale,
-					  float _time)
+void CTransform::Lerp(Vec3 _pos, bool _bMoveRot, Vec3 _rot, bool _bMoveScale, Vec3 _scale, float _time)
 {
 	m_vTargetPos = _pos;
 	_bMoveRot ? m_vTargetRot = _rot : m_vTargetRot = m_vRelativeRotation;
 	_bMoveScale ? m_vTargetScale = _scale : m_vTargetScale = m_vRelativeScale;
 	m_fTargetTimer = m_fTargetTime = _time;
-	m_bRotLerp = _bMoveRot;
-	m_bScaleLerp = _bMoveScale;
-	m_bLerp = true;
+	m_bRotLerp					   = _bMoveRot;
+	m_bScaleLerp				   = _bMoveScale;
+	m_bLerp						   = true;
 
-	m_vStartPos = m_vRelativePos;
-	m_vStartRot = m_vRelativeRotation;
+	m_vStartPos	  = m_vRelativePos;
+	m_vStartRot	  = m_vRelativeRotation;
 	m_vStartScale = m_vRelativeScale;
 
 	if (m_fTargetTime == 0.f)
@@ -53,16 +52,16 @@ void CTransform::tick()
 		{
 			m_bLerp = false;
 
-			vNPos = m_vTargetPos;
-			vNRot = m_vTargetRot;
+			vNPos	= m_vTargetPos;
+			vNRot	= m_vTargetRot;
 			vNScale = m_vTargetScale;
 		}
 		else
 		{
 			float alpha = m_fTargetTimer / m_fTargetTime;
-			vNPos = RoRMath::Lerp(m_vTargetPos, m_vStartPos, alpha);
-			vNRot = RoRMath::Lerp(m_vTargetRot, m_vStartRot, alpha);
-			vNScale = RoRMath::Lerp(m_vTargetScale, m_vStartScale, alpha);
+			vNPos		= RoRMath::Lerp(m_vTargetPos, m_vStartPos, alpha);
+			vNRot		= RoRMath::Lerp(m_vTargetRot, m_vStartRot, alpha);
+			vNScale		= RoRMath::Lerp(m_vTargetScale, m_vStartScale, alpha);
 
 			m_fTargetTimer -= DT_ENGINE;
 		}
@@ -86,30 +85,30 @@ void CTransform::finaltick()
 void CTransform::UpdateData()
 {
 	g_Transform.matWorld = m_matWorld;
-	g_Transform.matWV = g_Transform.matWorld * g_Transform.matView;
-	g_Transform.matWVP = g_Transform.matWV * g_Transform.matProj;
+	g_Transform.matWV	 = g_Transform.matWorld * g_Transform.matView;
+	g_Transform.matWVP	 = g_Transform.matWV * g_Transform.matProj;
 
 	// 위치정보를 Transform 상수버퍼에 보내고, B0 레지스터에 바인딩 해둠
-	CConstBuffer *pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::TRANSFORM);
+	CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::TRANSFORM);
 	pCB->SetData(&g_Transform);
 	pCB->UpdateData();
 }
 
-void CTransform::SetWorldMat(const Matrix &_matWorld)
+void CTransform::SetWorldMat(const Matrix& _matWorld)
 {
 	m_matWorld = _matWorld;
-	Vec3 vScale, vRot, vPos;
+	Vec3	   vScale, vRot, vPos;
 	Quaternion Quat;
-	Matrix matrix = m_matWorld;
+	Matrix	   matrix = m_matWorld;
 
 	if (GetOwner()->GetParent())
 	{
-		const Matrix &matParentWorldInv = GetOwner()->GetParent()->Transform()->GetWorldInvMat();
+		const Matrix& matParentWorldInv = GetOwner()->GetParent()->Transform()->GetWorldInvMat();
 		if (m_bAbsolute)
 		{
 			// m_matWorld = m_matWorld * matParentScaleInv * matParentWorld + matParentWorldInv *
 			// matParentScale;
-			Vec3 vParentScale = GetOwner()->GetParent()->Transform()->GetRelativeScale();
+			Vec3   vParentScale	  = GetOwner()->GetParent()->Transform()->GetRelativeScale();
 			Matrix matParentScale = XMMatrixScaling(vParentScale.x, vParentScale.y, vParentScale.z);
 
 			matrix = matrix * matParentWorldInv * matParentScale;
@@ -122,7 +121,7 @@ void CTransform::SetWorldMat(const Matrix &_matWorld)
 
 	matrix.Decompose(vScale, Quat, vPos);
 	auto mat = XMMatrixRotationQuaternion(Quat);
-	vRot = DecomposeRotMat(mat);
+	vRot	 = DecomposeRotMat(mat);
 
 	SetRelativePos(vPos);
 	SetRelativeRotation(vRot);
@@ -139,8 +138,8 @@ Vec3 CTransform::GetWorldScale()
 		return m_vRelativeScale;
 	}
 
-	CGameObject *pParent = GetOwner()->GetParent();
-	Vec3 vWorldScale = m_vRelativeScale;
+	CGameObject* pParent	 = GetOwner()->GetParent();
+	Vec3		 vWorldScale = m_vRelativeScale;
 
 	while (pParent)
 	{
@@ -190,7 +189,7 @@ void CTransform::SetDir(Vec3 _Dir)
 	SetRelativeRotation(vRot);
 }
 
-void CTransform::SaveToFile(FILE *_File)
+void CTransform::SaveToFile(FILE* _File)
 {
 	fwrite(&m_vRelativePos, sizeof(Vec3), 1, _File);
 	fwrite(&m_vRelativeScale, sizeof(Vec3), 1, _File);
@@ -203,7 +202,7 @@ void CTransform::SaveToFile(FILE *_File)
 #define TagRotation "[Rotation]"
 #define TagAbsolute "[Absolute]"
 
-void CTransform::SaveToFile(ofstream &fout)
+void CTransform::SaveToFile(ofstream& fout)
 {
 	fout << TagPos << endl;
 	fout << m_vRelativePos << endl;
@@ -215,7 +214,7 @@ void CTransform::SaveToFile(ofstream &fout)
 	fout << m_bAbsolute << endl;
 }
 
-void CTransform::LoadFromFile(FILE *_File)
+void CTransform::LoadFromFile(FILE* _File)
 {
 	fread(&m_vRelativePos, sizeof(Vec3), 1, _File);
 	fread(&m_vRelativeScale, sizeof(Vec3), 1, _File);
@@ -223,7 +222,7 @@ void CTransform::LoadFromFile(FILE *_File)
 	fread(&m_bAbsolute, sizeof(bool), 1, _File);
 }
 
-void CTransform::LoadFromFile(ifstream &fin)
+void CTransform::LoadFromFile(ifstream& fin)
 {
 	string tag;
 
@@ -250,8 +249,7 @@ void CTransform::CalWorldMat()
 	Matrix matRotY = XMMatrixRotationY(m_vRelativeRotation.y);
 	Matrix matRotZ = XMMatrixRotationZ(m_vRelativeRotation.z);
 
-	Matrix matTranslation =
-		XMMatrixTranslation(m_vRelativePos.x, m_vRelativePos.y, m_vRelativePos.z);
+	Matrix matTranslation = XMMatrixTranslation(m_vRelativePos.x, m_vRelativePos.y, m_vRelativePos.z);
 
 	m_matWorld = matScale * matRotX * matRotY * matRotZ * matTranslation;
 
@@ -273,7 +271,7 @@ void CTransform::CalWorldMat()
 	// 부모 오브젝트가 있다면
 	if (GetOwner()->GetParent())
 	{
-		const Matrix &matParentWorld = GetOwner()->GetParent()->Transform()->GetWorldMat();
+		const Matrix& matParentWorld = GetOwner()->GetParent()->Transform()->GetWorldMat();
 
 		if (m_bAbsolute)
 		{
