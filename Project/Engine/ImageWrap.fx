@@ -15,7 +15,7 @@
 #define ColorTextureCheck   g_btex_0
 #define NormalMapCheck      g_btex_1
 
-#define TextuerSIze         g_vec2_0
+#define TextureSIze         g_vec2_0
 #define PlaneScale          g_vec2_1
 // ======================
 
@@ -110,7 +110,7 @@ PS_OUT PS_ImageWrap(VS_OUT _in) : SV_Target
     float2 iWrapUV;
     
     
-    float2 WrapTexture = PlaneScale / TextuerSIze;
+    float2 WrapTexture = PlaneScale / TextureSIze;
     
     iWrapUV = WrapTexture;
     
