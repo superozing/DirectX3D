@@ -27,6 +27,8 @@ public:
 	static bool Param_TEXTURE(_Inout_ Ptr<CTexture>& _Texture, const string& _Desc, UI* _Inst = nullptr,
 							  Delegate_1 _Func = nullptr);
 
+	static bool Param_OBJECT(CGameObject** _Object, const string& _Desc, COMPONENT_TYPE _Ctype, UINT _Stype, bool _View,
+							 const string& _Tooltip);
 	static bool Param_FUNC_STATIC(StaticFuncPtr _Func, const string& _Desc);
 	static bool Param_FUNC_MEMBER(std::function<void()> _Func, const string& _Desc);
 };

@@ -105,8 +105,10 @@ private:
 	void CreateMRT();
 	void ClearMRT();
 
-	void render_play();
-	void render_editor();
+    void ResetMRT();
+
+    void render_play();
+    void render_editor();
 
 	void render_debug();
 
@@ -116,5 +118,6 @@ private:
 	// 리소스 클리어
 	void Clear();
 
-	friend class CRenderMgrScript;
+    friend class CRenderMgrScript;
+	friend class CDevice;
 };

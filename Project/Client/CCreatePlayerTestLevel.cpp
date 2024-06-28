@@ -161,4 +161,5 @@ void CCreatePlayerTestLevel::CreateTempLevel()
 	GamePlayStatic::ChangeLevel(pTempLevel, LEVEL_STATE::STOP);
 
 	CLevelSaveLoad::SaveLevel(pTempLevel, L"level\\PlayerTest.lv");
+	pTempLevel->SetRelativePath("level\\PlayerTest.lv");
 }

@@ -6,6 +6,7 @@
 CSpringArm::CSpringArm()
 	: CScript((UINT)SCRIPT_TYPE::SPRINGARM)
 {
+	// AppendScriptObject("camera", m_target, COMPONENT_TYPE::ANIMATOR3D, SCRIPT_TYPE::CAMERAMOVESCRIPT);
 }
 
 CSpringArm::~CSpringArm()

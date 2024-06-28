@@ -201,12 +201,11 @@ void Inspector::ObjectLayer()
 
 	// 오브젝트 레이어
 	int LayerIdx = m_TargetObject->GetLayerIdx();
+	int PrevIdx	 = LayerIdx;
 
 	if (-1 != LayerIdx)
 	{
 		string LayerName = ToString(CurLevel->GetLayer(LayerIdx)->GetName());
-		int	   PrevIdx	 = LayerIdx;
-
 		ImGui::Text("Layer");
 		ImGui::SameLine();
 		auto LayerVal = magic_enum::enum_cast<LAYER>(LayerName);
@@ -327,8 +326,6 @@ void Inspector::ObjectScript()
 
 	if (0 == filteredScripts.size())
 		CurSciprt = -1;
-	else
-		CurSciprt = 0;
 
 	if (-1 != CurSciprt)
 	{

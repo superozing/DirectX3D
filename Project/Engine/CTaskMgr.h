@@ -25,6 +25,9 @@ enum class TASK_TYPE
 
 	// Param1 : Parent Object, Param2 : Child Object
 	DISCONNECT_PARENT,
+
+	// Param1 : ResolutionX , Param2 : ResolutionY
+	CHANGE_RESOLUTION,
 };
 
 struct tTask

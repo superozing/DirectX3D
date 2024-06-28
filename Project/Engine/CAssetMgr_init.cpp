@@ -11,7 +11,7 @@ void CAssetMgr::init()
 
 	CreateDefaultMesh();
 
-	CreateDefaultGraphicsShader();
+	// CreateDefaultGraphicsShader();
 
 	CreateDefaultComputeShader();
 
@@ -670,7 +670,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->SetBSType(BS_TYPE::DEFAULT);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
 
-	pShader->AddScalarParam(SCALAR_PARAM::INT_0, "test", 0.f, 1.f);
+	// pShader->AddScalarParam(SCALAR_PARAM::INT_0, "test", 0.f, 1.f);
 
 	AddAsset(L"Std3D_DeferredShader", pShader.Get());
 

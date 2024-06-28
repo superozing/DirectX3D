@@ -70,6 +70,8 @@ void ScriptUI::render_update()
 								iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::OBJECT:
+			ParamUI::Param_OBJECT((CGameObject**)iter->second.pData, iter->first, iter->second.CompType,
+								  iter->second.ScriptType, iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::COLOR:
 			ParamUI::Param_COLOR((Vec4*)iter->second.pData, iter->first, iter->second.View, iter->second.Tooltip);

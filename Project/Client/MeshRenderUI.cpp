@@ -116,6 +116,7 @@ void MeshRenderUI::render_update()
 				if (nullptr != pShader)
 				{
 					const auto& vecScalarParam = pShader->GetScalarParam();
+					const auto& vecTexParam	   = pShader->GetTexParam();
 
 					for (size_t j = 0; j < (UINT)SCALAR_PARAM::END; ++j)
 					{
@@ -176,6 +177,39 @@ void MeshRenderUI::render_update()
 							case SCALAR_PARAM::MAT_1:
 							case SCALAR_PARAM::MAT_2:
 							case SCALAR_PARAM::MAT_3:
+								break;
+							}
+						}
+					}
+
+					for (size_t j = 0; j < (UINT)TEX_PARAM::END; j++)
+					{
+						if (vecTexParam[j].IsUse)
+						{
+							switch (vecTexParam[j].Type)
+							{
+							case TEX_PARAM::TEX_0:
+							case TEX_PARAM::TEX_1:
+							case TEX_PARAM::TEX_2:
+							case TEX_PARAM::TEX_3:
+							case TEX_PARAM::TEX_4:
+							case TEX_PARAM::TEX_5: {
+								Ptr<CTexture> pTex =
+									GetTargetObject()->MeshRender()->GetMaterial(i)->GetTexParam(vecTexParam[j].Type);
+								ParamUI::Param_TEXTURE(pTex, vecTexParam[j].Desc);
+								break;
+							}
+							case TEX_PARAM::TEXCUBE_0:
+								break;
+							case TEX_PARAM::TEXCUBE_1:
+								break;
+							case TEX_PARAM::TEXARR_0:
+								break;
+							case TEX_PARAM::TEXARR_1:
+								break;
+							case TEX_PARAM::END:
+								break;
+							default:
 								break;
 							}
 						}

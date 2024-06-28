@@ -27,9 +27,13 @@ private:
 	ComPtr<ID3D11BlendState>		m_arrBS[(UINT)BS_TYPE::END];
 	ComPtr<ID3D11SamplerState>		m_arrSampler[2];
 
+	bool bIsWindowMode;
+
 public:
-	int	 init(HWND _hWnd, Vec2 _vResolution);
+	int	 init(HWND _hWnd, Vec2 _vResolution, bool bWindowMode);
 	void Present();
+
+	int RenewResolution(Vec2 _vResolutio, bool bWindowMode);
 
 	ID3D11Device*		 GetDevice() { return m_Device.Get(); }
 	ID3D11DeviceContext* GetContext() { return m_Context.Get(); }
@@ -41,8 +45,16 @@ public:
 	ComPtr<ID3D11DepthStencilState> GetDSState(DS_TYPE _Type) { return m_arrDS[(UINT)_Type]; }
 	ComPtr<ID3D11BlendState>		GetBSState(BS_TYPE _Type) { return m_arrBS[(UINT)_Type]; }
 
+	bool GetScreenMode() { return bIsWindowMode; }
+	void SetScreenMode(bool IsFullScreen) { bIsWindowMode = IsFullScreen; }
+
+	void DeleteTexturesForResolutionChange();
+	void RematchMtrlTexParam();
+
+	void ReportLiveObjects();
+
 private:
-	int CreateSwapChain();
+	int CreateSwapChain(bool _bFullscreen = true);
 	int CreateTargetView();
 	int CreateRasterizerState();
 	int CreateDepthStencilState();

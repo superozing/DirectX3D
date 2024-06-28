@@ -13,6 +13,8 @@
 
 #include "CLevelSaveLoad.h"
 
+#include <Engine\CLogMgr.h>
+
 #ifdef _DEBUG
 #pragma comment(lib, "Engine\\Engine_d.lib")
 #else
@@ -39,6 +41,8 @@
 
 #include <Engine/CRenderMgr.h>
 #include "RTViewPort.h"
+
+#include "CEnvMgr.h"
 // #define _RELEASE_GAME
 
 HINSTANCE hInst;
@@ -55,7 +59,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 					  _In_ int nCmdShow)
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	//_CrtSetBreakAlloc(1751);
+	//_CrtSetBreakAlloc(412);
 
 	MyRegisterClass(hInstance);
 
@@ -68,8 +72,21 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));
 	MSG	   msg;
 
+	CPathMgr::init();
+	CEnvMgr::GetInst()->init();
+
+	Vec2 res;
+	res = CEnvMgr::GetInst()->GetResolutionData().res;
+	if (res.x <= 200.f || res.x >= 4000.f)
+	{
+		res.x = 1920.f;
+	}
+	if (res.y <= 200.f || res.y >= 4000.f)
+	{
+		res.y = 1080.f;
+	}
 	// CEngine 초기화 실패 -> 프로그램 종료
-	if (FAILED(CEngine::GetInst()->init(hWnd, Vec2(1910, 960))))
+	if (FAILED(CEngine::GetInst()->init(hWnd, res)))
 	{
 		MessageBox(nullptr, L"CEngine 초기화 실패", L"초기화 실패", MB_OK);
 		return 0;
@@ -86,9 +103,18 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	// CCreateTempLevel::Init();
 	// CCreateTempLevel::CreateTempLevel();
 
-	MapTutorial::CreateMapTestLevel();
-
-	// CCreatePlayerTestLevel::CreateTempLevel();
+	// MapTestLevel::CreateMapTestLevel();
+	string levelPath = CEnvMgr::GetInst()->GetLevelRelativePath();
+	string abPath	 = ToString(CPathMgr::GetContentPath()) + levelPath;
+	if (levelPath == "" || !exists(abPath))
+	{
+		CCreatePlayerTestLevel::CreateTempLevel();
+	}
+	else
+	{
+		auto pLevel = CLevelSaveLoad::LoadLevel(CEnvMgr::GetInst()->GetLevelRelativePath());
+		GamePlayStatic::ChangeLevel(pLevel, LEVEL_STATE::STOP);
+	}
 
 	// ImGui 초기화
 	CImGuiMgr::GetInst()->init(hWnd, DEVICE, CONTEXT);
@@ -132,6 +158,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			CDevice::GetInst()->Present();
 		}
 	}
+
+	CEnvMgr::GetInst()->exit();
 
 	return (int)msg.wParam;
 }
@@ -236,6 +264,23 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 						   SWP_NOZORDER | SWP_NOACTIVATE);
 		}
 		break;
+	case WM_EXITSIZEMOVE: {
+		RECT rect;
+
+		if (GetClientRect(hWnd, &rect))
+		{
+			// rect 구조체에 윈도우의 크기와 위치 정보가 저장됨
+			int	 width	= rect.right - rect.left;
+			int	 height = rect.bottom - rect.top;
+			Vec2 newRes(width, height);
+			auto vRes = CDevice::GetInst()->GetRenderResolution();
+			if (vRes == newRes)
+				break;
+
+			CEngine::GetInst()->ResizeScreenResolution(newRes, true);
+		}
+	}
+	break;
 #include <Engine\CKeyMgr.h>
 	case WM_MOUSEWHEEL:
 		if ((SHORT)HIWORD(wParam) > 0)

@@ -4,6 +4,8 @@
 #include "CConstBuffer.h"
 #include "CStructuredBuffer.h"
 #include "CAssetMgr.h"
+#include "CRenderMgr.h"
+#include "CTaskMgr.h"
 
 CDevice::CDevice()
 	: m_hRenderWnd(nullptr)
@@ -13,6 +15,7 @@ CDevice::CDevice()
 	, m_arrDS{}
 	, m_arrBS{}
 	, m_arrSampler{}
+	, bIsWindowMode(false)
 {
 }
 
@@ -23,7 +26,7 @@ CDevice::~CDevice()
 	Delete_Array(m_arrSB);
 }
 
-int CDevice::init(HWND _hWnd, Vec2 _vResolution)
+int CDevice::init(HWND _hWnd, Vec2 _vResolution, bool bWindowMode)
 {
 	// 출력 윈도우
 	m_hRenderWnd = _hWnd;
@@ -42,7 +45,7 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution)
 	}
 
 	// 스왚체인 생성
-	if (FAILED(CreateSwapChain()))
+	if (FAILED(CreateSwapChain(bWindowMode)))
 	{
 		MessageBox(nullptr, L"SwapChain 생성 실패", L"Device 초기화 실패", MB_OK);
 		return E_FAIL;
@@ -99,10 +102,52 @@ void CDevice::Present()
 	m_SwapChain->Present(0, 0);
 }
 
-int CDevice::CreateSwapChain()
+int CDevice::RenewResolution(Vec2 _vResolution, bool bWindowMode)
 {
+	m_vRenderResolution = _vResolution;
+
+	DeleteTexturesForResolutionChange();
+
+	// 스왚체인 생성
+	if (FAILED(CreateSwapChain()))
+	{
+		MessageBox(nullptr, L"SwapChain 생성 실패", L"Device 초기화 실패", MB_OK);
+		return E_FAIL;
+	}
+
+	// 렌더타겟, 렌더타겟 뷰, 뎁스스텐실 타겟, 뎁스 스텐실 뷰 생성
+	if (FAILED(CreateTargetView()))
+	{
+		MessageBox(nullptr, L"타겟 및 View 생성 실패", L"Device 초기화 실패", MB_OK);
+		return E_FAIL;
+	}
+
+	CRenderMgr::GetInst()->ResetMRT();
+	CRenderMgr::GetInst()->CreateMRT();
+
+	// MRT와 연관없는 Texture 생성
+	CAssetMgr::GetInst()->CreateTexture(L"CopyRTtex", m_vRenderResolution.x, m_vRenderResolution.y,
+										DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE);
+
+	CRenderMgr::GetInst()->m_PostProcessTex =
+		CAssetMgr::GetInst()->CreateTexture(L"PostProcessTex", (UINT)m_vRenderResolution.x, (UINT)m_vRenderResolution.y,
+											DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE);
+
+	RematchMtrlTexParam();
+
+	return S_OK;
+}
+
+int CDevice::CreateSwapChain(bool _bFullscreen)
+{
+	if (m_SwapChain)
+	{
+		m_SwapChain.Reset();
+	}
+
 	// SwapChain 생성 구조체
 	DXGI_SWAP_CHAIN_DESC tDesc = {};
+	ZeroMemory(&tDesc, sizeof(tDesc));
 
 	// SwapChain 이 관리하는 Buffer(RenderTarget) 의 구성 정보
 	tDesc.BufferCount						 = 1;
@@ -119,7 +164,7 @@ int CDevice::CreateSwapChain()
 	tDesc.SampleDesc.Count	 = 1;
 	tDesc.SampleDesc.Quality = 0;
 
-	tDesc.Windowed	   = true;		   // 창모드
+	tDesc.Windowed	   = _bFullscreen; // 창모드
 	tDesc.OutputWindow = m_hRenderWnd; // SwapChain 의 출력 윈도우 지정
 
 	// 스왚체인 생성기능을 가지고 있는 Factory 에 접근한다.
@@ -433,4 +478,82 @@ int CDevice::CreateStructuredBuffer()
 	m_arrSB[(UINT)SB_TYPE::WEIGHTMAP]->Create(sizeof(tWeight_4), 1024 * 1024, SB_READ_TYPE::READ_WRITE, false);
 
 	return S_OK;
+}
+
+void CDevice::DeleteTexturesForResolutionChange()
+{
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"RenderTargetTex");
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"DepthStencilTex");
+
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"ColorTargetTex");
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"PositionTargetTex");
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"NormalTargetTex");
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"EmissiveTargetTex");
+
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"DiffuseTargetTex");
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"SpecularTargetTex");
+
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"ShadowDepthTargetTex");
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"ShadowDepthStencilTex");
+
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"CopyRTtex");
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"PostProcessTex");
+}
+
+void CDevice::RematchMtrlTexParam()
+{
+	Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(MTRL_dirlight);
+	pMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"ShadowDepthTargetTex"));
+
+	pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(MTRL_pointlight);
+	pMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"ShadowDepthTargetTex"));
+
+	pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(MTRL_spotlight);
+	pMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex"));
+
+	pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(MTRL_merge);
+	pMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"ColorTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"DiffuseTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"SpecularTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_3, CAssetMgr::GetInst()->FindAsset<CTexture>(L"EmissiveTargetTex"));
+
+	pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(MTRL_decal);
+	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
+}
+
+#include <dxgidebug.h>
+#include <dxgi.h>
+
+void CDevice::ReportLiveObjects()
+{
+	D3D_FEATURE_LEVEL eLevel = D3D_FEATURE_LEVEL_11_0;
+
+	HRESULT hr = D3D11CreateDevice(nullptr,					  // 기본 어댑터 사용
+								   D3D_DRIVER_TYPE_HARDWARE,  // 하드웨어 드라이버 사용
+								   nullptr,					  // 소프트웨어 드라이버 없음
+								   D3D11_CREATE_DEVICE_DEBUG, // 디버그 플래그
+								   nullptr,					  // 기본 피처 레벨 배열 사용
+								   0,						  // 피처 레벨 배열 크기
+								   D3D11_SDK_VERSION,		  // SDK 버전
+								   m_Device.GetAddressOf(),	  // 생성된 디바이스
+								   &eLevel,					  // 피처 레벨
+								   m_Context.GetAddressOf()	  // 생성된 디바이스 컨텍스트
+	);
+
+	ID3D11Debug* debugDevice = nullptr;
+	hr						 = m_Device->QueryInterface(__uuidof(ID3D11Debug), reinterpret_cast<void**>(&debugDevice));
+	if (SUCCEEDED(hr))
+	{
+		debugDevice->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
+		debugDevice->Release();
+	}
+	else
+	{
+		std::cerr << "Failed to get D3D11 debug interface." << std::endl;
+	}
 }
