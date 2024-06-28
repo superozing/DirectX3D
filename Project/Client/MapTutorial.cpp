@@ -110,9 +110,9 @@ void MapTutorial::CreateMapTestLevel()
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ImageWrapMtrl"), 0);
 	pObj->MeshRender()->GetMaterial(0)->SetTexParam(
 		TEX_PARAM::TEX_0,
-		CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TutorialCube.jpg", L"texture\\tile\\TutorialCube.jpg"));
+		CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TutorialTile1.jpg", L"texture\\tile\\TutorialTile1.jpg"));
 
-	Ptr<CTexture> pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"texture\\tile\\TutorialCube.jpg");
+	Ptr<CTexture> pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"texture\\tile\\TutorialTile1.jpg");
 
 	Vec2 TexSize = Vec2(pTex.Get()->GetWidth(), pTex.Get()->GetHeight());
 	pObj->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC2_0, TexSize);
