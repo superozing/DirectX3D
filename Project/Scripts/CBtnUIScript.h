@@ -24,7 +24,7 @@ private:
 
 public:
 	void SetNormalImg(Ptr<CTexture> _NormalImg) { m_NormalImg = _NormalImg; }
-	void SetPressedImg(CTexture* _PressedImg) { m_PressedImg = _PressedImg; }
+	void SetPressedImg(Ptr<CTexture> _PressedImg) { m_PressedImg = _PressedImg; }
 	void SetHoverImg(Ptr<CTexture> _HoverImg) { m_HoverImg = _HoverImg; }
 
 	void AllowTexSet() { m_AllowTexSet = true; }
