@@ -958,7 +958,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->CreateVertexShader(FXImageWrap, "VS_ImageWrap");
 	pShader->CreatePixelShader(FXImageWrap, "PS_ImageWrap");
 
-	pShader->SetRSType(RS_TYPE::CULL_FRONT);
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
 	pShader->SetDSType(DS_TYPE::LESS);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
 
@@ -966,7 +966,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->AddScalarParam(SCALAR_PARAM::VEC2_0, "ImageSize");
 	pShader->AddScalarParam(SCALAR_PARAM::VEC2_1, "PlaneSize");
 
-	AddAsset(L"ImageWrapShader", pShader.Get());
+	AddAsset(GRPSHADERImageWrapShader, pShader.Get());
 }
 
 void CAssetMgr::CreateDefaultMaterial()

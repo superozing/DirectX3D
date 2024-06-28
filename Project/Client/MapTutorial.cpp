@@ -123,4 +123,7 @@ void MapTutorial::CreateMapTestLevel()
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT);
 
 	GamePlayStatic::ChangeLevel(pTempLevel, LEVEL_STATE::STOP);
+
+	CLevelSaveLoad::SaveLevel(pTempLevel, L"level\\Tutorial.lv");
+	pTempLevel->SetRelativePath("level\\Tutorial.lv");
 }
