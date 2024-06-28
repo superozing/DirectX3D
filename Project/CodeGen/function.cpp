@@ -259,6 +259,10 @@ void SortExtention(const string& path, const string& extention)
 	{
 		// imgui ini에 대한 메시지 예외처리
 	}
+	else if (extention == ".ttf")
+	{
+		// 폰트 처리는 안함
+	}
 	else if (extention == "")
 	{
 	}

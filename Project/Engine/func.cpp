@@ -29,6 +29,15 @@ void GamePlayStatic::AddAsset(CAsset* _Asset)
 	CTaskMgr::GetInst()->AddTask(task);
 }
 
+void GamePlayStatic::DeleteAsset(ASSET_TYPE _Type, CAsset* _Asset)
+{
+	tTask task	 = {};
+	task.Type	 = TASK_TYPE::DELETE_ASSET;
+	task.Param_1 = (DWORD_PTR)_Type;
+	task.Param_2 = (DWORD_PTR)_Asset;
+	CTaskMgr::GetInst()->AddTask(task);
+}
+
 void GamePlayStatic::DrawDebugRect(const Matrix& _WorldMat, Vec3 _Color, bool _bDepthTest, float _Duration)
 {
 	tDebugShapeInfo info = {};

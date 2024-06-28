@@ -74,11 +74,12 @@ public:
 	void SaveDefaultGraphicsShader();
 
 private:
-	// 지정된 에셋을 삭제한다.
+	//  지정된 에셋을 삭제한다.
 	template <typename T> void DeleteAsset(const wstring& _strKey);
 	void					   DeleteAsset(ASSET_TYPE _Type, const wstring& _strKey);
 
 	friend class CTaskMgr;
+	friend class CDevice;
 };
 
 template <typename T> ASSET_TYPE GetAssetType()

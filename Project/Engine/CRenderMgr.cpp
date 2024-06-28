@@ -65,6 +65,15 @@ void CRenderMgr::ClearMRT()
 	m_arrMRT[(UINT)MRT_TYPE::SHADOW_DEPTH]->Clear();
 }
 
+void CRenderMgr::ResetMRT()
+{
+	for (int i = 0; i < (UINT)MRT_TYPE::END; ++i)
+	{
+		delete m_arrMRT[i];
+		m_arrMRT[i] = nullptr;
+	}
+}
+
 void CRenderMgr::CreateDynamicShadowDepth()
 {
 	GetMRT(MRT_TYPE::SHADOW_DEPTH)->OMSet();

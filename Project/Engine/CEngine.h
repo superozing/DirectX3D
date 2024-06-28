@@ -11,11 +11,13 @@ private:
 public:
 	HWND GetMainWind() { return m_hMainWnd; }
 
+	void ResizeScreenResolution(Vec2 NewResolution, bool bWindowMode);
+
 private:
 	void DebugFunctionCheck();
 	void TestFunction();
 
 public:
-	int	 init(HWND _hWnd, Vec2 _vResolution);
+	int	 init(HWND _hWnd, Vec2 _vResolution, bool bWindowMode = true);
 	void progress();
 };

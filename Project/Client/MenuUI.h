@@ -12,9 +12,11 @@ private:
 	void Level();
 	void GameObject();
 	void Asset();
+	void ScreenControl();
 
 private:
 	void ContentSaveAll();
+	void ScreenResize(Vec2 _Resolution, bool IsWindowMode);
 
 public:
 	MenuUI();

@@ -19,6 +19,8 @@
 #include "TreeUI.h"
 #include "CLevelSaveLoad.h"
 
+#include <Engine\CDevice.h>
+
 MenuUI::MenuUI()
 	: UI("Menu", "##Menu")
 {
@@ -47,6 +49,11 @@ void MenuUI::render_update()
 	GameObject();
 
 	Asset();
+
+	ImVec2 Blank = ImGui::GetContentRegionAvail();
+	ImGui::Dummy(ImVec2(Blank.x - 140.f, 0.f));
+
+	ScreenControl();
 }
 // #include <Engine/CLevel.h>
 
@@ -350,4 +357,82 @@ void MenuUI::ContentSaveAll()
 			delete shader;
 		}
 	}
+}
+
+void MenuUI::ScreenResize(Vec2 _Resolution, bool IsWindowMode)
+{
+
+	tTask Task;
+	Task.Type	 = TASK_TYPE::CHANGE_RESOLUTION;
+	Task.Param_1 = (UINT_PTR)_Resolution.x;
+	Task.Param_2 = (UINT_PTR)_Resolution.y;
+
+	CDevice::GetInst()->SetScreenMode(IsWindowMode);
+
+	CTaskMgr::GetInst()->AddTask(Task);
+}
+
+#include <Engine\CEngine.h>
+
+void MenuUI::ScreenControl()
+{
+	int ResolutionX = int(CDevice::GetInst()->GetRenderResolution().x);
+	int ResolutionY = int(CDevice::GetInst()->GetRenderResolution().y);
+
+	string Resolution = to_string(ResolutionX) + " X " + to_string(ResolutionY);
+
+	ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.2f, 0.4f, 0.8f, 1.0f)); // 메뉴 아이템의 배경색 변경
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));	// 메뉴 아이템의 글자색 변경
+
+	if (ImGui::BeginMenu(Resolution.c_str()))
+	{
+		static bool IsWindowMode = true;
+		ImGui::Checkbox("Window Mode", &IsWindowMode);
+
+		if (ImGui::MenuItem("1366 X 720"))
+		{
+			ScreenResize(Vec2(1366.f, 720.f), IsWindowMode);
+		}
+
+		if (ImGui::MenuItem("1910 X 960"))
+		{
+			ScreenResize(Vec2(1910.f, 960.f), IsWindowMode);
+		}
+
+		if (ImGui::MenuItem("1920 X 1080"))
+		{
+			ScreenResize(Vec2(1920.f, 1080.f), IsWindowMode);
+		}
+
+		if (ImGui::MenuItem("2560 X 1440"))
+		{
+			ScreenResize(Vec2(2560.f, 1440.f), IsWindowMode);
+		}
+
+		static int Resolution[2] = {0, 0};
+
+		ImGui::InputInt2("##Custom Resolution", Resolution);
+		ImGui::SameLine();
+
+		if (ImGui::Button("Change"))
+		{
+			Vec2 CustomRes = {Resolution[0], Resolution[1]};
+			CEngine::GetInst()->ResizeScreenResolution(CustomRes, IsWindowMode);
+		}
+
+		ImGui::EndMenu();
+	}
+
+	ImGui::PopStyleColor(2); // Push한 스타일 변경을 원래대로 복원
+
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.4f, 0.4f, 0.4f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.6f, 0.6f, 0.6f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.8f, 0.8f, 0.8f, 1.0f));
+
+	if (ImGui::Button("Exit"))
+	{
+		PostQuitMessage(0);
+	}
+
+	ImGui::PopStyleColor(3);
 }

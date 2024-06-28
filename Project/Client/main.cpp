@@ -13,6 +13,8 @@
 
 #include "CLevelSaveLoad.h"
 
+#include <Engine\CLogMgr.h>
+
 #ifdef _DEBUG
 #pragma comment(lib, "Engine\\Engine_d.lib")
 #else
@@ -56,7 +58,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 					  _In_ int nCmdShow)
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	//_CrtSetBreakAlloc(1751);
+	//_CrtSetBreakAlloc(412);
 
 	MyRegisterClass(hInstance);
 
@@ -261,6 +263,23 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 						   SWP_NOZORDER | SWP_NOACTIVATE);
 		}
 		break;
+	case WM_EXITSIZEMOVE: {
+		RECT rect;
+
+		if (GetClientRect(hWnd, &rect))
+		{
+			// rect 구조체에 윈도우의 크기와 위치 정보가 저장됨
+			int	 width	= rect.right - rect.left;
+			int	 height = rect.bottom - rect.top;
+			Vec2 newRes(width, height);
+			auto vRes = CDevice::GetInst()->GetRenderResolution();
+			if (vRes == newRes)
+				break;
+
+			CEngine::GetInst()->ResizeScreenResolution(newRes, true);
+		}
+	}
+	break;
 #include <Engine\CKeyMgr.h>
 	case WM_MOUSEWHEEL:
 		if ((SHORT)HIWORD(wParam) > 0)

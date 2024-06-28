@@ -220,23 +220,23 @@ int CGraphicsShader::CreateVertexShader(const wstring& _strRelativePath, const s
 							  m_Layout.GetAddressOf());
 
 	// Vertex Inst Shader 컴파일 하기
-	HRESULT hr = D3DCompileFromFile(strFilePath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE,
-									(_strFuncName + "_Inst").c_str(), "vs_5_0", 0, 0, m_VSInstBlob.GetAddressOf(),
-									m_ErrBlob.GetAddressOf());
+	// HRESULT hr = D3DCompileFromFile(strFilePath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE,
+	//								(_strFuncName + "_Inst").c_str(), "vs_5_0", 0, 0, m_VSInstBlob.GetAddressOf(),
+	//								m_ErrBlob.GetAddressOf());
 
-	if (SUCCEEDED(hr))
-	{
-		// 컴파일 된 코드로 Vertex Instancing Shader 객체 만들기
-		DEVICE->CreateVertexShader(m_VSInstBlob->GetBufferPointer(), m_VSInstBlob->GetBufferSize(), nullptr,
-								   m_VSInst.GetAddressOf());
+	// if (SUCCEEDED(hr))
+	//{
+	//	// 컴파일 된 코드로 Vertex Instancing Shader 객체 만들기
+	//	DEVICE->CreateVertexShader(m_VSInstBlob->GetBufferPointer(), m_VSInstBlob->GetBufferSize(), nullptr,
+	//							   m_VSInst.GetAddressOf());
 
-		DEVICE->CreateInputLayout(arrElement, 21, m_VSInstBlob->GetBufferPointer(), m_VSInstBlob->GetBufferSize(),
-								  m_LayoutInst.GetAddressOf());
-	}
-	else
-	{
-		return E_FAIL;
-	}
+	//	DEVICE->CreateInputLayout(arrElement, 21, m_VSInstBlob->GetBufferPointer(), m_VSInstBlob->GetBufferSize(),
+	//							  m_LayoutInst.GetAddressOf());
+	//}
+	// else
+	//{
+	//	return E_FAIL;
+	//}
 
 	return S_OK;
 }
@@ -543,23 +543,26 @@ int CGraphicsShader::Load(const wstring& _strFilePath)
 	getline(fin, m_VSFuncName);
 
 	if (!m_VSPath.empty() && !m_VSFuncName.empty())
-		CreateVertexShader(ToWString(m_VSPath), m_VSFuncName);
+		if (FAILED(CreateVertexShader(ToWString(m_VSPath), m_VSFuncName)))
+			return E_FAIL;
 
 	Utils::GetLineUntilString(fin, TagHSPath);
 	getline(fin, m_HSPath);
 	Utils::GetLineUntilString(fin, TagHSFuncName);
 	getline(fin, m_HSFuncName);
 
-	// if (!m_HSPath.empty() && !m_HSFuncName.empty())
-	// CreateHullShader(ToWString(m_HSPath), m_HSFuncName);
+	if (!m_HSPath.empty() && !m_HSFuncName.empty())
+		if (FAILED(CreateHullShader(ToWString(m_HSPath), m_HSFuncName)))
+			return E_FAIL;
 
 	Utils::GetLineUntilString(fin, TagDSPath);
 	getline(fin, m_DSPath);
 	Utils::GetLineUntilString(fin, TagDSFuncName);
 	getline(fin, m_DSFuncName);
 
-	// if (!m_VSPath.empty() && !m_VSFuncName.empty())
-	// CreateDomainShader(ToWString(m_DSPath), m_DSFuncName);
+	if (!m_DSPath.empty() && !m_DSFuncName.empty())
+		if (FAILED(CreateDomainShader(ToWString(m_DSPath), m_DSFuncName)))
+			return E_FAIL;
 
 	Utils::GetLineUntilString(fin, TagGSPath);
 	getline(fin, m_GSPath);
@@ -567,7 +570,8 @@ int CGraphicsShader::Load(const wstring& _strFilePath)
 	getline(fin, m_GSFuncName);
 
 	if (!m_GSPath.empty() && !m_GSFuncName.empty())
-		CreateGeometryShader(ToWString(m_GSPath), m_GSFuncName);
+		if (FAILED(CreateGeometryShader(ToWString(m_GSPath), m_GSFuncName)))
+			return E_FAIL;
 
 	Utils::GetLineUntilString(fin, TagPSPath);
 	getline(fin, m_PSPath);
@@ -575,7 +579,8 @@ int CGraphicsShader::Load(const wstring& _strFilePath)
 	getline(fin, m_PSFuncName);
 
 	if (!m_PSPath.empty() && !m_PSFuncName.empty())
-		CreatePixelShader(ToWString(m_PSPath), m_PSFuncName);
+		if (FAILED(CreatePixelShader(ToWString(m_PSPath), m_PSFuncName)))
+			return E_FAIL;
 
 	Utils::GetLineUntilString(fin, TagScalarParam);
 	for (UINT i = 0; i < (UINT)SCALAR_PARAM::END; ++i)
@@ -653,5 +658,5 @@ int CGraphicsShader::Load(const wstring& _strFilePath)
 		getline(fin, m_TexParam[i].Desc);
 	}
 
-	return 0;
+	return S_OK;
 }
