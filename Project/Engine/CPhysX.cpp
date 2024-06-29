@@ -73,7 +73,7 @@ void CPhysX::updateToPhysics()
 
 void CPhysX::begin()
 {
-	CPhysXMgr::GetInst()->addGameObject(GetOwner(), m_bStaticActor);
+	CPhysXMgr::GetInst()->addGameObject(GetOwner(), m_bStaticActor, m_Shape);
 }
 
 void CPhysX::finaltick()
@@ -106,7 +106,14 @@ void CPhysX::finaltick()
 
 	const auto& trans = Transform();
 
-	GamePlayStatic::DrawDebugCube(trans->GetWorldMat(), Vec3(0.3f, .3f, 0.3f), true);
+	if (PhysShape::BOX == m_Shape)
+	{
+		GamePlayStatic::DrawDebugCube(trans->GetWorldMat(), Vec3(0.3f, .3f, 0.3f), true);
+	}
+	else
+	{
+		GamePlayStatic::DrawDebugSphere(trans->GetWorldPos(), trans->GetWorldScale().x/2.f, Vec3(0.3f, .3f, 0.3f), true);
+	}
 }
 
 void CPhysX::SaveToFile(FILE* _File)

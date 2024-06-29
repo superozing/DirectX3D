@@ -3,6 +3,7 @@
 #include <iostream>
 #include <windows.h>
 #include <sstream>
+#include "CPhysX.h"
 
 struct tRoRHitInfo
 {
@@ -77,7 +78,7 @@ public:
 	virtual void init() override;
 	virtual void tick() override;
 	virtual void enter() override {}
-	void addGameObject(CGameObject* object, bool _bStatic);
+	void addGameObject(CGameObject* object, bool _bStatic, PhysShape _Shape = PhysShape::BOX);
 	bool PerfomRaycast(Vec3 _OriginPos, Vec3 _Dir , tRoRHitInfo& _HitInfo , UINT _LAYER = (UINT)LAYER::LAYER_RAYCAST);
 
 private:

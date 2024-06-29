@@ -9,6 +9,12 @@ enum class eColType
     COL_END,
 };
 
+enum class PhysShape
+{
+    BOX,
+    SPHERE,
+};
+
 struct tCollisionData
 {
     CGameObject* Other;
@@ -30,6 +36,7 @@ private:
     void Overlap(CGameObject* other);
     void EndOverlap(CGameObject* other);
 public:
+    PhysShape m_Shape = PhysShape::BOX;
     vector<tCollisionData> m_vThisFrameContact;
     bool m_bStaticActor = false;
     virtual void begin() override;

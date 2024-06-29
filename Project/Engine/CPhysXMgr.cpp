@@ -125,7 +125,7 @@ void CPhysXMgr::setFillterData(PxShape* _shape, UINT _Layer)
     _shape->setQueryFilterData(filterData);
 }
 
-void CPhysXMgr::addGameObject(CGameObject* object, bool _bStatic)
+void CPhysXMgr::addGameObject(CGameObject* object, bool _bStatic, PhysShape _Shape)
 {
     auto Rot = object->Transform()->GetWorldRot();
     Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(Rot.z, Rot.y, Rot.x);
@@ -151,9 +151,16 @@ void CPhysXMgr::addGameObject(CGameObject* object, bool _bStatic)
 
     // 게임 오브젝트의 스케일 정보
     auto scale = object->Transform()->GetWorldScale();
-
+    PxShape* shape;
     // Collider 추가 (여기서는 예시로 Box Collider를 사용)
-    PxShape* shape = gPhysics->createShape(PxBoxGeometry(scale.z / 2, scale.y / 2, scale.x / 2), *gMaterial);
+    if (PhysShape::BOX == _Shape)
+    {
+        shape = gPhysics->createShape(PxBoxGeometry(scale.z / 2, scale.y / 2, scale.x / 2), *gMaterial);
+    }
+    else
+    {
+        shape = gPhysics->createShape(PxSphereGeometry(scale.x / 2), *gMaterial);
+    }
     
     //필터정보 세팅
     setFillterData(shape, (UINT)object->GetLayerIdx());
@@ -195,7 +202,7 @@ void CPhysXMgr::init()
     sceneDesc.filterShader = CustomFilterShader;
 
     gScene = gPhysics->createScene(sceneDesc);
-    gMaterial = gPhysics->createMaterial(0.5f, 0.5f, 0.000f); // (정지 마찰 계수, 동적 마찰 계수, 반발 계수)
+    gMaterial = gPhysics->createMaterial(0.5f, 0.5f, 0.5f); // (정지 마찰 계수, 동적 마찰 계수, 반발 계수)
 
     gCollisionCalback = new RoRCollisionCallback;
     gScene->setSimulationEventCallback(gCollisionCalback);

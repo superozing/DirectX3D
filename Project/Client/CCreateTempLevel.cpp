@@ -145,6 +145,7 @@ void CCreateTempLevel::CreateTempLevel()
 	
 	pObj->AddComponent(new CPhysX);
 	pObj->PhysX()->m_bStaticActor = false;
+	pObj->PhysX()->m_Shape = PhysShape::SPHERE;
 	
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_PLAYER, false);
 	pObj = nullptr;
