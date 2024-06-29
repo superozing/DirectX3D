@@ -16,9 +16,19 @@ bool CPhysXMgr::PerfomRaycast(Vec3 _OriginPos, Vec3 _Dir, tRoRHitInfo& _HitInfo)
     PxVec3 Dir = PxVec3(_Dir.x, _Dir.y, _Dir.z);
     Dir.normalize();
 
-
     PxRaycastBuffer hit;
-    bool status = gScene->raycast(OriginPos, Dir, PX_MAX_F32, hit);
+    PxQueryFilterData filterData;
+
+    filterData.data.word0 = (UINT)LAYER::LAYER_DEFAULT; // 고정된 레이어 마스크 설정
+    //filterData.data.word1 = (UINT)LAYER::LAYER_RAYCAST; // 고정된 레이어 마스크 설정
+    filterData.flags = PxQueryFlag::ePREFILTER | PxQueryFlag::eSTATIC; // ePREFILTER 플래그 설정
+
+    CustomQueryCallback queryCallback;
+
+    bool status = gScene->raycast(OriginPos, Dir, PX_MAX_F32, hit, PxHitFlag::eDEFAULT, filterData, &queryCallback);
+    //bool status = gScene->raycast(OriginPos, Dir, PX_MAX_F32, hit, PxHitFlag::eDEFAULT, filterData);
+    //bool status = gScene->raycast(OriginPos, Dir, PX_MAX_F32, hit, PxHitFlag::eDEFAULT);
+
 
     if (true == status)
     {
@@ -123,6 +133,7 @@ void CPhysXMgr::init()
 
     //필터
     LayerCheck((UINT)LAYER::LAYER_DEFAULT, (UINT)LAYER::LAYER_PLAYER);
+    LayerCheck((UINT)LAYER::LAYER_DEFAULT, (UINT)LAYER::LAYER_RAYCAST);
 
     sceneDesc.filterShader = CustomFilterShader;
 
