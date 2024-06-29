@@ -4,6 +4,8 @@
 #include <Engine/CAssetMgr.h>
 #include <Engine/CFontMgr.h>
 #include <Engine/CDevice.h>
+#include <Engine/CLevelMgr.h>
+#include <Engine/CLevel.h>
 
 #include "CImageUIScript.h"
 #include "CBtnUIScript.h"
@@ -42,7 +44,7 @@ void CPausePanel::begin()
 	m_pModalBg->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Modal_Bg.png"));
 	m_pModalBg->DisallowBindTexPerFrame();
 
-	GetOwner()->AddChild(pObj);
+	CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(pObj, (UINT)LAYER::LAYER_UI);
 
 	// m_pPausePanel
 	m_pPausePanelObject = new CGameObject;
@@ -65,7 +67,7 @@ void CPausePanel::begin()
 	m_pPausePanel->DisallowTexSet();
 	m_pPausePanel->DisallowDragAndDrop();
 
-	GetOwner()->AddChild(m_pPausePanelObject);
+	CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(m_pPausePanelObject, (UINT)LAYER::LAYER_UI);
 
 	// m_PanelFontInfo
 	m_PanelFontInfo.Color	  = FONT_RGBA(20, 20, 180, 255);
@@ -89,7 +91,7 @@ void CPausePanel::begin()
 	pObj->AddComponent(new CMeshRender);
 	pObj->AddComponent(m_pExitBtn);
 
-	pObj->Transform()->SetRelativePos(Vec3(500.f, 250.f, -10.f));
+	pObj->Transform()->SetRelativePos(Vec3(450.f, 200.f, -10.f));
 	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
 
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
@@ -98,10 +100,12 @@ void CPausePanel::begin()
 
 	m_pExitBtn->SetDeletage(this, (DelegateFunc)&CPausePanel::InactivePausePanel);
 	m_pExitBtn->SetNormalImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Field_Common_Bg_03.png"));
+	m_pExitBtn->SetHoverImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Field_Common_Bg_03.png"));
+	m_pExitBtn->SetPressedImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Field_Common_Bg_03.png"));
 	m_pExitBtn->DisallowCallFunc();
 	m_pExitBtn->DisallowTexSet();
 
-	GetOwner()->AddChild(pObj);
+	m_pPausePanelObject->AddChild(pObj);
 
 	// m_pFuncBtn
 
