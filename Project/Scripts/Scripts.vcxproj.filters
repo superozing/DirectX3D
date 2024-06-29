@@ -61,7 +61,9 @@
     <ClInclude Include="CPausePanel.h">
       <Filter>Scripts\UI\PausePanel</Filter>
     </ClInclude>
-    <ClInclude Include="CPauseBtn.h" />
+    <ClInclude Include="CPauseBtn.h">
+      <Filter>Scripts\UI\PauseBtn</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -124,7 +126,9 @@
     <ClCompile Include="CPausePanel.cpp">
       <Filter>Scripts\UI\PausePanel</Filter>
     </ClCompile>
-    <ClCompile Include="CPauseBtn.cpp" />
+    <ClCompile Include="CPauseBtn.cpp">
+      <Filter>Scripts\UI\PauseBtn</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -177,6 +181,9 @@
     </Filter>
     <Filter Include="Scripts\UI\PausePanel">
       <UniqueIdentifier>{78fd96b1-f585-4066-88dc-0a7b73c075a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\PauseBtn">
+      <UniqueIdentifier>{5511a975-3f3a-4029-8368-2ae1a53ecf41}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

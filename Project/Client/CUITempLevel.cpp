@@ -34,6 +34,7 @@
 #include <Scripts/CCrosshair.h>
 #include <Scripts/CWeaponInfo.h>
 #include <Scripts/CPausePanel.h>
+#include <Scripts/CPauseBtn.h>
 
 void CUITempLevel::Init()
 {
@@ -336,35 +337,43 @@ void CUITempLevel::CreateTempLevel()
 
 #pragma endregion
 
-	// CWeaponInfo
-	pObj = new CGameObject;
-	pObj->SetName(L"WeaponInfo");
+#pragma region CWeaponInfo
 
-	pObj->AddComponent(new CTransform);
+	//// CWeaponInfo
+	//pObj = new CGameObject;
+	//pObj->SetName(L"WeaponInfo");
 
-	auto pWeaponInfo = new CWeaponInfo;
-	pObj->AddComponent(pWeaponInfo);
-	pWeaponInfo->SetMaxAmmo(30);
-	pWeaponInfo->SetCurAmmo(30);
+	//pObj->AddComponent(new CTransform);
 
-	pObj->Transform()->SetRelativePos(Vec3(700, -300, 0));
-	pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
+	//auto pWeaponInfo = new CWeaponInfo;
+	//pObj->AddComponent(pWeaponInfo);
+	//pWeaponInfo->SetMaxAmmo(30);
+	//pWeaponInfo->SetCurAmmo(30);
 
-	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+	//pObj->Transform()->SetRelativePos(Vec3(700, -300, 0));
+	//pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
 
-	// CCrosshair
-	pObj = new CGameObject;
-	pObj->SetName(L"Crosshair");
+	//pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 
-	pObj->AddComponent(new CTransform);
+#pragma endregion
 
-	auto pCrosshair = new CCrosshair;
-	pObj->AddComponent(pCrosshair);
+#pragma region CCrosshair
 
-	pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
-	pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
+	//// CCrosshair
+	//pObj = new CGameObject;
+	//pObj->SetName(L"Crosshair");
 
-	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+	//pObj->AddComponent(new CTransform);
+
+	//auto pCrosshair = new CCrosshair;
+	//pObj->AddComponent(pCrosshair);
+
+	//pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
+	//pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
+
+	//pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+
+#pragma endregion
 
 	// CPausePanel
 	pObj = new CGameObject;
@@ -380,32 +389,24 @@ void CUITempLevel::CreateTempLevel()
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 
-	// Fire Btn
+	// CPauseBtn
 	pObj = new CGameObject;
-	pObj->SetName(L"Fire Btn");
-
+	pObj->SetName(L"Pause Btn");
 	pObj->AddComponent(new CTransform);
-	pObj->AddComponent(new CMeshRender);
 
-	auto SubHPbtnUI = new CBtnUIScript;
-	pObj->AddComponent(SubHPbtnUI);
-	SubHPbtnUI->AllowTexSet();
-	SubHPbtnUI->SetNormalImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
-	SubHPbtnUI->SetDeletage((CEntity*)pPausePanel, (DelegateFunc)&CPausePanel::ActivePausePanel);
+	auto PauseBtn = new CPauseBtn;
+	pObj->AddComponent(PauseBtn);
 
-	pObj->Transform()->SetRelativePos(Vec3(890, 400, 100.f));
+	PauseBtn->SetPausePanel(pPausePanel);
+
+	pObj->Transform()->SetRelativePos(Vec3(1, 1, 100.f));
 	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
 
-	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
-	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
-	pObj->MeshRender()->GetDynamicMaterial(0);
-	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0,
-													CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 	
-	// Fire Btn
+	// Btn
 	pObj = new CGameObject;
-	pObj->SetName(L"Fire Btn2");
+	pObj->SetName(L"Close Btn");
 
 	pObj->AddComponent(new CTransform);
 	pObj->AddComponent(new CMeshRender);
