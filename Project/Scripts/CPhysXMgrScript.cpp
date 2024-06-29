@@ -15,7 +15,7 @@ CPhysXMgrScript::~CPhysXMgrScript()
 
 //RayInput
 static Vec3 RayOrigin = Vec3();
-static Vec3 RayDir = Vec3();
+static Vec3 RayDir = Vec3(0.f,-1.f,0.f);
 
 //RayContactInfo
 static tRoRHitInfo hitinfo= {};
@@ -42,8 +42,8 @@ void CPhysXMgrScript::begin()
 void CPhysXMgrScript::tick()
 {
 	iscontact = CPhysXMgr::GetInst()->PerfomRaycast(
-		PxVec3(RayOrigin.x, RayOrigin.y, RayOrigin.z),
-		PxVec3(RayDir.x, RayDir.y, RayDir.z),
+		Vec3(RayOrigin.x, RayOrigin.y, RayOrigin.z),
+		Vec3(RayDir.x, RayDir.y, RayDir.z),
 		hitinfo);
 
 	if (true == iscontact)

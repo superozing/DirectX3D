@@ -10,18 +10,15 @@ UINT CPhysXMgr::m_layerMasks[32] = { 0 };
 
 CPhysXMgr::CPhysXMgr() {}
 
-bool CPhysXMgr::PerfomRaycast(PxVec3 origin, PxVec3 direction, tRoRHitInfo& _HitInfo)
+bool CPhysXMgr::PerfomRaycast(Vec3 _OriginPos, Vec3 _Dir, tRoRHitInfo& _HitInfo)
 {
-    direction.normalize();
-    // TODO(JINYOUNG) : DrawDebugLine 함수추가
-    //if (true == m_RayDebug)
-    //{
-    //    GamePlayStatic::DrawDebugLine();
-    //}
+    PxVec3 OriginPos = PxVec3(_OriginPos.x, _OriginPos.y, _OriginPos.z);
+    PxVec3 Dir = PxVec3(_Dir.x, _Dir.y, _Dir.z);
+    Dir.normalize();
 
 
     PxRaycastBuffer hit;
-    bool status = gScene->raycast(origin, direction, PX_MAX_F32, hit);
+    bool status = gScene->raycast(OriginPos, Dir, PX_MAX_F32, hit);
 
     if (true == status)
     {
@@ -33,13 +30,16 @@ bool CPhysXMgr::PerfomRaycast(PxVec3 origin, PxVec3 direction, tRoRHitInfo& _Hit
 
         auto pGO = hitActor->userData;
         _HitInfo.pOtherObj = static_cast<CGameObject*>(pGO);
+
         _HitInfo.vHitPos = Vec3(hitPoint.x, hitPoint.y, hitPoint.z);
 
         // 충돌 지점과 충돌한 물체에 대한 정보를 처리
         // 예: 충돌 지점 출력
         if (true == m_RayDebug)
         {
-            GamePlayStatic::DrawDebugSphere(_HitInfo.vHitPos, 20.f, Vec4(0.f, 0.8f, 0.f, 1.f), false);
+            GamePlayStatic::DrawDebugSphere(Vec3(_OriginPos.x, _OriginPos.y, _OriginPos.z), 50.f, Vec4(1.f, 0.8f, 0.f, 1.f), false);
+            GamePlayStatic::DrawDebugSphere(_HitInfo.vHitPos, 50.f, Vec4(0.f, 0.8f, 0.f, 1.f), false);
+            GamePlayStatic::DrawDebugCylinder(Vec3(_OriginPos.x, _OriginPos.y, _OriginPos.z), _HitInfo.vHitPos,5.f,Vec3(0.f,.8f,0.f),true);
         }
         return true;
     }

@@ -8,6 +8,7 @@ struct VS_IN
     float3 vPos : POSITION;
     float2 vUV : TEXCOORD;
     float3 vNormal : NORMAL;
+    float4 vColor : COLOR;
 };
 
 struct VS_OUT
@@ -17,6 +18,7 @@ struct VS_OUT
         
     float3 vViewPos : POSITION;
     float3 vViewNormal : NORMAL;
+    float4 vColor : COLOR;
 };
 
 VS_OUT VS_DebugShape(VS_IN _in)
@@ -39,6 +41,19 @@ VS_OUT VS_DebugShape(VS_IN _in)
         output.vViewPos = mul(float4(_in.vPos, 1.f), g_matWV).xyz;
         output.vViewNormal = normalize(mul(float4(_in.vNormal, 0.f), g_matWV).xyz);
     }
+    // 현재 렌더링하는 메쉬가 LINE 메쉬일 때(사실 DebugRect임),
+    else if (3 == g_int_0)
+    {
+        // Sphere 의 View 공간상에서의 정점의 좌표와 노말값을 픽셀쉐이더로 전달
+        output.vViewPos = mul(float4(_in.vPos, 1.f), g_matWV).xyz;
+        output.vViewNormal = normalize(mul(float4(_in.vNormal, 0.f), g_matWV).xyz);
+        output.vColor = _in.vColor;
+    }
+    //else
+    //{
+    //    output.vPosition = mul(float4(_in.vPos, 1.f), g_matWVP);
+    //    output.vUV = _in.vUV;
+    //}
     
     return output;
 }
@@ -66,7 +81,17 @@ float4 PS_DebugShape(VS_OUT _in) : SV_Target
     {
         vOutColor.a = 0.2f;
     }
-
+    else if (3 == g_int_0)
+    {
+        // View 공간에서 카메라(원점) 가 픽셀(대상) 을 바라보는 시선 방향벡터는 물체의 좌표이다.
+        //float3 vEye = normalize(_in.vViewPos);
+        
+        // 시선벡터랑 픽셀의 ViewNormal 의 내적을 통해서 구의 내부인지 외각영역인지 구별할 수 있다.
+        // 내적의 결과를 토대로, 시선벡터와 물체의 노말의이 이루는 각도가 정면은 0 도에 가까울 수록, 
+        // 뒤로 들어간 면은 180 도에 가까울 수록 중앙이기 때문에, 둘다 체크하기 위해서 내적의 결과를 
+        // absolute 로 절대값을 씌운다        
+        //vOutColor.a = 1.f - pow(saturate(abs(dot(-vEye, _in.vViewNormal))), 0.1f);
+    }
     return vOutColor;
 }
 

@@ -28,7 +28,7 @@ void CAssetMgr::CreateDefaultMesh()
 	pMesh->Create(&vPoint, 1, &Idx, 1);
 	AddAsset(MESHpoint, pMesh);
 
-
+#pragma region Rect Mesh
 	// 전역변수에 삼각형 위치 설정
 	//   0(Red)-- 1(Blue)	     
 	//    |   \   |	     
@@ -59,8 +59,6 @@ void CAssetMgr::CreateDefaultMesh()
 	v.vColor = Vec4(0.f, 1.f, 0.f, 1.f);
 	v.vUV = Vec2(0.f, 1.f);
 	vecVtx.push_back(v);
-
-	
 
 	// 인덱스
 	vecIdx.push_back(0);
@@ -94,14 +92,12 @@ void CAssetMgr::CreateDefaultMesh()
 
 	vecVtx.clear();
 	vecIdx.clear();
+#pragma endregion
 
-
+#pragma region CircleMesh
 	// =================
 	// CircleMesh 만들기
 	// =================
-	
-	
-
 	// 중심 점
 	v.vPos = Vec3(0.f, 0.f, 0.f);
 	v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
@@ -147,7 +143,9 @@ void CAssetMgr::CreateDefaultMesh()
 	AddAsset(MESHcircledebug, pMesh);
 	vecVtx.clear();
 	vecIdx.clear();
+#pragma endregion
 
+#pragma region Cross Mesh
 	// =================
 	// CrossMesh 만들기
 	// =================
@@ -173,8 +171,9 @@ void CAssetMgr::CreateDefaultMesh()
 	AddAsset(MESHcross, pMesh);
 	vecVtx.clear();
 	vecIdx.clear();
+#pragma endregion
 
-
+#pragma region Cube Mesh
 	// ==========
 	// Cube Mesh
 	// ==========
@@ -325,9 +324,11 @@ void CAssetMgr::CreateDefaultMesh()
 	pMesh->Create(arrCube, 24, vecIdx.data(), (UINT)vecIdx.size());
 	AddAsset(MESHcube, pMesh);
 	vecIdx.clear();
+#pragma endregion
 
+#pragma region Debug Cube Mesh
 	// ========================
-	// Cube Mesh
+	// Debug Cube Mesh
 	// Topology Line Strip 용도
 	// ========================
 	vecIdx.push_back(0);
@@ -353,8 +354,9 @@ void CAssetMgr::CreateDefaultMesh()
 	pMesh->Create(arrCube, 24, vecIdx.data(), (UINT)vecIdx.size());
 	AddAsset(MESHcubedebug, pMesh);
 	vecIdx.clear();
+#pragma endregion
 
-
+#pragma region Sphere Mesh
 	// ===========
 	// Sphere Mesh
 	// ===========
@@ -464,7 +466,9 @@ void CAssetMgr::CreateDefaultMesh()
 	AddAsset(MESHsphere, pMesh);
 	vecVtx.clear();
 	vecIdx.clear();
+#pragma endregion
 
+#pragma region Cone Mesh
 	// ===========
 	// Cone Mesh
 	// ===========
@@ -623,6 +627,130 @@ void CAssetMgr::CreateDefaultMesh()
 	//		vecVtx[lastVtxIdx].vNormal = vNormal;
 	//	}
 	//}
+#pragma endregion
+
+#pragma region Cylinder Mesh
+	// ===========
+	// Cylinder Mesh
+	// ===========
+	fHeight = 1.0f;
+	fRadius = 0.5f;
+	iSliceCount = 30; // 세로 분할 개수
+
+
+	fSliceAngle = XM_2PI / iSliceCount;
+
+	fUVXStep = 1.f / (float)iSliceCount;
+
+	// 상단 원판 중앙 정점 0
+	v.vPos = Vec3(0.f, fHeight * 0.5f, 0.f);
+	v.vUV = Vec2(0.5f, 0.f);
+	v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+	v.vNormal = Vec3(0.f, 1.f, 0.f);
+	v.vTangent = Vec3(1.f, 0.f, 0.f);
+	v.vBinormal = Vec3(0.f, 0.f, -1.f);
+	vecVtx.push_back(v);
+
+	// 상단 원판 주변 정점들 1~4 (4개)
+	for (UINT i = 0; i <= iSliceCount; ++i)
+	{
+		float theta = i * fSliceAngle;
+
+		v.vPos = Vec3(fRadius * cosf(theta), fHeight * 0.5f, fRadius * sinf(theta));
+		v.vUV = Vec2(fUVXStep * i, 0.f);
+		v.vColor = Vec4(1.f, 0.f, 0.f, 1.f);
+		v.vNormal = Vec3(0.f, 1.f, 0.f);
+		v.vTangent = Vec3(-sinf(theta), 0.f, cosf(theta));
+		v.vBinormal = Vec3(-cosf(theta), 0.f, -sinf(theta));
+
+		vecVtx.push_back(v);
+	}
+
+	// 하단 원판 중앙 정점 5
+	v.vPos = Vec3(0.f, -fHeight * 0.5f, 0.f);
+	v.vUV = Vec2(0.5f, 1.f);
+	v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+	v.vNormal = Vec3(0.f, -1.f, 0.f);
+	v.vTangent = Vec3(1.f, 0.f, 0.f);
+	v.vBinormal = Vec3(0.f, 0.f, 1.f);
+	vecVtx.push_back(v);
+
+	// 하단 원판 주변 정점들 6 7 8 9
+	for (UINT i = 0; i <= iSliceCount; ++i)
+	{
+		float theta = i * fSliceAngle;
+
+		v.vPos = Vec3(fRadius * cosf(theta), -fHeight * 0.5f, fRadius * sinf(theta));
+		v.vUV = Vec2(fUVXStep * i, 1.f);
+		v.vColor = Vec4(0.f, 1.f, 0.f, 1.f);
+		v.vNormal = Vec3(0.f, -1.f, 0.f);
+		v.vTangent = Vec3(-sinf(theta), 0.f, cosf(theta));
+		v.vBinormal = Vec3(-cosf(theta), 0.f, -sinf(theta));
+
+		vecVtx.push_back(v);
+	}
+
+	// 측면 정점들 10~
+	for (UINT i = 0; i <= iSliceCount; ++i)
+	{
+		float theta = i * fSliceAngle;
+
+		v.vPos = Vec3(fRadius * cosf(theta), fHeight * 0.5f, fRadius * sinf(theta));
+		v.vUV = Vec2(fUVXStep * i, 0.f);
+		v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+		v.vNormal = Vec3(cosf(theta), 0.f, sinf(theta));
+		v.vTangent = Vec3(-sinf(theta), 0.f, cosf(theta));
+		v.vBinormal = Vec3(0.f, 1.f, 0.f);
+
+		vecVtx.push_back(v);
+
+		v.vPos = Vec3(fRadius * cosf(theta), -fHeight * 0.5f, fRadius * sinf(theta));
+		v.vUV = Vec2(fUVXStep * i, 1.f);
+		v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+		v.vNormal = Vec3(cosf(theta), 0.f, sinf(theta));
+		v.vTangent = Vec3(-sinf(theta), 0.f, cosf(theta));
+		v.vBinormal = Vec3(0.f, -1.f, 0.f);
+
+		vecVtx.push_back(v);
+	}
+
+	// 상단 원판 인덱스
+	for (UINT i = 1; i <= iSliceCount; ++i)
+	{
+		vecIdx.push_back(0); // 상단 원판 중앙 정점
+		vecIdx.push_back(i); // 현재 정점
+		vecIdx.push_back((i % iSliceCount) + 1); // 다음 정점
+	}
+
+
+	// 하단 원판 인덱스 2+4
+	UINT baseIndex = (iSliceCount + 3);
+	for (UINT i = 1; i <= iSliceCount; ++i)
+	{
+		vecIdx.push_back(baseIndex); // 하단 원판 중앙 정점
+		vecIdx.push_back(baseIndex + i); // 현재 정점
+		vecIdx.push_back(baseIndex + ((i % iSliceCount) + 1)); // 다음 정점
+	}
+
+	// 측면 인덱스
+	baseIndex = 2 * (iSliceCount + 2);
+	for (UINT i = 0; i < iSliceCount; ++i)
+	{
+		vecIdx.push_back(baseIndex + 2 * i);
+		vecIdx.push_back(baseIndex + 2 * i + 1);
+		vecIdx.push_back(baseIndex + ((2 * (i + 1)) % (2 * (iSliceCount + 1))));
+
+		vecIdx.push_back(baseIndex + 2 * i + 1);
+		vecIdx.push_back(baseIndex + ((2 * (i + 1) + 1) % (2 * (iSliceCount + 1))));
+		vecIdx.push_back(baseIndex + ((2 * (i + 1)) % (2 * (iSliceCount + 1))));
+	}
+	pMesh = new CMesh(true);
+	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
+	AddAsset(MESHcylinder, pMesh);
+	vecVtx.clear();
+	vecIdx.clear();
+#pragma endregion
+
 }
 
 void CAssetMgr::CreateDefaultGraphicsShader()

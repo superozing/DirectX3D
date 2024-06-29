@@ -271,6 +271,7 @@ enum class DEBUG_SHAPE
 	RECT,
 	CIRCLE,
 	CROSS,
+	CYLINDER,
 
 	CUBE,
 	SPHERE,

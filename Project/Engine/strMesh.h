@@ -10,3 +10,4 @@
 #define MESHcubedebug L"CubeMesh_Debug"
 #define MESHsphere L"SphereMesh"
 #define MESHcone L"ConeMesh"
+#define MESHcylinder L"CylinderMesh"

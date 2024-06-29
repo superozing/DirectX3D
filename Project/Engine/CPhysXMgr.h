@@ -34,7 +34,7 @@ public:
 	virtual void tick() override;
 	virtual void enter() override {}
 	void addGameObject(CGameObject* object, bool _bStatic);
-	bool PerfomRaycast(PxVec3 origin, PxVec3 direction , tRoRHitInfo& _HitInfo);
+	bool PerfomRaycast(Vec3 _OriginPos, Vec3 _Dir , tRoRHitInfo& _HitInfo);
 
 private:
 	void Clear() {};
