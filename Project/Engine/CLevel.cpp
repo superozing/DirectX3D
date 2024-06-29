@@ -46,6 +46,12 @@ void CLevel::begin()
 
 void CLevel::tick()
 {
+	if (GetModalState())
+	{
+		m_arrLayer[(UINT)LAYER::LAYER_UI]->tick();
+		return;
+	}
+
 	for (int i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)
 	{
 		m_arrLayer[i]->tick();
