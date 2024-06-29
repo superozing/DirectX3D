@@ -10,25 +10,21 @@ UINT CPhysXMgr::m_layerMasks[32] = { 0 };
 
 CPhysXMgr::CPhysXMgr() {}
 
-bool CPhysXMgr::PerfomRaycast(Vec3 _OriginPos, Vec3 _Dir, tRoRHitInfo& _HitInfo)
+bool CPhysXMgr::PerfomRaycast(Vec3 _OriginPos, Vec3 _Dir, tRoRHitInfo& _HitInfo, UINT _LAYER)
 {
     PxVec3 OriginPos = PxVec3(_OriginPos.x, _OriginPos.y, _OriginPos.z);
     PxVec3 Dir = PxVec3(_Dir.x, _Dir.y, _Dir.z);
     Dir.normalize();
 
     PxRaycastBuffer hit;
-    PxQueryFilterData filterData;
+    static PxQueryFilterData filterData;
 
-    filterData.data.word0 = (UINT)LAYER::LAYER_DEFAULT; // 고정된 레이어 마스크 설정
-    //filterData.data.word1 = (UINT)LAYER::LAYER_RAYCAST; // 고정된 레이어 마스크 설정
-    filterData.flags = PxQueryFlag::ePREFILTER | PxQueryFlag::eSTATIC; // ePREFILTER 플래그 설정
+    filterData.data.word0 = m_layerMasks[_LAYER]; // 고정된 레이어 마스크 설정
+    filterData.flags = PxQueryFlag::ePREFILTER | PxQueryFlag::eSTATIC | PxQueryFlag::eDYNAMIC; // ePREFILTER 플래그 설정
 
-    CustomQueryCallback queryCallback;
+    static CustomQueryCallback queryCallback;
 
     bool status = gScene->raycast(OriginPos, Dir, PX_MAX_F32, hit, PxHitFlag::eDEFAULT, filterData, &queryCallback);
-    //bool status = gScene->raycast(OriginPos, Dir, PX_MAX_F32, hit, PxHitFlag::eDEFAULT, filterData);
-    //bool status = gScene->raycast(OriginPos, Dir, PX_MAX_F32, hit, PxHitFlag::eDEFAULT);
-
 
     if (true == status)
     {
@@ -64,8 +60,8 @@ PxFilterFlags CustomFilterShader(
     PxFilterObjectAttributes attributes1, PxFilterData filterData1,
     PxPairFlags& pairFlags, const void* constantBlock, PxU32 constantBlockSize)
 {
-    UINT layer0 = filterData0.word0;
-    UINT layer1 = filterData1.word0;
+    UINT layer0 = filterData0.word1;
+    UINT layer1 = filterData1.word1;
 
     if ((CPhysXMgr::m_layerMasks[layer0] & (1 << layer1)) == 0 && (CPhysXMgr::m_layerMasks[layer1] & (1 << layer0)) == 0)
     {
@@ -98,7 +94,6 @@ void CPhysXMgr::LayerCheck(UINT _left, UINT _right)
     m_layerMasks[iCol] |= (1 << iRow);
 }
 
-
 void CPhysXMgr::LayerCheckToggle(UINT _left, UINT _right)
 {
     UINT iRow = _left;
@@ -120,34 +115,14 @@ void CPhysXMgr::LayerCheckToggle(UINT _left, UINT _right)
     m_layerMasks[iCol] ^= (1 << iRow);
 }
 
-
-void CPhysXMgr::init()
+void CPhysXMgr::setFillterData(PxShape* _shape, UINT _Layer)
 {
-    // PhysX 초기화
-    gFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, gAllocator, gErrorCallback);
-    gPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *gFoundation, PxTolerancesScale(), true);
-    PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
-    sceneDesc.gravity = PxVec3(0.0f, -981.f, 0.0f);
-    gDispatcher = PxDefaultCpuDispatcherCreate(2);
-    sceneDesc.cpuDispatcher = gDispatcher;
-
-    //필터
-    LayerCheck((UINT)LAYER::LAYER_DEFAULT, (UINT)LAYER::LAYER_PLAYER);
-    LayerCheck((UINT)LAYER::LAYER_DEFAULT, (UINT)LAYER::LAYER_RAYCAST);
-
-    sceneDesc.filterShader = CustomFilterShader;
-
-    gScene = gPhysics->createScene(sceneDesc);
-    gMaterial = gPhysics->createMaterial(0.5f, 0.5f, 0.000f); // (정지 마찰 계수, 동적 마찰 계수, 반발 계수)
-
-    gCollisionCalback = new RoRCollisionCallback;
-    gScene->setSimulationEventCallback(gCollisionCalback);
-}
-
-void CPhysXMgr::tick()
-{
-    gScene->simulate(DT);
-    gScene->fetchResults(true);
+    // 객체에 필터 데이터 설정
+    PxFilterData filterData;
+    filterData.word0 = 1 << _Layer; // 레이어 번호 설정
+    filterData.word1 = _Layer; // 레이어 번호 설정
+    _shape->setSimulationFilterData(filterData);
+    _shape->setQueryFilterData(filterData);
 }
 
 void CPhysXMgr::addGameObject(CGameObject* object, bool _bStatic)
@@ -180,10 +155,8 @@ void CPhysXMgr::addGameObject(CGameObject* object, bool _bStatic)
     // Collider 추가 (여기서는 예시로 Box Collider를 사용)
     PxShape* shape = gPhysics->createShape(PxBoxGeometry(scale.z / 2, scale.y / 2, scale.x / 2), *gMaterial);
     
-    // 객체에 필터 데이터 설정
-    PxFilterData filterData;
-    filterData.word0 = (UINT)object->GetLayerIdx(); // 레이어 번호 설정
-    shape->setSimulationFilterData(filterData);
+    //필터정보 세팅
+    setFillterData(shape, (UINT)object->GetLayerIdx());
 
     actor->attachShape(*shape);
 
@@ -195,12 +168,62 @@ void CPhysXMgr::addGameObject(CGameObject* object, bool _bStatic)
     actor->userData = object;
 }
 
+void CPhysXMgr::init()
+{
+    gFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, gAllocator, gErrorCallback);
+
+    //static MyPhysXErrorCallback gErrorCallback;
+    //gFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, gAllocator, gErrorCallback);
+
+    //// PVD 연결 설정
+    //gPvd = PxCreatePvd(*gFoundation);
+    //PxPvdTransport* transport = PxDefaultPvdSocketTransportCreate("127.0.0.1", 5425, 10);
+    //gPvd->connect(*transport, PxPvdInstrumentationFlag::eALL);
+
+    // PhysX 초기화
+    gPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *gFoundation, PxTolerancesScale(), true, gPvd);
+    PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
+    sceneDesc.gravity = PxVec3(0.0f, -981.f, 0.0f);
+    gDispatcher = PxDefaultCpuDispatcherCreate(2);
+    sceneDesc.cpuDispatcher = gDispatcher;
+
+    //필터
+    LayerCheck((UINT)LAYER::LAYER_MONSTER, (UINT)LAYER::LAYER_PLAYER);
+    LayerCheck((UINT)LAYER::LAYER_DEFAULT, (UINT)LAYER::LAYER_RAYCAST);
+    LayerCheck((UINT)LAYER::LAYER_PLAYER, (UINT)LAYER::LAYER_RAYCAST);
+
+    sceneDesc.filterShader = CustomFilterShader;
+
+    gScene = gPhysics->createScene(sceneDesc);
+    gMaterial = gPhysics->createMaterial(0.5f, 0.5f, 0.000f); // (정지 마찰 계수, 동적 마찰 계수, 반발 계수)
+
+    gCollisionCalback = new RoRCollisionCallback;
+    gScene->setSimulationEventCallback(gCollisionCalback);
+}
+
+void CPhysXMgr::tick()
+{
+    gScene->simulate(DT);
+    gScene->fetchResults(true);
+}
+
 CPhysXMgr::~CPhysXMgr()
 {
     gScene->release();
     gDispatcher->release();
     gPhysics->release();
+    if (gPvd)
+    {
+        PxPvdTransport* transport = gPvd->getTransport();
+        if (transport)
+        {
+            transport->release();
+        }
+        gPvd->release();
+        gPvd = nullptr;
+    }
     gFoundation->release();
+
     //gMaterial->release();
     if (nullptr != gCollisionCalback)
     {

@@ -14,7 +14,7 @@ CPhysXMgrScript::~CPhysXMgrScript()
 }
 
 //RayInput
-static Vec3 RayOrigin = Vec3();
+static Vec3 RayOrigin = Vec3(0.f,500.f,0.f);
 static Vec3 RayDir = Vec3(0.f,-1.f,0.f);
 
 //RayContactInfo

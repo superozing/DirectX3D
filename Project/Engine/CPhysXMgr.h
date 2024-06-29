@@ -1,5 +1,8 @@
 ﻿#pragma once
 #include "CManager.h"
+#include <iostream>
+#include <windows.h>
+#include <sstream>
 
 struct tRoRHitInfo
 {
@@ -19,6 +22,7 @@ private:
 	PxDefaultAllocator      gAllocator;
 	PxDefaultErrorCallback  gErrorCallback;
 	PxFoundation* gFoundation = nullptr;
+	PxPvd* gPvd = nullptr;
 	PxPhysics* gPhysics = nullptr;
 	PxDefaultCpuDispatcher* gDispatcher = nullptr;
 	PxScene* gScene = nullptr;
@@ -27,8 +31,17 @@ private:
 
 	void LayerCheck(UINT _left, UINT _right);
 	void LayerCheckToggle(UINT _left, UINT _right);
-
-
+	class MyPhysXErrorCallback : public PxErrorCallback
+	{
+	public:
+		virtual void reportError(PxErrorCode::Enum code, const char* message, const char* file, int line) override
+		{
+			std::ostringstream oss;
+			oss << "PhysX Error (" << code << "): " << message << " in " << file << " at line " << line << std::endl;
+			OutputDebugStringA(oss.str().c_str());
+		}
+	};
+	void setFillterData(PxShape* _shape,UINT _Layer);
 
 public:
 #pragma region RayCast CallBack
@@ -40,9 +53,12 @@ public:
 		{
 			// 레이어 필터링 로직
 			UINT shapeLayer = shape->getSimulationFilterData().word0;
-			UINT rayLayer = (UINT)LAYER::LAYER_RAYCAST;//filterData.word0;
+			//UINT rayLayer = (UINT)LAYER::LAYER_LIGHT;//filterData.word0;
+			UINT rayLayer = filterData.word0;
 
-			if ((CPhysXMgr::m_layerMasks[rayLayer] & (1 << shapeLayer)) == 0 && (CPhysXMgr::m_layerMasks[shapeLayer] & (1 << rayLayer)) == 0)
+			//if ((CPhysXMgr::m_layerMasks[rayLayer] & (1 << shapeLayer)) == 0 && (CPhysXMgr::m_layerMasks[shapeLayer] & (1 << rayLayer)) == 0)
+			//if ((rayLayer & (1 << shapeLayer)) == 0 && (CPhysXMgr::m_layerMasks[shapeLayer] & (1 << rayLayer)) == 0)
+			if ((rayLayer & shapeLayer) == 0)
 			{
 				return PxQueryHitType::eNONE; // 충돌 무시
 			}
@@ -62,7 +78,7 @@ public:
 	virtual void tick() override;
 	virtual void enter() override {}
 	void addGameObject(CGameObject* object, bool _bStatic);
-	bool PerfomRaycast(Vec3 _OriginPos, Vec3 _Dir , tRoRHitInfo& _HitInfo);
+	bool PerfomRaycast(Vec3 _OriginPos, Vec3 _Dir , tRoRHitInfo& _HitInfo , UINT _LAYER = (UINT)LAYER::LAYER_RAYCAST);
 
 private:
 	void Clear() {};
