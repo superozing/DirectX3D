@@ -140,6 +140,8 @@ void CPausePanel::ActivePausePanel()
 	m_pExitBtn->AllowTexSet();
 
 	m_bActivate = true;
+
+	CLevelMgr::GetInst()->GetCurrentLevel()->ChangeModalState(true);
 }
 
 void CPausePanel::InactivePausePanel()
@@ -155,4 +157,6 @@ void CPausePanel::InactivePausePanel()
 	m_pExitBtn->DisallowTexSet();
 
 	m_bActivate = false;
+
+	CLevelMgr::GetInst()->GetCurrentLevel()->ChangeModalState(false);
 }
