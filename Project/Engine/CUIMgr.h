@@ -23,7 +23,7 @@ public:
 	Vec2 GetWorldMousePos() const { return m_vWorldMousePos; }
 
 private:
-	CUIScript* GetPriorityCheck(CUIScript* _ParentUI);
+	CUIScript* GetPriorityCheck(CGameObject* _Parent);
 
 	void CalWorldMousePos();
 };

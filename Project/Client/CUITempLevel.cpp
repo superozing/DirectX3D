@@ -35,6 +35,8 @@
 #include <Scripts/CCrosshair.h>
 #include <Scripts/CWeaponInfo.h>
 #include <Scripts/CPausePanel.h>
+#include <Scripts/CPauseBtn.h>
+#include <Scripts/CDamageFont.h>
 #include <Engine/CFontMgr.h>
 
 void CUITempLevel::Init()
@@ -153,38 +155,37 @@ void CUITempLevel::CreateTempLevel()
 
 #pragma region how to add UI Script
 
-	// auto pBtnTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Background.jpg", L"texture\\Background.jpg");
-	//
-	//
-	//// DynamicUI Object 생성
-	//// MESHpoint
-	//// DynamicUIMtrl
-	//// btnUI2->DisableMouseInput(); -> 카메라의 영향을 받는 UI는 이걸 반드시 꺼주어야 해요.
-	//
-	// pObj = new CGameObject;
-	// pObj->SetName(L"DynamicUI");
+	 auto pBtnTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Background.jpg", L"texture\\Background.jpg");
+	
+	
+	// DynamicUI Object 생성
+	// MESHpoint
+	// DynamicUIMtrl
+	// btnUI2->DisableMouseInput(); -> 카메라의 영향을 받는 UI는 이걸 반드시 꺼주어야 해요.
+	
+	 pObj = new CGameObject;
+	 pObj->SetName(L"DynamicUI");
 
-	// pObj->AddComponent(new CTransform);
-	// pObj->AddComponent(new CMeshRender);
+	 pObj->AddComponent(new CTransform);
+	 pObj->AddComponent(new CMeshRender);
 
-	// auto btnUI2 = new CBtnUIScript;
-	// pObj->AddComponent(btnUI2);
+	 auto btnUI2 = new CBtnUIScript;
+	 pObj->AddComponent(btnUI2);
 
-	// btnUI2->DisableMouseInput();
+	 btnUI2->DisableMouseInput();
 
-	// btnUI2->AllowTexSet();
-	// btnUI2->SetNormalImg(pBtnTex);
+	 btnUI2->AllowTexSet();
+	 btnUI2->SetNormalImg(pBtnTex);
 
-	// pObj->Transform()->SetRelativePos(Vec3(0, 0, 100.f));
-	// pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+	 pObj->Transform()->SetRelativePos(Vec3(0, 0, 100.f));
+	 pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
 
-	// pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHpoint)); // pointMesh일 때, 동작하지 않음.
-	// 무엇의 문제인지는 모르겠네요.
-	// pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DynamicUIMtrl"), 0);
-	// pObj->MeshRender()->GetDynamicMaterial(0);
-	// pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, pBtnTex);
+	 pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHpoint));
+	 pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DynamicUIMtrl"), 0);
+	 pObj->MeshRender()->GetDynamicMaterial(0);
+	 pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, pBtnTex);
 
-	// pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
+	 pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
 	//// PanelUI Object 생성
 	//// MESHrect
@@ -338,96 +339,87 @@ void CUITempLevel::CreateTempLevel()
 
 #pragma endregion
 
-	// CWeaponInfo
-	pObj = new CGameObject;
-	pObj->SetName(L"WeaponInfo");
+#pragma region CWeaponInfo
 
-	pObj->AddComponent(new CTransform);
+	//// CWeaponInfo
+	//pObj = new CGameObject;
+	//pObj->SetName(L"WeaponInfo");
 
-	auto pWeaponInfo = new CWeaponInfo;
-	pObj->AddComponent(pWeaponInfo);
-	pWeaponInfo->SetMaxAmmo(30);
-	pWeaponInfo->SetCurAmmo(30);
+	//pObj->AddComponent(new CTransform);
 
-	pObj->Transform()->SetRelativePos(Vec3(700, -300, 0));
-	pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
+	//auto pWeaponInfo = new CWeaponInfo;
+	//pObj->AddComponent(pWeaponInfo);
+	//pWeaponInfo->SetMaxAmmo(30);
+	//pWeaponInfo->SetCurAmmo(30);
 
-	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+	//pObj->Transform()->SetRelativePos(Vec3(700, -300, 0));
+	//pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
 
-	// CCrosshair
-	pObj = new CGameObject;
-	pObj->SetName(L"Crosshair");
+	//pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 
-	pObj->AddComponent(new CTransform);
+#pragma endregion
 
-	auto pCrosshair = new CCrosshair;
-	pObj->AddComponent(pCrosshair);
+#pragma region CCrosshair
 
-	pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
-	pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
+	//// CCrosshair
+	//pObj = new CGameObject;
+	//pObj->SetName(L"Crosshair");
 
-	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+	//pObj->AddComponent(new CTransform);
 
-	// CPausePanel
-	pObj = new CGameObject;
-	pObj->SetName(L"Pause Panel");
+	//auto pCrosshair = new CCrosshair;
+	//pObj->AddComponent(pCrosshair);
 
-	pObj->AddComponent(new CTransform);
+	//pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
+	//pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
 
-	auto pPausePanel = new CPausePanel;
-	pObj->AddComponent(pPausePanel);
+	//pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 
-	pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
-	pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
+#pragma endregion
 
-	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+	//// CPausePanel
+	//pObj = new CGameObject;
+	//pObj->SetName(L"Pause Panel");
 
-	// Fire Btn
-	pObj = new CGameObject;
-	pObj->SetName(L"Fire Btn");
+	//pObj->AddComponent(new CTransform);
 
-	pObj->AddComponent(new CTransform);
-	pObj->AddComponent(new CMeshRender);
+	//auto pPausePanel = new CPausePanel;
+	//pObj->AddComponent(pPausePanel);
 
-	auto SubHPbtnUI = new CBtnUIScript;
-	pObj->AddComponent(SubHPbtnUI);
-	SubHPbtnUI->AllowTexSet();
-	SubHPbtnUI->SetNormalImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
-	SubHPbtnUI->SetDeletage((CEntity*)pPausePanel, (DelegateFunc)&CPausePanel::ActivePausePanel);
+	//pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
+	//pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
 
-	pObj->Transform()->SetRelativePos(Vec3(890, 400, 100.f));
-	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+	//pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 
-	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
-	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
-	pObj->MeshRender()->GetDynamicMaterial(0);
-	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0,
-													CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
-	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+	//// CPauseBtn
+	//pObj = new CGameObject;
+	//pObj->SetName(L"Pause Btn");
+	//pObj->AddComponent(new CTransform);
+
+	//auto PauseBtn = new CPauseBtn;
+	//pObj->AddComponent(PauseBtn);
+
+	//PauseBtn->SetPausePanel(pPausePanel);
+
+	//pObj->Transform()->SetRelativePos(Vec3(1, 1, 100.f));
+	//pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+
+	//pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+
+	// DamageFont
+	CGameObject* pDamageFontObj = new CGameObject;
+	auto DamageFont = new CDamageFont;
+	pDamageFontObj->SetName(L"DamageFont");
 	
-	// Fire Btn
-	pObj = new CGameObject;
-	pObj->SetName(L"Fire Btn2");
+	pDamageFontObj->AddComponent(new CTransform);
+	pDamageFontObj->AddComponent(DamageFont);
+	
+	pDamageFontObj->Transform()->SetRelativePos(Vec3(200, 0, 0.f));
+	pDamageFontObj->Transform()->SetRelativeScale(Vec3(50, 50, 1.f));
+	
+	DamageFont->SetDamage(10012312);
 
-	pObj->AddComponent(new CTransform);
-	pObj->AddComponent(new CMeshRender);
-
-	auto SubHPbtnUI2 = new CBtnUIScript;
-	pObj->AddComponent(SubHPbtnUI2);
-	SubHPbtnUI2->AllowTexSet();
-	SubHPbtnUI2->SetNormalImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
-	SubHPbtnUI2->SetDeletage((CEntity*)pPausePanel, (DelegateFunc)&CPausePanel::InactivePausePanel);
-
-	pObj->Transform()->SetRelativePos(Vec3(-650, -400, 100.f));
-	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
-
-	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
-	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
-	pObj->MeshRender()->GetDynamicMaterial(0);
-	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0,
-													CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
-	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
-
+	pTempLevel->AddObject(pDamageFontObj, (UINT)LAYER::LAYER_PLAYER, false);
 
 	// Test Font
 	pObj = new CGameObject;

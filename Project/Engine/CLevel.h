@@ -9,6 +9,7 @@ class CLevel : public CEntity
 private:
 	CLayer*		m_arrLayer[(UINT)LAYER::LAYER_MAX];
 	LEVEL_STATE m_State;
+	bool		m_isActiveUIModal;
 
 public:
 	void begin();
@@ -29,6 +30,9 @@ public:
 public:
 	void		ChangeState(LEVEL_STATE _NextState);
 	LEVEL_STATE GetState() { return m_State; }
+
+	void		ChangeModalState(bool _isActiveUIModal) { m_isActiveUIModal = _isActiveUIModal; }
+	bool		GetModalState() const { return m_isActiveUIModal; }
 
 private:
 	void clear();
