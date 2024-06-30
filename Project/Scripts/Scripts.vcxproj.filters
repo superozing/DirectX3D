@@ -46,26 +46,29 @@
     <ClInclude Include="CPanelUIScript.h">
       <Filter>Scripts\DefaultUI\Panel</Filter>
     </ClInclude>
-    <ClInclude Include="CProgressBar.h">
-      <Filter>Scripts\UI</Filter>
-    </ClInclude>
     <ClInclude Include="CRoRStateMachine.h">
       <Filter>RoRStateMachine</Filter>
     </ClInclude>
     <ClInclude Include="CCrosshair.h">
-      <Filter>Scripts\UI\Crosshair</Filter>
+      <Filter>Scripts\UI\Image\Crosshair</Filter>
     </ClInclude>
     <ClInclude Include="CWeaponInfo.h">
-      <Filter>Scripts\UI\WeaponInfo</Filter>
+      <Filter>Scripts\UI\Image\WeaponInfo</Filter>
     </ClInclude>
     <ClInclude Include="CPausePanel.h">
-      <Filter>Scripts\UI\PausePanel</Filter>
+      <Filter>Scripts\UI\Image\PausePanel</Filter>
     </ClInclude>
     <ClInclude Include="CPauseBtn.h">
-      <Filter>Scripts\UI\PauseBtn</Filter>
+      <Filter>Scripts\UI\Image\PauseBtn</Filter>
     </ClInclude>
     <ClInclude Include="CDamageFont.h">
-      <Filter>Scripts\UI\DamageFont</Filter>
+      <Filter>Scripts\UI\Image\DamageFont</Filter>
+    </ClInclude>
+    <ClInclude Include="CProgressBar.h">
+      <Filter>Scripts\UI\ProgressBar</Filter>
+    </ClInclude>
+    <ClInclude Include="CBossHP.h">
+      <Filter>Scripts\UI\ProgressBar\BossHP</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -114,26 +117,29 @@
     <ClCompile Include="CPanelUIScript.cpp">
       <Filter>Scripts\DefaultUI\Panel</Filter>
     </ClCompile>
-    <ClCompile Include="CProgressBar.cpp">
-      <Filter>Scripts\UI</Filter>
-    </ClCompile>
     <ClCompile Include="CRoRStateMachine.cpp">
       <Filter>RoRStateMachine</Filter>
     </ClCompile>
     <ClCompile Include="CCrosshair.cpp">
-      <Filter>Scripts\UI\Crosshair</Filter>
+      <Filter>Scripts\UI\Image\Crosshair</Filter>
     </ClCompile>
     <ClCompile Include="CWeaponInfo.cpp">
-      <Filter>Scripts\UI\WeaponInfo</Filter>
+      <Filter>Scripts\UI\Image\WeaponInfo</Filter>
     </ClCompile>
     <ClCompile Include="CPausePanel.cpp">
-      <Filter>Scripts\UI\PausePanel</Filter>
+      <Filter>Scripts\UI\Image\PausePanel</Filter>
     </ClCompile>
     <ClCompile Include="CPauseBtn.cpp">
-      <Filter>Scripts\UI\PauseBtn</Filter>
+      <Filter>Scripts\UI\Image\PauseBtn</Filter>
     </ClCompile>
     <ClCompile Include="CDamageFont.cpp">
-      <Filter>Scripts\UI\DamageFont</Filter>
+      <Filter>Scripts\UI\Image\DamageFont</Filter>
+    </ClCompile>
+    <ClCompile Include="CProgressBar.cpp">
+      <Filter>Scripts\UI\ProgressBar</Filter>
+    </ClCompile>
+    <ClCompile Include="CBossHP.cpp">
+      <Filter>Scripts\UI\ProgressBar\BossHP</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -179,20 +185,35 @@
     <Filter Include="RoRStateMachine">
       <UniqueIdentifier>{86892923-b05a-4177-80fe-2f8aebe68887}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\UI\Crosshair">
+    <Filter Include="Scripts\UI\Image">
+      <UniqueIdentifier>{4c858d1c-f5d2-4b6f-b0de-d26a867f62bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\Image\Crosshair">
       <UniqueIdentifier>{34c9d88f-7a17-4733-81e3-09cf4048d6c9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\UI\WeaponInfo">
-      <UniqueIdentifier>{ed447ae9-d1c6-45b7-92af-d3e4daf01425}</UniqueIdentifier>
+    <Filter Include="Scripts\UI\Image\DamageFont">
+      <UniqueIdentifier>{0b661eb9-4e4a-43d3-9edf-5093ab788785}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\UI\PausePanel">
-      <UniqueIdentifier>{78fd96b1-f585-4066-88dc-0a7b73c075a9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\UI\PauseBtn">
+    <Filter Include="Scripts\UI\Image\PauseBtn">
       <UniqueIdentifier>{5511a975-3f3a-4029-8368-2ae1a53ecf41}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\UI\DamageFont">
-      <UniqueIdentifier>{0b661eb9-4e4a-43d3-9edf-5093ab788785}</UniqueIdentifier>
+    <Filter Include="Scripts\UI\Image\PausePanel">
+      <UniqueIdentifier>{78fd96b1-f585-4066-88dc-0a7b73c075a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\Image\WeaponInfo">
+      <UniqueIdentifier>{ed447ae9-d1c6-45b7-92af-d3e4daf01425}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\ProgressBar">
+      <UniqueIdentifier>{e8beecff-8dff-41b8-8ccd-cd06f6600281}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\ProgressBar\BossHP">
+      <UniqueIdentifier>{2be96e02-7796-457e-b422-6aa6ecb85aae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\ProgressBar\PlayerHP">
+      <UniqueIdentifier>{a4f4a420-e7cd-4f98-b9cc-eb77d7f93edb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\ProgressBar\MonsterHP">
+      <UniqueIdentifier>{41b13e7f-f4e2-41a0-9eb2-f1742d335840}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
