@@ -153,38 +153,37 @@ void CUITempLevel::CreateTempLevel()
 
 #pragma region how to add UI Script
 
-	// auto pBtnTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Background.jpg", L"texture\\Background.jpg");
-	//
-	//
-	//// DynamicUI Object 생성
-	//// MESHpoint
-	//// DynamicUIMtrl
-	//// btnUI2->DisableMouseInput(); -> 카메라의 영향을 받는 UI는 이걸 반드시 꺼주어야 해요.
-	//
-	// pObj = new CGameObject;
-	// pObj->SetName(L"DynamicUI");
+	 auto pBtnTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Background.jpg", L"texture\\Background.jpg");
+	
+	
+	// DynamicUI Object 생성
+	// MESHpoint
+	// DynamicUIMtrl
+	// btnUI2->DisableMouseInput(); -> 카메라의 영향을 받는 UI는 이걸 반드시 꺼주어야 해요.
+	
+	 pObj = new CGameObject;
+	 pObj->SetName(L"DynamicUI");
 
-	// pObj->AddComponent(new CTransform);
-	// pObj->AddComponent(new CMeshRender);
+	 pObj->AddComponent(new CTransform);
+	 pObj->AddComponent(new CMeshRender);
 
-	// auto btnUI2 = new CBtnUIScript;
-	// pObj->AddComponent(btnUI2);
+	 auto btnUI2 = new CBtnUIScript;
+	 pObj->AddComponent(btnUI2);
 
-	// btnUI2->DisableMouseInput();
+	 btnUI2->DisableMouseInput();
 
-	// btnUI2->AllowTexSet();
-	// btnUI2->SetNormalImg(pBtnTex);
+	 btnUI2->AllowTexSet();
+	 btnUI2->SetNormalImg(pBtnTex);
 
-	// pObj->Transform()->SetRelativePos(Vec3(0, 0, 100.f));
-	// pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+	 pObj->Transform()->SetRelativePos(Vec3(0, 0, 100.f));
+	 pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
 
-	// pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHpoint)); // pointMesh일 때, 동작하지 않음.
-	// 무엇의 문제인지는 모르겠네요.
-	// pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DynamicUIMtrl"), 0);
-	// pObj->MeshRender()->GetDynamicMaterial(0);
-	// pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, pBtnTex);
+	 pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHpoint));
+	 pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DynamicUIMtrl"), 0);
+	 pObj->MeshRender()->GetDynamicMaterial(0);
+	 pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, pBtnTex);
 
-	// pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
+	 pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
 	//// PanelUI Object 생성
 	//// MESHrect
@@ -376,45 +375,49 @@ void CUITempLevel::CreateTempLevel()
 
 #pragma endregion
 
-	// CPausePanel
-	pObj = new CGameObject;
-	pObj->SetName(L"Pause Panel");
+	//// CPausePanel
+	//pObj = new CGameObject;
+	//pObj->SetName(L"Pause Panel");
 
-	pObj->AddComponent(new CTransform);
+	//pObj->AddComponent(new CTransform);
 
-	auto pPausePanel = new CPausePanel;
-	pObj->AddComponent(pPausePanel);
+	//auto pPausePanel = new CPausePanel;
+	//pObj->AddComponent(pPausePanel);
 
-	pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
-	pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
+	//pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
+	//pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
 
-	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+	//pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 
-	// CPauseBtn
-	pObj = new CGameObject;
-	pObj->SetName(L"Pause Btn");
-	pObj->AddComponent(new CTransform);
+	//// CPauseBtn
+	//pObj = new CGameObject;
+	//pObj->SetName(L"Pause Btn");
+	//pObj->AddComponent(new CTransform);
 
-	auto PauseBtn = new CPauseBtn;
-	pObj->AddComponent(PauseBtn);
+	//auto PauseBtn = new CPauseBtn;
+	//pObj->AddComponent(PauseBtn);
 
-	PauseBtn->SetPausePanel(pPausePanel);
+	//PauseBtn->SetPausePanel(pPausePanel);
 
-	pObj->Transform()->SetRelativePos(Vec3(1, 1, 100.f));
-	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+	//pObj->Transform()->SetRelativePos(Vec3(1, 1, 100.f));
+	//pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
 
-	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+	//pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 
-	// CPauseBtn
-	pObj = new CGameObject;
-	pObj->SetName(L"DamageFont");
-	pObj->AddComponent(new CTransform);
+	// DamageFont
+	CGameObject* pDamageFontObj = new CGameObject;
 	auto DamageFont = new CDamageFont;
-	pObj->AddComponent(DamageFont);
-	pObj->Transform()->SetRelativePos(Vec3(200, 0, 0.f));
-	DamageFont->SetDamage(100);
+	pDamageFontObj->SetName(L"DamageFont");
+	
+	pDamageFontObj->AddComponent(new CTransform);
+	pDamageFontObj->AddComponent(DamageFont);
+	
+	pDamageFontObj->Transform()->SetRelativePos(Vec3(200, 0, 0.f));
+	pDamageFontObj->Transform()->SetRelativeScale(Vec3(50, 50, 1.f));
+	
+	DamageFont->SetDamage(10012312);
 
-	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
+	pTempLevel->AddObject(pDamageFontObj, (UINT)LAYER::LAYER_PLAYER, false);
 
 	GamePlayStatic::ChangeLevel(pTempLevel, LEVEL_STATE::STOP);
 
