@@ -35,6 +35,7 @@
 #include <Scripts/CWeaponInfo.h>
 #include <Scripts/CPausePanel.h>
 #include <Scripts/CPauseBtn.h>
+#include <Scripts/CDamageFont.h>
 
 void CUITempLevel::Init()
 {
@@ -403,30 +404,17 @@ void CUITempLevel::CreateTempLevel()
 	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
-	
-	// Btn
+
+	// CPauseBtn
 	pObj = new CGameObject;
-	pObj->SetName(L"Close Btn");
-
+	pObj->SetName(L"DamageFont");
 	pObj->AddComponent(new CTransform);
-	pObj->AddComponent(new CMeshRender);
+	auto DamageFont = new CDamageFont;
+	pObj->AddComponent(DamageFont);
+	pObj->Transform()->SetRelativePos(Vec3(200, 0, 0.f));
+	DamageFont->SetDamage(100);
 
-	auto SubHPbtnUI2 = new CBtnUIScript;
-	pObj->AddComponent(SubHPbtnUI2);
-	SubHPbtnUI2->AllowTexSet();
-	SubHPbtnUI2->SetNormalImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
-	SubHPbtnUI2->SetDeletage((CEntity*)pPausePanel, (DelegateFunc)&CPausePanel::InactivePausePanel);
-
-	pObj->Transform()->SetRelativePos(Vec3(-650, -400, 100.f));
-	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
-
-	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
-	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
-	pObj->MeshRender()->GetDynamicMaterial(0);
-	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0,
-													CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
-	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
-
+	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
 	GamePlayStatic::ChangeLevel(pTempLevel, LEVEL_STATE::STOP);
 
