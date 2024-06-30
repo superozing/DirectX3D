@@ -32,6 +32,7 @@
 #include <Engine/CDevice.h>
 
 #include <Scripts/CProgressBar.h>
+#include <Scripts/CBossHP.h>
 #include <Scripts/CCrosshair.h>
 #include <Scripts/CWeaponInfo.h>
 #include <Scripts/CPausePanel.h>
@@ -267,77 +268,7 @@ void CUITempLevel::CreateTempLevel()
 
 #pragma endregion
 
-#pragma region progress bar
 
-	//// Progress Bar
-	// auto BarObj		 = new CGameObject;
-	// auto progressbar = new CProgressBar;
-
-	// BarObj->SetName(L"Progress Bar");
-
-	// BarObj->AddComponent(new CTransform);
-	// BarObj->AddComponent(progressbar);
-
-	// progressbar->SetMaxHP(2000);
-	// progressbar->SetCurHP(2000);
-
-	// progressbar->SetImgFontTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/ImageFont_Raidboss.png"));
-	// progressbar->SetPortraitTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Portrait_Raidboss_KaitenRanger.png"));
-
-	// BarObj->Transform()->SetRelativePos(Vec3(0.f, 300.f, 100.f));
-	// BarObj->Transform()->SetRelativeScale(Vec3(1, 1, 1.f));
-
-	// pTempLevel->AddObject(BarObj, (UINT)LAYER::LAYER_UI, false);
-
-	//// Add HP Btn
-	// pObj = new CGameObject;
-	// pObj->SetName(L"Add HP Btn");
-
-	// pObj->AddComponent(new CTransform);
-	// pObj->AddComponent(new CMeshRender);
-
-	// auto AddHPbtnUI = new CBtnUIScript;
-	// pObj->AddComponent(AddHPbtnUI);
-	// AddHPbtnUI->AllowTexSet();
-	// AddHPbtnUI->SetNormalImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Red.png"));
-	// AddHPbtnUI->SetDeletage((CEntity*)progressbar, (DelegateFunc)&CProgressBar::Add100);
-
-	// pObj->Transform()->SetRelativePos(Vec3(680, -400, 100.f));
-	// pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
-
-	// pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
-	// pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
-	// pObj->MeshRender()->GetDynamicMaterial(0);
-	// pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0,
-	//												CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Red.png"));
-
-	// pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
-
-	//// Sub HP Btn
-	// pObj = new CGameObject;
-	// pObj->SetName(L"Sub HP Btn");
-
-	// pObj->AddComponent(new CTransform);
-	// pObj->AddComponent(new CMeshRender);
-
-	// auto SubHPbtnUI = new CBtnUIScript;
-	// pObj->AddComponent(SubHPbtnUI);
-	// SubHPbtnUI->AllowTexSet();
-	// SubHPbtnUI->SetNormalImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
-	// SubHPbtnUI->SetDeletage((CEntity*)progressbar, (DelegateFunc)&CProgressBar::Sub100);
-
-	// pObj->Transform()->SetRelativePos(Vec3(800, -400, 100.f));
-	// pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
-
-	// pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
-	// pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
-	// pObj->MeshRender()->GetDynamicMaterial(0);
-	// pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0,
-	//												CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
-
-	// pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
-
-#pragma endregion
 
 #pragma region CWeaponInfo
 
@@ -449,11 +380,78 @@ void CUITempLevel::CreateTempLevel()
 
 #pragma region ProgressBar UI
 
+	// Boss HP
+	auto BarObj	= new CGameObject;
+	auto BossHP	= new CBossHP;
 
+	BarObj->SetName(L"Boss HP");
 
+	BarObj->AddComponent(new CTransform);
+	BarObj->AddComponent(new CMeshRender);
+	BarObj->AddComponent(BossHP);
 
+	BarObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
+	BarObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
+	BarObj->MeshRender()->GetDynamicMaterial(0);
 
+	BossHP->SetMaxHP(2000);
+	BossHP->SetCurHP(2000);
 
+	BossHP->SetImgFontTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/ImageFont_Raidboss.png"));
+	BossHP->SetPortraitTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Portrait_Raidboss_KaitenRanger.png"));
+
+	BarObj->Transform()->SetRelativePos(Vec3(0.f, 300.f, 100.f));
+	BarObj->Transform()->SetRelativeScale(Vec3(1, 1, 1.f));
+
+	pTempLevel->AddObject(BarObj, (UINT)LAYER::LAYER_UI, false);
+
+	// Damage Button
+	pObj = new CGameObject;
+	pObj->SetName(L"Damage Button");
+
+	pObj->AddComponent(new CTransform);
+	pObj->AddComponent(new CMeshRender);
+
+	auto AddHPbtnUI = new CBtnUIScript;
+	pObj->AddComponent(AddHPbtnUI);
+	AddHPbtnUI->AllowTexSet();
+	AddHPbtnUI->SetNormalImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Red.png"));
+	AddHPbtnUI->SetDeletage((CEntity*)BossHP, (DelegateFunc)&CBossHP::Sub100);
+
+	pObj->Transform()->SetRelativePos(Vec3(680, -400, 100.f));
+	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+
+	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
+	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
+	pObj->MeshRender()->GetDynamicMaterial(0);
+	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0,
+												CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Red.png"));
+
+	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+
+	//// Sub HP Btn
+	// pObj = new CGameObject;
+	// pObj->SetName(L"Sub HP Btn");
+
+	// pObj->AddComponent(new CTransform);
+	// pObj->AddComponent(new CMeshRender);
+
+	// auto SubHPbtnUI = new CBtnUIScript;
+	// pObj->AddComponent(SubHPbtnUI);
+	// SubHPbtnUI->AllowTexSet();
+	// SubHPbtnUI->SetNormalImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
+	// SubHPbtnUI->SetDeletage((CEntity*)progressbar, (DelegateFunc)&CProgressBar::Sub100);
+
+	// pObj->Transform()->SetRelativePos(Vec3(800, -400, 100.f));
+	// pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+
+	// pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
+	// pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
+	// pObj->MeshRender()->GetDynamicMaterial(0);
+	// pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0,
+	//												CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
+
+	// pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 
 #pragma endregion
 
