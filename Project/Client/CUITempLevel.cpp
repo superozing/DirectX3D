@@ -377,7 +377,9 @@ void CUITempLevel::CreateTempLevel()
 
 #pragma endregion
 
-	//// CPausePanel
+#pragma region Image UI
+
+	 //// CPausePanel
 	//pObj = new CGameObject;
 	//pObj->SetName(L"Pause Panel");
 
@@ -406,42 +408,54 @@ void CUITempLevel::CreateTempLevel()
 
 	//pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 
-	// DamageFont
-	CGameObject* pDamageFontObj = new CGameObject;
-	auto DamageFont = new CDamageFont;
-	pDamageFontObj->SetName(L"DamageFont");
-	
-	pDamageFontObj->AddComponent(new CTransform);
-	pDamageFontObj->AddComponent(DamageFont);
-	
-	pDamageFontObj->Transform()->SetRelativePos(Vec3(200, 0, 0.f));
-	pDamageFontObj->Transform()->SetRelativeScale(Vec3(50, 50, 1.f));
-	
-	DamageFont->SetDamage(10012312);
+	//// DamageFont
+	//CGameObject* pDamageFontObj = new CGameObject;
+	//auto DamageFont = new CDamageFont;
+	//pDamageFontObj->SetName(L"DamageFont");
+	//
+	//pDamageFontObj->AddComponent(new CTransform);
+	//pDamageFontObj->AddComponent(DamageFont);
+	//
+	//pDamageFontObj->Transform()->SetRelativePos(Vec3(200, 0, 0.f));
+	//pDamageFontObj->Transform()->SetRelativeScale(Vec3(50, 50, 1.f));
+	//
+	//DamageFont->SetDamage(10012312);
 
-	pTempLevel->AddObject(pDamageFontObj, (UINT)LAYER::LAYER_PLAYER, false);
+	//pTempLevel->AddObject(pDamageFontObj, (UINT)LAYER::LAYER_PLAYER, false);
 
-	// Test Font
-	pObj = new CGameObject;
-	pObj->SetName(L"Test Font");
+	//// Test Font
+	//pObj = new CGameObject;
+	//pObj->SetName(L"Test Font");
 
-	pObj->AddComponent(new CTransform);
-	pObj->AddComponent(new CFontRender);
+	//pObj->AddComponent(new CTransform);
+	//pObj->AddComponent(new CFontRender);
 
-	pObj->Transform()->SetRelativePos(Vec3(1, 1, -500.f));
-	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+	//pObj->Transform()->SetRelativePos(Vec3(1, 1, -500.f));
+	//pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
 
-	tFontInfo FontInfo{};
-	FontInfo.Color = FONT_RGBA(255, 255, 255, 255);
-	FontInfo.fFontSize = 50.f;
-	FontInfo.FontType  = FONT_TYPE::ARIAL;
-	FontInfo.WStr	   = L"ABCDEFGHIJKLMNOPQR";
-	FontInfo.TextFlag  = FW1_CENTER;
+	//tFontInfo FontInfo{};
+	//FontInfo.Color = FONT_RGBA(255, 255, 255, 255);
+	//FontInfo.fFontSize = 50.f;
+	//FontInfo.FontType  = FONT_TYPE::ARIAL;
+	//FontInfo.WStr	   = L"ABCDEFGHIJKLMNOPQR";
+	//FontInfo.TextFlag  = FW1_CENTER;
 
-	pObj->FontRender()->SetFontInfo(FontInfo);
-	pObj->FontRender()->AllowConvertWorldPosToWindowPos(true);
+	//pObj->FontRender()->SetFontInfo(FontInfo);
+	//pObj->FontRender()->AllowConvertWorldPosToWindowPos(true);
 
-	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
+	//pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
+#pragma endregion
+
+
+#pragma region ProgressBar UI
+
+
+
+
+
+
+
+#pragma endregion
 
 
 	GamePlayStatic::ChangeLevel(pTempLevel, LEVEL_STATE::STOP);
