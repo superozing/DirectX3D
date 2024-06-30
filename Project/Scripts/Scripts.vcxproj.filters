@@ -64,6 +64,9 @@
     <ClInclude Include="CPauseBtn.h">
       <Filter>Scripts\UI\PauseBtn</Filter>
     </ClInclude>
+    <ClInclude Include="CDamageFont.h">
+      <Filter>Scripts\UI\DamageFont</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -129,6 +132,9 @@
     <ClCompile Include="CPauseBtn.cpp">
       <Filter>Scripts\UI\PauseBtn</Filter>
     </ClCompile>
+    <ClCompile Include="CDamageFont.cpp">
+      <Filter>Scripts\UI\DamageFont</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -184,6 +190,9 @@
     </Filter>
     <Filter Include="Scripts\UI\PauseBtn">
       <UniqueIdentifier>{5511a975-3f3a-4029-8368-2ae1a53ecf41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\DamageFont">
+      <UniqueIdentifier>{0b661eb9-4e4a-43d3-9edf-5093ab788785}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

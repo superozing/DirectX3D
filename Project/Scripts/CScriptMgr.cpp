@@ -18,6 +18,7 @@
 #include "CWeaponInfo.h"
 #include "CPausePanel.h"
 #include "CPauseBtn.h"
+#include "CDamageFont.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -38,6 +39,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CWeaponInfo");
 	_vec.push_back(L"CPausePanel");
 	_vec.push_back(L"CPauseBtn");
+	_vec.push_back(L"CDamageFont");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -76,6 +78,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPausePanel;
 	if (L"CPauseBtn" == _strScriptName)
 		return new CPauseBtn;
+	if (L"CDamageFont" == _strScriptName)
+		return new CDamageFont;
 	return nullptr;
 }
 
@@ -133,6 +137,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::PAUSEBTN:
 		return new CPauseBtn;
+		break;
+	case (UINT)SCRIPT_TYPE::DAMAGEFONT:
+		return new CDamageFont;
 		break;
 	}
 	return nullptr;
@@ -208,6 +215,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::PAUSEBTN:
 		return L"CPauseBtn";
+		break;
+
+	case SCRIPT_TYPE::DAMAGEFONT:
+		return L"CDamageFont";
 		break;
 
 	}
