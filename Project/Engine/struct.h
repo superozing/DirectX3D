@@ -302,9 +302,9 @@ struct tFontInfo
 {
 	wstring WStr; // 출력할 문자열
 
-	float fPosX; // X Pos
-	float fPosY; // Y Pos
-	float fPosZ; // Z Pos
+	// X, Y - 윈도우 좌표 기준 x, y
+	// Z - 깊이 판정을 위한 용도
+	Vec3  vPos;
 
 	float fFontSize; // 폰트의 크기
 

@@ -26,7 +26,6 @@ void CFontMgr::init()
 		assert(NULL);
 
 	// FontWrapper
-
 	if (FAILED(m_pFW1Factory->CreateFontWrapper(DEVICE, L"Arial", &m_pFontWrapper[(UINT)FONT_TYPE::ARIAL])))
 		assert(NULL);
 
@@ -48,12 +47,35 @@ void CFontMgr::DrawFont(const wchar_t* _pStr, float _fPosX, float _fPosY, float 
 	);
 }
 
+void CFontMgr::DrawFont(tFontInfo& _FontInfo)
+{
+	m_pFontWrapper[(UINT)_FontInfo.FontType]->DrawString(
+		CONTEXT,
+		_FontInfo.WStr.c_str(), // String
+		_FontInfo.fFontSize,	// Font size
+		_FontInfo.vPos.x,		// X position
+		_FontInfo.vPos.y,		// Y position
+		_FontInfo.Color,		// Text color, 0xAaBbGgRr
+		_FontInfo.TextFlag		// Flags (for example FW1_RESTORESTATE to keep context states unchanged)
+	);
+}
+
+
+struct Cmp
+{
+	bool operator()(tFontInfo& _l, tFontInfo& _r)
+	{
+		return _l.vPos.z < _r.vPos.z;
+	}
+};
+
 void CFontMgr::render()
 {
 	// 여기서 뎁스 소팅
+	sort(m_VecRenderFont.begin(), m_VecRenderFont.end(), Cmp());
 
 	for (auto& it : m_VecRenderFont)
-		DrawFont(it.WStr.c_str(), it.fPosX, it.fPosY, it.fFontSize, it.Color, it.FontType, it.TextFlag);
+		DrawFont(it);
 
 	m_VecRenderFont.clear();
 }

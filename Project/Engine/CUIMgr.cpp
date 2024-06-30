@@ -52,6 +52,7 @@ void CUIMgr::tick()
 		// 만약 UI 스크립트가 없는 오브젝트일 경우
 		if (!pUI)
 		{
+			//CLogMgr::GetInst()->AddLog(Log_Level::ERR, "UI Layer Contains Non - UI Objects");
 			continue;
 		}
 
