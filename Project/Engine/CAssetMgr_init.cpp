@@ -946,6 +946,27 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->AddTexParam(TEX_PARAM::TEX_0, "DynamicUI Texture");
 
 	AddAsset(L"DynamicUIShader", pShader.Get());
+
+	// ================
+	// DamageFont Shader
+	// ----------------
+	// Mesh: PointMesh
+	// RenderComp: MeshRender
+	// ================
+	pShader = new CGraphicsShader;
+	pShader->CreateVertexShader(L"shader\\damagefont.fx", "VS_DamageFont");
+	pShader->CreateGeometryShader(L"shader\\damagefont.fx", "GS_DamageFont");
+	pShader->CreatePixelShader(L"shader\\damagefont.fx", "PS_DamageFont");
+
+	pShader->SetRSType(RS_TYPE::CULL_BACK);
+	pShader->SetDSType(DS_TYPE::NO_TEST);
+	pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+	pShader->SetTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
+
+	pShader->AddTexParam(TEX_PARAM::TEX_0, "DamageFontTexture");
+
+	AddAsset(L"DamageFontShader", pShader.Get());
 }
 
 void CAssetMgr::CreateDefaultMaterial()
