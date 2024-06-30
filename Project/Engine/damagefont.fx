@@ -129,16 +129,19 @@ float4 PS_DamageFont(GS_OUT _in) : SV_Target
     //  (찍어야 할 숫자) - 1 / 12 를 텍스쳐에서 가져올 UV로 맟추면 된다.
     
     
-    // 현재 UV에 해당하는 숫자 자릿수
-    int digitnum = ceil(_in.vUV.x);
+    // 현재 UV에 해당하는 자릿수 
+    // 예를 들어, 다섯 자리 수가 있다면
+    // 10000의 자리는 1, 1000의 자리는 2, 100의 자리는 3...
+    int digitnum = trunc(_in.vUV.x) + 1;
     
+
     // 자릿수에 해당하는 숫자
-    int rendernum = pow(10, DIGIT - digitnum) / DAMAGE;
-    
+    int rendernum = (DAMAGE / pow(10, DIGIT - digitnum)) % 10;
+
     float UVx = frac(_in.vUV.x);
     
-    // 0일 경우 예외 처리 필요
-    _in.vUV.x = (rendernum - 1 + UVx) / 12.f;
+    // 최종 샘플링할 UV좌표 계산
+    _in.vUV.x = rendernum == 0 ? (9 + UVx) / 12.f : (rendernum - 1 + UVx) / 12.f;
     
     // 출력 색상
     float4 vOutColor = (float4) 0.f;
