@@ -2,60 +2,44 @@
 #include <Engine\CScript.h>
 
 class CImageUIScript;
+class CPanelUIScript;
 
+// 파생되는 자식 클래스가 해야하는 일.
+// 
+// 1. GetPanelUI()로 paneltex와 여러 옵션 set
+// 2. MaxHP, CurHP 조정
+// 3. MakeChildObjects() override, 
+//		이후 HPLineTex 등 자식 오브젝트로 추가
 class CProgressBar : public CScript
 {
 private:
-	// 체력 게이지
-	CImageUIScript* m_pGauge;
-
-	// 초상화
-	CImageUIScript* m_pPortrait;
-	Ptr<CTexture>	m_PortraitTex;
-
-	// 폰트 텍스쳐
-	CImageUIScript* m_pImgFont;
-	Ptr<CTexture>	m_ImgFontTex;
+	// 메인 패널UI
+	// 자식 쪽에서 텍스쳐 등을 전부 Set 해주어야 해요.
+	CPanelUIScript* m_pPanelUI;
 
 	// 최대 체력
 	int m_MaxHP;
 
-	// 바 별 체력
-	int m_LineHP;
-
-	int m_LerpHP;
-
 	// 현재 체력
 	int m_CurHP;
 
-	CImageUIScript* m_pOddLineHPUI;
-	CImageUIScript* m_pEvenLineHPUI;
-	CImageUIScript* m_pLinearHPUI;
+protected:
+	virtual void	MakeChildObjects() {}
+	CPanelUIScript* GetPanelUI() { return m_pPanelUI; }
+
+	void SetMaxHP(int _MaxHP) { m_MaxHP = _MaxHP; }
+	void SetCurHP(int _CurHP) { m_CurHP = _CurHP; }
+
+	int GetMaxHP() const { return m_MaxHP; }
+	int GetCurHP() const { return m_CurHP; }
 
 public:
 	virtual void begin() override;
-	virtual void tick() override;
-
-public:
-	void SetPortraitTex(Ptr<CTexture> _PortraitTex);
-	void SetImgFontTex(Ptr<CTexture> _ImgFontTex);
-
-	void SetMaxHP(int _MaxHP) { m_MaxHP = RoRMath::ClampInt(_MaxHP, 0); }
-	void SetLineHP(int _LineHP);
-	void SetCurHP(int _CurHP) { m_CurHP = RoRMath::ClampInt(_CurHP, 0, m_MaxHP); }
-
-	int GetMaxHP() const { return m_MaxHP; }
-	int GetLineHP() const { return m_LineHP; }
-	int GetCurHP() const { return m_CurHP; }
-
-	void Add100();
-	void Sub100();
-
-private:
-	void MakeChildObjects();
+	virtual void tick() override {}
 
 public:
 	CLONE(CProgressBar);
 	CProgressBar();
+	CProgressBar(UINT _ScriptType);
 	~CProgressBar();
 };
