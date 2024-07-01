@@ -41,10 +41,24 @@ void CPhysXMgrScript::begin()
 
 void CPhysXMgrScript::tick()
 {
-	iscontact = CPhysXMgr::GetInst()->PerfomRaycast(
-		Vec3(RayOrigin.x, RayOrigin.y, RayOrigin.z),
-		Vec3(RayDir.x, RayDir.y, RayDir.z),
-		hitinfo);
+	//일반 Raycast
+	//iscontact = CPhysXMgr::GetInst()->PerfomRaycast(
+	//	Vec3(RayOrigin.x, RayOrigin.y, RayOrigin.z),
+	//	Vec3(RayDir.x, RayDir.y, RayDir.z),
+	//	hitinfo);
+
+	//if (true == iscontact)
+	//{
+	//	strobj = ToString(hitinfo.pOtherObj->GetName());
+	//	contactpos = hitinfo.vHitPos;
+	//}
+	//else
+	//{
+	//	strobj = "";
+	//}
+
+	//뷰포트 Raycast
+	iscontact = CPhysXMgr::GetInst()->ViewPortRaycast(hitinfo);
 
 	if (true == iscontact)
 	{

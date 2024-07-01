@@ -44,8 +44,8 @@ bool CPhysXMgr::PerfomRaycast(Vec3 _OriginPos, Vec3 _Dir, tRoRHitInfo& _HitInfo,
         if (true == m_RayDebug)
         {
             GamePlayStatic::DrawDebugSphere(Vec3(_OriginPos.x, _OriginPos.y, _OriginPos.z), 50.f, Vec4(1.f, 0.8f, 0.f, 1.f), false);
+            //GamePlayStatic::DrawDebugCylinder(Vec3(_OriginPos.x, _OriginPos.y, _OriginPos.z), _HitInfo.vHitPos,5.f,Vec3(0.f,.8f,0.f),true);
             GamePlayStatic::DrawDebugSphere(_HitInfo.vHitPos, 50.f, Vec4(0.f, 0.8f, 0.f, 1.f), false);
-            GamePlayStatic::DrawDebugCylinder(Vec3(_OriginPos.x, _OriginPos.y, _OriginPos.z), _HitInfo.vHitPos,5.f,Vec3(0.f,.8f,0.f),true);
         }
         return true;
     }
@@ -53,6 +53,44 @@ bool CPhysXMgr::PerfomRaycast(Vec3 _OriginPos, Vec3 _Dir, tRoRHitInfo& _HitInfo,
     {
         return false;
     }
+}
+
+#include "CMRT.h"
+#include "CRenderMgr.h"
+#include "CKeyMgr.h"
+#include "CCamera.h"
+bool CPhysXMgr::ViewPortRaycast(tRoRHitInfo& _HitInfo, UINT _LAYER)
+{
+    CMRT* pMRT = CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN);
+    D3D11_VIEWPORT tVP = pMRT->GetViewPort();
+
+    //  현재 마우스 좌표
+    Vec2 vMousePos = CKeyMgr::GetInst()->GetMousePos();
+
+    auto camera = CRenderMgr::GetInst()->GetMainCam();
+    if (camera->ViewportConvertFunc != nullptr)
+        vMousePos = camera->ViewportConvertFunc();
+
+    // 카메라로부터 역투영 행렬과 역뷰 행렬을 가져옵니다
+    Matrix ProjMat = camera->GetProjMat();
+    Matrix ViewInvMat = camera->GetViewInvMat();
+
+    Vec3 rayOrigin = camera->Transform()->GetWorldPos();
+    Vec3 rayDir;
+
+    // view space 에서의 방향
+    rayDir.x = ((((vMousePos.x - tVP.TopLeftX) * 2.f / tVP.Width) - 1.f) - ProjMat._31) / ProjMat._11;
+    rayDir.y = (-(((vMousePos.y - tVP.TopLeftY) * 2.f / tVP.Height) - 1.f) - ProjMat._32) / ProjMat._22;
+    rayDir.z = 1.f;
+
+    // world space 에서의 방향
+    rayDir = XMVector3TransformNormal(rayDir, ViewInvMat);
+    rayDir.Normalize();
+
+    // 레이케스트 수행
+    bool hit = CPhysXMgr::GetInst()->PerfomRaycast(Vec3(rayOrigin.x, rayOrigin.y, rayOrigin.z), Vec3(rayDir.x, rayDir.y, rayDir.z), _HitInfo, _LAYER);
+
+    return hit;
 }
 
 PxFilterFlags CustomFilterShader(
