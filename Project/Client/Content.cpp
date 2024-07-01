@@ -110,7 +110,7 @@ void Content::render_update()
 
 	ImGui::PopStyleVar();
 
-	if (KEY_TAP_EDITOR(KEY::DEL))
+	if (KEY_TAP_EDITOR(KEY::DEL) && ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows))
 	{
 		TreeNode* pNode = m_ContentTree->GetSelectedNode();
 		if (nullptr != pNode)

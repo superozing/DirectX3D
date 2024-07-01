@@ -55,7 +55,7 @@ void Outliner::render_update()
 		ResetCurrentLevel();
 	}
 
-	if (KEY_TAP_EDITOR(KEY::DEL))
+	if (KEY_TAP_EDITOR(KEY::DEL) && ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows))
 	{
 		TreeNode* pNode = m_Tree->GetSelectedNode();
 		if (nullptr != pNode)
