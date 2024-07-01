@@ -16,7 +16,8 @@ void PhysXUI::render_update()
 {
 	ComponentUI::render_update();
 
-	if (!TitleCollapse("PhysXUI")) return;
+	if (!TitleCollapse("PhysXUI"))
+		return;
 
 	auto TGO = GetTargetObject();
 	if (nullptr == TGO)
@@ -29,15 +30,13 @@ void PhysXUI::render_update()
 		return;
 	}
 
-	phys->m_bImguiDirtyFlag = true;
+	phys->m_bImguiDirtyFlag	   = true;
 	const auto& vecContactInfo = phys->m_vThisFrameContact;
 
-	ImGui::Text(("Col Cnt:" + std::to_string( phys->m_CollisionCount)).c_str());
+	ImGui::Text(("Col Cnt:" + std::to_string(phys->m_CollisionCount)).c_str());
 
 	for (const auto& info : vecContactInfo)
 	{
-		ImGui::Text(ToString( info.Other->GetName()).c_str());
+		ImGui::Text(ToString(info.Other->GetName()).c_str());
 	}
-
 }
-

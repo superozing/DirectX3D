@@ -20,11 +20,11 @@ void CPhysX::updateFromPhysics()
 	if (nullptr == m_Actor)
 		return;
 
-    PxTransform physTransform = getTransform();
+	PxTransform physTransform = getTransform();
 
 	auto tempmat = XMMatrixIdentity();
 
-	auto ObScale = Transform()->GetRelativeScale();
+	auto   ObScale	= Transform()->GetRelativeScale();
 	Matrix matScale = XMMatrixScaling(ObScale.x, ObScale.y, ObScale.z);
 
 	auto q = XMFLOAT4(physTransform.q.x, physTransform.q.y, physTransform.q.z, physTransform.q.w);
@@ -40,17 +40,12 @@ void CPhysX::updateFromPhysics()
 	Transform()->m_matWorld = matScale * matRotX * matRotY * matRotZ * matTranslation;
 
 	// 물체의 방향값을 다시 계산한다.
-	static const Vec3 arrAxis[3] =
-	{
-		Vec3(1.f, 0.f, 0.f),
-		Vec3(0.f, 1.f, 0.f),
-		Vec3(0.f, 0.f, 1.f)
-	};
+	static const Vec3 arrAxis[3] = {Vec3(1.f, 0.f, 0.f), Vec3(0.f, 1.f, 0.f), Vec3(0.f, 0.f, 1.f)};
 
 	// Vec3 를 Vec4 타입으로 확장해서 행렬을 적용시켜야 함
 	// XMVector3TransformCoord	- w 를 1로 확장
 	// XMVector3TransformNormal - w 를 0으로 확장
-	// mul(float4(_in.vPos, 1 or 0), g_matWorld); 
+	// mul(float4(_in.vPos, 1 or 0), g_matWorld);
 	// 적용 받을 상태행렬의 이동을 적용할지 말지 결정
 	for (int i = 0; i < 3; ++i)
 	{
@@ -68,14 +63,13 @@ void CPhysX::updateToPhysics()
 	if (nullptr == m_Actor)
 		return;
 
-	auto Obj = GetOwner();
-	auto Rot = Obj->Transform()->GetWorldRot();
-	auto Pos = Obj->Transform()->GetWorldPos();
+	auto	   Obj		  = GetOwner();
+	auto	   Rot		  = Obj->Transform()->GetWorldRot();
+	auto	   Pos		  = Obj->Transform()->GetWorldPos();
 	Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(Rot.y, Rot.z, Rot.x);
 
 	// 게임 오브젝트의 위치와 회전 정보
-	PxTransform transform(PxVec3(Pos.x, Pos.y, Pos.z),
-		PxQuat(quaternion.x, quaternion.y, quaternion.z, quaternion.w));
+	PxTransform transform(PxVec3(Pos.x, Pos.y, Pos.z), PxQuat(quaternion.x, quaternion.y, quaternion.z, quaternion.w));
 
 	m_Actor->setGlobalPose(transform);
 }
@@ -87,14 +81,14 @@ void CPhysX::begin()
 
 void CPhysX::finaltick()
 {
-	//콘텍트벡터를 초기화
+	// 콘텍트벡터를 초기화
 	if (0 != m_vThisFrameContact.size())
 	{
 		m_vThisFrameContact.resize(0);
 	}
 
-	//imgui가 포커스되어있으면 ,현재프레임에 충돌한 오브젝트정보를 수집
-	if (true == m_bImguiDirtyFlag )
+	// imgui가 포커스되어있으면 ,현재프레임에 충돌한 오브젝트정보를 수집
+	if (true == m_bImguiDirtyFlag)
 	{
 		m_bThisFrameImguiFocused = true;
 	}
@@ -121,7 +115,8 @@ void CPhysX::finaltick()
 	}
 	else
 	{
-		GamePlayStatic::DrawDebugSphere(trans->GetWorldPos(), trans->GetWorldScale().x/2.f, Vec3(0.3f, .3f, 0.3f), true);
+		GamePlayStatic::DrawDebugSphere(trans->GetWorldPos(), trans->GetWorldScale().x / 2.f, Vec3(0.3f, .3f, 0.3f),
+										true);
 	}
 }
 
@@ -158,17 +153,17 @@ void CPhysX::LoadFromFile(ifstream& fin)
 
 void CPhysX::setTransform(const PxTransform& transform)
 {
-    m_Actor->setGlobalPose(transform);
+	m_Actor->setGlobalPose(transform);
 }
 
 PxTransform CPhysX::getTransform() const
 {
-    return m_Actor->getGlobalPose();
+	return m_Actor->getGlobalPose();
 }
 
 void CPhysX::BeginOverlap(CGameObject* other)
 {
-	m_vThisFrameContact.push_back(tCollisionData{ other , eColType::COL_BEGINE });
+	m_vThisFrameContact.push_back(tCollisionData{other, eColType::COL_BEGINE});
 	++m_CollisionCount;
 
 	const vector<CScript*>& vecScript = GetOwner()->GetScripts();
@@ -180,7 +175,7 @@ void CPhysX::BeginOverlap(CGameObject* other)
 
 void CPhysX::Overlap(CGameObject* other)
 {
-	m_vThisFrameContact.push_back(tCollisionData{ other , eColType::COL_ON });
+	m_vThisFrameContact.push_back(tCollisionData{other, eColType::COL_ON});
 	const vector<CScript*>& vecScript = GetOwner()->GetScripts();
 	for (size_t i = 0; i < vecScript.size(); ++i)
 	{
@@ -191,11 +186,10 @@ void CPhysX::Overlap(CGameObject* other)
 void CPhysX::EndOverlap(CGameObject* other)
 {
 	--m_CollisionCount;
-	m_vThisFrameContact.push_back(tCollisionData{ other , eColType::COL_END });
+	m_vThisFrameContact.push_back(tCollisionData{other, eColType::COL_END});
 	const vector<CScript*>& vecScript = GetOwner()->GetScripts();
 	for (size_t i = 0; i < vecScript.size(); ++i)
 	{
 		vecScript[i]->EndOverlap(this, other, other->PhysX());
 	}
 }
-
