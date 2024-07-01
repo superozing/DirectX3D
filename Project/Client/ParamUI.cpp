@@ -144,37 +144,7 @@ bool ParamUI::Param_STRING(string* _Data, const string& _Desc, float _min, float
 		if (ImGui::InputText(_Desc.c_str(), buffer, IM_ARRAYSIZE(buffer)))
 		{
 			(*_Data) = buffer;
-		}
-	}
-
-bool ParamUI::Param_STRING(string* _Data, const string& _Desc, float _min, float _Max, bool _View,
-						   const string& _Tooltip)
-{
-	ImGui::Text(_Desc.c_str());
-	ImGui::SameLine();
-
-	char szID[256] = {};
-	sprintf_s(szID, "##float%d", g_ID++);
-
-	if (_View)
-	{
-		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !_Tooltip.empty())
-		{
-			ImGui::SetTooltip(_Tooltip.c_str());
-		}
-		ImGui::Text(_Data->c_str());
-	}
-	else
-	{
-		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !_Tooltip.empty())
-		{
-			ImGui::SetTooltip(_Tooltip.c_str());
-		}
-		char buffer[255];
-		strcpy_s(buffer, _Data->c_str());
-		if (ImGui::InputText(_Desc.c_str(), buffer, IM_ARRAYSIZE(buffer)))
-		{
-			(*_Data) = buffer;
+			return true;
 		}
 	}
 
@@ -608,8 +578,8 @@ bool ParamUI::Param_MGR_PHYSX(void* _pPhysXMgr)
 	// UI::StaticButton(string("RayCast Info"), STATIC_BTN_TYPE::SUBTITLE);
 
 	// const char* column_names[] = { "Track", "cabasa", "ride", "smash", "tom-hi", "tom-mid", "tom-low", "hihat-o",
-	// "hihat-c", "snare-s", "snare-c", "clap", "rim", "kick" }; const int columns_count = IM_ARRAYSIZE(column_names);
-	// const int rows_count = 12;
+	// "hihat-c", "snare-s", "snare-c", "clap", "rim", "kick" }; const int columns_count =
+	// IM_ARRAYSIZE(column_names); const int rows_count = 12;
 
 	static ImGuiTableFlags table_flags = ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersInnerH |
 										 ImGuiTableFlags_Hideable | ImGuiTableFlags_Resizable |
@@ -634,7 +604,8 @@ bool ParamUI::Param_MGR_PHYSX(void* _pPhysXMgr)
 
 			ImGui::TableAngledHeadersRow(); // Draw angled headers for all columns with the
 											// ImGuiTableColumnFlags_AngledHeader flag.
-			ImGui::TableHeadersRow(); // Draw remaining headers and allow access to context-menu and other functions.
+			ImGui::TableHeadersRow();		// Draw remaining headers and allow access to context-menu and other
+											// functions.
 			for (int row = 0; row < LayerMap.size(); row++)
 			{
 				ImGui::PushID(row);

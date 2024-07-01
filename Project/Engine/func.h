@@ -23,8 +23,6 @@ float ClampFloat(float _input, float _min, float _max);
 
 void MatrixToFloat16(float _dest[16], const Matrix& _src);
 void Float16ToMatrix(Matrix& _dest, const float _src[16]);
-} // namespace RoRMath
-
 Vec3 QuaternionToEulerAngles(const XMFLOAT4& _Quaternion);
 } // namespace RoRMath
 
@@ -98,8 +96,6 @@ public:
 };
 
 void ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextLevelStartState);
-} // namespace GamePlayStatic
-
 // enum class Layer의 {인덱스,레이어이름}을 반환
 // 중요) 이름없는 레이어는 요소에 들어있지않음
 vector<std::pair<int, string>>& GetLayerMap();
