@@ -9,3 +9,4 @@
 #include "strTxt.h"
 #include "strGrpShader.h"
 #include "strFBX.h"
+#include "strMesh.h"

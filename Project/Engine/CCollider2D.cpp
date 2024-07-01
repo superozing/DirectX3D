@@ -40,18 +40,18 @@ void CCollider2D::finaltick()
 	// GameObject 의 Scale 에 영향을 받지 않으려는 경우
 	if (m_bAbsolute)
 	{
-		Vec3 vWorldScale = Transform()->GetWorldScale();
+		Vec3   vWorldScale = Transform()->GetWorldScale();
 		Matrix matScaleInv = XMMatrixScaling(vWorldScale.x, vWorldScale.y, vWorldScale.z);
-		matScaleInv = XMMatrixInverse(nullptr, matScaleInv);
+		matScaleInv		   = XMMatrixInverse(nullptr, matScaleInv);
 
 		// Object 의 Scale 의 역행렬을 사이에 배치해서 무효화 시킴
-		m_matColWorld = m_matColWorld * matScaleInv *  matObjWorld;
+		m_matColWorld = m_matColWorld * matScaleInv * matObjWorld;
 	}
 	else
 	{
 		m_matColWorld *= matObjWorld;
-	}	
-	
+	}
+
 	if (m_bDebug)
 	{
 		// 충돌중이면 Red, 충돌하고 있지 않으면 Green
@@ -63,7 +63,7 @@ void CCollider2D::finaltick()
 			}
 			else
 			{
-				Vec3 vPos = GetOwner()->Transform()->GetWorldPos();
+				Vec3 vPos	 = GetOwner()->Transform()->GetWorldPos();
 				Vec2 vRadius = GetOwner()->Collider2D()->GetOffsetScale();
 				GamePlayStatic::DrawDebugCircle(vPos, vRadius.x, Vec3(0.f, 1.f, 0.f), false);
 			}
@@ -76,7 +76,7 @@ void CCollider2D::finaltick()
 			}
 			else
 			{
-				Vec3 vPos = GetOwner()->Transform()->GetWorldPos();
+				Vec3 vPos	 = GetOwner()->Transform()->GetWorldPos();
 				Vec2 vRadius = GetOwner()->Collider2D()->GetOffsetScale();
 				GamePlayStatic::DrawDebugCircle(vPos, vRadius.x, Vec3(1.f, 0.f, 0.f), false);
 			}
@@ -120,7 +120,7 @@ void CCollider2D::SaveToFile(FILE* _File)
 	fwrite(&m_vOffsetPos, sizeof(Vec3), 1, _File);
 	fwrite(&m_vOffsetScale, sizeof(Vec3), 1, _File);
 	fwrite(&m_bAbsolute, sizeof(bool), 1, _File);
-	fwrite(&m_Type, sizeof(UINT), 1, _File);	
+	fwrite(&m_Type, sizeof(UINT), 1, _File);
 }
 
 #define TagOffsetPos "[OffsetPos]"

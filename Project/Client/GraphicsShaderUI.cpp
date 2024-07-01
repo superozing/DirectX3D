@@ -11,11 +11,10 @@ GraphicsShader::~GraphicsShader()
 {
 }
 
-
 void GraphicsShader::render_update()
 {
 	AssetUI::render_update();
-	
+
 	Ptr<CGraphicsShader> pShader = (CGraphicsShader*)GetAsset().Get();
 
 	ImGui::SameLine();
@@ -31,7 +30,7 @@ void GraphicsShader::render_update()
 
 	ImGui::Text("Graphics Shader ");
 	ImGui::SameLine();
-	
+
 	using namespace std::filesystem;
 
 	path filePath = strShaderName;
@@ -39,79 +38,133 @@ void GraphicsShader::render_update()
 	// 확장자 제거 - stem() 함수를 사용하면 파일 명만 가져올 수 있어요.
 	string strFileName = filePath.stem().string();
 
-	ImGui::InputText("##GraphicsShaderName", (char*)strFileName.c_str(), strFileName.length(), ImGuiInputTextFlags_ReadOnly);
-
+	ImGui::InputText("##GraphicsShaderName", (char*)strFileName.c_str(), strFileName.length(),
+					 ImGuiInputTextFlags_ReadOnly);
 
 	ImGui::SeparatorText("Shader Info");
 
 	string strPath;
 	string strFuncName;
+	char   VSPath[128]{};
+	char   VSFuncName[128]{};
+	char   HSPath[128]{};
+	char   HSFuncName[128]{};
+	char   DSPath[128]{};
+	char   DSFuncName[128]{};
+	char   GSPath[128]{};
+	char   GSFuncName[128]{};
+	char   PSPath[128]{};
+	char   PSFuncName[128]{};
 
 	// VertexShader
 	pShader->GetVSInfo(strPath, strFuncName);
-	if (!strPath.empty())
+
+	strcpy_s(VSPath, strPath.c_str());
+	strcpy_s(VSFuncName, strFuncName.c_str());
+
+	ImGui::Text("VS File Path    ");
+	ImGui::SameLine();
+	if (ImGui::InputText("##VS_Path", VSPath, 128, ImGuiInputTextFlags_EnterReturnsTrue))
 	{
-		ImGui::Text("VS File Path    ");
-		ImGui::SameLine();
-		ImGui::InputText("##VS_Path", (char*)strPath.c_str(), strPath.length(), ImGuiInputTextFlags_ReadOnly);
-		ImGui::Text("VS Func Name    ");
-		ImGui::SameLine();
-		ImGui::InputText("##VS_Func", (char*)strFuncName.c_str(), strFuncName.length(), ImGuiInputTextFlags_ReadOnly);
+		pShader->SetVSPath(VSPath);
 	}
 
+	ImGui::Text("VS Func Name    ");
+	ImGui::SameLine();
+	if (ImGui::InputText("##VS_Func", VSFuncName, 128, ImGuiInputTextFlags_EnterReturnsTrue))
+	{
+		pShader->SetVSFuncName(VSFuncName);
+	}
+	
 	// HullShader
 	pShader->GetHSInfo(strPath, strFuncName);
-	if (!strPath.empty())
+
+	strcpy_s(HSPath, strPath.c_str());
+	strcpy_s(HSFuncName, strFuncName.c_str());
+
+	ImGui::Text("HS File Path    ");
+	ImGui::SameLine();
+	if (ImGui::InputText("##HS_Path", HSPath, 128, ImGuiInputTextFlags_EnterReturnsTrue))
 	{
-		ImGui::Text("HS File Path    ");
-		ImGui::SameLine();
-		ImGui::InputText("##HS_Path", (char*)strPath.c_str(), strPath.length(), ImGuiInputTextFlags_ReadOnly);
-		ImGui::Text("HS Func Name    ");
-		ImGui::SameLine();
-		ImGui::InputText("##HS_Func", (char*)strFuncName.c_str(), strFuncName.length(), ImGuiInputTextFlags_ReadOnly);
+		pShader->SetHSPath(HSPath);
 	}
 
+	ImGui::Text("HS Func Name    ");
+	ImGui::SameLine();
+	if (ImGui::InputText("##HS_Func", HSFuncName, 128, ImGuiInputTextFlags_EnterReturnsTrue))
+	{
+		pShader->SetHSFuncName(HSFuncName);
+	}
+		
 	// DomainShader
 	pShader->GetDSInfo(strPath, strFuncName);
-	if (!strPath.empty())
+
+	strcpy_s(DSPath, strPath.c_str());
+	strcpy_s(DSFuncName, strFuncName.c_str());
+
+	ImGui::Text("DS File Path    ");
+	ImGui::SameLine();
+	if (ImGui::InputText("##DS_Path", DSPath, 128, ImGuiInputTextFlags_EnterReturnsTrue))
 	{
-		ImGui::Text("DS File Path    ");
-		ImGui::SameLine();
-		ImGui::InputText("##DS_Path", (char*)strPath.c_str(), strPath.length(), ImGuiInputTextFlags_ReadOnly);
-		ImGui::Text("DS Func Name    ");
-		ImGui::SameLine();
-		ImGui::InputText("##DS_Func", (char*)strFuncName.c_str(), strFuncName.length(), ImGuiInputTextFlags_ReadOnly);
+		pShader->SetDSPath(DSPath);
 	}
 
-	// GeometryShader
+	ImGui::Text("DS Func Name    ");
+	ImGui::SameLine();
+	if (ImGui::InputText("##DS_Func", DSFuncName, 128, ImGuiInputTextFlags_EnterReturnsTrue))
+	{
+		pShader->SetDSFuncName(DSFuncName);
+	}
+	
+			
+	// GeomatryShader
 	pShader->GetGSInfo(strPath, strFuncName);
-	if (!strPath.empty())
+
+	strcpy_s(GSPath, strPath.c_str());
+	strcpy_s(GSFuncName, strFuncName.c_str());
+
+	ImGui::Text("GS File Path    ");
+	ImGui::SameLine();
+	if (ImGui::InputText("##GS_Path", GSPath, 128, ImGuiInputTextFlags_EnterReturnsTrue))
 	{
-		ImGui::Text("GS File Path    ");
-		ImGui::SameLine();
-		ImGui::InputText("##GS_Path", (char*)strPath.c_str(), strPath.length(), ImGuiInputTextFlags_ReadOnly);
-		ImGui::Text("GS Func Name    ");
-		ImGui::SameLine();
-		ImGui::InputText("##GS_Func", (char*)strFuncName.c_str(), strFuncName.length(), ImGuiInputTextFlags_ReadOnly);
+		pShader->SetGSPath(GSPath);
 	}
 
+	ImGui::Text("GS Func Name    ");
+	ImGui::SameLine();
+	if (ImGui::InputText("##GS_Func", GSFuncName, 128, ImGuiInputTextFlags_EnterReturnsTrue))
+	{
+		pShader->SetGSFuncName(GSFuncName);
+	}
+	
+				
 	// PixelShader
 	pShader->GetPSInfo(strPath, strFuncName);
-	if (!strPath.empty())
+
+	strcpy_s(PSPath, strPath.c_str());
+	strcpy_s(PSFuncName, strFuncName.c_str());
+
+	ImGui::Text("PS File Path    ");
+	ImGui::SameLine();
+	if (ImGui::InputText("##PS_Path", PSPath, 128, ImGuiInputTextFlags_EnterReturnsTrue))
 	{
-		ImGui::Text("PS File Path    ");
-		ImGui::SameLine();
-		ImGui::InputText("##PS_Path", (char*)strPath.c_str(), strPath.length(), ImGuiInputTextFlags_ReadOnly);
-		ImGui::Text("PS Func Name    ");
-		ImGui::SameLine();
-		ImGui::InputText("##PS_Func", (char*)strFuncName.c_str(), strFuncName.length(), ImGuiInputTextFlags_ReadOnly);
+		pShader->SetPSPath(PSPath);
 	}
+
+	ImGui::Text("PS Func Name    ");
+	ImGui::SameLine();
+	if (ImGui::InputText("##PS_Func", PSFuncName, 128, ImGuiInputTextFlags_EnterReturnsTrue))
+	{
+		pShader->SetPSFuncName(PSFuncName);
+	}
+	
+
+
+	///////////////////////////////////////
 
 
 
 	ImGui::SeparatorText("Shader State ");
-
-
 
 	string strEnum = ToString(magic_enum::enum_name(pShader->GetTopology()));
 	if (!strEnum.empty())
@@ -131,8 +184,8 @@ void GraphicsShader::render_update()
 
 				bool isSelected = (topologyBuffer == SelectedTopology);
 
-				if (vecTopologyNames[(UINT)topologyBuffer] != "" 
-					&& ImGui::Selectable(vecTopologyNames[(UINT)topologyBuffer].c_str(), isSelected))
+				if (vecTopologyNames[(UINT)topologyBuffer] != "" &&
+					ImGui::Selectable(vecTopologyNames[(UINT)topologyBuffer].c_str(), isSelected))
 				{
 					SelectedTopology = topologyBuffer;
 				}
@@ -170,8 +223,8 @@ void GraphicsShader::render_update()
 
 				bool isSelected = (TypeBuffer == SelectedType);
 
-				if (vecTypeNames[(UINT)TypeBuffer] != ""
-					&& ImGui::Selectable(vecTypeNames[(UINT)TypeBuffer].c_str(), isSelected))
+				if (vecTypeNames[(UINT)TypeBuffer] != "" &&
+					ImGui::Selectable(vecTypeNames[(UINT)TypeBuffer].c_str(), isSelected))
 				{
 					SelectedType = TypeBuffer;
 				}
@@ -196,7 +249,7 @@ void GraphicsShader::render_update()
 	{
 		ImGui::Text("Depth Stancil State");
 		ImGui::SameLine();
-	
+
 		DS_TYPE SelectedType = pShader->GetDSType();
 
 		const vector<string>& vecTypeNames = CImGuiMgr::GetInst()->GetVecEnumDS();
@@ -209,8 +262,8 @@ void GraphicsShader::render_update()
 
 				bool isSelected = (TypeBuffer == SelectedType);
 
-				if (vecTypeNames[(UINT)TypeBuffer] != ""
-					&& ImGui::Selectable(vecTypeNames[(UINT)TypeBuffer].c_str(), isSelected))
+				if (vecTypeNames[(UINT)TypeBuffer] != "" &&
+					ImGui::Selectable(vecTypeNames[(UINT)TypeBuffer].c_str(), isSelected))
 				{
 					SelectedType = TypeBuffer;
 				}
@@ -248,8 +301,8 @@ void GraphicsShader::render_update()
 
 				bool isSelected = (TypeBuffer == SelectedType);
 
-				if (vecTypeNames[(UINT)TypeBuffer] != ""
-					&& ImGui::Selectable(vecTypeNames[(UINT)TypeBuffer].c_str(), isSelected))
+				if (vecTypeNames[(UINT)TypeBuffer] != "" &&
+					ImGui::Selectable(vecTypeNames[(UINT)TypeBuffer].c_str(), isSelected))
 				{
 					SelectedType = TypeBuffer;
 				}
@@ -286,8 +339,8 @@ void GraphicsShader::render_update()
 
 				bool isSelected = (TypeBuffer == SelectedType);
 
-				if (vecTypeNames[(UINT)TypeBuffer] != ""
-					&& ImGui::Selectable(vecTypeNames[(UINT)TypeBuffer].c_str(), isSelected))
+				if (vecTypeNames[(UINT)TypeBuffer] != "" &&
+					ImGui::Selectable(vecTypeNames[(UINT)TypeBuffer].c_str(), isSelected))
 				{
 					SelectedType = TypeBuffer;
 				}
@@ -307,7 +360,6 @@ void GraphicsShader::render_update()
 		}
 	}
 
-
 	ImGui::SeparatorText("");
 
 	if (TitleCollapse("Scalar Param"))
@@ -318,7 +370,7 @@ void GraphicsShader::render_update()
 		{
 			// 1. 사용 여부 (체크 박스)
 			auto& Scalar = pScalarParam[i];
-			bool IsUse = Scalar.IsUse;
+			bool  IsUse	 = Scalar.IsUse;
 
 			ImGui::Checkbox(ToString(magic_enum::enum_name(SCALAR_PARAM(i))).c_str(), &IsUse);
 
@@ -333,22 +385,24 @@ void GraphicsShader::render_update()
 				pShader->DeleteScalarParam(SCALAR_PARAM(i));
 			}
 
-			// 2. 사용 여부에 따른 정보 표시 
+			// 2. 사용 여부에 따른 정보 표시
 			if (Scalar.IsUse)
 			{
 				char cdesc[100]{};
 				strcpy_s(cdesc, Scalar.Desc.c_str());
-				ImGui::Text("Param Name");			ImGui::SameLine();
+				ImGui::Text("Param Name");
+				ImGui::SameLine();
 				ImGui::InputText(("##Scalar" + to_string(i)).c_str(), cdesc, 100, ImGuiInputTextFlags_None);
 
 				char cscalar[100]{};
 				strcpy_s(cscalar, Scalar.Tooltip.c_str());
-				ImGui::Text("Tooltip");			ImGui::SameLine();
+				ImGui::Text("Tooltip");
+				ImGui::SameLine();
 				ImGui::InputText(("##ScalarTooltip" + to_string(i)).c_str(), cscalar, 100, ImGuiInputTextFlags_None);
 
-				pShader->AddScalarParam(SCALAR_PARAM(i), string(cdesc), Scalar.Min, Scalar.Max, Scalar.View, string(cscalar));
+				pShader->AddScalarParam(SCALAR_PARAM(i), string(cdesc), Scalar.Min, Scalar.Max, Scalar.View,
+										string(cscalar));
 			}
-
 
 			ImGui::Separator();
 		}
@@ -361,8 +415,8 @@ void GraphicsShader::render_update()
 		for (UINT i = 0; i < (UINT)TEX_PARAM::END; ++i)
 		{
 			// 1. 사용 여부 (체크 박스)
-			auto& Tex = pTexParam[i];
-			bool IsUse = Tex.IsUse;
+			auto& Tex	= pTexParam[i];
+			bool  IsUse = Tex.IsUse;
 
 			ImGui::Checkbox(ToString(magic_enum::enum_name(TEX_PARAM(i))).c_str(), &IsUse);
 
@@ -374,13 +428,13 @@ void GraphicsShader::render_update()
 			else if (!IsUse && Tex.IsUse)
 				pShader->DeleteTexParam(TEX_PARAM(i));
 
-
-			// 2. 사용 여부에 따른 정보 표시 
+			// 2. 사용 여부에 따른 정보 표시
 			if (Tex.IsUse)
 			{
 				char cdesc[100]{};
 				strcpy_s(cdesc, Tex.Desc.c_str());
-				ImGui::Text("Param Name");			ImGui::SameLine();
+				ImGui::Text("Param Name");
+				ImGui::SameLine();
 				ImGui::InputText(("##Scalar" + to_string(i)).c_str(), cdesc, 100, ImGuiInputTextFlags_None);
 
 				pShader->AddTexParam(TEX_PARAM(i), string(cdesc));

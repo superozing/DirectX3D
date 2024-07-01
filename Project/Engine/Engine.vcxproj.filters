@@ -199,9 +199,6 @@
     <ClInclude Include="strFnShader.h">
       <Filter>01. Header\UserString</Filter>
     </ClInclude>
-    <ClInclude Include="strMesh.h">
-      <Filter>01. Header\UserString</Filter>
-    </ClInclude>
     <ClInclude Include="strShader.h">
       <Filter>01. Header\UserString</Filter>
     </ClInclude>
@@ -229,13 +226,19 @@
     <ClInclude Include="CMeshData.h">
       <Filter>06. Asset\MeshData</Filter>
     </ClInclude>
-    <ClInclude Include="strLevel.h">
-      <Filter>01. Header\GenString</Filter>
+    <ClInclude Include="CUIScript.h">
+      <Filter>08. Component\Script\UIScript</Filter>
     </ClInclude>
-    <ClInclude Include="strFx.h">
+    <ClInclude Include="strFBX.h">
       <Filter>01. Header\GenString</Filter>
     </ClInclude>
     <ClInclude Include="strGrpShader.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strAnim.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strTxt.h">
       <Filter>01. Header\GenString</Filter>
     </ClInclude>
     <ClInclude Include="strMtrl.h">
@@ -244,20 +247,38 @@
     <ClInclude Include="strPref.h">
       <Filter>01. Header\GenString</Filter>
     </ClInclude>
+    <ClInclude Include="strFx.h">
+      <Filter>01. Header\GenString</Filter>
+    </ClInclude>
     <ClInclude Include="strSnd.h">
       <Filter>01. Header\GenString</Filter>
     </ClInclude>
     <ClInclude Include="strTex.h">
       <Filter>01. Header\GenString</Filter>
     </ClInclude>
-    <ClInclude Include="strTxt.h">
+    <ClInclude Include="strLevel.h">
       <Filter>01. Header\GenString</Filter>
     </ClInclude>
-    <ClInclude Include="strAnim.h">
+    <ClInclude Include="CUIMgr.h">
+      <Filter>04. Manager\UIMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CAnimator3D.h">
+      <Filter>08. Component\05. Animator3D</Filter>
+    </ClInclude>
+    <ClInclude Include="CAnimation3DShader.h">
+      <Filter>ShaderCode\03. Compute\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="CCopyBoneShader.h">
+      <Filter>ShaderCode\03. Compute\CopyBone</Filter>
+    </ClInclude>
+    <ClInclude Include="CInstancingBuffer.h">
+      <Filter>04. Manager\Instancing</Filter>
+    </ClInclude>
+    <ClInclude Include="strMesh.h">
       <Filter>01. Header\GenString</Filter>
     </ClInclude>
-    <ClInclude Include="strFBX.h">
-      <Filter>01. Header\GenString</Filter>
+    <ClInclude Include="strEngineMesh.h">
+      <Filter>01. Header\UserString</Filter>
     </ClInclude>
     <ClInclude Include="CPhysXMgr.h">
       <Filter>04. Manager\PhysXMgr</Filter>
@@ -477,6 +498,24 @@
     </ClCompile>
     <ClCompile Include="CMeshData.cpp">
       <Filter>06. Asset\MeshData</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIScript.cpp">
+      <Filter>08. Component\Script\UIScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIMgr.cpp">
+      <Filter>04. Manager\UIMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimator3D.cpp">
+      <Filter>08. Component\05. Animator3D</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimation3DShader.cpp">
+      <Filter>ShaderCode\03. Compute\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="CCopyBoneShader.cpp">
+      <Filter>ShaderCode\03. Compute\CopyBone</Filter>
+    </ClCompile>
+    <ClCompile Include="CInstancingBuffer.cpp">
+      <Filter>04. Manager\Instancing</Filter>
     </ClCompile>
     <ClCompile Include="CPhysXMgr.cpp">
       <Filter>04. Manager\PhysXMgr</Filter>
@@ -699,6 +738,24 @@
     <Filter Include="Module\FBXLoader">
       <UniqueIdentifier>{81e92f5f-7347-4b4b-9815-eb45c0544dfd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="08. Component\Script\UIScript">
+      <UniqueIdentifier>{61c8e488-0387-49e6-b456-edf8f05bc054}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\UIMgr">
+      <UniqueIdentifier>{88ac7c17-5583-41d8-bd7c-2f27f5d9dfcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\05. Animator3D">
+      <UniqueIdentifier>{2605de3c-e5b1-4a58-ae2f-2d0f3190a6c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\03. Compute\Animation">
+      <UniqueIdentifier>{719ce4cc-0827-4657-b832-8a035be32951}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\03. Compute\CopyBone">
+      <UniqueIdentifier>{fd317bd7-361d-4fa1-a0f0-d2d124781117}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\Instancing">
+      <UniqueIdentifier>{7bf1cd61-beb8-4c25-aed0-fb8664e6ded0}</UniqueIdentifier>
+    </Filter>
     <Filter Include="04. Manager\PhysXMgr">
       <UniqueIdentifier>{263d4c6c-38b6-450d-b372-fa32dbe97c2f}</UniqueIdentifier>
     </Filter>
@@ -777,6 +834,18 @@
     </FxCompile>
     <FxCompile Include="weightmap.fx">
       <Filter>ShaderCode\03. Compute\LandScape\WeightMap</Filter>
+    </FxCompile>
+    <FxCompile Include="staticui.fx">
+      <Filter>ShaderCode\02. Render\2DShader</Filter>
+    </FxCompile>
+    <FxCompile Include="dynamicui.fx">
+      <Filter>ShaderCode\02. Render</Filter>
+    </FxCompile>
+    <FxCompile Include="animation.fx">
+      <Filter>ShaderCode\03. Compute\Animation</Filter>
+    </FxCompile>
+    <FxCompile Include="copybone.fx">
+      <Filter>ShaderCode\03. Compute\CopyBone</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

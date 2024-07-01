@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <stdlib.h>
+#include <iostream>
 #include <Windows.h>
 #include <typeinfo>
 

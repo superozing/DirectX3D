@@ -37,6 +37,21 @@
     <ClInclude Include="CSpringArm.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CBtnUIScript.h">
+      <Filter>Scripts\DefaultUI\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="CImageUIScript.h">
+      <Filter>Scripts\DefaultUI\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="CPanelUIScript.h">
+      <Filter>Scripts\DefaultUI\Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="CProgressBar.h">
+      <Filter>Scripts\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CRoRStateMachine.h">
+      <Filter>RoRStateMachine</Filter>
+    </ClInclude>
     <ClInclude Include="CPhysXMgrScript.h">
       <Filter>Scripts\Manager\PhysXMgr</Filter>
     </ClInclude>
@@ -78,6 +93,21 @@
     <ClCompile Include="CSpringArm.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="CBtnUIScript.cpp">
+      <Filter>Scripts\DefaultUI\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="CImageUIScript.cpp">
+      <Filter>Scripts\DefaultUI\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="CPanelUIScript.cpp">
+      <Filter>Scripts\DefaultUI\Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="CProgressBar.cpp">
+      <Filter>Scripts\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CRoRStateMachine.cpp">
+      <Filter>RoRStateMachine</Filter>
+    </ClCompile>
     <ClCompile Include="CPhysXMgrScript.cpp">
       <Filter>Scripts\Manager\PhysXMgr</Filter>
     </ClCompile>
@@ -106,6 +136,24 @@
     </Filter>
     <Filter Include="Scripts\Manager\Time">
       <UniqueIdentifier>{9b5c2bf2-2681-42e9-b790-8b4aba881373}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\DefaultUI">
+      <UniqueIdentifier>{949d4c11-e4a8-4d1b-8d31-20202e70f9dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\DefaultUI\Button">
+      <UniqueIdentifier>{d563a445-59fa-4a54-9b9c-700bf54e43d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\DefaultUI\Image">
+      <UniqueIdentifier>{a8345db0-a049-4493-b2e4-cec8fdf207f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\DefaultUI\Panel">
+      <UniqueIdentifier>{239cd80d-3287-4e2a-b122-6447aac778ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI">
+      <UniqueIdentifier>{cb982d5c-819e-4bec-aaf2-577bd2b82280}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RoRStateMachine">
+      <UniqueIdentifier>{86892923-b05a-4177-80fe-2f8aebe68887}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Manager\PhysXMgr">
       <UniqueIdentifier>{85af28fd-4fb9-47c5-b0d2-100e2dae1ca2}</UniqueIdentifier>

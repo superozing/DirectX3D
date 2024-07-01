@@ -30,8 +30,9 @@ void ScriptUI::render_update()
 	ComponentUI::render_update();
 
 	auto ScriptList = magic_enum::enum_names<SCRIPT_TYPE>();
-	UINT ScriptIdx = m_TargetScript->GetScriptType();
-	if (!TitleCollapse(string(ScriptList[ScriptIdx]).c_str())) return;
+	UINT ScriptIdx	= m_TargetScript->GetScriptType();
+	if (!TitleCollapse(string(ScriptList[ScriptIdx]).c_str()))
+		return;
 
 	const auto& vParam = m_TargetScript->GetScriptParam();
 
@@ -45,24 +46,35 @@ void ScriptUI::render_update()
 			ParamUI::Param_BOOL((bool*)iter->second.pData, iter->first, iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::INT:
-			ParamUI::Param_INT((int*)iter->second.pData, iter->first, (int)iter->second.fmin, (int)iter->second.fMax, iter->second.View, iter->second.Tooltip);
+			ParamUI::Param_INT((int*)iter->second.pData, iter->first, (int)iter->second.fmin, (int)iter->second.fMax,
+							   iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::FLOAT:
-			ParamUI::Param_FLOAT((float*)iter->second.pData, iter->first, iter->second.fmin, iter->second.fMax, iter->second.View, iter->second.Tooltip);
+			ParamUI::Param_FLOAT((float*)iter->second.pData, iter->first, iter->second.fmin, iter->second.fMax,
+								 iter->second.View, iter->second.Tooltip);
+			break;
+		case SCRIPT_PARAM::STRING:
+			ParamUI::Param_STRING((string*)iter->second.pData, iter->first, iter->second.fmin, iter->second.fMax,
+								  iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::STRING:
 			ParamUI::Param_STRING((string*)iter->second.pData, iter->first, iter->second.fmin, iter->second.fMax, iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::VEC2:
-			ParamUI::Param_VEC2((Vec2*)iter->second.pData, iter->first, iter->second.fmin, iter->second.fMax, iter->second.View, iter->second.Tooltip);
+			ParamUI::Param_VEC2((Vec2*)iter->second.pData, iter->first, iter->second.fmin, iter->second.fMax,
+								iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::VEC3:
-			ParamUI::Param_VEC3((Vec3*)iter->second.pData, iter->first, iter->second.fmin, iter->second.fMax, iter->second.View, iter->second.Tooltip);
+			ParamUI::Param_VEC3((Vec3*)iter->second.pData, iter->first, iter->second.fmin, iter->second.fMax,
+								iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::VEC4:
-			ParamUI::Param_VEC4((Vec4*)iter->second.pData, iter->first, iter->second.fmin, iter->second.fMax, iter->second.View, iter->second.Tooltip);
+			ParamUI::Param_VEC4((Vec4*)iter->second.pData, iter->first, iter->second.fmin, iter->second.fMax,
+								iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::OBJECT:
+			ParamUI::Param_OBJECT((CGameObject**)iter->second.pData, iter->first, iter->second.CompType,
+								  iter->second.ScriptType, iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::COLOR:
 			ParamUI::Param_COLOR((Vec4*)iter->second.pData, iter->first, iter->second.View, iter->second.Tooltip);

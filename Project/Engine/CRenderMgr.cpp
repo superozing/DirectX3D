@@ -65,6 +65,15 @@ void CRenderMgr::ClearMRT()
 	m_arrMRT[(UINT)MRT_TYPE::SHADOW_DEPTH]->Clear();
 }
 
+void CRenderMgr::ResetMRT()
+{
+	for (int i = 0; i < (UINT)MRT_TYPE::END; ++i)
+	{
+		delete m_arrMRT[i];
+		m_arrMRT[i] = nullptr;
+	}
+}
+
 void CRenderMgr::CreateDynamicShadowDepth()
 {
 	GetMRT(MRT_TYPE::SHADOW_DEPTH)->OMSet();
@@ -92,9 +101,9 @@ void CRenderMgr::render_play()
 		pMainCam->SortObject();
 
 		// 계산한 view 행렬과 proj 행렬을 전역 변수에 담는다.
-		g_Transform.matView = pMainCam->GetViewMat();
+		g_Transform.matView	   = pMainCam->GetViewMat();
 		g_Transform.matViewInv = pMainCam->GetViewInvMat();
-		g_Transform.matProj = pMainCam->GetProjMat();
+		g_Transform.matProj	   = pMainCam->GetProjMat();
 		g_Transform.matProjInv = pMainCam->GetProjInvMat();
 
 		// Domain 순서대로 렌더링
@@ -108,13 +117,10 @@ void CRenderMgr::render_play()
 
 		// 그림자 판정
 
-
-
-
 		// 광원처리
 		// LightMRT 변경
 		GetMRT(MRT_TYPE::LIGHT)->OMSet();
-		
+
 		// 광원이 자신의 영향 범위에 있는 Deferred 물체에 빛을 남긴다
 		for (size_t i = 0; i < m_vecLight3D.size(); ++i)
 		{
@@ -129,12 +135,19 @@ void CRenderMgr::render_play()
 
 		// 후처리 작업
 		pMainCam->render_postprocess();
-
 	}
 
 	// 추가 보조카메라 시점 렌더링
 	for (int i = 1; i < m_vecCam.size(); ++i)
 	{
+		g_Transform.matView	   = m_vecCam[i]->GetViewMat();
+		g_Transform.matViewInv = m_vecCam[i]->GetViewInvMat();
+		g_Transform.matProj	   = m_vecCam[i]->GetProjMat();
+		g_Transform.matProjInv = m_vecCam[i]->GetProjInvMat();
+
+		// 보조카메라 시점 기준 SortObject
+		m_vecCam[i]->SortObject();
+
 		// Foward 렌더링
 		m_vecCam[i]->render_forward();
 	}
@@ -152,9 +165,9 @@ void CRenderMgr::render_editor()
 	m_EditorCam->SortObject();
 
 	// 계산한 view 행렬과 proj 행렬을 전역변수에 담아둔다.
-	g_Transform.matView = m_EditorCam->GetViewMat();
+	g_Transform.matView	   = m_EditorCam->GetViewMat();
 	g_Transform.matViewInv = m_EditorCam->GetViewInvMat();
-	g_Transform.matProj = m_EditorCam->GetProjMat();
+	g_Transform.matProj	   = m_EditorCam->GetProjMat();
 	g_Transform.matProjInv = m_EditorCam->GetProjInvMat();
 
 	// Domain 순서대로 렌더링
@@ -170,7 +183,7 @@ void CRenderMgr::render_editor()
 	// Light MRT 로 변경
 	GetMRT(MRT_TYPE::LIGHT)->OMSet();
 
-	// 광원이 자신의 영향범위에 있는 Deferred 물체에 빛을 남긴다.		
+	// 광원이 자신의 영향범위에 있는 Deferred 물체에 빛을 남긴다.
 	for (size_t i = 0; i < m_vecLight3D.size(); ++i)
 	{
 		m_vecLight3D[i]->render();
@@ -184,12 +197,11 @@ void CRenderMgr::render_editor()
 
 	// 후처리 작업
 	m_EditorCam->render_postprocess();
-	
 }
 
 void CRenderMgr::render_debug()
 {
-	//레벨이 플레이상태일경우(랜더Func가 render_play 일 경우)
+	// 레벨이 플레이상태일경우(랜더Func가 render_play 일 경우)
 	if (&CRenderMgr::render_play == m_RenderFunc)
 	{
 		if (m_vecCam.empty())
@@ -198,7 +210,7 @@ void CRenderMgr::render_debug()
 		g_Transform.matView = m_vecCam[0]->GetViewMat();
 		g_Transform.matProj = m_vecCam[0]->GetProjMat();
 	}
-	//레벨이 플레이상태가 아닐경우
+	// 레벨이 플레이상태가 아닐경우
 	else
 	{
 		if (m_EditorCam == nullptr)
@@ -209,7 +221,7 @@ void CRenderMgr::render_debug()
 	}
 
 	list<tDebugShapeInfo>::iterator iter = m_DbgShapeInfo.begin();
-	for (; iter != m_DbgShapeInfo.end(); )
+	for (; iter != m_DbgShapeInfo.end();)
 	{
 		switch ((*iter).eShape)
 		{
@@ -250,7 +262,8 @@ void CRenderMgr::render_debug()
 		D3D11_PRIMITIVE_TOPOLOGY PrevTopology = m_pDebugObj->MeshRender()->GetMaterial(0)->GetShader()->GetTopology();
 		if (DEBUG_SHAPE::CROSS == (*iter).eShape)
 		{
-			m_pDebugObj->MeshRender()->GetMaterial(0)->GetShader()->SetTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+			m_pDebugObj->MeshRender()->GetMaterial(0)->GetShader()->SetTopology(
+				D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 		}
 		else if (DEBUG_SHAPE::CYLINDER == (*iter).eShape)
 		{
@@ -346,7 +359,8 @@ void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Idx)
 
 	if (_Idx == 0)
 	{
-		if (CameraChange) CameraChange(_Cam);
+		if (CameraChange)
+			CameraChange(_Cam);
 	}
 
 	if (m_vecCam.size() <= _Idx + 1)
@@ -359,7 +373,6 @@ void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Idx)
 
 	m_vecCam[_Idx] = _Cam;
 }
-
 
 void CRenderMgr::CheckEscape()
 {

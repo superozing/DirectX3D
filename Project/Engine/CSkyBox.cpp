@@ -10,7 +10,6 @@
 #define TagSphere "[SkyBoxSphereTex]"
 #define TagCube "[SkyBoxCubeTex]"
 
-
 CSkyBox::CSkyBox()
 	: CRenderComponent(COMPONENT_TYPE::SKYBOX)
 	, m_SkyBoxType(SKYBOX_TYPE::SPHERE)
@@ -40,7 +39,6 @@ void CSkyBox::SetSkyBoxType(SKYBOX_TYPE _Type)
 	}
 }
 
-
 void CSkyBox::SaveToFile(ofstream& fout)
 {
 	fout << TagType << endl;
@@ -55,7 +53,6 @@ void CSkyBox::SaveToFile(ofstream& fout)
 
 	fout << TagCube << endl;
 	SaveAssetRef(m_CubeTex, fout);
-
 }
 
 void CSkyBox::LoadFromFile(ifstream& fin)
@@ -63,7 +60,7 @@ void CSkyBox::LoadFromFile(ifstream& fin)
 	string tag;
 
 	Utils::GetLineUntilString(fin, TagType);
-	
+
 	string strSkyBoxType;
 	fin >> strSkyBoxType;
 
@@ -76,7 +73,6 @@ void CSkyBox::LoadFromFile(ifstream& fin)
 
 	Utils::GetLineUntilString(fin, TagCube);
 	LoadAssetRef(m_CubeTex, fin);
-
 }
 
 void CSkyBox::finaltick()

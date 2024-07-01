@@ -7,7 +7,6 @@
 
 #include "CCamera.h"
 
-
 CLandScape::CLandScape()
 	: CRenderComponent(COMPONENT_TYPE::LANDSCAPE)
 	, m_FaceX(64)
@@ -22,12 +21,11 @@ CLandScape::CLandScape()
 {
 	Init();
 
-	XMFLOAT4 row1 = XMFLOAT4(1.f, 4.f, 1000.f, 4000.f);
-	XMFLOAT4 row2 = XMFLOAT4(1.f, 4.f, 1000.f, 4000.f);
-	XMFLOAT4 row3 = XMFLOAT4(1.f, 4.f, 1000.f, 4000.f);
-	XMFLOAT4 row4 = XMFLOAT4(1.f, 4.f, 1000.f, 4000.f);
+	XMFLOAT4 row1		= XMFLOAT4(1.f, 4.f, 1000.f, 4000.f);
+	XMFLOAT4 row2		= XMFLOAT4(1.f, 4.f, 1000.f, 4000.f);
+	XMFLOAT4 row3		= XMFLOAT4(1.f, 4.f, 1000.f, 4000.f);
+	XMFLOAT4 row4		= XMFLOAT4(1.f, 4.f, 1000.f, 4000.f);
 	m_matEdgeTessFactor = Matrix(row1, row2, row3, row4);
-
 }
 
 CLandScape::~CLandScape()
@@ -36,7 +34,7 @@ CLandScape::~CLandScape()
 
 void CLandScape::finaltick()
 {
-	if(KEY_TAP(KEY::NUM0))
+	if (KEY_TAP(KEY::NUM0))
 		m_Mode = LANDSCAPE_MODE::NONE;
 	else if (KEY_TAP(KEY::NUM1))
 		m_Mode = LANDSCAPE_MODE::HEIGHT_MAP;
@@ -61,11 +59,11 @@ void CLandScape::finaltick()
 		if (LANDSCAPE_MODE::HEIGHT_MAP == m_Mode)
 		{
 			// 교점 위치정보를 토대로 높이를 수정 함
-			m_CSHeightMap->SetInputBuffer(m_CrossBuffer);	// 픽킹 정보를 HeightMapShader 에 세팅
+			m_CSHeightMap->SetInputBuffer(m_CrossBuffer); // 픽킹 정보를 HeightMapShader 에 세팅
 
-			m_CSHeightMap->SetBrushTex(m_BrushTex);			// 사용할 브러쉬 텍스쳐 세팅			
-			m_CSHeightMap->SetBrushIndex(0);				// 브러쉬 인덱스 설정
-			m_CSHeightMap->SetBrushScale(m_BrushScale);		// 브러쉬 크기
+			m_CSHeightMap->SetBrushTex(m_BrushTex);		// 사용할 브러쉬 텍스쳐 세팅
+			m_CSHeightMap->SetBrushIndex(0);			// 브러쉬 인덱스 설정
+			m_CSHeightMap->SetBrushScale(m_BrushScale); // 브러쉬 크기
 			m_CSHeightMap->SetHeightMap(m_HeightMapTex);
 			m_CSHeightMap->SetBrushPow(m_fBrushPow);
 			m_CSHeightMap->SetTesDir(m_bTessDir);
@@ -74,8 +72,8 @@ void CLandScape::finaltick()
 
 		else if (LANDSCAPE_MODE::SPLAT == m_Mode)
 		{
-			// 피킹 위치정보를 토대로 가중치를 수정함	
-			m_CSWeightMap->SetInputBuffer(m_CrossBuffer);  // 레이 캐스트 위치
+			// 피킹 위치정보를 토대로 가중치를 수정함
+			m_CSWeightMap->SetInputBuffer(m_CrossBuffer); // 레이 캐스트 위치
 			m_CSWeightMap->SetBrushArrTex(m_BrushTex);
 			m_CSWeightMap->SetBrushIndex(0);
 			m_CSWeightMap->SetBrushScale(m_BrushScale); // 브러쉬 크기
@@ -84,7 +82,6 @@ void CLandScape::finaltick()
 			m_CSWeightMap->SetWeightIdx(m_WeightIdx);
 			m_CSWeightMap->Execute();
 		}
-
 	}
 }
 
@@ -106,10 +103,9 @@ void CLandScape::UpdateData()
 	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_1, m_FaceZ);
 	GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_HeightMapTex);
 	GetMaterial(0)->GetShader()->SetRSType(RS_TYPE::WIRE_FRAME);
-  
-  GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_1, m_TessDivide);
-	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::MAT_0, m_matEdgeTessFactor);
 
+	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_1, m_TessDivide);
+	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::MAT_0, m_matEdgeTessFactor);
 
 	// 가중치 버퍼 전달
 	m_WeightMapBuffer->UpdateData(17);
@@ -121,7 +117,7 @@ void CLandScape::UpdateData()
 	// 타일 텍스쳐 전달
 	GetMaterial(0)->SetTexParam(TEX_PARAM::TEXARR_0, m_TileArrTex);
 
-	//타일 배열 개수 전달
+	// 타일 배열 개수 전달
 	float m_fTileCount = float(m_TileArrTex->GetArraySize() / 2); // 색상, 노말 합쳐져 있어서 2를 나눈다.
 	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, m_fTileCount);
 
@@ -142,15 +138,15 @@ void CLandScape::Raycasting()
 
 	// 월드 기준 광선을 지형의 로컬로 보냄
 	const Matrix& matWorldInv = Transform()->GetWorldInvMat();
-	const tRay& ray = pMainCam->GetRay();
+	const tRay&	  ray		  = pMainCam->GetRay();
 
-	tRay CamRay = {};
+	tRay CamRay	  = {};
 	CamRay.vStart = XMVector3TransformCoord(ray.vStart, matWorldInv);
-	CamRay.vDir = XMVector3TransformNormal(ray.vDir, matWorldInv);
+	CamRay.vDir	  = XMVector3TransformNormal(ray.vDir, matWorldInv);
 	CamRay.vDir.Normalize();
 
 	// 지형과 카메라 Ray 의 교점을 구함
-	tRaycastOut out = { Vec2(0.f, 0.f), 0x7fffffff, 0 };
+	tRaycastOut out = {Vec2(0.f, 0.f), 0x7fffffff, 0};
 	m_CrossBuffer->SetData(&out, 1);
 
 	m_CSRaycast->SetHeightMap(m_HeightMapTex);
@@ -161,9 +157,7 @@ void CLandScape::Raycasting()
 	m_CSRaycast->Execute();
 
 	m_CrossBuffer->GetData(&out);
-
 }
-
 
 #define TagFaceX "[FaceX]"
 #define TagFaceZ "[FaceZ]"
@@ -183,15 +177,17 @@ void CLandScape::SaveToFile(ofstream& fout)
 	fout << m_TessDivide.x << " " << m_TessDivide.y << " " << m_TessDivide.z << " " << m_TessDivide.w << endl;
 
 	fout << TagMatMatrix << endl;
-	fout << m_matEdgeTessFactor._11 << " " << m_matEdgeTessFactor._12 << " " << m_matEdgeTessFactor._13 << " " << m_matEdgeTessFactor._14 << endl;
-	fout << m_matEdgeTessFactor._21 << " " << m_matEdgeTessFactor._22 << " " << m_matEdgeTessFactor._23 << " " << m_matEdgeTessFactor._24 << endl;
-	fout << m_matEdgeTessFactor._31 << " " << m_matEdgeTessFactor._32 << " " << m_matEdgeTessFactor._33 << " " << m_matEdgeTessFactor._34 << endl;
-	fout << m_matEdgeTessFactor._41 << " " << m_matEdgeTessFactor._42 << " " << m_matEdgeTessFactor._43 << " " << m_matEdgeTessFactor._44 << endl;
+	fout << m_matEdgeTessFactor._11 << " " << m_matEdgeTessFactor._12 << " " << m_matEdgeTessFactor._13 << " "
+		 << m_matEdgeTessFactor._14 << endl;
+	fout << m_matEdgeTessFactor._21 << " " << m_matEdgeTessFactor._22 << " " << m_matEdgeTessFactor._23 << " "
+		 << m_matEdgeTessFactor._24 << endl;
+	fout << m_matEdgeTessFactor._31 << " " << m_matEdgeTessFactor._32 << " " << m_matEdgeTessFactor._33 << " "
+		 << m_matEdgeTessFactor._34 << endl;
+	fout << m_matEdgeTessFactor._41 << " " << m_matEdgeTessFactor._42 << " " << m_matEdgeTessFactor._43 << " "
+		 << m_matEdgeTessFactor._44 << endl;
 
 	fout << TagHeightMapTex << endl;
 	SaveAssetRef(m_HeightMapTex, fout);
-
-
 }
 
 void CLandScape::LoadFromFile(ifstream& fin)

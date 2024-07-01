@@ -1,12 +1,12 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "ListUI.h"
 
 ListUI::ListUI()
 	: UI("", "##List")
-    , m_CallBackFunc(nullptr)
+	, m_CallBackFunc(nullptr)
 {
 	Deactivate();
-    SetModal(true);
+	SetModal(true);
 }
 
 ListUI::~ListUI()
@@ -15,50 +15,54 @@ ListUI::~ListUI()
 
 void ListUI::render_update()
 {
-    ImVec2 vWinSize = ImGui::GetWindowContentRegionMax();
-    vWinSize.y -= 27;
-       
-    static int item_current_idx = 0; // Here we store our selection data as an index.
-    if (ImGui::BeginListBox("##ListBox", vWinSize))
-    {
-        for (int i = 0; i < m_vecStr.size(); i++)
-        {
-            const bool is_selected = (item_current_idx == i);
+	ImVec2 vWinSize = ImGui::GetWindowContentRegionMax();
+	vWinSize.y -= 27;
 
-            if (ImGui::Selectable(m_vecStr[i].c_str(), is_selected))
-                item_current_idx = i;
+	static int item_current_idx = 0; // Here we store our selection data as an index.
+	if (ImGui::BeginListBox("##ListBox", vWinSize))
+	{
+		for (int i = 0; i < m_vecStr.size(); i++)
+		{
+			const bool is_selected = (item_current_idx == i);
 
-            // ¸®½ºÆ® Áß ÇØ´ç Ç×¸ñÀÌ Å¬¸¯µÇ¸é ÇÏÀÌ¶óÀÌÆ® °É¾îÁÜ
-            if (is_selected)
-                ImGui::SetItemDefaultFocus();
+			if (ImGui::Selectable(m_vecStr[i].c_str(), is_selected))
+				item_current_idx = i;
 
-            // ¸®½ºÆ® Ç×¸ñ Áß ´õºíÅ¬¸¯ÀÌ ¹ß»ýÇÑ´Ù¸é            
-            if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
-            {
-                m_strDBClicked = m_vecStr[i];
+			// ë¦¬ìŠ¤íŠ¸ ì¤‘ í•´ë‹¹ í•­ëª©ì´ í´ë¦­ë˜ë©´ í•˜ì´ë¼ì´íŠ¸ ê±¸ì–´ì¤Œ
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
 
-                // µî·ÏµÈ CallBack ÀÌ ÀÖÀ¸¸é È£Ãâ
-                if (nullptr != m_CallBackFunc)
-                {
-                    m_CallBackFunc((DWORD_PTR)m_strDBClicked.c_str());
-                }
+			// ë¦¬ìŠ¤íŠ¸ í•­ëª© ì¤‘ ë”ë¸”í´ë¦­ì´ ë°œìƒí•œë‹¤ë©´
+			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+			{
+				m_strDBClicked = m_vecStr[i];
 
-                // µî·ÏµÈ Delegate °¡ ÀÖÀ¸¸é È£Ãâ
-                if (m_pUI && m_Func)
-                {
-                    (m_pUI->*m_Func)((DWORD_PTR)m_strDBClicked.c_str());
-                }                 
+				// ë“±ë¡ëœ CallBack ì´ ìžˆìœ¼ë©´ í˜¸ì¶œ
+				if (nullptr != m_CallBackFunc)
+				{
+					m_CallBackFunc((DWORD_PTR)m_strDBClicked.c_str());
+				}
 
-                Deactivate();
-            }
-        }
-        ImGui::EndListBox();
-    }
+				// ë“±ë¡ëœ Delegate ê°€ ìžˆìœ¼ë©´ í˜¸ì¶œ
+				if (m_pUI && m_Func)
+				{
+					(m_pUI->*m_Func)((DWORD_PTR)m_strDBClicked.c_str());
+				}
+				else if (m_pUI && m_Func3)
+				{
+					(m_pUI->*m_Func3)((DWORD_PTR)m_strDBClicked.c_str(), m_Idx);
+				}
+
+				Deactivate();
+			}
+		}
+		ImGui::EndListBox();
+	}
 }
 
 void ListUI::Deactivate()
 {
 	UI::Deactivate();
 	m_vecStr.clear();
-    ImGui::SetWindowFocus(nullptr);
+	ImGui::SetWindowFocus(nullptr);
 }

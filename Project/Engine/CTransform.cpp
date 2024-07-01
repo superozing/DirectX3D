@@ -118,9 +118,18 @@ void CTransform::SetWorldMat(const Matrix& _matWorld)
 		}
 	}
 
-	matrix.Decompose(vScale, Quat, vPos);
+	m_matWorld.Decompose(vScale, Quat, vPos);
 	auto mat = XMMatrixRotationQuaternion(Quat);
 	vRot	 = DecomposeRotMat(mat);
+
+	// 스케일이 조금씩 서서히 줄어드는 현상 예외처리
+	Vec3 vOriginScale = GetRelativeScale();
+	if (fabs(vScale.x - vOriginScale.x) < 0.01f)
+		vScale.x = vOriginScale.x;
+	if (fabs(vScale.y - vOriginScale.y) < 0.01f)
+		vScale.y = vOriginScale.y;
+	if (fabs(vScale.z - vOriginScale.z) < 0.01f)
+		vScale.z = vOriginScale.z;
 
 	SetRelativePos(vPos);
 	SetRelativeRotation(vRot);

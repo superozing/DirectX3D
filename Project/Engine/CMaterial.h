@@ -4,36 +4,38 @@
 #include "CTexture.h"
 #include "CGraphicsShader.h"
 
-class CMaterial :
-    public CAsset
+class CMaterial : public CAsset
 {
 private:
-    tMtrlConst				m_Const;
-	Ptr<CTexture>			m_arrTex[(UINT)TEX_PARAM::END];
-    Ptr<CGraphicsShader>    m_pShader;
-    
+	tMtrlConst			 m_Const;
+	Ptr<CTexture>		 m_arrTex[(UINT)TEX_PARAM::END];
+	Ptr<CGraphicsShader> m_pShader;
+
 public:
-    void SetShader(Ptr<CGraphicsShader> _Shader) { m_pShader = _Shader; }
+	void				 SetShader(Ptr<CGraphicsShader> _Shader) { m_pShader = _Shader; }
 	Ptr<CGraphicsShader> GetShader() { return m_pShader; }
 
-    template<typename T>
-    void SetScalarParam(SCALAR_PARAM _ParamType, const T& _Value);
-	void SetTexParam(TEX_PARAM _Param, Ptr<CTexture> _pTex);
+	template <typename T> void SetScalarParam(SCALAR_PARAM _ParamType, const T& _Value);
+	void					   SetTexParam(TEX_PARAM _Param, Ptr<CTexture> _pTex);
 
 	void SetMaterialCoefficient(Vec4 _vDiff, Vec4 _vSpec, Vec4 _vAmb, Vec4 _vEmis)
 	{
 		m_Const.mtrl.vDiff = _vDiff;
-		m_Const.mtrl.vAmb = _vAmb;
+		m_Const.mtrl.vAmb  = _vAmb;
 		m_Const.mtrl.vSpec = _vSpec;
-		m_Const.mtrl.vEmv = _vEmis;
+		m_Const.mtrl.vEmv  = _vEmis;
 	}
 
-	void* GetScalarParam(SCALAR_PARAM _ParamType);
+	void SetAnim3D(bool _bTrue) { m_Const.arrAnimData[0] = (int)_bTrue; }
+	void SetBoneCount(int _iBoneCount) { m_Const.arrAnimData[1] = _iBoneCount; }
+
+	void*		  GetScalarParam(SCALAR_PARAM _ParamType);
 	Ptr<CTexture> GetTexParam(TEX_PARAM _ParamType) { return m_arrTex[(UINT)_ParamType]; }
 
-    void UpdateData();
+	void UpdateData();
+	void UpdateData_Inst();
 
-	void operator = (const CMaterial& _OtherMtrl)
+	void operator=(const CMaterial& _OtherMtrl)
 	{
 		SetName(_OtherMtrl.GetName());
 
@@ -55,12 +57,10 @@ public:
 public:
 	CLONE(CMaterial);
 	CMaterial(bool _bEngine = false);
-    ~CMaterial();
+	~CMaterial();
 };
 
-
-template<typename T>
-void CMaterial::SetScalarParam(SCALAR_PARAM _ParamType, const T& _Value)
+template <typename T> void CMaterial::SetScalarParam(SCALAR_PARAM _ParamType, const T& _Value)
 {
 	const T* pValue = &_Value;
 
@@ -92,7 +92,6 @@ void CMaterial::SetScalarParam(SCALAR_PARAM _ParamType, const T& _Value)
 	case SCALAR_PARAM::VEC2_2:
 	case SCALAR_PARAM::VEC2_3:
 		m_Const.v2Arr[(UINT)_ParamType - (UINT)SCALAR_PARAM::VEC2_0] = *((Vec2*)pValue);
-
 
 		break;
 	case SCALAR_PARAM::VEC4_0:

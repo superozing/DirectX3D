@@ -15,63 +15,60 @@ class ComponentUI;
 class ScriptUI;
 class AssetUI;
 
-class Inspector :
-    public UI
+class Inspector : public UI
 {
 private:
-    CGameObject*        m_TargetObject;
-    Ptr<CAsset>         m_TargetAsset;
-    bool                m_bPrefab;
+	CGameObject* m_TargetObject;
+	Ptr<CAsset>	 m_TargetAsset;
+	bool		 m_bPrefab;
 
-    ComponentUI*        m_arrComUI[(UINT)COMPONENT_TYPE::END];
-    vector<ScriptUI*>   m_vecScriptUI;
+	ComponentUI*	  m_arrComUI[(UINT)COMPONENT_TYPE::END];
+	vector<ScriptUI*> m_vecScriptUI;
 
-    AssetUI*            m_arrAssetUI[(UINT)ASSET_TYPE::END];
-
-
-public:
-    virtual void tick() override;
-    virtual void render_update() override;
-    virtual void enter() override;
+	AssetUI* m_arrAssetUI[(UINT)ASSET_TYPE::END];
 
 public:
-    void SetTargetObject(CGameObject* _Object, bool _bPrefab = false);
-    void SetTargetAsset(Ptr<CAsset> _Asset);
+	virtual void tick() override;
+	virtual void render_update() override;
+	virtual void enter() override;
 
-    CGameObject* GetTargetObject() { return m_TargetObject; }
+public:
+	void SetTargetObject(CGameObject* _Object, bool _bPrefab = false);
+	void SetTargetAsset(Ptr<CAsset> _Asset);
 
-    void RefreshScriptUI();
+	CGameObject* GetTargetObject() { return m_TargetObject; }
 
-    void ObjectName();
-    void ObjectLayer();
-    int PrefabLayer();
-    void ObjectComponent();
-    void ObjectScript();
+	void RefreshScriptUI();
 
-    void CheckTargetComponent(COMPONENT_TYPE _type);
-    void DeleteTargetComponent(COMPONENT_TYPE _type);
-    void DeleteTargetScript(ScriptUI* _Script);
-    void MakePrefab();
-    void SavePrefab(const string& _Directory, const string& _FileName);
+	void ObjectName();
+	void ObjectLayer();
+	int	 PrefabLayer();
+	void ObjectComponent();
+	void ObjectScript();
 
-    ComponentUI* GetComponentUI(COMPONENT_TYPE ComType);
+	void CheckTargetComponent(COMPONENT_TYPE _type);
+	void DeleteTargetComponent(COMPONENT_TYPE _type);
+	void DeleteTargetScript(ScriptUI* _Script);
+	void MakePrefab();
+	void SavePrefab(const string& _Directory, const string& _FileName);
 
-    void ResetComponent();
+	ComponentUI* GetComponentUI(COMPONENT_TYPE ComType);
+
+	void ResetComponent();
 
 private:
-    void CreateChildUI();
-    void CreateComponentUI();
-    void CreateAssetUI();
-    void ResizeScriptUI(UINT _Size);
+	void CreateChildUI();
+	void CreateComponentUI();
+	void CreateAssetUI();
+	void ResizeScriptUI(UINT _Size);
 
 private:
-    void ResetTargetObject();
-    void ResetTargetAsset();
+	void ResetTargetObject();
+	void ResetTargetAsset();
 
 public:
-    Inspector();
-    ~Inspector();
+	Inspector();
+	~Inspector();
 
-    friend class CImGuiMgr;
+	friend class CImGuiMgr;
 };
-

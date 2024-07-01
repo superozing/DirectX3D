@@ -13,8 +13,7 @@ CTimeMgr::CTimeMgr()
 	, m_bLock(true)
 	, m_szText{}
 	, m_DTScale(1.f)
-{	
-
+{
 }
 
 CTimeMgr::~CTimeMgr()
@@ -54,10 +53,10 @@ void CTimeMgr::tick()
 	m_Time += m_EngineDeltaTime;
 	m_szText[70] = {};
 	if (1.f <= m_Time)
-	{		
+	{
 		swprintf_s(m_szText, 70, L"DeltaTime : %f[Scale: %f], FPS : %d", m_DeltaTime, m_DTScale, m_iCall);
 		m_iCall = 0;
-		m_Time = 0.f;
+		m_Time	= 0.f;
 	}
 
 	++m_iCall;
@@ -65,7 +64,7 @@ void CTimeMgr::tick()
 	g_global.g_time += (float)m_DeltaTime;
 	g_global.g_EngineDT = (float)m_EngineDeltaTime;
 	g_global.g_EngineTime += (float)m_EngineDeltaTime;
-	
+
 	// 레벨 누적 시간 추가
 	m_AccLevelTime += m_DeltaTime;
 }

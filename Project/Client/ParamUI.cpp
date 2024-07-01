@@ -147,6 +147,37 @@ bool ParamUI::Param_STRING(string* _Data, const string& _Desc, float _min, float
 		}
 	}
 
+bool ParamUI::Param_STRING(string* _Data, const string& _Desc, float _min, float _Max, bool _View,
+						   const string& _Tooltip)
+{
+	ImGui::Text(_Desc.c_str());
+	ImGui::SameLine();
+
+	char szID[256] = {};
+	sprintf_s(szID, "##float%d", g_ID++);
+
+	if (_View)
+	{
+		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !_Tooltip.empty())
+		{
+			ImGui::SetTooltip(_Tooltip.c_str());
+		}
+		ImGui::Text(_Data->c_str());
+	}
+	else
+	{
+		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !_Tooltip.empty())
+		{
+			ImGui::SetTooltip(_Tooltip.c_str());
+		}
+		char buffer[255];
+		strcpy_s(buffer, _Data->c_str());
+		if (ImGui::InputText(_Desc.c_str(), buffer, IM_ARRAYSIZE(buffer)))
+		{
+			(*_Data) = buffer;
+		}
+	}
+
 	return false;
 }
 
@@ -359,6 +390,80 @@ bool ParamUI::Param_TEXTURE(Ptr<CTexture>& _Texture, const string& _Desc, UI* _I
 			pListUI->Activate();
 
 			return true;
+		}
+	}
+
+	return false;
+}
+
+#include <Engine/CGameObject.h>
+#include <Engine/CScript.h>
+
+bool ParamUI::Param_OBJECT(CGameObject** _Object, const string& _Desc, COMPONENT_TYPE _Ctype, UINT _Stype, bool _View,
+						   const string& _Tooltip)
+{
+	ImGui::Text(_Desc.c_str());
+	ImGui::SameLine();
+
+	char szID[256] = {};
+	sprintf_s(szID, "##obj%d", g_ID++);
+
+	string name = "";
+	if (*_Object)
+		name = ToString((*_Object)->GetName());
+
+	if (_View)
+	{
+		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !_Tooltip.empty())
+		{
+			ImGui::SetTooltip(_Tooltip.c_str());
+		}
+		if (ImGui::InputText(szID, (char*)name.c_str(), name.length(), ImGuiInputTextFlags_ReadOnly))
+		{
+			return true;
+		}
+	}
+	else
+	{
+		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !_Tooltip.empty())
+		{
+			ImGui::SetTooltip(_Tooltip.c_str());
+		}
+		if (ImGui::InputText(szID, (char*)name.c_str(), name.length(), ImGuiInputTextFlags_ReadOnly))
+		{
+			return true;
+		}
+		if (ImGui::BeginDragDropTarget())
+		{
+			const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("OutlinerTree");
+
+			if (payload)
+			{
+				DWORD_PTR data	  = *((DWORD_PTR*)payload->Data);
+				CEntity*  ptrData = (CEntity*)data;
+
+				CGameObject* obj = dynamic_cast<CGameObject*>(ptrData);
+
+				if (obj && (_Ctype != COMPONENT_TYPE::END && obj->GetComponent(_Ctype)))
+				{
+					*_Object = obj;
+				}
+
+				if (obj)
+				{
+					auto scripts = obj->GetScripts();
+					bool find	 = false;
+					for (auto script : scripts)
+					{
+						UINT type = script->GetScriptType();
+						if (type == _Stype)
+						{
+							*_Object = obj;
+						}
+					}
+				}
+			}
+			ImGui::EndDragDropTarget();
 		}
 	}
 

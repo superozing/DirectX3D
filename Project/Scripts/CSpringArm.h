@@ -1,24 +1,23 @@
 ﻿#pragma once
 #include <Engine\CScript.h>
 
-class CSpringArm :
-    public CScript
+class CSpringArm : public CScript
 {
 private:
-    class CCamera* m_pTargetCam;
-    float m_fDistance;
-    float m_fSpeed;
-    
-public:
-    void SetTargetCamera(CCamera* _cam);
+	class CCamera* m_pTargetCam;
+	float		   m_fDistance;
+	float		   m_fSpeed;
+	CGameObject*   m_target;
 
 public:
-    virtual void begin() override;
-    virtual void tick() override;
+	void SetTargetCamera(CCamera* _cam);
 
 public:
-    CLONE(CSpringArm);
-    CSpringArm();
-    ~CSpringArm();
+	virtual void begin() override;
+	virtual void tick() override;
+
+public:
+	CLONE(CSpringArm);
+	CSpringArm();
+	~CSpringArm();
 };
-

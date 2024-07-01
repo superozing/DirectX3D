@@ -1,16 +1,15 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CSound.h"
 
-// CallBack ÇÔ¼ö Àü¹æ¼±¾ð
-FMOD_RESULT CHANNEL_CALLBACK(FMOD_CHANNELCONTROL* channelcontrol, FMOD_CHANNELCONTROL_TYPE controltype
-	, FMOD_CHANNELCONTROL_CALLBACK_TYPE callbacktype
-	, void* commanddata1, void* commanddata2);
+// CallBack í•¨ìˆ˜ ì „ë°©ì„ ì–¸
+FMOD_RESULT CHANNEL_CALLBACK(FMOD_CHANNELCONTROL* channelcontrol, FMOD_CHANNELCONTROL_TYPE controltype,
+							 FMOD_CHANNELCONTROL_CALLBACK_TYPE callbacktype, void* commanddata1, void* commanddata2);
 
 FMOD::System* CSound::g_pFMOD = nullptr;
 
 CSound::CSound(bool _Engine)
 	: CAsset(ASSET_TYPE::SOUND, _Engine)
-	, m_pSound(nullptr)	
+	, m_pSound(nullptr)
 {
 }
 
@@ -23,7 +22,6 @@ CSound::~CSound()
 	}
 }
 
-
 int CSound::Play(int _iRoopCount, float _fVolume, bool _bOverlap)
 {
 	if (_iRoopCount <= -1)
@@ -31,7 +29,7 @@ int CSound::Play(int _iRoopCount, float _fVolume, bool _bOverlap)
 		assert(nullptr);
 	}
 
-	// Àç»ýµÇ°í ÀÖ´Â Ã¤³ÎÀÌ ÀÖ´Âµ¥, Áßº¹Àç»ýÀ» Çã¿ëÇÏÁö ¾Ê¾Ò´Ù -> Àç»ý ¾ÈÇÔ
+	// ìž¬ìƒë˜ê³  ìžˆëŠ” ì±„ë„ì´ ìžˆëŠ”ë°, ì¤‘ë³µìž¬ìƒì„ í—ˆìš©í•˜ì§€ ì•Šì•˜ë‹¤ -> ìž¬ìƒ ì•ˆí•¨
 	if (!_bOverlap && !m_listChannel.empty())
 	{
 		return E_FAIL;
@@ -41,8 +39,8 @@ int CSound::Play(int _iRoopCount, float _fVolume, bool _bOverlap)
 
 	FMOD::Channel* pChannel = nullptr;
 	g_pFMOD->playSound(m_pSound, nullptr, false, &pChannel);
-	
-	// Àç»ý ½ÇÆÐ
+
+	// ìž¬ìƒ ì‹¤íŒ¨
 	if (nullptr == pChannel)
 		return E_FAIL;
 
@@ -55,13 +53,12 @@ int CSound::Play(int _iRoopCount, float _fVolume, bool _bOverlap)
 	pChannel->setLoopCount(_iRoopCount);
 
 	m_listChannel.push_back(pChannel);
-		
+
 	int iIdx = -1;
 	pChannel->getIndex(&iIdx);
 
 	return iIdx;
 }
-
 
 void CSound::Stop()
 {
@@ -86,7 +83,6 @@ void CSound::RemoveChannel(FMOD::Channel* _pTargetChannel)
 		}
 	}
 }
-
 
 void CSound::SetVolume(float _f, int _iChannelIdx)
 {
@@ -116,23 +112,18 @@ int CSound::Load(const wstring& _strFilePath)
 	return S_OK;
 }
 
-
-
-
 // =========
 // Call Back
 // =========
-FMOD_RESULT CHANNEL_CALLBACK(FMOD_CHANNELCONTROL* channelcontrol, FMOD_CHANNELCONTROL_TYPE controltype
-	, FMOD_CHANNELCONTROL_CALLBACK_TYPE callbacktype
-	, void* commanddata1, void* commanddata2)
+FMOD_RESULT CHANNEL_CALLBACK(FMOD_CHANNELCONTROL* channelcontrol, FMOD_CHANNELCONTROL_TYPE controltype,
+							 FMOD_CHANNELCONTROL_CALLBACK_TYPE callbacktype, void* commanddata1, void* commanddata2)
 {
 	FMOD::Channel* cppchannel = (FMOD::Channel*)channelcontrol;
-	CSound* pSound = nullptr;
+	CSound*		   pSound	  = nullptr;
 
 	switch (controltype)
 	{
-	case FMOD_CHANNELCONTROL_CALLBACK_END:
-	{
+	case FMOD_CHANNELCONTROL_CALLBACK_END: {
 		cppchannel->getUserData((void**)&pSound);
 		pSound->RemoveChannel(cppchannel);
 	}

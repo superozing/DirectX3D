@@ -159,10 +159,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Animator2DUI.h" />
+    <ClInclude Include="Animator3DUI.h" />
     <ClInclude Include="AssetUI.h" />
     <ClInclude Include="CameraUI.h" />
+    <ClInclude Include="CCreatePlayerTestLevel.h" />
     <ClInclude Include="CCreateTempLevel.h" />
     <ClInclude Include="CEditorObjMgr.h" />
+    <ClInclude Include="CEnvMgr.h" />
     <ClInclude Include="CGameObjectEx.h" />
     <ClInclude Include="CIdleState.h" />
     <ClInclude Include="CImGuiMgr.h" />
@@ -175,6 +178,7 @@
     <ClInclude Include="LandscapeUI.h" />
     <ClInclude Include="ImGuizmo.h" />
     <ClInclude Include="Light3DUI.h" />
+    <ClInclude Include="MapTestLevel.h" />
     <ClInclude Include="ParticleSystemUI.h" />
     <ClInclude Include="LogUI.h" />
     <ClInclude Include="PhysXUI.h" />
@@ -212,13 +216,17 @@
     <ClInclude Include="TreeUI.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="RTViewPort.h" />
+    <ClInclude Include="CUITempLevel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animator2DUI.cpp" />
+    <ClCompile Include="Animator3DUI.cpp" />
     <ClCompile Include="AssetUI.cpp" />
     <ClCompile Include="CameraUI.cpp" />
+    <ClCompile Include="CCreatePlayerTestLevel.cpp" />
     <ClCompile Include="CCreateTempLevel.cpp" />
     <ClCompile Include="CEditorObjMgr.cpp" />
+    <ClCompile Include="CEnvMgr.cpp" />
     <ClCompile Include="CGameObjectEx.cpp" />
     <ClCompile Include="CIdleState.cpp" />
     <ClCompile Include="CImGuiMgr.cpp" />
@@ -231,6 +239,7 @@
     <ClCompile Include="ImGuizmo.cpp" />
     <ClCompile Include="Light3DUI.cpp" />
     <ClCompile Include="LogUI.cpp" />
+    <ClCompile Include="MapTestLevel.cpp" />
     <ClCompile Include="ParticleSystemUI.cpp" />
     <ClCompile Include="PhysXUI.cpp" />
     <ClCompile Include="ScriptUI.cpp" />
@@ -268,6 +277,7 @@
     <ClCompile Include="TreeUI.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="RTViewPort.cpp" />
+    <ClCompile Include="CUITempLevel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc" />

@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CStructuredBuffer.h"
 
 #include "CDevice.h"
@@ -18,48 +18,48 @@ CStructuredBuffer::CStructuredBuffer(const CStructuredBuffer& _OriginBuffer)
 	, m_ElementCount(_OriginBuffer.m_ElementCount)
 	, m_Type(_OriginBuffer.m_Type)
 	, m_bSysMemMove(_OriginBuffer.m_bSysMemMove)
-	, m_RegentSRV(0)   // ÃÖ±Ù¿¡ ¹ÙÀÎµùÇÑ t·¹Áö½ºÅÍ ¹øÈ£
-	, m_RegentUAV(0) // ÃÖ±Ù¿¡ ¹ÙÀÎµùÇÑ u·¹Áö½ºÅÍ ¹øÈ£
+	, m_RegentSRV(0) // ìµœê·¼ì— ë°”ì¸ë”©í•œ të ˆì§€ìŠ¤í„° ë²ˆí˜¸
+	, m_RegentUAV(0) // ìµœê·¼ì— ë°”ì¸ë”©í•œ uë ˆì§€ìŠ¤í„° ë²ˆí˜¸
 {
-	Create(m_ElementSize, m_ElementCount, m_Type, m_bSysMemMove);		
+	Create(m_ElementSize, m_ElementCount, m_Type, m_bSysMemMove);
 }
 
 CStructuredBuffer::~CStructuredBuffer()
 {
 }
 
-int CStructuredBuffer::Create(UINT _ElementSize, UINT _ElementCount, SB_READ_TYPE _Type, bool _bSysMemMove, void* _pSysMem)
+int CStructuredBuffer::Create(UINT _ElementSize, UINT _ElementCount, SB_READ_TYPE _Type, bool _bSysMemMove,
+							  void* _pSysMem)
 {
-	// ±¸Á¶È­¹öÆÛ Å©±â°¡ 16ÀÇ ¹è¼öÀÎÁö Ã¼Å©
+	// êµ¬ì¡°í™”ë²„í¼ í¬ê¸°ê°€ 16ì˜ ë°°ìˆ˜ì¸ì§€ ì²´í¬
 	assert(!(_ElementSize % 16));
 
-	m_SB = nullptr;
-	m_SRV = nullptr;
-	m_SB_Read = nullptr;
+	m_SB	   = nullptr;
+	m_SRV	   = nullptr;
+	m_SB_Read  = nullptr;
 	m_SB_Write = nullptr;
 
-	
-	m_ElementSize = _ElementSize;
+	m_ElementSize  = _ElementSize;
 	m_ElementCount = _ElementCount;
-	m_Type = _Type;
-	m_bSysMemMove = _bSysMemMove;
+	m_Type		   = _Type;
+	m_bSysMemMove  = _bSysMemMove;
 
 	D3D11_BUFFER_DESC tDesc = {};
-	tDesc.ByteWidth = m_ElementSize * m_ElementCount;	
+	tDesc.ByteWidth			= m_ElementSize * m_ElementCount;
 
 	tDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 
-	// RW ¿É¼ÇÀ¸·Î »ı¼ºµÈ ±¸Á¶È­¹öÆÛ´Â UnorderedAccessView »ı¼ºµµ °¡´ÉÇÏ°Ô ¸¸µç´Ù.
+	// RW ì˜µì…˜ìœ¼ë¡œ ìƒì„±ëœ êµ¬ì¡°í™”ë²„í¼ëŠ” UnorderedAccessView ìƒì„±ë„ ê°€ëŠ¥í•˜ê²Œ ë§Œë“ ë‹¤.
 	if (SB_READ_TYPE::READ_WRITE == m_Type)
 	{
 		tDesc.BindFlags |= D3D11_BIND_UNORDERED_ACCESS;
 	}
-	
-	tDesc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+
+	tDesc.MiscFlags			  = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
 	tDesc.StructureByteStride = m_ElementSize;
 
 	tDesc.CPUAccessFlags = 0;
-	tDesc.Usage = D3D11_USAGE_DEFAULT;
+	tDesc.Usage			 = D3D11_USAGE_DEFAULT;
 
 	HRESULT hr = E_FAIL;
 	if (nullptr == _pSysMem)
@@ -69,49 +69,50 @@ int CStructuredBuffer::Create(UINT _ElementSize, UINT _ElementCount, SB_READ_TYP
 	else
 	{
 		D3D11_SUBRESOURCE_DATA tSub = {};
-		tSub.pSysMem = _pSysMem;
-		hr = DEVICE->CreateBuffer(&tDesc, &tSub, m_SB.GetAddressOf());
+		tSub.pSysMem				= _pSysMem;
+		hr							= DEVICE->CreateBuffer(&tDesc, &tSub, m_SB.GetAddressOf());
 	}
 
-	if (FAILED(hr)) return E_FAIL;
-		
-	// Shader Resource View »ı¼º
+	if (FAILED(hr))
+		return E_FAIL;
+
+	// Shader Resource View ìƒì„±
 	D3D11_SHADER_RESOURCE_VIEW_DESC SRVDesc = {};
-	SRVDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
-	SRVDesc.Buffer.NumElements = m_ElementCount;
+	SRVDesc.ViewDimension					= D3D11_SRV_DIMENSION_BUFFER;
+	SRVDesc.Buffer.NumElements				= m_ElementCount;
 
 	hr = DEVICE->CreateShaderResourceView(m_SB.Get(), &SRVDesc, m_SRV.GetAddressOf());
-	if (FAILED(hr)) return E_FAIL;
+	if (FAILED(hr))
+		return E_FAIL;
 
-
-	// Unordered Access View »ı¼º
+	// Unordered Access View ìƒì„±
 	if (SB_READ_TYPE::READ_WRITE == m_Type)
 	{
 		D3D11_UNORDERED_ACCESS_VIEW_DESC UAVDesc = {};
-		UAVDesc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
-		UAVDesc.Buffer.NumElements = m_ElementCount;
+		UAVDesc.ViewDimension					 = D3D11_UAV_DIMENSION_BUFFER;
+		UAVDesc.Buffer.NumElements				 = m_ElementCount;
 
 		hr = DEVICE->CreateUnorderedAccessView(m_SB.Get(), &UAVDesc, m_UAV.GetAddressOf());
-		if (FAILED(hr)) return E_FAIL;
+		if (FAILED(hr))
+			return E_FAIL;
 	}
 
 	if (m_bSysMemMove)
 	{
-		// ¾²±â¿ë ¹öÆÛ
+		// ì“°ê¸°ìš© ë²„í¼
 		tDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-		tDesc.Usage = D3D11_USAGE_DYNAMIC;
-		tDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-		hr = DEVICE->CreateBuffer(&tDesc, nullptr, m_SB_Write.GetAddressOf());
+		tDesc.Usage			 = D3D11_USAGE_DYNAMIC;
+		tDesc.BindFlags		 = D3D11_BIND_SHADER_RESOURCE;
+		hr					 = DEVICE->CreateBuffer(&tDesc, nullptr, m_SB_Write.GetAddressOf());
 
-		// ÀĞ±â¿ë ¹öÆÛ
+		// ì½ê¸°ìš© ë²„í¼
 		tDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
-		tDesc.Usage = D3D11_USAGE_DEFAULT;
-		hr = DEVICE->CreateBuffer(&tDesc, nullptr, m_SB_Read.GetAddressOf());
+		tDesc.Usage			 = D3D11_USAGE_DEFAULT;
+		hr					 = DEVICE->CreateBuffer(&tDesc, nullptr, m_SB_Read.GetAddressOf());
 	}
 
 	return S_OK;
 }
-
 
 void CStructuredBuffer::UpdateData(UINT _RegisterNum)
 {
@@ -145,7 +146,6 @@ int CStructuredBuffer::UpdateData_CS_UAV(UINT _RegisterNum)
 	return S_OK;
 }
 
-
 void CStructuredBuffer::Clear(UINT _RegisterNum)
 {
 	ID3D11ShaderResourceView* pSRV = nullptr;
@@ -164,7 +164,6 @@ void CStructuredBuffer::Clear_CS_SRV()
 	CONTEXT->CSSetShaderResources(m_RegentSRV, 1, &pSRV);
 }
 
-
 void CStructuredBuffer::Clear_CS_UAV()
 {
 	ID3D11UnorderedAccessView* pUAV = nullptr;
@@ -173,8 +172,6 @@ void CStructuredBuffer::Clear_CS_UAV()
 	CONTEXT->CSSetUnorderedAccessViews(m_RegentUAV, 1, &pUAV, &i);
 }
 
-
-
 void CStructuredBuffer::SetData(void* _SysMem, UINT _ElementCount)
 {
 	assert(m_bSysMemMove);
@@ -182,15 +179,15 @@ void CStructuredBuffer::SetData(void* _SysMem, UINT _ElementCount)
 	if (0 == _ElementCount)
 		_ElementCount = m_ElementCount;
 
-	// ÀÔ·Â µ¥ÀÌÅÍ°¡ ±¸Á¶È­¹öÆÛº¸´Ù ´õ Å« °æ¿ì
+	// ì…ë ¥ ë°ì´í„°ê°€ êµ¬ì¡°í™”ë²„í¼ë³´ë‹¤ ë” í° ê²½ìš°
 	if (m_ElementCount < _ElementCount)
 	{
 		Create(m_ElementSize, _ElementCount, m_Type, m_bSysMemMove, nullptr);
 	}
 
-	D3D11_MAPPED_SUBRESOURCE tSub = {};	
+	D3D11_MAPPED_SUBRESOURCE tSub = {};
 	CONTEXT->Map(m_SB_Write.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &tSub);
-	memcpy(tSub.pData, _SysMem, m_ElementSize * _ElementCount);	
+	memcpy(tSub.pData, _SysMem, m_ElementSize * _ElementCount);
 	CONTEXT->Unmap(m_SB_Write.Get(), 0);
 
 	// Write Buffer -> Main Buffer
@@ -203,7 +200,7 @@ void CStructuredBuffer::GetData(void* _Dest, UINT _ElementCount)
 
 	if (0 == _ElementCount)
 		_ElementCount = m_ElementCount;
-	
+
 	// Min Buffer -> Read Buffer
 	CONTEXT->CopyResource(m_SB_Read.Get(), m_SB.Get());
 

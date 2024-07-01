@@ -39,6 +39,7 @@ public:
 	inline class CStateMachine* StateMachine() { return (CStateMachine*)m_arrCom[(UINT)COMPONENT_TYPE::STATEMACHINE]; }
 	inline class CCollider2D*	Collider2D() { return (CCollider2D*)m_arrCom[(UINT)COMPONENT_TYPE::COLLIDER2D]; }
 	inline class CAnimator2D*	Animator2D() { return (CAnimator2D*)m_arrCom[(UINT)COMPONENT_TYPE::ANIMATOR2D]; }
+	inline class CAnimator3D*	Animator3D() { return (CAnimator3D*)m_arrCom[(UINT)COMPONENT_TYPE::ANIMATOR3D]; }
 	inline class CLight2D*		Light2D() { return (CLight2D*)m_arrCom[(UINT)COMPONENT_TYPE::LIGHT2D]; }
 	inline class CLight3D*		Light3D() { return (CLight3D*)m_arrCom[(UINT)COMPONENT_TYPE::LIGHT3D]; }
 	inline class CParticleSystem* ParticleSystem()
@@ -49,7 +50,7 @@ public:
 	inline class CSkyBox*	 SkyBox() { return (CSkyBox*)m_arrCom[(UINT)COMPONENT_TYPE::SKYBOX]; }
 	inline class CDecal*	 Decal() { return (CDecal*)m_arrCom[(UINT)COMPONENT_TYPE::DECAL]; }
 	inline class CLandScape* LandScape() { return (CLandScape*)m_arrCom[(UINT)COMPONENT_TYPE::LANDSCAPE]; }
-	inline class CPhysX*	 PhysX() { return (CPhysX*)m_arrCom[(UINT)COMPONENT_TYPE::PHYSX]; }
+	inline class CPhysX* PhysX() { return (CPhysX*)m_arrCom[(UINT)COMPONENT_TYPE::PHYSX]; }
 
 	int GetLayerIdx() { return m_iLayerIdx; }
 

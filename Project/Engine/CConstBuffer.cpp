@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CConstBuffer.h"
 
 #include "CDevice.h"
@@ -15,22 +15,22 @@ CConstBuffer::~CConstBuffer()
 
 int CConstBuffer::Create(UINT _ElementSize, UINT _ElementCount)
 {
-	m_ElementSize = _ElementSize;
+	m_ElementSize  = _ElementSize;
 	m_ElementCount = _ElementCount;
 
-	// »ó¼ö ¹öÆÛ(Constant Buffer) »ı¼º
-	m_Desc.ByteWidth = m_ElementSize * m_ElementCount;
+	// ìƒìˆ˜ ë²„í¼(Constant Buffer) ìƒì„±
+	m_Desc.ByteWidth		   = m_ElementSize * m_ElementCount;
 	m_Desc.StructureByteStride = m_ElementSize;
-	m_Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	m_Desc.BindFlags		   = D3D11_BIND_CONSTANT_BUFFER;
 
-	// ¹öÆÛ¿¡ µ¥ÀÌÅÍ ¾²±â °¡´É
+	// ë²„í¼ì— ë°ì´í„° ì“°ê¸° ê°€ëŠ¥
 	m_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	m_Desc.Usage = D3D11_USAGE_DYNAMIC;
+	m_Desc.Usage		  = D3D11_USAGE_DYNAMIC;
 
-	// »ó¼ö ¹öÆÛ »ı¼º
+	// ìƒìˆ˜ ë²„í¼ ìƒì„±
 	if (FAILED(DEVICE->CreateBuffer(&m_Desc, nullptr, m_CB.GetAddressOf())))
 	{
-		MessageBox(nullptr, L"»ó¼ö ¹öÆÛ »ı¼º ½ÇÆĞ", L"TestInit ¿À·ù", MB_OK);
+		MessageBox(nullptr, L"ìƒìˆ˜ ë²„í¼ ìƒì„± ì‹¤íŒ¨", L"TestInit ì˜¤ë¥˜", MB_OK);
 		return E_FAIL;
 	}
 

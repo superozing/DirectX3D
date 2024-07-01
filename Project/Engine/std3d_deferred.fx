@@ -2,6 +2,7 @@
 #define _STD_DEFERRED
 
 #include "value.fx"
+#include "func.fx"
 
 // ======================
 // Std3D_Deferred Shader
@@ -24,6 +25,14 @@ struct VS_IN
     float3 vNormal : NORMAL;
     float3 vBinormal : BINORMAL;
     
+    float4 vWeights : BLENDWEIGHT;
+    float4 vIndices : BLENDINDICES;
+    
+    // Per Instance Data    
+    row_major matrix matWorld : WORLD;
+    row_major matrix matWV : WV;
+    row_major matrix matWVP : WVP;
+    uint iRowIndex : ROWINDEX;
 };
 
 struct VS_OUT
@@ -40,6 +49,12 @@ struct VS_OUT
 VS_OUT VS_Std3D_Deferred(VS_IN _in)
 {
     VS_OUT output = (VS_OUT) 0.f;
+        
+    if (g_iAnim)
+    {
+        Skinning(_in.vPos, _in.vTangent, _in.vBinormal, _in.vNormal
+              , _in.vWeights, _in.vIndices, 0);
+    }
     
     output.vPosition = mul(float4(_in.vPos, 1.f), g_matWVP);
     output.vUV = _in.vUV;
@@ -49,7 +64,26 @@ VS_OUT VS_Std3D_Deferred(VS_IN _in)
     output.vViewNormal = normalize(mul(float4(_in.vNormal, 0.f), g_matWV));;
     output.vViewBinormal = normalize(mul(float4(_in.vBinormal, 0.f), g_matWV));;
     
+    return output;
+}
+
+VS_OUT VS_Std3D_Deferred_Inst(VS_IN _in)
+{
+    VS_OUT output = (VS_OUT) 0.f;
+
+    if (g_iAnim)
+    {
+        Skinning(_in.vPos, _in.vTangent, _in.vBinormal, _in.vNormal
+              , _in.vWeights, _in.vIndices, _in.iRowIndex);
+    }
+        
+    output.vPosition = mul(float4(_in.vPos, 1.f), _in.matWVP);
+    output.vUV = _in.vUV;
     
+    output.vViewPos = mul(float4(_in.vPos, 1.f), _in.matWV);
+    output.vViewTangent = normalize(mul(float4(_in.vTangent, 0.f), _in.matWV));
+    output.vViewNormal = normalize(mul(float4(_in.vNormal, 0.f), _in.matWV));
+    output.vViewBinormal = normalize(mul(float4(_in.vBinormal, 0.f), _in.matWV));
     
     return output;
 }
