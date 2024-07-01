@@ -95,6 +95,10 @@ namespace GamePlayStatic
 	};
 
 	void ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextLevelStartState);
+
+	// enum class Layer의 {인덱스,레이어이름}을 반환
+	// 중요) 이름없는 레이어는 요소에 들어있지않음
+	vector<std::pair<int, string>>& GetLayerMap();
 }
 
 namespace Utils

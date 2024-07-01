@@ -187,6 +187,25 @@ void GamePlayStatic::ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextLevelStart
 	CTaskMgr::GetInst()->AddTask(task);
 }
 
+vector<std::pair<int, string>>& GamePlayStatic::GetLayerMap()
+{
+	static vector<std::pair<int, string>> vLayerMap;
+	if (0 == vLayerMap.size())
+	{
+		const int LayerCount = static_cast<int>(LAYER::LAYER_MAX);
+
+		for (int i = 0; i < LayerCount; ++i)
+		{
+			auto layerName = magic_enum::enum_name(static_cast<LAYER>(i));
+			if (!layerName.empty() && static_cast<LAYER>(i) != LAYER::LAYER_MAX)
+			{
+				vLayerMap.push_back({ i,ToString(layerName) });
+			}
+		}
+	}
+	return vLayerMap;
+}
+
 void GamePlayStatic::DrawDebugCircle(const Matrix& _WorldMat, Vec3 _Color, bool _bDepthTest, float _Duration)
 {
 	tDebugShapeInfo info = {};
