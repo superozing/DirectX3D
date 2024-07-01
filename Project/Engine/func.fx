@@ -8,7 +8,7 @@
 void CalLight2D(float3 _WorldPos, int _LightIdx, inout tLightColor _output)
 {
     // 빛을 적용시킬 광원의 정보
-    tLightInfo info = g_Light2D[_LightIdx];    
+    tLightInfo info = g_Light2D[_LightIdx];
     
     // Directional Light
     if (0 == info.LightType)
@@ -108,8 +108,10 @@ void CalLight3D(int _LightIdx, float3 _vViewPos, float3 _vViewNormal, inout tLig
         vViewLightDir = normalize(vViewLightDir);
         
         // 광원 반경과 물체까지의 거리에 따른 빛의 세기
-        //fDistanceRatio = saturate(1.f - (fDistance / Light.fRadius)); // 선형적
-        fDistanceRatio = saturate(cos(fDistance / Light.fRadius * (PI / 2.f))); // cos
+        fDistanceRatio = pow(1 - saturate((fDistance / Light.fRadius)), 20.f); // 
+        //pow(1 - saturate((fDistance / Light.fRadius)), 0.02f);
+        //fDistanceRatio = pow(saturate(cos(fDistance / Light.fRadius * (PI / 2.f))), 0.2f); // cos
+
     }
 
     // Spot Light
@@ -137,7 +139,7 @@ void CalLight3D(int _LightIdx, float3 _vViewPos, float3 _vViewNormal, inout tLig
         // 물체와 광원 사이의 각도가 광원에 설정된 fAngle과 가까울 수록 빛의 세기가 약해져야 함
         if (0.f != Light.fAngle)
         {
-        }        
+        }
     }
 
      // ViewSpace 에서 광원의 방향과, 물체 표면의 법선를 이용해서 광원의 진입 세기(Diffuse) 를 구한다.
