@@ -37,11 +37,8 @@ void CWrapImage::tick()
 	Vec2 ObjPlaneScale =
 		Vec2(GetOwner()->Transform()->GetRelativeScale().x, GetOwner()->Transform()->GetRelativeScale().y);
 
-	if (ObjPlaneScale != PlaneScale)
-	{
-		GetOwner()->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC2_1, ObjPlaneScale);
-		PlaneScale = ObjPlaneScale;
-	}
+	GetOwner()->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC2_1, ObjPlaneScale);
+	PlaneScale = ObjPlaneScale;
 
 	// 매핑시키고 싶은 texture의 좌표를 조정하고 싶을때
 	if (m_Mode == WrapMode::Custom)
