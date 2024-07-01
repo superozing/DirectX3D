@@ -244,7 +244,7 @@ int CGameObject::DisconnectWithLayer()
 	return LayerIdx;
 }
 
-void CGameObject::AddChild(CGameObject* _Child)
+void CGameObject::AddChild(CGameObject* _Child, bool spawn)
 {
 	if (-1 == _Child->m_iLayerIdx)
 	{

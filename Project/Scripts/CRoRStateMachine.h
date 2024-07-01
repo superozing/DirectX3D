@@ -114,6 +114,12 @@ public:
 	void LogState(int index);
 	void LogAllStates();
 
+	CRoRStateMachine<T>* Clone(T* _pOwner)
+	{
+		auto fsm	  = new CRoRStateMachine<T>(this->m_pOwner, this->m_vecStateStrings.size());
+		fsm->m_pOwner = _pOwner;
+		return fsm;
+	}
 	CRoRStateMachine(T* _pOwner, int maxStates = 1)
 		: m_pOwner(_pOwner)
 		, m_StateMgr(StateManager(this))
@@ -127,6 +133,16 @@ public:
 		m_vecBegins.resize(maxStates, nullptr);
 		m_vecEnds.resize(maxStates, nullptr);
 		m_vecCoroutines.resize(maxStates, nullptr);
+	}
+
+	CRoRStateMachine(const CRoRStateMachine<T>*& _origin)
+		: m_pOwner(nullptr)
+		, m_StateMgr(StateManager(this))
+		, m_bChangedStates(_origin.m_bChangedStates)
+		, m_bLog(_origin.m_bLog)
+		, m_bLocked(_origin.m_bLocked)
+		, currentCoroutine(_origin.currentCoroutine)
+	{
 	}
 
 	~CRoRStateMachine(){};

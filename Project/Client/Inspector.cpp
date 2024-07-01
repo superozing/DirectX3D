@@ -61,13 +61,8 @@ void Inspector::render_update()
 			ImGui::SameLine();
 			if (ImGui::Button("Save Prefab"))
 			{
-				wstring ContentPath = CPathMgr::GetContentPath();
-				ContentPath += L"prefab\\";
 
-				wstring FileName = m_TargetObject->GetName();
-				FileName += L".pref";
-
-				SavePrefab(ToString(ContentPath), ToString(FileName));
+				SavePrefab();
 			}
 
 			ObjectLayer();
@@ -83,7 +78,7 @@ void Inspector::render_update()
 				wstring FileName = m_TargetObject->GetName();
 				FileName += L".pref";
 
-				SavePrefab(ToString(ContentPath), ToString(FileName));
+				SavePrefab();
 			}
 
 			int LayerIdx = PrefabLayer();
@@ -452,27 +447,28 @@ void Inspector::CheckTargetComponent(COMPONENT_TYPE _type)
 	}
 }
 
-void Inspector::MakePrefab()
+void Inspector::SavePrefab()
 {
-	CGameObject* pObj = GetTargetObject();
-	pObj			  = pObj->Clone();
-	wstring Key;
-	Key					 = L"prefab\\" + m_TargetObject->GetName() + L".pref";
-	Ptr<CPrefab> pPrefab = new CPrefab(pObj, false);
-	CAssetMgr::GetInst()->AddAsset<CPrefab>(Key, pPrefab.Get());
-	pPrefab->Save(Key);
-}
+	wstring ContentPath = CPathMgr::GetContentPath();
+	ContentPath += L"prefab\\";
+	wstring FileName = path(m_TargetObject->GetName()).stem();
+	FileName += L".pref";
 
-void Inspector::SavePrefab(const string& _Directory, const string& _FileName)
-{
-	filesystem::path file_path = filesystem::path(_Directory) / _FileName;
+	filesystem::path file_path = filesystem::path(ContentPath) / FileName;
 
 	if (filesystem::exists(file_path))
 	{
 		filesystem::remove(file_path);
 	}
 
-	MakePrefab();
+	CGameObject* pObj = GetTargetObject();
+	pObj			  = pObj->Clone();
+	wstring Key;
+	Key = L"prefab\\" + FileName;
+
+	Ptr<CPrefab> pPrefab = new CPrefab(pObj, false);
+	CAssetMgr::GetInst()->AddAsset<CPrefab>(Key, pPrefab.Get());
+	pPrefab->Save(Key);
 }
 
 void Inspector::DeleteTargetComponent(COMPONENT_TYPE _type)

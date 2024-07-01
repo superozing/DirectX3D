@@ -29,9 +29,7 @@ CAnimator3D::CAnimator3D()
 }
 
 CAnimator3D::CAnimator3D(const CAnimator3D& _origin)
-	: m_pVecBones(_origin.m_pVecBones)
-	, m_pVecClip(_origin.m_pVecClip)
-	, m_iCurClip(_origin.m_iCurClip)
+	: m_iCurClip(_origin.m_iCurClip)
 	, m_dCurTime(_origin.m_dCurTime)
 	, m_iFrameCount(_origin.m_iFrameCount)
 	, m_pBoneFinalMatBuffer(nullptr)
@@ -45,6 +43,9 @@ CAnimator3D::CAnimator3D(const CAnimator3D& _origin)
 	, CComponent(COMPONENT_TYPE::ANIMATOR3D)
 {
 	m_pBoneFinalMatBuffer = new CStructuredBuffer;
+
+	SetBones(_origin.m_pVecBones);
+	SetAnimClip(_origin.m_pVecClip);
 }
 
 CAnimator3D::~CAnimator3D()
@@ -55,6 +56,9 @@ CAnimator3D::~CAnimator3D()
 
 void CAnimator3D::finaltick()
 {
+	if (m_vecClipUpdateTime.size() <= 0)
+		return;
+
 	if (KEY_TAP(M))
 		Play(0);
 	else if (KEY_TAP(N))
