@@ -184,6 +184,8 @@ void MeshRenderUI::render_update()
 
 					for (size_t j = 0; j < (UINT)TEX_PARAM::END; j++)
 					{
+						CTexture* PayloadTexture = nullptr;
+
 						if (vecTexParam[j].IsUse)
 						{
 							switch (vecTexParam[j].Type)
@@ -197,6 +199,13 @@ void MeshRenderUI::render_update()
 								Ptr<CTexture> pTex =
 									GetTargetObject()->MeshRender()->GetMaterial(i)->GetTexParam(vecTexParam[j].Type);
 								ParamUI::Param_TEXTURE(pTex, vecTexParam[j].Desc);
+
+								// Texture payload 체크
+								if (PayloadCheck(&PayloadTexture))
+								{
+									GetTargetObject()->MeshRender()->GetMaterial(i)->SetTexParam((TEX_PARAM)j,
+																								 PayloadTexture);
+								}
 								break;
 							}
 							case TEX_PARAM::TEXCUBE_0:
