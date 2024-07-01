@@ -13,6 +13,7 @@
 #include "CSkybox.h"
 #include "CDecal.h"
 #include "CLandscape.h"
+#include "CPhysX.h"
 
 //#include "CCollider3D.h"
 //#include "CAnimator3D.h"

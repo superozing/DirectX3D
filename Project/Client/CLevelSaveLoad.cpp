@@ -299,6 +299,9 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
 		case COMPONENT_TYPE::STATEMACHINE:
 			pComponent = new CStateMachine;
 			break;
+		case COMPONENT_TYPE::PHYSX:
+			pComponent = new CPhysX;
+			break;
 		case COMPONENT_TYPE::MESHRENDER:
 			pComponent = new CMeshRender;
 			break;
@@ -401,6 +404,9 @@ CGameObject* CLevelSaveLoad::LoadGameObject(ifstream& fin)
 				break;
 			case COMPONENT_TYPE::STATEMACHINE:
 				pComponent = new CStateMachine;
+				break;
+			case COMPONENT_TYPE::PHYSX:
+				pComponent = new CPhysX;
 				break;
 			case COMPONENT_TYPE::MESHRENDER:
 				pComponent = new CMeshRender;

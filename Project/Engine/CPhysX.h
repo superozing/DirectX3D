@@ -43,9 +43,9 @@ public:
     virtual void finaltick() override;
 
     virtual void SaveToFile(FILE* _File) override;
-    virtual void SaveToFile(ofstream& fout) {};
+    virtual void SaveToFile(ofstream& fout);
     virtual void LoadFromFile(FILE* _File) override;
-    virtual void LoadFromFile(ifstream& fin) {};
+    virtual void LoadFromFile(ifstream& fin);
 
     void setTransform(const PxTransform& transform);
     PxTransform getTransform() const;

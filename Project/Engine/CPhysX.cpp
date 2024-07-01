@@ -125,12 +125,35 @@ void CPhysX::finaltick()
 	}
 }
 
+#define TagStatic "[IsStatic]"
+#define TagShape "[Shape]"
 void CPhysX::SaveToFile(FILE* _File)
 {
 }
 
+void CPhysX::SaveToFile(ofstream& fout)
+{
+	fout << TagStatic << endl;
+	fout << m_bStaticActor << endl;
+
+	fout << TagShape << endl;
+	auto shape = magic_enum::enum_name<PhysShape>(m_Shape);
+	fout << ToString(shape) << endl;
+}
+
 void CPhysX::LoadFromFile(FILE* _File)
 {
+}
+
+void CPhysX::LoadFromFile(ifstream& fin)
+{
+	string tag, str;
+	Utils::GetLineUntilString(fin, TagStatic);
+	fin >> m_bStaticActor;
+
+	Utils::GetLineUntilString(fin, TagShape);
+	getline(fin, str);
+	m_Shape = magic_enum::enum_cast<PhysShape>(str).value();
 }
 
 void CPhysX::setTransform(const PxTransform& transform)
