@@ -27,7 +27,11 @@
 void CLevelSaveLoad::SaveLevel(CLevel* _Level, const wstring& _strLevelPath)
 {
 	assert(_Level);
-	assert(LEVEL_STATE::STOP == _Level->GetState() || LEVEL_STATE::NONE == _Level->GetState());
+	if (LEVEL_STATE::PLAY == _Level->GetState() || LEVEL_STATE::PAUSE == _Level->GetState())
+	{
+		MessageBox(nullptr, L"레벨을 Stop 상태로 만들어야 합니다.", L"Level Save System", 0);
+		return;
+	}
 
 	// Level 을 저장할 경로
 	wstring strLevelPath = CPathMgr::GetContentPath();
