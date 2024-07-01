@@ -9,11 +9,13 @@
 namespace BOSSHP
 {
 
-#define BAR_XSCALE 1100
+#define BAR_XSCALE 1125
 #define BAR_YSCALE 44
 
-#define BAR_XPOS 100
+#define BAR_XPOS 70
 #define BAR_YPOS -10
+
+#define SCALE_RATIO 0.7f
 
 #define BASE CProgressBar
 }
@@ -30,8 +32,6 @@ CBossHP::~CBossHP()
 void CBossHP::begin()
 {
 	CProgressBar::begin();
-
-	MakeChildObjects();
 }
 
 void CBossHP::tick()
@@ -49,8 +49,10 @@ void CBossHP::tick()
 		float fHPRatio = (float)CurHP / MaxHP;
 
 		// 2. 체력 비율에 따른 HP UI transform 조절
-		m_pHPLineUI->Transform()->SetRelativeScale(Vec3(fHPRatio * BAR_XSCALE, BAR_YSCALE, 1));
-		m_pHPLineUI->Transform()->SetRelativePos(Vec3(BAR_XPOS - ((1 - fHPRatio) * BAR_XSCALE) / 2, BAR_YPOS, 0));
+		m_pHPLineUI->Transform()->SetRelativeScale(
+			Vec3(fHPRatio * BAR_XSCALE * SCALE_RATIO, BAR_YSCALE * SCALE_RATIO, 1));
+		m_pHPLineUI->Transform()->SetRelativePos(
+			Vec3(BAR_XPOS - ((1 - fHPRatio) * BAR_XSCALE) / 2 * SCALE_RATIO, BAR_YPOS * SCALE_RATIO, -200));
 	}
 }
 
@@ -105,8 +107,7 @@ void CBossHP::MakeChildObjects()
 	using namespace BOSSHP;
 
 	// transform 조정
-	Transform()->SetRelativePos(Vec3(0, 0, -100.f));
-	Transform()->SetRelativeScale(Vec3(1388.f, 222.f, 1.f));
+	Transform()->SetRelativeScale(Vec3(1388.f * SCALE_RATIO, 222.f * SCALE_RATIO, 1.f));
 
 	// panel texture 설정
 	GetPanelUI()->SetPanelTex(
@@ -124,8 +125,8 @@ void CBossHP::MakeChildObjects()
 	pObj->AddComponent(new CMeshRender);
 	pObj->AddComponent(m_pPortrait);
 
-	pObj->Transform()->SetRelativePos(Vec3(-553, 10, -90.f));
-	pObj->Transform()->SetRelativeScale(Vec3(211.f, 215.f, 1.f));
+	pObj->Transform()->SetRelativePos(Vec3(-553 * SCALE_RATIO, 10 * SCALE_RATIO, -90.f));
+	pObj->Transform()->SetRelativeScale(Vec3(211.f * SCALE_RATIO, 215.f * SCALE_RATIO, 1.f));
 
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
@@ -145,8 +146,8 @@ void CBossHP::MakeChildObjects()
 	pObj->AddComponent(new CMeshRender);
 	pObj->AddComponent(m_pImgFont);
 
-	pObj->Transform()->SetRelativePos(Vec3(-553, -80, -80.f));
-	pObj->Transform()->SetRelativeScale(Vec3(128.f, 32.f, 1.f));
+	pObj->Transform()->SetRelativePos(Vec3(-553 * SCALE_RATIO, -80 * SCALE_RATIO, -80.f * SCALE_RATIO));
+	pObj->Transform()->SetRelativeScale(Vec3(128.f * SCALE_RATIO, 32.f * SCALE_RATIO, 1.f));
 
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
@@ -172,8 +173,8 @@ void CBossHP::MakeChildObjects()
 	m_pHPLineUI->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Red.png"));
 	m_pHPLineUI->AllowBindTexPerFrame();
 
-	pObj->Transform()->SetRelativePos(Vec3(100, -10, 0.f));
-	pObj->Transform()->SetRelativeScale(Vec3(1100.f, 44.f, 1.f));
+	pObj->Transform()->SetRelativePos(Vec3(100 * SCALE_RATIO, -10 * SCALE_RATIO, 0.f));
+	pObj->Transform()->SetRelativeScale(Vec3(1100.f * SCALE_RATIO, 44.f * SCALE_RATIO, 1.f));
 
 	GetOwner()->AddChild(pObj);
 }

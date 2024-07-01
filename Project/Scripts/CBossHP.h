@@ -18,7 +18,6 @@ private:
 	// HP Line UI
 	CImageUIScript* m_pHPLineUI;
 
-
 public:
 	virtual void begin() override;
 	virtual void tick() override;

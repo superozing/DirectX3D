@@ -28,4 +28,6 @@ void CProgressBar::begin()
 	GetOwner()->AddComponent(m_pPanelUI);
 
 	MeshRender()->GetDynamicMaterial(0);
+
+	MakeChildObjects();
 }

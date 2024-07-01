@@ -70,6 +70,12 @@
     <ClInclude Include="CBossHP.h">
       <Filter>Scripts\UI\ProgressBar\BossHP</Filter>
     </ClInclude>
+    <ClInclude Include="CMonsterHP.h">
+      <Filter>Scripts\UI\ProgressBar\MonsterHP</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayerHP.h">
+      <Filter>Scripts\UI\ProgressBar\PlayerHP</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -140,6 +146,12 @@
     </ClCompile>
     <ClCompile Include="CBossHP.cpp">
       <Filter>Scripts\UI\ProgressBar\BossHP</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonsterHP.cpp">
+      <Filter>Scripts\UI\ProgressBar\MonsterHP</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerHP.cpp">
+      <Filter>Scripts\UI\ProgressBar\PlayerHP</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

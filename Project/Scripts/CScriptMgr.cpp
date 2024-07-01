@@ -20,6 +20,8 @@
 #include "CDamageFont.h"
 #include "CProgressBar.h"
 #include "CBossHP.h"
+#include "CMonsterHP.h"
+#include "CPlayerHP.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -42,6 +44,8 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CDamageFont");
 	_vec.push_back(L"CProgressBar");
 	_vec.push_back(L"CBossHP");
+	_vec.push_back(L"CMonsterHP");
+	_vec.push_back(L"CPlayerHP");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -84,6 +88,10 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CProgressBar;
 	if (L"CBossHP" == _strScriptName)
 		return new CBossHP;
+	if (L"CMonsterHP" == _strScriptName)
+		return new CMonsterHP;
+	if (L"CPlayerHP" == _strScriptName)
+		return new CPlayerHP;
 	return nullptr;
 }
 
@@ -147,6 +155,12 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::BOSSHP:
 		return new CBossHP;
+		break;
+	case (UINT)SCRIPT_TYPE::MONSTERHP:
+		return new CMonsterHP;
+		break;
+	case (UINT)SCRIPT_TYPE::PLAYERHP:
+		return new CPlayerHP;
 		break;
 	}
 	return nullptr;
@@ -230,6 +244,14 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::BOSSHP:
 		return L"CBossHP";
+		break;
+
+	case SCRIPT_TYPE::MONSTERHP:
+		return L"CMonsterHP";
+		break;
+
+	case SCRIPT_TYPE::PLAYERHP:
+		return L"CPlayerHP";
 		break;
 
 	}

@@ -30,6 +30,7 @@
 #include <Scripts/CBtnUIScript.h>
 #include <Scripts/CpanelUIScript.h>
 #include <Engine/CDevice.h>
+#include <Engine/CFontMgr.h>
 
 #include <Scripts/CProgressBar.h>
 #include <Scripts/CBossHP.h>
@@ -38,7 +39,8 @@
 #include <Scripts/CPausePanel.h>
 #include <Scripts/CPauseBtn.h>
 #include <Scripts/CDamageFont.h>
-#include <Engine/CFontMgr.h>
+#include <Scripts/CPlayerHP.h>
+#include <Scripts/CMonsterHP.h>
 
 void CUITempLevel::Init()
 {
@@ -400,10 +402,54 @@ void CUITempLevel::CreateTempLevel()
 	BossHP->SetImgFontTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/ImageFont_Raidboss.png"));
 	BossHP->SetPortraitTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Portrait_Raidboss_KaitenRanger.png"));
 
-	BarObj->Transform()->SetRelativePos(Vec3(0.f, 300.f, 100.f));
+	BarObj->Transform()->SetRelativePos(Vec3(0.f, 350.f, 100.f));
 	BarObj->Transform()->SetRelativeScale(Vec3(1, 1, 1.f));
 
 	pTempLevel->AddObject(BarObj, (UINT)LAYER::LAYER_UI, false);
+
+	// Player HP
+	auto PlayerHPObj	= new CGameObject;
+	auto PlayerHP	 = new CPlayerHP;
+
+	PlayerHPObj->SetName(L"Player HP");
+
+	PlayerHPObj->AddComponent(new CTransform);
+	PlayerHPObj->AddComponent(new CMeshRender);
+	PlayerHPObj->AddComponent(PlayerHP);
+
+	PlayerHPObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
+	PlayerHPObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
+	PlayerHPObj->MeshRender()->GetDynamicMaterial(0);
+
+	PlayerHP->SetMaxHP(2000);
+	PlayerHP->SetCurHP(2000);
+
+	PlayerHPObj->Transform()->SetRelativePos(Vec3(-700.f, -400.f, 100.f));
+	PlayerHPObj->Transform()->SetRelativeScale(Vec3(1, 1, 1.f));
+
+	pTempLevel->AddObject(PlayerHPObj, (UINT)LAYER::LAYER_UI, false);
+	
+	// Monster HP
+	auto MonsterHPObj	= new CGameObject;
+	auto MonsterHP	 = new CMonsterHP;
+
+	MonsterHPObj->SetName(L"Monster HP");
+
+	MonsterHPObj->AddComponent(new CTransform);
+	MonsterHPObj->AddComponent(new CMeshRender);
+	MonsterHPObj->AddComponent(MonsterHP);
+
+	MonsterHPObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHpoint));
+	MonsterHPObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DynamicUIMtrl"), 0);
+	MonsterHPObj->MeshRender()->GetDynamicMaterial(0);
+
+	MonsterHP->SetMaxHP(2000);
+	MonsterHP->SetCurHP(2000);
+
+	MonsterHPObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 100.f));
+	MonsterHPObj->Transform()->SetRelativeScale(Vec3(1, 1, 1.f));
+
+	pTempLevel->AddObject(MonsterHPObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
 	// Damage Button
 	pObj = new CGameObject;

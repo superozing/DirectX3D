@@ -171,10 +171,12 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CDamageFont.h" />
     <ClInclude Include="CImageUIScript.h" />
     <ClInclude Include="CMissileScript.h" />
+    <ClInclude Include="CMonsterHP.h" />
     <ClInclude Include="CMonsterScript.h" />
     <ClInclude Include="CPanelUIScript.h" />
     <ClInclude Include="CPauseBtn.h" />
     <ClInclude Include="CPausePanel.h" />
+    <ClInclude Include="CPlayerHP.h" />
     <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CProgressBar.h" />
     <ClInclude Include="CRenderMgrScript.h" />
@@ -196,10 +198,12 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CDamageFont.cpp" />
     <ClCompile Include="CImageUIScript.cpp" />
     <ClCompile Include="CMissileScript.cpp" />
+    <ClCompile Include="CMonsterHP.cpp" />
     <ClCompile Include="CMonsterScript.cpp" />
     <ClCompile Include="CPanelUIScript.cpp" />
     <ClCompile Include="CPauseBtn.cpp" />
     <ClCompile Include="CPausePanel.cpp" />
+    <ClCompile Include="CPlayerHP.cpp" />
     <ClCompile Include="CPlayerScript.cpp" />
     <ClCompile Include="CProgressBar.cpp" />
     <ClCompile Include="CRenderMgrScript.cpp" />
