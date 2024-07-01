@@ -1121,8 +1121,9 @@ void CAssetMgr::CreateDefaultMaterial()
 	AddAsset(L"DynamicUIMtrl", pMtrl);
 
 	// ImageWrapMtrl
-	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"ImageWrapShader"));
+	pMtrl		  = new CMaterial(true);
+	strShaderPath = "GraphicsShader\\ImageWrapShader.gs";
+	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset(L"ImageWrapMtrl", pMtrl);
 }
 
