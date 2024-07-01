@@ -23,6 +23,7 @@ float ClampFloat(float _input, float _min, float _max);
 
 void MatrixToFloat16(float _dest[16], const Matrix& _src);
 void Float16ToMatrix(Matrix& _dest, const float _src[16]);
+Vec3 QuaternionToEulerAngles(const XMFLOAT4& _Quaternion);
 } // namespace RoRMath
 
 class CLevel;
@@ -51,6 +52,8 @@ void DrawDebugCube(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Co
 				   float _Duration = 0.f);
 
 void DrawDebugSphere(Vec3 _vWorldPos, float _fRadius, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
+void DrawDebugCylinder(Vec3 _FromPos, Vec3 _ToPos, float _LineWidth, Vec3 _Color, bool _bDepthTest,
+					   float _Duration = 0.f);
 
 void DrawDebugCone(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, bool _bDepthTest,
 				   float _Duration = 0.f);
@@ -93,6 +96,9 @@ public:
 };
 
 void ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextLevelStartState);
+// enum class Layer의 {인덱스,레이어이름}을 반환
+// 중요) 이름없는 레이어는 요소에 들어있지않음
+vector<std::pair<int, string>>& GetLayerMap();
 } // namespace GamePlayStatic
 
 namespace Utils

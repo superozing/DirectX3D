@@ -82,6 +82,9 @@ void ScriptUI::render_update()
 		case SCRIPT_PARAM::FUNC_MEMBER:
 			ParamUI::Param_FUNC_MEMBER(iter->second.MemberFunc, iter->first);
 			break;
+		case SCRIPT_PARAM::MGR_PHYSX:
+			ParamUI::Param_MGR_PHYSX(iter->second.pData);
+			break;
 		}
 	}
 }

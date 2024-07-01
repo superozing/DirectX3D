@@ -62,8 +62,8 @@ enum class LAYER
 	LAYER_PLAYER,
 	LAYER_MONSTER,
 	LAYER_LIGHT,
-
-	LAYER_UI  = 31,
+	LAYER_RAYCAST,
+	LAYER_UI = 31,
 	LAYER_MAX = 32,
 };
 
@@ -106,6 +106,8 @@ enum class COMPONENT_TYPE
 	CAMERA, // 카메라 기능
 
 	STATEMACHINE, // 상태머신
+
+	PHYSX,
 
 	// Render Component
 	MESHRENDER,
@@ -257,6 +259,8 @@ enum class SCRIPT_PARAM
 	COLOR,
 	FUNC_STATIC,
 	FUNC_MEMBER,
+	// PhysXMgr 리플렉션용
+	MGR_PHYSX,
 };
 
 enum class FUNC_PARAM
@@ -275,6 +279,7 @@ enum class DEBUG_SHAPE
 	RECT,
 	CIRCLE,
 	CROSS,
+	CYLINDER,
 
 	CUBE,
 	SPHERE,
@@ -365,6 +370,6 @@ enum class Log_Level
 {
 	INFO = 1,
 	WARN = 2,
-	ERR	 = 4,
+	ERR = 4,
 	END,
 };
