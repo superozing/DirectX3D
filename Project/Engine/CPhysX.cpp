@@ -65,10 +65,19 @@ void CPhysX::updateFromPhysics()
 
 void CPhysX::updateToPhysics()
 {
-	//TODO: 로직구현하기
-    //PxTransform physTransform(PxVec3(Transform()->GetWorldPos().x, Transform()->GetWorldPos().y, Transform()->GetWorldPos().z),
-    //    PxQuat(Transform()->GetWorldRot().x, Transform()->GetWorldRot().y, Transform()->GetWorldRot().z, 1.f));
-    //setTransform(physTransform);
+	if (nullptr == m_Actor)
+		return;
+
+	auto Obj = GetOwner();
+	auto Rot = Obj->Transform()->GetWorldRot();
+	auto Pos = Obj->Transform()->GetWorldPos();
+	Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(Rot.y, Rot.z, Rot.x);
+
+	// 게임 오브젝트의 위치와 회전 정보
+	PxTransform transform(PxVec3(Pos.x, Pos.y, Pos.z),
+		PxQuat(quaternion.x, quaternion.y, quaternion.z, quaternion.w));
+
+	m_Actor->setGlobalPose(transform);
 }
 
 void CPhysX::begin()
@@ -97,7 +106,7 @@ void CPhysX::finaltick()
 
 	if (m_bStaticActor)
 	{
-
+		updateToPhysics();
 	}
 	else
 	{

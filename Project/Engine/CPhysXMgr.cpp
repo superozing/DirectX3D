@@ -193,7 +193,7 @@ void CPhysXMgr::addGameObject(CGameObject* object, bool _bStatic, PhysShape _Sha
     // Collider 추가 (여기서는 예시로 Box Collider를 사용)
     if (PhysShape::BOX == _Shape)
     {
-        shape = gPhysics->createShape(PxBoxGeometry(scale.z / 2, scale.y / 2, scale.x / 2), *gMaterial);
+        shape = gPhysics->createShape(PxBoxGeometry(scale.z / 2, scale.x / 2, scale.y / 2), *gMaterial);
     }
     else
     {
@@ -234,7 +234,7 @@ void CPhysXMgr::init()
 
     //필터
     LayerCheck((UINT)LAYER::LAYER_MONSTER, (UINT)LAYER::LAYER_PLAYER);
-    LayerCheck((UINT)LAYER::LAYER_DEFAULT, (UINT)LAYER::LAYER_RAYCAST);
+    LayerCheck((UINT)LAYER::LAYER_MONSTER, (UINT)LAYER::LAYER_RAYCAST);
     LayerCheck((UINT)LAYER::LAYER_PLAYER, (UINT)LAYER::LAYER_RAYCAST);
 
     sceneDesc.filterShader = CustomFilterShader;

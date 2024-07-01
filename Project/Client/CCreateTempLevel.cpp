@@ -178,7 +178,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->AddComponent(new CMeshRender);
 
 	pObj->Transform()->SetRelativePos(Vec3(0.f, -500.f, 500.f));
-	pObj->Transform()->SetRelativeScale(Vec3(2000.f, 2000.f, 200.f));
+	pObj->Transform()->SetRelativeScale(Vec3(500.f, 2000.f, 200.f));
 	pObj->Transform()->SetDir(Vec3(0.f, -1.f, 0.f));
 
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
