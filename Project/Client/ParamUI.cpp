@@ -95,7 +95,8 @@ bool ParamUI::Param_FLOAT(float* _Data, const string& _Desc, float _min, float _
 		{
 			ImGui::SetTooltip(_Tooltip.c_str());
 		}
-		if (ImGui::DragFloat(szID, _Data, 0.f, 0.f, 0.f, "%.1f", ImGuiSliderFlags_Logarithmic | ImGuiSliderFlags_NoInput))
+		if (ImGui::DragFloat(szID, _Data, 0.f, 0.f, 0.f, "%.1f",
+							 ImGuiSliderFlags_Logarithmic | ImGuiSliderFlags_NoInput))
 		{
 			return true;
 		}
@@ -116,7 +117,7 @@ bool ParamUI::Param_FLOAT(float* _Data, const string& _Desc, float _min, float _
 }
 
 bool ParamUI::Param_STRING(string* _Data, const string& _Desc, float _min, float _Max, bool _View,
-	const string& _Tooltip)
+						   const string& _Tooltip)
 {
 	ImGui::Text(_Desc.c_str());
 	ImGui::SameLine();
@@ -154,8 +155,8 @@ bool ParamUI::Param_VEC2(Vec2* _Data, const string& _Desc, float _min, float _Ma
 	ImGui::Text(_Desc.c_str());
 	ImGui::SameLine();
 
-	float arrFloat[2] = { _Data->x, _Data->y };
-	char szID[256] = {};
+	float arrFloat[2] = {_Data->x, _Data->y};
+	char  szID[256]	  = {};
 	sprintf_s(szID, "##Vec2%d", g_ID++);
 
 	if (_View)
@@ -164,7 +165,8 @@ bool ParamUI::Param_VEC2(Vec2* _Data, const string& _Desc, float _min, float _Ma
 		{
 			ImGui::SetTooltip(_Tooltip.c_str());
 		}
-		if (ImGui::DragFloat2(szID, arrFloat, 0.f, 0.f, 0.f, "%.1f", ImGuiSliderFlags_Logarithmic | ImGuiSliderFlags_NoInput))
+		if (ImGui::DragFloat2(szID, arrFloat, 0.f, 0.f, 0.f, "%.1f",
+							  ImGuiSliderFlags_Logarithmic | ImGuiSliderFlags_NoInput))
 		{
 			_Data->x = arrFloat[0];
 			_Data->y = arrFloat[1];
@@ -202,7 +204,8 @@ bool ParamUI::Param_VEC3(Vec3* _Data, const string& _Desc, float _min, float _Ma
 		{
 			ImGui::SetTooltip(_Tooltip.c_str());
 		}
-		if (ImGui::DragFloat3(szID, *_Data, 0.f, 0.f, 0.f, "%.1f", ImGuiSliderFlags_Logarithmic | ImGuiSliderFlags_NoInput))
+		if (ImGui::DragFloat3(szID, *_Data, 0.f, 0.f, 0.f, "%.1f",
+							  ImGuiSliderFlags_Logarithmic | ImGuiSliderFlags_NoInput))
 		{
 			return true;
 		}
@@ -236,7 +239,8 @@ bool ParamUI::Param_VEC4(Vec4* _Data, const string& _Desc, float _min, float _Ma
 		{
 			ImGui::SetTooltip(_Tooltip.c_str());
 		}
-		if (ImGui::DragFloat4(szID, *_Data, 0.f, 0.f, 0.f, "%.1f", ImGuiSliderFlags_Logarithmic | ImGuiSliderFlags_NoInput))
+		if (ImGui::DragFloat4(szID, *_Data, 0.f, 0.f, 0.f, "%.1f",
+							  ImGuiSliderFlags_Logarithmic | ImGuiSliderFlags_NoInput))
 		{
 			return true;
 		}
@@ -255,7 +259,6 @@ bool ParamUI::Param_VEC4(Vec4* _Data, const string& _Desc, float _min, float _Ma
 
 	return false;
 }
-
 
 bool ParamUI::Param_COLOR(Vec4* _Data, const string& _Desc, bool _View, const string& _Tooltip)
 {
@@ -291,7 +294,6 @@ bool ParamUI::Param_COLOR(Vec4* _Data, const string& _Desc, bool _View, const st
 	return false;
 }
 
-
 bool ParamUI::Param_TEXTURE(Ptr<CTexture>& _Texture, const string& _Desc, UI* _Inst, Delegate_1 _Func)
 {
 	// 파라미터의 Description 정보 출력
@@ -301,12 +303,12 @@ bool ParamUI::Param_TEXTURE(Ptr<CTexture>& _Texture, const string& _Desc, UI* _I
 	// Texture 이름 출력 InputText 의 ID 만들기
 	char szID[256] = {};
 	sprintf_s(szID, "##Texture%d", g_ID++);
-	
+
 	ImTextureID texid = nullptr;
-	string strTexKey;
+	string		strTexKey;
 	if (nullptr != _Texture)
 	{
-		texid = _Texture->GetSRV().Get();
+		texid	  = _Texture->GetSRV().Get();
 		strTexKey = string(_Texture->GetKey().begin(), _Texture->GetKey().end());
 	}
 
@@ -319,8 +321,8 @@ bool ParamUI::Param_TEXTURE(Ptr<CTexture>& _Texture, const string& _Desc, UI* _I
 
 		if (payload)
 		{
-			DWORD_PTR data = *((DWORD_PTR*)payload->Data);
-			CAsset* pAsset = (CAsset*)data;
+			DWORD_PTR data	 = *((DWORD_PTR*)payload->Data);
+			CAsset*	  pAsset = (CAsset*)data;
 			if (ASSET_TYPE::TEXTURE == pAsset->GetType())
 			{
 				_Texture = (CTexture*)pAsset;
@@ -330,15 +332,15 @@ bool ParamUI::Param_TEXTURE(Ptr<CTexture>& _Texture, const string& _Desc, UI* _I
 		ImGui::EndDragDropTarget();
 	}
 
-
 	// 텍스쳐 이미지 출력
 	static bool use_text_color_for_tint = false;
-	ImVec2 uv_min = ImVec2(0.0f, 0.0f);
-	ImVec2 uv_max = ImVec2(1.0f, 1.0f);
-	ImVec4 tint_col = use_text_color_for_tint ? ImGui::GetStyleColorVec4(ImGuiCol_Text) : ImVec4(1.0f, 1.0f, 1.0f, 1.0f); // No tint
-	ImVec4 border_col = ImGui::GetStyleColorVec4(ImGuiCol_Border);		
+	ImVec2		uv_min					= ImVec2(0.0f, 0.0f);
+	ImVec2		uv_max					= ImVec2(1.0f, 1.0f);
+	ImVec4		tint_col =
+		 use_text_color_for_tint ? ImGui::GetStyleColorVec4(ImGuiCol_Text) : ImVec4(1.0f, 1.0f, 1.0f, 1.0f); // No tint
+	ImVec4 border_col = ImGui::GetStyleColorVec4(ImGuiCol_Border);
 	ImGui::Image(texid, ImVec2(150, 150), uv_min, uv_max, tint_col, border_col);
-	
+
 	// 입력된 델리게이트가 있다면
 	if (_Inst && _Func)
 	{
@@ -362,7 +364,6 @@ bool ParamUI::Param_TEXTURE(Ptr<CTexture>& _Texture, const string& _Desc, UI* _I
 
 	return false;
 }
-
 
 bool ParamUI::Param_FUNC_STATIC(StaticFuncPtr _Func, const string& _Desc)
 {
@@ -393,28 +394,28 @@ bool ParamUI::Param_MGR_PHYSX(void* _pPhysXMgr)
 	}
 
 	// 레이어 수를 정의합니다.
-	const int LayerCount = static_cast<int>(LAYER::LAYER_MAX);
-	static const auto LayerMap = GamePlayStatic::GetLayerMap();
+	const int		  LayerCount = static_cast<int>(LAYER::LAYER_MAX);
+	static const auto LayerMap	 = GamePlayStatic::GetLayerMap();
 
 	//// 라벨의 최대 길이를 계산합니다.
-	//size_t maxLabelLength = 0;
-	//for (int i = 0; i < layerCount; ++i)
+	// size_t maxLabelLength = 0;
+	// for (int i = 0; i < layerCount; ++i)
 	//{
 	//	auto layerNameI = magic_enum::enum_name(static_cast<LAYER>(i));
 	//	if (!layerNameI.empty() && static_cast<LAYER>(i) != LAYER::LAYER_MAX)
 	//	{
 	//		maxLabelLength = max(maxLabelLength, layerNameI.size());
 	//	}
-	//}
+	// }
 
 	//// 최대 라벨 길이에 맞게 왼쪽 여백을 설정합니다.
-	//float labelWidth = ImGui::CalcTextSize(std::string(maxLabelLength, ' ').c_str()).x;
+	// float labelWidth = ImGui::CalcTextSize(std::string(maxLabelLength, ' ').c_str()).x;
 
 	//// 윗쪽에 인덱스를 세로로 표시합니다.
-	//ImGui::Text(" "); // 첫 번째 빈 셀
-	//ImGui::SameLine(0, labelWidth); // 왼쪽 여백을 설정합니다.
+	// ImGui::Text(" "); // 첫 번째 빈 셀
+	// ImGui::SameLine(0, labelWidth); // 왼쪽 여백을 설정합니다.
 
-	//for (int j = 0; j < layerCount; ++j)
+	// for (int j = 0; j < layerCount; ++j)
 	//{
 	//	auto layerNameJ = magic_enum::enum_name(static_cast<LAYER>(j));
 
@@ -441,10 +442,10 @@ bool ParamUI::Param_MGR_PHYSX(void* _pPhysXMgr)
 	//	ImGui::SetCursorPosX(currentPosX + labelOffset);
 	//	ImGui::Text("%s", std::to_string(j).c_str());
 	//}
-	//ImGui::NewLine();
+	// ImGui::NewLine();
 
 	//// 충돌 행렬을 N x N 체크박스로 표시합니다.
-	//for (int i = 0; i < layerCount; ++i)
+	// for (int i = 0; i < layerCount; ++i)
 	//{
 	//	auto layerNameI = magic_enum::enum_name(static_cast<LAYER>(i));
 
@@ -498,36 +499,41 @@ bool ParamUI::Param_MGR_PHYSX(void* _pPhysXMgr)
 	//	ImGui::NewLine();
 	//}
 
-	//ImGui::Separator();
-	//UI::StaticButton(string("RayCast Info"), STATIC_BTN_TYPE::SUBTITLE);
+	// ImGui::Separator();
+	// UI::StaticButton(string("RayCast Info"), STATIC_BTN_TYPE::SUBTITLE);
 
-	//const char* column_names[] = { "Track", "cabasa", "ride", "smash", "tom-hi", "tom-mid", "tom-low", "hihat-o", "hihat-c", "snare-s", "snare-c", "clap", "rim", "kick" };
-	//const int columns_count = IM_ARRAYSIZE(column_names);
-	//const int rows_count = 12;
+	// const char* column_names[] = { "Track", "cabasa", "ride", "smash", "tom-hi", "tom-mid", "tom-low", "hihat-o",
+	// "hihat-c", "snare-s", "snare-c", "clap", "rim", "kick" }; const int columns_count = IM_ARRAYSIZE(column_names);
+	// const int rows_count = 12;
 
-static ImGuiTableFlags table_flags = ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersInnerH | ImGuiTableFlags_Hideable | ImGuiTableFlags_Resizable | ImGuiTableFlags_HighlightHoveredColumn;
+	static ImGuiTableFlags table_flags = ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersInnerH |
+										 ImGuiTableFlags_Hideable | ImGuiTableFlags_Resizable |
+										 ImGuiTableFlags_HighlightHoveredColumn;
 	static bool bools[LayerCount * LayerCount] = {}; // Dummy storage selection storage
-	static int frozen_cols = 1;
-	static int frozen_rows = 2;
-	//ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
-	//ImGui::SliderInt("Frozen columns", &frozen_cols, 0, 2);
-	//ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
-	//ImGui::SliderInt("Frozen rows", &frozen_rows, 0, 2);
+	static int	frozen_cols					   = 1;
+	static int	frozen_rows					   = 2;
+	// ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
+	// ImGui::SliderInt("Frozen columns", &frozen_cols, 0, 2);
+	// ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
+	// ImGui::SliderInt("Frozen rows", &frozen_rows, 0, 2);
 	if (ImGui::CollapsingHeader("Layer Table"))
 	{
-		if (ImGui::BeginTable("table_angled_headers", LayerMap.size() + 1, table_flags, ImVec2(0.0f, ImGui::GetTextLineHeightWithSpacing())))
+		if (ImGui::BeginTable("table_angled_headers", LayerMap.size() + 1, table_flags,
+							  ImVec2(0.0f, ImGui::GetTextLineHeightWithSpacing())))
 		{
 			ImGui::TableSetupColumn("", ImGuiTableColumnFlags_NoHide | ImGuiTableColumnFlags_NoReorder);
 			for (int n = 0; n < LayerMap.size(); n++)
-				ImGui::TableSetupColumn(LayerMap[n].second.c_str(), ImGuiTableColumnFlags_AngledHeader | ImGuiTableColumnFlags_WidthFixed);
+				ImGui::TableSetupColumn(LayerMap[n].second.c_str(),
+										ImGuiTableColumnFlags_AngledHeader | ImGuiTableColumnFlags_WidthFixed);
 			ImGui::TableSetupScrollFreeze(frozen_cols, frozen_rows);
 
-			ImGui::TableAngledHeadersRow(); // Draw angled headers for all columns with the ImGuiTableColumnFlags_AngledHeader flag.
-			ImGui::TableHeadersRow();       // Draw remaining headers and allow access to context-menu and other functions.
+			ImGui::TableAngledHeadersRow(); // Draw angled headers for all columns with the
+											// ImGuiTableColumnFlags_AngledHeader flag.
+			ImGui::TableHeadersRow(); // Draw remaining headers and allow access to context-menu and other functions.
 			for (int row = 0; row < LayerMap.size(); row++)
 			{
 				ImGui::PushID(row);
-				//ImGui::TableNextRow(ImGuiTableRowFlags_None, 0.f); // 행 높이를 설정
+				// ImGui::TableNextRow(ImGuiTableRowFlags_None, 0.f); // 행 높이를 설정
 				ImGui::TableNextRow(); // 행 높이를 설정
 				ImGui::TableSetColumnIndex(0);
 				ImGui::AlignTextToFramePadding();

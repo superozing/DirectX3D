@@ -26,7 +26,7 @@ CGameObject::CGameObject()
 CGameObject::CGameObject(const CGameObject& _OriginObject)
 	: CEntity(_OriginObject)
 	, m_arrCom{}
-	, m_RenderCom(nullptr)	
+	, m_RenderCom(nullptr)
 	, m_Parent(nullptr)
 	, m_iLayerIdx(-1)
 	, m_bDead(false)
@@ -37,19 +37,18 @@ CGameObject::CGameObject(const CGameObject& _OriginObject)
 			continue;
 
 		AddComponent(_OriginObject.m_arrCom[i]->Clone());
-	}	
+	}
 
 	for (size_t i = 0; i < _OriginObject.m_vecScript.size(); ++i)
 	{
 		AddComponent(_OriginObject.m_vecScript[i]->Clone());
 	}
-	
 
-	// 복사되는 GameObject 는 부모만 레이어소속을 -1 로 하고, 
+	// 복사되는 GameObject 는 부모만 레이어소속을 -1 로 하고,
 	// 자식들은 원본객체랑 동일한 레이어소속을 유지한다.
 	for (size_t i = 0; i < _OriginObject.m_vecChild.size(); ++i)
 	{
-		CGameObject* ChildClone = _OriginObject.m_vecChild[i]->Clone();						
+		CGameObject* ChildClone = _OriginObject.m_vecChild[i]->Clone();
 		AddChild(ChildClone);
 		ChildClone->m_iLayerIdx = _OriginObject.m_vecChild[i]->m_iLayerIdx;
 	}
@@ -139,7 +138,7 @@ void CGameObject::render()
 	if (nullptr != m_RenderCom)
 	{
 		m_RenderCom->render();
-	}	
+	}
 }
 
 void CGameObject::AddComponent(CComponent* _Component)
@@ -147,7 +146,7 @@ void CGameObject::AddComponent(CComponent* _Component)
 	COMPONENT_TYPE type = _Component->GetType();
 
 	if (type == COMPONENT_TYPE::SCRIPT)
-	{		
+	{
 		// Script 타입 Component 가 실제로 Script 클래스가 아닌 경우
 		assert(dynamic_cast<CScript*>(_Component));
 
@@ -156,11 +155,11 @@ void CGameObject::AddComponent(CComponent* _Component)
 	}
 	else
 	{
-		// 이미 해당 타입의 컴포넌트를 보유하고 있는 경우 
+		// 이미 해당 타입의 컴포넌트를 보유하고 있는 경우
 		assert(!m_arrCom[(UINT)type]);
 
 		m_arrCom[(UINT)type] = _Component;
-		_Component->m_Owner = this;
+		_Component->m_Owner	 = this;
 
 		CRenderComponent* pRenderCom = dynamic_cast<CRenderComponent*>(_Component);
 		if (nullptr != pRenderCom)
@@ -169,7 +168,7 @@ void CGameObject::AddComponent(CComponent* _Component)
 			assert(!m_RenderCom);
 
 			m_RenderCom = pRenderCom;
-		}		
+		}
 	}
 }
 
@@ -180,8 +179,9 @@ void CGameObject::DeleteComponent(COMPONENT_TYPE _Type)
 		delete m_arrCom[(UINT)_Type];
 		m_arrCom[(UINT)_Type] = nullptr;
 
-		if (COMPONENT_TYPE::MESHRENDER == _Type || COMPONENT_TYPE::TILEMAP == _Type || COMPONENT_TYPE::PARTICLESYSTEM == _Type
-			|| COMPONENT_TYPE::DECAL == _Type || COMPONENT_TYPE::SKYBOX == _Type)
+		if (COMPONENT_TYPE::MESHRENDER == _Type || COMPONENT_TYPE::TILEMAP == _Type ||
+			COMPONENT_TYPE::PARTICLESYSTEM == _Type || COMPONENT_TYPE::DECAL == _Type ||
+			COMPONENT_TYPE::SKYBOX == _Type)
 		{
 			m_RenderCom = nullptr;
 		}
@@ -191,7 +191,7 @@ void CGameObject::DeleteComponent(COMPONENT_TYPE _Type)
 void CGameObject::DeleteScript(CScript* _Script)
 {
 	auto iter = find(m_vecScript.begin(), m_vecScript.end(), _Script);
-	
+
 	if (iter != m_vecScript.end())
 	{
 		delete (*iter);
@@ -199,15 +199,14 @@ void CGameObject::DeleteScript(CScript* _Script)
 	}
 }
 
-
 int CGameObject::DisconnectWithParent()
-{	
+{
 	// 부모가 없는 오브젝트에 DisconnectWithParent 함수를 호출했으면
 	if (nullptr == m_Parent)
 		return -1;
 
-	bool bSuccess = false;
-	vector<CGameObject*>::iterator iter = m_Parent->m_vecChild.begin();
+	bool						   bSuccess = false;
+	vector<CGameObject*>::iterator iter		= m_Parent->m_vecChild.begin();
 	for (; iter != m_Parent->m_vecChild.end(); ++iter)
 	{
 		if (*iter == this)
@@ -256,7 +255,7 @@ void CGameObject::AddChild(CGameObject* _Child)
 	{
 		// 이전 부모 오브젝트랑 연결 해제
 		// 원래 레이어를 유지한다.
-		int LayerIdx = _Child->DisconnectWithParent();
+		int LayerIdx		= _Child->DisconnectWithParent();
 		_Child->m_iLayerIdx = LayerIdx;
 	}
 	else
@@ -264,7 +263,7 @@ void CGameObject::AddChild(CGameObject* _Child)
 		// 자식으로 들어오는 오브젝트가 최상위 부모타입이면,
 		// 소속 레이어의 Parent 오브젝트 목록에서 제거되어야 한다.
 		// 제거되기 전의 레이어를 유지한다.
-		int LayerIdx = _Child->DisconnectWithLayer();
+		int LayerIdx		= _Child->DisconnectWithLayer();
 		_Child->m_iLayerIdx = LayerIdx;
 	}
 

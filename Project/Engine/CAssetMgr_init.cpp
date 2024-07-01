@@ -11,7 +11,7 @@ void CAssetMgr::init()
 
 	CreateDefaultMesh();
 
-	//CreateDefaultGraphicsShader();
+	// CreateDefaultGraphicsShader();
 
 	CreateDefaultComputeShader();
 
@@ -22,42 +22,42 @@ void CAssetMgr::CreateDefaultMesh()
 {
 	CMesh* pMesh = nullptr;
 
-	Vtx vPoint;
+	Vtx	 vPoint;
 	UINT Idx = 0;
-	pMesh = new CMesh(true);
+	pMesh	 = new CMesh(true);
 	pMesh->Create(&vPoint, 1, &Idx, 1);
 	AddAsset(MESHpoint, pMesh);
 
 #pragma region Rect Mesh
 	// 전역변수에 삼각형 위치 설정
-	//   0(Red)-- 1(Blue)	     
-	//    |   \   |	     
-	//   3(G)---- 2(Magenta)  
-	vector<Vtx> vecVtx;
+	//   0(Red)-- 1(Blue)
+	//    |   \   |
+	//   3(G)---- 2(Magenta)
+	vector<Vtx>	 vecVtx;
 	vector<UINT> vecIdx;
-	Vtx v;
+	Vtx			 v;
 
-	v.vPos = Vec3(-0.5f, 0.5f, 0.f);
-	v.vColor = Vec4(1.f, 0.f, 0.f, 1.f);
-	v.vUV = Vec2(0.f, 0.f);
-	v.vTangent = Vec3(1.f, 0.f, 0.f);
-	v.vNormal = Vec3(0.f, 0.f, -1.f);
+	v.vPos		= Vec3(-0.5f, 0.5f, 0.f);
+	v.vColor	= Vec4(1.f, 0.f, 0.f, 1.f);
+	v.vUV		= Vec2(0.f, 0.f);
+	v.vTangent	= Vec3(1.f, 0.f, 0.f);
+	v.vNormal	= Vec3(0.f, 0.f, -1.f);
 	v.vBinormal = Vec3(0.f, -1.f, 0.f);
 	vecVtx.push_back(v);
 
-	v.vPos = Vec3(0.5f, 0.5f, 0.f);
+	v.vPos	 = Vec3(0.5f, 0.5f, 0.f);
 	v.vColor = Vec4(0.f, 0.f, 1.f, 1.f);
-	v.vUV = Vec2(1.f, 0.f);	
+	v.vUV	 = Vec2(1.f, 0.f);
 	vecVtx.push_back(v);
 
-	v.vPos = Vec3(0.5f, -0.5f, 0.f);
+	v.vPos	 = Vec3(0.5f, -0.5f, 0.f);
 	v.vColor = Vec4(1.f, 0.f, 1.f, 1.f);
-	v.vUV = Vec2(1.f, 1.f);	
+	v.vUV	 = Vec2(1.f, 1.f);
 	vecVtx.push_back(v);
 
-	v.vPos = Vec3(-0.5f, -0.5f, 0.f);
+	v.vPos	 = Vec3(-0.5f, -0.5f, 0.f);
 	v.vColor = Vec4(0.f, 1.f, 0.f, 1.f);
-	v.vUV = Vec2(0.f, 1.f);
+	v.vUV	 = Vec2(0.f, 1.f);
 	vecVtx.push_back(v);
 
 	// 인덱스
@@ -68,23 +68,22 @@ void CAssetMgr::CreateDefaultMesh()
 	vecIdx.push_back(2);
 	vecIdx.push_back(0);
 	vecIdx.push_back(1);
-	
 
 	pMesh = new CMesh(true);
 	pMesh->Create(vecVtx.data(), vecVtx.size(), vecIdx.data(), vecIdx.size());
 	AddAsset(MESHrect, pMesh);
-		
+
 	vecIdx.clear();
 
 	// Topology LineStrip 용도
-	//   0(Red)-- 1(Blue)	     
-	//    |       |	     
-	//   3(G)---- 2(Magenta)   
+	//   0(Red)-- 1(Blue)
+	//    |       |
+	//   3(G)---- 2(Magenta)
 	vecIdx.push_back(0);
 	vecIdx.push_back(1);
 	vecIdx.push_back(2);
 	vecIdx.push_back(3);
-	vecIdx.push_back(0);	
+	vecIdx.push_back(0);
 
 	pMesh = new CMesh(true);
 	pMesh->Create(vecVtx.data(), vecVtx.size(), vecIdx.data(), vecIdx.size());
@@ -99,22 +98,22 @@ void CAssetMgr::CreateDefaultMesh()
 	// CircleMesh 만들기
 	// =================
 	// 중심 점
-	v.vPos = Vec3(0.f, 0.f, 0.f);
+	v.vPos	 = Vec3(0.f, 0.f, 0.f);
 	v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
-	v.vUV = Vec2(0.5f, 0.5f);
+	v.vUV	 = Vec2(0.5f, 0.5f);
 	vecVtx.push_back(v);
 
-	UINT iSlice = 40;
-	float fTheta = 0.f;
+	UINT  iSlice  = 40;
+	float fTheta  = 0.f;
 	float fRadius = 0.5f;
 
 	for (UINT i = 0; i <= iSlice; ++i)
 	{
 		fTheta = (XM_2PI / iSlice) * i;
 
-		v.vPos = Vec3(fRadius * cosf(fTheta), fRadius * sinf(fTheta), 0.f);
+		v.vPos	 = Vec3(fRadius * cosf(fTheta), fRadius * sinf(fTheta), 0.f);
 		v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
-		v.vUV = Vec2(0.f, 0.f);
+		v.vUV	 = Vec2(0.f, 0.f);
 
 		vecVtx.push_back(v);
 	}
@@ -129,7 +128,6 @@ void CAssetMgr::CreateDefaultMesh()
 	pMesh = new CMesh(true);
 	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
 	AddAsset(MESHcircle, pMesh);
-
 
 	// CircleMesh_Debug
 	vecIdx.clear();
@@ -149,8 +147,8 @@ void CAssetMgr::CreateDefaultMesh()
 	// =================
 	// CrossMesh 만들기
 	// =================
-	v.vPos = Vec3(0.f, 0.5f, 0.f);
-	v.vUV = Vec2(0.f, 0.f);
+	v.vPos	 = Vec3(0.f, 0.5f, 0.f);
+	v.vUV	 = Vec2(0.f, 0.f);
 	v.vColor = Vec4(0.f, 1.f, 0.f, 1.f);
 	vecVtx.push_back(v);
 
@@ -163,8 +161,10 @@ void CAssetMgr::CreateDefaultMesh()
 	v.vPos = Vec3(0.5f, 0.f, 0.f);
 	vecVtx.push_back(v);
 
-	vecIdx.push_back(0); vecIdx.push_back(1);
-	vecIdx.push_back(2); vecIdx.push_back(3);
+	vecIdx.push_back(0);
+	vecIdx.push_back(1);
+	vecIdx.push_back(2);
+	vecIdx.push_back(3);
 
 	pMesh = new CMesh(true);
 	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
@@ -178,134 +178,134 @@ void CAssetMgr::CreateDefaultMesh()
 	// Cube Mesh
 	// ==========
 	// 6개의 각 면 마다 각자의 방향벡터(노말, 탄젠트, 바이노말) 이 세팅되어야 하기 때문에
-	// 면 단위로 정점 4개씩 6면, 총 24개의 정점이 필요하다.	
+	// 면 단위로 정점 4개씩 6면, 총 24개의 정점이 필요하다.
 	Vtx arrCube[24] = {};
-	 
+
 	// 윗면
-	arrCube[0].vPos = Vec3(-0.5f, 0.5f, 0.5f);
-	arrCube[0].vColor = Vec4(1.f, 1.f, 1.f, 1.f);
-	arrCube[0].vUV = Vec2(0.f, 0.f);
+	arrCube[0].vPos	   = Vec3(-0.5f, 0.5f, 0.5f);
+	arrCube[0].vColor  = Vec4(1.f, 1.f, 1.f, 1.f);
+	arrCube[0].vUV	   = Vec2(0.f, 0.f);
 	arrCube[0].vNormal = Vec3(0.f, 1.f, 0.f);
 
-	arrCube[1].vPos = Vec3(0.5f, 0.5f, 0.5f);
-	arrCube[1].vColor = Vec4(1.f, 1.f, 1.f, 1.f);
-	arrCube[1].vUV = Vec2(0.f, 0.f);
+	arrCube[1].vPos	   = Vec3(0.5f, 0.5f, 0.5f);
+	arrCube[1].vColor  = Vec4(1.f, 1.f, 1.f, 1.f);
+	arrCube[1].vUV	   = Vec2(0.f, 0.f);
 	arrCube[1].vNormal = Vec3(0.f, 1.f, 0.f);
 
-	arrCube[2].vPos = Vec3(0.5f, 0.5f, -0.5f);
-	arrCube[2].vColor = Vec4(1.f, 1.f, 1.f, 1.f);
-	arrCube[2].vUV = Vec2(0.f, 0.f);
+	arrCube[2].vPos	   = Vec3(0.5f, 0.5f, -0.5f);
+	arrCube[2].vColor  = Vec4(1.f, 1.f, 1.f, 1.f);
+	arrCube[2].vUV	   = Vec2(0.f, 0.f);
 	arrCube[2].vNormal = Vec3(0.f, 1.f, 0.f);
 
-	arrCube[3].vPos = Vec3(-0.5f, 0.5f, -0.5f);
-	arrCube[3].vColor = Vec4(1.f, 1.f, 1.f, 1.f);
-	arrCube[3].vUV = Vec2(0.f, 0.f);
+	arrCube[3].vPos	   = Vec3(-0.5f, 0.5f, -0.5f);
+	arrCube[3].vColor  = Vec4(1.f, 1.f, 1.f, 1.f);
+	arrCube[3].vUV	   = Vec2(0.f, 0.f);
 	arrCube[3].vNormal = Vec3(0.f, 1.f, 0.f);
 
-
-	// 아랫 면	
-	arrCube[4].vPos = Vec3(-0.5f, -0.5f, -0.5f);
-	arrCube[4].vColor = Vec4(1.f, 0.f, 0.f, 1.f);
-	arrCube[4].vUV = Vec2(0.f, 0.f);
+	// 아랫 면
+	arrCube[4].vPos	   = Vec3(-0.5f, -0.5f, -0.5f);
+	arrCube[4].vColor  = Vec4(1.f, 0.f, 0.f, 1.f);
+	arrCube[4].vUV	   = Vec2(0.f, 0.f);
 	arrCube[4].vNormal = Vec3(0.f, -1.f, 0.f);
 
-	arrCube[5].vPos = Vec3(0.5f, -0.5f, -0.5f);
-	arrCube[5].vColor = Vec4(1.f, 0.f, 0.f, 1.f);
-	arrCube[5].vUV = Vec2(0.f, 0.f);
+	arrCube[5].vPos	   = Vec3(0.5f, -0.5f, -0.5f);
+	arrCube[5].vColor  = Vec4(1.f, 0.f, 0.f, 1.f);
+	arrCube[5].vUV	   = Vec2(0.f, 0.f);
 	arrCube[5].vNormal = Vec3(0.f, -1.f, 0.f);
 
-	arrCube[6].vPos = Vec3(0.5f, -0.5f, 0.5f);
-	arrCube[6].vColor = Vec4(1.f, 0.f, 0.f, 1.f);
-	arrCube[6].vUV = Vec2(0.f, 0.f);
+	arrCube[6].vPos	   = Vec3(0.5f, -0.5f, 0.5f);
+	arrCube[6].vColor  = Vec4(1.f, 0.f, 0.f, 1.f);
+	arrCube[6].vUV	   = Vec2(0.f, 0.f);
 	arrCube[6].vNormal = Vec3(0.f, -1.f, 0.f);
 
-	arrCube[7].vPos = Vec3(-0.5f, -0.5f, 0.5f);
-	arrCube[7].vColor = Vec4(1.f, 0.f, 0.f, 1.f);
-	arrCube[7].vUV = Vec2(0.f, 0.f);
+	arrCube[7].vPos	   = Vec3(-0.5f, -0.5f, 0.5f);
+	arrCube[7].vColor  = Vec4(1.f, 0.f, 0.f, 1.f);
+	arrCube[7].vUV	   = Vec2(0.f, 0.f);
 	arrCube[7].vNormal = Vec3(0.f, -1.f, 0.f);
 
 	// 왼쪽 면
-	arrCube[8].vPos = Vec3(-0.5f, 0.5f, 0.5f);
-	arrCube[8].vColor = Vec4(0.f, 1.f, 0.f, 1.f);
-	arrCube[8].vUV = Vec2(0.f, 0.f);
+	arrCube[8].vPos	   = Vec3(-0.5f, 0.5f, 0.5f);
+	arrCube[8].vColor  = Vec4(0.f, 1.f, 0.f, 1.f);
+	arrCube[8].vUV	   = Vec2(0.f, 0.f);
 	arrCube[8].vNormal = Vec3(-1.f, 0.f, 0.f);
 
-	arrCube[9].vPos = Vec3(-0.5f, 0.5f, -0.5f);
-	arrCube[9].vColor = Vec4(0.f, 1.f, 0.f, 1.f);
-	arrCube[9].vUV = Vec2(0.f, 0.f);
+	arrCube[9].vPos	   = Vec3(-0.5f, 0.5f, -0.5f);
+	arrCube[9].vColor  = Vec4(0.f, 1.f, 0.f, 1.f);
+	arrCube[9].vUV	   = Vec2(0.f, 0.f);
 	arrCube[9].vNormal = Vec3(-1.f, 0.f, 0.f);
 
-	arrCube[10].vPos = Vec3(-0.5f, -0.5f, -0.5f);
-	arrCube[10].vColor = Vec4(0.f, 1.f, 0.f, 1.f);
-	arrCube[10].vUV = Vec2(0.f, 0.f);
+	arrCube[10].vPos	= Vec3(-0.5f, -0.5f, -0.5f);
+	arrCube[10].vColor	= Vec4(0.f, 1.f, 0.f, 1.f);
+	arrCube[10].vUV		= Vec2(0.f, 0.f);
 	arrCube[10].vNormal = Vec3(-1.f, 0.f, 0.f);
 
-	arrCube[11].vPos = Vec3(-0.5f, -0.5f, 0.5f);
-	arrCube[11].vColor = Vec4(0.f, 1.f, 0.f, 1.f);
-	arrCube[11].vUV = Vec2(0.f, 0.f);
+	arrCube[11].vPos	= Vec3(-0.5f, -0.5f, 0.5f);
+	arrCube[11].vColor	= Vec4(0.f, 1.f, 0.f, 1.f);
+	arrCube[11].vUV		= Vec2(0.f, 0.f);
 	arrCube[11].vNormal = Vec3(-1.f, 0.f, 0.f);
 
 	// 오른쪽 면
-	arrCube[12].vPos = Vec3(0.5f, 0.5f, -0.5f);
-	arrCube[12].vColor = Vec4(0.f, 0.f, 1.f, 1.f);
-	arrCube[12].vUV = Vec2(0.f, 0.f);
+	arrCube[12].vPos	= Vec3(0.5f, 0.5f, -0.5f);
+	arrCube[12].vColor	= Vec4(0.f, 0.f, 1.f, 1.f);
+	arrCube[12].vUV		= Vec2(0.f, 0.f);
 	arrCube[12].vNormal = Vec3(1.f, 0.f, 0.f);
 
-	arrCube[13].vPos = Vec3(0.5f, 0.5f, 0.5f);
-	arrCube[13].vColor = Vec4(0.f, 0.f, 1.f, 1.f);
-	arrCube[13].vUV = Vec2(0.f, 0.f);
+	arrCube[13].vPos	= Vec3(0.5f, 0.5f, 0.5f);
+	arrCube[13].vColor	= Vec4(0.f, 0.f, 1.f, 1.f);
+	arrCube[13].vUV		= Vec2(0.f, 0.f);
 	arrCube[13].vNormal = Vec3(1.f, 0.f, 0.f);
 
-	arrCube[14].vPos = Vec3(0.5f, -0.5f, 0.5f);
-	arrCube[14].vColor = Vec4(0.f, 0.f, 1.f, 1.f);
-	arrCube[14].vUV = Vec2(0.f, 0.f);
+	arrCube[14].vPos	= Vec3(0.5f, -0.5f, 0.5f);
+	arrCube[14].vColor	= Vec4(0.f, 0.f, 1.f, 1.f);
+	arrCube[14].vUV		= Vec2(0.f, 0.f);
 	arrCube[14].vNormal = Vec3(1.f, 0.f, 0.f);
 
-	arrCube[15].vPos = Vec3(0.5f, -0.5f, -0.5f);
-	arrCube[15].vColor = Vec4(0.f, 0.f, 1.f, 1.f);
-	arrCube[15].vUV = Vec2(0.f, 0.f);
+	arrCube[15].vPos	= Vec3(0.5f, -0.5f, -0.5f);
+	arrCube[15].vColor	= Vec4(0.f, 0.f, 1.f, 1.f);
+	arrCube[15].vUV		= Vec2(0.f, 0.f);
 	arrCube[15].vNormal = Vec3(1.f, 0.f, 0.f);
 
 	// 뒷 면
-	arrCube[16].vPos = Vec3(0.5f, 0.5f, 0.5f);
-	arrCube[16].vColor = Vec4(1.f, 1.f, 0.f, 1.f);
-	arrCube[16].vUV = Vec2(0.f, 0.f);
+	arrCube[16].vPos	= Vec3(0.5f, 0.5f, 0.5f);
+	arrCube[16].vColor	= Vec4(1.f, 1.f, 0.f, 1.f);
+	arrCube[16].vUV		= Vec2(0.f, 0.f);
 	arrCube[16].vNormal = Vec3(0.f, 0.f, 1.f);
 
-	arrCube[17].vPos = Vec3(-0.5f, 0.5f, 0.5f);
-	arrCube[17].vColor = Vec4(1.f, 1.f, 0.f, 1.f);
-	arrCube[17].vUV = Vec2(0.f, 0.f);
+	arrCube[17].vPos	= Vec3(-0.5f, 0.5f, 0.5f);
+	arrCube[17].vColor	= Vec4(1.f, 1.f, 0.f, 1.f);
+	arrCube[17].vUV		= Vec2(0.f, 0.f);
 	arrCube[17].vNormal = Vec3(0.f, 0.f, 1.f);
 
-	arrCube[18].vPos = Vec3(-0.5f, -0.5f, 0.5f);
-	arrCube[18].vColor = Vec4(1.f, 1.f, 0.f, 1.f);
-	arrCube[18].vUV = Vec2(0.f, 0.f);
+	arrCube[18].vPos	= Vec3(-0.5f, -0.5f, 0.5f);
+	arrCube[18].vColor	= Vec4(1.f, 1.f, 0.f, 1.f);
+	arrCube[18].vUV		= Vec2(0.f, 0.f);
 	arrCube[18].vNormal = Vec3(0.f, 0.f, 1.f);
 
-	arrCube[19].vPos = Vec3(0.5f, -0.5f, 0.5f);
-	arrCube[19].vColor = Vec4(1.f, 1.f, 0.f, 1.f);
-	arrCube[19].vUV = Vec2(0.f, 0.f);
+	arrCube[19].vPos	= Vec3(0.5f, -0.5f, 0.5f);
+	arrCube[19].vColor	= Vec4(1.f, 1.f, 0.f, 1.f);
+	arrCube[19].vUV		= Vec2(0.f, 0.f);
 	arrCube[19].vNormal = Vec3(0.f, 0.f, 1.f);
 
 	// 앞 면
-	arrCube[20].vPos = Vec3(-0.5f, 0.5f, -0.5f);;
-	arrCube[20].vColor = Vec4(1.f, 0.f, 1.f, 1.f);
-	arrCube[20].vUV = Vec2(0.f, 0.f);
+	arrCube[20].vPos = Vec3(-0.5f, 0.5f, -0.5f);
+	;
+	arrCube[20].vColor	= Vec4(1.f, 0.f, 1.f, 1.f);
+	arrCube[20].vUV		= Vec2(0.f, 0.f);
 	arrCube[20].vNormal = Vec3(0.f, 0.f, -1.f);
 
-	arrCube[21].vPos = Vec3(0.5f, 0.5f, -0.5f);
-	arrCube[21].vColor = Vec4(1.f, 0.f, 1.f, 1.f);
-	arrCube[21].vUV = Vec2(0.f, 0.f);
+	arrCube[21].vPos	= Vec3(0.5f, 0.5f, -0.5f);
+	arrCube[21].vColor	= Vec4(1.f, 0.f, 1.f, 1.f);
+	arrCube[21].vUV		= Vec2(0.f, 0.f);
 	arrCube[21].vNormal = Vec3(0.f, 0.f, -1.f);
 
-	arrCube[22].vPos = Vec3(0.5f, -0.5f, -0.5f);
-	arrCube[22].vColor = Vec4(1.f, 0.f, 1.f, 1.f);
-	arrCube[22].vUV = Vec2(0.f, 0.f);
+	arrCube[22].vPos	= Vec3(0.5f, -0.5f, -0.5f);
+	arrCube[22].vColor	= Vec4(1.f, 0.f, 1.f, 1.f);
+	arrCube[22].vUV		= Vec2(0.f, 0.f);
 	arrCube[22].vNormal = Vec3(0.f, 0.f, -1.f);
 
-	arrCube[23].vPos = Vec3(-0.5f, -0.5f, -0.5f);
-	arrCube[23].vColor = Vec4(1.f, 0.f, 1.f, 1.f);
-	arrCube[23].vUV = Vec2(0.f, 0.f);
+	arrCube[23].vPos	= Vec3(-0.5f, -0.5f, -0.5f);
+	arrCube[23].vColor	= Vec4(1.f, 0.f, 1.f, 1.f);
+	arrCube[23].vUV		= Vec2(0.f, 0.f);
 	arrCube[23].vNormal = Vec3(0.f, 0.f, -1.f);
 
 	// 인덱스
@@ -363,12 +363,12 @@ void CAssetMgr::CreateDefaultMesh()
 	fRadius = 0.5f;
 
 	// Top
-	v.vPos = Vec3(0.f, fRadius, 0.f);
-	v.vUV = Vec2(0.5f, 0.f);
-	v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+	v.vPos	  = Vec3(0.f, fRadius, 0.f);
+	v.vUV	  = Vec2(0.5f, 0.f);
+	v.vColor  = Vec4(1.f, 1.f, 1.f, 1.f);
 	v.vNormal = v.vPos;
 	v.vNormal.Normalize();
-	v.vTangent = Vec3(1.f, 0.f, 0.f);
+	v.vTangent	= Vec3(1.f, 0.f, 0.f);
 	v.vBinormal = Vec3(0.f, 0.f, -1.f);
 	vecVtx.push_back(v);
 
@@ -390,12 +390,11 @@ void CAssetMgr::CreateDefaultMesh()
 		{
 			float theta = j * fSliceAngle;
 
-			v.vPos = Vec3(fRadius * sinf(i * fStackAngle) * cosf(j * fSliceAngle)
-				, fRadius * cosf(i * fStackAngle)
-				, fRadius * sinf(i * fStackAngle) * sinf(j * fSliceAngle));
+			v.vPos = Vec3(fRadius * sinf(i * fStackAngle) * cosf(j * fSliceAngle), fRadius * cosf(i * fStackAngle),
+						  fRadius * sinf(i * fStackAngle) * sinf(j * fSliceAngle));
 
-			v.vUV = Vec2(fUVXStep * j, fUVYStep * i);
-			v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+			v.vUV	  = Vec2(fUVXStep * j, fUVYStep * i);
+			v.vColor  = Vec4(1.f, 1.f, 1.f, 1.f);
 			v.vNormal = v.vPos;
 			v.vNormal.Normalize();
 
@@ -412,13 +411,13 @@ void CAssetMgr::CreateDefaultMesh()
 	}
 
 	// Bottom
-	v.vPos = Vec3(0.f, -fRadius, 0.f);
-	v.vUV = Vec2(0.5f, 1.f);
-	v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+	v.vPos	  = Vec3(0.f, -fRadius, 0.f);
+	v.vUV	  = Vec2(0.5f, 1.f);
+	v.vColor  = Vec4(1.f, 1.f, 1.f, 1.f);
 	v.vNormal = v.vPos;
 	v.vNormal.Normalize();
 
-	v.vTangent = Vec3(1.f, 0.f, 0.f);
+	v.vTangent	= Vec3(1.f, 0.f, 0.f);
 	v.vBinormal = Vec3(0.f, 0.f, -1.f);
 	vecVtx.push_back(v);
 
@@ -436,18 +435,18 @@ void CAssetMgr::CreateDefaultMesh()
 	{
 		for (UINT j = 0; j < iSliceCount; ++j)
 		{
-			// + 
+			// +
 			// | \
 			// +--+
-			vecIdx.push_back((iSliceCount + 1) * (i)+(j)+1);
+			vecIdx.push_back((iSliceCount + 1) * (i) + (j) + 1);
 			vecIdx.push_back((iSliceCount + 1) * (i + 1) + (j + 1) + 1);
-			vecIdx.push_back((iSliceCount + 1) * (i + 1) + (j)+1);
+			vecIdx.push_back((iSliceCount + 1) * (i + 1) + (j) + 1);
 
 			// +--+
 			//  \ |
 			//    +
-			vecIdx.push_back((iSliceCount + 1) * (i)+(j)+1);
-			vecIdx.push_back((iSliceCount + 1) * (i)+(j + 1) + 1);
+			vecIdx.push_back((iSliceCount + 1) * (i) + (j) + 1);
+			vecIdx.push_back((iSliceCount + 1) * (i) + (j + 1) + 1);
 			vecIdx.push_back((iSliceCount + 1) * (i + 1) + (j + 1) + 1);
 		}
 	}
@@ -472,7 +471,7 @@ void CAssetMgr::CreateDefaultMesh()
 	// ===========
 	// Cone Mesh
 	// ===========
-	fRadius = 0.5f;
+	fRadius		  = 0.5f;
 	float fHeight = 1.f;
 
 	iSliceCount = 100; // 원뿔의 세로 분할 개수
@@ -485,16 +484,16 @@ void CAssetMgr::CreateDefaultMesh()
 	for (UINT i = 0; i <= iSliceCount; ++i)
 	{
 		// Top
-		v.vPos = Vec3(0.f, 0.f, 0.f);
-		v.vUV = Vec2(0.5f, 0.f);
+		v.vPos	 = Vec3(0.f, 0.f, 0.f);
+		v.vUV	 = Vec2(0.5f, 0.f);
 		v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
 		vecVtx.push_back(v);
 
 		// Body
 		float theta = i * fSliceAngle;
-		v.vPos = Vec3(fRadius * cosf(theta), fRadius * sinf(theta), fHeight);
-		v.vUV = Vec2(fUVXStep * i, fUVYStep);
-		v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+		v.vPos		= Vec3(fRadius * cosf(theta), fRadius * sinf(theta), fHeight);
+		v.vUV		= Vec2(fUVXStep * i, fUVYStep);
+		v.vColor	= Vec4(1.f, 1.f, 1.f, 1.f);
 		vecVtx.push_back(v);
 
 		// vecVtx 저장 순서 : {꼭대기1, 정점1, 꼭대기2, 정점2, ...}
@@ -509,18 +508,19 @@ void CAssetMgr::CreateDefaultMesh()
 			vecVtx[lastVtxIdx - 3].vBinormal = vtx1.vBinormal = -vtx1.vPos.Normalize();
 			vecVtx[lastVtxIdx - 3].vTangent = vtx1.vTangent = vtx1.vBinormal.Cross(vtx1.vNormal).Normalize();
 
-			//vecVtx[lastVtxIdx].vNormal = vtx2.vNormal = vtx1.vPos.Cross(vtx2.vPos).Normalize();
-			//vecVtx[lastVtxIdx].vBinormal = vtx2.vBinormal = -vtx2.vPos.Normalize();
-			//vecVtx[lastVtxIdx].vTangent = vtx2.vTangent = vtx2.vBinormal.Cross(vtx2.vNormal).Normalize();
-			
+			// vecVtx[lastVtxIdx].vNormal = vtx2.vNormal = vtx1.vPos.Cross(vtx2.vPos).Normalize();
+			// vecVtx[lastVtxIdx].vBinormal = vtx2.vBinormal = -vtx2.vPos.Normalize();
+			// vecVtx[lastVtxIdx].vTangent = vtx2.vTangent = vtx2.vBinormal.Cross(vtx2.vNormal).Normalize();
+
 			//// Binormal : 아랫면 정점에서 원뿔 꼭대기를 향하는 방향 벡터
-			//vecVtx[lastVtxIdx - 3] .vBinormal = vtx1.vBinormal = (vecVtx[lastVtxIdx - 3].vPos - vtx1.vPos).Normalize();
+			// vecVtx[lastVtxIdx - 3] .vBinormal = vtx1.vBinormal = (vecVtx[lastVtxIdx - 3].vPos -
+			// vtx1.vPos).Normalize();
 			//
 			//// Tangent : 정점2에서 정점1로 향하는 방향 벡터
-			//vecVtx[lastVtxIdx - 3].vTangent = vtx1.vTangent = (vtx2.vPos - vtx1.vPos).Normalize();
+			// vecVtx[lastVtxIdx - 3].vTangent = vtx1.vTangent = (vtx2.vPos - vtx1.vPos).Normalize();
 
 			//// Normal : Binormal과 Tangent의 외적
-			//vecVtx[lastVtxIdx - 3].vNormal = vtx1.vNormal = (vtx1.vBinormal).Cross(vtx1.vTangent).Normalize();
+			// vecVtx[lastVtxIdx - 3].vNormal = vtx1.vNormal = (vtx1.vBinormal).Cross(vtx1.vTangent).Normalize();
 		}
 	}
 
@@ -529,7 +529,7 @@ void CAssetMgr::CreateDefaultMesh()
 		// 인덱스
 		if (i < iSliceCount)
 		{
-			vecIdx.push_back(2 * i);	
+			vecIdx.push_back(2 * i);
 			vecIdx.push_back(2 * i + 3);
 			vecIdx.push_back(2 * i + 1);
 		}
@@ -539,22 +539,22 @@ void CAssetMgr::CreateDefaultMesh()
 	{
 		float theta = i * fSliceAngle;
 
-		v.vPos = Vec3(fRadius * cosf(theta), fRadius * sinf(theta), fHeight);
-		v.vUV = Vec2(fUVXStep * i, fUVYStep);
-		v.vNormal = Vec3(0.f, 0.f, 1.f);
-		v.vTangent = Vec3(1.f, 0.f, 0.f);
+		v.vPos		= Vec3(fRadius * cosf(theta), fRadius * sinf(theta), fHeight);
+		v.vUV		= Vec2(fUVXStep * i, fUVYStep);
+		v.vNormal	= Vec3(0.f, 0.f, 1.f);
+		v.vTangent	= Vec3(1.f, 0.f, 0.f);
 		v.vBinormal = Vec3(0.f, 1.f, 0.f);
 		vecVtx.push_back(v);
 	}
 
 	// 아래면의 중심 정점 추가
-	v.vPos = Vec3(0.f, 0, 1.f);
-	v.vUV = Vec2(0.5f, 1.f);
-	v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+	v.vPos	  = Vec3(0.f, 0, 1.f);
+	v.vUV	  = Vec2(0.5f, 1.f);
+	v.vColor  = Vec4(1.f, 1.f, 1.f, 1.f);
 	v.vNormal = v.vPos;
 	v.vNormal.Normalize();
 
-	v.vTangent = Vec3(1.f, 0.f, 0.f);
+	v.vTangent	= Vec3(1.f, 0.f, 0.f);
 	v.vBinormal = Vec3(0.f, 0.f, -1.f);
 	vecVtx.push_back(v);
 
@@ -573,23 +573,23 @@ void CAssetMgr::CreateDefaultMesh()
 	vecIdx.clear();
 
 	//// Top
-	//v.vPos = Vec3(0.f, 0.f, 0.f);
-	//v.vUV = Vec2(0.5f, 0.f);
-	//v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
-	//v.vNormal = Vec3(0.f, 0.f, -1.f);
-	//v.vTangent = Vec3(1.f, 0.f, 0.f);
-	//v.vBinormal = Vec3(0.f, 1.f, 0.f);
-	//vecVtx.push_back(v);
+	// v.vPos = Vec3(0.f, 0.f, 0.f);
+	// v.vUV = Vec2(0.5f, 0.f);
+	// v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+	// v.vNormal = Vec3(0.f, 0.f, -1.f);
+	// v.vTangent = Vec3(1.f, 0.f, 0.f);
+	// v.vBinormal = Vec3(0.f, 1.f, 0.f);
+	// vecVtx.push_back(v);
 
 	//// Body
-	//iSliceCount = 80; // 원뿔의 세로 분할 개수
+	// iSliceCount = 80; // 원뿔의 세로 분할 개수
 
-	//fSliceAngle = XM_2PI / iSliceCount;
+	// fSliceAngle = XM_2PI / iSliceCount;
 
-	//fUVXStep = 1.f / (float)iSliceCount;
-	//fUVYStep = 1.f;
+	// fUVXStep = 1.f / (float)iSliceCount;
+	// fUVYStep = 1.f;
 
-	//for (UINT i = 0; i <= iSliceCount; ++i)
+	// for (UINT i = 0; i <= iSliceCount; ++i)
 	//{
 	//	float theta = i * fSliceAngle;
 
@@ -633,21 +633,20 @@ void CAssetMgr::CreateDefaultMesh()
 	// ===========
 	// Cylinder Mesh
 	// ===========
-	fHeight = 1.0f;
-	fRadius = 0.5f;
+	fHeight		= 1.0f;
+	fRadius		= 0.5f;
 	iSliceCount = 30; // 세로 분할 개수
-
 
 	fSliceAngle = XM_2PI / iSliceCount;
 
 	fUVXStep = 1.f / (float)iSliceCount;
 
 	// 상단 원판 중앙 정점 0
-	v.vPos = Vec3(0.f, fHeight * 0.5f, 0.f);
-	v.vUV = Vec2(0.5f, 0.f);
-	v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
-	v.vNormal = Vec3(0.f, 1.f, 0.f);
-	v.vTangent = Vec3(1.f, 0.f, 0.f);
+	v.vPos		= Vec3(0.f, fHeight * 0.5f, 0.f);
+	v.vUV		= Vec2(0.5f, 0.f);
+	v.vColor	= Vec4(1.f, 1.f, 1.f, 1.f);
+	v.vNormal	= Vec3(0.f, 1.f, 0.f);
+	v.vTangent	= Vec3(1.f, 0.f, 0.f);
 	v.vBinormal = Vec3(0.f, 0.f, -1.f);
 	vecVtx.push_back(v);
 
@@ -656,22 +655,22 @@ void CAssetMgr::CreateDefaultMesh()
 	{
 		float theta = i * fSliceAngle;
 
-		v.vPos = Vec3(fRadius * cosf(theta), fHeight * 0.5f, fRadius * sinf(theta));
-		v.vUV = Vec2(fUVXStep * i, 0.f);
-		v.vColor = Vec4(1.f, 0.f, 0.f, 1.f);
-		v.vNormal = Vec3(0.f, 1.f, 0.f);
-		v.vTangent = Vec3(-sinf(theta), 0.f, cosf(theta));
+		v.vPos		= Vec3(fRadius * cosf(theta), fHeight * 0.5f, fRadius * sinf(theta));
+		v.vUV		= Vec2(fUVXStep * i, 0.f);
+		v.vColor	= Vec4(1.f, 0.f, 0.f, 1.f);
+		v.vNormal	= Vec3(0.f, 1.f, 0.f);
+		v.vTangent	= Vec3(-sinf(theta), 0.f, cosf(theta));
 		v.vBinormal = Vec3(-cosf(theta), 0.f, -sinf(theta));
 
 		vecVtx.push_back(v);
 	}
 
 	// 하단 원판 중앙 정점 5
-	v.vPos = Vec3(0.f, -fHeight * 0.5f, 0.f);
-	v.vUV = Vec2(0.5f, 1.f);
-	v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
-	v.vNormal = Vec3(0.f, -1.f, 0.f);
-	v.vTangent = Vec3(1.f, 0.f, 0.f);
+	v.vPos		= Vec3(0.f, -fHeight * 0.5f, 0.f);
+	v.vUV		= Vec2(0.5f, 1.f);
+	v.vColor	= Vec4(1.f, 1.f, 1.f, 1.f);
+	v.vNormal	= Vec3(0.f, -1.f, 0.f);
+	v.vTangent	= Vec3(1.f, 0.f, 0.f);
 	v.vBinormal = Vec3(0.f, 0.f, 1.f);
 	vecVtx.push_back(v);
 
@@ -680,11 +679,11 @@ void CAssetMgr::CreateDefaultMesh()
 	{
 		float theta = i * fSliceAngle;
 
-		v.vPos = Vec3(fRadius * cosf(theta), -fHeight * 0.5f, fRadius * sinf(theta));
-		v.vUV = Vec2(fUVXStep * i, 1.f);
-		v.vColor = Vec4(0.f, 1.f, 0.f, 1.f);
-		v.vNormal = Vec3(0.f, -1.f, 0.f);
-		v.vTangent = Vec3(-sinf(theta), 0.f, cosf(theta));
+		v.vPos		= Vec3(fRadius * cosf(theta), -fHeight * 0.5f, fRadius * sinf(theta));
+		v.vUV		= Vec2(fUVXStep * i, 1.f);
+		v.vColor	= Vec4(0.f, 1.f, 0.f, 1.f);
+		v.vNormal	= Vec3(0.f, -1.f, 0.f);
+		v.vTangent	= Vec3(-sinf(theta), 0.f, cosf(theta));
 		v.vBinormal = Vec3(-cosf(theta), 0.f, -sinf(theta));
 
 		vecVtx.push_back(v);
@@ -695,20 +694,20 @@ void CAssetMgr::CreateDefaultMesh()
 	{
 		float theta = i * fSliceAngle;
 
-		v.vPos = Vec3(fRadius * cosf(theta), fHeight * 0.5f, fRadius * sinf(theta));
-		v.vUV = Vec2(fUVXStep * i, 0.f);
-		v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
-		v.vNormal = Vec3(cosf(theta), 0.f, sinf(theta));
-		v.vTangent = Vec3(-sinf(theta), 0.f, cosf(theta));
+		v.vPos		= Vec3(fRadius * cosf(theta), fHeight * 0.5f, fRadius * sinf(theta));
+		v.vUV		= Vec2(fUVXStep * i, 0.f);
+		v.vColor	= Vec4(1.f, 1.f, 1.f, 1.f);
+		v.vNormal	= Vec3(cosf(theta), 0.f, sinf(theta));
+		v.vTangent	= Vec3(-sinf(theta), 0.f, cosf(theta));
 		v.vBinormal = Vec3(0.f, 1.f, 0.f);
 
 		vecVtx.push_back(v);
 
-		v.vPos = Vec3(fRadius * cosf(theta), -fHeight * 0.5f, fRadius * sinf(theta));
-		v.vUV = Vec2(fUVXStep * i, 1.f);
-		v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
-		v.vNormal = Vec3(cosf(theta), 0.f, sinf(theta));
-		v.vTangent = Vec3(-sinf(theta), 0.f, cosf(theta));
+		v.vPos		= Vec3(fRadius * cosf(theta), -fHeight * 0.5f, fRadius * sinf(theta));
+		v.vUV		= Vec2(fUVXStep * i, 1.f);
+		v.vColor	= Vec4(1.f, 1.f, 1.f, 1.f);
+		v.vNormal	= Vec3(cosf(theta), 0.f, sinf(theta));
+		v.vTangent	= Vec3(-sinf(theta), 0.f, cosf(theta));
 		v.vBinormal = Vec3(0.f, -1.f, 0.f);
 
 		vecVtx.push_back(v);
@@ -717,18 +716,17 @@ void CAssetMgr::CreateDefaultMesh()
 	// 상단 원판 인덱스
 	for (UINT i = 1; i <= iSliceCount; ++i)
 	{
-		vecIdx.push_back(0); // 상단 원판 중앙 정점
-		vecIdx.push_back(i); // 현재 정점
+		vecIdx.push_back(0);					 // 상단 원판 중앙 정점
+		vecIdx.push_back(i);					 // 현재 정점
 		vecIdx.push_back((i % iSliceCount) + 1); // 다음 정점
 	}
-
 
 	// 하단 원판 인덱스 2+4
 	UINT baseIndex = (iSliceCount + 3);
 	for (UINT i = 1; i <= iSliceCount; ++i)
 	{
-		vecIdx.push_back(baseIndex); // 하단 원판 중앙 정점
-		vecIdx.push_back(baseIndex + i); // 현재 정점
+		vecIdx.push_back(baseIndex);						   // 하단 원판 중앙 정점
+		vecIdx.push_back(baseIndex + i);					   // 현재 정점
 		vecIdx.push_back(baseIndex + ((i % iSliceCount) + 1)); // 다음 정점
 	}
 
@@ -750,7 +748,6 @@ void CAssetMgr::CreateDefaultMesh()
 	vecVtx.clear();
 	vecIdx.clear();
 #pragma endregion
-
 }
 
 void CAssetMgr::CreateDefaultGraphicsShader()
@@ -760,7 +757,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// =================================
 	Ptr<CGraphicsShader> pShader = nullptr;
 
-	pShader = new CGraphicsShader;	
+	pShader = new CGraphicsShader;
 	pShader->CreateVertexShader(FXstd2d, FN_VS_std2d);
 	pShader->CreatePixelShader(FXstd2d, FN_PS_std2d);
 
@@ -768,14 +765,12 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->SetDSType(DS_TYPE::LESS);
 	pShader->SetBSType(BS_TYPE::DEFAULT);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
-		
-	// Parameter	
+
+	// Parameter
 	pShader->AddScalarParam(SCALAR_PARAM::INT_0, "Test Param");
 	pShader->AddTexParam(TEX_PARAM::TEX_0, "Output Texture 1");
-	
+
 	AddAsset(SHADER_std2d, pShader.Get());
-
-
 
 	// ===========
 	// Std3DShader
@@ -785,7 +780,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->CreatePixelShader(FXstd3d, FN_PS_std3d);
 
 	pShader->SetRSType(RS_TYPE::CULL_BACK);
-	//pShader->SetRSType(RS_TYPE::WIRE_FRAME);
+	// pShader->SetRSType(RS_TYPE::WIRE_FRAME);
 	pShader->SetDSType(DS_TYPE::LESS);
 	pShader->SetBSType(BS_TYPE::DEFAULT);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
@@ -900,7 +895,6 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
 	AddAsset(SHADER_effect, pShader.Get());
 
-
 	// =============
 	// TileMapShader
 	// =============
@@ -926,11 +920,11 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
 	pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
-	pShader->SetDSType(DS_TYPE::NO_WRITE);		// 깊이 테스트는 진행, 깊이는 기록 X
+	pShader->SetDSType(DS_TYPE::NO_WRITE); // 깊이 테스트는 진행, 깊이는 기록 X
 	pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
 
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
-	
+
 	AddAsset(SHADER_particlerender, pShader.Get());
 
 	// =================================
@@ -968,7 +962,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	AddAsset(SHADER_skybox, pShader.Get());
 
 	// =================================
-	// Distortion Shader	
+	// Distortion Shader
 	// RS_TYPE		: CULL_BACK
 	// DS_TYPE		: NO_TEST_NO_WRITE
 	// BS_TYPE		: Default
@@ -1010,7 +1004,6 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
 	AddAsset(L"ShadowMapShader", pShader.Get());
 
-
 	// ===========
 	// Tess Shader
 	// ===========
@@ -1040,15 +1033,12 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->AddScalarParam(SCALAR_PARAM::VEC4_1, "Tess Divide");
 	pShader->AddScalarParam(SCALAR_PARAM::FLOAT_0, "Tess Power");
 
-
 	pShader->SetRSType(RS_TYPE::CULL_BACK);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
 	pShader->SetTopology(D3D_PRIMITIVE_TOPOLOGY_3_CONTROL_POINT_PATCHLIST);
 
 	AddAsset(L"LandScapeShader", pShader.Get());
 }
-
-
 
 void CAssetMgr::CreateDefaultMaterial()
 {
@@ -1058,28 +1048,28 @@ void CAssetMgr::CreateDefaultMaterial()
 
 	// Std2DMtrl
 	pMtrl = new CMaterial(true);
-	//pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_std2d));
+	// pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_std2d));
 	strShaderPath = "GraphicsShader\\Std2DShader.gs";
 	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset<CMaterial>(MTRL_std2d, pMtrl);
 
 	// Std3DMtrl
 	pMtrl = new CMaterial(true);
-	//pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_std3d));
+	// pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_std3d));
 	strShaderPath = "GraphicsShader\\Std3DShader.gs";
 	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset<CMaterial>(MTRL_std3d, pMtrl);
 
 	// Std3D_DeferredMtrl
 	pMtrl = new CMaterial(true);
-	//pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_deferred));
+	// pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_deferred));
 	strShaderPath = "GraphicsShader\\Std3D_DeferredShader.gs";
 	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset<CMaterial>(MTRL_deferred, pMtrl);
 
 	// DirLightMtrl
 	pMtrl = new CMaterial(true);
-	//pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_dirlight));
+	// pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_dirlight));
 	strShaderPath = "GraphicsShader\\DirLightShader.gs";
 	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_0, FindAsset<CTexture>(L"PositionTargetTex"));
@@ -1089,7 +1079,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
 	// PointLightMtrl
 	pMtrl = new CMaterial(true);
-	//pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_pointlight));
+	// pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_pointlight));
 	strShaderPath = "GraphicsShader\\PointLightShader.gs";
 	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_0, FindAsset<CTexture>(L"PositionTargetTex"));
@@ -1099,7 +1089,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
 	// SpotLightMtrl
 	pMtrl = new CMaterial(true);
-	//pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_spotlight));
+	// pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_spotlight));
 	strShaderPath = "GraphicsShader\\SpotLightShader.gs";
 	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_0, FindAsset<CTexture>(L"PositionTargetTex"));
@@ -1108,7 +1098,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
 	// MergeMtrl
 	pMtrl = new CMaterial(true);
-	//pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_merge));
+	// pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_merge));
 	strShaderPath = "GraphicsShader\\MergeShader.gs";
 	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"ColorTargetTex"));
@@ -1119,7 +1109,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
 	// DecalMtrl
 	pMtrl = new CMaterial(true);
-	//pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DecalShader"));
+	// pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DecalShader"));
 	strShaderPath = "GraphicsShader\\DecalShader.gs";
 	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
@@ -1127,56 +1117,56 @@ void CAssetMgr::CreateDefaultMaterial()
 
 	// BackgroundMtrl
 	pMtrl = new CMaterial(true);
-	//pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_std2d));
+	// pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_std2d));
 	strShaderPath = "GraphicsShader\\Std2DShader.gs";
 	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset<CMaterial>(MTRL_background, pMtrl);
 
 	// TileMapMtrl
 	pMtrl = new CMaterial(true);
-	//pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_tilemap));
+	// pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_tilemap));
 	strShaderPath = "GraphicsShader\\TileMapShader.gs";
 	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset<CMaterial>(MTRL_tilemap, pMtrl);
 
 	// ParticleMtrl
 	pMtrl = new CMaterial(true);
-	//pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_particlerender));
+	// pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_particlerender));
 	strShaderPath = "GraphicsShader\\ParticleRenderShader.gs";
 	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset<CMaterial>(MTRL_particle, pMtrl);
 
 	// SkyBoxMtrl
 	pMtrl = new CMaterial(true);
-	//pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_skybox));
+	// pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_skybox));
 	strShaderPath = "GraphicsShader\\SkyBoxShader.gs";
 	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset<CMaterial>(MTRL_skybox, pMtrl);
 
 	// GrayFilterMtrl
 	pMtrl = new CMaterial(true);
-	//pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_grayfilter));
+	// pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_grayfilter));
 	strShaderPath = "GraphicsShader\\GrayFilterShader.gs";
 	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset<CMaterial>(MTRL_grayfilter, pMtrl);
 
 	// DistortionMtrl
 	pMtrl = new CMaterial(true);
-	//pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_distortion));
+	// pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_distortion));
 	strShaderPath = "GraphicsShader\\DistortionShader.gs";
 	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset<CMaterial>(MTRL_distortion, pMtrl);
 
 	// DebugShapeMtrl
 	pMtrl = new CMaterial(true);
-	//pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_debugshape));
+	// pMtrl->SetShader(FindAsset<CGraphicsShader>(SHADER_debugshape));
 	strShaderPath = "GraphicsShader\\DebugShapeShader.gs";
 	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset<CMaterial>(MTRL_debugshape, pMtrl);
 
 	// ShadowMapMtrl
 	pMtrl = new CMaterial(true);
-	//pMtrl->SetShader(FindAsset<CGraphicsShader>(L"ShadowMapShader"));
+	// pMtrl->SetShader(FindAsset<CGraphicsShader>(L"ShadowMapShader"));
 	strShaderPath = "GraphicsShader\\ShadowMapShader.gs";
 	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset(L"ShadowMapMtrl", pMtrl);
@@ -1192,9 +1182,6 @@ void CAssetMgr::CreateDefaultMaterial()
 	AddAsset(L"LandScapeMtrl", pMtrl);
 }
 
-
-
-
 #include "CSetColorShader.h"
 #include "CParticleUpdate.h"
 void CAssetMgr::CreateDefaultComputeShader()
@@ -1202,14 +1189,13 @@ void CAssetMgr::CreateDefaultComputeShader()
 	Ptr<CComputeShader> pShader = nullptr;
 
 	// SetColorShader
-	pShader = new CSetColorShader;	
+	pShader = new CSetColorShader;
 	AddAsset(SHADER_setcolor, pShader.Get());
 
 	// ParticleUpdateShader
 	pShader = new CParticleUpdate;
 	AddAsset(SHADER_particleupdate, pShader.Get());
 }
-
 
 #include "CSound.h"
 void CAssetMgr::InitSound()

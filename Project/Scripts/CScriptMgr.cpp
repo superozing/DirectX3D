@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CScriptMgr.h"
 
 #include "CBackgroundScript.h"
@@ -26,7 +26,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPhysXMgrScript");
 }
 
-CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
+CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 {
 	if (L"CBackgroundScript" == _strScriptName)
 		return new CBackgroundScript;
@@ -51,7 +51,7 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 	return nullptr;
 }
 
-CScript * CScriptMgr::GetScript(UINT _iScriptType)
+CScript* CScriptMgr::GetScript(UINT _iScriptType)
 {
 	switch (_iScriptType)
 	{
@@ -89,7 +89,7 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	return nullptr;
 }
 
-const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
+const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 {
 	switch ((SCRIPT_TYPE)_pScript->GetScriptType())
 	{
@@ -132,7 +132,6 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 	case SCRIPT_TYPE::PHYSXMGRSCRIPT:
 		return L"CPhysXMgrScript";
 		break;
-
 	}
 	return nullptr;
 }
