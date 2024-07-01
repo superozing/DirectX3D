@@ -55,10 +55,41 @@ void		  CPlayerScript::begin()
 	// m_Missile = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\missile.pref", L"prefab\\missile.pref");
 }
 
+#include "CSpringArm.h"
+
 void CPlayerScript::tick()
 {
 	m_FSM->Update();
 	state = magic_enum::enum_name((PLAYER_STATE)m_FSM->GetCurState());
+
+	// TEST : 스프링 암 정보 저장 세팅 테스트
+	if (KEY_TAP(KEY::_1))
+	{
+		auto sa	  = GetOwner()->GetScript<CSpringArm>();
+		auto info = sa->GetInfo();
+		info.vDir = Vec3(1.f, 0.f, 1.f);
+		info.vOffset;
+		info.vDirOffset;
+		info.fDistance	  = 1000.f;
+		info.fCamSpeed	  = 30.f;
+		info.fCamRotSpeed = 20.f;
+		info.Type		  = true;
+		sa->SetInfo(info);
+	}
+	if (KEY_TAP(_2))
+	{
+		auto sa	  = GetOwner()->GetScript<CSpringArm>();
+		auto info = sa->GetInfo();
+		info.vDir = Vec3(0.f, 1.f, 1.f);
+		info.vOffset;
+		info.vDirOffset;
+		info.fDistance	  = 500.f;
+		info.fCamSpeed	  = 20.f;
+		info.fCamRotSpeed = 20.f;
+		info.Type		  = true;
+		sa->SetInfo(info);
+	}
+	// 스프링 암 테스트 끝
 
 	Vec3 vPos = Transform()->GetRelativePos();
 	Vec3 vRot = Transform()->GetRelativeRotation();
