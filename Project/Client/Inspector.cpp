@@ -232,12 +232,14 @@ void Inspector::ObjectLayer()
 
 		string strLayer = LayerName;
 
+		static auto mLayer = GamePlayStatic::GetLayerMap();
+
 		if (ImGui::BeginCombo("##ObjLayer", strLayer.c_str()))
 		{
-			for (int i = 0; i < 32; ++i)
+			for (size_t i = 0; i < mLayer.size(); ++i)
 			{
-				int	   CurLayer		= i;
-				string CurLayerName = ToString(CurLevel->GetLayer(CurLayer)->GetName());
+				size_t CurLayer		= mLayer[i].first;
+				string CurLayerName = mLayer[i].second;
 
 				if (!magic_enum::enum_cast<LAYER>(CurLayerName).has_value())
 					continue;
@@ -277,13 +279,13 @@ int Inspector::PrefabLayer()
 
 	string strLayer = ToString(CurLevel->GetLayer(LayerIdx)->GetName());
 
+	static auto mLayer = GamePlayStatic::GetLayerMap();
 	if (ImGui::BeginCombo("##ObjLayer", strLayer.c_str()))
 	{
-		for (int i = 0; i < 32; ++i)
+		for (size_t i = 0; i < mLayer.size(); ++i)
 		{
-			int CurLayer = i;
-
-			string CurLayerName = ToString(CurLevel->GetLayer(CurLayer)->GetName());
+			size_t CurLayer		= mLayer[i].first;
+			string CurLayerName = mLayer[i].second;
 
 			if (!magic_enum::enum_cast<LAYER>(CurLayerName).has_value())
 				continue;
@@ -459,7 +461,6 @@ void Inspector::CheckTargetComponent(COMPONENT_TYPE _type)
 		m_TargetObject->AddComponent(new CParticleSystem);
 		SetTargetObject(GetTargetObject());
 		break;
-	case COMPONENT_TYPE::SKYBOX:
 		m_TargetObject->AddComponent(new CSkyBox);
 		SetTargetObject(GetTargetObject());
 		break;
@@ -467,7 +468,7 @@ void Inspector::CheckTargetComponent(COMPONENT_TYPE _type)
 		m_TargetObject->AddComponent(new CDecal);
 		SetTargetObject(GetTargetObject());
 		break;
-	//case COMPONENT_TYPE::PHYSX:
+	// case COMPONENT_TYPE::PHYSX:
 	//	m_TargetObject->AddComponent(new CPhysX);
 	//	SetTargetObject(GetTargetObject());
 	//	break;

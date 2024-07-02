@@ -240,6 +240,7 @@ void CLevelSaveLoad::LoadLayer(CLayer* _Layer, FILE* _File)
 	{
 		CGameObject* pObject = LoadGameObject(_File);
 		_Layer->AddObject(pObject, false);
+		_Layer->SetName(ToString(magic_enum::enum_name((LAYER)i)));
 	}
 }
 
@@ -249,7 +250,6 @@ void CLevelSaveLoad::LoadLayer(CLayer* _Layer, ifstream& fin)
 	string str;
 	Utils::GetLineUntilString(fin, TagLayerName);
 	getline(fin, str);
-	_Layer->SetName(str);
 
 	int objCnt;
 	Utils::GetLineUntilString(fin, TagObjCount);
