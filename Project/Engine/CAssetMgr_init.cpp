@@ -945,6 +945,9 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
 	pShader->AddTexParam(TEX_PARAM::TEX_0, "DynamicUI Texture");
 
+	pShader->AddScalarParam(SCALAR_PARAM::BOOL_0, "Use Expand Center");
+	pShader->AddScalarParam(SCALAR_PARAM::FLOAT_0, "Expand Center Ratio", 0.f, 1.f);
+
 	AddAsset(L"DynamicUIShader", pShader.Get());
 
 	// ================

@@ -111,7 +111,6 @@ float4 PS_DynamicUI(GS_OUT _in) : SV_Target
         // ExpandCenterRatio;
         // 어떻게 float 하나를 가지고 중앙의 uv 값을 조절할 것인가?
         
-        
         // 수식을 생각해보아요.
         
         // uv x가 
@@ -119,10 +118,30 @@ float4 PS_DynamicUI(GS_OUT _in) : SV_Target
         // (0.5 - ExpandCenterRatio / 2) ~ (0.5 + ExpandCenterRatio / 2) 사이면 0.5의 UVx로 고정
         // (0.5 + ExpandCenterRatio / 2) ~ 1.f 사이면 0.5 ~ 1의 UVx로 보간
         
-        float CenterUVMin = ExpandCenterRatio / 2.f;
+        float CenterUVMin = 0.5 - ExpandCenterRatio / 2.f;
+        float CenterUVMax = 0.5 + ExpandCenterRatio / 2.f;
+        
+        float UVx = _in.vUV.x;
         
         
-        
+        if (UVx < CenterUVMin)
+        {
+            // 0 ~ CenterUVMin 사이의 비율 계산
+            float t = UVx / CenterUVMin;
+            _in.vUV.x = lerp(0.f, 0.5, t);
+
+        }
+        else if (UVx > CenterUVMax)
+        {
+            // 0 ~ CenterUVMax 사이의 비율 계산
+            float t = (UVx - CenterUVMax) / (1.f - CenterUVMax);
+            _in.vUV.x = lerp(0.5f, 1.f, t);
+
+        }
+        else
+        {
+            _in.vUV.x = 0.5f;
+        }
     }
     
     if (g_btex_0)
