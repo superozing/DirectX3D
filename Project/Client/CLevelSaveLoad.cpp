@@ -140,6 +140,8 @@ void CLevelSaveLoad::SaveGameObject(CGameObject* _Obj, ofstream& fout)
 	// GameObject 의 이름을 저장
 	fout << TagObjectName << endl;
 	fout << ToString(_Obj->GetName()) << endl;
+	fout << TagLayerName << endl;
+	fout << _Obj->GetLayerIdx() << endl;
 
 	// 컴포넌트 정보를 저장
 	UINT i = 0;
@@ -256,7 +258,7 @@ void CLevelSaveLoad::LoadLayer(CLayer* _Layer, ifstream& fin)
 	for (size_t i = 0; i < objCnt; i++)
 	{
 		CGameObject* pObject = LoadGameObject(fin);
-		_Layer->AddObject(pObject, false);
+		_Layer->AddObject(pObject, false, true);
 	}
 }
 
@@ -363,6 +365,10 @@ CGameObject* CLevelSaveLoad::LoadGameObject(ifstream& fin)
 	Utils::GetLineUntilString(fin, TagObjectName);
 	getline(fin, str);
 	pObject->SetName(str);
+
+	// NOTE : 레벨 로드할 때 실패하면 아래 2줄 주석처리 해주어야 함
+	Utils::GetLineUntilString(fin, TagLayerName);
+	fin >> pObject->m_iLayerIdx;
 
 	while (true)
 	{

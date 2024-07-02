@@ -81,13 +81,15 @@ void Inspector::render_update()
 				SavePrefab();
 			}
 
-			int LayerIdx = PrefabLayer();
+			PrefabLayer();
 			ImGui::SameLine();
 
 			if (ImGui::Button("Spawn Prefab"))
 			{
-				m_TargetObject = m_TargetObject->Clone();
-				GamePlayStatic::SpawnGameObject(m_TargetObject, LayerIdx);
+				m_TargetObject				= m_TargetObject->Clone();
+				int idx						= m_TargetObject->GetLayerIdx();
+				m_TargetObject->m_iLayerIdx = -1;
+				GamePlayStatic::SpawnGameObject(m_TargetObject, idx);
 			}
 		}
 
@@ -242,7 +244,7 @@ void Inspector::ObjectLayer()
 
 int Inspector::PrefabLayer()
 {
-	static int LayerIdx = 0;
+	static int LayerIdx = m_TargetObject->GetLayerIdx();
 	static int PrevIdx	= LayerIdx;
 
 	ImGui::Text("Layer");
@@ -280,7 +282,8 @@ int Inspector::PrefabLayer()
 
 		if (PrevIdx != LayerIdx)
 		{
-			CurLevel->AddObject(m_TargetObject, LayerIdx);
+			// CurLevel->AddObject(m_TargetObject, LayerIdx);
+			m_TargetObject->m_iLayerIdx = LayerIdx;
 		}
 	}
 

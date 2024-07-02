@@ -28,7 +28,7 @@ CGameObject::CGameObject(const CGameObject& _OriginObject)
 	, m_arrCom{}
 	, m_RenderCom(nullptr)
 	, m_Parent(nullptr)
-	, m_iLayerIdx(-1)
+	, m_iLayerIdx(_OriginObject.m_iLayerIdx)
 	, m_bDead(false)
 {
 	for (UINT i = 0; i < (UINT)COMPONENT_TYPE::END; ++i)
@@ -49,7 +49,7 @@ CGameObject::CGameObject(const CGameObject& _OriginObject)
 	for (size_t i = 0; i < _OriginObject.m_vecChild.size(); ++i)
 	{
 		CGameObject* ChildClone = _OriginObject.m_vecChild[i]->Clone();
-		AddChild(ChildClone);
+		AddChild(ChildClone, true);
 		ChildClone->m_iLayerIdx = _OriginObject.m_vecChild[i]->m_iLayerIdx;
 	}
 }
@@ -257,6 +257,10 @@ void CGameObject::AddChild(CGameObject* _Child, bool spawn)
 		// 원래 레이어를 유지한다.
 		int LayerIdx		= _Child->DisconnectWithParent();
 		_Child->m_iLayerIdx = LayerIdx;
+	}
+	else if (spawn)
+	{
+		// 새로 스폰하는 경우 아무것도 하지 않고 부모자식 연결 해주어야 함
 	}
 	else
 	{
