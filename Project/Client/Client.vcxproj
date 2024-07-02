@@ -90,6 +90,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\dev\vcpkg\installed\x64-windows\include\physx</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -105,6 +106,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\dev\vcpkg\installed\x64-windows\include\physx</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -125,6 +127,7 @@
       <MaxFilesInUnityFile>20</MaxFilesInUnityFile>
       <UnityFilesDirectory>$(ProjectDir)</UnityFilesDirectory>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\dev\vcpkg\installed\x64-windows\include\physx</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -145,6 +148,7 @@
       <MaxFilesInUnityFile>20</MaxFilesInUnityFile>
       <UnityFilesDirectory>$(ProjectDir)</UnityFilesDirectory>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\dev\vcpkg\installed\x64-windows\include\physx</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -177,6 +181,7 @@
     <ClInclude Include="MapTestLevel.h" />
     <ClInclude Include="ParticleSystemUI.h" />
     <ClInclude Include="LogUI.h" />
+    <ClInclude Include="PhysXUI.h" />
     <ClInclude Include="ScriptUI.h" />
     <ClInclude Include="CTraceState.h" />
     <ClInclude Include="framework.h" />
@@ -236,6 +241,7 @@
     <ClCompile Include="LogUI.cpp" />
     <ClCompile Include="MapTestLevel.cpp" />
     <ClCompile Include="ParticleSystemUI.cpp" />
+    <ClCompile Include="PhysXUI.cpp" />
     <ClCompile Include="ScriptUI.cpp" />
     <ClCompile Include="CTraceState.cpp" />
     <ClCompile Include="FSMUI.cpp" />

@@ -16,6 +16,7 @@
 #include "CUIMgr.h"
 #include "CInstancingBuffer.h"
 #include "CSound.h"
+#include "CPhysXMgr.h"
 
 CEngine::CEngine()
 	: m_hMainWnd(nullptr)
@@ -56,6 +57,7 @@ int CEngine::init(HWND _hWnd, Vec2 _vResolution, bool bWindowMode)
 	CLevelMgr::GetInst()->init();
 	CFontMgr::GetInst()->init();
 	CInstancingBuffer::GetInst()->init();
+	CPhysXMgr::GetInst()->init();
 
 	return S_OK;
 }
@@ -75,6 +77,7 @@ void CEngine::progress()
 	// Level Update
 	CLevelMgr::GetInst()->tick();
 	CTimeMgr::GetInst()->render();
+	CPhysXMgr::GetInst()->tick();
 
 	// GC
 	CGC::GetInst()->tick();

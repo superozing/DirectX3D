@@ -127,6 +127,48 @@ void GamePlayStatic::DrawDebugSphere(Vec3 _vWorldPos, float _fRadius, Vec3 _Colo
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
 
+void GamePlayStatic::DrawDebugCylinder(Vec3 _FromPos, Vec3 _ToPos, float _LineWidth, Vec3 _Color, bool _bDepthTest,
+									   float _Duration)
+{
+	tDebugShapeInfo info = {};
+	info.eShape			 = DEBUG_SHAPE::CYLINDER;
+
+	Vec3  direction = (_ToPos - _FromPos).Normalize();
+	float length	= Vector3::Distance(_ToPos, _FromPos);
+
+	// 중심 위치 계산
+	info.vWorldPos = Vec3((_ToPos.x + _FromPos.x) / 2.f, (_ToPos.y + _FromPos.y) / 2.f, (_ToPos.z + _FromPos.z) / 2.f);
+
+	// 스케일 설정
+	info.vWorldScale = Vec3(_LineWidth, length, _LineWidth);
+
+	// 방향 벡터를 회전 행렬로 변환
+	Vec3  up(0, 1, 0); // 원기둥의 기본 방향이 Y축을 향한다고 가정
+	Vec3  axis	= up.Cross(direction);
+	float angle = acos(up.Dot(direction));
+
+	XMMATRIX rotationMatrix;
+	if (axis.Length() > 0.0001f)
+	{
+		rotationMatrix = XMMatrixRotationAxis(XMLoadFloat3(&axis), angle);
+	}
+	else
+	{
+		// 방향 벡터가 Y축과 거의 평행한 경우
+		rotationMatrix = XMMatrixIdentity();
+	}
+
+	// 월드 매트릭스 설정
+	info.matWorld = XMMatrixScaling(info.vWorldScale.x, info.vWorldScale.y, info.vWorldScale.z) * rotationMatrix *
+					XMMatrixTranslation(info.vWorldPos.x, info.vWorldPos.y, info.vWorldPos.z);
+
+	info.vColor		= _Color;
+	info.bDepthTest = _bDepthTest;
+	info.fDuration	= _Duration;
+
+	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
+}
+
 void GamePlayStatic::DrawDebugCone(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, bool _bDepthTest,
 								   float _Duration)
 {
@@ -159,6 +201,25 @@ void GamePlayStatic::ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextLevelStart
 	task.Param_2 = (DWORD_PTR)_NextLevelStartState;
 
 	CTaskMgr::GetInst()->AddTask(task);
+}
+
+vector<std::pair<int, string>>& GamePlayStatic::GetLayerMap()
+{
+	static vector<std::pair<int, string>> vLayerMap;
+	if (0 == vLayerMap.size())
+	{
+		const int LayerCount = static_cast<int>(LAYER::LAYER_MAX);
+
+		for (int i = 0; i < LayerCount; ++i)
+		{
+			auto layerName = magic_enum::enum_name(static_cast<LAYER>(i));
+			if (!layerName.empty() && static_cast<LAYER>(i) != LAYER::LAYER_MAX)
+			{
+				vLayerMap.push_back({i, ToString(layerName)});
+			}
+		}
+	}
+	return vLayerMap;
 }
 
 void GamePlayStatic::DrawDebugCircle(const Matrix& _WorldMat, Vec3 _Color, bool _bDepthTest, float _Duration)
@@ -538,6 +599,36 @@ void RoRMath::Float16ToMatrix(Matrix& _dest, const float _src[16])
 	_dest._42 = _src[13];
 	_dest._43 = _src[14];
 	_dest._44 = _src[15];
+}
+
+Vec3 RoRMath::QuaternionToEulerAngles(const XMFLOAT4& _Quaternion)
+{
+	// 쿼터니언을 XMVECTOR로 로드
+	XMVECTOR q = XMLoadFloat4(&_Quaternion);
+
+	// 쿼터니언을 행렬로 변환
+	XMMATRIX rotationMatrix = XMMatrixRotationQuaternion(q);
+
+	// 행렬에서 오일러 각도를 추출
+	float pitch, yaw, roll;
+
+	// Y축 회전 (Yaw)
+	yaw = atan2(rotationMatrix.r[0].m128_f32[2], rotationMatrix.r[2].m128_f32[2]);
+
+	// X축 회전 (Pitch)
+	float sinPitch = -rotationMatrix.r[1].m128_f32[2];
+	if (sinPitch >= 1.0f)
+		pitch = XM_PI / 2; // 90도
+	else if (sinPitch <= -1.0f)
+		pitch = -XM_PI / 2; // -90도
+	else
+		pitch = asin(sinPitch);
+
+	// Z축 회전 (Roll)
+	roll = atan2(rotationMatrix.r[1].m128_f32[0], rotationMatrix.r[1].m128_f32[1]);
+
+	// 오일러 각도를 반환
+	return Vec3(pitch, yaw, roll);
 }
 
 bool closeEnough(const float& a, const float& b, const float& epsilon = std::numeric_limits<float>::epsilon())
