@@ -33,7 +33,7 @@ void CTaskMgr::tick()
 			CGameObject* Object	  = (CGameObject*)m_vecTask[i].Param_2;
 
 			CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-			pCurLevel->AddObject(Object, LayerIdx, true);
+			pCurLevel->AddObject(Object, LayerIdx, false);
 
 			m_bCreateObject = true;
 

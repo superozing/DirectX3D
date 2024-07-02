@@ -72,6 +72,10 @@ void Inspector::render_update()
 			ImGui::SameLine();
 			if (ImGui::Button("Save Prefab"))
 			{
+				while (m_TargetObject->GetParent())
+				{
+					SetTargetObject(m_TargetObject->GetParent(), true);
+				}
 				wstring ContentPath = CPathMgr::GetContentPath();
 				ContentPath += L"prefab\\";
 
@@ -90,6 +94,25 @@ void Inspector::render_update()
 				int idx						= m_TargetObject->GetLayerIdx();
 				m_TargetObject->m_iLayerIdx = -1;
 				GamePlayStatic::SpawnGameObject(m_TargetObject, idx);
+			}
+
+			if (ImGui::Button("parent"))
+			{
+				if (m_TargetObject->GetParent())
+					SetTargetObject(m_TargetObject->GetParent(), true);
+			}
+
+			if (ImGui::CollapsingHeader("Child List"))
+			{
+				for (size_t i = 0; i < m_TargetObject->m_vecChild.size(); i++)
+				{
+					string id =
+						ToString(m_TargetObject->m_vecChild[i]->GetName()) + "##childbutton" + std::to_string(i);
+					if (ImGui::Button(id.c_str()))
+					{
+						SetTargetObject(m_TargetObject->m_vecChild[i], true);
+					}
+				}
 			}
 		}
 
@@ -244,8 +267,8 @@ void Inspector::ObjectLayer()
 
 int Inspector::PrefabLayer()
 {
-	static int LayerIdx = m_TargetObject->GetLayerIdx();
-	static int PrevIdx	= LayerIdx;
+	int LayerIdx = m_TargetObject->GetLayerIdx();
+	int PrevIdx	 = LayerIdx;
 
 	ImGui::Text("Layer");
 	ImGui::SameLine();
@@ -284,6 +307,7 @@ int Inspector::PrefabLayer()
 		{
 			// CurLevel->AddObject(m_TargetObject, LayerIdx);
 			m_TargetObject->m_iLayerIdx = LayerIdx;
+			PrevIdx						= LayerIdx;
 		}
 	}
 
