@@ -4,6 +4,8 @@
 #include "value.fx"
 #include "struct.fx"
 
+#define UseExpandCenter     g_bool_0
+#define ExpandCenterRatio   g_float_0
 
 struct VS_IN
 {
@@ -61,8 +63,8 @@ void GS_DynamicUI(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStream)
 	// | \  |	     
 	// 3 -- 2
     output[0].vPosition = float4((vWorldScale.x * -0.5f), (vWorldScale.y * 0.5f), 0.f, 1.f);
-    output[1].vPosition = float4((vWorldScale.x * 0.5f),  (vWorldScale.y * 0.5f), 0.f, 1.f);
-    output[2].vPosition = float4((vWorldScale.x * 0.5f),  (vWorldScale.y * -0.5f), 0.f, 1.f);
+    output[1].vPosition = float4((vWorldScale.x * 0.5f), (vWorldScale.y * 0.5f), 0.f, 1.f);
+    output[2].vPosition = float4((vWorldScale.x * 0.5f), (vWorldScale.y * -0.5f), 0.f, 1.f);
     output[3].vPosition = float4((vWorldScale.x * -0.5f), (vWorldScale.y * -0.5f), 0.f, 1.f);
     
     output[0].vUV = float2(0.f, 0.f);
@@ -101,7 +103,27 @@ void GS_DynamicUI(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStream)
 float4 PS_DynamicUI(GS_OUT _in) : SV_Target
 {
     // 출력 색상
-    float4 vOutColor = (float4)0.f;
+    float4 vOutColor = (float4) 0.f;
+    
+    // 중앙 연장 기능을 사용한다면 vUV 조정하기.
+    if (UseExpandCenter)
+    {
+        // ExpandCenterRatio;
+        // 어떻게 float 하나를 가지고 중앙의 uv 값을 조절할 것인가?
+        
+        
+        // 수식을 생각해보아요.
+        
+        // uv x가 
+        // 0.f ~ (0.5 - ExpandCenterRatio / 2) 사이면 0 ~ 0.5의 UVx로 보간
+        // (0.5 - ExpandCenterRatio / 2) ~ (0.5 + ExpandCenterRatio / 2) 사이면 0.5의 UVx로 고정
+        // (0.5 + ExpandCenterRatio / 2) ~ 1.f 사이면 0.5 ~ 1의 UVx로 보간
+        
+        float CenterUVMin = ExpandCenterRatio / 2.f;
+        
+        
+        
+    }
     
     if (g_btex_0)
     {
