@@ -15,6 +15,7 @@
 #include "CPanelUIScript.h"
 #include "CProgressBar.h"
 #include "CWrapImage.h"
+#include "CLevelTransition.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -32,6 +33,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPanelUIScript");
 	_vec.push_back(L"CProgressBar");
 	_vec.push_back(L"CWrapImage");
+	_vec.push_back(L"CLevelTransition");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -64,6 +66,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CProgressBar;
 	if (L"CWrapImage" == _strScriptName)
 		return new CWrapImage;
+	if (L"CLevelTransition" == _strScriptName)
+		return new CLevelTransition;
 	return nullptr;
 }
 
@@ -112,6 +116,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::WRAPIMAGE:
 		return new CWrapImage;
+		break;
+	case (UINT)SCRIPT_TYPE::LEVELTRANSITION:
+		return new CLevelTransition;
 		break;
 	}
 	return nullptr;
@@ -175,6 +182,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::WRAPIMAGE:
 		return L"CWrapImage";
+		break;
+
+	case SCRIPT_TYPE::LEVELTRANSITION:
+		return L"CLevelTransition";
 		break;
 
 	}

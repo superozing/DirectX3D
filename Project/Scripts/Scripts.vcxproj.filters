@@ -55,6 +55,9 @@
     <ClInclude Include="CWrapImage.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CLevelTransition.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -109,6 +112,9 @@
       <Filter>RoRStateMachine</Filter>
     </ClCompile>
     <ClCompile Include="CWrapImage.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevelTransition.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>
