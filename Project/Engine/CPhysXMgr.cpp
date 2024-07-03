@@ -182,7 +182,7 @@ void CPhysXMgr::setFillterData(PxShape* _shape, UINT _Layer)
 void CPhysXMgr::addGameObject(CGameObject* object, bool _bStatic, PhysShape _Shape)
 {
 	auto	   Rot		  = object->Transform()->GetWorldRot();
-	Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(Rot.z, Rot.y, Rot.x);
+	Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(Rot.y, Rot.x, Rot.z);
 
 	// 게임 오브젝트의 위치와 회전 정보
 	PxTransform transform(PxVec3(object->Transform()->GetWorldPos().x, object->Transform()->GetWorldPos().y,
@@ -210,7 +210,7 @@ void CPhysXMgr::addGameObject(CGameObject* object, bool _bStatic, PhysShape _Sha
 	// Collider 추가 (여기서는 예시로 Box Collider를 사용)
 	if (PhysShape::BOX == _Shape)
 	{
-		shape = gPhysics->createShape(PxBoxGeometry(scale.z / 2, scale.x / 2, scale.y / 2), *gMaterial);
+		shape = gPhysics->createShape(PxBoxGeometry(scale.x / 2, scale.y / 2, scale.z / 2), *gMaterial);
 	}
 	else
 	{
