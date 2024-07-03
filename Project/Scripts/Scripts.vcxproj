@@ -166,6 +166,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CBtnUIScript.h" />
     <ClInclude Include="CCameraEffect.h" />
     <ClInclude Include="CCameraMoveScript.h" />
+    <ClInclude Include="CEditorCameraMoveScript.h" />
     <ClInclude Include="CImageUIScript.h" />
     <ClInclude Include="CLevelTransition.h" />
     <ClInclude Include="CMissileScript.h" />
@@ -187,6 +188,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CBtnUIScript.cpp" />
     <ClCompile Include="CCameraEffect.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
+    <ClCompile Include="CEditorCameraMoveScript.cpp" />
     <ClCompile Include="CImageUIScript.cpp" />
     <ClCompile Include="CLevelTransition.cpp" />
     <ClCompile Include="CMissileScript.cpp" />

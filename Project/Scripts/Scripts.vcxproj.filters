@@ -58,6 +58,9 @@
     <ClInclude Include="CLevelTransition.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CEditorCameraMoveScript.h">
+      <Filter>Scripts\Manager\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -116,6 +119,9 @@
     </ClCompile>
     <ClCompile Include="CLevelTransition.cpp">
       <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CEditorCameraMoveScript.cpp">
+      <Filter>Scripts\Manager\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
