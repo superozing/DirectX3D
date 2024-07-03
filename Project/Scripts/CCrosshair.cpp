@@ -4,6 +4,7 @@
 #include <Engine/CAssetMgr.h>
 
 #include "CImageUIScript.h"
+#include "CPanelUIScript.h"
 
 namespace CROSSHAIR
 {
@@ -16,10 +17,8 @@ enum idx
 	IDX_RIGHT
 };
 
-const int PosX[4] = {0, 0, -20, 20};
-const int PosY[4] = {20, -20, 0, 0};
-
-const float SpreadMul = 3.f;
+const int PosX[4] = {0, 0, -1, 1};
+const int PosY[4] = {1, -1, 0, 0};
 
 } // namespace CROSSHAIR
 
@@ -34,6 +33,13 @@ CCrosshair::~CCrosshair()
 
 void CCrosshair::begin()
 {
+	AppendScriptParam("Min Spread", SCRIPT_PARAM::FLOAT, &m_fMinSpread, 0.f, 1000.f);
+	AppendScriptParam("Max Spread", SCRIPT_PARAM::FLOAT, &m_fMaxSpread, 0.f, 1000.f);
+	AppendScriptParam("Spread Ratio", SCRIPT_PARAM::FLOAT, &m_fSpreadRatio, 0.f, 0.f);
+
+	// 부모 오브젝트에 패널UI 추가
+	SetParentPanelUI();
+
 	using namespace CROSSHAIR;
 
 	for (int i = 0; i < 4; ++i)
@@ -78,10 +84,37 @@ void CCrosshair::tick()
 {
 	using namespace CROSSHAIR;
 
-	float fSpreadVal = SpreadMul * m_fSpreadRatio + 1;
+	float fSpreadVal = max((m_fMaxSpread * m_fSpreadRatio), m_fMinSpread);
 
 	for (int i = 0; i < 4; ++i)
 		m_pCrossHair[i]->Transform()->SetRelativePos(Vec3(PosX[i] * fSpreadVal, PosY[i] * fSpreadVal, 0.f));
+}
 
-	m_fSpreadRatio = RoRMath::ClampFloat(m_fSpreadRatio - DT * 2, 0.f);
+void CCrosshair::SetParentPanelUI()
+{
+	auto pOwn = GetOwner();
+
+	m_pPanelUI = pOwn->GetScript<CPanelUIScript>();
+
+	if (!m_pPanelUI)
+	{
+		m_pPanelUI = new CPanelUIScript;
+		pOwn->AddComponent(m_pPanelUI);
+	}
+
+	m_pPanelUI->DisableMouseInput();
+	m_pPanelUI->DisallowDragAndDrop();
+	m_pPanelUI->DisallowTexSet();
+
+	auto meshrender = pOwn->MeshRender();
+
+	if (!meshrender)
+	{
+		meshrender = new CMeshRender;
+		pOwn->AddComponent(meshrender);
+	}
+
+	meshrender->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	meshrender->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
+	meshrender->GetDynamicMaterial(0);
 }
