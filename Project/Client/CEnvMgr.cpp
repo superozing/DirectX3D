@@ -5,6 +5,9 @@
 #include <Engine/CDevice.h>
 #include <Engine/CLevelMgr.h>
 #include <Engine/CLevel.h>
+#include <Engine/CKeyMgr.h>
+#include <Engine\CTaskMgr.h>
+#include "CLevelSaveLoad.h"
 
 #define TagResolution "[Resolution(x, y), FullScreen]"
 #define TagLevel "[Level]"
@@ -74,4 +77,20 @@ void CEnvMgr::exit()
 
 	fout << TagLevel << endl;
 	fout << ToString(CLevelMgr::GetInst()->GetCurrentLevel()->GetRelativePath()) << endl;
+}
+
+void CEnvMgr::tick()
+{
+	if (KEY_PRESSED(KEY::LSHIFT) && KEY_TAP(KEY::F5) &&
+		CLevelMgr::GetInst()->GetCurrentLevel()->GetState() == LEVEL_STATE::PLAY)
+	{
+		tTask task;
+		task.Type = TASK_TYPE::CHANGE_LEVEL;
+
+		CLevel* TransitionLv = CLevelSaveLoad::LoadLevel(LEVELLevelTransition);
+		task.Param_1		 = (UINT_PTR)TransitionLv;
+		task.Param_2		 = (UINT_PTR)LEVEL_STATE::PLAY;
+
+		CTaskMgr::GetInst()->AddTask(task);
+	}
 }
