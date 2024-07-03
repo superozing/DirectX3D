@@ -17,6 +17,8 @@ Vec2  Lerp(Vec2 A, Vec2 B, float Alpha);
 Vec3  Lerp(Vec3 A, Vec3 B, float Alpha);
 Vec4  Lerp(Vec4 A, Vec4 B, float Alpha);
 
+float SmoothStep(float A, float B, float Alpha);
+
 int	  ClampInt(int _input, int _min, int _max = INT_MAX);
 float ClampFloat(float _input, float _min);
 float ClampFloat(float _input, float _min, float _max);

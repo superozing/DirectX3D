@@ -61,13 +61,8 @@ void Inspector::render_update()
 			ImGui::SameLine();
 			if (ImGui::Button("Save Prefab"))
 			{
-				wstring ContentPath = CPathMgr::GetContentPath();
-				ContentPath += L"prefab\\";
 
-				wstring FileName = m_TargetObject->GetName();
-				FileName += L".pref";
-
-				SavePrefab(ToString(ContentPath), ToString(FileName));
+				SavePrefab();
 			}
 
 			ObjectLayer();
@@ -77,22 +72,47 @@ void Inspector::render_update()
 			ImGui::SameLine();
 			if (ImGui::Button("Save Prefab"))
 			{
+				while (m_TargetObject->GetParent())
+				{
+					SetTargetObject(m_TargetObject->GetParent(), true);
+				}
 				wstring ContentPath = CPathMgr::GetContentPath();
 				ContentPath += L"prefab\\";
 
 				wstring FileName = m_TargetObject->GetName();
 				FileName += L".pref";
 
-				SavePrefab(ToString(ContentPath), ToString(FileName));
+				SavePrefab();
 			}
 
-			int LayerIdx = PrefabLayer();
+			PrefabLayer();
 			ImGui::SameLine();
 
 			if (ImGui::Button("Spawn Prefab"))
 			{
-				m_TargetObject = m_TargetObject->Clone();
-				GamePlayStatic::SpawnGameObject(m_TargetObject, LayerIdx);
+				m_TargetObject				= m_TargetObject->Clone();
+				int idx						= m_TargetObject->GetLayerIdx();
+				m_TargetObject->m_iLayerIdx = -1;
+				GamePlayStatic::SpawnGameObject(m_TargetObject, idx);
+			}
+
+			if (ImGui::Button("parent"))
+			{
+				if (m_TargetObject->GetParent())
+					SetTargetObject(m_TargetObject->GetParent(), true);
+			}
+
+			if (ImGui::CollapsingHeader("Child List"))
+			{
+				for (size_t i = 0; i < m_TargetObject->m_vecChild.size(); i++)
+				{
+					string id =
+						ToString(m_TargetObject->m_vecChild[i]->GetName()) + "##childbutton" + std::to_string(i);
+					if (ImGui::Button(id.c_str()))
+					{
+						SetTargetObject(m_TargetObject->m_vecChild[i], true);
+					}
+				}
 			}
 		}
 
@@ -212,12 +232,14 @@ void Inspector::ObjectLayer()
 
 		string strLayer = LayerName;
 
+		static auto mLayer = GamePlayStatic::GetLayerMap();
+
 		if (ImGui::BeginCombo("##ObjLayer", strLayer.c_str()))
 		{
-			for (int i = 0; i < 32; ++i)
+			for (size_t i = 0; i < mLayer.size(); ++i)
 			{
-				int	   CurLayer		= i;
-				string CurLayerName = ToString(CurLevel->GetLayer(CurLayer)->GetName());
+				size_t CurLayer		= mLayer[i].first;
+				string CurLayerName = mLayer[i].second;
 
 				if (!magic_enum::enum_cast<LAYER>(CurLayerName).has_value())
 					continue;
@@ -247,8 +269,8 @@ void Inspector::ObjectLayer()
 
 int Inspector::PrefabLayer()
 {
-	static int LayerIdx = 0;
-	static int PrevIdx	= LayerIdx;
+	int LayerIdx = m_TargetObject->GetLayerIdx();
+	int PrevIdx	 = LayerIdx;
 
 	ImGui::Text("Layer");
 	ImGui::SameLine();
@@ -257,13 +279,13 @@ int Inspector::PrefabLayer()
 
 	string strLayer = ToString(CurLevel->GetLayer(LayerIdx)->GetName());
 
+	static auto mLayer = GamePlayStatic::GetLayerMap();
 	if (ImGui::BeginCombo("##ObjLayer", strLayer.c_str()))
 	{
-		for (int i = 0; i < 32; ++i)
+		for (size_t i = 0; i < mLayer.size(); ++i)
 		{
-			int CurLayer = i;
-
-			string CurLayerName = ToString(CurLevel->GetLayer(CurLayer)->GetName());
+			size_t CurLayer		= mLayer[i].first;
+			string CurLayerName = mLayer[i].second;
 
 			if (!magic_enum::enum_cast<LAYER>(CurLayerName).has_value())
 				continue;
@@ -285,7 +307,9 @@ int Inspector::PrefabLayer()
 
 		if (PrevIdx != LayerIdx)
 		{
-			CurLevel->AddObject(m_TargetObject, LayerIdx);
+			// CurLevel->AddObject(m_TargetObject, LayerIdx);
+			m_TargetObject->m_iLayerIdx = LayerIdx;
+			PrevIdx						= LayerIdx;
 		}
 	}
 
@@ -317,13 +341,16 @@ void Inspector::ObjectScript()
 	auto ScriptList = magic_enum::enum_names<SCRIPT_TYPE>();
 	for (const auto& script : ScriptList)
 	{
-		// PassFilter : filter에 입력된 문자열과 비교하여 현재 텍스트가 필터를 통과하는지 확인하는 함수
+		// PassFilter : filter에 입력된 문자열과 비교하여 현재 텍스트가 필터를 통과하는지 확인하는
+		// 함수
 		if (filter.PassFilter(script.data()))
 		{
 			filteredScripts.push_back(string(script.data()));
 		}
 	}
 
+	if (CurSciprt >= filteredScripts.size())
+		CurSciprt = 0;
 	if (0 == filteredScripts.size())
 		CurSciprt = -1;
 
@@ -434,7 +461,6 @@ void Inspector::CheckTargetComponent(COMPONENT_TYPE _type)
 		m_TargetObject->AddComponent(new CParticleSystem);
 		SetTargetObject(GetTargetObject());
 		break;
-	case COMPONENT_TYPE::SKYBOX:
 		m_TargetObject->AddComponent(new CSkyBox);
 		SetTargetObject(GetTargetObject());
 		break;
@@ -453,27 +479,28 @@ void Inspector::CheckTargetComponent(COMPONENT_TYPE _type)
 	}
 }
 
-void Inspector::MakePrefab()
+void Inspector::SavePrefab()
 {
-	CGameObject* pObj = GetTargetObject();
-	pObj			  = pObj->Clone();
-	wstring Key;
-	Key					 = L"prefab\\" + m_TargetObject->GetName() + L".pref";
-	Ptr<CPrefab> pPrefab = new CPrefab(pObj, false);
-	CAssetMgr::GetInst()->AddAsset<CPrefab>(Key, pPrefab.Get());
-	pPrefab->Save(Key);
-}
+	wstring ContentPath = CPathMgr::GetContentPath();
+	ContentPath += L"prefab\\";
+	wstring FileName = path(m_TargetObject->GetName()).stem();
+	FileName += L".pref";
 
-void Inspector::SavePrefab(const string& _Directory, const string& _FileName)
-{
-	filesystem::path file_path = filesystem::path(_Directory) / _FileName;
+	filesystem::path file_path = filesystem::path(ContentPath) / FileName;
 
 	if (filesystem::exists(file_path))
 	{
 		filesystem::remove(file_path);
 	}
 
-	MakePrefab();
+	CGameObject* pObj = GetTargetObject();
+	pObj			  = pObj->Clone();
+	wstring Key;
+	Key = L"prefab\\" + FileName;
+
+	Ptr<CPrefab> pPrefab = new CPrefab(pObj, false);
+	CAssetMgr::GetInst()->AddAsset<CPrefab>(Key, pPrefab.Get());
+	pPrefab->Save(Key);
 }
 
 void Inspector::DeleteTargetComponent(COMPONENT_TYPE _type)

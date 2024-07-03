@@ -72,7 +72,7 @@ public:
 	int DisconnectWithParent();
 	int DisconnectWithLayer();
 
-	void AddChild(CGameObject* _Child);
+	void AddChild(CGameObject* _Child, bool spawn = false);
 	bool IsDead() { return m_bDead; }
 
 	void Destroy();
@@ -89,4 +89,6 @@ public:
 	friend class CLevel;
 	friend class CLayer;
 	friend class CTaskMgr;
+	friend class CLevelSaveLoad;
+	friend class Inspector;
 };

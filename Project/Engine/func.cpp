@@ -517,6 +517,14 @@ Vec4 RoRMath::Lerp(Vec4 A, Vec4 B, float Alpha)
 	return Vec4(x, y, z, w);
 }
 
+float RoRMath::SmoothStep(float A, float B, float Alpha)
+{
+	Alpha		 = (Alpha > 1.0f) ? 1.0f : ((Alpha < 0.0f) ? 0.0f : Alpha); // Clamp value to 0 to 1
+	Alpha		 = Alpha * Alpha * (3.f - 2.f * Alpha);
+	float result = Lerp(A, B, Alpha);
+	return result;
+}
+
 int RoRMath::ClampInt(int _input, int _min, int _max)
 {
 	if (_min > _input)

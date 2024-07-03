@@ -138,6 +138,9 @@ void CTransform::SetWorldMat(const Matrix& _matWorld)
 
 Vec3 CTransform::GetWorldScale()
 {
+	if (m_bDirty)
+		CalWorldMat();
+
 	if (m_bAbsolute)
 	{
 		return m_vRelativeScale;
@@ -157,6 +160,9 @@ Vec3 CTransform::GetWorldScale()
 
 Vec3 CTransform::GetWorldRot()
 {
+	if (m_bDirty)
+		CalWorldMat();
+
 	XMVECTOR Qurt;
 	XMVECTOR Scale;
 	XMVECTOR Pos;

@@ -67,7 +67,12 @@ public:
 	Vec3 GetRelativeScale() const { return m_vRelativeScale; }
 	Vec3 GetRelativeRotation() const { return m_vRelativeRotation; }
 
-	Vec3 GetWorldPos() { return m_matWorld.Translation(); }
+	Vec3 GetWorldPos()
+	{
+		if (m_bDirty)
+			CalWorldMat();
+		return m_matWorld.Translation();
+	}
 	Vec3 GetWorldScale();
 	Vec3 GetWorldRot();
 
