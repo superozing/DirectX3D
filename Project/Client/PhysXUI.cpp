@@ -30,6 +30,12 @@ void PhysXUI::render_update()
 		return;
 	}
 
+	static auto IsStatic = phys->m_bStaticActor;
+	if (ImGui::Checkbox("IsStatic", &IsStatic))
+	{
+		phys->m_bStaticActor = IsStatic;
+	}
+
 	phys->m_bImguiDirtyFlag	   = true;
 	const auto& vecContactInfo = phys->m_vThisFrameContact;
 
