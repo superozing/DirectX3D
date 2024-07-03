@@ -30,6 +30,29 @@ void PhysXUI::render_update()
 		return;
 	}
 
+	static auto Shape	 = phys->m_Shape;
+	auto		strShape = ToString(magic_enum::enum_name<PhysShape>(Shape));
+
+	if (ImGui::BeginCombo("##Shape", strShape.c_str()))
+	{
+		for (size_t i = 0; i < (UINT)PhysShape::END; ++i)
+		{
+			bool isSelected = (i == (UINT)Shape);
+			auto ShapeName	= ToString(magic_enum::enum_name<PhysShape>((PhysShape)i));
+			if (ImGui::Selectable(ShapeName.c_str(), isSelected))
+			{
+				phys->m_Shape = (PhysShape)i;
+			}
+
+			if (isSelected)
+			{
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+
+		ImGui::EndCombo();
+	}
+
 	static auto IsStatic = phys->m_bStaticActor;
 	if (ImGui::Checkbox("IsStatic", &IsStatic))
 	{
