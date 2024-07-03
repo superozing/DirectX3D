@@ -598,7 +598,7 @@ bool ParamUI::Param_MGR_PHYSX(void* _pPhysXMgr)
 		{
 			ImGui::TableSetupColumn("", ImGuiTableColumnFlags_NoHide | ImGuiTableColumnFlags_NoReorder);
 			for (int n = 0; n < LayerMap.size(); n++)
-				ImGui::TableSetupColumn(LayerMap[n].second.c_str(),
+				ImGui::TableSetupColumn(LayerMap[n].LayerName.c_str(),
 										ImGuiTableColumnFlags_AngledHeader | ImGuiTableColumnFlags_WidthFixed);
 			ImGui::TableSetupScrollFreeze(frozen_cols, frozen_rows);
 
@@ -613,13 +613,13 @@ bool ParamUI::Param_MGR_PHYSX(void* _pPhysXMgr)
 				ImGui::TableNextRow(); // 행 높이를 설정
 				ImGui::TableSetColumnIndex(0);
 				ImGui::AlignTextToFramePadding();
-				ImGui::Text(LayerMap[row].second.c_str(), row);
+				ImGui::Text(LayerMap[row].LayerName.c_str(), row);
 				for (int column = 1; column <= LayerMap.size(); column++)
 					if (ImGui::TableSetColumnIndex(column))
 					{
 						ImGui::PushID(column);
-						int realrow = LayerMap[row].first;
-						int realcol = LayerMap[column - 1].first;
+						int realrow = LayerMap[row].LayerIdx;
+						int realcol = LayerMap[column - 1].LayerIdx;
 						// 현재 상태를 가져옵니다.
 						bool isColliding = (CPhysXMgr::m_layerMasks[realrow] & (1 << realcol)) != 0;
 						if (realrow <= realcol)

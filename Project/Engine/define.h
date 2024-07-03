@@ -63,7 +63,7 @@ enum class LAYER
 	LAYER_MONSTER,
 	LAYER_LIGHT,
 	LAYER_RAYCAST,
-	LAYER_UI = 31,
+	LAYER_UI  = 31,
 	LAYER_MAX = 32,
 };
 
@@ -370,6 +370,6 @@ enum class Log_Level
 {
 	INFO = 1,
 	WARN = 2,
-	ERR = 4,
+	ERR	 = 4,
 	END,
 };

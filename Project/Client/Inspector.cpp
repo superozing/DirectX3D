@@ -238,8 +238,8 @@ void Inspector::ObjectLayer()
 		{
 			for (size_t i = 0; i < mLayer.size(); ++i)
 			{
-				size_t CurLayer		= mLayer[i].first;
-				string CurLayerName = mLayer[i].second;
+				size_t CurLayer		= mLayer[i].LayerIdx;
+				string CurLayerName = mLayer[i].LayerName;
 
 				if (!magic_enum::enum_cast<LAYER>(CurLayerName).has_value())
 					continue;
@@ -284,8 +284,8 @@ int Inspector::PrefabLayer()
 	{
 		for (size_t i = 0; i < mLayer.size(); ++i)
 		{
-			size_t CurLayer		= mLayer[i].first;
-			string CurLayerName = mLayer[i].second;
+			size_t CurLayer		= mLayer[i].LayerIdx;
+			string CurLayerName = mLayer[i].LayerName;
 
 			if (!magic_enum::enum_cast<LAYER>(CurLayerName).has_value())
 				continue;
