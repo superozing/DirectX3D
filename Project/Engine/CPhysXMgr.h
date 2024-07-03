@@ -11,6 +11,16 @@ struct tRoRHitInfo
 	Vec3		 vHitPos   = Vec3();
 };
 
+enum RayCastDebugFlag
+{
+	AllInvisible	  = (0),
+	StartPointVisible = (1 << 0),
+	EndPointVisible	  = (1 << 1),
+	RayLineVisible	  = (1 << 2),
+	StartEndVisible	  = (StartPointVisible | EndPointVisible),
+	AllVisible		  = (StartPointVisible | EndPointVisible | RayLineVisible),
+};
+
 using namespace physx;
 
 class CPhysXMgr : public CManager<CPhysXMgr>
@@ -18,7 +28,6 @@ class CPhysXMgr : public CManager<CPhysXMgr>
 	SINGLE(CPhysXMgr);
 
 private:
-	bool						m_RayDebug = true;
 	PxDefaultAllocator			gAllocator;
 	PxDefaultErrorCallback		gErrorCallback;
 	PxFoundation*				gFoundation		  = nullptr;
@@ -81,8 +90,11 @@ public:
 	virtual void enter() override {}
 	virtual void exit() override;
 	void		 addGameObject(CGameObject* object, bool _bStatic, PhysShape _Shape = PhysShape::BOX);
-	bool PerfomRaycast(Vec3 _OriginPos, Vec3 _Dir, tRoRHitInfo& _HitInfo, UINT _LAYER = (UINT)LAYER::LAYER_RAYCAST);
-	bool ViewPortRaycast(tRoRHitInfo& _HitInfo, UINT _LAYER = (UINT)LAYER::LAYER_RAYCAST);
+
+	bool PerfomRaycast(Vec3 _OriginPos, Vec3 _Dir, tRoRHitInfo& _HitInfo, UINT _LAYER = (UINT)LAYER::LAYER_RAYCAST,
+					   int _DebugFlagMask = RayCastDebugFlag::StartEndVisible);
+	bool ViewPortRaycast(tRoRHitInfo& _HitInfo, UINT _LAYER = (UINT)LAYER::LAYER_RAYCAST,
+						 int _DebugFlagMask = RayCastDebugFlag::StartEndVisible);
 
 private:
 	void ClearAllActors();

@@ -12,7 +12,7 @@ CPhysXMgr::CPhysXMgr()
 {
 }
 
-bool CPhysXMgr::PerfomRaycast(Vec3 _OriginPos, Vec3 _Dir, tRoRHitInfo& _HitInfo, UINT _LAYER)
+bool CPhysXMgr::PerfomRaycast(Vec3 _OriginPos, Vec3 _Dir, tRoRHitInfo& _HitInfo, UINT _LAYER, int _DebugFlagMask)
 {
 	PxVec3 OriginPos = PxVec3(_OriginPos.x, _OriginPos.y, _OriginPos.z);
 	PxVec3 Dir		 = PxVec3(_Dir.x, _Dir.y, _Dir.z);
@@ -27,6 +27,12 @@ bool CPhysXMgr::PerfomRaycast(Vec3 _OriginPos, Vec3 _Dir, tRoRHitInfo& _HitInfo,
 	static CustomQueryCallback queryCallback;
 
 	bool status = gScene->raycast(OriginPos, Dir, PX_MAX_F32, hit, PxHitFlag::eDEFAULT, filterData, &queryCallback);
+
+	// 시작지점출력
+	if (0 != (_DebugFlagMask & RayCastDebugFlag::StartPointVisible))
+	{
+		GamePlayStatic::DrawDebugSphere(_OriginPos, 50.f, Vec4(1.f, 0.8f, 0.f, 1.f), false);
+	}
 
 	if (true == status)
 	{
@@ -43,18 +49,22 @@ bool CPhysXMgr::PerfomRaycast(Vec3 _OriginPos, Vec3 _Dir, tRoRHitInfo& _HitInfo,
 
 		// 충돌 지점과 충돌한 물체에 대한 정보를 처리
 		// 예: 충돌 지점 출력
-		if (true == m_RayDebug)
+		if (0 != (_DebugFlagMask & RayCastDebugFlag::RayLineVisible))
 		{
-			GamePlayStatic::DrawDebugSphere(Vec3(_OriginPos.x, _OriginPos.y, _OriginPos.z), 50.f,
-											Vec4(1.f, 0.8f, 0.f, 1.f), false);
-			// GamePlayStatic::DrawDebugCylinder(Vec3(_OriginPos.x, _OriginPos.y, _OriginPos.z),
-			// _HitInfo.vHitPos,5.f,Vec3(0.f,.8f,0.f),true);
+			GamePlayStatic::DrawDebugCylinder(_OriginPos, _HitInfo.vHitPos, 5.f, Vec3(0.f, .8f, 0.f), true);
+		}
+		if (0 != (_DebugFlagMask & RayCastDebugFlag::EndPointVisible))
+		{
 			GamePlayStatic::DrawDebugSphere(_HitInfo.vHitPos, 50.f, Vec4(0.f, 0.8f, 0.f, 1.f), false);
 		}
 		return true;
 	}
 	else
 	{
+		if (0 != (_DebugFlagMask & RayCastDebugFlag::RayLineVisible))
+		{
+			GamePlayStatic::DrawDebugCylinder(_OriginPos, _OriginPos + _Dir * 1000.f, 5.f, Vec3(0.f, .8f, 0.f), true);
+		}
 		return false;
 	}
 }
@@ -63,7 +73,7 @@ bool CPhysXMgr::PerfomRaycast(Vec3 _OriginPos, Vec3 _Dir, tRoRHitInfo& _HitInfo,
 #include "CRenderMgr.h"
 #include "CKeyMgr.h"
 #include "CCamera.h"
-bool CPhysXMgr::ViewPortRaycast(tRoRHitInfo& _HitInfo, UINT _LAYER)
+bool CPhysXMgr::ViewPortRaycast(tRoRHitInfo& _HitInfo, UINT _LAYER, int _DebugFlagMask)
 {
 	CMRT*		   pMRT = CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN);
 	D3D11_VIEWPORT tVP	= pMRT->GetViewPort();
@@ -92,9 +102,9 @@ bool CPhysXMgr::ViewPortRaycast(tRoRHitInfo& _HitInfo, UINT _LAYER)
 	rayDir.Normalize();
 
 	// 레이케스트 수행
-	bool hit = CPhysXMgr::GetInst()->PerfomRaycast(Vec3(rayOrigin.x, rayOrigin.y, rayOrigin.z),
-												   Vec3(rayDir.x, rayDir.y, rayDir.z), _HitInfo, _LAYER);
-
+	bool hit =
+		CPhysXMgr::GetInst()->PerfomRaycast(Vec3(rayOrigin.x, rayOrigin.y, rayOrigin.z),
+											Vec3(rayDir.x, rayDir.y, rayDir.z), _HitInfo, _LAYER, _DebugFlagMask);
 	return hit;
 }
 
