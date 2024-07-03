@@ -5,10 +5,10 @@ class CImageUIScript;
 class CPanelUIScript;
 
 // 파생되는 자식 클래스가 해야하는 일.
-// 
+//
 // 1. GetPanelUI()로 paneltex와 여러 옵션 set
 // 2. MaxHP, CurHP 조정
-// 3. MakeChildObjects() override, 
+// 3. MakeChildObjects() override,
 //		이후 HPLineTex 등 자식 오브젝트로 추가
 class CProgressBar : public CScript
 {
@@ -18,20 +18,20 @@ private:
 	CPanelUIScript* m_pPanelUI;
 
 	// 최대 체력
-	int m_MaxHP;
+	int m_MaxValue;
 
 	// 현재 체력
-	int m_CurHP;
+	int m_CurValue;
 
 protected:
 	virtual void	MakeChildObjects() {}
 	CPanelUIScript* GetPanelUI() { return m_pPanelUI; }
 
-	void SetMaxHP(int _MaxHP) { m_MaxHP = _MaxHP; }
-	void SetCurHP(int _CurHP) { m_CurHP = _CurHP; }
+	void SetMaxValue(int _MaxValue) { m_MaxValue = _MaxValue; }
+	void SetCurValue(int _CurValue) { m_CurValue = _CurValue; }
 
-	int GetMaxHP() const { return m_MaxHP; }
-	int GetCurHP() const { return m_CurHP; }
+	int GetMaxValue() const { return m_MaxValue; }
+	int GetCurValue() const { return m_CurValue; }
 
 public:
 	virtual void begin() override;
