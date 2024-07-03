@@ -1,6 +1,9 @@
 ﻿#include "pch.h"
 #include "CCameraMoveScript.h"
 
+#include <Engine\CLevel.h>
+#include <Engine\CLevelMgr.h>
+
 CCameraMoveScript::CCameraMoveScript()
 	: CScript((UINT)SCRIPT_TYPE::CAMERAMOVESCRIPT)
 	, m_CamSpeed(500.f)
@@ -15,6 +18,9 @@ CCameraMoveScript::~CCameraMoveScript()
 
 void CCameraMoveScript::tick()
 {
+	if (CLevelMgr::GetInst()->GetCurrentLevel()->GetState() != LEVEL_STATE::PLAY)
+		return;
+
 	if (KEY_TAP(KEY::P))
 	{
 		if (Camera()->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)
@@ -56,6 +62,9 @@ void CCameraMoveScript::tick()
 
 void CCameraMoveScript::MoveOrthographic()
 {
+	if (CLevelMgr::GetInst()->GetCurrentLevel()->GetState() != LEVEL_STATE::PLAY)
+		return;
+
 	Vec3 vPos = Transform()->GetRelativePos();
 
 	if (KEY_PRESSED(KEY::RBTN) && KEY_PRESSED(KEY::W))
@@ -83,6 +92,9 @@ void CCameraMoveScript::MoveOrthographic()
 
 void CCameraMoveScript::MovePerspective()
 {
+	if (CLevelMgr::GetInst()->GetCurrentLevel()->GetState() != LEVEL_STATE::PLAY)
+		return;
+
 	Vec3 vPos = Transform()->GetRelativePos();
 
 	Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
