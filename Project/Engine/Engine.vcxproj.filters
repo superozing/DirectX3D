@@ -834,5 +834,8 @@
     <FxCompile Include="damagefont.fx">
       <Filter>ShaderCode\02. Render</Filter>
     </FxCompile>
+    <FxCompile Include="crosshair.fx">
+      <Filter>ShaderCode\02. Render</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

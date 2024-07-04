@@ -11,27 +11,23 @@ private:
 	CPanelUIScript* m_pPanelUI;
 
 	// 상, 하, 좌, 우 조준선 이미지
-	CImageUIScript* m_pCrossHair[4];
-
-	// 조준선이 최대 벌어지는 정도
-	float m_fMaxSpread;
-	// 조준선이 최소 벌어지는 정도
-	float m_fMinSpread;
+	CImageUIScript* m_pCrossHair;
 
 	// 조준선이 벌어지는 비율
 	float m_fSpreadRatio;
+
+	// 조준선 색상
+	Vec4 m_CrosshairColor;
 
 public:
 	virtual void begin() override;
 	virtual void tick() override;
 
-	void SetMaxSpread(float _fMaxSpread) { m_fMaxSpread = RoRMath::ClampFloat(_fMaxSpread, 0.f); }
-	void SetMinSpread(float _fMinSpread) { m_fMinSpread = RoRMath::ClampFloat(_fMinSpread, 0.f); }
 	void SetSpreadRatio(float _fSpreadRatio) { m_fSpreadRatio = RoRMath::ClampFloat(_fSpreadRatio, 0.f, 1.f); }
+	void SetCrosshairColor(Vec4 _CrosshairColor) { m_CrosshairColor = _CrosshairColor; }
 
-	float GetMaxSpread() const { return m_fMaxSpread; }
-	float GetMinSpread() const { return m_fMinSpread; }
 	float GetSpreadRatio() const { return m_fSpreadRatio; }
+	Vec4  GetCrosshairColor() const { return m_CrosshairColor; }
 
 private:
 	void SetParentPanelUI();
