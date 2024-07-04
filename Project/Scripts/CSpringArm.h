@@ -9,8 +9,12 @@ struct SpringArmInfo
 	Vec3 vOffset;
 	/// @brief 카메라가 바라보는 지점을 시작지점으로부터 돌려주는 오프셋
 	Vec3 vDirOffset;
+
+	/// @brief 스프링 암의 최대 길이
+	float fMaxDistance = 500.f;
 	/// @brief 스프링 암의 길이
-	float fDistance = 500.f;
+	float fDistance = fMaxDistance;
+
 	/// @brief 카메라의 위치를 이동시키는 속도입니다.
 	float fCamSpeed = 20.f;
 	/// @brief 카메라의 물체를 바라보는 속도 입니다.
@@ -38,9 +42,21 @@ public:
 	void SetOffsetPos(Vec3 _vOffset) { m_tInfo.vOffset = _vOffset; }
 	/// @brief 스프링 암에 붙어있는 카메라가 바라보는 지점을 돌려주는 오프셋을 지정하는 함수입니다.
 	void SetOffsetDir(Vec3 _vOffset) { m_tInfo.vDirOffset = _vOffset; }
-	/// @brief 스프링 암의 길이를 지정하는 함수입니다.
-	void SetDistance(float _dist) { m_tInfo.fDistance = _dist; }
+	/// @brief 스프링 암의 최대 길이를 지정하는 함수입니다. 현재 스프링 암의 길이도 같이 변경합니다.
+	void SetMaxDistance(float _dist)
+	{
+		m_tInfo.fMaxDistance = _dist;
+		SetDistance(_dist);
+	}
 
+private:
+	/// @brief 스프링 암의 길이를 지정하는 함수입니다. 최대 길이 캡을 보장합니다.
+	void SetDistance(float _dist)
+	{
+		_dist < m_tInfo.fMaxDistance ? m_tInfo.fDistance = _dist : m_tInfo.fDistance = m_tInfo.fMaxDistance;
+	}
+
+public:
 	/// @brief 캠이 따라붙는 속도를 설정하는 함수입니다.
 	void SetCamSpeed(float _speed) { m_tInfo.fCamSpeed = _speed; }
 	/// @brief 캠이 시작지점으로 회전하는 속도를 설정하는 함수입니다.
@@ -53,7 +69,7 @@ public:
 	void SetMoveType(bool _type) { m_tInfo.Type = _type; }
 
 	SpringArmInfo GetInfo() { return m_tInfo; }
-	void		  SetInfo(SpringArmInfo _info) { m_tInfo = _info; }
+	void		  SetInfo(const SpringArmInfo& _info) { m_tInfo = _info; }
 
 public:
 	virtual void begin() override;

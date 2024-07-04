@@ -2,6 +2,7 @@
 #include "CSpringArm.h"
 
 #include <Engine\CRenderMgr.h>
+#include <Engine/CPhysXMgr.h>
 
 CSpringArm::CSpringArm()
 	: CScript((UINT)SCRIPT_TYPE::SPRINGARM)
@@ -49,11 +50,11 @@ void CSpringArm::tick()
 
 	if (KEY_TAP(J))
 	{
-		m_tInfo.fDistance = 100.f;
+		SetMaxDistance(100.f);
 	}
 	if (KEY_TAP(K))
 	{
-		m_tInfo.fDistance = 300.f;
+		SetMaxDistance(300.f);
 	}
 	// 테스트 코드 끝
 
@@ -76,6 +77,19 @@ void CSpringArm::tick()
 		vNewDir =
 			Vec3::Lerp(m_pTargetCam->Transform()->GetWorldDir(DIR_TYPE::FRONT), vNewDir, DT * m_tInfo.fCamRotSpeed);
 		fCurDistance = RoRMath::Lerp(fCurDistance, m_tInfo.fDistance, DT * m_tInfo.fCamSpeed);
+	}
+
+	tRoRHitInfo tHitInfo;
+
+	if (CPhysXMgr::GetInst()->PerfomRaycast(vNewPos, -vNewDir, tHitInfo, (UINT)LAYER::LAYER_RAYCAST,
+											(int)RayCastDebugFlag::AllInvisible))
+	{
+		float length = (tHitInfo.vHitPos - vNewPos).Length();
+		SetDistance(length);
+	}
+	else
+	{
+		SetDistance(m_tInfo.fMaxDistance);
 	}
 
 	m_pTargetCam->Transform()->SetRelativePos(vNewPos);
