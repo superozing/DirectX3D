@@ -22,6 +22,7 @@
 #include "CBossHP.h"
 #include "CMonsterHP.h"
 #include "CPlayerHP.h"
+#include "CAmmoInfo.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -46,6 +47,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CBossHP");
 	_vec.push_back(L"CMonsterHP");
 	_vec.push_back(L"CPlayerHP");
+	_vec.push_back(L"CAmmoInfo");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -92,6 +94,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CMonsterHP;
 	if (L"CPlayerHP" == _strScriptName)
 		return new CPlayerHP;
+	if (L"CAmmoInfo" == _strScriptName)
+		return new CAmmoInfo;
 	return nullptr;
 }
 
@@ -161,6 +165,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::PLAYERHP:
 		return new CPlayerHP;
+		break;
+	case (UINT)SCRIPT_TYPE::AMMOINFO:
+		return new CAmmoInfo;
 		break;
 	}
 	return nullptr;
@@ -252,6 +259,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::PLAYERHP:
 		return L"CPlayerHP";
+		break;
+
+	case SCRIPT_TYPE::AMMOINFO:
+		return L"CAmmoInfo";
 		break;
 
 	}

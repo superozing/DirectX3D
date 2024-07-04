@@ -7,7 +7,7 @@ class CPanelUIScript;
 class CCrosshair : public CScript
 {
 private:
-	// 부모 패널UI
+	// 기반 패널UI
 	CPanelUIScript* m_pPanelUI;
 
 	// 상, 하, 좌, 우 조준선 이미지

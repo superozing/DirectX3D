@@ -271,21 +271,21 @@ void CUITempLevel::CreateTempLevel()
 
 #pragma region CWeaponInfo
 
-	//// CWeaponInfo
-	// pObj = new CGameObject;
-	// pObj->SetName(L"WeaponInfo");
+	// CWeaponInfo
+	pObj = new CGameObject;
+	pObj->SetName(L"WeaponInfo");
 
-	// pObj->AddComponent(new CTransform);
+	pObj->AddComponent(new CTransform);
 
-	// auto pWeaponInfo = new CWeaponInfo;
-	// pObj->AddComponent(pWeaponInfo);
-	// pWeaponInfo->SetMaxAmmo(30);
-	// pWeaponInfo->SetCurAmmo(30);
+	auto pWeaponInfo = new CWeaponInfo;
+	pObj->AddComponent(pWeaponInfo);
+	pWeaponInfo->SetMaxAmmo(30);
+	pWeaponInfo->SetCurAmmo(30);
 
-	// pObj->Transform()->SetRelativePos(Vec3(700, -300, 0));
-	// pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
+	pObj->Transform()->SetRelativePos(Vec3(700, -300, 0));
+	pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
 
-	// pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 
 #pragma endregion
 
