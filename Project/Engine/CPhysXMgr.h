@@ -45,9 +45,9 @@ private:
 	public:
 		virtual void reportError(PxErrorCode::Enum code, const char* message, const char* file, int line) override
 		{
-			std::ostringstream oss;
-			oss << "PhysX Error (" << code << "): " << message << " in " << file << " at line " << line << std::endl;
-			OutputDebugStringA(oss.str().c_str());
+			// std::ostringstream oss;
+			// oss << "PhysX Error (" << code << "): " << message << " in " << file << " at line " << line << std::endl;
+			// OutputDebugStringA(oss.str().c_str());
 		}
 	};
 	void setFillterData(PxShape* _shape, UINT _Layer);

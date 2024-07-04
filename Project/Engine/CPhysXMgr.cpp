@@ -232,10 +232,10 @@ void CPhysXMgr::addGameObject(CGameObject* object, bool _bStatic, PhysShape _Sha
 
 void CPhysXMgr::init()
 {
-	gFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, gAllocator, gErrorCallback);
-
-	// static MyPhysXErrorCallback gErrorCallback;
 	// gFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, gAllocator, gErrorCallback);
+
+	static MyPhysXErrorCallback gErrorCallback;
+	gFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, gAllocator, gErrorCallback);
 
 	//// PVD 연결 설정
 	// gPvd = PxCreatePvd(*gFoundation);
