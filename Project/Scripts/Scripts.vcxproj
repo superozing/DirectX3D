@@ -162,6 +162,7 @@ call ScriptsCopy.bat</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CAmmoInfo.h" />
     <ClInclude Include="CBackgroundScript.h" />
     <ClInclude Include="CBossHP.h" />
     <ClInclude Include="CBtnUIScript.h" />
@@ -189,6 +190,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CAmmoInfo.cpp" />
     <ClCompile Include="CBackgroundScript.cpp" />
     <ClCompile Include="CBossHP.cpp" />
     <ClCompile Include="CBtnUIScript.cpp" />
