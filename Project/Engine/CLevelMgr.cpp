@@ -18,7 +18,8 @@
 
 #include "CKeyMgr.h"
 
-Restart_Level CLevelMgr::LevelChangeFunc = nullptr;
+Restart_Level	CLevelMgr::LevelChangeFunc = nullptr;
+Save_CheckPoint CLevelMgr::CheckPointFunc  = nullptr;
 
 CLevelMgr::CLevelMgr()
 	: m_CurLevel(nullptr)

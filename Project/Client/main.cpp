@@ -98,6 +98,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	CRenderMgr::CameraChange	 = &RTViewPort::SetCamera;
 	CCamera::ViewportConvertFunc = &RTViewPort::ConvertCoord;
 	CLevelMgr::LevelChangeFunc	 = &CLevelSaveLoad::LoadLevel;
+	CLevelMgr::CheckPointFunc	 = &CLevelSaveLoad::SaveCheckPoint;
 
 #ifndef _RELEASE_GAME
 

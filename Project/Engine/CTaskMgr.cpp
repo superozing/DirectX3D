@@ -116,6 +116,17 @@ void CTaskMgr::tick()
 		}
 		break;
 
+		case TASK_TYPE::SAVE_CHECKPOINT: {
+
+			CLevel* pPlayLevel = (CLevel*)m_vecTask[i].Param_1;
+			pPlayLevel->ChangeState(LEVEL_STATE::PAUSE);
+
+			CLevelMgr::CheckPointFunc(pPlayLevel);
+
+			pPlayLevel->ChangeState(LEVEL_STATE::PLAY);
+		}
+		break;
+
 		case TASK_TYPE::ADD_CHILD: {
 		}
 		break;

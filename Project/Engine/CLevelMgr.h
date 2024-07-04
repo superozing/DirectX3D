@@ -2,6 +2,7 @@
 #include "singleton.h"
 
 typedef CLevel* (*Restart_Level)(const string& _strLevelPath);
+typedef void	(*Save_CheckPoint)(CLevel* _Level);
 
 enum class Client_Function_Type
 {
@@ -19,7 +20,8 @@ private:
 	string	m_strPrevLevelPath;
 
 public:
-	static Restart_Level LevelChangeFunc;
+	static Restart_Level   LevelChangeFunc;
+	static Save_CheckPoint CheckPointFunc;
 
 public:
 	virtual void init() override;
