@@ -66,13 +66,20 @@ CPlayerScript::~CPlayerScript()
 }
 
 static string state = "";
-void		  CPlayerScript::begin()
+#include "CSpringArm.h"
+#include <Engine/CRenderMgr.h>
+
+void CPlayerScript::begin()
 {
 	m_FSM->Begin();
 	AppendScriptParam("CurState", SCRIPT_PARAM::STRING, (void*)&state);
-}
 
-#include "CSpringArm.h"
+	auto pSA = GetOwner()->GetScript<CSpringArm>();
+	if (pSA)
+	{
+		pSA->SetTargetCamera(CRenderMgr::GetInst()->GetMainCam());
+	}
+}
 
 void CPlayerScript::tick()
 {

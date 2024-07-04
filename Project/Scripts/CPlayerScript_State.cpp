@@ -18,9 +18,10 @@ int CPlayerScript::NormalUpdate()
 	// 카메라에 따라 캐릭터 8방향 움직임 - 스프링 암에서 가져와야 함
 	// 마지막 키 입력 추적해야 함 - 앞, 뒤랑 양 옆을
 	CGameObject* pCamera   = CRenderMgr::GetInst()->GetMainCam()->GetOwner();
-	Vec3		 vCamFront = pCamera->Transform()->GetWorldDir(DIR_TYPE::FRONT);
 	Vec3		 vCamRight = pCamera->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
-	Vec3		 vTargetDir;
+	Vec3		 vCamFront = vCamRight.Cross(Vec3::Up);
+
+	Vec3 vTargetDir;
 	if (KEY_PRESSED(W))
 	{
 		vTargetDir += vCamFront;

@@ -11,7 +11,7 @@ CSpringArm::CSpringArm()
 {
 	AppendScriptParam("Active", SCRIPT_PARAM::BOOL, &m_bActive);
 	AppendScriptParam("Smooth", SCRIPT_PARAM::BOOL, &m_tInfo.Type);
-	AppendScriptParam("Distance", SCRIPT_PARAM::FLOAT, &m_tInfo.fDistance);
+	AppendScriptParam("Distance", SCRIPT_PARAM::FLOAT, &m_tInfo.fMaxDistance);
 	AppendScriptParam("Speed", SCRIPT_PARAM::FLOAT, &m_tInfo.fCamSpeed);
 	AppendScriptParam("RotSpeed", SCRIPT_PARAM::FLOAT, &m_tInfo.fCamRotSpeed);
 	AppendScriptParam("PosOffset", SCRIPT_PARAM::VEC3, &m_tInfo.vOffset);
