@@ -203,9 +203,9 @@ void GamePlayStatic::ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextLevelStart
 	CTaskMgr::GetInst()->AddTask(task);
 }
 
-vector<std::pair<int, string>>& GamePlayStatic::GetLayerMap()
+vector<LayerMap>& GamePlayStatic::GetLayerMap()
 {
-	static vector<std::pair<int, string>> vLayerMap;
+	static vector<LayerMap> vLayerMap;
 	if (0 == vLayerMap.size())
 	{
 		const int LayerCount = static_cast<int>(LAYER::LAYER_MAX);
@@ -215,7 +215,7 @@ vector<std::pair<int, string>>& GamePlayStatic::GetLayerMap()
 			auto layerName = magic_enum::enum_name(static_cast<LAYER>(i));
 			if (!layerName.empty() && static_cast<LAYER>(i) != LAYER::LAYER_MAX)
 			{
-				vLayerMap.push_back({i, ToString(layerName)});
+				vLayerMap.push_back(LayerMap{i, ToString(layerName)});
 			}
 		}
 	}

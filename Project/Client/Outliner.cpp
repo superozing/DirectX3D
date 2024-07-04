@@ -105,7 +105,7 @@ void Outliner::ResetCurrentLevel()
 		}
 	}
 
-	TreeNode* pEditorRootNode = m_Tree->AddTreeNode(pRootNode, "Editor Object", 0);
+	TreeNode* pEditorRootNode = m_Tree->AddTreeNode(pRootNode, "EX Object", 0);
 
 	auto vecEditorObj = CEditorObjMgr::GetInst()->GetEditorGameObjects();
 

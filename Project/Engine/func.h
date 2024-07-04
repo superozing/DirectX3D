@@ -4,7 +4,6 @@
 class CGameObject;
 class CAsset;
 #include <Magic_Enum/magic_enum_all.hpp>
-
 string	ToString(const wstring& _str);
 wstring ToWString(const string& _str);
 string	ToString(const std::string_view& _sv);
@@ -29,6 +28,7 @@ Vec3 QuaternionToEulerAngles(const XMFLOAT4& _Quaternion);
 } // namespace RoRMath
 
 class CLevel;
+struct LayerMap;
 namespace GamePlayStatic
 {
 void SpawnGameObject(CGameObject* _Target, int _LayerIdx);
@@ -100,7 +100,8 @@ public:
 void ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextLevelStartState);
 // enum class Layer의 {인덱스,레이어이름}을 반환
 // 중요) 이름없는 레이어는 요소에 들어있지않음
-vector<std::pair<int, string>>& GetLayerMap();
+
+vector<LayerMap>& GetLayerMap();
 } // namespace GamePlayStatic
 
 namespace Utils

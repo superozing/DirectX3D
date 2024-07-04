@@ -31,9 +31,9 @@ void CPhysX::updateFromPhysics()
 
 	Vec3 AxisAngle = RoRMath::QuaternionToEulerAngles(q);
 
-	Matrix matRotX = XMMatrixRotationX(-AxisAngle.z);
-	Matrix matRotY = XMMatrixRotationY(AxisAngle.y);
-	Matrix matRotZ = XMMatrixRotationZ(AxisAngle.x);
+	Matrix matRotX = XMMatrixRotationX(AxisAngle.y);
+	Matrix matRotY = XMMatrixRotationY(AxisAngle.x);
+	Matrix matRotZ = XMMatrixRotationZ(AxisAngle.z);
 
 	Matrix matTranslation = XMMatrixTranslation(physTransform.p.x, physTransform.p.y, physTransform.p.z);
 
@@ -63,10 +63,17 @@ void CPhysX::updateToPhysics()
 	if (nullptr == m_Actor)
 		return;
 
-	auto	   Obj		  = GetOwner();
-	auto	   Rot		  = Obj->Transform()->GetWorldRot();
-	auto	   Pos		  = Obj->Transform()->GetWorldPos();
-	Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(Rot.y, Rot.z, Rot.x);
+	auto Obj = GetOwner();
+	auto Rot = Obj->Transform()->GetWorldRot();
+	auto Pos = Obj->Transform()->GetWorldPos();
+
+	Matrix worldMat	   = Obj->Transform()->GetWorldMat();
+	Matrix transInvMat = Matrix::CreateTranslation(worldMat.Translation()).Invert();
+	Matrix scaleInvMat = Matrix::CreateScale(Obj->Transform()->GetRelativeScale()).Invert();
+	Matrix rotationMat = scaleInvMat * worldMat;
+
+	Quaternion quaternion = Quaternion::CreateFromRotationMatrix(rotationMat);
+	// Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(Rot.y, Rot.z, Rot.x);
 
 	// 게임 오브젝트의 위치와 회전 정보
 	PxTransform transform(PxVec3(Pos.x, Pos.y, Pos.z), PxQuat(quaternion.x, quaternion.y, quaternion.z, quaternion.w));

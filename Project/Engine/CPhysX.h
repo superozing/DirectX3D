@@ -13,6 +13,7 @@ enum class PhysShape
 {
 	BOX,
 	SPHERE,
+	END,
 };
 
 struct tCollisionData

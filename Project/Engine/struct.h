@@ -296,3 +296,9 @@ struct tLog
 	Log_Level m_LogLv;
 	string	  m_strMsg;
 };
+
+struct LayerMap
+{
+	int	   LayerIdx;
+	string LayerName;
+};

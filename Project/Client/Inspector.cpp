@@ -238,8 +238,8 @@ void Inspector::ObjectLayer()
 		{
 			for (size_t i = 0; i < mLayer.size(); ++i)
 			{
-				size_t CurLayer		= mLayer[i].first;
-				string CurLayerName = mLayer[i].second;
+				size_t CurLayer		= mLayer[i].LayerIdx;
+				string CurLayerName = mLayer[i].LayerName;
 
 				if (!magic_enum::enum_cast<LAYER>(CurLayerName).has_value())
 					continue;
@@ -284,8 +284,8 @@ int Inspector::PrefabLayer()
 	{
 		for (size_t i = 0; i < mLayer.size(); ++i)
 		{
-			size_t CurLayer		= mLayer[i].first;
-			string CurLayerName = mLayer[i].second;
+			size_t CurLayer		= mLayer[i].LayerIdx;
+			string CurLayerName = mLayer[i].LayerName;
 
 			if (!magic_enum::enum_cast<LAYER>(CurLayerName).has_value())
 				continue;
@@ -468,10 +468,10 @@ void Inspector::CheckTargetComponent(COMPONENT_TYPE _type)
 		m_TargetObject->AddComponent(new CDecal);
 		SetTargetObject(GetTargetObject());
 		break;
-	// case COMPONENT_TYPE::PHYSX:
-	//	m_TargetObject->AddComponent(new CPhysX);
-	//	SetTargetObject(GetTargetObject());
-	//	break;
+	case COMPONENT_TYPE::PHYSX:
+		m_TargetObject->AddComponent(new CPhysX);
+		SetTargetObject(GetTargetObject());
+		break;
 	case COMPONENT_TYPE::LANDSCAPE:
 		break;
 	default:
