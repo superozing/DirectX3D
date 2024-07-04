@@ -177,6 +177,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CRenderMgrScript.h" />
     <ClInclude Include="CRoRStateMachine.h" />
     <ClInclude Include="CScriptMgr.h" />
+    <ClInclude Include="CSpawnSpotScript.h" />
     <ClInclude Include="CSpringArm.h" />
     <ClInclude Include="CTimeMgrScript.h" />
     <ClInclude Include="CWrapImage.h" />
@@ -199,6 +200,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CRenderMgrScript.cpp" />
     <ClCompile Include="CRoRStateMachine.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
+    <ClCompile Include="CSpawnSpotScript.cpp" />
     <ClCompile Include="CSpringArm.cpp" />
     <ClCompile Include="CTimeMgrScript.cpp" />
     <ClCompile Include="CWrapImage.cpp" />

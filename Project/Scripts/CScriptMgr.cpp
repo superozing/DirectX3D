@@ -17,6 +17,7 @@
 #include "CWrapImage.h"
 #include "CLevelTransition.h"
 #include "CEditorCameraMoveScript.h"
+#include "CSpawnSpotScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -36,6 +37,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CWrapImage");
 	_vec.push_back(L"CLevelTransition");
 	_vec.push_back(L"CEditorCameraMoveScript");
+	_vec.push_back(L"CSpawnSpotScript");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -72,6 +74,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CLevelTransition;
 	if (L"CEditorCameraMoveScript" == _strScriptName)
 		return new CEditorCameraMoveScript;
+	if (L"CSpawnSpotScript" == _strScriptName)
+		return new CSpawnSpotScript;
 	return nullptr;
 }
 
@@ -126,6 +130,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::EDITORCAMERAMOVESCRIPT:
 		return new CEditorCameraMoveScript;
+		break;
+	case (UINT)SCRIPT_TYPE::SPAWNSPOTSCRIPT:
+		return new CSpawnSpotScript;
 		break;
 	}
 	return nullptr;
@@ -197,6 +204,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::EDITORCAMERAMOVESCRIPT:
 		return L"CEditorCameraMoveScript";
+		break;
+
+	case SCRIPT_TYPE::SPAWNSPOTSCRIPT:
+		return L"CSpawnSpotScript";
 		break;
 
 	}
