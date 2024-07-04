@@ -115,6 +115,18 @@ public:
 	void SetBSType(BS_TYPE _Type) { m_BSType = _Type; }
 	void SetDomain(SHADER_DOMAIN _domain) { m_Domain = _domain; }
 
+	void SetVSPath(const char* _arr) { m_VSPath = _arr; }
+	void SetHSPath(const char* _arr) { m_HSPath = _arr; }
+	void SetDSPath(const char* _arr) { m_DSPath = _arr; }
+	void SetGSPath(const char* _arr) { m_GSPath = _arr; }
+	void SetPSPath(const char* _arr) { m_PSPath = _arr; }
+
+	void SetVSFuncName(const char* _arr) { m_VSFuncName = _arr; }
+	void SetHSFuncName(const char* _arr) { m_HSFuncName = _arr; }
+	void SetDSFuncName(const char* _arr) { m_DSFuncName = _arr; }
+	void SetGSFuncName(const char* _arr) { m_GSFuncName = _arr; }
+	void SetPSFuncName(const char* _arr) { m_PSFuncName = _arr; }
+
 	D3D11_PRIMITIVE_TOPOLOGY GetTopology() const { return m_Topology; }
 	RS_TYPE					 GetRSType() const { return m_RSType; }
 	DS_TYPE					 GetDSType() const { return m_DSType; }

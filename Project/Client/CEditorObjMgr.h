@@ -11,6 +11,7 @@ private:
 	vector<CGameObjectEx*> m_vecEditorObj;
 
 	CGameObjectEx* m_EditorCam;
+	CGameObjectEx* m_ManagerObj;
 
 public:
 	virtual void init() override;

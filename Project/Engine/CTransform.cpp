@@ -118,9 +118,18 @@ void CTransform::SetWorldMat(const Matrix& _matWorld)
 		}
 	}
 
-	matrix.Decompose(vScale, Quat, vPos);
+	m_matWorld.Decompose(vScale, Quat, vPos);
 	auto mat = XMMatrixRotationQuaternion(Quat);
 	vRot	 = DecomposeRotMat(mat);
+
+	// 스케일이 조금씩 서서히 줄어드는 현상 예외처리
+	Vec3 vOriginScale = GetRelativeScale();
+	if (fabs(vScale.x - vOriginScale.x) < 0.01f)
+		vScale.x = vOriginScale.x;
+	if (fabs(vScale.y - vOriginScale.y) < 0.01f)
+		vScale.y = vOriginScale.y;
+	if (fabs(vScale.z - vOriginScale.z) < 0.01f)
+		vScale.z = vOriginScale.z;
 
 	SetRelativePos(vPos);
 	SetRelativeRotation(vRot);
@@ -129,6 +138,9 @@ void CTransform::SetWorldMat(const Matrix& _matWorld)
 
 Vec3 CTransform::GetWorldScale()
 {
+	if (m_bDirty)
+		CalWorldMat();
+
 	if (m_bAbsolute)
 	{
 		return m_vRelativeScale;
@@ -148,6 +160,9 @@ Vec3 CTransform::GetWorldScale()
 
 Vec3 CTransform::GetWorldRot()
 {
+	if (m_bDirty)
+		CalWorldMat();
+
 	XMVECTOR Qurt;
 	XMVECTOR Scale;
 	XMVECTOR Pos;
@@ -289,4 +304,21 @@ void CTransform::CalWorldMat()
 	}
 
 	m_matWorldInv = XMMatrixInverse(nullptr, m_matWorld);
+
+	// 쿼터니언구하기
+	// 월드 행렬에서 회전 행렬을 추출
+	// Matrix rotationMatrix = m_matWorld;
+	// rotationMatrix._41 = rotationMatrix._42 = rotationMatrix._43 = 0.0f; // 평행 이동 성분 제거
+
+	//// 행렬의 축을 정규화
+	// rotationMatrix.Right().Normalize();
+	// rotationMatrix.Up().Normalize();
+	// rotationMatrix.Forward().Normalize();
+
+	//// 회전 행렬을 쿼터니언으로 변환
+	// auto q = Quaternion::CreateFromRotationMatrix(rotationMatrix);
+	// m_vWorldRotQuat.x = q.x;
+	// m_vWorldRotQuat.y = q.y;
+	// m_vWorldRotQuat.z = q.z;
+	// m_vWorldRotQuat.w = q.w;
 }

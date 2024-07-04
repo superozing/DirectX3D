@@ -24,7 +24,7 @@ public:
 	const vector<CGameObject*>& GetParentObjects() { return m_vecParent; }
 	const vector<CGameObject*>& GetLayerObjects() { return m_vecObjects; }
 
-	void AddObject(CGameObject* _Object, bool _bMove);
+	void AddObject(CGameObject* _Object, bool _bMove, bool _spawn = false);
 
 private:
 	// 레이어의 오브젝트를 상수화가 아닌 채로 반환해요.
