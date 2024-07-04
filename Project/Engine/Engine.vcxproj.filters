@@ -746,6 +746,9 @@
     <Filter Include="08. Component\RenderComponent\07. FontRender">
       <UniqueIdentifier>{25baae11-4a5d-4756-b806-d1cfe4808c10}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\02. Render\UIShader">
+      <UniqueIdentifier>{2361e0c8-cb87-4fe0-aeb8-5174e6747f3d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -819,20 +822,23 @@
     <FxCompile Include="weightmap.fx">
       <Filter>ShaderCode\03. Compute\LandScape\WeightMap</Filter>
     </FxCompile>
-    <FxCompile Include="staticui.fx">
-      <Filter>ShaderCode\02. Render\2DShader</Filter>
-    </FxCompile>
-    <FxCompile Include="dynamicui.fx">
-      <Filter>ShaderCode\02. Render</Filter>
-    </FxCompile>
     <FxCompile Include="animation.fx">
       <Filter>ShaderCode\03. Compute\Animation</Filter>
     </FxCompile>
     <FxCompile Include="copybone.fx">
       <Filter>ShaderCode\03. Compute\CopyBone</Filter>
     </FxCompile>
+    <FxCompile Include="staticui.fx">
+      <Filter>ShaderCode\02. Render\UIShader</Filter>
+    </FxCompile>
     <FxCompile Include="damagefont.fx">
-      <Filter>ShaderCode\02. Render</Filter>
+      <Filter>ShaderCode\02. Render\UIShader</Filter>
+    </FxCompile>
+    <FxCompile Include="dynamicui.fx">
+      <Filter>ShaderCode\02. Render\UIShader</Filter>
+    </FxCompile>
+    <FxCompile Include="ammoprogressbar.fx">
+      <Filter>ShaderCode\02. Render\UIShader</Filter>
     </FxCompile>
     <FxCompile Include="crosshair.fx">
       <Filter>ShaderCode\02. Render</Filter>

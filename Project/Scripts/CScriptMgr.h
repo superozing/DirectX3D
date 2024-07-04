@@ -26,6 +26,7 @@ enum class SCRIPT_TYPE
 	BOSSHP,
 	MONSTERHP,
 	PLAYERHP,
+	AMMOINFO,
 	END,
 };
 

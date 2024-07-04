@@ -26,13 +26,13 @@ public:
 	void SetPortraitTex(Ptr<CTexture> _PortraitTex);
 	void SetImgFontTex(Ptr<CTexture> _ImgFontTex);
 
-	void SetMaxHP(int _MaxHP) { CProgressBar::SetMaxHP(RoRMath::ClampInt(_MaxHP, 0)); }
+	void SetMaxHP(int _MaxHP) { CProgressBar::SetMaxValue(RoRMath::ClampInt(_MaxHP, 0)); }
 	void SetLineHP(int _LineHP);
-	void SetCurHP(int _CurHP) { CProgressBar::SetCurHP(RoRMath::ClampInt(_CurHP, 0, CProgressBar::GetMaxHP())); }
+	void SetCurHP(int _CurHP) { CProgressBar::SetCurValue(RoRMath::ClampInt(_CurHP, 0, CProgressBar::GetMaxValue())); }
 
-	int GetMaxHP() const { return CProgressBar::GetMaxHP(); }
+	int GetMaxHP() const { return CProgressBar::GetMaxValue(); }
 	int GetLineHP() const { return m_LineHP; }
-	int GetCurHP() const { return CProgressBar::GetCurHP(); }
+	int GetCurHP() const { return CProgressBar::GetCurValue(); }
 
 public:
 	// 디버그용 함수

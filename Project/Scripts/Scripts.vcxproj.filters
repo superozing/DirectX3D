@@ -76,6 +76,9 @@
     <ClInclude Include="CPlayerHP.h">
       <Filter>Scripts\UI\ProgressBar\PlayerHP</Filter>
     </ClInclude>
+    <ClInclude Include="CAmmoInfo.h">
+      <Filter>Scripts\UI\ProgressBar\AmmoInfo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -153,6 +156,9 @@
     <ClCompile Include="CPlayerHP.cpp">
       <Filter>Scripts\UI\ProgressBar\PlayerHP</Filter>
     </ClCompile>
+    <ClCompile Include="CAmmoInfo.cpp">
+      <Filter>Scripts\UI\ProgressBar\AmmoInfo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -226,6 +232,9 @@
     </Filter>
     <Filter Include="Scripts\UI\ProgressBar\MonsterHP">
       <UniqueIdentifier>{41b13e7f-f4e2-41a0-9eb2-f1742d335840}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\ProgressBar\AmmoInfo">
+      <UniqueIdentifier>{428b9d57-cfd8-4bf1-b2ca-3905db9d780b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
