@@ -45,6 +45,7 @@ private:
 	PlayerStatus m_tStatus;
 
 public:
+#pragma region StatusFunc
 	/// @brief 플레이어 캐릭터에 파라미터 만큼 데미지를 줍니다. 현재 체력이 0 이하로 떨어지면 Dead상태로 만듭니다.
 	/// 아직은 회피율을 계산하지 않습니다.
 	void Hit(float _damage)
@@ -156,12 +157,11 @@ public:
 
 	/// @brief 사망 여부를 반환합니다.
 	bool IsDead() { return m_tStatus.IsDead; }
+#pragma endregion
 
 public:
 	virtual void begin() override;
 	virtual void tick() override;
-
-	CRoRStateMachine<CPlayerScript>* m_FSM;
 
 	virtual void BeginOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider);
 	virtual void Overlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider);
