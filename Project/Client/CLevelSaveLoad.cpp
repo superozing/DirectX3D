@@ -27,7 +27,8 @@
 void CLevelSaveLoad::SaveLevel(CLevel* _Level, const wstring& _strLevelPath)
 {
 	assert(_Level);
-	assert(LEVEL_STATE::STOP == _Level->GetState() || LEVEL_STATE::NONE == _Level->GetState());
+	assert(LEVEL_STATE::STOP == _Level->GetState() || LEVEL_STATE::NONE == _Level->GetState() ||
+		   LEVEL_STATE::PAUSE == _Level->GetState());
 
 	// Level 을 저장할 경로
 	wstring strLevelPath = CPathMgr::GetContentPath();
@@ -48,6 +49,20 @@ void CLevelSaveLoad::SaveLevel(CLevel* _Level, const wstring& _strLevelPath)
 	{
 		SaveLayer(_Level->GetLayer(i), fout);
 	}
+}
+
+void CLevelSaveLoad::SaveCheckPoint(CLevel* _Level)
+{
+	assert(_Level);
+	assert(LEVEL_STATE::PAUSE == _Level->GetState());
+
+	wstring wpath	= L"level\\";
+	wstring wLvName = L"CheckPoint.lv";
+
+	_Level->SetName(wLvName);
+
+	wpath += wLvName;
+	SaveLevel(_Level, wpath);
 }
 
 void CLevelSaveLoad::SaveLayer(CLayer* _Layer, FILE* _File)

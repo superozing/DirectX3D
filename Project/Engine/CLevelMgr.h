@@ -16,7 +16,7 @@ class CLevelMgr : public CManager<CLevelMgr>
 
 private:
 	CLevel* m_CurLevel;
-	string	m_strPrevLevel;
+	string	m_strPrevLevelPath;
 
 public:
 	static Restart_Level LevelChangeFunc;
@@ -37,8 +37,8 @@ public:
 	CLevel* GetCurrentLevel() { return m_CurLevel; }
 	void	RegisterClientFunction(Client_Function_Type _Type, std::function<void()> _MemberFunction);
 
-	string GetstrPrevLevel() { return m_strPrevLevel; }
-	void   SetstrPrevLevel(string CurLevel) { m_strPrevLevel = CurLevel; }
+	string GetstrPrevLevelPath() { return m_strPrevLevelPath; }
+	void   SetstrPrevLevelPath(string CurLevel) { m_strPrevLevelPath = CurLevel; }
 
 private:
 	unordered_map<Client_Function_Type, std::function<void()>> m_MapClientFunc;

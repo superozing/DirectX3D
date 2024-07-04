@@ -100,11 +100,11 @@ void CTaskMgr::tick()
 
 		case TASK_TYPE::CHANGE_LEVEL: {
 
-			string strPrevLevel = "";
+			string strPrevLevelPath = "";
 
 			if (CLevelMgr::GetInst()->GetCurrentLevel() != nullptr)
 			{
-				strPrevLevel = CLevelMgr::GetInst()->GetCurrentLevel()->GetRelativePath();
+				strPrevLevelPath = CLevelMgr::GetInst()->GetCurrentLevel()->GetRelativePath();
 			}
 
 			CLevel*		pNextLevel = (CLevel*)m_vecTask[i].Param_1;
@@ -112,7 +112,7 @@ void CTaskMgr::tick()
 			CLevelMgr::GetInst()->ChangeLevel_Task(pNextLevel, State);
 			m_bCreateObject = true;
 
-			CLevelMgr::GetInst()->SetstrPrevLevel(strPrevLevel);
+			CLevelMgr::GetInst()->SetstrPrevLevelPath(strPrevLevelPath);
 		}
 		break;
 

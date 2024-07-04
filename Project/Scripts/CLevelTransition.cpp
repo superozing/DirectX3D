@@ -18,13 +18,29 @@ void CLevelTransition::begin()
 {
 }
 
+#include <Engine\CLogMgr.h>
+
 void CLevelTransition::tick()
 {
 	if (CLevelMgr::GetInst()->GetCurrentLevel()) //!= CLevelMgr::GetInst()->GetPrevLevel())
 	{
 		m_ChangeLevelTask.Type = TASK_TYPE::CHANGE_LEVEL;
 
-		string strPrevLevel = CLevelMgr::GetInst()->GetstrPrevLevel();
+		string strPrevLevel;
+
+		wstring CheckPointPath = CPathMgr::GetContentPath();
+		CheckPointPath += L"level\\CheckPoint.lv";
+
+		ifstream CheckPointLv(CheckPointPath);
+
+		if (CheckPointLv.is_open())
+		{
+			strPrevLevel = "level\\CheckPoint.lv";
+		}
+		else
+		{
+			strPrevLevel = CLevelMgr::GetInst()->GetstrPrevLevelPath();
+		}
 
 		auto	pLevel	  = CLevelMgr::GetInst()->LevelChangeFunc(strPrevLevel);
 		wstring levelname = path(strPrevLevel).stem().wstring();

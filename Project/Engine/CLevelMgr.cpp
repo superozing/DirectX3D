@@ -22,7 +22,7 @@ Restart_Level CLevelMgr::LevelChangeFunc = nullptr;
 
 CLevelMgr::CLevelMgr()
 	: m_CurLevel(nullptr)
-	, m_strPrevLevel("")
+	, m_strPrevLevelPath("")
 {
 }
 
