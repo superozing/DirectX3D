@@ -50,6 +50,7 @@ public:
 	inline class CSkyBox*	 SkyBox() { return (CSkyBox*)m_arrCom[(UINT)COMPONENT_TYPE::SKYBOX]; }
 	inline class CDecal*	 Decal() { return (CDecal*)m_arrCom[(UINT)COMPONENT_TYPE::DECAL]; }
 	inline class CLandScape* LandScape() { return (CLandScape*)m_arrCom[(UINT)COMPONENT_TYPE::LANDSCAPE]; }
+	inline class CPhysX* PhysX() { return (CPhysX*)m_arrCom[(UINT)COMPONENT_TYPE::PHYSX]; }
 
 	int GetLayerIdx() { return m_iLayerIdx; }
 
@@ -71,7 +72,7 @@ public:
 	int DisconnectWithParent();
 	int DisconnectWithLayer();
 
-	void AddChild(CGameObject* _Child);
+	void AddChild(CGameObject* _Child, bool spawn = false);
 	bool IsDead() { return m_bDead; }
 
 	void Destroy();
@@ -88,4 +89,6 @@ public:
 	friend class CLevel;
 	friend class CLayer;
 	friend class CTaskMgr;
+	friend class CLevelSaveLoad;
+	friend class Inspector;
 };

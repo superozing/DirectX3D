@@ -27,6 +27,8 @@ void AssetUI::render_update()
 
 	if (ImGui::Button("Save Edit"))
 	{
+		m_Asset->Save(m_Asset->GetRelativePath());
+		CAssetMgr::GetInst()->AddAsset(m_Asset->GetRelativePath(), m_Asset.Get());
 	}
 
 	ImGui::SameLine();

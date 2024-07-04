@@ -60,7 +60,7 @@ void CLayer::finaltick()
 	}
 }
 
-void CLayer::AddObject(CGameObject* _Object, bool _bMove)
+void CLayer::AddObject(CGameObject* _Object, bool _bMove, bool _spawn)
 {
 	// _bMove : true  - 레이어에 입력되는 Object가 자식이 있는 경우, 자식까지 모두 해당 레이어로 넘어온다.
 	// _bMove : false - 레이어에 입력되는 Object의 자식은 해당 레이어로 같이 넘어오지 않는다. 단 자식오브젝트가 레이어
@@ -70,7 +70,7 @@ void CLayer::AddObject(CGameObject* _Object, bool _bMove)
 	if (nullptr == _Object->GetParent())
 	{
 		// 다른 레이어 소속이었다
-		if (-1 != _Object->m_iLayerIdx)
+		if (-1 != _Object->m_iLayerIdx && !_spawn)
 		{
 			// 기존 레이어의 Parent 벡터에서 제거되어야 한다.
 			_Object->DisconnectWithLayer();

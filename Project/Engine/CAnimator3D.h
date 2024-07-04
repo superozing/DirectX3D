@@ -44,15 +44,18 @@ public:
 	void SetAnimClip(const vector<tMTAnimClip>* _vecAnimClip);
 	void SetClipTime(int _iClipIdx, float _fTime) { m_vecClipUpdateTime[_iClipIdx] = _fTime; }
 
-	CStructuredBuffer* GetFinalBoneMat() { return m_pBoneFinalMatBuffer; }
-	UINT			   GetBoneCount() { return (UINT)m_pVecBones->size(); }
-	void			   ClearData();
+	CStructuredBuffer*	   GetFinalBoneMat() { return m_pBoneFinalMatBuffer; }
+	UINT				   GetBoneCount() { return (UINT)m_pVecBones->size(); }
+	const vector<tMTBone>* GetBones() { return m_pVecBones; }
+	void				   ClearData();
 
 public:
 	const vector<tMTAnimClip>* GetAnimClip() { return m_pVecClip; }
 
 	void SetCurClip(int _Clip) { m_iCurClip = _Clip; }
 	int	 GetCurClip() { return m_iCurClip; }
+
+	int GetCurFrameIdx() { return m_iFrameIdx; }
 
 	void SetPlayable(bool _bPlay) { m_bPlay = _bPlay; }
 	bool IsPlayable() { return m_bPlay; }

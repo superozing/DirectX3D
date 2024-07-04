@@ -55,7 +55,7 @@ void Outliner::render_update()
 		ResetCurrentLevel();
 	}
 
-	if (KEY_TAP_EDITOR(KEY::DEL))
+	if (KEY_TAP_EDITOR(KEY::DEL) && ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows))
 	{
 		TreeNode* pNode = m_Tree->GetSelectedNode();
 		if (nullptr != pNode)
@@ -105,7 +105,7 @@ void Outliner::ResetCurrentLevel()
 		}
 	}
 
-	TreeNode* pEditorRootNode = m_Tree->AddTreeNode(pRootNode, "Editor Object", 0);
+	TreeNode* pEditorRootNode = m_Tree->AddTreeNode(pRootNode, "EX Object", 0);
 
 	auto vecEditorObj = CEditorObjMgr::GetInst()->GetEditorGameObjects();
 

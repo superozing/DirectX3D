@@ -49,6 +49,13 @@ CPlayerScript::CPlayerScript()
 						nullptr);
 }
 
+CPlayerScript::CPlayerScript(const CPlayerScript& _origin)
+	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
+	, m_Speed(_origin.m_Speed)
+{
+	m_FSM = _origin.m_FSM->Clone(this);
+}
+
 CPlayerScript::~CPlayerScript()
 {
 	if (nullptr != m_FSM)
@@ -64,6 +71,8 @@ void		  CPlayerScript::begin()
 	m_FSM->Begin();
 	AppendScriptParam("CurState", SCRIPT_PARAM::STRING, (void*)&state);
 }
+
+#include "CSpringArm.h"
 
 void CPlayerScript::tick()
 {
