@@ -131,7 +131,7 @@ bool ParamUI::Param_STRING(string* _Data, const string& _Desc, float _min, float
 		{
 			ImGui::SetTooltip(_Tooltip.c_str());
 		}
-		ImGui::Text(_Data->c_str());
+		// ImGui::Text(_Data->c_str());
 	}
 	else
 	{
@@ -141,7 +141,7 @@ bool ParamUI::Param_STRING(string* _Data, const string& _Desc, float _min, float
 		}
 		char buffer[255];
 		strcpy_s(buffer, _Data->c_str());
-		if (ImGui::InputText(_Desc.c_str(), buffer, IM_ARRAYSIZE(buffer)))
+		if (ImGui::InputText(szID, buffer, IM_ARRAYSIZE(buffer)))
 		{
 			(*_Data) = buffer;
 			return true;
