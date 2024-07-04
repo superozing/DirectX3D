@@ -50,11 +50,11 @@ void CSpringArm::tick()
 
 	if (KEY_TAP(J))
 	{
-		SetMaxDistance(100.f);
+		SetDistance(100.f);
 	}
 	if (KEY_TAP(K))
 	{
-		SetMaxDistance(300.f);
+		SetDistance(300.f);
 	}
 	// 테스트 코드 끝
 
@@ -85,11 +85,11 @@ void CSpringArm::tick()
 											(int)RayCastDebugFlag::AllInvisible))
 	{
 		float length = (tHitInfo.vHitPos - vNewPos).Length();
-		SetDistance(length);
+		SetCurDistance(length);
 	}
 	else
 	{
-		SetDistance(m_tInfo.fMaxDistance);
+		SetCurDistance(m_tInfo.fMaxDistance);
 	}
 
 	m_pTargetCam->Transform()->SetRelativePos(vNewPos);

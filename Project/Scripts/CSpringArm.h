@@ -43,15 +43,15 @@ public:
 	/// @brief 스프링 암에 붙어있는 카메라가 바라보는 지점을 돌려주는 오프셋을 지정하는 함수입니다.
 	void SetOffsetDir(Vec3 _vOffset) { m_tInfo.vDirOffset = _vOffset; }
 	/// @brief 스프링 암의 최대 길이를 지정하는 함수입니다. 현재 스프링 암의 길이도 같이 변경합니다.
-	void SetMaxDistance(float _dist)
+	void SetDistance(float _dist)
 	{
 		m_tInfo.fMaxDistance = _dist;
-		SetDistance(_dist);
+		SetCurDistance(_dist);
 	}
 
 private:
 	/// @brief 스프링 암의 길이를 지정하는 함수입니다. 최대 길이 캡을 보장합니다.
-	void SetDistance(float _dist)
+	void SetCurDistance(float _dist)
 	{
 		_dist < m_tInfo.fMaxDistance ? m_tInfo.fDistance = _dist : m_tInfo.fDistance = m_tInfo.fMaxDistance;
 	}
