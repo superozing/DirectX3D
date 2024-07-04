@@ -4,7 +4,6 @@
 class CGameObject;
 class CAsset;
 #include <Magic_Enum/magic_enum_all.hpp>
-
 string	ToString(const wstring& _str);
 wstring ToWString(const string& _str);
 string	ToString(const std::string_view& _sv);
@@ -17,15 +16,19 @@ Vec2  Lerp(Vec2 A, Vec2 B, float Alpha);
 Vec3  Lerp(Vec3 A, Vec3 B, float Alpha);
 Vec4  Lerp(Vec4 A, Vec4 B, float Alpha);
 
+float SmoothStep(float A, float B, float Alpha);
+
 int	  ClampInt(int _input, int _min, int _max = INT_MAX);
 float ClampFloat(float _input, float _min);
 float ClampFloat(float _input, float _min, float _max);
 
 void MatrixToFloat16(float _dest[16], const Matrix& _src);
 void Float16ToMatrix(Matrix& _dest, const float _src[16]);
+Vec3 QuaternionToEulerAngles(const XMFLOAT4& _Quaternion);
 } // namespace RoRMath
 
 class CLevel;
+struct LayerMap;
 namespace GamePlayStatic
 {
 void SpawnGameObject(CGameObject* _Target, int _LayerIdx);
@@ -51,6 +54,8 @@ void DrawDebugCube(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Co
 				   float _Duration = 0.f);
 
 void DrawDebugSphere(Vec3 _vWorldPos, float _fRadius, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
+void DrawDebugCylinder(Vec3 _FromPos, Vec3 _ToPos, float _LineWidth, Vec3 _Color, bool _bDepthTest,
+					   float _Duration = 0.f);
 
 void DrawDebugCone(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, bool _bDepthTest,
 				   float _Duration = 0.f);
@@ -93,6 +98,10 @@ public:
 };
 
 void ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextLevelStartState);
+// enum class Layer의 {인덱스,레이어이름}을 반환
+// 중요) 이름없는 레이어는 요소에 들어있지않음
+
+vector<LayerMap>& GetLayerMap();
 } // namespace GamePlayStatic
 
 namespace Utils

@@ -178,7 +178,7 @@ void CLevel::CheckObjectName(CGameObject* _Object)
 				{
 					while (true)
 					{
-						swprintf_s(szObj, (ObjName + L"_%d").c_str(), num);
+						swprintf_s(szObj, (ObjName + L"_copy%d").c_str(), num);
 						if (nullptr == pLevel->FindObjectByName(szObj))
 							break;
 						++num;

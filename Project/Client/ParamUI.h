@@ -31,4 +31,6 @@ public:
 							 const string& _Tooltip);
 	static bool Param_FUNC_STATIC(StaticFuncPtr _Func, const string& _Desc);
 	static bool Param_FUNC_MEMBER(std::function<void()> _Func, const string& _Desc);
+
+	static bool Param_MGR_PHYSX(void* _pPhysXMgr);
 };

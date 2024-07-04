@@ -90,7 +90,9 @@ void RTViewPort::render_update()
 				{
 					Ptr<CMeshData> pMD = (CMeshData*)pAsset;
 					CGameObject*   pGO = pMD->Instantiate();
-					pGO->SetName(pAsset->GetKey());
+
+					string name = path(ToString(pAsset->GetKey())).stem().string();
+					pGO->SetName(name);
 
 					// 카메라 위치에 맞춰서 위치 설정하기
 					CCamera* pCam	   = CRenderMgr::GetInst()->GetMainCam();

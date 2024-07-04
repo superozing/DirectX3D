@@ -21,6 +21,9 @@ CEditorObjMgr::~CEditorObjMgr()
 	Delete_Vec(m_vecEditorObj);
 }
 
+#include <Scripts/CPhysXMgrScript.h>
+#include <Scripts/CRenderMgrScript.h>
+#include <Scripts/CTimeMgrScript.h>
 void CEditorObjMgr::init()
 {
 	// 에디터용 카메라 오브젝트 생성
@@ -45,6 +48,20 @@ void CEditorObjMgr::init()
 
 	// Editor 용 카메라로서 렌더매니저에 등록
 	CRenderMgr::GetInst()->RegisterEditorCamera(m_EditorCam->Camera());
+
+	// 매니저 스크립트 오브젝트 생성
+	m_ManagerObj = new CGameObjectEx;
+	m_ManagerObj->SetName(L"Manager Object");
+	auto PS = new CPhysXMgrScript;
+	PS->begin();
+	m_ManagerObj->AddComponent(PS);
+	auto RS = new CRenderMgrScript;
+	RS->begin();
+	m_ManagerObj->AddComponent(RS);
+	auto TS = new CTimeMgrScript;
+	TS->begin();
+	m_ManagerObj->AddComponent(TS);
+	m_vecEditorObj.push_back(m_ManagerObj);
 }
 
 void CEditorObjMgr::progress()

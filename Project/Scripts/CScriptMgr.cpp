@@ -14,6 +14,8 @@
 #include "CImageUIScript.h"
 #include "CPanelUIScript.h"
 #include "CProgressBar.h"
+#include "CPhysXMgrScript.h"
+#include "CHalo.h"
 #include "CWrapImage.h"
 #include "CLevelTransition.h"
 #include "CEditorCameraMoveScript.h"
@@ -34,6 +36,8 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CImageUIScript");
 	_vec.push_back(L"CPanelUIScript");
 	_vec.push_back(L"CProgressBar");
+	_vec.push_back(L"CPhysXMgrScript");
+	_vec.push_back(L"CHalo");
 	_vec.push_back(L"CWrapImage");
 	_vec.push_back(L"CLevelTransition");
 	_vec.push_back(L"CEditorCameraMoveScript");
@@ -68,6 +72,10 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPanelUIScript;
 	if (L"CProgressBar" == _strScriptName)
 		return new CProgressBar;
+	if (L"CPhysXMgrScript" == _strScriptName)
+		return new CPhysXMgrScript;
+	if (L"CHalo" == _strScriptName)
+		return new CHalo;
 	if (L"CWrapImage" == _strScriptName)
 		return new CWrapImage;
 	if (L"CLevelTransition" == _strScriptName)
@@ -121,6 +129,12 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::PROGRESSBAR:
 		return new CProgressBar;
+		break;
+	case (UINT)SCRIPT_TYPE::PHYSXMGRSCRIPT:
+		return new CPhysXMgrScript;
+		break;
+	case (UINT)SCRIPT_TYPE::HALO:
+		return new CHalo;
 		break;
 	case (UINT)SCRIPT_TYPE::WRAPIMAGE:
 		return new CWrapImage;
@@ -192,6 +206,14 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::PROGRESSBAR:
 		return L"CProgressBar";
+		break;
+
+	case SCRIPT_TYPE::PHYSXMGRSCRIPT:
+		return L"CPhysXMgrScript";
+		break;
+
+	case SCRIPT_TYPE::HALO:
+		return L"CHalo";
 		break;
 
 	case SCRIPT_TYPE::WRAPIMAGE:

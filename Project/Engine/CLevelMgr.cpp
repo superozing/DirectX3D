@@ -90,6 +90,7 @@ void CLevelMgr::ChangeLevelState(LEVEL_STATE _State)
 	CTaskMgr::GetInst()->AddTask(task);
 }
 
+#include "CPhysXMgr.h"
 void CLevelMgr::ChangeLevel_Task(CLevel* _NextLevel, LEVEL_STATE _NextLevelState)
 {
 	assert(!(m_CurLevel == _NextLevel));
@@ -100,6 +101,7 @@ void CLevelMgr::ChangeLevel_Task(CLevel* _NextLevel, LEVEL_STATE _NextLevelState
 	CAssetMgr::GetInst()->exit();
 	CCollisionMgr::GetInst()->exit();
 	CGC::GetInst()->exit();
+	CPhysXMgr::GetInst()->exit();
 
 	if (nullptr != m_CurLevel)
 		delete m_CurLevel;
