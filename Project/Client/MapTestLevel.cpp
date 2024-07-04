@@ -283,7 +283,7 @@ void MapTestLevel::CreateMapTestLevel()
 
 	GamePlayStatic::ChangeLevel(pTempLevel, LEVEL_STATE::STOP);
 
-	CLevelSaveLoad::SaveLevel(pTempLevel, L"level\\MapLevel.lv");
+	// CLevelSaveLoad::SaveLevel(pTempLevel, L"level\\MapLevel.lv");
 
 	// CTaskMgr::GetInst()->tick();
 }

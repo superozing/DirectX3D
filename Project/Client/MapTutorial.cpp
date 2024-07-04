@@ -34,8 +34,6 @@
 #include "CTraceState.h"
 #include <Scripts/CRenderMgrScript.h>
 
-#include <Engine\CLogMgr.h>
-
 void MapTutorial::Init()
 {
 }
@@ -110,9 +108,9 @@ void MapTutorial::CreateMapTestLevel()
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ImageWrapMtrl"), 0);
 	pObj->MeshRender()->GetMaterial(0)->SetTexParam(
 		TEX_PARAM::TEX_0,
-		CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TutorialTile1.jpg", L"texture\\tile\\TutorialTile1.jpg"));
+		CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TutorialTile.jpg", L"texture\\tile\\TutorialTile.jpg"));
 
-	Ptr<CTexture> pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"texture\\tile\\TutorialTile1.jpg");
+	Ptr<CTexture> pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"texture\\tile\\TutorialTile.jpg");
 
 	Vec2 TexSize = Vec2(pTex.Get()->GetWidth(), pTex.Get()->GetHeight());
 	pObj->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC2_0, TexSize);
@@ -124,6 +122,6 @@ void MapTutorial::CreateMapTestLevel()
 
 	GamePlayStatic::ChangeLevel(pTempLevel, LEVEL_STATE::STOP);
 
-	CLevelSaveLoad::SaveLevel(pTempLevel, L"level\\Tutorial.lv");
-	pTempLevel->SetRelativePath("level\\Tutorial.lv");
+	// CLevelSaveLoad::SaveLevel(pTempLevel, L"level\\Tutorial.lv");
+	// pTempLevel->SetRelativePath("level\\Tutorial.lv");
 }

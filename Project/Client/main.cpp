@@ -119,6 +119,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	}
 
 	// MapTestLevel::CreateMapTestLevel();
+	// MapTutorial::CreateMapTestLevel();
 
 	// ImGui 초기화
 	CImGuiMgr::GetInst()->init(hWnd, DEVICE, CONTEXT);

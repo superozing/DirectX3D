@@ -93,4 +93,18 @@ void CEnvMgr::tick()
 
 		CTaskMgr::GetInst()->AddTask(task);
 	}
+
+	if (KEY_PRESSED(KEY::LSHIFT) && KEY_TAP(KEY::F6) &&
+		CLevelMgr::GetInst()->GetCurrentLevel()->GetState() == LEVEL_STATE::PAUSE)
+	{
+		CLevel* Curlevel = CLevelMgr::GetInst()->GetCurrentLevel();
+		CLevelSaveLoad::SaveCheckPoint(Curlevel);
+
+		tTask task;
+		task.Type	 = TASK_TYPE::CHANGE_LEVELSTATE;
+		task.Param_1 = (UINT_PTR)Curlevel;
+		task.Param_2 = (UINT_PTR)LEVEL_STATE::PLAY;
+
+		CTaskMgr::GetInst()->AddTask(task);
+	}
 }

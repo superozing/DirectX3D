@@ -1114,7 +1114,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->AddScalarParam(SCALAR_PARAM::VEC2_0, "ImageSize");
 	pShader->AddScalarParam(SCALAR_PARAM::VEC2_1, "PlaneSize");
 
-	AddAsset(GRPSHADERImageWrapShader, pShader.Get());
+	AddAsset(L"ImageWrapShader", pShader.Get());
 }
 
 void CAssetMgr::CreateDefaultMaterial()
