@@ -291,34 +291,34 @@ void CUITempLevel::CreateTempLevel()
 
 #pragma region Image UI
 
-	//// CPausePanel
-	// pObj = new CGameObject;
-	// pObj->SetName(L"Pause Panel");
+	// CPausePanel
+	pObj = new CGameObject;
+	pObj->SetName(L"Pause Panel");
 
-	// pObj->AddComponent(new CTransform);
+	pObj->AddComponent(new CTransform);
 
-	// auto pPausePanel = new CPausePanel;
-	// pObj->AddComponent(pPausePanel);
+	auto pPausePanel = new CPausePanel;
+	pObj->AddComponent(pPausePanel);
 
-	// pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
-	// pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
+	pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
+	pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
 
-	// pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 
-	//// CPauseBtn
-	// pObj = new CGameObject;
-	// pObj->SetName(L"Pause Btn");
-	// pObj->AddComponent(new CTransform);
+	// CPauseBtn
+	pObj = new CGameObject;
+	pObj->SetName(L"Pause Btn");
+	pObj->AddComponent(new CTransform);
 
-	// auto PauseBtn = new CPauseBtn;
-	// pObj->AddComponent(PauseBtn);
+	auto PauseBtn = new CPauseBtn;
+	pObj->AddComponent(PauseBtn);
 
-	// PauseBtn->SetPausePanel(pPausePanel);
+	PauseBtn->SetPausePanel(pPausePanel);
 
-	// pObj->Transform()->SetRelativePos(Vec3(1, 1, 100.f));
-	// pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+	pObj->Transform()->SetRelativePos(Vec3(1, 1, 100.f));
+	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
 
-	// pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 
 	//// DamageFont
 	// CGameObject* pDamageFontObj = new CGameObject;

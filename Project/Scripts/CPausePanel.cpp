@@ -22,100 +22,94 @@ CPausePanel::~CPausePanel()
 
 void CPausePanel::begin()
 {
+	SetParentPanelUI();
+
 	Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
 
-	// m_pModalBg
-	auto pObj  = new CGameObject;
-	m_pModalBg = new CImageUIScript;
+	//// m_pModalBg
+	// auto pObj  = new CGameObject;
+	// m_pModalBg = new CImageUIScript;
 
-	pObj->SetName("Modal Background");
+	// pObj->SetName("Modal Background");
+
+	// pObj->AddComponent(new CTransform);
+	// pObj->AddComponent(new CMeshRender);
+	// pObj->AddComponent(m_pModalBg);
+
+	// pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 100.f));
+	// pObj->Transform()->SetRelativeScale(Vec3(vResol.x, vResol.y, 1.f));
+
+	// pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
+	// pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
+	// pObj->MeshRender()->GetDynamicMaterial(0);
+
+	// m_pModalBg->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Modal_Bg.png"));
+	// m_pModalBg->DisallowBindTexPerFrame();
+
+	// GetOwner()->AddChild(pObj);
+
+	// 계속하기 버튼
+	auto pObj	   = new CGameObject;
+	m_pContinueBtn = new CBtnUIScript;
+
+	pObj->SetName("Continue Btn");
 
 	pObj->AddComponent(new CTransform);
 	pObj->AddComponent(new CMeshRender);
-	pObj->AddComponent(m_pModalBg);
+	pObj->AddComponent(m_pContinueBtn);
 
-	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 10.f));
-	pObj->Transform()->SetRelativeScale(Vec3(vResol.x, vResol.y, 1.f));
+	pObj->Transform()->SetRelativePos(Vec3(300.f, 0.f, -10.f));
+	pObj->Transform()->SetRelativeScale(Vec3(250.f, 250.f, 1.f));
 
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
 	pObj->MeshRender()->GetDynamicMaterial(0);
 
-	m_pModalBg->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Modal_Bg.png"));
-	m_pModalBg->DisallowBindTexPerFrame();
+	m_pContinueBtn->SetDeletage(this, (DelegateFunc)&CPausePanel::InactivePausePanel);
+	m_pContinueBtn->SetNormalImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Field_Common_Bg_03.png"));
+	m_pContinueBtn->SetHoverImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Field_Common_Bg_03.png"));
+	m_pContinueBtn->SetPressedImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Field_Common_Bg_03.png"));
+	m_pContinueBtn->DisallowCallFunc();
+	m_pContinueBtn->DisallowTexSet();
 
-	CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(pObj, (UINT)LAYER::LAYER_UI);
+	GetOwner()->AddChild(pObj);
 
-	// m_pPausePanel
-	m_pPausePanelObject = new CGameObject;
-	m_pPausePanel		= new CPanelUIScript;
-
-	m_pPausePanelObject->SetName("Pause Panel");
-
-	m_pPausePanelObject->AddComponent(new CTransform);
-	m_pPausePanelObject->AddComponent(new CMeshRender);
-	m_pPausePanelObject->AddComponent(m_pPausePanel);
-
-	m_pPausePanelObject->Transform()->SetRelativePos(Vec3(0.f, 0.f, 20.f));
-	m_pPausePanelObject->Transform()->SetRelativeScale(Vec3(1024.f, 512.f, 1.f));
-
-	m_pPausePanelObject->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
-	m_pPausePanelObject->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
-	m_pPausePanelObject->MeshRender()->GetDynamicMaterial(0);
-
-	m_pPausePanel->SetPanelTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Pause_Bg.png"));
-	m_pPausePanel->DisallowTexSet();
-	m_pPausePanel->DisallowDragAndDrop();
-
-	CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(m_pPausePanelObject, (UINT)LAYER::LAYER_UI);
-
-	// m_PanelFontInfo
-	m_PanelFontInfo.Color	  = FONT_RGBA(20, 20, 180, 255);
-	m_PanelFontInfo.fFontSize = 50.f;
-
-	m_PanelFontInfo.FontType = FONT_TYPE::MAPLE;
-
-	m_PanelFontInfo.vPos  = Vec2(vResol.x / 2, -250.f + (vResol.y / 2));
-
-	m_PanelFontInfo.TextFlag = FW1_CENTER;
-	m_PanelFontInfo.WStr	 = L"일시 정지";
-
-	// m_pExitBtn
+	// 나가기 버튼
 	pObj	   = new CGameObject;
 	m_pExitBtn = new CBtnUIScript;
 
-	pObj->SetName("Modal Background");
+	pObj->SetName("Exit Btn");
 
 	pObj->AddComponent(new CTransform);
 	pObj->AddComponent(new CMeshRender);
 	pObj->AddComponent(m_pExitBtn);
 
-	pObj->Transform()->SetRelativePos(Vec3(450.f, 200.f, -10.f));
-	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, -10.f));
+	pObj->Transform()->SetRelativeScale(Vec3(250.f, 250.f, 1.f));
 
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
 	pObj->MeshRender()->GetDynamicMaterial(0);
 
-	m_pExitBtn->SetDeletage(this, (DelegateFunc)&CPausePanel::InactivePausePanel);
+	m_pExitBtn->SetDeletage(this, (DelegateFunc)&CPausePanel::ExitBtnDelegateFunc);
 	m_pExitBtn->SetNormalImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Field_Common_Bg_03.png"));
 	m_pExitBtn->SetHoverImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Field_Common_Bg_03.png"));
 	m_pExitBtn->SetPressedImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Field_Common_Bg_03.png"));
 	m_pExitBtn->DisallowCallFunc();
 	m_pExitBtn->DisallowTexSet();
 
-	m_pPausePanelObject->AddChild(pObj);
+	GetOwner()->AddChild(pObj);
 
-	// m_pFuncBtn
+	// m_PanelFontInfo
+	m_PanelFontInfo.Color	  = FONT_RGBA(120, 120, 180, 255);
+	m_PanelFontInfo.fFontSize = 50.f;
 
-	// for (int i = 0; i < 2; ++i)
-	//{
-	//	auto pObj = new CGameObject;
-	//	m_pFuncBtn[i] = new CBtnUIScript;
-	// }
+	m_PanelFontInfo.FontType = FONT_TYPE::MAPLE;
 
-	// 1. 콜백 버튼을 추가할 함수 필요
-	// 2.
+	m_PanelFontInfo.vPos = Vec2(vResol.x / 2, -250.f + (vResol.y / 2));
+
+	m_PanelFontInfo.TextFlag = FW1_CENTER;
+	m_PanelFontInfo.WStr	 = L"일시 정지";
 }
 
 void CPausePanel::tick()
@@ -128,12 +122,15 @@ void CPausePanel::tick()
 
 void CPausePanel::ActivePausePanel()
 {
-	m_pModalBg->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Modal_Bg.png"));
-	m_pModalBg->BindUIImgOnTexParam();
-	m_pModalBg->EnableMouseInput();
+	// m_pModalBg->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Modal_Bg.png"));
+	// m_pModalBg->BindUIImgOnTexParam();
+	// m_pModalBg->EnableMouseInput();
 
-	m_pPausePanel->AllowTexSet();
-	m_pPausePanel->EnableMouseInput();
+	m_pPanelUI->AllowTexSet();
+	m_pPanelUI->EnableMouseInput();
+
+	m_pContinueBtn->AllowCallFunc();
+	m_pContinueBtn->AllowTexSet();
 
 	m_pExitBtn->AllowCallFunc();
 	m_pExitBtn->AllowTexSet();
@@ -145,12 +142,15 @@ void CPausePanel::ActivePausePanel()
 
 void CPausePanel::InactivePausePanel()
 {
-	m_pModalBg->SetUIImg(nullptr);
-	m_pModalBg->BindUIImgOnTexParam();
-	m_pModalBg->DisableMouseInput();
+	// m_pModalBg->SetUIImg(nullptr);
+	// m_pModalBg->BindUIImgOnTexParam();
+	// m_pModalBg->DisableMouseInput();
 
-	m_pPausePanel->DisallowTexSet();
-	m_pPausePanel->DisableMouseInput();
+	m_pPanelUI->DisallowTexSet();
+	m_pPanelUI->DisableMouseInput();
+
+	m_pContinueBtn->DisallowCallFunc();
+	m_pContinueBtn->DisallowTexSet();
 
 	m_pExitBtn->DisallowCallFunc();
 	m_pExitBtn->DisallowTexSet();
@@ -158,4 +158,38 @@ void CPausePanel::InactivePausePanel()
 	m_bActivate = false;
 
 	CLevelMgr::GetInst()->GetCurrentLevel()->ChangeModalState(false);
+}
+
+void CPausePanel::SetParentPanelUI()
+{
+	auto pOwn = GetOwner();
+
+	pOwn->Transform()->SetRelativePos(Vec3(0.f, 0.f, -500.f));
+	pOwn->Transform()->SetRelativeScale(Vec3(1024.f, 512.f, 1.f));
+
+	m_pPanelUI = pOwn->GetScript<CPanelUIScript>();
+
+	if (!m_pPanelUI)
+	{
+		m_pPanelUI = new CPanelUIScript;
+		pOwn->AddComponent(m_pPanelUI);
+	}
+
+	m_pPanelUI->DisableMouseInput();
+	m_pPanelUI->DisallowDragAndDrop();
+	m_pPanelUI->DisallowTexSet();
+
+	auto meshrender = pOwn->MeshRender();
+
+	if (!meshrender)
+	{
+		meshrender = new CMeshRender;
+		pOwn->AddComponent(meshrender);
+	}
+
+	meshrender->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	meshrender->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
+	meshrender->GetDynamicMaterial(0);
+
+	m_pPanelUI->SetPanelTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Pause_Bg.png"));
 }
