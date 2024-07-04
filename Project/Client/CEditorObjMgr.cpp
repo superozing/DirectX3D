@@ -10,6 +10,7 @@
 #include <Engine/CLevel.h>
 
 #include <Scripts/CCameraEffect.h>
+#include <Scripts\CEditorCameraMoveScript.h>
 
 CEditorObjMgr::CEditorObjMgr()
 {
@@ -27,7 +28,7 @@ void CEditorObjMgr::init()
 	m_EditorCam->SetName(L"Editor Camera");
 	m_EditorCam->AddComponent(new CTransform);
 	m_EditorCam->AddComponent(new CCamera);
-	m_EditorCam->AddComponent(new CCameraMoveScript);
+	m_EditorCam->AddComponent(new CEditorCameraMoveScript);
 	m_EditorCam->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
 	m_EditorCam->Transform()->SetRelativeRotation(Vec3(.0f, 0.f, 0.f));
 
