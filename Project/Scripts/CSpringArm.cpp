@@ -16,7 +16,7 @@ CSpringArm::CSpringArm()
 	AppendScriptParam("PosOffset", SCRIPT_PARAM::VEC3, &m_tInfo.vOffset);
 	AppendScriptParam("DirOffset", SCRIPT_PARAM::VEC3, &m_tInfo.vDirOffset);
 	AppendScriptParam("Direction", SCRIPT_PARAM::VEC3, &m_tInfo.vDir);
-	AppendScriptObject("Cam", &m_pTargetCam, COMPONENT_TYPE::CAMERA);
+	AppendScriptObject("Cam", &m_pTargetCam, COMPONENT_TYPE::TRANSFORM);
 }
 
 CSpringArm::~CSpringArm()
@@ -26,7 +26,7 @@ CSpringArm::~CSpringArm()
 void CSpringArm::begin()
 {
 	auto cam = CRenderMgr::GetInst()->GetMainCam();
-	SetTargetCamera(cam);
+	// SetTargetCamera(cam);
 }
 
 void CSpringArm::tick()

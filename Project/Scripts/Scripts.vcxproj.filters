@@ -55,6 +55,9 @@
     <ClInclude Include="CPhysXMgrScript.h">
       <Filter>Scripts\Manager\PhysXMgr</Filter>
     </ClInclude>
+    <ClInclude Include="CHalo.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -110,6 +113,9 @@
     </ClCompile>
     <ClCompile Include="CPhysXMgrScript.cpp">
       <Filter>Scripts\Manager\PhysXMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CHalo.cpp">
+      <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
