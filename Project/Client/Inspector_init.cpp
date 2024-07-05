@@ -22,6 +22,7 @@ void Inspector::CreateChildUI()
 #include "SkyBoxUI.h"
 #include "ParticleSystemUI.h"
 #include "LandScapeUI.h"
+#include "PhysXUI.h"
 
 void Inspector::CreateComponentUI()
 {
@@ -68,6 +69,10 @@ void Inspector::CreateComponentUI()
 	m_arrComUI[(UINT)COMPONENT_TYPE::ANIMATOR3D] = new Animator3DUI;
 	m_arrComUI[(UINT)COMPONENT_TYPE::ANIMATOR3D]->Deactivate();
 	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::ANIMATOR3D]);
+
+	m_arrComUI[(UINT)COMPONENT_TYPE::PHYSX] = new PhysXUI;
+	m_arrComUI[(UINT)COMPONENT_TYPE::PHYSX]->Deactivate();
+	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::PHYSX]);
 }
 
 #include "TextureUI.h"

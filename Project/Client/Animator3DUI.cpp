@@ -20,7 +20,9 @@ void Animator3DUI::render_update()
 	if (!TitleCollapse("Animator3D"))
 		return;
 
-	auto  AnimClip	 = GetTargetObject()->Animator3D()->GetAnimClip();
+	auto AnimClip = GetTargetObject()->Animator3D()->GetAnimClip();
+	if (AnimClip->size() <= 0)
+		return;
 	int	  CurAnimIdx = GetTargetObject()->Animator3D()->GetCurClip();
 	int	  iLoopCount = GetTargetObject()->Animator3D()->GetLoopCount();
 	float ClipTime	 = GetTargetObject()->Animator3D()->GetClipUpdateTime(CurAnimIdx);

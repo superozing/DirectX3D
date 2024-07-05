@@ -65,6 +65,15 @@ void CRenderMgr::ClearMRT()
 	m_arrMRT[(UINT)MRT_TYPE::SHADOW_DEPTH]->Clear();
 }
 
+void CRenderMgr::ResetMRT()
+{
+	for (int i = 0; i < (UINT)MRT_TYPE::END; ++i)
+	{
+		delete m_arrMRT[i];
+		m_arrMRT[i] = nullptr;
+	}
+}
+
 void CRenderMgr::CreateDynamicShadowDepth()
 {
 	GetMRT(MRT_TYPE::SHADOW_DEPTH)->OMSet();
@@ -225,6 +234,9 @@ void CRenderMgr::render_debug()
 		case DEBUG_SHAPE::CROSS:
 			m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHcross));
 			break;
+		case DEBUG_SHAPE::CYLINDER:
+			m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHcylinder));
+			break;
 
 		case DEBUG_SHAPE::CUBE:
 			m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHcubedebug));
@@ -252,6 +264,11 @@ void CRenderMgr::render_debug()
 		{
 			m_pDebugObj->MeshRender()->GetMaterial(0)->GetShader()->SetTopology(
 				D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+		}
+		else if (DEBUG_SHAPE::CYLINDER == (*iter).eShape)
+		{
+			m_pDebugObj->MeshRender()->GetMaterial(0)->GetShader()->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+			m_pDebugObj->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_0, 3);
 		}
 		else if (DEBUG_SHAPE::SPHERE == (*iter).eShape)
 		{

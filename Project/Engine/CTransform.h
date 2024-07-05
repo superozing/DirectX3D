@@ -18,6 +18,8 @@ private:
 	bool   m_bDirty;
 	// bool    m_FrustumCheck;
 
+	// Vec4    m_vWorldRotQuat; //회전쿼터니언
+
 	// =========================
 	// 부드럽게 움직이기(선형) 위한 변수들
 	// =========================
@@ -65,7 +67,12 @@ public:
 	Vec3 GetRelativeScale() const { return m_vRelativeScale; }
 	Vec3 GetRelativeRotation() const { return m_vRelativeRotation; }
 
-	Vec3 GetWorldPos() { return m_matWorld.Translation(); }
+	Vec3 GetWorldPos()
+	{
+		if (m_bDirty)
+			CalWorldMat();
+		return m_matWorld.Translation();
+	}
 	Vec3 GetWorldScale();
 	Vec3 GetWorldRot();
 
@@ -97,6 +104,7 @@ public:
 	virtual void LoadFromFile(FILE* _File) override;
 	virtual void LoadFromFile(ifstream& fin) override;
 
+	// Vec4 GetWorldRotQuat() { m_vWorldRotQuat; }
 public:
 	CLONE(CTransform);
 	CTransform();
@@ -104,4 +112,6 @@ public:
 
 private:
 	void CalWorldMat();
+
+	friend class CPhysX;
 };

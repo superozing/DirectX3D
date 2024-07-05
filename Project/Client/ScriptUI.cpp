@@ -70,6 +70,8 @@ void ScriptUI::render_update()
 								iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::OBJECT:
+			ParamUI::Param_OBJECT((CGameObject**)iter->second.pData, iter->first, iter->second.CompType,
+								  iter->second.ScriptType, iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::COLOR:
 			ParamUI::Param_COLOR((Vec4*)iter->second.pData, iter->first, iter->second.View, iter->second.Tooltip);
@@ -79,6 +81,9 @@ void ScriptUI::render_update()
 			break;
 		case SCRIPT_PARAM::FUNC_MEMBER:
 			ParamUI::Param_FUNC_MEMBER(iter->second.MemberFunc, iter->first);
+			break;
+		case SCRIPT_PARAM::MGR_PHYSX:
+			ParamUI::Param_MGR_PHYSX(iter->second.pData);
 			break;
 		}
 	}

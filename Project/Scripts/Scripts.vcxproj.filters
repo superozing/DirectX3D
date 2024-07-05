@@ -79,6 +79,12 @@
     <ClInclude Include="CAmmoInfo.h">
       <Filter>Scripts\UI\ProgressBar\AmmoInfo</Filter>
     </ClInclude>
+    <ClInclude Include="CPhysXMgrScript.h">
+      <Filter>Scripts\Manager\PhysXMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CHalo.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -150,6 +156,12 @@
     <ClCompile Include="CBossHP.cpp">
       <Filter>Scripts\UI\ProgressBar\BossHP</Filter>
     </ClCompile>
+    <ClCompile Include="CPhysXMgrScript.cpp">
+      <Filter>Scripts\Manager\PhysXMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CHalo.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
     <ClCompile Include="CMonsterHP.cpp">
       <Filter>Scripts\UI\ProgressBar\MonsterHP</Filter>
     </ClCompile>
@@ -202,6 +214,9 @@
     </Filter>
     <Filter Include="RoRStateMachine">
       <UniqueIdentifier>{86892923-b05a-4177-80fe-2f8aebe68887}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager\PhysXMgr">
+      <UniqueIdentifier>{85af28fd-4fb9-47c5-b0d2-100e2dae1ca2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\UI\Image">
       <UniqueIdentifier>{4c858d1c-f5d2-4b6f-b0de-d26a867f62bb}</UniqueIdentifier>

@@ -3,6 +3,7 @@
 
 #include <Engine\CRenderMgr.h>
 #include <Engine\CDevice.h>
+#include <Engine/CEngine.h>
 #include "CImGuiMgr.h"
 
 #include "CLevelSaveLoad.h"
@@ -17,6 +18,7 @@
 #include "ImGuizmo.h"
 
 #include "imgui_internal.h"
+
 #include <Engine\CLogMgr.h>
 
 #include "Inspector.h"
@@ -44,6 +46,13 @@ void RTViewPort::tick()
 
 void RTViewPort::render_update()
 {
+
+	if (m_ViewPortTexture.Get()->GetWidth() != CDevice::GetInst()->GetRenderResolution().x ||
+		m_ViewPortTexture.Get()->GetHeight() != CDevice::GetInst()->GetRenderResolution().y)
+	{
+		m_ViewPortTexture = CAssetMgr::GetInst()->FindAsset<CTexture>(L"CopyRTtex");
+	}
+
 	CRenderMgr::GetInst()->CopyRTTex(m_ViewPortTexture);
 
 	m_fTapHeight	 = ImGui::GetFrameHeightWithSpacing();
@@ -81,7 +90,9 @@ void RTViewPort::render_update()
 				{
 					Ptr<CMeshData> pMD = (CMeshData*)pAsset;
 					CGameObject*   pGO = pMD->Instantiate();
-					pGO->SetName(pAsset->GetKey());
+
+					string name = path(ToString(pAsset->GetKey())).stem().string();
+					pGO->SetName(name);
 
 					// 카메라 위치에 맞춰서 위치 설정하기
 					CCamera* pCam	   = CRenderMgr::GetInst()->GetMainCam();
@@ -115,6 +126,13 @@ void RTViewPort::render_update()
 	if (KEY_TAP(KEY::V))
 	{
 		MoveCameraToObject();
+	}
+
+	if (KEY_PRESSED(KEY::LCTRL) && KEY_PRESSED(KEY::S))
+	{
+		MessageBox(nullptr, L"레벨을 저장합니다.", L"저장 시스템", 0);
+		CLevelSaveLoad::SaveLevel(CLevelMgr::GetInst()->GetCurrentLevel(),
+								  CLevelMgr::GetInst()->GetCurrentLevel()->GetRelativePath());
 	}
 }
 
@@ -226,8 +244,12 @@ void EditTransform(float* cameraView, float* cameraProjection, float* matrix, bo
 	float					viewManipulateTop	= ImGui::GetWindowPos().y;
 	static ImGuiWindowFlags gizmoWindowFlags	= 0;
 
+	HWND hWnd = CEngine::GetInst()->GetMainWind(); // 활성화된 창의 핸들 얻기
+	RECT rect;
+	GetWindowRect(hWnd, &rect);
+
 	auto size = ImGui::GetWindowSize();
-	ImGuizmo::SetRect(0, 0, size.x, size.y);
+	ImGuizmo::SetRect(rect.left, rect.top, size.x, size.y);
 
 	ImGuizmo::SetDrawlist();
 	ImGuizmo::Manipulate(cameraView, cameraProjection, mCurrentGizmoOperation, mCurrentGizmoMode, matrix, NULL,

@@ -21,6 +21,8 @@ struct tScriptParam
 	string				  Tooltip;
 	StaticFuncPtr		  StaticFunc;
 	std::function<void()> MemberFunc;
+	COMPONENT_TYPE		  CompType;
+	UINT				  ScriptType;
 
 	// public:
 	//     tScriptParam(SCRIPT_PARAM type, void* data, float _min, float _max, bool view, const string& tooltip,
@@ -45,6 +47,12 @@ protected:
 	{
 		m_vScriptParam.push_back({_Key, tScriptParam{_Param, _Data, _min, _Max, _View, _Tooltip}});
 	}
+	void AppendScriptObject(const string& _Key, void* _Data, COMPONENT_TYPE _CType = COMPONENT_TYPE::END,
+							UINT _SType = -1, bool _View = false, const string& _Tooltip = {})
+	{
+		m_vScriptParam.push_back(
+			{_Key, tScriptParam{SCRIPT_PARAM::OBJECT, _Data, 0, 0, _View, _Tooltip, nullptr, nullptr, _CType, _SType}});
+	}
 
 	void AppendStaticFunction(const string& _Key, SCRIPT_PARAM _Param, string _Desc, StaticFuncPtr _StaticFuncPtr)
 	{
@@ -63,6 +71,10 @@ public:
 	virtual void BeginOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider) {}
 	virtual void Overlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider) {}
 	virtual void EndOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider) {}
+
+	virtual void BeginOverlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider) {}
+	virtual void Overlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider) {}
+	virtual void EndOverlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider) {}
 
 	virtual void SaveToFile(FILE* _File){};
 	virtual void SaveToFile(ofstream& fout){};

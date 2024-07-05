@@ -297,6 +297,12 @@ struct tLog
 	string	  m_strMsg;
 };
 
+struct LayerMap
+{
+	int	   LayerIdx;
+	string LayerName;
+};
+
 #include <FontEngine/FW1FontWrapper.h>
 struct tFontInfo
 {

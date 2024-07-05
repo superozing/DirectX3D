@@ -7,7 +7,7 @@
 using namespace std::filesystem;
 
 vector<wstring> g_vecScriptNames;
-vector<string> g_vecFileNames;
+vector<string>	g_vecFileNames;
 
 vector<string> g_vecLevelNames;
 vector<string> g_vecFxNames;
@@ -26,14 +26,14 @@ vector<string> g_excepts;
 
 void ScriptNameInput()
 {
-	wstring solPath = CPathMgr::GetSolutionPath();
+	wstring solPath	   = CPathMgr::GetSolutionPath();
 	wstring filterPath = solPath + L"Project\\Scripts\\Scripts.vcxproj.filters";
 
 	wifstream fin;
 	fin.open(filterPath);
 	wstring line;
 	wstring header;
-	bool isheader = false;
+	bool	isheader = false;
 	while (getline(fin, line))
 	{
 		if (line.find(L".cpp") != string::npos)
@@ -45,9 +45,9 @@ void ScriptNameInput()
 		if (line.find(L".h") != string::npos)
 		{
 			int start = line.find(L"\"");
-			int end = line.find(L".");
+			int end	  = line.find(L".");
 
-			header = line.substr(start + 1, end - start - 1);
+			header	 = line.substr(start + 1, end - start - 1);
 			isheader = true;
 		}
 
@@ -64,7 +64,7 @@ void ScriptNameInput()
 void MakeScriptMgrHeader()
 {
 	wstring solPath = CPathMgr::GetSolutionPath();
-	wstring Path = solPath + L"Project\\Scripts\\CScriptMgr.h";
+	wstring Path	= solPath + L"Project\\Scripts\\CScriptMgr.h";
 
 	wfstream fout;
 	fout.open(Path, ofstream::out | ofstream::trunc);
@@ -102,8 +102,8 @@ void MakeScriptMgrHeader()
 
 void MakeScriptMgrCPP()
 {
-	wstring solPath = CPathMgr::GetSolutionPath();
-	wstring Path = solPath + L"Project\\Scripts\\CScriptMgr.cpp";
+	wstring	 solPath = CPathMgr::GetSolutionPath();
+	wstring	 Path	 = solPath + L"Project\\Scripts\\CScriptMgr.cpp";
 	wfstream fout;
 	fout.open(Path, ofstream::out | ofstream::trunc);
 	if (!fout.is_open())
@@ -176,16 +176,16 @@ void MakeScriptMgrCPP()
 void GetAllContents()
 {
 	wstring solPath = CPathMgr::GetSolutionPath();
-	wstring path = solPath + L"OutputFile\\content";
+	wstring path	= solPath + L"OutputFile\\content";
 	FindAllFiles(path);
 }
 
-void FindAllFiles(const wstring &path)
+void FindAllFiles(const wstring& path)
 {
-	namespace fs = filesystem;
+	namespace fs	= filesystem;
 	wstring solPath = CPathMgr::GetSolutionPath();
 	wstring subpath = solPath + L"..\\OutputFile\\content";
-	for (const auto &entry : fs::directory_iterator(path))
+	for (const auto& entry : fs::directory_iterator(path))
 	{
 		if (entry.is_directory())
 		{
@@ -196,7 +196,7 @@ void FindAllFiles(const wstring &path)
 		else
 		{
 			string str = entry.path().string();
-			str = str.substr(str.find("content") + 8);
+			str		   = str.substr(str.find("content") + 8);
 			g_vecFileNames.push_back(str);
 
 			SortExtention(str, entry.path().extension().string());
@@ -204,7 +204,7 @@ void FindAllFiles(const wstring &path)
 	}
 }
 
-void SortExtention(const string &path, const string &extention)
+void SortExtention(const string& path, const string& extention)
 {
 	if (extention == ".lv")
 	{
@@ -259,6 +259,13 @@ void SortExtention(const string &path, const string &extention)
 	{
 		// imgui ini에 대한 메시지 예외처리
 	}
+	else if (extention == ".ttf")
+	{
+		// 폰트 처리는 안함
+	}
+	else if (extention == "")
+	{
+	}
 	else
 	{
 		auto iter = find(g_excepts.begin(), g_excepts.end(), extention);
@@ -271,26 +278,26 @@ void SortExtention(const string &path, const string &extention)
 
 void InitStrHeader()
 {
-	wstring solPath = CPathMgr::GetSolutionPath();
-	string strsolPath = string(solPath.begin(), solPath.end());
+	wstring solPath	   = CPathMgr::GetSolutionPath();
+	string	strsolPath = string(solPath.begin(), solPath.end());
 
 	fstream hfout;
-	auto head = strsolPath;
+	auto	head = strsolPath;
 	head += "Project\\Engine\\GenStrings.h";
 	hfout.open(head, ofstream::out | ofstream::trunc);
 
 	hfout << "#pragma once" << endl;
 }
 
-void MakeStrHeader(const string &_path, const string &symbol, const vector<string> &vec)
+void MakeStrHeader(const string& _path, const string& symbol, const vector<string>& vec)
 {
-	wstring solPath = CPathMgr::GetSolutionPath();
-	string strsolPath = string(solPath.begin(), solPath.end());
-	string Path = strsolPath + _path;
+	wstring solPath	   = CPathMgr::GetSolutionPath();
+	string	strsolPath = string(solPath.begin(), solPath.end());
+	string	Path	   = strsolPath + _path;
 
 	fstream hfout;
-	auto str = path(_path).filename().string();
-	auto head = strsolPath + path(_path).parent_path().string();
+	auto	str	 = path(_path).filename().string();
+	auto	head = strsolPath + path(_path).parent_path().string();
 	head += "\\GenStrings.h";
 	hfout.open(head, ofstream::out | ofstream::app);
 
@@ -307,7 +314,7 @@ void MakeStrHeader(const string &_path, const string &symbol, const vector<strin
 	fout << "#pragma once" << endl << endl;
 	for (int i = 0; i < vec.size(); i++)
 	{
-		std::string path = vec[i];
+		std::string path	 = vec[i];
 		std::string filename = path.substr(path.find_last_of('\\') + 1);
 		std::string basename = filename.substr(0, filename.find_last_of('.'));
 
@@ -333,7 +340,7 @@ void MakeStrHeader(const string &_path, const string &symbol, const vector<strin
 
 void PrintError()
 {
-	for (const string &str : g_excepts)
+	for (const string& str : g_excepts)
 	{
 		MessageBox(nullptr, wstring(str.begin(), str.end()).c_str(), L"CodeGenerator Str헤더 생성실패 확장자", 0);
 	}

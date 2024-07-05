@@ -27,7 +27,11 @@
 void CLevelSaveLoad::SaveLevel(CLevel* _Level, const wstring& _strLevelPath)
 {
 	assert(_Level);
-	assert(LEVEL_STATE::STOP == _Level->GetState() || LEVEL_STATE::NONE == _Level->GetState());
+	if (LEVEL_STATE::PLAY == _Level->GetState() || LEVEL_STATE::PAUSE == _Level->GetState())
+	{
+		MessageBox(nullptr, L"레벨을 Stop 상태로 만들어야 합니다.", L"Level Save System", 0);
+		return;
+	}
 
 	// Level 을 저장할 경로
 	wstring strLevelPath = CPathMgr::GetContentPath();
@@ -136,6 +140,8 @@ void CLevelSaveLoad::SaveGameObject(CGameObject* _Obj, ofstream& fout)
 	// GameObject 의 이름을 저장
 	fout << TagObjectName << endl;
 	fout << ToString(_Obj->GetName()) << endl;
+	fout << TagLayerName << endl;
+	fout << _Obj->GetLayerIdx() << endl;
 
 	// 컴포넌트 정보를 저장
 	UINT i = 0;
@@ -208,6 +214,7 @@ CLevel* CLevelSaveLoad::LoadLevel(const wstring& _strLevelPath)
 	Utils::GetLineUntilString(fin, TagLevelName);
 	getline(fin, strLevelName);
 	pLevel->SetName(strLevelName);
+	pLevel->SetRelativePath(ToString(_strLevelPath));
 
 	// Layer 로드
 	for (UINT i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)
@@ -233,6 +240,7 @@ void CLevelSaveLoad::LoadLayer(CLayer* _Layer, FILE* _File)
 	{
 		CGameObject* pObject = LoadGameObject(_File);
 		_Layer->AddObject(pObject, false);
+		_Layer->SetName(ToString(magic_enum::enum_name((LAYER)i)));
 	}
 }
 
@@ -242,7 +250,6 @@ void CLevelSaveLoad::LoadLayer(CLayer* _Layer, ifstream& fin)
 	string str;
 	Utils::GetLineUntilString(fin, TagLayerName);
 	getline(fin, str);
-	_Layer->SetName(str);
 
 	int objCnt;
 	Utils::GetLineUntilString(fin, TagObjCount);
@@ -251,7 +258,7 @@ void CLevelSaveLoad::LoadLayer(CLayer* _Layer, ifstream& fin)
 	for (size_t i = 0; i < objCnt; i++)
 	{
 		CGameObject* pObject = LoadGameObject(fin);
-		_Layer->AddObject(pObject, false);
+		_Layer->AddObject(pObject, false, true);
 	}
 }
 
@@ -296,6 +303,9 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
 			break;
 		case COMPONENT_TYPE::STATEMACHINE:
 			pComponent = new CStateMachine;
+			break;
+		case COMPONENT_TYPE::PHYSX:
+			pComponent = new CPhysX;
 			break;
 		case COMPONENT_TYPE::MESHRENDER:
 			pComponent = new CMeshRender;
@@ -359,6 +369,10 @@ CGameObject* CLevelSaveLoad::LoadGameObject(ifstream& fin)
 	getline(fin, str);
 	pObject->SetName(str);
 
+	// NOTE : 레벨 로드할 때 실패하면 아래 2줄 주석처리 해주어야 함
+	Utils::GetLineUntilString(fin, TagLayerName);
+	fin >> pObject->m_iLayerIdx;
+
 	while (true)
 	{
 		tag = Utils::GetLineUntilString(fin, {TagComponentType, TagComponentEnd});
@@ -402,6 +416,9 @@ CGameObject* CLevelSaveLoad::LoadGameObject(ifstream& fin)
 				break;
 			case COMPONENT_TYPE::STATEMACHINE:
 				pComponent = new CStateMachine;
+				break;
+			case COMPONENT_TYPE::PHYSX:
+				pComponent = new CPhysX;
 				break;
 			case COMPONENT_TYPE::MESHRENDER:
 				pComponent = new CMeshRender;
@@ -451,7 +468,7 @@ CGameObject* CLevelSaveLoad::LoadGameObject(ifstream& fin)
 
 	for (size_t i = 0; i < childCnt; i++)
 	{
-		pObject->AddChild(LoadGameObject(fin));
+		pObject->AddChild(LoadGameObject(fin), true);
 	}
 
 	return pObject;

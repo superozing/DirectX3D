@@ -45,7 +45,9 @@ void MaterialUI::render_update()
 
 	ImGui::Text("Material");
 	ImGui::SameLine();
-	ImGui::InputText("##MtrlName", MtrlKey, 255);
+	!m_TargetMtrl->IsEngineAsset()
+		? ImGui::InputText("##MtrlName", MtrlKey, 255)
+		: ImGui::InputText("##MtrlName", (char*)strKey.c_str(), strKey.length(), ImGuiInputTextFlags_ReadOnly);
 
 	string NewName = "material\\" + string(MtrlKey) + ".mtrl";
 	if (prevKey != NewName)
