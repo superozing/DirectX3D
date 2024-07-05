@@ -60,8 +60,8 @@ protected:
 
 	/// @brief 파람 UI에 오브젝트를 추가하는 함수, 컴포넌트 타입이나 스크립트 타입으로 받고싶은 오브젝트를 필터링
 	/// 합니다.
-	/// @param _CType 제한하고 싶은 컴포넌트 타입
-	/// @param _SType 제한하고 싶은 스크립트 타입
+	/// @param _CType 제한하고 싶은 컴포넌트 타입(해당 컴포넌트가 있는 obj들만 들어옴)
+	/// @param _SType 제한하고 싶은 스크립트 타입(해당 스크립트가 있는 obj들만 들어옴)
 	void AppendScriptObject(const string& _Key, void* _Data, COMPONENT_TYPE _CType = COMPONENT_TYPE::END,
 							UINT _SType = -1, bool _View = false, const string& _Tooltip = {})
 	{
