@@ -67,7 +67,7 @@ void CPhysX::updateToPhysics()
 
 	auto Obj = GetOwner();
 	auto Rot = Obj->Transform()->GetWorldRot();
-	auto Pos = Obj->Transform()->GetWorldPos();
+	auto Pos = Obj->Transform()->GetWorldPos() + m_vOffsetPos;
 
 	Matrix worldMat	   = Obj->Transform()->GetWorldMat();
 	Matrix transInvMat = Matrix::CreateTranslation(worldMat.Translation()).Invert();
