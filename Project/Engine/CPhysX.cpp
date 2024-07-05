@@ -20,14 +20,16 @@ void CPhysX::updateFromPhysics()
 	if (nullptr == m_Actor)
 		return;
 
-	PxTransform physTransform = getTransform();
+	PxTransform PhysTrans = getTransform();
+	auto		PhysPos	  = Vec3(PhysTrans.p.x, PhysTrans.p.y, PhysTrans.p.z);
+	auto		FinalPos  = PhysPos - m_vOffsetPos;
 
 	auto tempmat = XMMatrixIdentity();
 
 	auto   ObScale	= Transform()->GetRelativeScale();
 	Matrix matScale = XMMatrixScaling(ObScale.x, ObScale.y, ObScale.z);
 
-	auto q = XMFLOAT4(physTransform.q.x, physTransform.q.y, physTransform.q.z, physTransform.q.w);
+	auto q = XMFLOAT4(PhysTrans.q.x, PhysTrans.q.y, PhysTrans.q.z, PhysTrans.q.w);
 
 	Vec3 AxisAngle = RoRMath::QuaternionToEulerAngles(q);
 
@@ -35,7 +37,7 @@ void CPhysX::updateFromPhysics()
 	Matrix matRotY = XMMatrixRotationY(AxisAngle.x);
 	Matrix matRotZ = XMMatrixRotationZ(AxisAngle.z);
 
-	Matrix matTranslation = XMMatrixTranslation(physTransform.p.x, physTransform.p.y, physTransform.p.z);
+	Matrix matTranslation = XMMatrixTranslation(FinalPos.x, FinalPos.y, FinalPos.z);
 
 	Transform()->m_matWorld = matScale * matRotX * matRotY * matRotZ * matTranslation;
 
@@ -114,15 +116,21 @@ void CPhysX::finaltick()
 		updateFromPhysics();
 	}
 
-	const auto& trans = Transform();
+	if (nullptr == m_Actor)
+		return;
+	const auto& trans		  = Transform();
+	auto		ObjWorldPos	  = trans->GetWorldPos();
+	auto		DebugFinalPos = ObjWorldPos - m_vOffsetPos;
+	auto		Rot			  = getTransform().q;
 
 	if (PhysShape::BOX == m_Shape)
 	{
-		GamePlayStatic::DrawDebugCube(trans->GetWorldMat(), Vec3(0.3f, .3f, 0.3f), true);
+		GamePlayStatic::DrawDebugCube(DebugFinalPos, m_vScale, Vec4(Rot.x, Rot.y, Rot.z, Rot.w), Vec3(0.3f, .3f, 0.3f),
+									  true);
 	}
 	else
 	{
-		GamePlayStatic::DrawDebugSphere(trans->GetWorldPos(), trans->GetWorldScale().x / 2.f, Vec3(0.3f, .3f, 0.3f),
+		GamePlayStatic::DrawDebugSphere(trans->GetWorldPos() - m_vOffsetPos, m_vScale.x / 2.f, Vec3(0.3f, .3f, 0.3f),
 										true);
 	}
 }
