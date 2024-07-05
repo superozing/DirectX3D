@@ -16,6 +16,12 @@ private:
 	// 조준선이 벌어지는 비율
 	float m_fSpreadRatio;
 
+	// 조준선 막대기 넓이
+	float m_fBarThikness;
+
+	// 조준선 막대기 길이
+	float m_fLength;
+
 	// 조준선 색상
 	Vec4 m_CrosshairColor;
 
