@@ -43,7 +43,9 @@ struct tLightInfo
 
 	int LightType; // 광원 타입
 
-	Vec3 vPadding;
+	int	 ToonShading;	  // 0:안함 1:함
+	Vec4 vToonShadeRange; // 노말 양자화 범위
+	int	 padding[2];
 
 	friend ofstream& operator<<(ofstream& fout, const tLightInfo& info);
 	friend ifstream& operator>>(ifstream& fin, tLightInfo& info);
