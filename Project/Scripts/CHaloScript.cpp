@@ -12,6 +12,7 @@ CHaloScript::CHaloScript()
 	, m_CurFrame(0)
 	, m_PrevClipIdx(0)
 	, m_CurClipIdx(0)
+	, m_HeadBoneIdx(0)
 {
 }
 
@@ -40,8 +41,6 @@ void CHaloScript::begin()
 			break;
 		}
 	}
-
-	m_HaloPos = GetOwner()->Transform()->GetRelativePos();
 
 	CheckHeadBonePos();
 }
@@ -78,13 +77,6 @@ void CHaloScript::CheckHeadBonePos()
 	if (m_CurFrame >= m_Parent->Animator3D()->GetAnimClip()->at(m_CurClipIdx).iFrameLength)
 		return;
 
-	// 부모 오브젝트의 머리본 위치 찾기
-	Matrix FinalMat;
-	auto   KeyFrame = m_ParentBones->at(m_HeadBoneIdx).vecKeyFrame[m_CurClipIdx][m_CurFrame];
-	Matrix MatTrans = Matrix::CreateTranslation(KeyFrame.vTranslate);
-	Matrix MatScale = Matrix::CreateScale(KeyFrame.vScale);
-	Matrix MatRot	= Matrix::CreateFromQuaternion(KeyFrame.qRot);
-	Matrix FrameMat = MatScale * MatRot * MatTrans;
-
-	Transform()->SetFrameMat(FrameMat);
+	Matrix BoneFrameMat = m_Parent->Animator3D()->FindBoneMat(m_HeadBoneIdx);
+	Transform()->SetFrameMat(BoneFrameMat);
 }

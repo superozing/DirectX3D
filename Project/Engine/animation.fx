@@ -133,6 +133,7 @@ void MatrixAffineTransformation(in float4 Scaling
 {
     matrix MScaling = (matrix) 0.f;
     MScaling._11_22_33 = Scaling.xyz;
+    MScaling._44 = 1.f;
 
     float4 VRotationOrigin = float4(RotationOrigin.xyz, 0.f);
     float4 VTranslation = float4(Translation.xyz, 0.f);
@@ -209,6 +210,7 @@ struct tFrameTrans
 StructuredBuffer<tFrameTrans> g_arrFrameTrans : register(t16);
 StructuredBuffer<matrix> g_arrOffset : register(t17);
 RWStructuredBuffer<matrix> g_arrFinelMat : register(u0);
+RWStructuredBuffer<matrix> g_arrBoneFrameMat : register(u1);
 
 // ===========================
 // Animation3D Compute Shader
@@ -236,7 +238,7 @@ void CS_Animation3D(int3 _iThreadIdx : SV_DispatchThreadID)
 
     // 최종 본행렬 연산
     MatrixAffineTransformation(vScale, vQZero, qRot, vTrans, matBone);
-
+    g_arrBoneFrameMat[_iThreadIdx.x] = transpose(matBone);
     // 최종 본행렬 연산    
     //MatrixAffineTransformation(g_arrFrameTrans[iFrameDataIndex].vScale, vQZero, g_arrFrameTrans[iFrameDataIndex].qRot, g_arrFrameTrans[iFrameDataIndex].vTranslate, matBone);
 

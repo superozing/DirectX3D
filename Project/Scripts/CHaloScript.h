@@ -16,9 +16,6 @@ private:
 	int m_PrevClipIdx;
 	int m_CurFrame;
 
-	Vec3 m_HaloPos;
-	Vec3 m_vHeadBonePos;
-
 public:
 	bool IsAnimChange();
 	void CheckHeadBonePos();
