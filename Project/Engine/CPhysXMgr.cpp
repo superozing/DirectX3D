@@ -213,7 +213,8 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 	auto scale = PhysX->m_vScale;
 	if (Vec3() == scale)
 	{
-		scale = object->Transform()->GetWorldScale();
+		scale			= object->Transform()->GetWorldScale();
+		PhysX->m_vScale = scale;
 	}
 	PxShape* shape;
 
