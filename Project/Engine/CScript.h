@@ -42,11 +42,26 @@ public:
 
 protected:
 	void Instantiate(Ptr<CPrefab> _Prefab, Vec3 _vWorldPos, int _LayerIdx);
+
+	/// @brief 파람 UI에 기본적인 스크립트 파람 타입들을 제공하는 함수입니다. 오브젝트 타입을 사용하려면
+	/// AppendScriptObject를 사용해야 합니다.
+	/// @param _Key Desc으로 들어가는 string
+	/// @param _Param Param 타입
+	/// @param _Data 넘기고 싶은 데이터 주소
+	/// @param _min 최솟값
+	/// @param _Max 최댓값
+	/// @param _View 변경할 지 말지 여부
+	/// @param _Tooltip 호버했을 때 뜨는 스트링 창
 	void AppendScriptParam(const string& _Key, SCRIPT_PARAM _Param, void* _Data, float _min = 0.f, float _Max = 0.f,
 						   bool _View = false, const string& _Tooltip = {})
 	{
 		m_vScriptParam.push_back({_Key, tScriptParam{_Param, _Data, _min, _Max, _View, _Tooltip}});
 	}
+
+	/// @brief 파람 UI에 오브젝트를 추가하는 함수, 컴포넌트 타입이나 스크립트 타입으로 받고싶은 오브젝트를 필터링
+	/// 합니다.
+	/// @param _CType 제한하고 싶은 컴포넌트 타입
+	/// @param _SType 제한하고 싶은 스크립트 타입
 	void AppendScriptObject(const string& _Key, void* _Data, COMPONENT_TYPE _CType = COMPONENT_TYPE::END,
 							UINT _SType = -1, bool _View = false, const string& _Tooltip = {})
 	{
