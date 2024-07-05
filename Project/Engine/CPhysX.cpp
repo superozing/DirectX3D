@@ -83,7 +83,7 @@ void CPhysX::updateToPhysics()
 
 void CPhysX::begin()
 {
-	CPhysXMgr::GetInst()->addGameObject(GetOwner(), m_bStaticActor, m_Shape);
+	CPhysXMgr::GetInst()->addGameObject(GetOwner());
 }
 
 void CPhysX::finaltick()

@@ -179,19 +179,24 @@ void CPhysXMgr::setFillterData(PxShape* _shape, UINT _Layer)
 	_shape->setQueryFilterData(filterData);
 }
 
-void CPhysXMgr::addGameObject(CGameObject* object, bool _bStatic, PhysShape _Shape)
+void CPhysXMgr::addGameObject(CGameObject* object)
 {
+	auto PhysX = object->PhysX();
+
 	auto	   Rot		  = object->Transform()->GetWorldRot();
 	Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(Rot.y, Rot.x, Rot.z);
 
+	auto ObjPos	   = object->Transform()->GetWorldPos();
+	auto OffsetPos = PhysX->m_vOffsetPos;
+	auto FinalPos  = ObjPos + OffsetPos;
+
 	// 게임 오브젝트의 위치와 회전 정보
-	PxTransform transform(PxVec3(object->Transform()->GetWorldPos().x, object->Transform()->GetWorldPos().y,
-								 object->Transform()->GetWorldPos().z),
+	PxTransform transform(PxVec3(FinalPos.x, FinalPos.y, FinalPos.z),
 						  PxQuat(quaternion.x, quaternion.y, quaternion.z, quaternion.w));
 
 	PxRigidActor* actor = nullptr;
 
-	if (_bStatic)
+	if (true == PhysX->m_bStaticActor)
 	{
 		// 고정된 물리 객체 생성
 		actor = gPhysics->createRigidStatic(transform);
@@ -205,10 +210,15 @@ void CPhysXMgr::addGameObject(CGameObject* object, bool _bStatic, PhysShape _Sha
 	}
 
 	// 게임 오브젝트의 스케일 정보
-	auto	 scale = object->Transform()->GetWorldScale();
+	auto scale = PhysX->m_vScale;
+	if (Vec3() == scale)
+	{
+		scale = object->Transform()->GetWorldScale();
+	}
 	PxShape* shape;
+
 	// Collider 추가 (여기서는 예시로 Box Collider를 사용)
-	if (PhysShape::BOX == _Shape)
+	if (PhysShape::BOX == PhysX->m_Shape)
 	{
 		shape = gPhysics->createShape(PxBoxGeometry(scale.x / 2, scale.y / 2, scale.z / 2), *gMaterial);
 	}
