@@ -6,11 +6,11 @@ typedef void (*SetObjSpawnType)(int);
 
 enum class SpawnObjType
 {
+	None,
 	Player,
 	Monster,
 	BOSS,
-	ETC,
-	NONE,
+	Etc,
 	END
 };
 
@@ -22,10 +22,15 @@ private:
 	string SpawnObjectPath;
 
 	SpawnObjType SpawnObjType;
-	int			 iTypeMask;
+	string		 strDisplayString;
+	Vec4		 ModeColor;
 
 public:
-	void SetSpawnObjType(int iNewType);
+	void SetSpawnTypePlayer();
+	void SetSpawnTypeMonster();
+	void SetSpawnTypeBoss();
+	void SetSpawnTypeETC();
+	void SetSpawnTypeNone();
 
 public:
 	virtual void begin() override;

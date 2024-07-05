@@ -1248,6 +1248,26 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->AddScalarParam(SCALAR_PARAM::VEC2_1, "PlaneSize");
 
 	AddAsset(L"ImageWrapShader", pShader.Get());
+
+	// ================
+	// SpawnPoint Shader
+	// ----------------
+	// Mesh: CubeMesh
+	// RenderComp: MeshRender
+	// ================
+
+	pShader = new CGraphicsShader;
+	pShader->CreateVertexShader(L"shader\\SpawnPoint.fx", "VS_SpawnPoint");
+	pShader->CreatePixelShader(L"shader\\SpawnPoint.fx", "PS_SpawnPoint");
+
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDSType(DS_TYPE::LESS);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
+
+	pShader->AddTexParam(TEX_PARAM::TEX_0, "Output Texture");
+	pShader->AddScalarParam(SCALAR_PARAM::VEC4_0, "Output Color");
+
+	AddAsset(L"SpawnPointShader", pShader.Get());
 }
 
 void CAssetMgr::CreateDefaultMaterial()
