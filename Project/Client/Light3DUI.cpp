@@ -49,7 +49,7 @@ void Light3DUI::render_update()
 		ImGui::Text("Toon Range ");
 		ImGui::SameLine();
 		ImGui::PushItemWidth(200.f);
-		ImGui::DragFloat4("##ToonRange", (float*)vToonRange);
+		ImGui::DragFloat4("##ToonRange", (float*)vToonRange, 0.03f, 0.f, 1.f);
 
 		ImGui::Text("Light Color");
 		ImGui::SameLine();

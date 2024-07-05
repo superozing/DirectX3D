@@ -143,14 +143,15 @@ void CalLight3D(int _LightIdx, float3 _vViewPos, float3 _vViewNormal, inout tLig
      // ViewSpace 에서 광원의 방향과, 물체 표면의 법선를 이용해서 광원의 진입 세기(Diffuse) 를 구한다.
     float LightPow = saturate(dot(_vViewNormal, -vViewLightDir));
     //Toon Shading
-    if (LightPow > 0.5)
-        LightPow = 1.0;
-    else if (LightPow > 0.25)
-        LightPow = 0.5;
-    else
-        LightPow = 0.0;
-
-    
+    if (1 == Light.ToonShading)
+    {
+        if (LightPow > Light.vToonShadeRange.z)
+            LightPow = Light.vToonShadeRange.w;
+        else if (LightPow > Light.vToonShadeRange.y)
+            LightPow = Light.vToonShadeRange.z;
+        else
+            LightPow = Light.vToonShadeRange.x;
+    }
     
     // 빛이 표면에 진입해서 반사되는 방향을 구한다.
     float3 vReflect = vViewLightDir + 2 * dot(-vViewLightDir, _vViewNormal) * _vViewNormal;
@@ -160,9 +161,14 @@ void CalLight3D(int _LightIdx, float3 _vViewPos, float3 _vViewNormal, inout tLig
     float3 vEye = normalize(_vViewPos);
     
     // 시선벡터와 반사벡터 내적, 반사광의 세기
-    float ReflectPow = saturate(dot(-vEye, vReflect));
-    ReflectPow = pow(ReflectPow, 20.f);
-
+    //ToonShade가 아닐때만 vSpecular를 연산
+    float ReflectPow = 0.f;
+    if (0 == Light.ToonShading)
+    {
+        ReflectPow = saturate(dot(-vEye, vReflect));
+        ReflectPow = pow(ReflectPow, 20.f);
+    }
+    
     _LightColor.vColor += Light.Color.vColor * LightPow * fDistanceRatio;
     _LightColor.vAmbient += Light.Color.vAmbient;
     _LightColor.vSpecular += Light.Color.vColor * Light.Color.vSpecular * ReflectPow * fDistanceRatio;
