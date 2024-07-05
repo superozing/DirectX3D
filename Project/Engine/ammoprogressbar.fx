@@ -30,22 +30,18 @@ VS_OUT VS_AmmoProgressBar(VS_IN _in)
 
 float4 PS_AmmoProgressBar(VS_OUT _in) : SV_Target
 {
-    if (1 - RATIO > _in.vUV.y || !g_btex_0)
+    float CurUVYRatio = 1 - RATIO; 
+    
+    if (_in.vUV.y < CurUVYRatio)
         discard;
     
-    float4 vColor = (float4) 0.f;
-    
-    if (RATIO < 0.5)
-        vColor = g_tex_0.Sample(g_sam_0, _in.vUV);
-    else if (RATIO < 0.8)
-        vColor = g_tex_1.Sample(g_sam_0, _in.vUV);
+    if (CurUVYRatio < 0.5)
+        return float4(0.f, 1.f, 0.f, 1.f);
+    else if (CurUVYRatio < 0.8)
+        return float4(1.f, 0.5f, 0.f, 1.f);
     else
-        vColor = g_tex_2.Sample(g_sam_0, _in.vUV);
+        return float4(1.f, 0.f, 0.f, 1.f);
     
-    if (vColor.a < 0.1f)
-        discard;
-
-    return vColor;
 }
 
 #endif
