@@ -188,7 +188,7 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 
 	auto ObjPos	   = object->Transform()->GetWorldPos();
 	auto OffsetPos = PhysX->m_vOffsetPos;
-	auto FinalPos  = ObjPos + OffsetPos;
+	auto FinalPos  = ObjPos - OffsetPos;
 
 	// 게임 오브젝트의 위치와 회전 정보
 	PxTransform transform(PxVec3(FinalPos.x, FinalPos.y, FinalPos.z),
