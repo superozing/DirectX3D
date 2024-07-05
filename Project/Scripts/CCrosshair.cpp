@@ -23,6 +23,10 @@ void CCrosshair::begin()
 	AppendScriptParam("Crosshair Color R", SCRIPT_PARAM::FLOAT, &m_CrosshairColor.x);
 	AppendScriptParam("Crosshair Color G", SCRIPT_PARAM::FLOAT, &m_CrosshairColor.y);
 	AppendScriptParam("Crosshair Color B", SCRIPT_PARAM::FLOAT, &m_CrosshairColor.z);
+	AppendScriptParam("Crosshair Color A", SCRIPT_PARAM::FLOAT, &m_CrosshairColor.w);
+
+	AppendScriptParam("Bar Thikness", SCRIPT_PARAM::FLOAT, &m_fBarThikness);
+	AppendScriptParam("Length", SCRIPT_PARAM::FLOAT, &m_fLength);
 
 	// 부모 오브젝트에 패널UI 추가
 	SetParentPanelUI();
@@ -49,6 +53,8 @@ void CCrosshair::begin()
 void CCrosshair::tick()
 {
 	m_pCrossHair->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, m_fSpreadRatio);
+	m_pCrossHair->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_1, m_fBarThikness);
+	m_pCrossHair->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_2, m_fLength);
 	m_pCrossHair->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, m_CrosshairColor);
 }
 

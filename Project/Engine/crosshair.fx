@@ -5,6 +5,8 @@
 #include "func.fx"
 
 #define SPREADRATIO     g_float_0 
+#define _THICKNESS     g_float_1 
+#define _LENGTH     g_float_2 
 
 #define CROSSHAIR_COLOR g_vec4_0
 
@@ -43,8 +45,8 @@ float4 PS_Crosshair(VS_OUT _in) : SV_Target
     // 만약 1이라면 중심에서 상하좌우로 0.5 씩 뻗어나가야 최대로 벌어지게 된다.
     float spreadRatio = SPREADRATIO / 2.f;
     
-    float THICKNESS = 0.02;
-    float LENGTH = 0.05;
+    float THICKNESS = _THICKNESS * 0.1;
+    float LENGTH = _LENGTH * 0.1;
     
     // 1. 판정 UV 왼 쪽 보다 오른 쪽에 있는가?
     // 2. 판정 UV 오른 쪽 보다 왼 쪽에 있는가?
