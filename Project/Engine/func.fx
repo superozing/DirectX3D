@@ -8,7 +8,7 @@
 void CalLight2D(float3 _WorldPos, int _LightIdx, inout tLightColor _output)
 {
     // 빛을 적용시킬 광원의 정보
-    tLightInfo info = g_Light2D[_LightIdx];    
+    tLightInfo info = g_Light2D[_LightIdx];
     
     // Directional Light
     if (0 == info.LightType)
@@ -137,12 +137,21 @@ void CalLight3D(int _LightIdx, float3 _vViewPos, float3 _vViewNormal, inout tLig
         // 물체와 광원 사이의 각도가 광원에 설정된 fAngle과 가까울 수록 빛의 세기가 약해져야 함
         if (0.f != Light.fAngle)
         {
-        }        
+        }
     }
 
      // ViewSpace 에서 광원의 방향과, 물체 표면의 법선를 이용해서 광원의 진입 세기(Diffuse) 를 구한다.
     float LightPow = saturate(dot(_vViewNormal, -vViewLightDir));
-            
+    //Toon Shading
+    if (LightPow > 0.5)
+        LightPow = 1.0;
+    else if (LightPow > 0.25)
+        LightPow = 0.5;
+    else
+        LightPow = 0.0;
+
+    
+    
     // 빛이 표면에 진입해서 반사되는 방향을 구한다.
     float3 vReflect = vViewLightDir + 2 * dot(-vViewLightDir, _vViewNormal) * _vViewNormal;
     vReflect = normalize(vReflect);
