@@ -120,7 +120,7 @@ void CPhysX::finaltick()
 		return;
 	const auto& trans		  = Transform();
 	auto		ObjWorldPos	  = trans->GetWorldPos();
-	auto		DebugFinalPos = ObjWorldPos - m_vOffsetPos;
+	auto		DebugFinalPos = ObjWorldPos + m_vOffsetPos;
 	auto		Rot			  = getTransform().q;
 
 	if (PhysShape::BOX == m_Shape)
@@ -130,8 +130,7 @@ void CPhysX::finaltick()
 	}
 	else
 	{
-		GamePlayStatic::DrawDebugSphere(trans->GetWorldPos() - m_vOffsetPos, m_vScale.x / 2.f, Vec3(0.3f, .3f, 0.3f),
-										true);
+		GamePlayStatic::DrawDebugSphere(DebugFinalPos, m_vScale.x / 2.f, Vec3(0.3f, .3f, 0.3f), true);
 	}
 }
 
