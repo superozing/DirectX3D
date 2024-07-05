@@ -26,11 +26,15 @@ public:
 	void SetRadius(float _Radius) { m_Info.fRadius = _Radius; }
 	void SetAngle(float _Angle) { m_Info.fAngle = _Angle; }
 	void SetLightDir(Vec3 _Dir) { m_Info.vWorldDir = _Dir; }
+	void SetToonShade(bool _bToonShade) { m_Info.ToonShading = _bToonShade ? 1 : 0; }
+	void SetToonShadeRange(Vec4 _vToonShadeRange) { m_Info.vToonShadeRange = _vToonShadeRange; }
 
 	LIGHT_TYPE GetLightType() { return (LIGHT_TYPE)m_Info.LightType; }
 	float	   GetRadius() { return m_Info.fRadius; }
 	float	   GetAngle() { return m_Info.fAngle; }
 	Vec3	   GetLightDir() { return m_Info.vWorldDir; }
+	bool	   GetToonShade() { return (1 == m_Info.ToonShading); }
+	Vec4	   GetToonShadeRange() { return m_Info.vToonShadeRange; }
 
 public:
 	virtual void finaltick() override;

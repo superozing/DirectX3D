@@ -31,6 +31,8 @@ void Light3DUI::render_update()
 	Vec3  vWorldDir = info.vWorldDir;
 	Vec3  vSpecular = info.vSpecular;
 	vWorldDir.ToDegree();
+	auto bIsToon	= GetTargetObject()->Light3D()->GetToonShade();
+	auto vToonRange = info.vToonShadeRange;
 
 	ImGui::Text("Light Type");
 	ImGui::SameLine(0, 20);
@@ -39,6 +41,16 @@ void Light3DUI::render_update()
 
 	if (0 == LightType)
 	{
+		ImGui::Text("ToonShade  ");
+		ImGui::SameLine();
+		ImGui::PushItemWidth(200.f);
+		ImGui::Checkbox("##IsToon", &bIsToon);
+
+		ImGui::Text("Toon Range ");
+		ImGui::SameLine();
+		ImGui::PushItemWidth(200.f);
+		ImGui::DragFloat4("##ToonRange", (float*)vToonRange);
+
 		ImGui::Text("Light Color");
 		ImGui::SameLine();
 		ImGui::PushItemWidth(200.f);
@@ -118,4 +130,6 @@ void Light3DUI::render_update()
 	GetTargetObject()->Light3D()->SetSpecular(vSpecular);
 	GetTargetObject()->Light3D()->SetLightDir(vWorldDir);
 	GetTargetObject()->Light3D()->SetAngle(fAngle);
+	GetTargetObject()->Light3D()->SetToonShade(bIsToon);
+	GetTargetObject()->Light3D()->SetToonShadeRange(vToonRange);
 }
