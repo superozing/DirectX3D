@@ -21,8 +21,7 @@ void CAmmoInfo::begin()
 
 void CAmmoInfo::tick()
 {
-	m_pAmmoLine->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0,
-															  (float)GetMaxAmmo() / (float)GetCurAmmo());
+	m_pAmmoLine->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, m_ratio);
 }
 
 void CAmmoInfo::MakeChildObjects()
@@ -49,13 +48,6 @@ void CAmmoInfo::MakeChildObjects()
 
 	pObj->MeshRender()->GetMaterial(0)->SetShader(
 		CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"AmmoProgressBarShader"));
-
-	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0,
-													CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/green.png"));
-	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_1,
-													CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Orange.png"));
-	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_2,
-													CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Red.png"));
 
 	m_pAmmoLine->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HPLine.png"));
 	m_pAmmoLine->AllowBindTexPerFrame();

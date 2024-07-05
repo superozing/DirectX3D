@@ -20,6 +20,9 @@ CWeaponInfo::~CWeaponInfo()
 
 void CWeaponInfo::begin()
 {
+	AppendScriptParam("Cur Ammo", SCRIPT_PARAM::INT, &m_CurAmmo);
+	AppendScriptParam("Max Ammo", SCRIPT_PARAM::INT, &m_MaxAmmo);
+
 	SetParentPanelUI();
 
 	// Weapon ui
@@ -63,30 +66,39 @@ void CWeaponInfo::begin()
 	GetOwner()->AddChild(pObj);
 
 	// Font Info
-	m_AmmoFontInfo.fFontSize = 50.f;
-	m_AmmoFontInfo.FontType	 = FONT_TYPE::MAPLE;
-	m_AmmoFontInfo.TextFlag	 = FW1_RIGHT;
+	m_MaxAmmoFont.fFontSize = 50.f;
+	m_MaxAmmoFont.FontType	 = FONT_TYPE::MAPLE;
+	m_MaxAmmoFont.TextFlag	 = FW1_RIGHT;
 
-	m_AmmoFontOffset.x = 200.f;
-	m_AmmoFontOffset.y = 50.f;
+	m_MaxAmmoFontOffset.x = 200.f;
+	m_MaxAmmoFontOffset.y = 50.f;
+
 }
 
 void CWeaponInfo::tick()
 {
 	// 폰트의 색상 설정
-	m_AmmoFontInfo.Color = FONT_RGBA(255, 255, 255, 255);
+	m_MaxAmmoFont.Color = FONT_RGBA(255, 255, 255, 255);
 
 	// 폰트의 위치 설정
 
 	Vec3 vWorldPos = Transform()->GetWorldPos();
 	Vec2 vResol	   = CDevice::GetInst()->GetRenderResolution();
 
-	m_AmmoFontInfo.vPos =
-		Vec2(vWorldPos.x + (vResol.x / 2) + m_AmmoFontOffset.x, -vWorldPos.y + (vResol.y / 2) + m_AmmoFontOffset.y);
+	m_MaxAmmoFont.vPos = Vec2(vWorldPos.x + (vResol.x / 2) + m_MaxAmmoFontOffset.x,
+							  -vWorldPos.y + (vResol.y / 2) + m_MaxAmmoFontOffset.y);
 
-	m_AmmoFontInfo.WStr = to_wstring(m_CurAmmo) + L" /" + to_wstring(m_MaxAmmo);
+	m_MaxAmmoFont.WStr = to_wstring(m_CurAmmo) + L" /" + to_wstring(m_MaxAmmo);
 
-	CFontMgr::GetInst()->RegisterFont(m_AmmoFontInfo);
+	CFontMgr::GetInst()->RegisterFont(m_MaxAmmoFont);
+
+	float ratio = 0;
+
+	if (m_MaxAmmo)
+		ratio = (float)m_CurAmmo / m_MaxAmmo;
+
+	m_pAmmoProgressBar->SetAmmoRatio(ratio);
+
 }
 
 void CWeaponInfo::Fire()

@@ -7,6 +7,8 @@ private:
 	// HP Line UI
 	CImageUIScript* m_pAmmoLine;
 
+	float m_ratio;
+
 public:
 	virtual void begin() override;
 	virtual void tick() override;
@@ -23,6 +25,8 @@ public:
 
 	int GetMaxAmmo() const { return CProgressBar::GetMaxValue(); }
 	int GetCurAmmo() const { return CProgressBar::GetCurValue(); }
+
+	void SetAmmoRatio(float _ratio) { m_ratio = _ratio; }
 
 public:
 	CLONE(CAmmoInfo);

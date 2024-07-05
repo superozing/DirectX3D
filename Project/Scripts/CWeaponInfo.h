@@ -23,9 +23,9 @@ private:
 	// 현재 탄 개수
 	int m_CurAmmo;
 
-	// 탄창 상태 폰트
-	tFontInfo m_AmmoFontInfo;
-	Vec2	  m_AmmoFontOffset;
+	// 최대 탄창 상태 폰트
+	tFontInfo m_MaxAmmoFont;
+	Vec2	  m_MaxAmmoFontOffset;
 
 public:
 	virtual void begin() override;
