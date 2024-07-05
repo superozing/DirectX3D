@@ -19,12 +19,12 @@
 #include "CPauseBtn.h"
 #include "CDamageFont.h"
 #include "CProgressBar.h"
-#include "CPhysXMgrScript.h"
-#include "CHalo.h"
 #include "CBossHP.h"
 #include "CMonsterHP.h"
 #include "CPlayerHP.h"
 #include "CAmmoInfo.h"
+#include "CPhysXMgrScript.h"
+#include "CHalo.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -46,12 +46,12 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPauseBtn");
 	_vec.push_back(L"CDamageFont");
 	_vec.push_back(L"CProgressBar");
-	_vec.push_back(L"CPhysXMgrScript");
-	_vec.push_back(L"CHalo");
 	_vec.push_back(L"CBossHP");
 	_vec.push_back(L"CMonsterHP");
 	_vec.push_back(L"CPlayerHP");
 	_vec.push_back(L"CAmmoInfo");
+	_vec.push_back(L"CPhysXMgrScript");
+	_vec.push_back(L"CHalo");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -92,10 +92,6 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CDamageFont;
 	if (L"CProgressBar" == _strScriptName)
 		return new CProgressBar;
-	if (L"CPhysXMgrScript" == _strScriptName)
-		return new CPhysXMgrScript;
-	if (L"CHalo" == _strScriptName)
-		return new CHalo;
 	if (L"CBossHP" == _strScriptName)
 		return new CBossHP;
 	if (L"CMonsterHP" == _strScriptName)
@@ -104,6 +100,10 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPlayerHP;
 	if (L"CAmmoInfo" == _strScriptName)
 		return new CAmmoInfo;
+	if (L"CPhysXMgrScript" == _strScriptName)
+		return new CPhysXMgrScript;
+	if (L"CHalo" == _strScriptName)
+		return new CHalo;
 	return nullptr;
 }
 
@@ -165,12 +165,6 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::PROGRESSBAR:
 		return new CProgressBar;
 		break;
-	case (UINT)SCRIPT_TYPE::PHYSXMGRSCRIPT:
-		return new CPhysXMgrScript;
-		break;
-	case (UINT)SCRIPT_TYPE::HALO:
-		return new CHalo;
-		break;
 	case (UINT)SCRIPT_TYPE::BOSSHP:
 		return new CBossHP;
 		break;
@@ -182,6 +176,12 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::AMMOINFO:
 		return new CAmmoInfo;
+		break;
+	case (UINT)SCRIPT_TYPE::PHYSXMGRSCRIPT:
+		return new CPhysXMgrScript;
+		break;
+	case (UINT)SCRIPT_TYPE::HALO:
+		return new CHalo;
 		break;
 	}
 	return nullptr;
@@ -263,14 +263,6 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CProgressBar";
 		break;
 
-	case SCRIPT_TYPE::PHYSXMGRSCRIPT:
-		return L"CPhysXMgrScript";
-		break;
-
-	case SCRIPT_TYPE::HALO:
-		return L"CHalo";
-		break;
-
 	case SCRIPT_TYPE::BOSSHP:
 		return L"CBossHP";
 		break;
@@ -285,6 +277,14 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::AMMOINFO:
 		return L"CAmmoInfo";
+		break;
+
+	case SCRIPT_TYPE::PHYSXMGRSCRIPT:
+		return L"CPhysXMgrScript";
+		break;
+
+	case SCRIPT_TYPE::HALO:
+		return L"CHalo";
 		break;
 
 	}

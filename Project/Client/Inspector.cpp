@@ -230,7 +230,7 @@ void Inspector::ObjectLayer()
 		ImGui::SameLine();
 		auto LayerVal = magic_enum::enum_cast<LAYER>(LayerName);
 
-	string strLayer = LayerName;
+		string strLayer = LayerName;
 
 		static auto mLayer = GamePlayStatic::GetLayerMap();
 
@@ -241,27 +241,28 @@ void Inspector::ObjectLayer()
 				size_t CurLayer		= mLayer[i].LayerIdx;
 				string CurLayerName = mLayer[i].LayerName;
 
-			if (!magic_enum::enum_cast<LAYER>(CurLayerName).has_value())
-				continue;
+				if (!magic_enum::enum_cast<LAYER>(CurLayerName).has_value())
+					continue;
 
-			bool isSelected = (CurLayer == LayerIdx);
+				bool isSelected = (CurLayer == LayerIdx);
 
-			if (ImGui::Selectable(CurLayerName.c_str(), isSelected))
-			{
-				LayerIdx = CurLayer;
+				if (ImGui::Selectable(CurLayerName.c_str(), isSelected))
+				{
+					LayerIdx = CurLayer;
+				}
+
+				if (isSelected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
 			}
 
-			if (isSelected)
+			ImGui::EndCombo();
+
+			if (PrevIdx != LayerIdx)
 			{
-				ImGui::SetItemDefaultFocus();
+				CurLevel->AddObject(m_TargetObject, LayerIdx);
 			}
-		}
-
-		ImGui::EndCombo();
-
-		if (PrevIdx != LayerIdx)
-		{
-			CurLevel->AddObject(m_TargetObject, LayerIdx);
 		}
 	}
 }
