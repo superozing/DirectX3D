@@ -21,21 +21,48 @@ struct SpringArmInfo
 	float fCamRotSpeed = 20.f;
 	/// @brief false : Lerp, true : Smooth
 	bool Type = true;
+
+public:
+	friend ofstream& operator<<(ofstream& fout, const SpringArmInfo _info)
+	{
+		fout << _info.vDir << endl;
+		fout << _info.vOffset << endl;
+		fout << _info.vDirOffset << endl;
+		fout << _info.fMaxDistance << endl;
+		fout << _info.fCamSpeed << endl;
+		fout << _info.fCamRotSpeed << endl;
+		fout << _info.Type << endl;
+		return fout;
+	}
+
+	friend ifstream& operator>>(ifstream& fin, SpringArmInfo& _info)
+	{
+		fin >> _info.vDir;
+		fin >> _info.vOffset;
+		fin >> _info.vDirOffset;
+		fin >> _info.fMaxDistance;
+		fin >> _info.fCamSpeed;
+		fin >> _info.fCamRotSpeed;
+		fin >> _info.Type;
+		return fin;
+	}
 };
 
 class CSpringArm : public CScript
 {
 private:
-	/// @brief 스프링 암에 매달리는 카메라
-	CGameObject* m_pTargetCam;
+	/// @brief 스프링 암에 매달리는 오브젝트
+	CGameObject* m_pTarget;
 	/// @brief 활성화 여부
 	bool m_bActive = true;
+	/// @brief 물체의 회전을 카메라 암 시작지점으로 고정 여부
+	bool m_bDirFix = false;
 
 	SpringArmInfo m_tInfo;
 
 public:
 	/// @brief 스프링 암에 붙는 카메라를 세팅하는 함수입니다.
-	void SetTargetCamera(CCamera* _cam);
+	void SetTargetObject(CGameObject* _pObject);
 	/// @brief 스프링 암이 시작하는 지점부터 캠으로 향하는 방향을 세팅하는 함수입니다.
 	void SetDir(Vec3 _dir) { m_tInfo.vDir = _dir; }
 	/// @brief 스프링 암이 시작되는 지점을 지정하는 함수입니다.
@@ -75,8 +102,14 @@ public:
 	virtual void begin() override;
 	virtual void tick() override;
 
+	virtual void SaveToFile(ofstream& fout) override;
+	virtual void LoadFromFile(ifstream& fin) override;
+
 public:
 	CLONE(CSpringArm);
 	CSpringArm();
 	~CSpringArm();
+
+private:
+	void Test();
 };

@@ -77,7 +77,7 @@ void CPlayerScript::begin()
 	auto pSA = GetOwner()->GetScript<CSpringArm>();
 	if (pSA)
 	{
-		pSA->SetTargetCamera(CRenderMgr::GetInst()->GetMainCam());
+		pSA->SetTargetObject(CRenderMgr::GetInst()->GetMainCam()->GetOwner());
 	}
 }
 
