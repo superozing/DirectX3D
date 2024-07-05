@@ -137,6 +137,8 @@ void CPhysX::finaltick()
 
 #define TagStatic "[IsStatic]"
 #define TagShape "[Shape]"
+#define TagScale "[Scale]"
+#define TagOffsetPos "[OffsetPos]"
 void CPhysX::SaveToFile(FILE* _File)
 {
 }
@@ -149,6 +151,12 @@ void CPhysX::SaveToFile(ofstream& fout)
 	fout << TagShape << endl;
 	auto shape = magic_enum::enum_name<PhysShape>(m_Shape);
 	fout << ToString(shape) << endl;
+
+	fout << TagScale << endl;
+	fout << m_vScale << endl;
+
+	fout << TagOffsetPos << endl;
+	fout << m_vOffsetPos << endl;
 }
 
 void CPhysX::LoadFromFile(FILE* _File)
@@ -164,6 +172,12 @@ void CPhysX::LoadFromFile(ifstream& fin)
 	Utils::GetLineUntilString(fin, TagShape);
 	getline(fin, str);
 	m_Shape = magic_enum::enum_cast<PhysShape>(str).value();
+
+	Utils::GetLineUntilString(fin, TagScale);
+	fin >> m_vScale;
+
+	Utils::GetLineUntilString(fin, TagOffsetPos);
+	fin >> m_vOffsetPos;
 }
 
 void CPhysX::setTransform(const PxTransform& transform)
