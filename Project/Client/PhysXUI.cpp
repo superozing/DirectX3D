@@ -1,9 +1,10 @@
 ﻿#include "pch.h"
 #include "PhysXUI.h"
 #include "Engine\CPhysX.h"
+#include "Engine\CTransform.h"
 
 PhysXUI::PhysXUI()
-	: ComponentUI("PhysXUI", "##PhysXUI", COMPONENT_TYPE::PHYSX)
+	: ComponentUI("PhysX", "##PhysX", COMPONENT_TYPE::PHYSX)
 {
 	SetComponentTitle("PhysX");
 }
@@ -16,7 +17,7 @@ void PhysXUI::render_update()
 {
 	ComponentUI::render_update();
 
-	if (!TitleCollapse("PhysXUI"))
+	if (!TitleCollapse("PhysX"))
 		return;
 
 	auto TGO = GetTargetObject();
@@ -32,6 +33,12 @@ void PhysXUI::render_update()
 
 	static auto Shape	 = phys->m_Shape;
 	auto		strShape = ToString(magic_enum::enum_name<PhysShape>(Shape));
+
+	static auto IsStatic = phys->m_bStaticActor;
+	if (ImGui::Checkbox("IsStatic", &IsStatic))
+	{
+		phys->m_bStaticActor = IsStatic;
+	}
 
 	if (ImGui::BeginCombo("##Shape", strShape.c_str()))
 	{
@@ -53,11 +60,17 @@ void PhysXUI::render_update()
 		ImGui::EndCombo();
 	}
 
-	static auto IsStatic = phys->m_bStaticActor;
-	if (ImGui::Checkbox("IsStatic", &IsStatic))
+	Vec3 Scale = phys->m_vScale;
+	if (Vec3() == Scale && nullptr != phys->Transform())
 	{
-		phys->m_bStaticActor = IsStatic;
+		Scale = phys->Transform()->GetRelativeScale();
 	}
+	ImGui::DragFloat3("Scale", (float*)Scale);
+	phys->m_vScale = Scale;
+
+	Vec3 OffsetPos = phys->m_vOffsetPos;
+	ImGui::DragFloat3("OffsetPos", (float*)OffsetPos);
+	phys->m_vOffsetPos = OffsetPos;
 
 	phys->m_bImguiDirtyFlag	   = true;
 	const auto& vecContactInfo = phys->m_vThisFrameContact;
