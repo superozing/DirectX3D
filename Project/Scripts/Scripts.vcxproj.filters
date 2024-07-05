@@ -55,8 +55,11 @@
     <ClInclude Include="CPhysXMgrScript.h">
       <Filter>Scripts\Manager\PhysXMgr</Filter>
     </ClInclude>
-    <ClInclude Include="CHalo.h">
-      <Filter>Scripts</Filter>
+    <ClInclude Include="CStudentScript.h">
+      <Filter>Scripts\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="CHaloScript.h">
+      <Filter>Scripts\Character</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -114,8 +117,11 @@
     <ClCompile Include="CPhysXMgrScript.cpp">
       <Filter>Scripts\Manager\PhysXMgr</Filter>
     </ClCompile>
-    <ClCompile Include="CHalo.cpp">
-      <Filter>Scripts</Filter>
+    <ClCompile Include="CStudentScript.cpp">
+      <Filter>Scripts\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="CHaloScript.cpp">
+      <Filter>Scripts\Character</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +169,9 @@
     </Filter>
     <Filter Include="Scripts\Manager\PhysXMgr">
       <UniqueIdentifier>{85af28fd-4fb9-47c5-b0d2-100e2dae1ca2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character">
+      <UniqueIdentifier>{d567e5b1-9cd5-47fb-80bb-aa8ac4fbfff3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
