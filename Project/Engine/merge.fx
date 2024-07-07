@@ -39,13 +39,15 @@ VS_OUT VS_Merge(VS_IN _in)
 
 float4 PS_Merge(VS_OUT _in) : SV_Target
 {
-    const float mask[9] =
+    const float mask[25] =
     {
-        -1, -1, -1,
-  -1, 8, -1,
-  -1, -1, -1
-    }; // Laplacian Filter
-    const float coord[3] = { -1, 0, +1 };
+        -1, -1, -1, -1, -1,
+        -1, -1, -1, -1, -1,
+        -1, -1, 24, -1, -1,
+        -1, -1, -1, -1, -1,
+        -1, -1, -1, -1, -1
+    }; // Larger Laplacian Filter
+    const float coord[5] = { -2, -1, 0, 1, 2 };
     const float divider = 1;
     float MAP_CX = g_RenderResolution.x;
     float MAP_CY = g_RenderResolution.y;
@@ -53,15 +55,15 @@ float4 PS_Merge(VS_OUT _in) : SV_Target
     const float threshold = 0.1f; // 외곽선 검출 임계값
     
     float4 vOutColor = (float4) 0.f;
-    float4 vColor = g_tex_0.Sample(g_sam_0, _in.vUV);
+    float4 vColor = g_tex_0.Sample(g_sam_1, _in.vUV);
     
     //Edge Detection START
     if (1 == g_int_0 && 0.f < g_float_0)
     {
         float4 vColorBuff = 0;
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < 25; i++)
         {
-            vColorBuff += mask[i] * (g_tex_4.Sample(g_sam_0, _in.vUV + float2(coord[i % 3] / MAP_CX, coord[i / 3] / MAP_CY)));
+            vColorBuff += mask[i] * (g_tex_4.Sample(g_sam_1, _in.vUV + float2(coord[i % 5] / MAP_CX, coord[i / 5] / MAP_CY)));
         }
         float gray = 1 - dot(vColorBuff.xyz, grayScale);
         float4 OutLine = float4(gray, gray, gray, 1) / divider;
