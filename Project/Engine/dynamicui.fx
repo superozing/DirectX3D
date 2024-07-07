@@ -5,7 +5,10 @@
 #include "struct.fx"
 
 #define UseExpandCenter     g_bool_0
+#define UseUVxDiscard       g_bool_1
+
 #define ExpandCenterRatio   g_float_0
+#define DiscardUVx          g_float_1
 
 struct VS_IN
 {
@@ -105,10 +108,12 @@ float4 PS_DynamicUI(GS_OUT _in) : SV_Target
     // 출력 색상
     float4 vOutColor = (float4) 0.f;
     
+    if (UseUVxDiscard && DiscardUVx < _in.vUV.x)
+        discard;
+    
     // 중앙 연장 기능을 사용한다면 vUV 조정하기.
     if (UseExpandCenter)
     {
-        // ExpandCenterRatio;
         // 어떻게 float 하나를 가지고 중앙의 uv 값을 조절할 것인가?
         
         // 수식을 생각해보아요.
