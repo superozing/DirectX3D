@@ -61,11 +61,6 @@ float4 PS_Merge(VS_OUT _in) : SV_Target
         float4 vColorBuff = 0;
         for (int i = 0; i < 9; i++)
         {
-        //float2 AddUv;
-        //AddUv.x = coord[i % 3] / MAP_CX;
-        //AddUv.y = coord[i / 3] / MAP_CY;
-        //float2 NewUv = _in.vUV + AddUv;
-        //vColorBuff += mask[i] * (g_tex_4.Sample(g_sam_0, NewUv));
             vColorBuff += mask[i] * (g_tex_4.Sample(g_sam_0, _in.vUV + float2(coord[i % 3] / MAP_CX, coord[i / 3] / MAP_CY)));
         }
         float gray = 1 - dot(vColorBuff.xyz, grayScale);
