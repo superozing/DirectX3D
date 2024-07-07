@@ -1175,7 +1175,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->SetTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	pShader->AddScalarParam(SCALAR_PARAM::INT_0, "Line Info");
-	pShader->AddScalarParam(SCALAR_PARAM::FLOAT_0, "HP Ratio");
+	pShader->AddScalarParam(SCALAR_PARAM::FLOAT_0, "Lerp HP Ratio");
+	pShader->AddScalarParam(SCALAR_PARAM::FLOAT_1, "HP Ratio");
 
 	AddAsset(L"BossHPShader", pShader.Get());
 }

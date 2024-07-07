@@ -44,12 +44,16 @@ void CBossHP::tick()
 {
 	using namespace BOSSHP;
 
+
 	int CurHP = GetCurHP();
 	int MaxHP = GetMaxHP();
+
+	m_CurLerpHP = RoRMath::Lerp(m_CurLerpHP, CurHP, DT * 0.1f);
 
 	// 현재 남은 줄 개수와 렌더링 할 색상 구하기
 	UINT LineInfo = 0;
 	float HPRatio = 0.f;
+	float CurLerpHPRatio = 0.f;
 	int LineCount = 0;
 
 	if (MaxHP != 0)
@@ -71,10 +75,12 @@ void CBossHP::tick()
 
 		// 체력 비율 계산
 		HPRatio = float(CurHP - LineCount * m_LineHP) / m_LineHP;
+		CurLerpHPRatio = float(m_CurLerpHP - LineCount * m_LineHP) / m_LineHP;
 	}
 
 	m_pHPLineUI->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_0, LineInfo);
-	m_pHPLineUI->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, HPRatio);
+	m_pHPLineUI->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, CurLerpHPRatio);
+	m_pHPLineUI->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_1, HPRatio);
 
 }
 

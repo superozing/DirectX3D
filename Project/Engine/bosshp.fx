@@ -4,9 +4,10 @@
 #include "value.fx"
 #include "func.fx"
 
-#define LINE g_int_0
+#define LINE        g_int_0
 
-#define RATIO g_float_0
+#define LERPRATIO   g_float_0
+#define RATIO       g_float_1
 
 #define SINGLE  0
 #define ODD     1
@@ -44,26 +45,33 @@ float4 PS_BossHP(VS_OUT _in) : SV_Target
     {
     case SINGLE:
     {
-        if (RATIO < _in.vUV.x)
+        if (LERPRATIO < _in.vUV.x)
             discard;
         
-         return FirLineColor;      
+        if (RATIO < _in.vUV.x)
+            return FirLineColor * float4(0.6f, 0.6f, 0.6f, 1.f);
+        else    
+            return FirLineColor;      
     }
         break;
         
     case ODD:
     {
-        if (RATIO < _in.vUV.x)
+        if (LERPRATIO < _in.vUV.x)
             return SecLineColor;
+        else if (RATIO < _in.vUV.x)
+            return FirLineColor * float4(0.6f, 0.6f, 0.6f, 1.f);
         else
             return FirLineColor;
-    }
+     }
         break;        
     
     case EVEN:
     {
-        if (RATIO < _in.vUV.x)
+        if (LERPRATIO < _in.vUV.x)
             return FirLineColor;
+        else if (RATIO < _in.vUV.x)
+            return SecLineColor * float4(0.6f, 0.6f, 0.6f, 1.f);
         else
             return SecLineColor;
     }

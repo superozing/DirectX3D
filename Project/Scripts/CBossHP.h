@@ -15,6 +15,8 @@ private:
 	// 바 별 체력
 	int m_LineHP;
 
+	int m_CurLerpHP;
+
 	// HP Line UI
 	CImageUIScript* m_pHPLineUI;
 
@@ -26,7 +28,9 @@ public:
 	void SetPortraitTex(Ptr<CTexture> _PortraitTex);
 	void SetImgFontTex(Ptr<CTexture> _ImgFontTex);
 
-	void SetMaxHP(int _MaxHP) { CProgressBar::SetMaxValue(RoRMath::ClampInt(_MaxHP, 0)); }
+	void SetMaxHP(int _MaxHP) { CProgressBar::SetMaxValue(RoRMath::ClampInt(_MaxHP, 0));
+		m_CurLerpHP = _MaxHP;
+	}
 	void SetLineHP(int _LineHP);
 	void SetCurHP(int _CurHP) { CProgressBar::SetCurValue(RoRMath::ClampInt(_CurHP, 0, CProgressBar::GetMaxValue())); }
 
