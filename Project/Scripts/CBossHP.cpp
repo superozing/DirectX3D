@@ -8,6 +8,10 @@
 
 namespace BOSSHP
 {
+#define SINGLE	0
+#define ODD		1
+#define EVEN	2
+
 
 #define BAR_XSCALE 1125
 #define BAR_YSCALE 44
@@ -31,6 +35,8 @@ CBossHP::~CBossHP()
 
 void CBossHP::begin()
 {
+	AppendScriptParam("Line HP", SCRIPT_PARAM::INT, &m_LineHP);
+
 	CProgressBar::begin();
 }
 
@@ -41,19 +47,35 @@ void CBossHP::tick()
 	int CurHP = GetCurHP();
 	int MaxHP = GetMaxHP();
 
-	//SetCurHP(RoRMath::Lerp(CurHP, 100, DT * 5));
+	// 현재 남은 줄 개수와 렌더링 할 색상 구하기
+	UINT LineInfo = 0;
+	float HPRatio = 0.f;
+	int LineCount = 0;
 
 	if (MaxHP != 0)
 	{
-		// 1. 현재 체력 비율 계산하기
-		float fHPRatio = (float)CurHP / MaxHP;
+		// 현재 남은 HP가 라인 HP보다 작을 경우
+		// 비율에 따라서 한 가지 색상의 라인만 출력해야 해요.
+		if (m_LineHP > CurHP)
+		{
+			LineInfo = SINGLE;
+		}
+		else
+		{
+			// 현재 남은 줄 개수 계산
+			LineCount = CurHP / m_LineHP;
 
-		// 2. 체력 비율에 따른 HP UI transform 조절
-		m_pHPLineUI->Transform()->SetRelativeScale(
-			Vec3(fHPRatio * BAR_XSCALE * SCALE_RATIO, BAR_YSCALE * SCALE_RATIO, 1));
-		m_pHPLineUI->Transform()->SetRelativePos(
-			Vec3(BAR_XPOS - ((1 - fHPRatio) * BAR_XSCALE) / 2 * SCALE_RATIO, BAR_YPOS * SCALE_RATIO, -200));
+			// 줄 개수의 홀짝 세팅
+			LineInfo = LineCount % 2 == 1 ? EVEN : ODD;
+		}
+
+		// 체력 비율 계산
+		HPRatio = float(CurHP - LineCount * m_LineHP) / m_LineHP;
 	}
+
+	m_pHPLineUI->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_0, LineInfo);
+	m_pHPLineUI->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, HPRatio);
+
 }
 
 void CBossHP::SetLineHP(int _LineHP)
@@ -169,9 +191,7 @@ void CBossHP::MakeChildObjects()
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
 	pObj->MeshRender()->GetDynamicMaterial(0);
-
-	m_pHPLineUI->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Red.png"));
-	m_pHPLineUI->AllowBindTexPerFrame();
+	pObj->MeshRender()->GetMaterial(0)->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BossHPShader"));
 
 	pObj->Transform()->SetRelativePos(Vec3(100 * SCALE_RATIO, -10 * SCALE_RATIO, 0.f));
 	pObj->Transform()->SetRelativeScale(Vec3(1100.f * SCALE_RATIO, 44.f * SCALE_RATIO, 1.f));
