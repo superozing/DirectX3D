@@ -4,6 +4,7 @@
 #include <Engine\CRenderMgr.h>
 #include <Engine/CPhysXMgr.h>
 
+static Vec3 gDir = Vec3();
 CSpringArm::CSpringArm()
 	: CScript((UINT)SCRIPT_TYPE::SPRINGARM)
 	, m_tInfo{}
@@ -18,6 +19,8 @@ CSpringArm::CSpringArm()
 	AppendScriptParam("PosOffset", SCRIPT_PARAM::VEC3, &m_tInfo.vOffset);
 	AppendScriptParam("DirOffset", SCRIPT_PARAM::VEC3, &m_tInfo.vDirOffset);
 	AppendScriptParam("Direction", SCRIPT_PARAM::VEC3, &m_tInfo.vDir);
+	AppendScriptParam("Direction", SCRIPT_PARAM::VEC3, &gDir);
+
 	AppendScriptObject("Cam", &m_pTarget, COMPONENT_TYPE::TRANSFORM);
 }
 
@@ -36,8 +39,11 @@ void CSpringArm::tick()
 
 	static float fCurDistance = m_tInfo.fDistance;
 
-	Vec3 vNewPos =
-		(GetOwner()->Transform()->GetWorldPos() + m_tInfo.vOffset) + m_tInfo.vDir.Normalize() * m_tInfo.fDistance;
+	Matrix worldMat = Transform()->GetWorldMat();
+
+	gDir = XMVector3TransformNormal(m_tInfo.vDir, worldMat);
+
+	Vec3 vNewPos = (GetOwner()->Transform()->GetWorldPos() + m_tInfo.vOffset) + gDir * m_tInfo.fDistance;
 	Vec3 vNewDir = (GetOwner()->Transform()->GetWorldPos() + m_tInfo.vOffset + m_tInfo.vDirOffset) -
 				   m_pTarget->Transform()->GetWorldPos();
 

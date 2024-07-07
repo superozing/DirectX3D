@@ -74,11 +74,18 @@ void CPlayerScript::begin()
 	m_FSM->Begin();
 	AppendScriptParam("CurState", SCRIPT_PARAM::STRING, (void*)&state);
 
-	auto pSA = GetOwner()->GetScript<CSpringArm>();
-	if (pSA)
+	CSpringArm* pSA = nullptr;
+
+	auto vecChild = GetOwner()->GetChild();
+	for (size_t i = 0; i < vecChild.size(); i++)
 	{
-		pSA->SetTargetObject(CRenderMgr::GetInst()->GetMainCam()->GetOwner());
+		pSA = vecChild[i]->GetScript<CSpringArm>();
+		if (pSA)
+			break;
 	}
+
+	if (pSA)
+		pSA->SetTargetObject(CRenderMgr::GetInst()->GetMainCam()->GetOwner());
 }
 
 void CPlayerScript::tick()

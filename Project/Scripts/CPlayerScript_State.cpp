@@ -3,6 +3,7 @@
 
 #include "CRoRStateMachine.h"
 #include <Engine/CRenderMgr.h>
+#include <Engine/CKeyMgr.h>
 
 void CPlayerScript::NormalBegin()
 {
@@ -21,6 +22,19 @@ int CPlayerScript::NormalUpdate()
 	Vec3		 vCamRight = pCamera->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
 	Vec3		 vCamFront = vCamRight.Cross(Vec3::Up);
 
+	Vec3 vRot = Transform()->GetRelativeRotation();
+
+	Vec2  vMouseDiff = CKeyMgr::GetInst()->GetMouseDrag();
+	float CamSpeed	 = 3.f;
+	if (vMouseDiff.x > 0.f)
+	{
+		vRot.y += CamSpeed * DT;
+	}
+	else if (vMouseDiff.x < 0.f)
+	{
+		vRot.y -= CamSpeed * DT;
+	}
+
 	Vec3 vTargetDir;
 	if (KEY_PRESSED(W))
 	{
@@ -30,14 +44,14 @@ int CPlayerScript::NormalUpdate()
 	{
 		vTargetDir += -vCamFront;
 	}
-	if (KEY_PRESSED(D))
-	{
-		vTargetDir += vCamRight;
-	}
-	if (KEY_PRESSED(A))
-	{
-		vTargetDir += -vCamRight;
-	}
+	// if (KEY_PRESSED(D))
+	//{
+	//	vTargetDir += vCamRight;
+	// }
+	// if (KEY_PRESSED(A))
+	//{
+	//	vTargetDir += -vCamRight;
+	// }
 
 	Vec3 vPos	= Transform()->GetRelativePos();
 	Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
@@ -50,6 +64,7 @@ int CPlayerScript::NormalUpdate()
 	}
 
 	Transform()->SetRelativePos(vPos);
+	Transform()->SetRelativeRotation(vRot);
 
 	if (KEY_TAP(KEY::SPACE))
 	{
