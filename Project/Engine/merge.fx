@@ -55,7 +55,7 @@ float4 PS_Merge(VS_OUT _in) : SV_Target
     const float threshold = 0.1f; // 외곽선 검출 임계값
     
     float4 vOutColor = (float4) 0.f;
-    float4 vColor = g_tex_0.Sample(g_sam_1, _in.vUV);
+    float4 vColor = g_tex_0.Sample(g_sam_0, _in.vUV);
     
     //Edge Detection START
     if (1 == g_int_0 && 0.f < g_float_0)
@@ -63,12 +63,25 @@ float4 PS_Merge(VS_OUT _in) : SV_Target
         float4 vColorBuff = 0;
         for (int i = 0; i < 25; i++)
         {
-            vColorBuff += mask[i] * (g_tex_4.Sample(g_sam_1, _in.vUV + float2(coord[i % 5] / MAP_CX, coord[i / 5] / MAP_CY)));
+            vColorBuff += mask[i] * (g_tex_4.Sample(g_sam_0, _in.vUV + float2(coord[i % 5] / MAP_CX, coord[i / 5] / MAP_CY)));
         }
         float gray = 1 - dot(vColorBuff.xyz, grayScale);
         float4 OutLine = float4(gray, gray, gray, 1) / divider;
         // 외곽선 검출 임계값을 기준으로 색상을 결정
         vColor = (gray > g_float_0) ? vColor : OutLine;
+        
+        // 안티앨리어싱 적용
+        float4 antiAliasedColor = 0;
+        float kernel[9] = { 1, 2, 1, 2, 4, 2, 1, 2, 1 };
+        for (int i = -1; i <= 1; i++)
+        {
+            for (int j = -1; j <= 1; j++)
+            {
+                antiAliasedColor += kernel[(i + 1) * 3 + (j + 1)] * g_tex_0.Sample(g_sam_0, _in.vUV + float2(i / MAP_CX, j / MAP_CY));
+            }
+        }
+        antiAliasedColor /= 16;
+        vColor = lerp(vColor, antiAliasedColor, 0.85); // 블렌딩 정도 조절
         //Edge Detection E N D
     }
     float4 vDiffuse = g_tex_1.Sample(g_sam_0, _in.vUV);
