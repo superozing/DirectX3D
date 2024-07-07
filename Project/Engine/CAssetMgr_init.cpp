@@ -1100,7 +1100,9 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->AddTexParam(TEX_PARAM::TEX_0, "DynamicUI Texture");
 
 	pShader->AddScalarParam(SCALAR_PARAM::BOOL_0, "Use Expand Center");
+	pShader->AddScalarParam(SCALAR_PARAM::BOOL_1, "Use UVx Discard");
 	pShader->AddScalarParam(SCALAR_PARAM::FLOAT_0, "Expand Center Ratio", 0.f, 1.f);
+	pShader->AddScalarParam(SCALAR_PARAM::FLOAT_1, "Discard UVx", 0.f, 1.f);
 
 	AddAsset(L"DynamicUIShader", pShader.Get());
 
@@ -1146,6 +1148,27 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->AddTexParam(TEX_PARAM::TEX_2, "Low Ammo Texture");
 
 	AddAsset(L"AmmoProgressBarShader", pShader.Get());
+
+	// ================
+	// BossHPShader
+	// ----------------
+	// Mesh: RectMesh
+	// RenderComp: MeshRender
+	// ================
+	pShader = new CGraphicsShader;
+	pShader->CreateVertexShader(L"shader\\bosshp.fx", "VS_BossHP");
+	pShader->CreatePixelShader(L"shader\\bosshp.fx", "PS_BossHP");
+
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+	pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+	pShader->SetTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	pShader->AddScalarParam(SCALAR_PARAM::INT_0, "Line Info");
+	pShader->AddScalarParam(SCALAR_PARAM::FLOAT_0, "HP Ratio");
+
+	AddAsset(L"BossHPShader", pShader.Get());
 }
 
 void CAssetMgr::CreateDefaultMaterial()
