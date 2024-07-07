@@ -19,6 +19,8 @@ CProgressBar::~CProgressBar()
 
 void CProgressBar::begin()
 {
+	AppendScriptParam("Cur Value", SCRIPT_PARAM::INT, &m_CurValue);
+	AppendScriptParam("Max Value", SCRIPT_PARAM::INT, &m_MaxValue);
 	m_pPanelUI = new CPanelUIScript;
 
 	m_pPanelUI->DisableMouseInput();
