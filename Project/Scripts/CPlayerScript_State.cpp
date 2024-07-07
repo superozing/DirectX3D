@@ -7,13 +7,14 @@
 
 #include "CPlayerController.h"
 
-void CPlayerScript::NormalBegin()
+#pragma region Normal
+
+void CPlayerScript::NormalIdleBegin()
 {
-	// 노말 애니메이션 시작(임시)
-	Animator3D()->Play(2);
+	Animator3D()->Play((int)PLAYER_STATE::NormalIdle);
 }
 
-int CPlayerScript::NormalUpdate()
+int CPlayerScript::NormalIdleUpdate()
 {
 	// TODO: 마우스 x축 회전에 따라 스프링암의 y축이 회전해야 함
 	// TODO: 키 입력 커스터마이징 가능하도록 민서 Controller 완성되면 붙여야 함
@@ -66,62 +67,16 @@ int CPlayerScript::NormalUpdate()
 	return m_FSM->GetCurState();
 }
 
-void CPlayerScript::NormalEnd()
+void CPlayerScript::NormalIdleEnd()
 {
 }
 
-static float	   Att_Acctime	= 0.f;
-static const float Att_duration = 1.f;
-
-void CPlayerScript::AttackBegin()
+void CPlayerScript::NormalReloadBegin()
 {
-	Att_Acctime = 0.f;
+	Animator3D()->Play((int)PLAYER_STATE::NormalReload);
 }
 
-int CPlayerScript::AttackUpdate()
-{
-	// 기본 움직임
-	CGameObject* pCamera = CRenderMgr::GetInst()->GetMainCam()->GetOwner();
-
-	Vec3 vPos	= Transform()->GetRelativePos();
-	Vec3 vFront = pCamera->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-	Vec3 vRight = pCamera->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
-
-	if (KEY_PRESSED(W))
-	{
-		vPos += vFront * m_tStatus.AttackMoveSpeed * DT;
-	}
-	if (KEY_PRESSED(S))
-	{
-		vPos += -vFront * m_tStatus.AttackMoveSpeed * DT;
-	}
-	if (KEY_PRESSED(D))
-	{
-		vPos += vRight * m_tStatus.AttackMoveSpeed * DT;
-	}
-	if (KEY_PRESSED(A))
-	{
-		vPos += -vRight * m_tStatus.AttackMoveSpeed * DT;
-	}
-
-	Transform()->SetRelativePos(vPos);
-
-	if (KEY_TAP(KEY::SPACE))
-	{
-		return m_FSM->GetCurState() + 1;
-	}
-	return m_FSM->GetCurState();
-}
-
-void CPlayerScript::AttackEnd()
-{
-}
-
-void CPlayerScript::CoverBegin()
-{
-}
-
-int CPlayerScript::CoverUpdate()
+int CPlayerScript::NormalReloadUpdate()
 {
 	if (KEY_TAP(KEY::SPACE))
 	{
@@ -130,15 +85,16 @@ int CPlayerScript::CoverUpdate()
 	return m_FSM->GetCurState();
 }
 
-void CPlayerScript::CoverEnd()
+void CPlayerScript::NormalReloadEnd()
 {
 }
 
-void CPlayerScript::CoverAttackBegin()
+void CPlayerScript::NormalAttackStartBegin()
 {
+	Animator3D()->Play((int)PLAYER_STATE::NormalAttackStart);
 }
 
-int CPlayerScript::CoverAttackUpdate()
+int CPlayerScript::NormalAttackStartUpdate()
 {
 	if (KEY_TAP(KEY::SPACE))
 	{
@@ -147,15 +103,16 @@ int CPlayerScript::CoverAttackUpdate()
 	return m_FSM->GetCurState();
 }
 
-void CPlayerScript::CoverAttackEnd()
+void CPlayerScript::NormalAttackStartEnd()
 {
 }
 
-void CPlayerScript::CoverKneeAttackBegin()
+void CPlayerScript::NormalAttackIngBegin()
 {
+	Animator3D()->Play((int)PLAYER_STATE::NormalAttackIng);
 }
 
-int CPlayerScript::CoverKneeAttackUpdate()
+int CPlayerScript::NormalAttackIngUpdate()
 {
 	if (KEY_TAP(KEY::SPACE))
 	{
@@ -164,15 +121,16 @@ int CPlayerScript::CoverKneeAttackUpdate()
 	return m_FSM->GetCurState();
 }
 
-void CPlayerScript::CoverKneeAttackEnd()
+void CPlayerScript::NormalAttackIngEnd()
 {
 }
 
-void CPlayerScript::DeathBegin()
+void CPlayerScript::NormalAttackDelayBegin()
 {
+	Animator3D()->Play((int)PLAYER_STATE::NormalAttackDelay);
 }
 
-int CPlayerScript::DeathUpdate()
+int CPlayerScript::NormalAttackDelayUpdate()
 {
 	if (KEY_TAP(KEY::SPACE))
 	{
@@ -181,15 +139,16 @@ int CPlayerScript::DeathUpdate()
 	return m_FSM->GetCurState();
 }
 
-void CPlayerScript::DeathEnd()
+void CPlayerScript::NormalAttackDelayEnd()
 {
 }
 
-void CPlayerScript::CeremonyBegin()
+void CPlayerScript::NormalAttackEndBegin()
 {
+	Animator3D()->Play((int)PLAYER_STATE::NormalAttackEnd);
 }
 
-int CPlayerScript::CeremonyUpdate()
+int CPlayerScript::NormalAttackEndUpdate()
 {
 	if (KEY_TAP(KEY::SPACE))
 	{
@@ -198,6 +157,611 @@ int CPlayerScript::CeremonyUpdate()
 	return m_FSM->GetCurState();
 }
 
-void CPlayerScript::CeremonyEnd()
+void CPlayerScript::NormalAttackEndEnd()
 {
 }
+
+#pragma endregion
+
+#pragma region Stand
+
+void CPlayerScript::StandIdleBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::StandIdle);
+}
+
+int CPlayerScript::StandIdleUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::StandIdleEnd()
+{
+}
+
+void CPlayerScript::StandReloadBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::StandReload);
+}
+
+int CPlayerScript::StandReloadUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::StandReloadEnd()
+{
+}
+
+void CPlayerScript::StandAttackStartBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::StandAttackStart);
+}
+
+int CPlayerScript::StandAttackStartUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::StandAttackStartEnd()
+{
+}
+
+void CPlayerScript::StandAttackIngBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::StandAttackIng);
+}
+
+int CPlayerScript::StandAttackIngUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::StandAttackIngEnd()
+{
+}
+
+void CPlayerScript::StandAttackDelayBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::StandAttackDelay);
+}
+
+int CPlayerScript::StandAttackDelayUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::StandAttackDelayEnd()
+{
+}
+
+void CPlayerScript::StandAttackEndBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::StandAttackEnd);
+}
+
+int CPlayerScript::StandAttackEndUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::StandAttackEndEnd()
+{
+}
+
+#pragma endregion
+
+#pragma region Kneel
+
+void CPlayerScript::KneelIdleBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::KneelIdle);
+}
+
+int CPlayerScript::KneelIdleUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::KneelIdleEnd()
+{
+}
+
+void CPlayerScript::KneelReloadBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::KneelReload);
+}
+
+int CPlayerScript::KneelReloadUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::KneelReloadEnd()
+{
+}
+
+void CPlayerScript::KneelAttackStartBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::KneelAttackStart);
+}
+
+int CPlayerScript::KneelAttackStartUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::KneelAttackStartEnd()
+{
+}
+
+void CPlayerScript::KneelAttackIngBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::KneelAttackIng);
+}
+
+int CPlayerScript::KneelAttackIngUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::KneelAttackIngEnd()
+{
+}
+
+void CPlayerScript::KneelAttackDelayBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::KneelAttackDelay);
+}
+
+int CPlayerScript::KneelAttackDelayUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::KneelAttackDelayEnd()
+{
+}
+
+void CPlayerScript::KneelAttackEndBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::KneelAttackEnd);
+}
+
+int CPlayerScript::KneelAttackEndUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::KneelAttackEndEnd()
+{
+}
+
+#pragma endregion
+
+#pragma region Move
+
+void CPlayerScript::MoveStartNormalBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::MoveStartNormal);
+}
+
+int CPlayerScript::MoveStartNormalUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::MoveStartNormalEnd()
+{
+}
+
+void CPlayerScript::MoveStartStandBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::MoveStartStand);
+}
+
+int CPlayerScript::MoveStartStandUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::MoveStartStandEnd()
+{
+}
+
+void CPlayerScript::MoveStartKneelBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::MoveStartKneel);
+}
+
+int CPlayerScript::MoveStartKneelUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::MoveStartKneelEnd()
+{
+}
+
+void CPlayerScript::MoveEndNormalBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::MoveEndNormal);
+}
+
+int CPlayerScript::MoveEndNormalUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::MoveEndNormalEnd()
+{
+}
+
+void CPlayerScript::MoveEndStandBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::MoveEndStand);
+}
+
+int CPlayerScript::MoveEndStandUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::MoveEndStandEnd()
+{
+}
+
+void CPlayerScript::MoveEndKneelBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::MoveEndKneel);
+}
+
+int CPlayerScript::MoveEndKneelUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::MoveEndKneelEnd()
+{
+}
+
+void CPlayerScript::MoveIngBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::MoveIng);
+}
+
+int CPlayerScript::MoveIngUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::MoveIngEnd()
+{
+}
+
+void CPlayerScript::MoveJumpBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::MoveJump);
+}
+
+int CPlayerScript::MoveJumpUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::MoveJumpEnd()
+{
+}
+
+#pragma endregion
+
+#pragma region Vital
+
+void CPlayerScript::VitalDeathBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::VitalDeath);
+}
+
+int CPlayerScript::VitalDeathUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::VitalDeathEnd()
+{
+}
+
+void CPlayerScript::VitalPanicBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::VitalPanic);
+}
+
+int CPlayerScript::VitalPanicUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::VitalPanicEnd()
+{
+}
+
+void CPlayerScript::VitalDyingBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::VitalDying);
+}
+
+int CPlayerScript::VitalDyingUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::VitalDyingEnd()
+{
+}
+
+#pragma endregion
+
+#pragma region Victory
+
+void CPlayerScript::VictoryStartBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::VictoryStart);
+}
+
+int CPlayerScript::VictoryStartUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::VictoryStartEnd()
+{
+}
+
+void CPlayerScript::VictoryEndBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::VictoryEnd);
+}
+
+int CPlayerScript::VictoryEndUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::VictoryEndEnd()
+{
+}
+
+#pragma endregion
+
+#pragma region Skill
+
+void CPlayerScript::SkillDashBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::SkillDash);
+}
+
+int CPlayerScript::SkillDashUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::SkillDashEnd()
+{
+}
+
+void CPlayerScript::SkillThrowBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::SkillThrow);
+}
+
+int CPlayerScript::SkillThrowUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::SkillThrowEnd()
+{
+}
+
+void CPlayerScript::SkillCallsignBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::SkillCallsign);
+}
+
+int CPlayerScript::SkillCallsignUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::SkillCallsignEnd()
+{
+}
+
+void CPlayerScript::SkillEXBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::SkillEX);
+}
+
+int CPlayerScript::SkillEXUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::SkillEXEnd()
+{
+}
+
+#pragma endregion
+
+#pragma region Formation
+
+void CPlayerScript::FormationIdleBegin()
+{
+	Animator3D()->Play((int)PLAYER_STATE::FormationIdle);
+}
+
+int CPlayerScript::FormationIdleUpdate()
+{
+	if (KEY_TAP(KEY::SPACE))
+	{
+		return 0;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CPlayerScript::FormationIdleEnd()
+{
+}
+
+#pragma endregion
+
+// int CPlayerScript::AttackUpdate()
+//{
+//	// 기본 움직임
+//	CGameObject* pCamera = CRenderMgr::GetInst()->GetMainCam()->GetOwner();
+//
+//	Vec3 vPos	= Transform()->GetRelativePos();
+//	Vec3 vFront = pCamera->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+//	Vec3 vRight = pCamera->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+//
+//	if (KEY_PRESSED(W))
+//	{
+//		vPos += vFront * m_tStatus.AttackMoveSpeed * DT;
+//	}
+//	if (KEY_PRESSED(S))
+//	{
+//		vPos += -vFront * m_tStatus.AttackMoveSpeed * DT;
+//	}
+//	if (KEY_PRESSED(D))
+//	{
+//		vPos += vRight * m_tStatus.AttackMoveSpeed * DT;
+//	}
+//	if (KEY_PRESSED(A))
+//	{
+//		vPos += -vRight * m_tStatus.AttackMoveSpeed * DT;
+//	}
+//
+//	Transform()->SetRelativePos(vPos);
+//
+//	if (KEY_TAP(KEY::SPACE))
+//	{
+//		return m_FSM->GetCurState() + 1;
+//	}
+//	return m_FSM->GetCurState();
+// }

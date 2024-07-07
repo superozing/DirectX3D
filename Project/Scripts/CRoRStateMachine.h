@@ -1,4 +1,11 @@
 ﻿#pragma once
+
+#define FSMInit(strEnumName, strScript, strEnumValue)                                                \
+	m_FSM->SetCallbacks((UINT)strEnumName## ::##strEnumValue,                                        \
+						ToString(magic_enum::enum_name(strEnumName## ::##strEnumValue)),             \
+						&strScript## ::##strEnumValue##Update, &strScript## ::##strEnumValue##Begin, \
+						&strScript## ::##strEnumValue##End, nullptr)
+
 class Coroutine;
 
 // 템플릿 클래스 : 스크립트별로 정의된 함수를 할당,호출하기위함

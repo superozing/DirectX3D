@@ -4,13 +4,42 @@
 
 enum class PLAYER_STATE
 {
-	NORMAL,
-	ATTACK,
-	COVER,
-	COVERATTACK,
-	COVERKNEEATTACK,
-	DEATH,
-	CEREMONY,
+	NormalIdle,
+	NormalReload,
+	NormalAttackStart,
+	NormalAttackIng,
+	NormalAttackDelay,
+	NormalAttackEnd,
+	StandIdle,
+	StandReload,
+	StandAttackStart,
+	StandAttackIng,
+	StandAttackDelay,
+	StandAttackEnd,
+	KneelIdle,
+	KneelReload,
+	KneelAttackStart,
+	KneelAttackIng,
+	KneelAttackDelay,
+	KneelAttackEnd,
+	MoveStartNormal,
+	MoveStartStand,
+	MoveStartKneel,
+	MoveIng,
+	MoveJump,
+	MoveEndNormal,
+	MoveEndStand,
+	MoveEndKneel,
+	VitalDeath,
+	VitalPanic,
+	VitalDying,
+	VictoryStart,
+	VictoryEnd,
+	SkillDash,
+	SkillThrow,
+	SkillCallsign,
+	SkillEX,
+	FormationIdle,
 	END,
 };
 
@@ -172,28 +201,121 @@ public:
 	CLONE(CPlayerScript);
 
 #pragma region About State
-	void NormalBegin();
-	int	 NormalUpdate();
-	void NormalEnd();
-	void AttackBegin();
-	int	 AttackUpdate();
-	void AttackEnd();
-	void CoverBegin();
-	int	 CoverUpdate();
-	void CoverEnd();
-	void CoverAttackBegin();
-	int	 CoverAttackUpdate();
-	void CoverAttackEnd();
-	void CoverKneeAttackBegin();
-	int	 CoverKneeAttackUpdate();
-	void CoverKneeAttackEnd();
+	void NormalIdleBegin();
+	int	 NormalIdleUpdate();
+	void NormalIdleEnd();
+	void NormalReloadBegin();
+	int	 NormalReloadUpdate();
+	void NormalReloadEnd();
+	void NormalAttackStartBegin();
+	int	 NormalAttackStartUpdate();
+	void NormalAttackStartEnd();
+	void NormalAttackIngBegin();
+	int	 NormalAttackIngUpdate();
+	void NormalAttackIngEnd();
+	void NormalAttackDelayBegin();
+	int	 NormalAttackDelayUpdate();
+	void NormalAttackDelayEnd();
+	void NormalAttackEndBegin();
+	int	 NormalAttackEndUpdate();
+	void NormalAttackEndEnd();
 
-	void DeathBegin();
-	int	 DeathUpdate();
-	void DeathEnd();
-	void CeremonyBegin();
-	int	 CeremonyUpdate();
-	void CeremonyEnd();
+	void StandIdleBegin();
+	int	 StandIdleUpdate();
+	void StandIdleEnd();
+	void StandReloadBegin();
+	int	 StandReloadUpdate();
+	void StandReloadEnd();
+	void StandAttackStartBegin();
+	int	 StandAttackStartUpdate();
+	void StandAttackStartEnd();
+	void StandAttackIngBegin();
+	int	 StandAttackIngUpdate();
+	void StandAttackIngEnd();
+	void StandAttackDelayBegin();
+	int	 StandAttackDelayUpdate();
+	void StandAttackDelayEnd();
+	void StandAttackEndBegin();
+	int	 StandAttackEndUpdate();
+	void StandAttackEndEnd();
+
+	void KneelIdleBegin();
+	int	 KneelIdleUpdate();
+	void KneelIdleEnd();
+	void KneelReloadBegin();
+	int	 KneelReloadUpdate();
+	void KneelReloadEnd();
+	void KneelAttackStartBegin();
+	int	 KneelAttackStartUpdate();
+	void KneelAttackStartEnd();
+	void KneelAttackIngBegin();
+	int	 KneelAttackIngUpdate();
+	void KneelAttackIngEnd();
+	void KneelAttackDelayBegin();
+	int	 KneelAttackDelayUpdate();
+	void KneelAttackDelayEnd();
+	void KneelAttackEndBegin();
+	int	 KneelAttackEndUpdate();
+	void KneelAttackEndEnd();
+
+	void MoveStartNormalBegin();
+	int	 MoveStartNormalUpdate();
+	void MoveStartNormalEnd();
+	void MoveStartStandBegin();
+	int	 MoveStartStandUpdate();
+	void MoveStartStandEnd();
+	void MoveStartKneelBegin();
+	int	 MoveStartKneelUpdate();
+	void MoveStartKneelEnd();
+	void MoveEndNormalBegin();
+	int	 MoveEndNormalUpdate();
+	void MoveEndNormalEnd();
+	void MoveEndStandBegin();
+	int	 MoveEndStandUpdate();
+	void MoveEndStandEnd();
+	void MoveEndKneelBegin();
+	int	 MoveEndKneelUpdate();
+	void MoveEndKneelEnd();
+	void MoveIngBegin();
+	int	 MoveIngUpdate();
+	void MoveIngEnd();
+	void MoveJumpBegin();
+	int	 MoveJumpUpdate();
+	void MoveJumpEnd();
+
+	void VitalDeathBegin();
+	int	 VitalDeathUpdate();
+	void VitalDeathEnd();
+	void VitalPanicBegin();
+	int	 VitalPanicUpdate();
+	void VitalPanicEnd();
+	void VitalDyingBegin();
+	int	 VitalDyingUpdate();
+	void VitalDyingEnd();
+
+	void VictoryStartBegin();
+	int	 VictoryStartUpdate();
+	void VictoryStartEnd();
+	void VictoryEndBegin();
+	int	 VictoryEndUpdate();
+	void VictoryEndEnd();
+
+	void SkillDashBegin();
+	int	 SkillDashUpdate();
+	void SkillDashEnd();
+	void SkillThrowBegin();
+	int	 SkillThrowUpdate();
+	void SkillThrowEnd();
+	void SkillCallsignBegin();
+	int	 SkillCallsignUpdate();
+	void SkillCallsignEnd();
+	void SkillEXBegin();
+	int	 SkillEXUpdate();
+	void SkillEXEnd();
+
+	void FormationIdleBegin();
+	int	 FormationIdleUpdate();
+	void FormationIdleEnd();
 
 #pragma endregion
 

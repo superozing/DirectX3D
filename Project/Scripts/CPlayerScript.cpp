@@ -26,27 +26,55 @@ CPlayerScript::CPlayerScript()
 	AppendScriptParam("MoveSpeed", SCRIPT_PARAM::FLOAT, &m_tStatus.MoveSpeed);
 	AppendScriptParam("AttackMoveSpeed", SCRIPT_PARAM::FLOAT, &m_tStatus.AttackMoveSpeed);
 
+#pragma region StateMachineInit
+
 	// 스테이트 초기화
 	m_FSM = new CRoRStateMachine<CPlayerScript>(this, (UINT)PLAYER_STATE::END);
 
-	m_FSM->SetCallbacks((UINT)PLAYER_STATE::NORMAL, ToString(magic_enum::enum_name(PLAYER_STATE::NORMAL)),
-						&CPlayerScript::NormalUpdate, &CPlayerScript::NormalBegin, &CPlayerScript::NormalEnd, nullptr);
-	m_FSM->SetCallbacks((UINT)PLAYER_STATE::ATTACK, ToString(magic_enum::enum_name(PLAYER_STATE::ATTACK)),
-						&CPlayerScript::AttackUpdate, &CPlayerScript::AttackBegin, &CPlayerScript::AttackEnd, nullptr);
-	m_FSM->SetCallbacks((UINT)PLAYER_STATE::COVER, ToString(magic_enum::enum_name(PLAYER_STATE::COVER)),
-						&CPlayerScript::CoverUpdate, &CPlayerScript::CoverBegin, &CPlayerScript::CoverEnd, nullptr);
-	m_FSM->SetCallbacks((UINT)PLAYER_STATE::COVERATTACK, ToString(magic_enum::enum_name(PLAYER_STATE::COVERATTACK)),
-						&CPlayerScript::CoverAttackUpdate, &CPlayerScript::CoverAttackBegin,
-						&CPlayerScript::CoverAttackEnd, nullptr);
-	m_FSM->SetCallbacks((UINT)PLAYER_STATE::COVERKNEEATTACK,
-						ToString(magic_enum::enum_name(PLAYER_STATE::COVERKNEEATTACK)),
-						&CPlayerScript::CoverKneeAttackUpdate, &CPlayerScript::CoverKneeAttackBegin,
-						&CPlayerScript::CoverKneeAttackEnd, nullptr);
-	m_FSM->SetCallbacks((UINT)PLAYER_STATE::DEATH, ToString(magic_enum::enum_name(PLAYER_STATE::DEATH)),
-						&CPlayerScript::DeathUpdate, &CPlayerScript::DeathBegin, &CPlayerScript::DeathEnd, nullptr);
-	m_FSM->SetCallbacks((UINT)PLAYER_STATE::CEREMONY, ToString(magic_enum::enum_name(PLAYER_STATE::CEREMONY)),
-						&CPlayerScript::CeremonyUpdate, &CPlayerScript::CeremonyBegin, &CPlayerScript::CeremonyEnd,
-						nullptr);
+	FSMInit(PLAYER_STATE, CPlayerScript, NormalIdle);
+	FSMInit(PLAYER_STATE, CPlayerScript, NormalReload);
+	FSMInit(PLAYER_STATE, CPlayerScript, NormalAttackStart);
+	FSMInit(PLAYER_STATE, CPlayerScript, NormalAttackIng);
+	FSMInit(PLAYER_STATE, CPlayerScript, NormalAttackDelay);
+	FSMInit(PLAYER_STATE, CPlayerScript, NormalAttackEnd);
+
+	FSMInit(PLAYER_STATE, CPlayerScript, StandIdle);
+	FSMInit(PLAYER_STATE, CPlayerScript, StandReload);
+	FSMInit(PLAYER_STATE, CPlayerScript, StandAttackStart);
+	FSMInit(PLAYER_STATE, CPlayerScript, StandAttackIng);
+	FSMInit(PLAYER_STATE, CPlayerScript, StandAttackDelay);
+	FSMInit(PLAYER_STATE, CPlayerScript, StandAttackEnd);
+
+	FSMInit(PLAYER_STATE, CPlayerScript, KneelIdle);
+	FSMInit(PLAYER_STATE, CPlayerScript, KneelReload);
+	FSMInit(PLAYER_STATE, CPlayerScript, KneelAttackStart);
+	FSMInit(PLAYER_STATE, CPlayerScript, KneelAttackIng);
+	FSMInit(PLAYER_STATE, CPlayerScript, KneelAttackDelay);
+	FSMInit(PLAYER_STATE, CPlayerScript, KneelAttackEnd);
+
+	FSMInit(PLAYER_STATE, CPlayerScript, MoveStartNormal);
+	FSMInit(PLAYER_STATE, CPlayerScript, MoveStartStand);
+	FSMInit(PLAYER_STATE, CPlayerScript, MoveStartKneel);
+	FSMInit(PLAYER_STATE, CPlayerScript, MoveEndNormal);
+	FSMInit(PLAYER_STATE, CPlayerScript, MoveEndStand);
+	FSMInit(PLAYER_STATE, CPlayerScript, MoveEndKneel);
+	FSMInit(PLAYER_STATE, CPlayerScript, MoveIng);
+	FSMInit(PLAYER_STATE, CPlayerScript, MoveJump);
+
+	FSMInit(PLAYER_STATE, CPlayerScript, VitalDeath);
+	FSMInit(PLAYER_STATE, CPlayerScript, VitalPanic);
+	FSMInit(PLAYER_STATE, CPlayerScript, VitalDying);
+	FSMInit(PLAYER_STATE, CPlayerScript, VictoryStart);
+	FSMInit(PLAYER_STATE, CPlayerScript, VictoryEnd);
+
+	FSMInit(PLAYER_STATE, CPlayerScript, SkillDash);
+	FSMInit(PLAYER_STATE, CPlayerScript, SkillThrow);
+	FSMInit(PLAYER_STATE, CPlayerScript, SkillCallsign);
+	FSMInit(PLAYER_STATE, CPlayerScript, SkillEX);
+
+	FSMInit(PLAYER_STATE, CPlayerScript, FormationIdle);
+
+#pragma endregion
 }
 
 CPlayerScript::CPlayerScript(const CPlayerScript& _origin)
