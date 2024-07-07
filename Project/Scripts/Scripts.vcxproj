@@ -189,6 +189,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CRenderMgrScript.h" />
     <ClInclude Include="CRoRStateMachine.h" />
     <ClInclude Include="CScriptMgr.h" />
+    <ClInclude Include="CSkillIcon.h" />
     <ClInclude Include="CSpringArm.h" />
     <ClInclude Include="CTimeMgrScript.h" />
     <ClInclude Include="CWeaponInfo.h" />
@@ -219,6 +220,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CRenderMgrScript.cpp" />
     <ClCompile Include="CRoRStateMachine.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
+    <ClCompile Include="CSkillIcon.cpp" />
     <ClCompile Include="CSpringArm.cpp" />
     <ClCompile Include="CTimeMgrScript.cpp" />
     <ClCompile Include="CWeaponInfo.cpp" />

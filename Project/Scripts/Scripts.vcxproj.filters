@@ -85,6 +85,9 @@
     <ClInclude Include="CHalo.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CSkillIcon.h">
+      <Filter>Scripts\UI\ProgressBar\SkillIcon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -171,6 +174,9 @@
     <ClCompile Include="CAmmoInfo.cpp">
       <Filter>Scripts\UI\ProgressBar\AmmoInfo</Filter>
     </ClCompile>
+    <ClCompile Include="CSkillIcon.cpp">
+      <Filter>Scripts\UI\ProgressBar\SkillIcon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -250,6 +256,9 @@
     </Filter>
     <Filter Include="Scripts\UI\ProgressBar\AmmoInfo">
       <UniqueIdentifier>{428b9d57-cfd8-4bf1-b2ca-3905db9d780b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\ProgressBar\SkillIcon">
+      <UniqueIdentifier>{904a9997-8eee-4e3b-ab19-3f8341cb7464}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

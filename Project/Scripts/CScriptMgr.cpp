@@ -25,6 +25,7 @@
 #include "CAmmoInfo.h"
 #include "CPhysXMgrScript.h"
 #include "CHalo.h"
+#include "CSkillIcon.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -52,6 +53,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CAmmoInfo");
 	_vec.push_back(L"CPhysXMgrScript");
 	_vec.push_back(L"CHalo");
+	_vec.push_back(L"CSkillIcon");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -104,6 +106,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPhysXMgrScript;
 	if (L"CHalo" == _strScriptName)
 		return new CHalo;
+	if (L"CSkillIcon" == _strScriptName)
+		return new CSkillIcon;
 	return nullptr;
 }
 
@@ -182,6 +186,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::HALO:
 		return new CHalo;
+		break;
+	case (UINT)SCRIPT_TYPE::SKILLICON:
+		return new CSkillIcon;
 		break;
 	}
 	return nullptr;
@@ -285,6 +292,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::HALO:
 		return L"CHalo";
+		break;
+
+	case SCRIPT_TYPE::SKILLICON:
+		return L"CSkillIcon";
 		break;
 
 	}
