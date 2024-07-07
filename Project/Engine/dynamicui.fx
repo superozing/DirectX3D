@@ -6,9 +6,12 @@
 
 #define UseExpandCenter     g_bool_0
 #define UseUVxDiscard       g_bool_1
+#define UseMulColor         g_bool_2
 
 #define ExpandCenterRatio   g_float_0
 #define DiscardUVx          g_float_1
+
+#define MulColor         g_vec4_0
 
 struct VS_IN
 {
@@ -150,9 +153,10 @@ float4 PS_DynamicUI(GS_OUT _in) : SV_Target
     }
     
     if (g_btex_0)
-    {
         vOutColor = g_tex_0.Sample(g_sam_0, _in.vUV);
-    }
+    
+    if (UseMulColor)
+        vOutColor *= MulColor;
     
     if (vOutColor.a < 0.001f)
         discard;

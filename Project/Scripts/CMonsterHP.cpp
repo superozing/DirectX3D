@@ -21,6 +21,11 @@ void CMonsterHP::begin()
 
 void CMonsterHP::tick()
 {
+	int CurHP = GetCurHP();
+	int MaxHP = GetMaxHP();
+
+	if (MaxHP)
+		m_pHPLineUI->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_1, (float)CurHP / MaxHP);
 }
 
 void CMonsterHP::MakeChildObjects()
@@ -47,8 +52,11 @@ void CMonsterHP::MakeChildObjects()
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHpoint));
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DynamicUIMtrl"), 0);
 	pObj->MeshRender()->GetDynamicMaterial(0);
+	pObj->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::BOOL_1, true);
+	pObj->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::BOOL_2, true);
+	pObj->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, Vec4(1.f, 0.2f, 0.2f, 1.f));
 
-	m_pHPLineUI->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HPLine.png"));
+	m_pHPLineUI->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HPLine_White.png"));
 	m_pHPLineUI->AllowBindTexPerFrame();
 
 	pObj->Transform()->SetRelativePos(Vec3(0, 0, 0.f));
