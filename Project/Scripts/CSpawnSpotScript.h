@@ -27,6 +27,7 @@ private:
 
 	CGameObject*		 CurObjectPointer;
 	vector<CGameObject*> m_vecSpawnObject;
+	vector<CGameObject*> m_CurrentSpawnObject;
 
 public:
 	void SetSpawnTypePlayer();
@@ -36,6 +37,7 @@ public:
 	void SetSpawnTypeNone();
 
 	void RegisterObject();
+	void DeAllocateObject();
 	void SpawnObject();
 
 public:

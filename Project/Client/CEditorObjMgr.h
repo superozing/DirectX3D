@@ -12,6 +12,7 @@ private:
 
 	CGameObjectEx* m_EditorCam;
 	CGameObjectEx* m_ManagerObj;
+	CGameObjectEx* m_MemoryPool;
 
 public:
 	virtual void init() override;

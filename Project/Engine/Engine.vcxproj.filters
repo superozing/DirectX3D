@@ -290,6 +290,9 @@
     <ClInclude Include="RoRCollisionCallback.h">
       <Filter>04. Manager\PhysXMgr</Filter>
     </ClInclude>
+    <ClInclude Include="CMemoryPoolMgr.h">
+      <Filter>04. Manager\MemoryPoolMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -526,6 +529,9 @@
     <ClCompile Include="RoRCollisionCallback.cpp">
       <Filter>04. Manager\PhysXMgr</Filter>
     </ClCompile>
+    <ClCompile Include="CMemoryPoolMgr.cpp">
+      <Filter>04. Manager\MemoryPoolMgr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -761,6 +767,9 @@
     </Filter>
     <Filter Include="08. Component\10. PhysX">
       <UniqueIdentifier>{f78ce992-961a-46dc-aed7-da0246b89182}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\MemoryPoolMgr">
+      <UniqueIdentifier>{66c0624b-2d5d-4929-861e-3af9a9b6ac1a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

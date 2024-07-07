@@ -62,6 +62,11 @@ void CEditorObjMgr::init()
 	TS->begin();
 	m_ManagerObj->AddComponent(TS);
 	m_vecEditorObj.push_back(m_ManagerObj);
+
+	m_MemoryPool = new CGameObjectEx;
+	m_MemoryPool->SetName(L"Memory Pool");
+	// auto PoolScript = new CMemoryPoolScript;
+	m_vecEditorObj.push_back(m_MemoryPool);
 }
 
 void CEditorObjMgr::progress()
