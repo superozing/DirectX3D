@@ -53,32 +53,32 @@ float4 PS_Merge(VS_OUT _in) : SV_Target
     const float threshold = 0.1f; // 외곽선 검출 임계값
     
     float4 vOutColor = (float4) 0.f;
+    float4 vColor = g_tex_0.Sample(g_sam_0, _in.vUV);
     
     //Edge Detection START
-    float4 vColor = g_tex_0.Sample(g_sam_0, _in.vUV);
-    float4 vColorBuff = 0;
-    float4 Ret = 0;
-    for (int i = 0; i < 9; i++)
+    if (1 == g_int_0 && 0.f < g_float_0)
     {
+        float4 vColorBuff = 0;
+        for (int i = 0; i < 9; i++)
+        {
         //float2 AddUv;
         //AddUv.x = coord[i % 3] / MAP_CX;
         //AddUv.y = coord[i / 3] / MAP_CY;
         //float2 NewUv = _in.vUV + AddUv;
         //vColorBuff += mask[i] * (g_tex_4.Sample(g_sam_0, NewUv));
-        vColorBuff += mask[i] * (g_tex_4.Sample(g_sam_0, _in.vUV + float2(coord[i % 3] / MAP_CX, coord[i / 3] / MAP_CY)));
+            vColorBuff += mask[i] * (g_tex_4.Sample(g_sam_0, _in.vUV + float2(coord[i % 3] / MAP_CX, coord[i / 3] / MAP_CY)));
+        }
+        float gray = 1 - dot(vColorBuff.xyz, grayScale);
+        float4 OutLine = float4(gray, gray, gray, 1) / divider;
+        // 외곽선 검출 임계값을 기준으로 색상을 결정
+        vColor = (gray > g_float_0) ? vColor : OutLine;
+        //Edge Detection E N D
     }
-
-    float gray = 1 - dot(vColorBuff.xyz, grayScale);
-    Ret = float4(gray, gray, gray, 1) / divider;
-    // 외곽선 검출 임계값을 기준으로 색상을 결정
-    Ret = (gray > threshold) ? vColor : Ret;
-    //Edge Detection E N D
-    
     float4 vDiffuse = g_tex_1.Sample(g_sam_0, _in.vUV);
     float4 Specular = g_tex_2.Sample(g_sam_0, _in.vUV);
     float4 Emissive = g_tex_3.Sample(g_sam_0, _in.vUV);
         
-    vOutColor = (Ret * (vDiffuse + Emissive)) + Specular;
+    vOutColor = (vColor * (vDiffuse + Emissive)) + Specular;
     vOutColor.a = 1.f;
     
     return vOutColor;
