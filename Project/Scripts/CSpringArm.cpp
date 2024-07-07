@@ -14,12 +14,8 @@ CSpringArm::CSpringArm()
 	AppendScriptParam("Smooth", SCRIPT_PARAM::BOOL, &m_tInfo.Type);
 	AppendScriptParam("Distance", SCRIPT_PARAM::FLOAT, &m_tInfo.fMaxDistance);
 	AppendScriptParam("Speed", SCRIPT_PARAM::FLOAT, &m_tInfo.fCamSpeed);
-	AppendScriptParam("DirectionFix", SCRIPT_PARAM::BOOL, &m_bDirFix);
 	AppendScriptParam("RotSpeed", SCRIPT_PARAM::FLOAT, &m_tInfo.fCamRotSpeed);
-	AppendScriptParam("PosOffset", SCRIPT_PARAM::VEC3, &m_tInfo.vOffset);
-	AppendScriptParam("DirOffset", SCRIPT_PARAM::VEC3, &m_tInfo.vDirOffset);
 	AppendScriptParam("Direction", SCRIPT_PARAM::VEC3, &m_tInfo.vDir);
-	AppendScriptParam("Direction", SCRIPT_PARAM::VEC3, &gDir);
 
 	AppendScriptObject("Cam", &m_pTarget, COMPONENT_TYPE::TRANSFORM);
 }
@@ -43,9 +39,11 @@ void CSpringArm::tick()
 
 	gDir = XMVector3TransformNormal(m_tInfo.vDir, worldMat);
 
-	Vec3 vNewPos = (GetOwner()->Transform()->GetWorldPos() + m_tInfo.vOffset) + gDir * m_tInfo.fDistance;
-	Vec3 vNewDir = (GetOwner()->Transform()->GetWorldPos() + m_tInfo.vOffset + m_tInfo.vDirOffset) -
-				   m_pTarget->Transform()->GetWorldPos();
+	Vec3 vCenterPos = Transform()->GetWorldPos();
+	Vec3 vTargetPos = m_pTarget->Transform()->GetWorldPos();
+
+	Vec3 vNewPos = vCenterPos + gDir * m_tInfo.fDistance;
+	Vec3 vNewDir = vCenterPos - vTargetPos;
 
 	// false : Lerp, true : Smooth
 	if (m_tInfo.Type)
@@ -76,8 +74,7 @@ void CSpringArm::tick()
 	}
 
 	m_pTarget->Transform()->SetRelativePos(vNewPos);
-	if (m_bDirFix)
-		m_pTarget->Transform()->SetDir(vNewDir);
+	m_pTarget->Transform()->SetDir(vNewDir);
 }
 
 #define TagSpringArm "[Info]"
@@ -89,7 +86,7 @@ void CSpringArm::SaveToFile(ofstream& fout)
 	fout << m_tInfo << endl;
 
 	fout << TagActive << endl;
-	fout << m_bActive << " " << m_bDirFix << endl;
+	fout << m_bActive << endl;
 }
 
 void CSpringArm::LoadFromFile(ifstream& fin)
@@ -98,7 +95,7 @@ void CSpringArm::LoadFromFile(ifstream& fin)
 	fin >> m_tInfo;
 
 	Utils::GetLineUntilString(fin, TagActive);
-	fin >> m_bActive >> m_bDirFix;
+	fin >> m_bActive;
 }
 
 void CSpringArm::SetTargetObject(CGameObject* _pObject)

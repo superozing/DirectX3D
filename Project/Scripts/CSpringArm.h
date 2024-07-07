@@ -4,11 +4,7 @@
 struct SpringArmInfo
 {
 	/// @brief 스프링 암이 향하는 각도
-	Vec3 vDir = Vec3(0.f, 1.f, 1.f);
-	/// @brief 부모 객체의 포지션에서 시작지점을 변경하는 오프셋
-	Vec3 vOffset;
-	/// @brief 카메라가 바라보는 지점을 시작지점으로부터 돌려주는 오프셋
-	Vec3 vDirOffset;
+	Vec3 vDir = Vec3(0.f, 0.f, 1.f);
 
 	/// @brief 스프링 암의 최대 길이
 	float fMaxDistance = 500.f;
@@ -26,8 +22,6 @@ public:
 	friend ofstream& operator<<(ofstream& fout, const SpringArmInfo _info)
 	{
 		fout << _info.vDir << endl;
-		fout << _info.vOffset << endl;
-		fout << _info.vDirOffset << endl;
 		fout << _info.fMaxDistance << endl;
 		fout << _info.fCamSpeed << endl;
 		fout << _info.fCamRotSpeed << endl;
@@ -38,8 +32,6 @@ public:
 	friend ifstream& operator>>(ifstream& fin, SpringArmInfo& _info)
 	{
 		fin >> _info.vDir;
-		fin >> _info.vOffset;
-		fin >> _info.vDirOffset;
 		fin >> _info.fMaxDistance;
 		fin >> _info.fCamSpeed;
 		fin >> _info.fCamRotSpeed;
@@ -55,8 +47,6 @@ private:
 	CGameObject* m_pTarget;
 	/// @brief 활성화 여부
 	bool m_bActive = true;
-	/// @brief 물체의 회전을 카메라 암 시작지점으로 고정 여부
-	bool m_bDirFix = false;
 
 	SpringArmInfo m_tInfo;
 
@@ -65,10 +55,6 @@ public:
 	void SetTargetObject(CGameObject* _pObject);
 	/// @brief 스프링 암이 시작하는 지점부터 캠으로 향하는 방향을 세팅하는 함수입니다.
 	void SetDir(Vec3 _dir) { m_tInfo.vDir = _dir; }
-	/// @brief 스프링 암이 시작되는 지점을 지정하는 함수입니다.
-	void SetOffsetPos(Vec3 _vOffset) { m_tInfo.vOffset = _vOffset; }
-	/// @brief 스프링 암에 붙어있는 카메라가 바라보는 지점을 돌려주는 오프셋을 지정하는 함수입니다.
-	void SetOffsetDir(Vec3 _vOffset) { m_tInfo.vDirOffset = _vOffset; }
 	/// @brief 스프링 암의 최대 길이를 지정하는 함수입니다. 현재 스프링 암의 길이도 같이 변경합니다.
 	void SetDistance(float _dist)
 	{
