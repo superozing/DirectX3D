@@ -1179,6 +1179,26 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->AddScalarParam(SCALAR_PARAM::FLOAT_1, "HP Ratio");
 
 	AddAsset(L"BossHPShader", pShader.Get());
+
+	// ================
+	// SkillIconShader
+	// ----------------
+	// Mesh: RectMesh
+	// RenderComp: MeshRender
+	// ================
+	pShader = new CGraphicsShader;
+	pShader->CreateVertexShader(L"shader\\skillicon.fx", "VS_SkillIcon");
+	pShader->CreatePixelShader(L"shader\\skillicon.fx", "PS_SkillIcon");
+
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+	pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+	pShader->SetTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	pShader->AddScalarParam(SCALAR_PARAM::FLOAT_0, "Cooldown Ratio");
+
+	AddAsset(L"SkillIconShader", pShader.Get());
 }
 
 void CAssetMgr::CreateDefaultMaterial()
