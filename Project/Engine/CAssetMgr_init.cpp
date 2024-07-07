@@ -1055,6 +1055,13 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
 	pShader->SetTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+	pShader->AddScalarParam(SCALAR_PARAM::BOOL_0, "Use Expand Center");
+	pShader->AddScalarParam(SCALAR_PARAM::BOOL_1, "Use UVx Discard");
+	pShader->AddScalarParam(SCALAR_PARAM::BOOL_2, "Use Mul Color");
+	pShader->AddScalarParam(SCALAR_PARAM::FLOAT_0, "Expand Center Ratio", 0.f, 1.f);
+	pShader->AddScalarParam(SCALAR_PARAM::FLOAT_1, "Discard UVx", 0.f, 1.f);
+	pShader->AddScalarParam(SCALAR_PARAM::VEC4_0, "Mul Color");
+
 	pShader->AddTexParam(TEX_PARAM::TEX_0, "StaticUI Texture");
 
 	AddAsset(L"StaticUIShader", pShader.Get());
