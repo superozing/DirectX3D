@@ -7,6 +7,34 @@
 
 #include "CPlayerController.h"
 
+#define MoveStartCondition                                                              \
+	(KEY_TAP(CPlayerController::Front) || KEY_PRESSED(CPlayerController::Front)) ||     \
+		(KEY_TAP(CPlayerController::Back) || KEY_PRESSED(CPlayerController::Back)) ||   \
+		(KEY_TAP(CPlayerController::Right) || KEY_PRESSED(CPlayerController::Right)) || \
+		(KEY_TAP(CPlayerController::Left) || KEY_PRESSED(CPlayerController::Left))
+
+#define MoveEndCondition                                                                  \
+	(KEY_RELEASED(CPlayerController::Front) || KEY_NONE(CPlayerController::Front)) &&     \
+		(KEY_RELEASED(CPlayerController::Back) || KEY_NONE(CPlayerController::Back)) &&   \
+		(KEY_RELEASED(CPlayerController::Right) || KEY_NONE(CPlayerController::Right)) && \
+		(KEY_RELEASED(CPlayerController::Left) || KEY_NONE(CPlayerController::Left))
+
+#define CAMROTATION                                        \
+	Vec3  vRot		 = Transform()->GetRelativeRotation(); \
+	Vec2  vMouseDiff = CKeyMgr::GetInst()->GetMouseDrag(); \
+	float CamSpeed	 = 3.f;                                \
+	if (vMouseDiff.x > 0.f)                                \
+		vRot.y += CamSpeed * DT;                           \
+	else if (vMouseDiff.x < 0.f)                           \
+		vRot.y -= CamSpeed * DT;                           \
+	Transform()->SetRelativeRotation(vRot)
+
+#define MOVEEND                                  \
+	if (MoveEndCondition)                        \
+	{                                            \
+		return (int)PLAYER_STATE::MoveEndNormal; \
+	}
+
 #pragma region Normal
 
 void CPlayerScript::NormalIdleBegin()
@@ -16,54 +44,29 @@ void CPlayerScript::NormalIdleBegin()
 
 int CPlayerScript::NormalIdleUpdate()
 {
-	// TODO: 마우스 x축 회전에 따라 스프링암의 y축이 회전해야 함
-	// TODO: 키 입력 커스터마이징 가능하도록 민서 Controller 완성되면 붙여야 함
+	// TODO: 상하 에임 구현해야 함
+	// 카메라 회전
+	CAMROTATION;
 
-	// 카메라에 따라 캐릭터 8방향 움직임 - 스프링 암에서 가져와야 함
-	// 마지막 키 입력 추적해야 함 - 앞, 뒤랑 양 옆을
-	CGameObject* pCamera = CRenderMgr::GetInst()->GetMainCam()->GetOwner();
-
-	Vec3 vRight = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
-	Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-
-	Vec3 vPos = Transform()->GetRelativePos();
-	Vec3 vRot = Transform()->GetRelativeRotation();
-
-	Vec2  vMouseDiff = CKeyMgr::GetInst()->GetMouseDrag();
-	float CamSpeed	 = 3.f;
-	if (vMouseDiff.x > 0.f)
+	// TODO : 재장전 조건 추가 필요 (현재 탄창이 최대 탄창과 같으면 x)
+	// 재장전
+	if (KEY_TAP(CPlayerController::Reload))
 	{
-		vRot.y += CamSpeed * DT;
-	}
-	else if (vMouseDiff.x < 0.f)
-	{
-		vRot.y -= CamSpeed * DT;
+		return (int)PLAYER_STATE::NormalReload;
 	}
 
-	if (KEY_PRESSED(CPlayerController::Front))
+	// 사격 준비
+	if (KEY_TAP(CPlayerController::Zoom))
 	{
-		vPos += vFront * m_tStatus.MoveSpeed * DT;
-	}
-	if (KEY_PRESSED(CPlayerController::Back))
-	{
-		vPos -= vFront * m_tStatus.MoveSpeed * DT;
-	}
-	if (KEY_PRESSED(CPlayerController::Right))
-	{
-		vPos += vRight * m_tStatus.MoveSpeed * DT;
-	}
-	if (KEY_PRESSED(CPlayerController::Left))
-	{
-		vPos -= vRight * m_tStatus.MoveSpeed * DT;
+		return (int)PLAYER_STATE::NormalAttackStart;
 	}
 
-	Transform()->SetRelativePos(vPos);
-	Transform()->SetRelativeRotation(vRot);
-
-	if (KEY_TAP(KEY::SPACE))
+	// 이동
+	if (MoveStartCondition)
 	{
-		return m_FSM->GetCurState() + 1;
+		return (int)PLAYER_STATE::MoveStartNormal;
 	}
+
 	return m_FSM->GetCurState();
 }
 
@@ -73,15 +76,18 @@ void CPlayerScript::NormalIdleEnd()
 
 void CPlayerScript::NormalReloadBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::NormalReload);
+	Animator3D()->Play((int)PLAYER_STATE::NormalReload, 0);
 }
 
 int CPlayerScript::NormalReloadUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
+	CAMROTATION;
+
+	if (!Animator3D()->IsPlayable())
 	{
-		return m_FSM->GetCurState() + 1;
+		return (int)PLAYER_STATE::NormalIdle;
 	}
+
 	return m_FSM->GetCurState();
 }
 
@@ -91,14 +97,16 @@ void CPlayerScript::NormalReloadEnd()
 
 void CPlayerScript::NormalAttackStartBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::NormalAttackStart);
+	Animator3D()->Play((int)PLAYER_STATE::NormalAttackStart, 0);
 }
 
 int CPlayerScript::NormalAttackStartUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
+	CAMROTATION;
+
+	if (!Animator3D()->IsPlayable())
 	{
-		return m_FSM->GetCurState() + 1;
+		return (int)PLAYER_STATE::NormalAttackDelay;
 	}
 	return m_FSM->GetCurState();
 }
@@ -109,14 +117,16 @@ void CPlayerScript::NormalAttackStartEnd()
 
 void CPlayerScript::NormalAttackIngBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::NormalAttackIng);
+	Animator3D()->Play((int)PLAYER_STATE::NormalAttackIng, 0);
 }
 
 int CPlayerScript::NormalAttackIngUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
+	CAMROTATION;
+
+	if (!Animator3D()->IsPlayable())
 	{
-		return m_FSM->GetCurState() + 1;
+		return (int)PLAYER_STATE::NormalAttackDelay;
 	}
 	return m_FSM->GetCurState();
 }
@@ -132,9 +142,21 @@ void CPlayerScript::NormalAttackDelayBegin()
 
 int CPlayerScript::NormalAttackDelayUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
+	CAMROTATION;
+
+	if (KEY_TAP(CPlayerController::Attack))
 	{
-		return m_FSM->GetCurState() + 1;
+		return (int)PLAYER_STATE::NormalAttackIng;
+	}
+
+	if (KEY_TAP(CPlayerController::Reload))
+	{
+		return (int)PLAYER_STATE::NormalReload;
+	}
+
+	if (KEY_RELEASED(CPlayerController::Zoom) || KEY_NONE(CPlayerController::Zoom))
+	{
+		return (int)PLAYER_STATE::NormalAttackEnd;
 	}
 	return m_FSM->GetCurState();
 }
@@ -145,14 +167,16 @@ void CPlayerScript::NormalAttackDelayEnd()
 
 void CPlayerScript::NormalAttackEndBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::NormalAttackEnd);
+	Animator3D()->Play((int)PLAYER_STATE::NormalAttackEnd, 0);
 }
 
 int CPlayerScript::NormalAttackEndUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
+	CAMROTATION;
+
+	if (!Animator3D()->IsPlayable())
 	{
-		return m_FSM->GetCurState() + 1;
+		return (int)PLAYER_STATE::NormalIdle;
 	}
 	return m_FSM->GetCurState();
 }
@@ -391,15 +415,16 @@ void CPlayerScript::KneelAttackEndEnd()
 
 void CPlayerScript::MoveStartNormalBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::MoveStartNormal);
+	Animator3D()->Play((int)PLAYER_STATE::MoveStartNormal, 0);
 }
 
 int CPlayerScript::MoveStartNormalUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
-	{
-		return m_FSM->GetCurState() + 1;
-	}
+	CAMROTATION;
+	MOVEEND;
+
+	if (!Animator3D()->IsPlayable())
+		return (int)PLAYER_STATE::MoveIng;
 	return m_FSM->GetCurState();
 }
 
@@ -445,15 +470,15 @@ void CPlayerScript::MoveStartKneelEnd()
 
 void CPlayerScript::MoveEndNormalBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::MoveEndNormal);
+	Animator3D()->Play((int)PLAYER_STATE::MoveEndNormal, 0);
 }
 
 int CPlayerScript::MoveEndNormalUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
-	{
-		return m_FSM->GetCurState() + 1;
-	}
+	CAMROTATION;
+
+	if (!Animator3D()->IsPlayable())
+		return (int)PLAYER_STATE::NormalIdle;
 	return m_FSM->GetCurState();
 }
 
@@ -463,15 +488,13 @@ void CPlayerScript::MoveEndNormalEnd()
 
 void CPlayerScript::MoveEndStandBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::MoveEndStand);
+	Animator3D()->Play((int)PLAYER_STATE::MoveEndStand, 0);
 }
 
 int CPlayerScript::MoveEndStandUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
-	{
-		return m_FSM->GetCurState() + 1;
-	}
+	if (!Animator3D()->IsPlayable())
+		return (int)PLAYER_STATE::StandIdle;
 	return m_FSM->GetCurState();
 }
 
@@ -504,10 +527,35 @@ void CPlayerScript::MoveIngBegin()
 
 int CPlayerScript::MoveIngUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
+	CAMROTATION;
+
+	Vec3 vRight = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+	Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+
+	Vec3 vPos = Transform()->GetRelativePos();
+
+	if (KEY_PRESSED(CPlayerController::Front))
 	{
-		return m_FSM->GetCurState() + 1;
+		vPos += vFront * m_tStatus.MoveSpeed * DT;
 	}
+	if (KEY_PRESSED(CPlayerController::Back))
+	{
+		vPos -= vFront * m_tStatus.MoveSpeed * DT;
+	}
+	if (KEY_PRESSED(CPlayerController::Right))
+	{
+		vPos += vRight * m_tStatus.MoveSpeed * DT;
+	}
+	if (KEY_PRESSED(CPlayerController::Left))
+	{
+		vPos -= vRight * m_tStatus.MoveSpeed * DT;
+	}
+
+	Transform()->SetRelativePos(vPos);
+
+	// TODO: 엄폐 조건에 따라 노말 보낼지 stand 보낼지, kneel 보낼지 결정 줘야함
+	MOVEEND;
+
 	return m_FSM->GetCurState();
 }
 
