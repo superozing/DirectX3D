@@ -1,26 +1,25 @@
 ﻿#pragma once
 
 #include <Engine/CKeyMgr.h>
+#include <Engine/singleton.h>
 
-class CPlayerController
+class CPlayerController : public CSingleton<CPlayerController>
 {
+	SINGLE(CPlayerController);
+
 public:
 	// Move
-	KEY Front = KEY::W;
-	KEY Right = KEY::D;
-	KEY Back  = KEY::S;
-	KEY Left  = KEY::A;
-	KEY Dash  = KEY::SPACE;
+	static KEY Front;
+	static KEY Right;
+	static KEY Back;
+	static KEY Left;
+	static KEY Dash;
 
-	KEY Attack = KEY::LBTN;
-	KEY Zoom   = KEY::RBTN;
-	KEY Reload = KEY::R;
+	static KEY Attack;
+	static KEY Zoom;
+	static KEY Reload;
 
-	KEY Cover = KEY::LSHIFT;
-	KEY Skill = KEY::F;
-	// KEY Jump  = KEY::LCTRL;
-
-public:
-	CPlayerController();
-	~CPlayerController();
+	static KEY Cover;
+	static KEY Skill;
+	// static KEY Jump;
 };

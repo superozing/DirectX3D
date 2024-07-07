@@ -55,6 +55,7 @@
     <ClInclude Include="CPhysXMgrScript.h">
       <Filter>Scripts\Manager\PhysXMgr</Filter>
     </ClInclude>
+    <ClInclude Include="CPlayerController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -114,6 +115,7 @@
     <ClCompile Include="CPlayerScript_State.cpp">
       <Filter>Scripts\Lecture</Filter>
     </ClCompile>
+    <ClCompile Include="CPlayerController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">

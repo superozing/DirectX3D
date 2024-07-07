@@ -5,6 +5,8 @@
 #include <Engine/CRenderMgr.h>
 #include <Engine/CKeyMgr.h>
 
+#include "CPlayerController.h"
+
 void CPlayerScript::NormalBegin()
 {
 	// 노말 애니메이션 시작(임시)
@@ -18,10 +20,12 @@ int CPlayerScript::NormalUpdate()
 
 	// 카메라에 따라 캐릭터 8방향 움직임 - 스프링 암에서 가져와야 함
 	// 마지막 키 입력 추적해야 함 - 앞, 뒤랑 양 옆을
-	CGameObject* pCamera   = CRenderMgr::GetInst()->GetMainCam()->GetOwner();
-	Vec3		 vCamRight = pCamera->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
-	Vec3		 vCamFront = vCamRight.Cross(Vec3::Up);
+	CGameObject* pCamera = CRenderMgr::GetInst()->GetMainCam()->GetOwner();
 
+	Vec3 vRight = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+	Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+
+	Vec3 vPos = Transform()->GetRelativePos();
 	Vec3 vRot = Transform()->GetRelativeRotation();
 
 	Vec2  vMouseDiff = CKeyMgr::GetInst()->GetMouseDrag();
@@ -35,32 +39,21 @@ int CPlayerScript::NormalUpdate()
 		vRot.y -= CamSpeed * DT;
 	}
 
-	Vec3 vTargetDir;
-	if (KEY_PRESSED(W))
-	{
-		vTargetDir += vCamFront;
-	}
-	if (KEY_PRESSED(S))
-	{
-		vTargetDir += -vCamFront;
-	}
-	// if (KEY_PRESSED(D))
-	//{
-	//	vTargetDir += vCamRight;
-	// }
-	// if (KEY_PRESSED(A))
-	//{
-	//	vTargetDir += -vCamRight;
-	// }
-
-	Vec3 vPos	= Transform()->GetRelativePos();
-	Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-	Vec3 vRight = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
-	if (vTargetDir != Vec3())
+	if (KEY_PRESSED(CPlayerController::Front))
 	{
 		vPos += vFront * m_tStatus.MoveSpeed * DT;
-		vTargetDir = Vec3::Lerp(Transform()->GetWorldDir(DIR_TYPE::FRONT), vTargetDir, DT * m_tStatus.RotateSpeed);
-		Transform()->SetDir(vTargetDir);
+	}
+	if (KEY_PRESSED(CPlayerController::Back))
+	{
+		vPos -= vFront * m_tStatus.MoveSpeed * DT;
+	}
+	if (KEY_PRESSED(CPlayerController::Right))
+	{
+		vPos += vRight * m_tStatus.MoveSpeed * DT;
+	}
+	if (KEY_PRESSED(CPlayerController::Left))
+	{
+		vPos -= vRight * m_tStatus.MoveSpeed * DT;
 	}
 
 	Transform()->SetRelativePos(vPos);
