@@ -4,7 +4,9 @@
 struct SpringArmInfo
 {
 	/// @brief 스프링 암이 향하는 각도
-	Vec3 vDir = Vec3(0.f, 0.f, 1.f);
+	Vec3 vDir = Vec3(0.f, 0.f, -1.f);
+	/// @brief 스프링 암이 시작하는 지점 offset
+	Vec2 vOffsetPos = Vec2(0.f, 0.f);
 
 	/// @brief 스프링 암의 최대 길이
 	float fMaxDistance = 500.f;
@@ -88,7 +90,12 @@ public:
 	void SetMoveType(bool _type) { m_tInfo.Type = _type; }
 
 	SpringArmInfo GetInfo() { return m_tInfo; }
-	void		  SetInfo(const SpringArmInfo& _info) { m_tInfo = _info; }
+	void		  SetInfo(const SpringArmInfo& _info)
+	{
+		m_tInfo = _info;
+		SetDistance(m_tInfo.fMaxDistance);
+		Transform()->Lerp(m_tInfo.vOffsetPos, false, Vec3(), false, Vec3(), 1.f);
+	}
 
 public:
 	virtual void begin() override;

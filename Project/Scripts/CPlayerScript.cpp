@@ -86,11 +86,49 @@ CPlayerScript::CPlayerScript()
 	FSMInit(PLAYER_STATE, CPlayerScript, FormationIdle);
 
 #pragma endregion
+
+	SpringArmInfo info;
+	info.Type								 = true;
+	info.fMaxDistance						 = 250.f;
+	info.fCamSpeed							 = 50.f;
+	info.fCamRotSpeed						 = 20.f;
+	info.vDir								 = Vec3(0.f, 0.4f, -1.f);
+	info.vOffsetPos							 = Vec2(150.f, 250.f);
+	m_mSpringInfos[PLAYER_STATE::NormalIdle] = info;
+
+	info.fMaxDistance								= 150.f;
+	info.fCamSpeed									= 30.f;
+	info.fCamRotSpeed								= 20.f;
+	info.vDir										= Vec3(0.f, 0.4f, -1.f);
+	info.vOffsetPos									= Vec2(150.f, 200.f);
+	m_mSpringInfos[PLAYER_STATE::NormalAttackStart] = info;
+
+	info.fMaxDistance							  = 250.f;
+	info.fCamSpeed								  = 30.f;
+	info.fCamRotSpeed							  = 20.f;
+	info.vDir									  = Vec3(0.f, 0.4f, -1.f);
+	info.vOffsetPos								  = Vec2(150.f, 250.f);
+	m_mSpringInfos[PLAYER_STATE::NormalAttackEnd] = info;
+
+	info.fMaxDistance						= 350.f;
+	info.fCamSpeed							= 30.f;
+	info.fCamRotSpeed						= 20.f;
+	info.vDir								= Vec3(-0.4f, 0.f, -1.f);
+	info.vOffsetPos							= Vec2(350.f, 250.f);
+	m_mSpringInfos[PLAYER_STATE::StandIdle] = info;
+
+	info.fMaxDistance							   = 150.f;
+	info.fCamSpeed								   = 30.f;
+	info.fCamRotSpeed							   = 20.f;
+	info.vDir									   = Vec3(0.f, 0.f, -1.f);
+	info.vOffsetPos								   = Vec2(300.f, 200.f);
+	m_mSpringInfos[PLAYER_STATE::StandAttackStart] = info;
 }
 
 CPlayerScript::CPlayerScript(const CPlayerScript& _origin)
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
 	, m_tStatus(_origin.m_tStatus)
+	, m_mSpringInfos(_origin.m_mSpringInfos)
 {
 	m_FSM = _origin.m_FSM->Clone(this);
 }
@@ -108,8 +146,6 @@ CPlayerScript::~CPlayerScript()
 
 void CPlayerScript::begin()
 {
-	m_FSM->Begin();
-
 	auto vecChild = GetOwner()->GetChild();
 	for (size_t i = 0; i < vecChild.size(); i++)
 	{
@@ -120,6 +156,8 @@ void CPlayerScript::begin()
 
 	if (m_pSpringArm)
 		m_pSpringArm->SetTargetObject(CRenderMgr::GetInst()->GetMainCam()->GetOwner());
+
+	m_FSM->Begin();
 }
 
 void CPlayerScript::tick()

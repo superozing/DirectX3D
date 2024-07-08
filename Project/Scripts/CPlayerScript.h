@@ -74,6 +74,7 @@ struct PlayerStatus
 };
 
 template <typename T> class CRoRStateMachine;
+#include "CSpringArm.h"
 
 class CPlayerScript : public CScript
 {
@@ -86,6 +87,8 @@ private:
 	CoverType m_iCorverType;
 
 	class CSpringArm* m_pSpringArm;
+
+	map<PLAYER_STATE, SpringArmInfo> m_mSpringInfos;
 
 public:
 #pragma region StatusFunc

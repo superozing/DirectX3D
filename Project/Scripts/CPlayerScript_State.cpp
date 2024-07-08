@@ -24,6 +24,7 @@
 void CPlayerScript::NormalIdleBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::NormalIdle);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalIdle]);
 }
 
 int CPlayerScript::NormalIdleUpdate()
@@ -80,6 +81,7 @@ void CPlayerScript::NormalReloadEnd()
 void CPlayerScript::NormalAttackStartBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::NormalAttackStart, 0);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalAttackStart]);
 }
 
 int CPlayerScript::NormalAttackStartUpdate()
@@ -143,6 +145,7 @@ void CPlayerScript::NormalAttackDelayEnd()
 void CPlayerScript::NormalAttackEndBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::NormalAttackEnd, 0);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalAttackEnd]);
 }
 
 int CPlayerScript::NormalAttackEndUpdate()
@@ -165,6 +168,7 @@ void CPlayerScript::NormalAttackEndEnd()
 void CPlayerScript::StandIdleBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::StandIdle);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::StandIdle]);
 }
 
 int CPlayerScript::StandIdleUpdate()
@@ -215,6 +219,7 @@ void CPlayerScript::StandReloadEnd()
 void CPlayerScript::StandAttackStartBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::StandAttackStart, 0);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::StandAttackStart]);
 }
 
 int CPlayerScript::StandAttackStartUpdate()
@@ -277,6 +282,8 @@ void CPlayerScript::StandAttackDelayEnd()
 void CPlayerScript::StandAttackEndBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::StandAttackEnd, 0);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::StandIdle]);
+	// m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalAttackEnd]);
 }
 
 int CPlayerScript::StandAttackEndUpdate()
@@ -435,6 +442,7 @@ void CPlayerScript::KneelAttackEndEnd()
 void CPlayerScript::MoveStartNormalBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::MoveStartNormal, 0);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalIdle]);
 }
 
 int CPlayerScript::MoveStartNormalUpdate()
@@ -454,6 +462,7 @@ void CPlayerScript::MoveStartNormalEnd()
 void CPlayerScript::MoveStartStandBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::MoveStartStand, 0);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalIdle]);
 }
 
 int CPlayerScript::MoveStartStandUpdate()
@@ -474,6 +483,7 @@ void CPlayerScript::MoveStartStandEnd()
 void CPlayerScript::MoveStartKneelBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::MoveStartKneel, 0);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalIdle]);
 }
 
 int CPlayerScript::MoveStartKneelUpdate()
@@ -494,6 +504,7 @@ void CPlayerScript::MoveStartKneelEnd()
 void CPlayerScript::MoveEndNormalBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::MoveEndNormal, 0);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalIdle]);
 }
 
 int CPlayerScript::MoveEndNormalUpdate()
@@ -510,6 +521,7 @@ void CPlayerScript::MoveEndNormalEnd()
 void CPlayerScript::MoveEndStandBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::MoveEndStand, 0);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::StandIdle]);
 }
 
 int CPlayerScript::MoveEndStandUpdate()
@@ -526,6 +538,7 @@ void CPlayerScript::MoveEndStandEnd()
 void CPlayerScript::MoveEndKneelBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::MoveEndKneel, 0);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalIdle]);
 }
 
 int CPlayerScript::MoveEndKneelUpdate()
