@@ -21,5 +21,5 @@ public:
 
 	static KEY Cover;
 	static KEY Skill;
-	// static KEY Jump;
+	static KEY Jump;
 };

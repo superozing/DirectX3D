@@ -13,6 +13,7 @@ KEY CPlayerController::Reload = KEY::R;
 
 KEY CPlayerController::Cover = KEY::LSHIFT;
 KEY CPlayerController::Skill = KEY::F;
+KEY CPlayerController::Jump	 = KEY::SPACE;
 
 CPlayerController::CPlayerController()
 {

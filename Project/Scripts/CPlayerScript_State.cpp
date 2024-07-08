@@ -19,10 +19,10 @@
 		(KEY_RELEASED(CPlayerController::Right) || KEY_NONE(CPlayerController::Right)) && \
 		(KEY_RELEASED(CPlayerController::Left) || KEY_NONE(CPlayerController::Left))
 
-#define MOVEEND                                 \
-	if (MoveEndCondition)                       \
-	{                                           \
-		return (int)PLAYER_STATE::MoveEndKneel; \
+#define MOVEEND                                  \
+	if (MoveEndCondition)                        \
+	{                                            \
+		return (int)PLAYER_STATE::MoveEndNormal; \
 	}
 
 #pragma region Normal
@@ -52,6 +52,12 @@ int CPlayerScript::NormalIdleUpdate()
 	if (MoveStartCondition)
 	{
 		return (int)PLAYER_STATE::MoveStartNormal;
+	}
+
+	// 스킬
+	if (KEY_TAP(CPlayerController::Dash))
+	{
+		return (int)PLAYER_STATE::SkillDash;
 	}
 
 	return m_FSM->GetCurState();
@@ -321,6 +327,11 @@ int CPlayerScript::KneelIdleUpdate()
 	{
 		return (int)PLAYER_STATE::MoveStartKneel;
 	}
+
+	if (KEY_TAP(CPlayerController::Jump))
+	{
+		return (int)PLAYER_STATE::MoveJump;
+	}
 	return m_FSM->GetCurState();
 }
 
@@ -552,6 +563,11 @@ int CPlayerScript::MoveIngUpdate()
 		return (int)PLAYER_STATE::NormalReload;
 	}
 
+	// 스킬
+	if (KEY_TAP(CPlayerController::Dash))
+	{
+		return (int)PLAYER_STATE::SkillDash;
+	}
 	return m_FSM->GetCurState();
 }
 
@@ -561,15 +577,14 @@ void CPlayerScript::MoveIngEnd()
 
 void CPlayerScript::MoveJumpBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::MoveJump);
+	Animator3D()->Play((int)PLAYER_STATE::MoveJump, 0);
 }
 
 int CPlayerScript::MoveJumpUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
-	{
-		return m_FSM->GetCurState() + 1;
-	}
+	if (!Animator3D()->IsPlayable())
+		return (int)PLAYER_STATE::NormalIdle;
+
 	return m_FSM->GetCurState();
 }
 
@@ -583,15 +598,11 @@ void CPlayerScript::MoveJumpEnd()
 
 void CPlayerScript::VitalDeathBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::VitalDeath);
+	Animator3D()->Play((int)PLAYER_STATE::VitalDeath, 0);
 }
 
 int CPlayerScript::VitalDeathUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
-	{
-		return m_FSM->GetCurState() + 1;
-	}
 	return m_FSM->GetCurState();
 }
 
@@ -601,15 +612,13 @@ void CPlayerScript::VitalDeathEnd()
 
 void CPlayerScript::VitalPanicBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::VitalPanic);
+	Animator3D()->Play((int)PLAYER_STATE::VitalPanic, 0);
 }
 
 int CPlayerScript::VitalPanicUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
-	{
-		return m_FSM->GetCurState() + 1;
-	}
+	// TODO: 패닉이 풀렸는지 검사해야 함
+	// return ispanic ? (int)PLAYER_STATE::NormalIdle : m_FSM->GetCurState();
 	return m_FSM->GetCurState();
 }
 
@@ -619,15 +628,11 @@ void CPlayerScript::VitalPanicEnd()
 
 void CPlayerScript::VitalDyingBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::VitalDying);
+	Animator3D()->Play((int)PLAYER_STATE::VitalDying, 0);
 }
 
 int CPlayerScript::VitalDyingUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
-	{
-		return m_FSM->GetCurState() + 1;
-	}
 	return m_FSM->GetCurState();
 }
 
@@ -641,15 +646,14 @@ void CPlayerScript::VitalDyingEnd()
 
 void CPlayerScript::VictoryStartBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::VictoryStart);
+	Animator3D()->Play((int)PLAYER_STATE::VictoryStart, 0);
 }
 
 int CPlayerScript::VictoryStartUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
-	{
-		return m_FSM->GetCurState() + 1;
-	}
+	if (!Animator3D()->IsPlayable())
+		return (int)PLAYER_STATE::VictoryEnd;
+
 	return m_FSM->GetCurState();
 }
 
@@ -659,15 +663,14 @@ void CPlayerScript::VictoryStartEnd()
 
 void CPlayerScript::VictoryEndBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::VictoryEnd);
+	Animator3D()->Play((int)PLAYER_STATE::VictoryEnd, 0);
 }
 
 int CPlayerScript::VictoryEndUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
-	{
-		return m_FSM->GetCurState() + 1;
-	}
+	if (!Animator3D()->IsPlayable())
+		return (int)PLAYER_STATE::NormalIdle;
+
 	return m_FSM->GetCurState();
 }
 
@@ -681,14 +684,15 @@ void CPlayerScript::VictoryEndEnd()
 
 void CPlayerScript::SkillDashBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::SkillDash);
+	Animator3D()->Play((int)PLAYER_STATE::SkillDash, 0);
 }
 
 int CPlayerScript::SkillDashUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
+
+	if (!Animator3D()->IsPlayable())
 	{
-		return m_FSM->GetCurState() + 1;
+		return (int)PLAYER_STATE::MoveStartNormal;
 	}
 	return m_FSM->GetCurState();
 }
@@ -699,15 +703,14 @@ void CPlayerScript::SkillDashEnd()
 
 void CPlayerScript::SkillThrowBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::SkillThrow);
+	Animator3D()->Play((int)PLAYER_STATE::SkillThrow, 0);
 }
 
 int CPlayerScript::SkillThrowUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
-	{
-		return m_FSM->GetCurState() + 1;
-	}
+	// TODO: 상태에 따라 Normal, Stand, Kneel로 분기 처리
+	if (!Animator3D()->IsPlayable())
+		return (int)PLAYER_STATE::NormalIdle;
 	return m_FSM->GetCurState();
 }
 
@@ -717,15 +720,15 @@ void CPlayerScript::SkillThrowEnd()
 
 void CPlayerScript::SkillCallsignBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::SkillCallsign);
+	Animator3D()->Play((int)PLAYER_STATE::SkillCallsign, 0);
 }
 
 int CPlayerScript::SkillCallsignUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
-	{
-		return m_FSM->GetCurState() + 1;
-	}
+	// TODO: 상태에 따라 Normal, Stand, Kneel로 분기 처리
+	if (!Animator3D()->IsPlayable())
+		return (int)PLAYER_STATE::NormalIdle;
+
 	return m_FSM->GetCurState();
 }
 
@@ -735,15 +738,14 @@ void CPlayerScript::SkillCallsignEnd()
 
 void CPlayerScript::SkillEXBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::SkillEX);
+	Animator3D()->Play((int)PLAYER_STATE::SkillEX, 0);
 }
 
 int CPlayerScript::SkillEXUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
-	{
-		return m_FSM->GetCurState() + 1;
-	}
+	// TODO: 상태에 따라 Normal, Stand, Kneel로 분기 처리
+	if (!Animator3D()->IsPlayable())
+		return (int)PLAYER_STATE::NormalIdle;
 	return m_FSM->GetCurState();
 }
 
