@@ -19,10 +19,10 @@
 		(KEY_RELEASED(CPlayerController::Right) || KEY_NONE(CPlayerController::Right)) && \
 		(KEY_RELEASED(CPlayerController::Left) || KEY_NONE(CPlayerController::Left))
 
-#define MOVEEND                                  \
-	if (MoveEndCondition)                        \
-	{                                            \
-		return (int)PLAYER_STATE::MoveEndNormal; \
+#define MOVEEND                                 \
+	if (MoveEndCondition)                       \
+	{                                           \
+		return (int)PLAYER_STATE::MoveEndKneel; \
 	}
 
 #pragma region Normal
@@ -43,7 +43,7 @@ int CPlayerScript::NormalIdleUpdate()
 	}
 
 	// 사격 준비
-	if (KEY_TAP(CPlayerController::Zoom))
+	if (KEY_TAP(CPlayerController::Zoom) || KEY_PRESSED(CPlayerController::Zoom))
 	{
 		return (int)PLAYER_STATE::NormalAttackStart;
 	}
@@ -69,9 +69,7 @@ void CPlayerScript::NormalReloadBegin()
 int CPlayerScript::NormalReloadUpdate()
 {
 	if (!Animator3D()->IsPlayable())
-	{
 		return (int)PLAYER_STATE::NormalIdle;
-	}
 
 	return m_FSM->GetCurState();
 }
@@ -88,9 +86,8 @@ void CPlayerScript::NormalAttackStartBegin()
 int CPlayerScript::NormalAttackStartUpdate()
 {
 	if (!Animator3D()->IsPlayable())
-	{
 		return (int)PLAYER_STATE::NormalAttackDelay;
-	}
+
 	return m_FSM->GetCurState();
 }
 
@@ -123,7 +120,7 @@ void CPlayerScript::NormalAttackDelayBegin()
 
 int CPlayerScript::NormalAttackDelayUpdate()
 {
-	if (KEY_TAP(CPlayerController::Attack))
+	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
 	{
 		return (int)PLAYER_STATE::NormalAttackIng;
 	}
@@ -173,9 +170,24 @@ void CPlayerScript::StandIdleBegin()
 
 int CPlayerScript::StandIdleUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
+	// TODO: 상하 에임 구현해야 함
+	// TODO : 재장전 조건 추가 필요 (현재 탄창이 최대 탄창과 같으면 x)
+	// 재장전
+	if (KEY_TAP(CPlayerController::Reload))
 	{
-		return m_FSM->GetCurState() + 1;
+		return (int)PLAYER_STATE::StandReload;
+	}
+
+	// 사격 준비
+	if (KEY_TAP(CPlayerController::Zoom) || KEY_PRESSED(CPlayerController::Zoom))
+	{
+		return (int)PLAYER_STATE::StandAttackStart;
+	}
+
+	// 이동
+	if (MoveStartCondition)
+	{
+		return (int)PLAYER_STATE::MoveStartStand;
 	}
 	return m_FSM->GetCurState();
 }
@@ -186,15 +198,14 @@ void CPlayerScript::StandIdleEnd()
 
 void CPlayerScript::StandReloadBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::StandReload);
+	Animator3D()->Play((int)PLAYER_STATE::StandReload, 0);
 }
 
 int CPlayerScript::StandReloadUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
-	{
-		return m_FSM->GetCurState() + 1;
-	}
+	if (!Animator3D()->IsPlayable())
+		return (int)PLAYER_STATE::StandIdle;
+
 	return m_FSM->GetCurState();
 }
 
@@ -204,15 +215,14 @@ void CPlayerScript::StandReloadEnd()
 
 void CPlayerScript::StandAttackStartBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::StandAttackStart);
+	Animator3D()->Play((int)PLAYER_STATE::StandAttackStart, 0);
 }
 
 int CPlayerScript::StandAttackStartUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
-	{
-		return m_FSM->GetCurState() + 1;
-	}
+	if (!Animator3D()->IsPlayable())
+		return (int)PLAYER_STATE::StandAttackDelay;
+
 	return m_FSM->GetCurState();
 }
 
@@ -222,15 +232,14 @@ void CPlayerScript::StandAttackStartEnd()
 
 void CPlayerScript::StandAttackIngBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::StandAttackIng);
+	Animator3D()->Play((int)PLAYER_STATE::StandAttackIng, 0);
 }
 
 int CPlayerScript::StandAttackIngUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
-	{
-		return m_FSM->GetCurState() + 1;
-	}
+	if (!Animator3D()->IsPlayable())
+		return (int)PLAYER_STATE::StandAttackDelay;
+
 	return m_FSM->GetCurState();
 }
 
@@ -245,9 +254,19 @@ void CPlayerScript::StandAttackDelayBegin()
 
 int CPlayerScript::StandAttackDelayUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
+	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
 	{
-		return m_FSM->GetCurState() + 1;
+		return (int)PLAYER_STATE::StandAttackIng;
+	}
+
+	if (KEY_TAP(CPlayerController::Reload))
+	{
+		return (int)PLAYER_STATE::StandReload;
+	}
+
+	if (KEY_RELEASED(CPlayerController::Zoom) || KEY_NONE(CPlayerController::Zoom))
+	{
+		return (int)PLAYER_STATE::StandAttackEnd;
 	}
 	return m_FSM->GetCurState();
 }
@@ -258,15 +277,14 @@ void CPlayerScript::StandAttackDelayEnd()
 
 void CPlayerScript::StandAttackEndBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::StandAttackEnd);
+	Animator3D()->Play((int)PLAYER_STATE::StandAttackEnd, 0);
 }
 
 int CPlayerScript::StandAttackEndUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
-	{
-		return m_FSM->GetCurState() + 1;
-	}
+	if (!Animator3D()->IsPlayable())
+		return (int)PLAYER_STATE::StandIdle;
+
 	return m_FSM->GetCurState();
 }
 
@@ -285,9 +303,23 @@ void CPlayerScript::KneelIdleBegin()
 
 int CPlayerScript::KneelIdleUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
+	// TODO : 재장전 조건 추가 필요 (현재 탄창이 최대 탄창과 같으면 x)
+	// 재장전
+	if (KEY_TAP(CPlayerController::Reload))
 	{
-		return m_FSM->GetCurState() + 1;
+		return (int)PLAYER_STATE::KneelReload;
+	}
+
+	// 사격 준비
+	if (KEY_TAP(CPlayerController::Zoom) || KEY_PRESSED(CPlayerController::Zoom))
+	{
+		return (int)PLAYER_STATE::KneelAttackStart;
+	}
+
+	// 이동
+	if (MoveStartCondition)
+	{
+		return (int)PLAYER_STATE::MoveStartKneel;
 	}
 	return m_FSM->GetCurState();
 }
@@ -298,15 +330,14 @@ void CPlayerScript::KneelIdleEnd()
 
 void CPlayerScript::KneelReloadBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::KneelReload);
+	Animator3D()->Play((int)PLAYER_STATE::KneelReload, 0);
 }
 
 int CPlayerScript::KneelReloadUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
-	{
-		return m_FSM->GetCurState() + 1;
-	}
+	if (!Animator3D()->IsPlayable())
+		return (int)PLAYER_STATE::KneelIdle;
+
 	return m_FSM->GetCurState();
 }
 
@@ -316,15 +347,14 @@ void CPlayerScript::KneelReloadEnd()
 
 void CPlayerScript::KneelAttackStartBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::KneelAttackStart);
+	Animator3D()->Play((int)PLAYER_STATE::KneelAttackStart, 0);
 }
 
 int CPlayerScript::KneelAttackStartUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
-	{
-		return m_FSM->GetCurState() + 1;
-	}
+	if (!Animator3D()->IsPlayable())
+		return (int)PLAYER_STATE::KneelAttackDelay;
+
 	return m_FSM->GetCurState();
 }
 
@@ -334,15 +364,13 @@ void CPlayerScript::KneelAttackStartEnd()
 
 void CPlayerScript::KneelAttackIngBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::KneelAttackIng);
+	Animator3D()->Play((int)PLAYER_STATE::KneelAttackIng, 0);
 }
 
 int CPlayerScript::KneelAttackIngUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
-	{
-		return m_FSM->GetCurState() + 1;
-	}
+	if (!Animator3D()->IsPlayable())
+		return (int)PLAYER_STATE::KneelAttackDelay;
 	return m_FSM->GetCurState();
 }
 
@@ -357,10 +385,21 @@ void CPlayerScript::KneelAttackDelayBegin()
 
 int CPlayerScript::KneelAttackDelayUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
+	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
 	{
-		return m_FSM->GetCurState() + 1;
+		return (int)PLAYER_STATE::KneelAttackIng;
 	}
+
+	if (KEY_TAP(CPlayerController::Reload))
+	{
+		return (int)PLAYER_STATE::KneelReload;
+	}
+
+	if (KEY_RELEASED(CPlayerController::Zoom) || KEY_NONE(CPlayerController::Zoom))
+	{
+		return (int)PLAYER_STATE::KneelAttackEnd;
+	}
+
 	return m_FSM->GetCurState();
 }
 
@@ -370,15 +409,14 @@ void CPlayerScript::KneelAttackDelayEnd()
 
 void CPlayerScript::KneelAttackEndBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::KneelAttackEnd);
+	Animator3D()->Play((int)PLAYER_STATE::KneelAttackEnd, 0);
 }
 
 int CPlayerScript::KneelAttackEndUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
-	{
-		return m_FSM->GetCurState() + 1;
-	}
+	if (!Animator3D()->IsPlayable())
+		return (int)PLAYER_STATE::KneelIdle;
+
 	return m_FSM->GetCurState();
 }
 
@@ -410,15 +448,16 @@ void CPlayerScript::MoveStartNormalEnd()
 
 void CPlayerScript::MoveStartStandBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::MoveStartStand);
+	Animator3D()->Play((int)PLAYER_STATE::MoveStartStand, 0);
 }
 
 int CPlayerScript::MoveStartStandUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
-	{
-		return m_FSM->GetCurState() + 1;
-	}
+	MOVEEND;
+
+	if (!Animator3D()->IsPlayable())
+		return (int)PLAYER_STATE::MoveIng;
+
 	return m_FSM->GetCurState();
 }
 
@@ -428,15 +467,14 @@ void CPlayerScript::MoveStartStandEnd()
 
 void CPlayerScript::MoveStartKneelBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::MoveStartKneel);
+	Animator3D()->Play((int)PLAYER_STATE::MoveStartKneel, 0);
 }
 
 int CPlayerScript::MoveStartKneelUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
-	{
-		return m_FSM->GetCurState() + 1;
-	}
+	if (!Animator3D()->IsPlayable())
+		return (int)PLAYER_STATE::MoveIng;
+
 	return m_FSM->GetCurState();
 }
 
@@ -478,15 +516,13 @@ void CPlayerScript::MoveEndStandEnd()
 
 void CPlayerScript::MoveEndKneelBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::MoveEndKneel);
+	Animator3D()->Play((int)PLAYER_STATE::MoveEndKneel, 0);
 }
 
 int CPlayerScript::MoveEndKneelUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
-	{
-		return m_FSM->GetCurState() + 1;
-	}
+	if (!Animator3D()->IsPlayable())
+		return (int)PLAYER_STATE::KneelIdle;
 	return m_FSM->GetCurState();
 }
 
@@ -501,9 +537,20 @@ void CPlayerScript::MoveIngBegin()
 
 int CPlayerScript::MoveIngUpdate()
 {
-
 	// TODO: 엄폐 조건에 따라 노말 보낼지 stand 보낼지, kneel 보낼지 결정 줘야함
 	MOVEEND;
+
+	// TODO: 엄폐 조건에 따라 노말 보낼지 stand 보낼지, kneel 보낼지 결정 줘야함
+	if (KEY_TAP(CPlayerController::Zoom) || KEY_PRESSED(CPlayerController::Zoom))
+	{
+		return (int)PLAYER_STATE::NormalAttackStart;
+	}
+
+	// TODO: 엄폐 조건에 따라 노말 보낼지 stand 보낼지, kneel 보낼지 결정 줘야함
+	if (KEY_TAP(CPlayerController::Reload))
+	{
+		return (int)PLAYER_STATE::NormalReload;
+	}
 
 	return m_FSM->GetCurState();
 }
