@@ -18,8 +18,11 @@ public:
 	virtual void init() override;
 	virtual void enter() override {}
 
+	void begin();
 	void progress();
 
 	CGameObjectEx*				 GetEditorCam() { return m_EditorCam; }
 	const vector<CGameObjectEx*> GetEditorGameObjects() { return m_vecEditorObj; }
+
+	CGameObjectEx* GetMemoryPoolObj() { return m_MemoryPool; }
 };

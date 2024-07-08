@@ -11,6 +11,7 @@
 
 #include <Scripts/CCameraEffect.h>
 #include <Scripts\CEditorCameraMoveScript.h>
+#include <Scripts\CMemoryPoolMgr.h>
 
 CEditorObjMgr::CEditorObjMgr()
 {
@@ -43,7 +44,7 @@ void CEditorObjMgr::init()
 
 	auto pComp = new CCameraEffect;
 	m_EditorCam->AddComponent(pComp);
-	pComp->begin();
+	// pComp->begin();
 	m_vecEditorObj.push_back(m_EditorCam);
 
 	// Editor 용 카메라로서 렌더매니저에 등록
@@ -53,20 +54,35 @@ void CEditorObjMgr::init()
 	m_ManagerObj = new CGameObjectEx;
 	m_ManagerObj->SetName(L"Manager Object");
 	auto PS = new CPhysXMgrScript;
-	PS->begin();
+	// PS->begin();
 	m_ManagerObj->AddComponent(PS);
 	auto RS = new CRenderMgrScript;
-	RS->begin();
+	// RS->begin();
 	m_ManagerObj->AddComponent(RS);
 	auto TS = new CTimeMgrScript;
-	TS->begin();
+	// TS->begin();
 	m_ManagerObj->AddComponent(TS);
 	m_vecEditorObj.push_back(m_ManagerObj);
 
 	m_MemoryPool = new CGameObjectEx;
 	m_MemoryPool->SetName(L"Memory Pool");
-	// auto PoolScript = new CMemoryPoolScript;
+	m_MemoryPool->AddComponent(new CTransform);
+
+	m_MemoryPool->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+	m_MemoryPool->Transform()->SetRelativeRotation(Vec3(.0f, 0.f, 0.f));
+	auto PoolScript = new CMemoryPoolMgr;
+	m_MemoryPool->AddComponent(PoolScript);
 	m_vecEditorObj.push_back(m_MemoryPool);
+
+	CEditorObjMgr::begin();
+}
+
+void CEditorObjMgr::begin()
+{
+	for (size_t i = 0; i < m_vecEditorObj.size(); ++i)
+	{
+		m_vecEditorObj[i]->begin();
+	}
 }
 
 void CEditorObjMgr::progress()
