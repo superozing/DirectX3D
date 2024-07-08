@@ -12,6 +12,7 @@
 
 #include "CRoRStateMachine.h"
 #include "CPlayerController.h"
+#include "CSpringArm.h"
 
 static string state = "";
 static string cover = "";
@@ -19,6 +20,7 @@ static string cover = "";
 CPlayerScript::CPlayerScript()
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
 	, m_tStatus{}
+	, m_pSpringArm(nullptr)
 {
 	// 테스트용
 	AppendScriptParam("CurState", SCRIPT_PARAM::STRING, (void*)&state);
@@ -102,25 +104,22 @@ CPlayerScript::~CPlayerScript()
 	}
 }
 
-#include "CSpringArm.h"
 #include <Engine/CRenderMgr.h>
 
 void CPlayerScript::begin()
 {
 	m_FSM->Begin();
 
-	CSpringArm* pSA = nullptr;
-
 	auto vecChild = GetOwner()->GetChild();
 	for (size_t i = 0; i < vecChild.size(); i++)
 	{
-		pSA = vecChild[i]->GetScript<CSpringArm>();
-		if (pSA)
+		m_pSpringArm = vecChild[i]->GetScript<CSpringArm>();
+		if (m_pSpringArm)
 			break;
 	}
 
-	if (pSA)
-		pSA->SetTargetObject(CRenderMgr::GetInst()->GetMainCam()->GetOwner());
+	if (m_pSpringArm)
+		m_pSpringArm->SetTargetObject(CRenderMgr::GetInst()->GetMainCam()->GetOwner());
 }
 
 void CPlayerScript::tick()
@@ -138,7 +137,6 @@ void CPlayerScript::tick()
 
 void CPlayerScript::CameraRotation()
 {
-	// TODO: 상하 에임 구현해야 함
 	auto state = m_FSM->GetCurState();
 	if (state != (int)PLAYER_STATE::NormalIdle && state != (int)PLAYER_STATE::NormalReload &&
 		state != (int)PLAYER_STATE::NormalAttackStart && state != (int)PLAYER_STATE::NormalAttackDelay &&
@@ -153,6 +151,19 @@ void CPlayerScript::CameraRotation()
 		vRot.y += CPlayerController::Sensitivity * DT;
 	else if (vMouseDiff.x < 0.f)
 		vRot.y -= CPlayerController::Sensitivity * DT;
+
+	if (m_pSpringArm && m_pSpringArm->IsActivate())
+	{
+		float fYSpeed = 100.f;
+		Vec3  vOffset = m_pSpringArm->GetDirOffset();
+		if (vMouseDiff.y > 0.f)
+			vOffset.y -= CPlayerController::Sensitivity * fYSpeed * DT;
+		else if (vMouseDiff.y < 0.f)
+			vOffset.y += CPlayerController::Sensitivity * fYSpeed * DT;
+
+		m_pSpringArm->SetDirOffset(vOffset);
+	}
+
 	Transform()->SetRelativeRotation(vRot);
 }
 

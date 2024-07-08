@@ -85,6 +85,8 @@ private:
 	/// @brief 현재 엄폐 타입입니다.
 	CoverType m_iCorverType;
 
+	class CSpringArm* m_pSpringArm;
+
 public:
 #pragma region StatusFunc
 	/// @brief 플레이어 캐릭터에 파라미터 만큼 데미지를 줍니다. 현재 체력이 0 이하로 떨어지면 Dead상태로 만듭니다.

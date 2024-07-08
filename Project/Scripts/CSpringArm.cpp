@@ -48,15 +48,12 @@ void CSpringArm::tick()
 	// false : Lerp, true : Smooth
 	if (m_tInfo.Type)
 	{
-		vNewPos = Vec3::SmoothStep(m_pTarget->Transform()->GetWorldPos(), vNewPos, DT * m_tInfo.fCamSpeed);
-		vNewDir =
-			Vec3::SmoothStep(m_pTarget->Transform()->GetWorldDir(DIR_TYPE::FRONT), vNewDir, DT * m_tInfo.fCamRotSpeed);
+		vNewPos		 = Vec3::SmoothStep(m_pTarget->Transform()->GetWorldPos(), vNewPos, DT * m_tInfo.fCamSpeed);
 		fCurDistance = RoRMath::SmoothStep(fCurDistance, m_tInfo.fDistance, DT * m_tInfo.fCamSpeed);
 	}
 	else
 	{
-		vNewPos = Vec3::Lerp(m_pTarget->Transform()->GetWorldPos(), vNewPos, DT * m_tInfo.fCamSpeed);
-		vNewDir = Vec3::Lerp(m_pTarget->Transform()->GetWorldDir(DIR_TYPE::FRONT), vNewDir, DT * m_tInfo.fCamRotSpeed);
+		vNewPos		 = Vec3::Lerp(m_pTarget->Transform()->GetWorldPos(), vNewPos, DT * m_tInfo.fCamSpeed);
 		fCurDistance = RoRMath::Lerp(fCurDistance, m_tInfo.fDistance, DT * m_tInfo.fCamSpeed);
 	}
 
@@ -74,7 +71,7 @@ void CSpringArm::tick()
 	}
 
 	m_pTarget->Transform()->SetRelativePos(vNewPos);
-	m_pTarget->Transform()->SetDir(vNewDir);
+	m_pTarget->Transform()->SetDir(m_vDirOffset + vNewDir);
 }
 
 #define TagSpringArm "[Info]"
