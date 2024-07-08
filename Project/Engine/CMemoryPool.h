@@ -1,9 +1,9 @@
 ﻿#pragma once
 #include "CManager.h"
 
-class CMemoryPoolMgr : public CManager<CMemoryPoolMgr>
+class CMemoryPool : public CManager<CMemoryPool>
 {
-	SINGLE(CMemoryPoolMgr);
+	SINGLE(CMemoryPool);
 
 private:
 	list<CGameObject*> m_listObjectPool;
@@ -19,4 +19,6 @@ public:
 public:
 	CGameObject* PopObject();
 	void		 PushObject(CGameObject* _Object);
+
+	list<CGameObject*> GetList() { return m_listObjectPool; }
 };

@@ -2,7 +2,7 @@
 #include "CSpawnSpotScript.h"
 
 #include <Engine\CAssetMgr.h>
-#include <Engine\CMemoryPoolMgr.h>
+#include <Engine\CMemoryPool.h>
 
 CSpawnSpotScript::CSpawnSpotScript()
 	: CScript((UINT)SCRIPT_TYPE::SPAWNSPOTSCRIPT)
@@ -103,7 +103,7 @@ void CSpawnSpotScript::RegisterObject()
 	for (int i = 0; i < 3; ++i)
 	{
 		CGameObject* pObj = nullptr;
-		pObj			  = CMemoryPoolMgr::GetInst()->PopObject();
+		pObj			  = CMemoryPool::GetInst()->PopObject();
 
 		m_listSpawnObject.push_back(pObj);
 
@@ -115,7 +115,7 @@ void CSpawnSpotScript::DeAllocateObject()
 {
 	for (auto iter = m_CurrentSpawnObject.begin(); iter != m_CurrentSpawnObject.end(); ++iter)
 	{
-		CMemoryPoolMgr::GetInst()->PushObject(*iter);
+		CMemoryPool::GetInst()->PushObject(*iter);
 	}
 
 	m_CurrentSpawnObject.clear();

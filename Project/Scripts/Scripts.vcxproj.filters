@@ -70,6 +70,9 @@
     <ClInclude Include="CSpawnSpotScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CMemoryPoolMgr.h">
+      <Filter>Scripts\Manager\MemoryPool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -141,6 +144,9 @@
     <ClCompile Include="CSpawnSpotScript.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="CMemoryPoolMgr.cpp">
+      <Filter>Scripts\Manager\MemoryPool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -187,6 +193,9 @@
     </Filter>
     <Filter Include="Scripts\Manager\PhysXMgr">
       <UniqueIdentifier>{85af28fd-4fb9-47c5-b0d2-100e2dae1ca2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager\MemoryPool">
+      <UniqueIdentifier>{3ff61ac7-4bc8-4dcf-83a8-b5f5804064c8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

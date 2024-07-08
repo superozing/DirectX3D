@@ -20,6 +20,7 @@
 #include "CLevelTransition.h"
 #include "CEditorCameraMoveScript.h"
 #include "CSpawnSpotScript.h"
+#include "CMemoryPoolMgr.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -42,6 +43,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CLevelTransition");
 	_vec.push_back(L"CEditorCameraMoveScript");
 	_vec.push_back(L"CSpawnSpotScript");
+	_vec.push_back(L"CMemoryPoolMgr");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -84,6 +86,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CEditorCameraMoveScript;
 	if (L"CSpawnSpotScript" == _strScriptName)
 		return new CSpawnSpotScript;
+	if (L"CMemoryPoolMgr" == _strScriptName)
+		return new CMemoryPoolMgr;
 	return nullptr;
 }
 
@@ -147,6 +151,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::SPAWNSPOTSCRIPT:
 		return new CSpawnSpotScript;
+		break;
+	case (UINT)SCRIPT_TYPE::MEMORYPOOLMGR:
+		return new CMemoryPoolMgr;
 		break;
 	}
 	return nullptr;
@@ -230,6 +237,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::SPAWNSPOTSCRIPT:
 		return L"CSpawnSpotScript";
+		break;
+
+	case SCRIPT_TYPE::MEMORYPOOLMGR:
+		return L"CMemoryPoolMgr";
 		break;
 
 	}

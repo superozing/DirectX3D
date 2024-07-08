@@ -1,21 +1,20 @@
 ﻿#include "pch.h"
-#include "CMemoryPoolMgr.h"
+#include "CMemoryPool.h"
 
 #include "CGameObject.h"
 
-CMemoryPoolMgr::CMemoryPoolMgr()
+CMemoryPool::CMemoryPool()
 	: m_listObjectPool()
 	, iPoolMaxCount(5)
 	, iCurPopCount(0)
 {
 }
 
-CMemoryPoolMgr::~CMemoryPoolMgr()
+CMemoryPool::~CMemoryPool()
 {
-	Delete_List(m_listObjectPool);
 }
 
-void CMemoryPoolMgr::init()
+void CMemoryPool::init()
 {
 	for (int i = 0; i < 5; ++i)
 	{
@@ -29,12 +28,11 @@ void CMemoryPoolMgr::init()
 	}
 }
 
-void CMemoryPoolMgr::tick()
+void CMemoryPool::tick()
 {
 }
 
-#include "CLogMgr.h"
-CGameObject* CMemoryPoolMgr::PopObject()
+CGameObject* CMemoryPool::PopObject()
 {
 	if (m_listObjectPool.empty() && iCurPopCount == iPoolMaxCount)
 	{
@@ -59,14 +57,11 @@ CGameObject* CMemoryPoolMgr::PopObject()
 	}
 }
 
-void CMemoryPoolMgr::PushObject(CGameObject* _Object)
+void CMemoryPool::PushObject(CGameObject* _Object)
 {
 	_Object->DisconnectWithLayer();
 	m_listObjectPool.push_back(_Object);
 	--iCurPopCount;
-
-	string s = std::to_string(iCurPopCount);
-	CLogMgr::GetInst()->AddLog(Log_Level::WARN, s);
 
 	if (iCurPopCount == 0)
 	{
@@ -78,7 +73,5 @@ void CMemoryPoolMgr::PushObject(CGameObject* _Object)
 		{
 			s += ToString((*iter)->GetName()) + " ";
 		}
-
-		CLogMgr::GetInst()->AddLog(Log_Level::INFO, s);
 	}
 }
