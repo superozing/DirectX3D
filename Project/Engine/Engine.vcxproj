@@ -216,7 +216,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CLogMgr.h" />
     <ClInclude Include="CManager.h" />
     <ClInclude Include="CMaterial.h" />
-    <ClInclude Include="CMemoryPoolMgr.h" />
+    <ClInclude Include="CMemoryPool.h" />
     <ClInclude Include="CMesh.h" />
     <ClInclude Include="CMeshData.h" />
     <ClInclude Include="CMeshRender.h" />
@@ -318,7 +318,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CLogMgr.cpp" />
     <ClCompile Include="CManager.cpp" />
     <ClCompile Include="CMaterial.cpp" />
-    <ClCompile Include="CMemoryPoolMgr.cpp" />
+    <ClCompile Include="CMemoryPool.cpp" />
     <ClCompile Include="CMesh.cpp" />
     <ClCompile Include="CMeshData.cpp" />
     <ClCompile Include="CMeshRender.cpp" />
