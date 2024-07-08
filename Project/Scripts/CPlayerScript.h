@@ -323,4 +323,8 @@ public:
 	CPlayerScript();
 	CPlayerScript(const CPlayerScript& _origin);
 	~CPlayerScript();
+
+private:
+	void CameraRotation();
+	void NormalMove();
 };

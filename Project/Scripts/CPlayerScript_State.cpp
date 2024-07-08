@@ -19,16 +19,6 @@
 		(KEY_RELEASED(CPlayerController::Right) || KEY_NONE(CPlayerController::Right)) && \
 		(KEY_RELEASED(CPlayerController::Left) || KEY_NONE(CPlayerController::Left))
 
-#define CAMROTATION                                        \
-	Vec3  vRot		 = Transform()->GetRelativeRotation(); \
-	Vec2  vMouseDiff = CKeyMgr::GetInst()->GetMouseDrag(); \
-	float CamSpeed	 = 3.f;                                \
-	if (vMouseDiff.x > 0.f)                                \
-		vRot.y += CamSpeed * DT;                           \
-	else if (vMouseDiff.x < 0.f)                           \
-		vRot.y -= CamSpeed * DT;                           \
-	Transform()->SetRelativeRotation(vRot)
-
 #define MOVEEND                                  \
 	if (MoveEndCondition)                        \
 	{                                            \
@@ -45,9 +35,6 @@ void CPlayerScript::NormalIdleBegin()
 int CPlayerScript::NormalIdleUpdate()
 {
 	// TODO: 상하 에임 구현해야 함
-	// 카메라 회전
-	CAMROTATION;
-
 	// TODO : 재장전 조건 추가 필요 (현재 탄창이 최대 탄창과 같으면 x)
 	// 재장전
 	if (KEY_TAP(CPlayerController::Reload))
@@ -81,8 +68,6 @@ void CPlayerScript::NormalReloadBegin()
 
 int CPlayerScript::NormalReloadUpdate()
 {
-	CAMROTATION;
-
 	if (!Animator3D()->IsPlayable())
 	{
 		return (int)PLAYER_STATE::NormalIdle;
@@ -102,8 +87,6 @@ void CPlayerScript::NormalAttackStartBegin()
 
 int CPlayerScript::NormalAttackStartUpdate()
 {
-	CAMROTATION;
-
 	if (!Animator3D()->IsPlayable())
 	{
 		return (int)PLAYER_STATE::NormalAttackDelay;
@@ -122,8 +105,6 @@ void CPlayerScript::NormalAttackIngBegin()
 
 int CPlayerScript::NormalAttackIngUpdate()
 {
-	CAMROTATION;
-
 	if (!Animator3D()->IsPlayable())
 	{
 		return (int)PLAYER_STATE::NormalAttackDelay;
@@ -142,8 +123,6 @@ void CPlayerScript::NormalAttackDelayBegin()
 
 int CPlayerScript::NormalAttackDelayUpdate()
 {
-	CAMROTATION;
-
 	if (KEY_TAP(CPlayerController::Attack))
 	{
 		return (int)PLAYER_STATE::NormalAttackIng;
@@ -172,8 +151,6 @@ void CPlayerScript::NormalAttackEndBegin()
 
 int CPlayerScript::NormalAttackEndUpdate()
 {
-	CAMROTATION;
-
 	if (!Animator3D()->IsPlayable())
 	{
 		return (int)PLAYER_STATE::NormalIdle;
@@ -420,7 +397,6 @@ void CPlayerScript::MoveStartNormalBegin()
 
 int CPlayerScript::MoveStartNormalUpdate()
 {
-	CAMROTATION;
 	MOVEEND;
 
 	if (!Animator3D()->IsPlayable())
@@ -475,8 +451,6 @@ void CPlayerScript::MoveEndNormalBegin()
 
 int CPlayerScript::MoveEndNormalUpdate()
 {
-	CAMROTATION;
-
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::NormalIdle;
 	return m_FSM->GetCurState();
@@ -527,31 +501,6 @@ void CPlayerScript::MoveIngBegin()
 
 int CPlayerScript::MoveIngUpdate()
 {
-	CAMROTATION;
-
-	Vec3 vRight = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
-	Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-
-	Vec3 vPos = Transform()->GetRelativePos();
-
-	if (KEY_PRESSED(CPlayerController::Front))
-	{
-		vPos += vFront * m_tStatus.MoveSpeed * DT;
-	}
-	if (KEY_PRESSED(CPlayerController::Back))
-	{
-		vPos -= vFront * m_tStatus.MoveSpeed * DT;
-	}
-	if (KEY_PRESSED(CPlayerController::Right))
-	{
-		vPos += vRight * m_tStatus.MoveSpeed * DT;
-	}
-	if (KEY_PRESSED(CPlayerController::Left))
-	{
-		vPos -= vRight * m_tStatus.MoveSpeed * DT;
-	}
-
-	Transform()->SetRelativePos(vPos);
 
 	// TODO: 엄폐 조건에 따라 노말 보낼지 stand 보낼지, kneel 보낼지 결정 줘야함
 	MOVEEND;

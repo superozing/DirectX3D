@@ -8,8 +8,10 @@
 #include <Engine/CMaterial.h>
 #include <Engine/CRenderComponent.h>
 
-#include <Engine\CLogMgr.h>
+#include <Engine/CKeyMgr.h>
+
 #include "CRoRStateMachine.h"
+#include "CPlayerController.h"
 
 CPlayerScript::CPlayerScript()
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
@@ -120,6 +122,60 @@ void CPlayerScript::tick()
 {
 	m_FSM->Update();
 	state = magic_enum::enum_name((PLAYER_STATE)m_FSM->GetCurState());
+
+	CameraRotation();
+	NormalMove();
+}
+
+void CPlayerScript::CameraRotation()
+{
+	auto state = m_FSM->GetCurState();
+	if (state != (int)PLAYER_STATE::NormalIdle && state != (int)PLAYER_STATE::NormalReload &&
+		state != (int)PLAYER_STATE::NormalAttackStart && state != (int)PLAYER_STATE::NormalAttackDelay &&
+		state != (int)PLAYER_STATE::NormalAttackIng && state != (int)PLAYER_STATE::NormalAttackEnd &&
+		state != (int)PLAYER_STATE::MoveStartNormal && state != (int)PLAYER_STATE::MoveEndNormal &&
+		state != (int)PLAYER_STATE::MoveIng)
+		return;
+
+	Vec3  vRot		 = Transform()->GetRelativeRotation();
+	Vec2  vMouseDiff = CKeyMgr::GetInst()->GetMouseDrag();
+	float CamSpeed	 = 3.f;
+	if (vMouseDiff.x > 0.f)
+		vRot.y += CamSpeed * DT;
+	else if (vMouseDiff.x < 0.f)
+		vRot.y -= CamSpeed * DT;
+	Transform()->SetRelativeRotation(vRot);
+}
+
+void CPlayerScript::NormalMove()
+{
+	auto state = m_FSM->GetCurState();
+	if (state != (int)PLAYER_STATE::MoveStartNormal && state != (int)PLAYER_STATE::MoveEndNormal &&
+		state != (int)PLAYER_STATE::MoveIng)
+		return;
+
+	Vec3 vRight = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+	Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+	Vec3 vPos	= Transform()->GetRelativePos();
+
+	if (KEY_PRESSED(CPlayerController::Front))
+	{
+		vPos += vFront * m_tStatus.MoveSpeed * DT;
+	}
+	if (KEY_PRESSED(CPlayerController::Back))
+	{
+		vPos -= vFront * m_tStatus.MoveSpeed * DT;
+	}
+	if (KEY_PRESSED(CPlayerController::Right))
+	{
+		vPos += vRight * m_tStatus.MoveSpeed * DT;
+	}
+	if (KEY_PRESSED(CPlayerController::Left))
+	{
+		vPos -= vRight * m_tStatus.MoveSpeed * DT;
+	}
+
+	Transform()->SetRelativePos(vPos);
 }
 
 void CPlayerScript::BeginOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)
