@@ -39,51 +39,58 @@ VS_OUT VS_Merge(VS_IN _in)
 
 float4 PS_Merge(VS_OUT _in) : SV_Target
 {
-    const float mask[25] =
+    const float mask[9] =
     {
-        -1, -1, -1, -1, -1,
-        -1, -1, -1, -1, -1,
-        -1, -1, 24, -1, -1,
-        -1, -1, -1, -1, -1,
-        -1, -1, -1, -1, -1
-    }; // Larger Laplacian Filter
-    const float coord[5] = { -2, -1, 0, 1, 2 };
+        -1, -1, -1,
+  -1, 8, -1,
+  -1, -1, -1
+    }; // Laplacian Filter
+    const float coord[3] = { -1, 0, +1 };
     const float divider = 1;
     float MAP_CX = g_RenderResolution.x;
     float MAP_CY = g_RenderResolution.y;
     const float3 grayScale = float3(0.3, 0.59, 0.11);
-    const float threshold = 0.1f; // 외곽선 검출 임계값
+    const float threshold = 0.5f; // 외곽선 검출 임계값
     
     float4 vOutColor = (float4) 0.f;
     float4 vColor = g_tex_0.Sample(g_sam_0, _in.vUV);
     
     //Edge Detection START
-    if (1 == g_int_0 && 0.f < g_float_0)
+    //if (1 == g_int_0 && 0.f < g_float_0)
+    if (true)
     {
         float4 vColorBuff = 0;
-        for (int i = 0; i < 25; i++)
+        for (int i = 0; i < 9; i++)
         {
-            vColorBuff += mask[i] * (g_tex_4.Sample(g_sam_0, _in.vUV + float2(coord[i % 5] / MAP_CX, coord[i / 5] / MAP_CY)));
+            vColorBuff += mask[i] * (g_tex_4.Sample(g_sam_0, _in.vUV + float2(coord[i % 3] / MAP_CX, coord[i / 3] / MAP_CY)));
         }
         float gray = 1 - dot(vColorBuff.xyz, grayScale);
         float4 OutLine = float4(gray, gray, gray, 1) / divider;
         // 외곽선 검출 임계값을 기준으로 색상을 결정
-        vColor = (gray > g_float_0) ? vColor : OutLine;
-        
-        // 안티앨리어싱 적용
-        float4 antiAliasedColor = 0;
-        float kernel[9] = { 1, 2, 1, 2, 4, 2, 1, 2, 1 };
-        for (int i = -1; i <= 1; i++)
-        {
-            for (int j = -1; j <= 1; j++)
-            {
-                antiAliasedColor += kernel[(i + 1) * 3 + (j + 1)] * g_tex_0.Sample(g_sam_0, _in.vUV + float2(i / MAP_CX, j / MAP_CY));
-            }
-        }
-        antiAliasedColor /= 16;
-        vColor = lerp(vColor, antiAliasedColor, 0.85); // 블렌딩 정도 조절
+        //vColor = (gray > g_float_0) ? vColor : OutLine;
+        //vColor = (gray > .5f) ? vColor : OutLine;
+        // 외곽선 검출 임계값을 기준으로 색상을 결정하고 블렌딩
+        float blendFactor = saturate(gray / threshold);
+        vColor = (gray > .5f) ? vColor : lerp(vColor, OutLine, blendFactor);
         //Edge Detection E N D
     }
+    
+    // Gaussian Blur START
+    const float blurKernel[9] =
+    {
+        1 / 16.0, 2 / 16.0, 1 / 16.0,
+        2 / 16.0, 4 / 16.0, 2 / 16.0,
+        1 / 16.0, 2 / 16.0, 1 / 16.0
+    };
+
+    float4 blurredColor = 0;
+    for (int i = 0; i < 9; i++)
+    {
+        blurredColor += blurKernel[i] * g_tex_0.Sample(g_sam_0, _in.vUV + float2(coord[i % 3] / MAP_CX, coord[i / 3] / MAP_CY));
+    }
+    vColor = lerp(vColor, blurredColor, 0.5);
+    // Gaussian Blur END
+    
     float4 vDiffuse = g_tex_1.Sample(g_sam_0, _in.vUV);
     float4 Specular = g_tex_2.Sample(g_sam_0, _in.vUV);
     float4 Emissive = g_tex_3.Sample(g_sam_0, _in.vUV);
