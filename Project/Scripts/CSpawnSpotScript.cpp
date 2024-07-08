@@ -45,6 +45,7 @@ CSpawnSpotScript::CSpawnSpotScript()
 
 CSpawnSpotScript::~CSpawnSpotScript()
 {
+	Delete_List(m_listSpawnObject);
 }
 
 void CSpawnSpotScript::SetSpawnTypePlayer()
@@ -97,63 +98,66 @@ void CSpawnSpotScript::SetSpawnTypeNone()
 	GetOwner()->MeshRender()->GetMaterial(1)->SetScalarParam(SCALAR_PARAM::VEC4_0, ModeColor);
 }
 
-#include <Engine\CLogMgr.h>
 void CSpawnSpotScript::RegisterObject()
 {
-	CGameObject* pObj = nullptr;
-	pObj			  = CMemoryPoolMgr::GetInst()->PopObject();
+	for (int i = 0; i < 3; ++i)
+	{
+		CGameObject* pObj = nullptr;
+		pObj			  = CMemoryPoolMgr::GetInst()->PopObject();
 
-	m_listSpawnObject.push_back(pObj);
+		m_listSpawnObject.push_back(pObj);
 
-	CurObjectPointer = pObj;
-
-	// string s = std::to_string((int)m_vecSpawnObject.size());
-	// CLogMgr::GetInst()->AddLog(Log_Level::INFO, s);
+		CurObjectPointer = pObj;
+	}
 }
 
 void CSpawnSpotScript::DeAllocateObject()
 {
-	CMemoryPoolMgr::GetInst()->PushObject(m_CurrentSpawnObject.front());
-	m_CurrentSpawnObject.pop_front();
+	for (auto iter = m_CurrentSpawnObject.begin(); iter != m_CurrentSpawnObject.end(); ++iter)
+	{
+		CMemoryPoolMgr::GetInst()->PushObject(*iter);
+	}
+
+	m_CurrentSpawnObject.clear();
 }
 
 void CSpawnSpotScript::SpawnObject()
 {
-	CGameObject* pObj = nullptr;
-	pObj			  = m_listSpawnObject.front();
-	m_listSpawnObject.pop_front();
-	m_CurrentSpawnObject.push_back(pObj);
+	for (int i = 0; i < 2; ++i)
+	{
+		CGameObject* pObj = nullptr;
+		pObj			  = m_listSpawnObject.front();
+		m_listSpawnObject.pop_front();
+		m_CurrentSpawnObject.push_back(pObj);
 
-	pObj->Transform()->SetRelativePos(GetOwner()->Transform()->GetRelativePos());
-	pObj->Transform()->SetRelativeRotation(GetOwner()->Transform()->GetRelativeRotation());
-	pObj->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 50.f));
+		Vec3 pos = GetOwner()->Transform()->GetRelativePos();
+		pos.x += 300.f * i;
 
-	GamePlayStatic::SpawnGameObject(pObj, 0);
+		pObj->Transform()->SetRelativePos(pos);
+		pObj->Transform()->SetRelativeRotation(GetOwner()->Transform()->GetRelativeRotation());
+		pObj->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 50.f));
 
-	pObj = nullptr;
+		GamePlayStatic::SpawnGameObject(pObj, 0);
+	}
 }
 
 void CSpawnSpotScript::begin()
 {
 	SpawnBasicPosition = GetOwner()->Transform()->GetWorldPos();
 
-	Ptr<CMeshData> pMeshData = CAssetMgr::GetInst()->Load<CMeshData>(ToWString(SpawnObjectPath));
-
-	if (pMeshData != nullptr)
+	for (auto iter = m_listSpawnObject.begin(); iter != m_listSpawnObject.end(); ++iter)
 	{
-		CGameObject* BindObject = pMeshData->Instantiate();
-		BindObject->SetName(pMeshData->GetKey());
+		(*iter)->Transform()->SetRelativePos(SpawnBasicPosition);
+		SpawnBasicPosition.x += 300.f;
+		(*iter)->Transform()->SetRelativeScale(Vec3(300.f, 300.f, 300.f));
 
-		BindObject->Transform()->SetRelativePos(SpawnBasicPosition);
-		BindObject->Transform()->SetRelativeScale(SpawnBasicScale);
-
-		Vec3 PointerRotation = GetOwner()->Transform()->GetWorldRot();
-		BindObject->Transform()->SetRelativeRotation(PointerRotation);
-
-		GamePlayStatic::SpawnGameObject(BindObject, 0);
+		GamePlayStatic::SpawnGameObject((*iter), 0);
 	}
 
-	GamePlayStatic::DestroyGameObject(GetOwner());
+	ModeColor = Vec4(0.f, 0.f, 0.f, 0.f);
+
+	GetOwner()->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, ModeColor);
+	GetOwner()->MeshRender()->GetMaterial(1)->SetScalarParam(SCALAR_PARAM::VEC4_0, ModeColor);
 }
 
 void CSpawnSpotScript::tick()
