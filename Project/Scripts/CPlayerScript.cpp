@@ -96,6 +96,7 @@ CPlayerScript::CPlayerScript()
 	info.vOffsetPos							 = Vec2(150.f, 250.f);
 	m_mSpringInfos[PLAYER_STATE::NormalIdle] = info;
 
+	info.Type										= false;
 	info.fMaxDistance								= 150.f;
 	info.fCamSpeed									= 30.f;
 	info.fCamRotSpeed								= 20.f;
@@ -103,6 +104,7 @@ CPlayerScript::CPlayerScript()
 	info.vOffsetPos									= Vec2(150.f, 200.f);
 	m_mSpringInfos[PLAYER_STATE::NormalAttackStart] = info;
 
+	info.Type									  = false;
 	info.fMaxDistance							  = 250.f;
 	info.fCamSpeed								  = 30.f;
 	info.fCamRotSpeed							  = 20.f;
@@ -110,6 +112,7 @@ CPlayerScript::CPlayerScript()
 	info.vOffsetPos								  = Vec2(150.f, 250.f);
 	m_mSpringInfos[PLAYER_STATE::NormalAttackEnd] = info;
 
+	info.Type								= true;
 	info.fMaxDistance						= 350.f;
 	info.fCamSpeed							= 30.f;
 	info.fCamRotSpeed						= 20.f;
@@ -117,12 +120,29 @@ CPlayerScript::CPlayerScript()
 	info.vOffsetPos							= Vec2(350.f, 250.f);
 	m_mSpringInfos[PLAYER_STATE::StandIdle] = info;
 
+	info.Type									   = true;
 	info.fMaxDistance							   = 150.f;
 	info.fCamSpeed								   = 30.f;
 	info.fCamRotSpeed							   = 20.f;
 	info.vDir									   = Vec3(0.f, 0.f, -1.f);
 	info.vOffsetPos								   = Vec2(300.f, 200.f);
 	m_mSpringInfos[PLAYER_STATE::StandAttackStart] = info;
+
+	info.Type								= true;
+	info.fMaxDistance						= 150.f;
+	info.fCamSpeed							= 30.f;
+	info.fCamRotSpeed						= 20.f;
+	info.vDir								= Vec3(0.f, 0.f, -1.f);
+	info.vOffsetPos							= Vec2(200.f, 150.f);
+	m_mSpringInfos[PLAYER_STATE::KneelIdle] = info;
+
+	info.Type									   = false;
+	info.fMaxDistance							   = 150.f;
+	info.fCamSpeed								   = 30.f;
+	info.fCamRotSpeed							   = 20.f;
+	info.vDir									   = Vec3(0.f, 0.f, -1.f);
+	info.vOffsetPos								   = Vec2(300.f, 200.f);
+	m_mSpringInfos[PLAYER_STATE::KneelAttackStart] = info;
 }
 
 CPlayerScript::CPlayerScript(const CPlayerScript& _origin)

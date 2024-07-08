@@ -305,6 +305,8 @@ void CPlayerScript::StandAttackEndEnd()
 void CPlayerScript::KneelIdleBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::KneelIdle);
+	float length = Animator3D()->GetAnimLength((int)PLAYER_STATE::KneelIdle);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::KneelIdle], 0.1f);
 }
 
 int CPlayerScript::KneelIdleUpdate()
@@ -359,6 +361,8 @@ void CPlayerScript::KneelReloadEnd()
 void CPlayerScript::KneelAttackStartBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::KneelAttackStart, 0);
+	float length = Animator3D()->GetAnimLength((int)PLAYER_STATE::KneelAttackStart);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::KneelAttackStart], 0.1f);
 }
 
 int CPlayerScript::KneelAttackStartUpdate()
@@ -421,6 +425,8 @@ void CPlayerScript::KneelAttackDelayEnd()
 void CPlayerScript::KneelAttackEndBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::KneelAttackEnd, 0);
+	float length = Animator3D()->GetAnimLength((int)PLAYER_STATE::KneelAttackEnd);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::KneelIdle], length);
 }
 
 int CPlayerScript::KneelAttackEndUpdate()
@@ -538,7 +544,7 @@ void CPlayerScript::MoveEndStandEnd()
 void CPlayerScript::MoveEndKneelBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::MoveEndKneel, 0);
-	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalIdle]);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::KneelIdle]);
 }
 
 int CPlayerScript::MoveEndKneelUpdate()

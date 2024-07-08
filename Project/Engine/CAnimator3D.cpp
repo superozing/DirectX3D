@@ -179,6 +179,11 @@ void CAnimator3D::check_mesh(Ptr<CMesh> _pMesh)
 	}
 }
 
+float CAnimator3D::GetAnimLength(int _iClipIdx)
+{
+	return m_pVecClip->at(_iClipIdx).dTimeLength;
+}
+
 void CAnimator3D::Play(int _iClipIdx, int _iLoopCount)
 {
 	if (_iClipIdx >= (int)m_pVecClip->size())

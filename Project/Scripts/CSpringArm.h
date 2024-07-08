@@ -90,11 +90,11 @@ public:
 	void SetMoveType(bool _type) { m_tInfo.Type = _type; }
 
 	SpringArmInfo GetInfo() { return m_tInfo; }
-	void		  SetInfo(const SpringArmInfo& _info)
+	void		  SetInfo(const SpringArmInfo& _info, float _moveSpeed = 1.f)
 	{
 		m_tInfo = _info;
 		SetDistance(m_tInfo.fMaxDistance);
-		Transform()->Lerp(m_tInfo.vOffsetPos, false, Vec3(), false, Vec3(), 1.f);
+		Transform()->Lerp(m_tInfo.vOffsetPos, false, Vec3(), false, Vec3(), _moveSpeed);
 	}
 
 public:
