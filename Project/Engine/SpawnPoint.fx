@@ -110,10 +110,11 @@ PS_OUT PS_SpawnPoint(VS_OUT _in) : SV_Target
     {
         vOutColor = ColorTexture.Sample(g_sam_0, _in.vUV);
         
-        if (vOutColor.x >= 0.7f && vOutColor.y <= 0.1f && vOutColor.z <= 0.1f && vOutColor.a >= 0.1f)
-        {
-            vOutColor = g_vec4_0;
-        }
+        vOutColor = g_vec4_0;
+        
+        if (vOutColor.a < 0.1)
+            discard;
+        
     }
     
     output.vColor = vOutColor;
