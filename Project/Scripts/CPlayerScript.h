@@ -43,6 +43,15 @@ enum class PLAYER_STATE
 	END,
 };
 
+/// @brief 0: 엄폐 없음, 1: 높은 엄폐, 2: 낮은 엄폐
+enum class CoverType
+{
+	Normal,
+	Stand,
+	Kneel,
+	End,
+};
+
 struct PlayerStatus
 {
 	float MaxHealth	 = 100.f;
@@ -72,6 +81,9 @@ private:
 	CRoRStateMachine<CPlayerScript>* m_FSM;
 
 	PlayerStatus m_tStatus;
+
+	/// @brief 현재 엄폐 타입입니다.
+	CoverType m_iCorverType;
 
 public:
 #pragma region StatusFunc
@@ -187,6 +199,9 @@ public:
 	/// @brief 사망 여부를 반환합니다.
 	bool IsDead() { return m_tStatus.IsDead; }
 #pragma endregion
+
+	void	  SetCoverType(CoverType _type) { m_iCorverType = _type; }
+	CoverType GetCoverType() { return m_iCorverType; }
 
 public:
 	virtual void begin() override;
@@ -327,4 +342,11 @@ public:
 private:
 	void CameraRotation();
 	void NormalMove();
+	int	 SwitchToCoverTypeIdle();
+
+private:
+	// Test 함수
+
+	/// @brief 커버 타입 판정 하기 전까지 필요한 함수
+	void SwitchCoverType();
 };

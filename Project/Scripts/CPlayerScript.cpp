@@ -13,10 +13,17 @@
 #include "CRoRStateMachine.h"
 #include "CPlayerController.h"
 
+static string state = "";
+static string cover = "";
+
 CPlayerScript::CPlayerScript()
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
 	, m_tStatus{}
 {
+	// 테스트용
+	AppendScriptParam("CurState", SCRIPT_PARAM::STRING, (void*)&state);
+	AppendScriptParam("CoverType", SCRIPT_PARAM::STRING, (void*)&cover);
+
 	AppendScriptParam("IsDead", SCRIPT_PARAM::BOOL, &m_tStatus.IsDead, 0, 0, true);
 	AppendScriptParam("Damage", SCRIPT_PARAM::FLOAT, &m_tStatus.Damage);
 	AppendScriptParam("Health", SCRIPT_PARAM::FLOAT, &m_tStatus.curHealth);
@@ -95,14 +102,12 @@ CPlayerScript::~CPlayerScript()
 	}
 }
 
-static string state = "";
 #include "CSpringArm.h"
 #include <Engine/CRenderMgr.h>
 
 void CPlayerScript::begin()
 {
 	m_FSM->Begin();
-	AppendScriptParam("CurState", SCRIPT_PARAM::STRING, (void*)&state);
 
 	CSpringArm* pSA = nullptr;
 
@@ -122,13 +127,18 @@ void CPlayerScript::tick()
 {
 	m_FSM->Update();
 	state = magic_enum::enum_name((PLAYER_STATE)m_FSM->GetCurState());
+	cover = magic_enum::enum_name((CoverType)GetCoverType());
 
 	CameraRotation();
 	NormalMove();
+
+	// 엄폐 판정 할 수 있게되면 지울 함수
+	SwitchCoverType();
 }
 
 void CPlayerScript::CameraRotation()
 {
+	// TODO: 상하 에임 구현해야 함
 	auto state = m_FSM->GetCurState();
 	if (state != (int)PLAYER_STATE::NormalIdle && state != (int)PLAYER_STATE::NormalReload &&
 		state != (int)PLAYER_STATE::NormalAttackStart && state != (int)PLAYER_STATE::NormalAttackDelay &&
@@ -137,13 +147,12 @@ void CPlayerScript::CameraRotation()
 		state != (int)PLAYER_STATE::MoveIng)
 		return;
 
-	Vec3  vRot		 = Transform()->GetRelativeRotation();
-	Vec2  vMouseDiff = CKeyMgr::GetInst()->GetMouseDrag();
-	float CamSpeed	 = 3.f;
+	Vec3 vRot		= Transform()->GetRelativeRotation();
+	Vec2 vMouseDiff = CKeyMgr::GetInst()->GetMouseDrag();
 	if (vMouseDiff.x > 0.f)
-		vRot.y += CamSpeed * DT;
+		vRot.y += CPlayerController::Sensitivity * DT;
 	else if (vMouseDiff.x < 0.f)
-		vRot.y -= CamSpeed * DT;
+		vRot.y -= CPlayerController::Sensitivity * DT;
 	Transform()->SetRelativeRotation(vRot);
 }
 
@@ -176,6 +185,34 @@ void CPlayerScript::NormalMove()
 	}
 
 	Transform()->SetRelativePos(vPos);
+}
+
+int CPlayerScript::SwitchToCoverTypeIdle()
+{
+	switch (GetCoverType())
+	{
+	case CoverType::Normal:
+		return (int)PLAYER_STATE::NormalIdle;
+		break;
+	case CoverType::Stand:
+		return (int)PLAYER_STATE::StandIdle;
+		break;
+	case CoverType::Kneel:
+		return (int)PLAYER_STATE::KneelIdle;
+		break;
+	}
+
+	return (int)PLAYER_STATE::END;
+}
+
+void CPlayerScript::SwitchCoverType()
+{
+	if (KEY_TAP(KEY::_1))
+		SetCoverType(CoverType::Normal);
+	if (KEY_TAP(KEY::_2))
+		SetCoverType(CoverType::Stand);
+	if (KEY_TAP(KEY::_3))
+		SetCoverType(CoverType::Kneel);
 }
 
 void CPlayerScript::BeginOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)

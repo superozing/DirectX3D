@@ -19,12 +19,6 @@
 		(KEY_RELEASED(CPlayerController::Right) || KEY_NONE(CPlayerController::Right)) && \
 		(KEY_RELEASED(CPlayerController::Left) || KEY_NONE(CPlayerController::Left))
 
-#define MOVEEND                                  \
-	if (MoveEndCondition)                        \
-	{                                            \
-		return (int)PLAYER_STATE::MoveEndNormal; \
-	}
-
 #pragma region Normal
 
 void CPlayerScript::NormalIdleBegin()
@@ -34,7 +28,6 @@ void CPlayerScript::NormalIdleBegin()
 
 int CPlayerScript::NormalIdleUpdate()
 {
-	// TODO: 상하 에임 구현해야 함
 	// TODO : 재장전 조건 추가 필요 (현재 탄창이 최대 탄창과 같으면 x)
 	// 재장전
 	if (KEY_TAP(CPlayerController::Reload))
@@ -446,7 +439,8 @@ void CPlayerScript::MoveStartNormalBegin()
 
 int CPlayerScript::MoveStartNormalUpdate()
 {
-	MOVEEND;
+	if (MoveEndCondition)
+		return (int)PLAYER_STATE::MoveEndNormal;
 
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::MoveIng;
@@ -464,7 +458,8 @@ void CPlayerScript::MoveStartStandBegin()
 
 int CPlayerScript::MoveStartStandUpdate()
 {
-	MOVEEND;
+	if (MoveEndCondition)
+		return (int)PLAYER_STATE::MoveEndStand;
 
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::MoveIng;
@@ -483,6 +478,9 @@ void CPlayerScript::MoveStartKneelBegin()
 
 int CPlayerScript::MoveStartKneelUpdate()
 {
+	if (MoveEndCondition)
+		return (int)PLAYER_STATE::MoveEndKneel;
+
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::MoveIng;
 
@@ -548,16 +546,28 @@ void CPlayerScript::MoveIngBegin()
 
 int CPlayerScript::MoveIngUpdate()
 {
-	// TODO: 엄폐 조건에 따라 노말 보낼지 stand 보낼지, kneel 보낼지 결정 줘야함
-	MOVEEND;
+	if (MoveEndCondition)
+	{
+		switch (GetCoverType())
+		{
+		case CoverType::Normal:
+			return (int)PLAYER_STATE::MoveEndNormal;
+			break;
+		case CoverType::Stand:
+			return (int)PLAYER_STATE::MoveEndStand;
+			break;
+		case CoverType::Kneel:
+			return (int)PLAYER_STATE::MoveEndKneel;
+			break;
+		}
+	}
 
-	// TODO: 엄폐 조건에 따라 노말 보낼지 stand 보낼지, kneel 보낼지 결정 줘야함
 	if (KEY_TAP(CPlayerController::Zoom) || KEY_PRESSED(CPlayerController::Zoom))
 	{
 		return (int)PLAYER_STATE::NormalAttackStart;
 	}
 
-	// TODO: 엄폐 조건에 따라 노말 보낼지 stand 보낼지, kneel 보낼지 결정 줘야함
+	// TODO: Reload 조건
 	if (KEY_TAP(CPlayerController::Reload))
 	{
 		return (int)PLAYER_STATE::NormalReload;
@@ -689,10 +699,9 @@ void CPlayerScript::SkillDashBegin()
 
 int CPlayerScript::SkillDashUpdate()
 {
-
 	if (!Animator3D()->IsPlayable())
 	{
-		return (int)PLAYER_STATE::MoveStartNormal;
+		return SwitchToCoverTypeIdle();
 	}
 	return m_FSM->GetCurState();
 }
@@ -708,9 +717,10 @@ void CPlayerScript::SkillThrowBegin()
 
 int CPlayerScript::SkillThrowUpdate()
 {
-	// TODO: 상태에 따라 Normal, Stand, Kneel로 분기 처리
 	if (!Animator3D()->IsPlayable())
-		return (int)PLAYER_STATE::NormalIdle;
+	{
+		return SwitchToCoverTypeIdle();
+	}
 	return m_FSM->GetCurState();
 }
 
@@ -725,9 +735,10 @@ void CPlayerScript::SkillCallsignBegin()
 
 int CPlayerScript::SkillCallsignUpdate()
 {
-	// TODO: 상태에 따라 Normal, Stand, Kneel로 분기 처리
 	if (!Animator3D()->IsPlayable())
-		return (int)PLAYER_STATE::NormalIdle;
+	{
+		return SwitchToCoverTypeIdle();
+	}
 
 	return m_FSM->GetCurState();
 }
@@ -743,9 +754,10 @@ void CPlayerScript::SkillEXBegin()
 
 int CPlayerScript::SkillEXUpdate()
 {
-	// TODO: 상태에 따라 Normal, Stand, Kneel로 분기 처리
 	if (!Animator3D()->IsPlayable())
-		return (int)PLAYER_STATE::NormalIdle;
+	{
+		return SwitchToCoverTypeIdle();
+	}
 	return m_FSM->GetCurState();
 }
 
