@@ -22,4 +22,6 @@ public:
 	static KEY Cover;
 	static KEY Skill;
 	static KEY Jump;
+
+	static float Sensitivity;
 };

@@ -15,6 +15,8 @@ KEY CPlayerController::Cover = KEY::LSHIFT;
 KEY CPlayerController::Skill = KEY::F;
 KEY CPlayerController::Jump	 = KEY::SPACE;
 
+float CPlayerController::Sensitivity = 6.f;
+
 CPlayerController::CPlayerController()
 {
 }
