@@ -12,13 +12,11 @@ CSpawnSpotScript::CSpawnSpotScript()
 	, SpawnObjType(SpawnObjType::None)
 	, strDisplayString(ToString(magic_enum::enum_name(SpawnObjType::None)))
 	, ModeColor{Vec4(1.f, 1.f, 1.f, 1.f)}
-	, m_vecSpawnObject()
+	, m_listSpawnObject()
 {
-	m_vecSpawnObject.reserve(1);
-
 	AppendScriptParam("Spawn Position", SCRIPT_PARAM::VEC3, &SpawnBasicPosition);
 	AppendScriptParam("Spawn Scale   ", SCRIPT_PARAM::VEC3, &SpawnBasicScale);
-	AppendScriptObject("Spawn Obj", &CurObjectPointer, COMPONENT_TYPE::TRANSFORM);
+	AppendScriptObject("Last Add Object", &CurObjectPointer, COMPONENT_TYPE::TRANSFORM);
 
 	AppendScriptParam("SPOT TYPE", SCRIPT_PARAM::STRING, &strDisplayString, 0.f, 0.f, true);
 
@@ -103,9 +101,9 @@ void CSpawnSpotScript::SetSpawnTypeNone()
 void CSpawnSpotScript::RegisterObject()
 {
 	CGameObject* pObj = nullptr;
-	pObj			  = CMemoryPoolMgr::GetInst()->Allocate();
+	pObj			  = CMemoryPoolMgr::GetInst()->PopObject();
 
-	m_vecSpawnObject.push_back(pObj);
+	m_listSpawnObject.push_back(pObj);
 
 	CurObjectPointer = pObj;
 
@@ -115,15 +113,15 @@ void CSpawnSpotScript::RegisterObject()
 
 void CSpawnSpotScript::DeAllocateObject()
 {
-	CMemoryPoolMgr::GetInst()->DeAllocate(m_CurrentSpawnObject.back());
-	m_CurrentSpawnObject.pop_back();
+	CMemoryPoolMgr::GetInst()->PushObject(m_CurrentSpawnObject.front());
+	m_CurrentSpawnObject.pop_front();
 }
 
 void CSpawnSpotScript::SpawnObject()
 {
 	CGameObject* pObj = nullptr;
-	pObj			  = m_vecSpawnObject.back();
-	m_vecSpawnObject.pop_back();
+	pObj			  = m_listSpawnObject.front();
+	m_listSpawnObject.pop_front();
 	m_CurrentSpawnObject.push_back(pObj);
 
 	pObj->Transform()->SetRelativePos(GetOwner()->Transform()->GetRelativePos());

@@ -25,9 +25,9 @@ private:
 	string		 strDisplayString;
 	Vec4		 ModeColor;
 
-	CGameObject*		 CurObjectPointer;
-	vector<CGameObject*> m_vecSpawnObject;
-	vector<CGameObject*> m_CurrentSpawnObject;
+	CGameObject*	   CurObjectPointer;
+	list<CGameObject*> m_listSpawnObject;
+	list<CGameObject*> m_CurrentSpawnObject;
 
 public:
 	void SetSpawnTypePlayer();

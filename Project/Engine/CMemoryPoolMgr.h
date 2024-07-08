@@ -6,7 +6,10 @@ class CMemoryPoolMgr : public CManager<CMemoryPoolMgr>
 	SINGLE(CMemoryPoolMgr);
 
 private:
-	vector<CGameObject*> m_vecObjectPool;
+	list<CGameObject*> m_listObjectPool;
+
+	int iPoolMaxCount;
+	int iCurPopCount;
 
 public:
 	void		 init();
@@ -14,6 +17,6 @@ public:
 	void		 tick();
 
 public:
-	CGameObject* Allocate();
-	void		 DeAllocate(CGameObject* _Object);
+	CGameObject* PopObject();
+	void		 PushObject(CGameObject* _Object);
 };
