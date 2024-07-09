@@ -43,6 +43,8 @@ private:
 	Vec4 m_vClearColor;
 
 public:
+	bool IsEscape() { return m_bEscape; }
+
 	static void (*CameraChange)(CCamera*);
 	/// <summary>
 	/// 0번 idx == MainCamera

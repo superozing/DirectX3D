@@ -22,7 +22,7 @@ void CEditorCameraMoveScript::tick()
 		CLevelMgr::GetInst()->GetCurrentLevel()->GetState() != LEVEL_STATE::STOP)
 		return;
 
-	if (KEY_TAP(KEY::P))
+	if (KEY_TAP_ANY(KEY::P))
 	{
 		if (Camera()->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)
 			Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
@@ -48,12 +48,12 @@ void CEditorCameraMoveScript::tick()
 	Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
 
 	// 줌 인, 줌 아웃
-	if (WHEEL_CHECK(WHEEL_UP))
+	if (WHEEL_CHECK_ANY(WHEEL_UP))
 	{
 		vPos += DT_ENGINE * m_CamSpeed * vFront;
 	}
 
-	if (WHEEL_CHECK(WHEEL_DOWN))
+	if (WHEEL_CHECK_ANY(WHEEL_DOWN))
 	{
 		vPos += DT_ENGINE * m_CamSpeed * -vFront;
 	}
@@ -68,22 +68,22 @@ void CEditorCameraMoveScript::MoveOrthographic()
 
 	Vec3 vPos = Transform()->GetRelativePos();
 
-	if (KEY_PRESSED(KEY::RBTN) && KEY_PRESSED(KEY::W))
+	if (KEY_PRESSED_ANY(KEY::RBTN) && KEY_PRESSED_ANY(KEY::W))
 	{
 		vPos.y += DT_ENGINE * m_CamSpeed;
 	}
 
-	if (KEY_PRESSED(KEY::RBTN) && KEY_PRESSED(KEY::S))
+	if (KEY_PRESSED_ANY(KEY::RBTN) && KEY_PRESSED_ANY(KEY::S))
 	{
 		vPos.y -= DT_ENGINE * m_CamSpeed;
 	}
 
-	if (KEY_PRESSED(KEY::RBTN) && KEY_PRESSED(KEY::A))
+	if (KEY_PRESSED_ANY(KEY::RBTN) && KEY_PRESSED_ANY(KEY::A))
 	{
 		vPos.x -= DT_ENGINE * m_CamSpeed;
 	}
 
-	if (KEY_PRESSED(KEY::RBTN) && KEY_PRESSED(KEY::D))
+	if (KEY_PRESSED_ANY(KEY::RBTN) && KEY_PRESSED_ANY(KEY::D))
 	{
 		vPos.x += DT_ENGINE * m_CamSpeed;
 	}
@@ -104,42 +104,42 @@ void CEditorCameraMoveScript::MovePerspective()
 
 	float camspeed = m_CamSpeed;
 
-	if (KEY_PRESSED(KEY::LSHIFT))
+	if (KEY_PRESSED_ANY(KEY::LSHIFT))
 		camspeed *= 5.f;
 
-	if (KEY_PRESSED(KEY::RBTN) && KEY_PRESSED(KEY::W))
+	if (KEY_PRESSED_ANY(KEY::RBTN) && KEY_PRESSED_ANY(KEY::W))
 	{
 		vPos += DT_ENGINE * camspeed * vFront;
 	}
 
-	if (KEY_PRESSED(KEY::RBTN) && KEY_PRESSED(KEY::S))
+	if (KEY_PRESSED_ANY(KEY::RBTN) && KEY_PRESSED_ANY(KEY::S))
 	{
 		vPos += DT_ENGINE * camspeed * -vFront;
 	}
 
-	if (KEY_PRESSED(KEY::RBTN) && KEY_PRESSED(KEY::A))
+	if (KEY_PRESSED_ANY(KEY::RBTN) && KEY_PRESSED_ANY(KEY::A))
 	{
 		vPos += DT_ENGINE * camspeed * -vRight;
 	}
 
-	if (KEY_PRESSED(KEY::RBTN) && KEY_PRESSED(KEY::D))
+	if (KEY_PRESSED_ANY(KEY::RBTN) && KEY_PRESSED_ANY(KEY::D))
 	{
 		vPos += DT_ENGINE * camspeed * vRight;
 	}
 
-	if (KEY_PRESSED(KEY::RBTN) && KEY_PRESSED(KEY::Q))
+	if (KEY_PRESSED_ANY(KEY::RBTN) && KEY_PRESSED_ANY(KEY::Q))
 	{
 		vPos += DT_ENGINE * m_CamSpeed * -vUp;
 	}
 
-	if (KEY_PRESSED(KEY::RBTN) && KEY_PRESSED(KEY::E))
+	if (KEY_PRESSED_ANY(KEY::RBTN) && KEY_PRESSED_ANY(KEY::E))
 	{
 		vPos += DT_ENGINE * m_CamSpeed * vUp;
 	}
 
 	Transform()->SetRelativePos(vPos);
 
-	if (KEY_PRESSED(KEY::RBTN))
+	if (KEY_PRESSED_ANY(KEY::RBTN))
 	{
 		Vec2 vDrag = CKeyMgr::GetInst()->GetMouseDrag();
 		Vec3 vRot  = Transform()->GetRelativeRotation();

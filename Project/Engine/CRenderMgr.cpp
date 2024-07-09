@@ -401,6 +401,7 @@ void CRenderMgr::CheckEscape()
 			m_bEscape = !m_bEscape;
 
 			ActiveEditorMode(m_bEscape);
+			CKeyMgr::GetInst()->SetFocuseState(FOCUS_STATE::OTHER);
 		}
 	}
 }

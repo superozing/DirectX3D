@@ -32,6 +32,12 @@ private:                  \
 #define WHEEL_CHECK_EDITOR(Key) \
 	(CKeyMgr::GetInst()->GetWheel() == Key && (CKeyMgr::GetInst()->GetFocusState() == FOCUS_STATE::OTHER))
 
+#define KEY_TAP_ANY(key) KEY_TAP(key) || KEY_TAP_EDITOR(key)
+#define KEY_PRESSED_ANY(key) KEY_PRESSED(key) || KEY_PRESSED_EDITOR(key)
+#define KEY_RELEASED_ANY(key) KEY_RELEASED(key) || KEY_RELEASED_EDITOR(key)
+#define KEY_NONE_ANY(key) KEY_NONE(key) || KEY_NONE_EDITOR(key)
+#define WHEEL_CHECK_ANY(key) WHEEL_CHECK(key) || WHEEL_CHECK_EDITOR(key)
+
 // #define LAYER_MAX 32
 #define MAX_MIP 8
 
@@ -383,4 +389,3 @@ enum class FONT_TYPE
 
 	END
 };
-

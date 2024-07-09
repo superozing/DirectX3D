@@ -72,12 +72,24 @@ public:
 public:
 	KEY_STATE GetKeyState(KEY _Key) { return m_vecKeyData[_Key].eState; }
 	Vec2	  GetMousePos() const { return m_vMousePos; }
-	Vec2	  GetMouseDrag() const { return m_vMouseDrag; }
+	Vec2	  GetMouseDrag() const
+	{
+		if (m_FocusState == FOCUS_STATE::MAIN)
+			return m_vMouseDrag;
+		return Vec2();
+	}
+	Vec2 GetMouseDrag_Editor() const
+	{
+		if (m_FocusState != FOCUS_STATE::MAIN)
+			return m_vMouseDrag;
+		return Vec2();
+	}
 
 	void		SetWheel(WHEEL_STATE _in) { _inWheel = _in; }
 	WHEEL_STATE GetWheel() { return m_ThisFrameWheel; }
 
 	FOCUS_STATE GetFocusState() const { return m_FocusState; }
+	void		SetFocuseState(FOCUS_STATE _state) { m_FocusState = _state; }
 
 public:
 	virtual void init() override;
