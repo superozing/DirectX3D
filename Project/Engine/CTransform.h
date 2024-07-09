@@ -93,7 +93,12 @@ public:
 		m_bDirty = false;
 		return m_matWorld;
 	}
-	const Matrix& GetWorldInvMat() { return m_matWorldInv; }
+	const Matrix& GetWorldInvMat()
+	{
+		if (m_bDirty)
+			CalWorldMat();
+		return m_matWorldInv;
+	}
 
 	Vec3 GetLocalDir(DIR_TYPE _type) const { return m_arrLocalDir[(UINT)_type]; }
 	Vec3 GetWorldDir(DIR_TYPE _type) const { return m_arrWorldDir[(UINT)_type]; }

@@ -69,10 +69,12 @@ public:
 
 	vector<float> GetClipUpdateTime() { return m_vecClipUpdateTime; }
 	float		  GetClipUpdateTime(int _idx) { return m_vecClipUpdateTime[_idx]; }
+	float		  GetAnimLength(int _iClipIdx);
 
 public:
 	void Play(int _iClipIdx, int _iLoopCount = -1);
 	void Play(const wstring& _AnimName, int _iLoopCount = -1);
+
 	void Stop();
 
 	Matrix FindBoneMat(int _idx);

@@ -125,6 +125,14 @@ void CTransform::SetWorldMat(const Matrix& _matWorld)
 	vRot	 = DecomposeRotMat(mat);
 
 	// 스케일이 조금씩 서서히 줄어드는 현상 예외처리
+	Vec3 vOriginPos = GetRelativePos();
+	if (fabs(vPos.x - vOriginPos.x) < 0.05f)
+		vPos.x = vOriginPos.x;
+	if (fabs(vPos.y - vOriginPos.y) < 0.05f)
+		vPos.y = vOriginPos.y;
+	if (fabs(vPos.z - vOriginPos.z) < 0.05f)
+		vPos.z = vOriginPos.z;
+
 	Vec3 vOriginScale = GetRelativeScale();
 	if (fabs(vScale.x - vOriginScale.x) < 0.01f)
 		vScale.x = vOriginScale.x;

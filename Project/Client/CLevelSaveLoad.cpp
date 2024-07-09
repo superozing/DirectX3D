@@ -173,7 +173,7 @@ void CLevelSaveLoad::SaveGameObject(CGameObject* _Obj, ofstream& fout)
 	{
 		fout << TagScriptName << endl;
 		fout << ToString(wstring(CScriptMgr::GetScriptName(vecScripts[i]))) << endl;
-		// vecScripts[i]->SaveToFile(_File);
+		vecScripts[i]->SaveToFile(fout);
 	}
 
 	// 자식 오브젝트가 있으면 자식 오브젝트 정보 저장
