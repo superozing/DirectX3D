@@ -1,24 +1,24 @@
 ﻿#include "pch.h"
-#include "CCameraMoveScript.h"
+#include "CEditorCameraMoveScript.h"
 
 #include <Engine\CLevel.h>
 #include <Engine\CLevelMgr.h>
 
-CCameraMoveScript::CCameraMoveScript()
-	: CScript((UINT)SCRIPT_TYPE::CAMERAMOVESCRIPT)
+CEditorCameraMoveScript::CEditorCameraMoveScript()
+	: CScript((UINT)SCRIPT_TYPE::EDITORCAMERAMOVESCRIPT)
 	, m_CamSpeed(500.f)
 	, m_fZoomSpeed(10.f)
 {
 	AppendScriptParam("ZoomSpeed", SCRIPT_PARAM::FLOAT, &m_fZoomSpeed, 0);
 }
 
-CCameraMoveScript::~CCameraMoveScript()
+CEditorCameraMoveScript::~CEditorCameraMoveScript()
 {
 }
 
-void CCameraMoveScript::tick()
+void CEditorCameraMoveScript::tick()
 {
-	if (CLevelMgr::GetInst()->GetCurrentLevel()->GetState() != LEVEL_STATE::PLAY)
+	if (CLevelMgr::GetInst()->GetCurrentLevel()->GetState() != LEVEL_STATE::STOP)
 		return;
 
 	if (KEY_TAP(KEY::P))
@@ -60,9 +60,9 @@ void CCameraMoveScript::tick()
 	Transform()->SetRelativePos(vPos);
 }
 
-void CCameraMoveScript::MoveOrthographic()
+void CEditorCameraMoveScript::MoveOrthographic()
 {
-	if (CLevelMgr::GetInst()->GetCurrentLevel()->GetState() != LEVEL_STATE::PLAY)
+	if (CLevelMgr::GetInst()->GetCurrentLevel()->GetState() != LEVEL_STATE::STOP)
 		return;
 
 	Vec3 vPos = Transform()->GetRelativePos();
@@ -90,9 +90,9 @@ void CCameraMoveScript::MoveOrthographic()
 	Transform()->SetRelativePos(vPos);
 }
 
-void CCameraMoveScript::MovePerspective()
+void CEditorCameraMoveScript::MovePerspective()
 {
-	if (CLevelMgr::GetInst()->GetCurrentLevel()->GetState() != LEVEL_STATE::PLAY)
+	if (CLevelMgr::GetInst()->GetCurrentLevel()->GetState() != LEVEL_STATE::STOP)
 		return;
 
 	Vec3 vPos = Transform()->GetRelativePos();

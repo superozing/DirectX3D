@@ -86,6 +86,14 @@ void CLevel::AddObject(CGameObject* _Object, const wstring& _strLayerName, bool 
 	pLayer->AddObject(_Object, _bChildMove);
 }
 
+CLayer* CLevel::GetLayer(int _iLayerIdx)
+{
+	if (_iLayerIdx != -1)
+		return m_arrLayer[_iLayerIdx];
+
+	return nullptr;
+}
+
 CLayer* CLevel::GetLayer(const wstring& _strLayerName)
 {
 	for (int i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)

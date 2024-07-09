@@ -175,8 +175,11 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CHalo.h" />
     <ClInclude Include="CCrosshair.h" />
     <ClInclude Include="CDamageFont.h" />
+    <ClInclude Include="CEditorCameraMoveScript.h" />
     <ClInclude Include="CHaloScript.h" />
     <ClInclude Include="CImageUIScript.h" />
+    <ClInclude Include="CLevelTransition.h" />
+    <ClInclude Include="CMemoryPoolMgr.h" />
     <ClInclude Include="CMissileScript.h" />
     <ClInclude Include="CMonsterHP.h" />
     <ClInclude Include="CMonsterScript.h" />
@@ -192,10 +195,12 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CRoRStateMachine.h" />
     <ClInclude Include="CScriptMgr.h" />
     <ClInclude Include="CSkillIcon.h" />
+    <ClInclude Include="CSpawnSpotScript.h" />
     <ClInclude Include="CSpringArm.h" />
     <ClInclude Include="CStudentScript.h" />
     <ClInclude Include="CTimeMgrScript.h" />
     <ClInclude Include="CWeaponInfo.h" />
+    <ClInclude Include="CWrapImage.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
@@ -209,8 +214,11 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CHalo.cpp" />
     <ClCompile Include="CCrosshair.cpp" />
     <ClCompile Include="CDamageFont.cpp" />
+    <ClCompile Include="CEditorCameraMoveScript.cpp" />
     <ClCompile Include="CHaloScript.cpp" />
     <ClCompile Include="CImageUIScript.cpp" />
+    <ClCompile Include="CLevelTransition.cpp" />
+    <ClCompile Include="CMemoryPoolMgr.cpp" />
     <ClCompile Include="CMissileScript.cpp" />
     <ClCompile Include="CMonsterHP.cpp" />
     <ClCompile Include="CMonsterScript.cpp" />
@@ -227,10 +235,12 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CRoRStateMachine.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
     <ClCompile Include="CSkillIcon.cpp" />
+    <ClCompile Include="CSpawnSpotScript.cpp" />
     <ClCompile Include="CSpringArm.cpp" />
     <ClCompile Include="CStudentScript.cpp" />
     <ClCompile Include="CTimeMgrScript.cpp" />
     <ClCompile Include="CWeaponInfo.cpp" />
+    <ClCompile Include="CWrapImage.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

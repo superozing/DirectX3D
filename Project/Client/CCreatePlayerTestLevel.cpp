@@ -132,7 +132,7 @@ void CCreatePlayerTestLevel::CreateTempLevel()
 	// FBX Loading
 	// ============
 	{
-		Ptr<CMeshData> pMeshData = nullptr;
+		/*Ptr<CMeshData> pMeshData = nullptr;
 		CGameObject*   pObj		 = nullptr;
 		CGameObject*   pObj2	 = nullptr;
 

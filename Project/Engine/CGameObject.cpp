@@ -114,7 +114,9 @@ void CGameObject::finaltick()
 	}
 
 	CLayer* pCurLayer = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(m_iLayerIdx);
-	pCurLayer->RegisterGameObject(this);
+
+	if (pCurLayer != nullptr)
+		pCurLayer->RegisterGameObject(this);
 
 	vector<CGameObject*>::iterator iter = m_vecChild.begin();
 	for (; iter != m_vecChild.end();)

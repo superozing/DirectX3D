@@ -50,13 +50,17 @@ void Play2DSound(const wstring& _SoundPath, int _Loop, float _Volume, bool _Over
 void Play2DBGM(const wstring& _SoundPath, float _Volume);
 
 void DrawDebugCube(const Matrix& _WorldMat, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
+// 회전에 문제가 있을 수 있음
 void DrawDebugCube(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, bool _bDepthTest,
+				   float _Duration = 0.f);
+void DrawDebugCube(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec4 _qWorldRot, Vec3 _Color, bool _bDepthTest,
 				   float _Duration = 0.f);
 
 void DrawDebugSphere(Vec3 _vWorldPos, float _fRadius, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
 void DrawDebugCylinder(Vec3 _FromPos, Vec3 _ToPos, float _LineWidth, Vec3 _Color, bool _bDepthTest,
 					   float _Duration = 0.f);
 
+// 회전에 문제가 있을 수 있음
 void DrawDebugCone(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, bool _bDepthTest,
 				   float _Duration = 0.f);
 
@@ -247,6 +251,19 @@ template <typename T> void Delete_Vec(vector<T*>& _vec)
 	}
 
 	_vec.clear();
+}
+
+template <typename T> void Delete_List(list<T*>& _list)
+{
+	for (auto iter = _list.begin(); iter != _list.end(); ++iter)
+	{
+		if (nullptr != *iter)
+		{
+			delete *iter;
+		}
+	}
+
+	_list.clear();
 }
 
 template <typename T1, typename T2> void Delete_Map(map<T1, T2>& _map)

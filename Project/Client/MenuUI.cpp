@@ -20,6 +20,7 @@
 #include "CLevelSaveLoad.h"
 
 #include <Engine\CDevice.h>
+#include <Engine\CRenderMgr.h>
 
 MenuUI::MenuUI()
 	: UI("Menu", "##Menu")
@@ -177,6 +178,8 @@ void MenuUI::Level()
 
 		if (ImGui::MenuItem("Pause", nullptr, nullptr, PauseEnable))
 		{
+			CRenderMgr::GetInst()->RePositionDebugCam();
+
 			CLevelMgr::GetInst()->ChangeLevelState(LEVEL_STATE::PAUSE);
 		}
 

@@ -21,6 +21,7 @@ public:
 public:
 	void init();
 	void exit();
+	void tick();
 
 	virtual void enter() {}
 };

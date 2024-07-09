@@ -25,6 +25,16 @@ CLight3D::CLight3D()
 	m_CamObj->Camera()->SetAspectRatio(1.f);
 }
 
+CLight3D::CLight3D(const CLight3D& _Other)
+	: CComponent(_Other)
+	, m_Info(_Other.m_Info)
+	, m_LightIdx(_Other.m_LightIdx)
+	, m_VolumeMesh(_Other.m_VolumeMesh)
+	, m_LightMtrl(_Other.m_LightMtrl)
+{
+	m_CamObj = (_Other.m_CamObj->Clone());
+}
+
 CLight3D::~CLight3D()
 {
 	if (m_CamObj)

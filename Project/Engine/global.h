@@ -85,5 +85,6 @@ typedef Vector4 Vec4;
 #include "UserStrings.h"
 
 // physx
+// dependency : vcpkg install physx:x64-windows
 #include "physx/PxPhysicsAPI.h"
 using namespace physx;

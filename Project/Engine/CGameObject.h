@@ -20,7 +20,7 @@ private:
 	bool m_bDead;
 
 public:
-	void		 begin();
+	virtual void begin();
 	void		 tick();
 	virtual void finaltick();
 	void		 render();

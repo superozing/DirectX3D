@@ -20,14 +20,16 @@ void CPhysX::updateFromPhysics()
 	if (nullptr == m_Actor)
 		return;
 
-	PxTransform physTransform = getTransform();
+	PxTransform PhysTrans = getTransform();
+	auto		PhysPos	  = Vec3(PhysTrans.p.x, PhysTrans.p.y, PhysTrans.p.z);
+	auto		FinalPos  = PhysPos - m_vOffsetPos;
 
 	auto tempmat = XMMatrixIdentity();
 
 	auto   ObScale	= Transform()->GetRelativeScale();
 	Matrix matScale = XMMatrixScaling(ObScale.x, ObScale.y, ObScale.z);
 
-	auto q = XMFLOAT4(physTransform.q.x, physTransform.q.y, physTransform.q.z, physTransform.q.w);
+	auto q = XMFLOAT4(PhysTrans.q.x, PhysTrans.q.y, PhysTrans.q.z, PhysTrans.q.w);
 
 	Vec3 AxisAngle = RoRMath::QuaternionToEulerAngles(q);
 
@@ -35,7 +37,7 @@ void CPhysX::updateFromPhysics()
 	Matrix matRotY = XMMatrixRotationY(AxisAngle.x);
 	Matrix matRotZ = XMMatrixRotationZ(AxisAngle.z);
 
-	Matrix matTranslation = XMMatrixTranslation(physTransform.p.x, physTransform.p.y, physTransform.p.z);
+	Matrix matTranslation = XMMatrixTranslation(FinalPos.x, FinalPos.y, FinalPos.z);
 
 	Transform()->m_matWorld = matScale * matRotX * matRotY * matRotZ * matTranslation;
 
@@ -65,7 +67,7 @@ void CPhysX::updateToPhysics()
 
 	auto Obj = GetOwner();
 	auto Rot = Obj->Transform()->GetWorldRot();
-	auto Pos = Obj->Transform()->GetWorldPos();
+	auto Pos = Obj->Transform()->GetWorldPos() + m_vOffsetPos;
 
 	Matrix worldMat	   = Obj->Transform()->GetWorldMat();
 	Matrix transInvMat = Matrix::CreateTranslation(worldMat.Translation()).Invert();
@@ -83,7 +85,7 @@ void CPhysX::updateToPhysics()
 
 void CPhysX::begin()
 {
-	CPhysXMgr::GetInst()->addGameObject(GetOwner(), m_bStaticActor, m_Shape);
+	CPhysXMgr::GetInst()->addGameObject(GetOwner());
 }
 
 void CPhysX::finaltick()
@@ -114,21 +116,28 @@ void CPhysX::finaltick()
 		updateFromPhysics();
 	}
 
-	const auto& trans = Transform();
+	if (nullptr == m_Actor)
+		return;
+	const auto& trans		  = Transform();
+	auto		ObjWorldPos	  = trans->GetWorldPos();
+	auto		DebugFinalPos = ObjWorldPos + m_vOffsetPos;
+	auto		Rot			  = getTransform().q;
 
 	if (PhysShape::BOX == m_Shape)
 	{
-		GamePlayStatic::DrawDebugCube(trans->GetWorldMat(), Vec3(0.3f, .3f, 0.3f), true);
+		GamePlayStatic::DrawDebugCube(DebugFinalPos, m_vScale, Vec4(Rot.x, Rot.y, Rot.z, Rot.w), Vec3(0.3f, .3f, 0.3f),
+									  true);
 	}
 	else
 	{
-		GamePlayStatic::DrawDebugSphere(trans->GetWorldPos(), trans->GetWorldScale().x / 2.f, Vec3(0.3f, .3f, 0.3f),
-										true);
+		GamePlayStatic::DrawDebugSphere(DebugFinalPos, m_vScale.x / 2.f, Vec3(0.3f, .3f, 0.3f), true);
 	}
 }
 
 #define TagStatic "[IsStatic]"
 #define TagShape "[Shape]"
+#define TagScale "[Scale]"
+#define TagOffsetPos "[OffsetPos]"
 void CPhysX::SaveToFile(FILE* _File)
 {
 }
@@ -141,6 +150,12 @@ void CPhysX::SaveToFile(ofstream& fout)
 	fout << TagShape << endl;
 	auto shape = magic_enum::enum_name<PhysShape>(m_Shape);
 	fout << ToString(shape) << endl;
+
+	fout << TagScale << endl;
+	fout << m_vScale << endl;
+
+	fout << TagOffsetPos << endl;
+	fout << m_vOffsetPos << endl;
 }
 
 void CPhysX::LoadFromFile(FILE* _File)
@@ -156,6 +171,12 @@ void CPhysX::LoadFromFile(ifstream& fin)
 	Utils::GetLineUntilString(fin, TagShape);
 	getline(fin, str);
 	m_Shape = magic_enum::enum_cast<PhysShape>(str).value();
+
+	Utils::GetLineUntilString(fin, TagScale);
+	fin >> m_vScale;
+
+	Utils::GetLineUntilString(fin, TagOffsetPos);
+	fin >> m_vOffsetPos;
 }
 
 void CPhysX::setTransform(const PxTransform& transform)

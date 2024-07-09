@@ -37,9 +37,11 @@ private:
 	void EndOverlap(CGameObject* other);
 
 public:
-	PhysShape			   m_Shape = PhysShape::BOX;
 	vector<tCollisionData> m_vThisFrameContact;
 	bool				   m_bStaticActor = false;
+	PhysShape			   m_Shape		  = PhysShape::BOX;
+	Vec3				   m_vScale;
+	Vec3				   m_vOffsetPos;
 	virtual void		   begin() override;
 	virtual void		   finaltick() override;
 
