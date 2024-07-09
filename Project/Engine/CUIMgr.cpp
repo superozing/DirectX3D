@@ -52,7 +52,7 @@ void CUIMgr::tick()
 		// 만약 UI 스크립트가 없는 오브젝트일 경우
 		if (!pUI)
 		{
-			CLogMgr::GetInst()->AddLog(Log_Level::ERR, "UI Layer Contains Non - UI Objects");
+			//CLogMgr::GetInst()->AddLog(Log_Level::ERR, "UI Layer Contains Non - UI Objects");
 			continue;
 		}
 
@@ -67,7 +67,7 @@ void CUIMgr::tick()
 			m_FocusedObject = *iter;
 			m_FocusedUI		= pUI;
 
-			pUI = GetPriorityCheck(pUI);
+			pUI = GetPriorityCheck(pUI->GetOwner());
 
 			if (pUI->m_bMouseOn_Prev != pUI->m_bMouseOn)
 			{
@@ -125,7 +125,7 @@ void CUIMgr::tick()
 	CalWorldMousePos();
 }
 
-CUIScript* CUIMgr::GetPriorityCheck(CUIScript* _ParentUI)
+CUIScript* CUIMgr::GetPriorityCheck(CGameObject* _Parent)
 {
 	// 현재 구조: UIScript가 다른 UIScript를 들고 있을 것을 가정한 구조
 	// 수정이 완료될 경우의 구조: 상위 오브젝트를 인자로 받아와서 자식 오브젝트에게 PriorityCheck를 해주어야 하는 구조.
@@ -142,7 +142,7 @@ CUIScript* CUIMgr::GetPriorityCheck(CUIScript* _ParentUI)
 	q.clear();
 
 	// 1. 인자로 받아은  UIScript에게서 Owner Object 가져오기
-	q.push_back(_ParentUI->GetOwner());
+	q.push_back(_Parent);
 
 	// 2. 오브젝트의 자식 오브젝트 vector 가져오며 BFS로 자식UI 끝까지 탐색
 	while (!q.empty())
@@ -161,7 +161,6 @@ CUIScript* CUIMgr::GetPriorityCheck(CUIScript* _ParentUI)
 
 		if (!pUIScript)
 		{
-			CLogMgr::GetInst()->AddLog(Log_Level::ERR, "UI Layer Contains Non - UI Objects");
 			continue;
 		}
 

@@ -11,6 +11,7 @@
 CLevel::CLevel()
 	: m_arrLayer{}
 	, m_State(LEVEL_STATE::NONE)
+	, m_isActiveUIModal(false)
 {
 	for (UINT i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)
 	{
@@ -24,6 +25,7 @@ CLevel::CLevel()
 CLevel::CLevel(const CLevel& _OriginLevel)
 	: CEntity(_OriginLevel)
 	, m_arrLayer{}
+	, m_isActiveUIModal(false)
 {
 	for (UINT i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)
 	{
@@ -46,6 +48,12 @@ void CLevel::begin()
 
 void CLevel::tick()
 {
+	if (GetModalState())
+	{
+		m_arrLayer[(UINT)LAYER::LAYER_UI]->tick();
+		return;
+	}
+
 	for (int i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)
 	{
 		m_arrLayer[i]->tick();

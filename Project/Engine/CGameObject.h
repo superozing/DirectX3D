@@ -50,7 +50,8 @@ public:
 	inline class CSkyBox*	 SkyBox() { return (CSkyBox*)m_arrCom[(UINT)COMPONENT_TYPE::SKYBOX]; }
 	inline class CDecal*	 Decal() { return (CDecal*)m_arrCom[(UINT)COMPONENT_TYPE::DECAL]; }
 	inline class CLandScape* LandScape() { return (CLandScape*)m_arrCom[(UINT)COMPONENT_TYPE::LANDSCAPE]; }
-	inline class CPhysX*	 PhysX() { return (CPhysX*)m_arrCom[(UINT)COMPONENT_TYPE::PHYSX]; }
+	inline class CPhysX* PhysX() { return (CPhysX*)m_arrCom[(UINT)COMPONENT_TYPE::PHYSX]; }
+	inline class CFontRender* FontRender() { return (CFontRender*)m_arrCom[(UINT)COMPONENT_TYPE::FONTRENDER]; }
 
 	int GetLayerIdx() { return m_iLayerIdx; }
 

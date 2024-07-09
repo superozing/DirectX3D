@@ -30,6 +30,8 @@ void CImageUIScript::BindUIImgOnTexParam()
 {
 	if (m_UIImg.Get())
 		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_UIImg);
+	else
+		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, nullptr);
 }
 
 #define TagUIImg "[UIImg]"

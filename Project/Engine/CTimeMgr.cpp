@@ -82,5 +82,5 @@ void CTimeMgr::exit()
 void CTimeMgr::render()
 {
 	// 폰트 출력
-	CFontMgr::GetInst()->DrawFont(m_szText, 10.f, 30.f, 16, FONT_RGBA(255, 30, 30, 255));
+	CFontMgr::GetInst()->DrawFont(m_szText, 10.f, 30.f, 16, FONT_RGBA(255, 30, 30, 255), FONT_TYPE::ARIAL);
 }

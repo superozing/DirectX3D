@@ -13,6 +13,7 @@ private:
 	Ptr<CTexture> m_CurImg;
 
 	bool m_AllowTexSet;
+	bool m_AllowCallFunc = true;
 
 	// 콜백 (전역함수 포인터)
 	BtnCallBack m_CallBackFunc;
@@ -23,11 +24,14 @@ private:
 
 public:
 	void SetNormalImg(Ptr<CTexture> _NormalImg) { m_NormalImg = _NormalImg; }
-	void SetPressedImg(CTexture* _PressedImg) { m_PressedImg = _PressedImg; }
+	void SetPressedImg(Ptr<CTexture> _PressedImg) { m_PressedImg = _PressedImg; }
 	void SetHoverImg(Ptr<CTexture> _HoverImg) { m_HoverImg = _HoverImg; }
 
 	void AllowTexSet() { m_AllowTexSet = true; }
 	void DisallowTexSet() { m_AllowTexSet = false; }
+
+	void AllowCallFunc() { m_AllowCallFunc = true; }
+	void DisallowCallFunc() { m_AllowCallFunc = false; }
 
 	void SetCallBack(BtnCallBack _CallBack) { m_CallBackFunc = _CallBack; }
 

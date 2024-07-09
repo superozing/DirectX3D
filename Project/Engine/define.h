@@ -117,6 +117,7 @@ enum class COMPONENT_TYPE
 	SKYBOX,
 	DECAL,
 	LANDSCAPE,
+	FONTRENDER,
 
 	END,
 
@@ -374,3 +375,12 @@ enum class Log_Level
 	ERR	 = 4,
 	END,
 };
+
+enum class FONT_TYPE
+{
+	ARIAL,
+	MAPLE,
+
+	END
+};
+

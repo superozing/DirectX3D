@@ -166,53 +166,73 @@ call ScriptsCopy.bat</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CAmmoInfo.h" />
     <ClInclude Include="CBackgroundScript.h" />
+    <ClInclude Include="CBossHP.h" />
     <ClInclude Include="CBtnUIScript.h" />
     <ClInclude Include="CCameraEffect.h" />
     <ClInclude Include="CCameraMoveScript.h" />
     <ClInclude Include="CHalo.h" />
+    <ClInclude Include="CCrosshair.h" />
+    <ClInclude Include="CDamageFont.h" />
     <ClInclude Include="CEditorCameraMoveScript.h" />
     <ClInclude Include="CImageUIScript.h" />
     <ClInclude Include="CLevelTransition.h" />
     <ClInclude Include="CMemoryPoolMgr.h" />
     <ClInclude Include="CMissileScript.h" />
+    <ClInclude Include="CMonsterHP.h" />
     <ClInclude Include="CMonsterScript.h" />
     <ClInclude Include="CPanelUIScript.h" />
     <ClInclude Include="CPhysXMgrScript.h" />
+    <ClInclude Include="CPauseBtn.h" />
+    <ClInclude Include="CPausePanel.h" />
+    <ClInclude Include="CPlayerHP.h" />
     <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CProgressBar.h" />
     <ClInclude Include="CRenderMgrScript.h" />
     <ClInclude Include="CRoRStateMachine.h" />
     <ClInclude Include="CScriptMgr.h" />
+    <ClInclude Include="CSkillIcon.h" />
     <ClInclude Include="CSpawnSpotScript.h" />
     <ClInclude Include="CSpringArm.h" />
     <ClInclude Include="CTimeMgrScript.h" />
+    <ClInclude Include="CWeaponInfo.h" />
     <ClInclude Include="CWrapImage.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CAmmoInfo.cpp" />
     <ClCompile Include="CBackgroundScript.cpp" />
+    <ClCompile Include="CBossHP.cpp" />
     <ClCompile Include="CBtnUIScript.cpp" />
     <ClCompile Include="CCameraEffect.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
     <ClCompile Include="CHalo.cpp" />
+    <ClCompile Include="CCrosshair.cpp" />
+    <ClCompile Include="CDamageFont.cpp" />
     <ClCompile Include="CEditorCameraMoveScript.cpp" />
     <ClCompile Include="CImageUIScript.cpp" />
     <ClCompile Include="CLevelTransition.cpp" />
     <ClCompile Include="CMemoryPoolMgr.cpp" />
     <ClCompile Include="CMissileScript.cpp" />
+    <ClCompile Include="CMonsterHP.cpp" />
     <ClCompile Include="CMonsterScript.cpp" />
     <ClCompile Include="CPanelUIScript.cpp" />
     <ClCompile Include="CPhysXMgrScript.cpp" />
+    <ClCompile Include="CPauseBtn.cpp" />
+    <ClCompile Include="CPausePanel.cpp" />
+    <ClCompile Include="CPlayerHP.cpp" />
     <ClCompile Include="CPlayerScript.cpp" />
     <ClCompile Include="CProgressBar.cpp" />
     <ClCompile Include="CRenderMgrScript.cpp" />
     <ClCompile Include="CRoRStateMachine.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
+    <ClCompile Include="CSkillIcon.cpp" />
     <ClCompile Include="CSpawnSpotScript.cpp" />
     <ClCompile Include="CSpringArm.cpp" />
     <ClCompile Include="CTimeMgrScript.cpp" />
+    <ClCompile Include="CWeaponInfo.cpp" />
     <ClCompile Include="CWrapImage.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

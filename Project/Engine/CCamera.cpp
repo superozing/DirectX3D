@@ -213,7 +213,18 @@ void CCamera::SortObject()
 			CRenderComponent* pRenderCom = vecObjects[j]->GetRenderComponent();
 
 			// 렌더링 기능이 없는 오브젝트는 제외
-			if (nullptr == pRenderCom || nullptr == pRenderCom->GetMesh())
+			if (nullptr == pRenderCom)
+				continue;
+
+			// Font일 경우 강제로 Transparent에 넣어주기
+			if (pRenderCom->GetType() == COMPONENT_TYPE::FONTRENDER)
+			{
+				m_vecTransparent.push_back(vecObjects[j]);
+				continue;
+			}
+
+			// 렌더링 기능이 없는 오브젝트는 제외
+			if (nullptr == pRenderCom->GetMesh())
 				continue;
 
 			// 절두체 안에 존재하지 않을 경우 continue

@@ -13,6 +13,7 @@
 #include <Engine/CMesh.h>
 #include <Engine/CGraphicsShader.h>
 #include <Engine/CTexture.h>
+#include <Engine/CFontRender.h>
 
 #include "CLevelSaveLoad.h"
 
@@ -29,8 +30,17 @@
 #include <Scripts/CBtnUIScript.h>
 #include <Scripts/CpanelUIScript.h>
 #include <Engine/CDevice.h>
+#include <Engine/CFontMgr.h>
 
 #include <Scripts/CProgressBar.h>
+#include <Scripts/CBossHP.h>
+#include <Scripts/CCrosshair.h>
+#include <Scripts/CWeaponInfo.h>
+#include <Scripts/CPausePanel.h>
+#include <Scripts/CPauseBtn.h>
+#include <Scripts/CDamageFont.h>
+#include <Scripts/CPlayerHP.h>
+#include <Scripts/CMonsterHP.h>
 
 void CUITempLevel::Init()
 {
@@ -148,14 +158,13 @@ void CUITempLevel::CreateTempLevel()
 
 #pragma region how to add UI Script
 
-	// auto pBtnTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Background.jpg", L"texture\\Background.jpg");
-	//
-	//
-	//// DynamicUI Object 생성
-	//// MESHpoint
-	//// DynamicUIMtrl
-	//// btnUI2->DisableMouseInput(); -> 카메라의 영향을 받는 UI는 이걸 반드시 꺼주어야 해요.
-	//
+	auto pBtnTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Background.jpg", L"texture\\Background.jpg");
+
+	// DynamicUI Object 생성
+	// MESHpoint
+	// DynamicUIMtrl
+	// btnUI2->DisableMouseInput(); -> 카메라의 영향을 받는 UI는 이걸 반드시 꺼주어야 해요.
+
 	// pObj = new CGameObject;
 	// pObj->SetName(L"DynamicUI");
 
@@ -173,8 +182,7 @@ void CUITempLevel::CreateTempLevel()
 	// pObj->Transform()->SetRelativePos(Vec3(0, 0, 100.f));
 	// pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
 
-	// pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHpoint)); // pointMesh일 때, 동작하지 않음.
-	// 무엇의 문제인지는 모르겠네요.
+	// pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHpoint));
 	// pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DynamicUIMtrl"), 0);
 	// pObj->MeshRender()->GetDynamicMaterial(0);
 	// pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, pBtnTex);
@@ -261,73 +269,229 @@ void CUITempLevel::CreateTempLevel()
 
 #pragma endregion
 
-#pragma region progress bar
+#pragma region CWeaponInfo
 
-	// Progress Bar
-	auto BarObj		 = new CGameObject;
-	auto progressbar = new CProgressBar;
-
-	BarObj->SetName(L"Progress Bar");
-
-	BarObj->AddComponent(new CTransform);
-	BarObj->AddComponent(progressbar);
-
-	progressbar->SetMaxHP(2000);
-	progressbar->SetCurHP(2000);
-
-	progressbar->SetImgFontTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/ImageFont_Raidboss.png"));
-	progressbar->SetPortraitTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Portrait_Raidboss_KaitenRanger.png"));
-
-	BarObj->Transform()->SetRelativePos(Vec3(0.f, 300.f, 100.f));
-	BarObj->Transform()->SetRelativeScale(Vec3(1, 1, 1.f));
-
-	pTempLevel->AddObject(BarObj, (UINT)LAYER::LAYER_UI, false);
-
-	// Add HP Btn
+	// CWeaponInfo
 	pObj = new CGameObject;
-	pObj->SetName(L"Add HP Btn");
+	pObj->SetName(L"WeaponInfo");
 
 	pObj->AddComponent(new CTransform);
-	pObj->AddComponent(new CMeshRender);
 
-	auto AddHPbtnUI = new CBtnUIScript;
-	pObj->AddComponent(AddHPbtnUI);
-	AddHPbtnUI->AllowTexSet();
-	AddHPbtnUI->SetNormalImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Red.png"));
-	AddHPbtnUI->SetDeletage((CEntity*)progressbar, (DelegateFunc)&CProgressBar::Add100);
+	auto pWeaponInfo = new CWeaponInfo;
+	pObj->AddComponent(pWeaponInfo);
+	pWeaponInfo->SetMaxAmmo(30);
+	pWeaponInfo->SetCurAmmo(30);
 
-	pObj->Transform()->SetRelativePos(Vec3(680, -400, 100.f));
-	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
-
-	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
-	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
-	pObj->MeshRender()->GetDynamicMaterial(0);
-	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0,
-													CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Red.png"));
+	pObj->Transform()->SetRelativePos(Vec3(700, -300, 0));
+	pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 
-	// Sub HP Btn
+#pragma endregion
+
+#pragma region Image UI
+
+	//// CPausePanel
+	// pObj = new CGameObject;
+	// pObj->SetName(L"Pause Panel");
+
+	// pObj->AddComponent(new CTransform);
+
+	// auto pPausePanel = new CPausePanel;
+	// pObj->AddComponent(pPausePanel);
+
+	// pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
+	// pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
+
+	// pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+
+	//// CPauseBtn
+	// pObj = new CGameObject;
+	// pObj->SetName(L"Pause Btn");
+	// pObj->AddComponent(new CTransform);
+
+	// auto PauseBtn = new CPauseBtn;
+	// pObj->AddComponent(PauseBtn);
+
+	// PauseBtn->SetPausePanel(pPausePanel);
+
+	// pObj->Transform()->SetRelativePos(Vec3(1, 1, 100.f));
+	// pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+
+	// pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+
+	//// DamageFont
+	// CGameObject* pDamageFontObj = new CGameObject;
+	// auto DamageFont = new CDamageFont;
+	// pDamageFontObj->SetName(L"DamageFont");
+	//
+	// pDamageFontObj->AddComponent(new CTransform);
+	// pDamageFontObj->AddComponent(DamageFont);
+	//
+	// pDamageFontObj->Transform()->SetRelativePos(Vec3(200, 0, 0.f));
+	// pDamageFontObj->Transform()->SetRelativeScale(Vec3(50, 50, 1.f));
+	//
+	// DamageFont->SetDamage(10012312);
+
+	// pTempLevel->AddObject(pDamageFontObj, (UINT)LAYER::LAYER_PLAYER, false);
+
+	//// Test Font
+	// pObj = new CGameObject;
+	// pObj->SetName(L"Test Font");
+
+	// pObj->AddComponent(new CTransform);
+	// pObj->AddComponent(new CFontRender);
+
+	// pObj->Transform()->SetRelativePos(Vec3(1, 1, -500.f));
+	// pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+
+	// tFontInfo FontInfo{};
+	// FontInfo.Color = FONT_RGBA(255, 255, 255, 255);
+	// FontInfo.fFontSize = 50.f;
+	// FontInfo.FontType  = FONT_TYPE::ARIAL;
+	// FontInfo.WStr	   = L"ABCDEFGHIJKLMNOPQR";
+	// FontInfo.TextFlag  = FW1_CENTER;
+
+	// pObj->FontRender()->SetFontInfo(FontInfo);
+	// pObj->FontRender()->AllowConvertWorldPosToWindowPos(true);
+
+	// pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
+#pragma endregion
+
+#pragma region ProgressBar UI
+
+	//// Boss HP
+	// auto BarObj = new CGameObject;
+	// auto BossHP = new CBossHP;
+
+	// BarObj->SetName(L"Boss HP");
+
+	// BarObj->AddComponent(new CTransform);
+	// BarObj->AddComponent(new CMeshRender);
+	// BarObj->AddComponent(BossHP);
+
+	// BarObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
+	// BarObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
+	// BarObj->MeshRender()->GetDynamicMaterial(0);
+
+	// BossHP->SetMaxHP(2000);
+	// BossHP->SetCurHP(2000);
+
+	// BossHP->SetImgFontTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/ImageFont_Raidboss.png"));
+	// BossHP->SetPortraitTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Portrait_Raidboss_KaitenRanger.png"));
+
+	// BarObj->Transform()->SetRelativePos(Vec3(0.f, 350.f, 100.f));
+	// BarObj->Transform()->SetRelativeScale(Vec3(1, 1, 1.f));
+
+	// pTempLevel->AddObject(BarObj, (UINT)LAYER::LAYER_UI, false);
+
+	//// Player HP
+	// auto PlayerHPObj = new CGameObject;
+	// auto PlayerHP	 = new CPlayerHP;
+
+	// PlayerHPObj->SetName(L"Player HP");
+
+	// PlayerHPObj->AddComponent(new CTransform);
+	// PlayerHPObj->AddComponent(new CMeshRender);
+	// PlayerHPObj->AddComponent(PlayerHP);
+
+	// PlayerHPObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
+	// PlayerHPObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
+	// PlayerHPObj->MeshRender()->GetDynamicMaterial(0);
+
+	// PlayerHP->SetMaxHP(2000);
+	// PlayerHP->SetCurHP(2000);
+
+	// PlayerHPObj->Transform()->SetRelativePos(Vec3(-700.f, -400.f, 100.f));
+	// PlayerHPObj->Transform()->SetRelativeScale(Vec3(1, 1, 1.f));
+
+	// pTempLevel->AddObject(PlayerHPObj, (UINT)LAYER::LAYER_UI, false);
+
+	//// Monster HP
+	// auto MonsterHPObj = new CGameObject;
+	// auto MonsterHP	  = new CMonsterHP;
+
+	// MonsterHPObj->SetName(L"Monster HP");
+
+	// MonsterHPObj->AddComponent(new CTransform);
+	// MonsterHPObj->AddComponent(new CMeshRender);
+	// MonsterHPObj->AddComponent(MonsterHP);
+
+	// MonsterHPObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHpoint));
+	// MonsterHPObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DynamicUIMtrl"), 0);
+	// MonsterHPObj->MeshRender()->GetDynamicMaterial(0);
+
+	// MonsterHP->SetMaxHP(2000);
+	// MonsterHP->SetCurHP(2000);
+
+	// MonsterHPObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 100.f));
+	// MonsterHPObj->Transform()->SetRelativeScale(Vec3(1, 1, 1.f));
+
+	// pTempLevel->AddObject(MonsterHPObj, (UINT)LAYER::LAYER_DEFAULT, false);
+
+	//// Damage Button
+	// pObj = new CGameObject;
+	// pObj->SetName(L"Damage Button");
+
+	// pObj->AddComponent(new CTransform);
+	// pObj->AddComponent(new CMeshRender);
+
+	// auto AddHPbtnUI = new CBtnUIScript;
+	// pObj->AddComponent(AddHPbtnUI);
+	// AddHPbtnUI->AllowTexSet();
+	// AddHPbtnUI->SetNormalImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Red.png"));
+	// AddHPbtnUI->SetDeletage((CEntity*)BossHP, (DelegateFunc)&CBossHP::Sub100);
+
+	// pObj->Transform()->SetRelativePos(Vec3(680, -400, 100.f));
+	// pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+
+	// pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
+	// pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
+	// pObj->MeshRender()->GetDynamicMaterial(0);
+	// pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0,
+	//												CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Red.png"));
+
+	// pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+
+	//// Sub HP Btn
+	// pObj = new CGameObject;
+	// pObj->SetName(L"Sub HP Btn");
+
+	// pObj->AddComponent(new CTransform);
+	// pObj->AddComponent(new CMeshRender);
+
+	// auto SubHPbtnUI = new CBtnUIScript;
+	// pObj->AddComponent(SubHPbtnUI);
+	// SubHPbtnUI->AllowTexSet();
+	// SubHPbtnUI->SetNormalImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
+	// SubHPbtnUI->SetDeletage((CEntity*)progressbar, (DelegateFunc)&CProgressBar::Sub100);
+
+	// pObj->Transform()->SetRelativePos(Vec3(800, -400, 100.f));
+	// pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+
+	// pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
+	// pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
+	// pObj->MeshRender()->GetDynamicMaterial(0);
+	// pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0,
+	//												CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
+
+	// pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+
+#pragma endregion
+
+#pragma region CCrosshair
+
+	// CCrosshair
 	pObj = new CGameObject;
-	pObj->SetName(L"Sub HP Btn");
+	pObj->SetName(L"Crosshair");
 
 	pObj->AddComponent(new CTransform);
-	pObj->AddComponent(new CMeshRender);
 
-	auto SubHPbtnUI = new CBtnUIScript;
-	pObj->AddComponent(SubHPbtnUI);
-	SubHPbtnUI->AllowTexSet();
-	SubHPbtnUI->SetNormalImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
-	SubHPbtnUI->SetDeletage((CEntity*)progressbar, (DelegateFunc)&CProgressBar::Sub100);
+	auto pCrosshair = new CCrosshair;
+	pObj->AddComponent(pCrosshair);
 
-	pObj->Transform()->SetRelativePos(Vec3(800, -400, 100.f));
-	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
-
-	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
-	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
-	pObj->MeshRender()->GetDynamicMaterial(0);
-	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0,
-													CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
+	pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
+	pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 
