@@ -293,6 +293,9 @@
     <ClInclude Include="CFontRender.h">
       <Filter>08. Component\RenderComponent\07. FontRender</Filter>
     </ClInclude>
+    <ClInclude Include="CMemoryPool.h">
+      <Filter>04. Manager\MemoryPool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -531,6 +534,9 @@
     </ClCompile>
     <ClCompile Include="CFontRender.cpp">
       <Filter>08. Component\RenderComponent\07. FontRender</Filter>
+    </ClCompile>
+    <ClCompile Include="CMemoryPool.cpp">
+      <Filter>04. Manager\MemoryPool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -774,6 +780,9 @@
     <Filter Include="ShaderCode\02. Render\UIShader">
       <UniqueIdentifier>{2361e0c8-cb87-4fe0-aeb8-5174e6747f3d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. Manager\MemoryPool">
+      <UniqueIdentifier>{66c0624b-2d5d-4929-861e-3af9a9b6ac1a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -873,6 +882,12 @@
     </FxCompile>
     <FxCompile Include="skillicon.fx">
       <Filter>ShaderCode\02. Render\UIShader</Filter>
+    </FxCompile>
+    <FxCompile Include="ImageWrap.fx">
+      <Filter>ShaderCode\02. Render\3DShader</Filter>
+    </FxCompile>
+    <FxCompile Include="SpawnPoint.fx">
+      <Filter>ShaderCode\02. Render\3DShader</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

@@ -108,8 +108,10 @@ void CalLight3D(int _LightIdx, float3 _vViewPos, float3 _vViewNormal, inout tLig
         vViewLightDir = normalize(vViewLightDir);
         
         // 광원 반경과 물체까지의 거리에 따른 빛의 세기
-        //fDistanceRatio = saturate(1.f - (fDistance / Light.fRadius)); // 선형적
-        fDistanceRatio = saturate(cos(fDistance / Light.fRadius * (PI / 2.f))); // cos
+        fDistanceRatio = pow(1 - saturate((fDistance / Light.fRadius)), 20.f); // 
+        //pow(1 - saturate((fDistance / Light.fRadius)), 0.02f);
+        //fDistanceRatio = pow(saturate(cos(fDistance / Light.fRadius * (PI / 2.f))), 0.2f); // cos
+
     }
 
     // Spot Light

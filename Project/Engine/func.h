@@ -253,6 +253,19 @@ template <typename T> void Delete_Vec(vector<T*>& _vec)
 	_vec.clear();
 }
 
+template <typename T> void Delete_List(list<T*>& _list)
+{
+	for (auto iter = _list.begin(); iter != _list.end(); ++iter)
+	{
+		if (nullptr != *iter)
+		{
+			delete *iter;
+		}
+	}
+
+	_list.clear();
+}
+
 template <typename T1, typename T2> void Delete_Map(map<T1, T2>& _map)
 {
 	for (const auto& pair : _map)

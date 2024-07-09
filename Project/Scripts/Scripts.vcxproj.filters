@@ -88,6 +88,21 @@
     <ClInclude Include="CSkillIcon.h">
       <Filter>Scripts\UI\ProgressBar\SkillIcon</Filter>
     </ClInclude>
+    <ClInclude Include="CWrapImage.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="CLevelTransition.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="CEditorCameraMoveScript.h">
+      <Filter>Scripts\Manager\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CSpawnSpotScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="CMemoryPoolMgr.h">
+      <Filter>Scripts\Manager\MemoryPool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -177,6 +192,21 @@
     <ClCompile Include="CSkillIcon.cpp">
       <Filter>Scripts\UI\ProgressBar\SkillIcon</Filter>
     </ClCompile>
+    <ClCompile Include="CWrapImage.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevelTransition.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CEditorCameraMoveScript.cpp">
+      <Filter>Scripts\Manager\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CSpawnSpotScript.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CMemoryPoolMgr.cpp">
+      <Filter>Scripts\Manager\MemoryPool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -259,6 +289,9 @@
     </Filter>
     <Filter Include="Scripts\UI\ProgressBar\SkillIcon">
       <UniqueIdentifier>{904a9997-8eee-4e3b-ab19-3f8341cb7464}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager\MemoryPool">
+      <UniqueIdentifier>{3ff61ac7-4bc8-4dcf-83a8-b5f5804064c8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

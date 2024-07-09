@@ -94,6 +94,12 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution, bool bWindowMode)
 		return E_FAIL;
 	}
 
+	CONTEXT->VSSetShader(nullptr, nullptr, 0);
+	CONTEXT->HSSetShader(nullptr, nullptr, 0);
+	CONTEXT->DSSetShader(nullptr, nullptr, 0);
+	CONTEXT->GSSetShader(nullptr, nullptr, 0);
+	CONTEXT->PSSetShader(nullptr, nullptr, 0);
+
 	return S_OK;
 }
 

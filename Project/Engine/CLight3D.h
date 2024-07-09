@@ -51,5 +51,6 @@ public:
 
 public:
 	CLight3D();
+	CLight3D(const CLight3D& _Other);
 	~CLight3D();
 };

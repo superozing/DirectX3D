@@ -10,6 +10,8 @@
 #include "CEngine.h"
 #include "CDevice.h"
 
+#include "CLogMgr.h"
+
 CTaskMgr::CTaskMgr()
 	: m_bCreateObject(false)
 	, m_bDeleteObject(false)
@@ -97,10 +99,31 @@ void CTaskMgr::tick()
 		break;
 
 		case TASK_TYPE::CHANGE_LEVEL: {
+
+			string strPrevLevelPath = "";
+
+			if (CLevelMgr::GetInst()->GetCurrentLevel() != nullptr)
+			{
+				strPrevLevelPath = CLevelMgr::GetInst()->GetCurrentLevel()->GetRelativePath();
+			}
+
 			CLevel*		pNextLevel = (CLevel*)m_vecTask[i].Param_1;
 			LEVEL_STATE State	   = (LEVEL_STATE)m_vecTask[i].Param_2;
 			CLevelMgr::GetInst()->ChangeLevel_Task(pNextLevel, State);
 			m_bCreateObject = true;
+
+			CLevelMgr::GetInst()->SetstrPrevLevelPath(strPrevLevelPath);
+		}
+		break;
+
+		case TASK_TYPE::SAVE_CHECKPOINT: {
+
+			CLevel* pPlayLevel = (CLevel*)m_vecTask[i].Param_1;
+			pPlayLevel->ChangeState(LEVEL_STATE::PAUSE);
+
+			CLevelMgr::CheckPointFunc(pPlayLevel);
+
+			pPlayLevel->ChangeState(LEVEL_STATE::PLAY);
 		}
 		break;
 
@@ -125,8 +148,9 @@ void CTaskMgr::tick()
 		}
 		break;
 		}
-		m_vecTask.clear();
 	}
+
+	m_vecTask.clear();
 }
 
 void CTaskMgr::Clear()

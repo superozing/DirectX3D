@@ -29,7 +29,11 @@ enum class SCRIPT_TYPE
 	AMMOINFO,
 	PHYSXMGRSCRIPT,
 	HALO,
-	SKILLICON,
+	WRAPIMAGE,
+	LEVELTRANSITION,
+	EDITORCAMERAMOVESCRIPT,
+	SPAWNSPOTSCRIPT,
+	MEMORYPOOLMGR,
 	END,
 };
 
@@ -39,7 +43,7 @@ class CScript;
 
 class CScriptMgr
 {
-public: 
+public:
 	static void GetScriptInfo(vector<wstring>& _vec);
 	static CScript* GetScript(const wstring& _strScriptName);
 	static CScript* GetScript(UINT _iScriptType);

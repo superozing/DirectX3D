@@ -36,8 +36,10 @@
 #include "CCreateTempLevel.h"
 #include "CUITempLevel.h"
 #include "MapTestLevel.h"
+#include "MapTutorial.h"
 #include "CCreatePlayerTestLevel.h"
 
+#include <Engine\CLevelMgr.h>
 #include <Engine/CRenderMgr.h>
 #include "RTViewPort.h"
 
@@ -95,14 +97,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	CPrefab::GAMEOBJECT_LOAD	 = &CLevelSaveLoad::LoadGameObject;
 	CRenderMgr::CameraChange	 = &RTViewPort::SetCamera;
 	CCamera::ViewportConvertFunc = &RTViewPort::ConvertCoord;
+	CLevelMgr::LevelChangeFunc	 = &CLevelSaveLoad::LoadLevel;
+	CLevelMgr::CheckPointFunc	 = &CLevelSaveLoad::SaveCheckPoint;
 
 #ifndef _RELEASE_GAME
 
 	// 임시 레벨 생성
 	// CCreateTempLevel::Init();
 	// CCreateTempLevel::CreateTempLevel();
-
 	// MapTestLevel::CreateMapTestLevel();
+
 	string levelPath = CEnvMgr::GetInst()->GetLevelRelativePath();
 	string abPath	 = ToString(CPathMgr::GetContentPath()) + levelPath;
 	if (levelPath == "" || !exists(abPath))
@@ -114,11 +118,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		auto pLevel = CLevelSaveLoad::LoadLevel(CEnvMgr::GetInst()->GetLevelRelativePath());
 		GamePlayStatic::ChangeLevel(pLevel, LEVEL_STATE::STOP);
 	}
-
-	// CCreatePlayerTestLevel::CreateTempLevel();
-
-	// CUITempLevel::Init();
-	// CUITempLevel::CreateTempLevel();
 
 	// ImGui 초기화
 	CImGuiMgr::GetInst()->init(hWnd, DEVICE, CONTEXT);
@@ -160,6 +159,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 			// Engine 및 ImGui 렌더링 최종 결과를 출력한다.
 			CDevice::GetInst()->Present();
+
+			CEnvMgr::GetInst()->tick();
 		}
 	}
 

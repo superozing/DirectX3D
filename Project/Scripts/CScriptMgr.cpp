@@ -25,7 +25,11 @@
 #include "CAmmoInfo.h"
 #include "CPhysXMgrScript.h"
 #include "CHalo.h"
-#include "CSkillIcon.h"
+#include "CWrapImage.h"
+#include "CLevelTransition.h"
+#include "CEditorCameraMoveScript.h"
+#include "CSpawnSpotScript.h"
+#include "CMemoryPoolMgr.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -53,10 +57,14 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CAmmoInfo");
 	_vec.push_back(L"CPhysXMgrScript");
 	_vec.push_back(L"CHalo");
-	_vec.push_back(L"CSkillIcon");
+	_vec.push_back(L"CWrapImage");
+	_vec.push_back(L"CLevelTransition");
+	_vec.push_back(L"CEditorCameraMoveScript");
+	_vec.push_back(L"CSpawnSpotScript");
+	_vec.push_back(L"CMemoryPoolMgr");
 }
 
-CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
+CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 {
 	if (L"CBackgroundScript" == _strScriptName)
 		return new CBackgroundScript;
@@ -106,12 +114,20 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPhysXMgrScript;
 	if (L"CHalo" == _strScriptName)
 		return new CHalo;
-	if (L"CSkillIcon" == _strScriptName)
-		return new CSkillIcon;
+	if (L"CWrapImage" == _strScriptName)
+		return new CWrapImage;
+	if (L"CLevelTransition" == _strScriptName)
+		return new CLevelTransition;
+	if (L"CEditorCameraMoveScript" == _strScriptName)
+		return new CEditorCameraMoveScript;
+	if (L"CSpawnSpotScript" == _strScriptName)
+		return new CSpawnSpotScript;
+	if (L"CMemoryPoolMgr" == _strScriptName)
+		return new CMemoryPoolMgr;
 	return nullptr;
 }
 
-CScript * CScriptMgr::GetScript(UINT _iScriptType)
+CScript* CScriptMgr::GetScript(UINT _iScriptType)
 {
 	switch (_iScriptType)
 	{
@@ -187,14 +203,26 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::HALO:
 		return new CHalo;
 		break;
-	case (UINT)SCRIPT_TYPE::SKILLICON:
-		return new CSkillIcon;
+	case (UINT)SCRIPT_TYPE::WRAPIMAGE:
+		return new CWrapImage;
+		break;
+	case (UINT)SCRIPT_TYPE::LEVELTRANSITION:
+		return new CLevelTransition;
+		break;
+	case (UINT)SCRIPT_TYPE::EDITORCAMERAMOVESCRIPT:
+		return new CEditorCameraMoveScript;
+		break;
+	case (UINT)SCRIPT_TYPE::SPAWNSPOTSCRIPT:
+		return new CSpawnSpotScript;
+		break;
+	case (UINT)SCRIPT_TYPE::MEMORYPOOLMGR:
+		return new CMemoryPoolMgr;
 		break;
 	}
 	return nullptr;
 }
 
-const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
+const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 {
 	switch ((SCRIPT_TYPE)_pScript->GetScriptType())
 	{
@@ -294,8 +322,24 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CHalo";
 		break;
 
-	case SCRIPT_TYPE::SKILLICON:
-		return L"CSkillIcon";
+	case SCRIPT_TYPE::WRAPIMAGE:
+		return L"CWrapImage";
+		break;
+
+	case SCRIPT_TYPE::LEVELTRANSITION:
+		return L"CLevelTransition";
+		break;
+
+	case SCRIPT_TYPE::EDITORCAMERAMOVESCRIPT:
+		return L"CEditorCameraMoveScript";
+		break;
+
+	case SCRIPT_TYPE::SPAWNSPOTSCRIPT:
+		return L"CSpawnSpotScript";
+		break;
+
+	case SCRIPT_TYPE::MEMORYPOOLMGR:
+		return L"CMemoryPoolMgr";
 		break;
 
 	}

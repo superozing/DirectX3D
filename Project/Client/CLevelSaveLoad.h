@@ -9,6 +9,7 @@ class CLevelSaveLoad
 public:
 	static void SaveLevel(CLevel* _Level, const wstring& _strLevelPath);
 	static void SaveLevel(CLevel* _Level, const string& _strLevelPath) { SaveLevel(_Level, ToWString(_strLevelPath)); }
+	static void SaveCheckPoint(CLevel* _Level);
 	static void SaveLayer(CLayer* _Layer, FILE* _File);
 	static void SaveLayer(CLayer* _Layer, ofstream& fout);
 	static void SaveGameObject(CGameObject* _Obj, FILE* _File);
