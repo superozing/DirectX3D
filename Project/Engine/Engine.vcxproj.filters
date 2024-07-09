@@ -290,6 +290,9 @@
     <ClInclude Include="RoRCollisionCallback.h">
       <Filter>04. Manager\PhysXMgr</Filter>
     </ClInclude>
+    <ClInclude Include="CMemoryPool.h">
+      <Filter>04. Manager\MemoryPool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -525,6 +528,9 @@
     </ClCompile>
     <ClCompile Include="RoRCollisionCallback.cpp">
       <Filter>04. Manager\PhysXMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CMemoryPool.cpp">
+      <Filter>04. Manager\MemoryPool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -762,6 +768,9 @@
     <Filter Include="08. Component\10. PhysX">
       <UniqueIdentifier>{f78ce992-961a-46dc-aed7-da0246b89182}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. Manager\MemoryPool">
+      <UniqueIdentifier>{66c0624b-2d5d-4929-861e-3af9a9b6ac1a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -846,6 +855,12 @@
     </FxCompile>
     <FxCompile Include="copybone.fx">
       <Filter>ShaderCode\03. Compute\CopyBone</Filter>
+    </FxCompile>
+    <FxCompile Include="ImageWrap.fx">
+      <Filter>ShaderCode\02. Render\3DShader</Filter>
+    </FxCompile>
+    <FxCompile Include="SpawnPoint.fx">
+      <Filter>ShaderCode\02. Render\3DShader</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

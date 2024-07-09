@@ -216,6 +216,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CLogMgr.h" />
     <ClInclude Include="CManager.h" />
     <ClInclude Include="CMaterial.h" />
+    <ClInclude Include="CMemoryPool.h" />
     <ClInclude Include="CMesh.h" />
     <ClInclude Include="CMeshData.h" />
     <ClInclude Include="CMeshRender.h" />
@@ -317,6 +318,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CLogMgr.cpp" />
     <ClCompile Include="CManager.cpp" />
     <ClCompile Include="CMaterial.cpp" />
+    <ClCompile Include="CMemoryPool.cpp" />
     <ClCompile Include="CMesh.cpp" />
     <ClCompile Include="CMeshData.cpp" />
     <ClCompile Include="CMeshRender.cpp" />
@@ -409,6 +411,10 @@ call CodeGen.exe</Command>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
+    <FxCompile Include="ImageWrap.fx">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="landscape.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
@@ -464,6 +470,10 @@ call CodeGen.exe</Command>
     <FxCompile Include="skybox.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="SpawnPoint.fx">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
     </FxCompile>
     <FxCompile Include="std2d.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>

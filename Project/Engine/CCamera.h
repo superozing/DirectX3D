@@ -112,6 +112,7 @@ public:
 
 	void SortObject();
 	void render_deferred();
+
 	void render_decal();
 	void render_forward();
 	void render_postprocess();
@@ -121,6 +122,9 @@ public:
 	void render_shadowmap();
 
 	void CalculateRay();
+
+private:
+	void render_Instance(const map<ULONG64, vector<tInstObj>>& m_mapInstGroup);
 
 public:
 	virtual void SaveToFile(FILE* _File) override;

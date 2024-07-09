@@ -374,6 +374,24 @@ void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Idx)
 	m_vecCam[_Idx] = _Cam;
 }
 
+void CRenderMgr::RePositionDebugCam()
+{
+	CCamera* pMainCam = m_vecCam[0];
+
+	Vec3 MainCamPos		 = m_vecCam[0]->Transform()->GetRelativePos();
+	Vec3 MainCamFrontDir = m_vecCam[0]->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+
+	Vec3 MainCamRotation = m_vecCam[0]->Transform()->GetWorldRot();
+
+	MainCamFrontDir.Normalize();
+
+	MainCamFrontDir *= -250.f;
+	MainCamPos += MainCamFrontDir;
+
+	m_EditorCam->Transform()->SetRelativePos(MainCamPos);
+	m_EditorCam->Transform()->SetRelativeRotation(MainCamRotation);
+}
+
 void CRenderMgr::CheckEscape()
 {
 	if (LEVEL_STATE::PLAY == CLevelMgr::GetInst()->GetCurrentLevel()->GetState())

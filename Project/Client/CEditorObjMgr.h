@@ -12,13 +12,17 @@ private:
 
 	CGameObjectEx* m_EditorCam;
 	CGameObjectEx* m_ManagerObj;
+	CGameObjectEx* m_MemoryPool;
 
 public:
 	virtual void init() override;
 	virtual void enter() override {}
 
+	void begin();
 	void progress();
 
 	CGameObjectEx*				 GetEditorCam() { return m_EditorCam; }
 	const vector<CGameObjectEx*> GetEditorGameObjects() { return m_vecEditorObj; }
+
+	CGameObjectEx* GetMemoryPoolObj() { return m_MemoryPool; }
 };

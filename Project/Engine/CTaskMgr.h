@@ -20,6 +20,9 @@ enum class TASK_TYPE
 	// Param1 : Level Adress, Param2 : Next Level Start State
 	CHANGE_LEVEL,
 
+	// Param1 : Level Adress
+	SAVE_CHECKPOINT,
+
 	// Param1 : Parent Object, Param2 : Child Object
 	ADD_CHILD,
 

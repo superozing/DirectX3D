@@ -27,7 +27,7 @@
 void CLevelSaveLoad::SaveLevel(CLevel* _Level, const wstring& _strLevelPath)
 {
 	assert(_Level);
-	if (LEVEL_STATE::PLAY == _Level->GetState() || LEVEL_STATE::PAUSE == _Level->GetState())
+	if (LEVEL_STATE::PLAY == _Level->GetState())
 	{
 		MessageBox(nullptr, L"레벨을 Stop 상태로 만들어야 합니다.", L"Level Save System", 0);
 		return;
@@ -52,6 +52,20 @@ void CLevelSaveLoad::SaveLevel(CLevel* _Level, const wstring& _strLevelPath)
 	{
 		SaveLayer(_Level->GetLayer(i), fout);
 	}
+}
+
+void CLevelSaveLoad::SaveCheckPoint(CLevel* _Level)
+{
+	assert(_Level);
+	assert(LEVEL_STATE::PAUSE == _Level->GetState());
+
+	wstring wpath	= L"level\\";
+	wstring wLvName = L"CheckPoint.lv";
+
+	_Level->SetName(wLvName);
+
+	wpath += wLvName;
+	SaveLevel(_Level, wpath);
 }
 
 void CLevelSaveLoad::SaveLayer(CLayer* _Layer, FILE* _File)
@@ -370,8 +384,8 @@ CGameObject* CLevelSaveLoad::LoadGameObject(ifstream& fin)
 	pObject->SetName(str);
 
 	// NOTE : 레벨 로드할 때 실패하면 아래 2줄 주석처리 해주어야 함
-	Utils::GetLineUntilString(fin, TagLayerName);
-	fin >> pObject->m_iLayerIdx;
+	// Utils::GetLineUntilString(fin, TagLayerName);
+	// fin >> pObject->m_iLayerIdx;
 
 	while (true)
 	{

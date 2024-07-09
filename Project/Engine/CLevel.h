@@ -19,7 +19,7 @@ public:
 	void AddObject(CGameObject* _Object, int _LayerIdx, bool _bChildMove = true);
 	void AddObject(CGameObject* _Object, const wstring& _strLayerName, bool _bChildMove = true);
 
-	CLayer* GetLayer(int _iLayerIdx) { return m_arrLayer[_iLayerIdx]; }
+	CLayer* GetLayer(int _iLayerIdx);
 	CLayer* GetLayer(const wstring& _strLayerName);
 
 	CGameObject* FindObjectByName(const wstring& _strName);

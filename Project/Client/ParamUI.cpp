@@ -131,7 +131,9 @@ bool ParamUI::Param_STRING(string* _Data, const string& _Desc, float _min, float
 		{
 			ImGui::SetTooltip(_Tooltip.c_str());
 		}
-		// ImGui::Text(_Data->c_str());
+		char buffer[255];
+		strcpy_s(buffer, _Data->c_str());
+		ImGui::InputText(szID, buffer, IM_ARRAYSIZE(buffer), ImGuiInputTextFlags_ReadOnly);
 	}
 	else
 	{
