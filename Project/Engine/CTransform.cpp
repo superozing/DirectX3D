@@ -270,9 +270,12 @@ void CTransform::CalWorldMat()
 	Matrix matRotY = XMMatrixRotationY(m_vRelativeRotation.y);
 	Matrix matRotZ = XMMatrixRotationZ(m_vRelativeRotation.z);
 
+	Quaternion quat	  = Quaternion::CreateFromRotationMatrix(matRotX * matRotY * matRotZ);
+	Matrix	   matRot = Matrix::CreateFromQuaternion(quat);
+
 	Matrix matTranslation = XMMatrixTranslation(m_vRelativePos.x, m_vRelativePos.y, m_vRelativePos.z);
 
-	m_matWorld = matScale * matRotX * matRotY * matRotZ * matTranslation;
+	m_matWorld = matScale * matRot * matTranslation;
 
 	// 물체의 방향값을 다시 계산한다.
 	static const Vec3 arrAxis[3] = {Vec3(1.f, 0.f, 0.f), Vec3(0.f, 1.f, 0.f), Vec3(0.f, 0.f, 1.f)};
