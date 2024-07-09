@@ -18,6 +18,13 @@ public:
 	virtual void LoadFromFile(FILE* _File) override{};
 
 public:
+	CGameObject* PopObject();
+	void		 PushObject(CGameObject* _Object);
+
+	void PopPool();
+	void PushPool();
+
+public:
 	CLONE(CMemoryPoolMgr);
 	CMemoryPoolMgr();
 	~CMemoryPoolMgr();

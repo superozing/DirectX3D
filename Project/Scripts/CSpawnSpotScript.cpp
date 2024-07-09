@@ -3,6 +3,7 @@
 
 #include <Engine\CAssetMgr.h>
 #include <Engine\CMemoryPool.h>
+#include "CMemoryPoolMgr.h"
 
 CSpawnSpotScript::CSpawnSpotScript()
 	: CScript((UINT)SCRIPT_TYPE::SPAWNSPOTSCRIPT)
@@ -45,7 +46,7 @@ CSpawnSpotScript::CSpawnSpotScript()
 
 CSpawnSpotScript::~CSpawnSpotScript()
 {
-	Delete_List(m_listSpawnObject);
+	// Delete_List(m_listSpawnObject);
 }
 
 void CSpawnSpotScript::SetSpawnTypePlayer()
@@ -100,10 +101,12 @@ void CSpawnSpotScript::SetSpawnTypeNone()
 
 void CSpawnSpotScript::RegisterObject()
 {
+	CMemoryPoolMgr* Script = CMemoryPool::GetInst()->GetPoolMgr()->GetScript<CMemoryPoolMgr>();
+
 	for (int i = 0; i < 3; ++i)
 	{
 		CGameObject* pObj = nullptr;
-		pObj			  = CMemoryPool::GetInst()->PopObject();
+		pObj			  = Script->PopObject();
 
 		m_listSpawnObject.push_back(pObj);
 
@@ -113,17 +116,19 @@ void CSpawnSpotScript::RegisterObject()
 
 void CSpawnSpotScript::DeAllocateObject()
 {
+	CMemoryPoolMgr* Script = CMemoryPool::GetInst()->GetPoolMgr()->GetScript<CMemoryPoolMgr>();
+
 	for (auto iter = m_CurrentSpawnObject.begin(); iter != m_CurrentSpawnObject.end(); ++iter)
 	{
-		CMemoryPool::GetInst()->PushObject(*iter);
+		Script->PushObject(*iter);
 	}
 
-	m_CurrentSpawnObject.clear();
+	// m_CurrentSpawnObject.clear();
 }
 
 void CSpawnSpotScript::SpawnObject()
 {
-	for (int i = 0; i < 2; ++i)
+	for (int i = 0; i < m_listSpawnObject.size(); ++i)
 	{
 		CGameObject* pObj = nullptr;
 		pObj			  = m_listSpawnObject.front();

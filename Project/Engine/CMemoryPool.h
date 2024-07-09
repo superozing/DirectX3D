@@ -11,6 +11,8 @@ private:
 	int iPoolMaxCount;
 	int iCurPopCount;
 
+	CGameObject* PoolMgr;
+
 public:
 	void		 init();
 	virtual void enter() override {}
@@ -19,6 +21,9 @@ public:
 public:
 	CGameObject* PopObject();
 	void		 PushObject(CGameObject* _Object);
+
+	void		 RegisterPoolMgr(CGameObject* _Mgr) { PoolMgr = _Mgr; }
+	CGameObject* GetPoolMgr() { return PoolMgr; }
 
 	list<CGameObject*> GetList() { return m_listObjectPool; }
 };
