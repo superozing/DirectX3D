@@ -6,6 +6,7 @@ private:
 	CStructuredBuffer* m_pFrameDataBuffer; // t16
 	CStructuredBuffer* m_pOffsetMatBuffer; // t17
 	CStructuredBuffer* m_pOutputBuffer;	   // u0
+	CStructuredBuffer* m_pBoneFrameBuffer; // u1
 
 public:
 	// g_int_0 : BonCount, g_int_1 : Frame Index
@@ -16,6 +17,7 @@ public:
 	void SetFrameDataBuffer(CStructuredBuffer* _buffer) { m_pFrameDataBuffer = _buffer; }
 	void SetOffsetMatBuffer(CStructuredBuffer* _buffer) { m_pOffsetMatBuffer = _buffer; }
 	void SetOutputBuffer(CStructuredBuffer* _buffer) { m_pOutputBuffer = _buffer; }
+	void SetBoneFrameBuffer(CStructuredBuffer* _buffer) { m_pBoneFrameBuffer = _buffer; }
 
 public:
 	virtual int	 UpdateData() override;

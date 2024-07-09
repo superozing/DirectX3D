@@ -13,6 +13,7 @@ private:
 
 	Matrix m_matWorld;	  // 상태행렬
 	Matrix m_matWorldInv; // 월드 역행렬
+	Matrix m_matFrame;	  // 프레임 데이터 행렬
 	bool   m_bAbsolute;
 	bool   m_IsDynamic; // 정적물체 or 동적물체
 	bool   m_bDirty;
@@ -62,6 +63,7 @@ public:
 	}
 
 	void SetWorldMat(const Matrix& _matWorld);
+	void SetFrameMat(const Matrix& _mat) { m_matFrame = _mat; }
 
 	Vec3 GetRelativePos() const { return m_vRelativePos; }
 	Vec3 GetRelativeScale() const { return m_vRelativeScale; }
@@ -91,7 +93,12 @@ public:
 		m_bDirty = false;
 		return m_matWorld;
 	}
-	const Matrix& GetWorldInvMat() { return m_matWorldInv; }
+	const Matrix& GetWorldInvMat()
+	{
+		if (m_bDirty)
+			CalWorldMat();
+		return m_matWorldInv;
+	}
 
 	Vec3 GetLocalDir(DIR_TYPE _type) const { return m_arrLocalDir[(UINT)_type]; }
 	Vec3 GetWorldDir(DIR_TYPE _type) const { return m_arrWorldDir[(UINT)_type]; }

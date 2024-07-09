@@ -16,6 +16,7 @@ CAnimator3D::CAnimator3D()
 	, m_dCurTime(0.)
 	, m_iFrameCount(30)
 	, m_pBoneFinalMatBuffer(nullptr)
+	, m_pBoneFrameMatBuffer(nullptr)
 	, m_bFinalMatUpdate(false)
 	, m_iFrameIdx(0)
 	, m_iNextFrameIdx(0)
@@ -26,6 +27,7 @@ CAnimator3D::CAnimator3D()
 	, CComponent(COMPONENT_TYPE::ANIMATOR3D)
 {
 	m_pBoneFinalMatBuffer = new CStructuredBuffer;
+	m_pBoneFrameMatBuffer = new CStructuredBuffer;
 }
 
 CAnimator3D::CAnimator3D(const CAnimator3D& _origin)
@@ -33,6 +35,7 @@ CAnimator3D::CAnimator3D(const CAnimator3D& _origin)
 	, m_dCurTime(_origin.m_dCurTime)
 	, m_iFrameCount(_origin.m_iFrameCount)
 	, m_pBoneFinalMatBuffer(nullptr)
+	, m_pBoneFrameMatBuffer(nullptr)
 	, m_bFinalMatUpdate(false)
 	, m_iFrameIdx(_origin.m_iFrameIdx)
 	, m_iNextFrameIdx(_origin.m_iNextFrameIdx)
@@ -43,6 +46,7 @@ CAnimator3D::CAnimator3D(const CAnimator3D& _origin)
 	, CComponent(COMPONENT_TYPE::ANIMATOR3D)
 {
 	m_pBoneFinalMatBuffer = new CStructuredBuffer;
+	m_pBoneFrameMatBuffer = new CStructuredBuffer;
 
 	SetBones(_origin.m_pVecBones);
 	SetAnimClip(_origin.m_pVecClip);
@@ -52,24 +56,13 @@ CAnimator3D::~CAnimator3D()
 {
 	if (nullptr != m_pBoneFinalMatBuffer)
 		delete m_pBoneFinalMatBuffer;
+
+	if (nullptr != m_pBoneFrameMatBuffer)
+		delete m_pBoneFrameMatBuffer;
 }
 
 void CAnimator3D::finaltick()
 {
-	if (m_vecClipUpdateTime.size() <= 0)
-		return;
-
-	if (KEY_TAP(M))
-		Play(0);
-	else if (KEY_TAP(N))
-		Play(1);
-	else if (KEY_TAP(B))
-		Play(2);
-	else if (KEY_TAP(C))
-		Play(3);
-	else if (KEY_TAP(V))
-		Stop();
-
 	m_dCurTime = 0.f;
 
 	// 현재 재생중인 Clip 의 시간을 진행한다.
@@ -131,11 +124,12 @@ void CAnimator3D::UpdateData()
 		Ptr<CMesh> pMesh = MeshRender()->GetMesh();
 		check_mesh(pMesh);
 
-		auto vBoneFrameData = pMesh->GetBoneFrameDataBuffer();
+		vector<CStructuredBuffer*> vBoneFrameData = pMesh->GetBoneFrameDataBuffer();
 
 		pUpdateShader->SetFrameDataBuffer(vBoneFrameData[m_iCurClip]);
 		pUpdateShader->SetOffsetMatBuffer(pMesh->GetBoneOffsetBuffer());
 		pUpdateShader->SetOutputBuffer(m_pBoneFinalMatBuffer);
+		pUpdateShader->SetBoneFrameBuffer(m_pBoneFrameMatBuffer);
 
 		UINT iBoneCount = (UINT)m_pVecBones->size();
 		pUpdateShader->SetBoneCount(iBoneCount);
@@ -151,6 +145,7 @@ void CAnimator3D::UpdateData()
 
 	// t30 레지스터에 최종행렬 데이터(구조버퍼) 바인딩
 	m_pBoneFinalMatBuffer->UpdateData(30);
+	m_pBoneFrameMatBuffer->GetData(m_vecFinalBoneMat.data());
 }
 
 void CAnimator3D::ClearData()
@@ -175,8 +170,18 @@ void CAnimator3D::check_mesh(Ptr<CMesh> _pMesh)
 	UINT iBoneCount = _pMesh->GetBoneCount();
 	if (m_pBoneFinalMatBuffer->GetElementCount() != iBoneCount)
 	{
-		m_pBoneFinalMatBuffer->Create(sizeof(Matrix), iBoneCount, SB_READ_TYPE::READ_WRITE, false, nullptr);
+		m_pBoneFinalMatBuffer->Create(sizeof(Matrix), iBoneCount, SB_READ_TYPE::READ_WRITE, true, nullptr);
 	}
+
+	if (m_pBoneFrameMatBuffer->GetElementCount() != iBoneCount)
+	{
+		m_pBoneFrameMatBuffer->Create(sizeof(Matrix), iBoneCount, SB_READ_TYPE::READ_WRITE, true, nullptr);
+	}
+}
+
+float CAnimator3D::GetAnimLength(int _iClipIdx)
+{
+	return m_pVecClip->at(_iClipIdx).dTimeLength;
 }
 
 void CAnimator3D::Play(int _iClipIdx, int _iLoopCount)
@@ -217,6 +222,38 @@ void CAnimator3D::Stop()
 	m_bPlay			= false;
 	m_iCurLoopCount = 0;
 	SetClipTime(m_iCurClip, 0.f);
+}
+
+Matrix CAnimator3D::FindBoneMat(int _idx)
+{
+	Matrix mat = XMMatrixIdentity();
+
+	if (_idx < 0 || _idx >= (int)m_vecFinalBoneMat.size())
+	{
+		MessageBox(nullptr, L"해당하는 본이 없습니다", L"Can't Find Bone", MB_OK);
+		return mat;
+	}
+
+	mat = m_vecFinalBoneMat[_idx];
+	return mat;
+}
+
+Matrix CAnimator3D::FindBoneMat(const wstring& _strBoneName)
+{
+	Matrix mat = XMMatrixIdentity();
+	int	   idx = -1;
+
+	for (int i = 0; i < (int)m_pVecBones->size(); ++i)
+	{
+		if (_strBoneName == m_pVecBones->at(i).strBoneName)
+		{
+			idx = i;
+			break;
+		}
+	}
+
+	mat = FindBoneMat(idx);
+	return mat;
 }
 
 void CAnimator3D::SaveToFile(FILE* _pFile)

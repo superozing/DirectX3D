@@ -8,25 +8,147 @@
 #include <Engine/CMaterial.h>
 #include <Engine/CRenderComponent.h>
 
-#include <Engine\CLogMgr.h>
+#include <Engine/CKeyMgr.h>
+
 #include "CRoRStateMachine.h"
+#include "CPlayerController.h"
+#include "CSpringArm.h"
+
+static string state = "";
+static string cover = "";
 
 CPlayerScript::CPlayerScript()
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
-	, m_Speed(500.f)
+	, m_tStatus{}
+	, m_pSpringArm(nullptr)
 {
-	AppendScriptParam("Player Speed", SCRIPT_PARAM::FLOAT, &m_Speed);
+	// 테스트용
+	AppendScriptParam("CurState", SCRIPT_PARAM::STRING, (void*)&state);
+	AppendScriptParam("CoverType", SCRIPT_PARAM::STRING, (void*)&cover);
+
+	AppendScriptParam("IsDead", SCRIPT_PARAM::BOOL, &m_tStatus.IsDead, 0, 0, true);
+	AppendScriptParam("Damage", SCRIPT_PARAM::FLOAT, &m_tStatus.Damage);
+	AppendScriptParam("Health", SCRIPT_PARAM::FLOAT, &m_tStatus.curHealth);
+	AppendScriptParam("Stamina", SCRIPT_PARAM::FLOAT, &m_tStatus.curStamina);
+	AppendScriptParam("Defensive", SCRIPT_PARAM::FLOAT, &m_tStatus.Defensive);
+	AppendScriptParam("Avoid Rate", SCRIPT_PARAM::FLOAT, &m_tStatus.AvoidPercent);
+	AppendScriptParam("Critical Rate", SCRIPT_PARAM::FLOAT, &m_tStatus.CriticalPercent);
+	AppendScriptParam("Critical Damage", SCRIPT_PARAM::FLOAT, &m_tStatus.CriticalDamage);
+	AppendScriptParam("MoveSpeed", SCRIPT_PARAM::FLOAT, &m_tStatus.MoveSpeed);
+	AppendScriptParam("AttackMoveSpeed", SCRIPT_PARAM::FLOAT, &m_tStatus.AttackMoveSpeed);
+
+#pragma region StateMachineInit
+
+	// 스테이트 초기화
 	m_FSM = new CRoRStateMachine<CPlayerScript>(this, (UINT)PLAYER_STATE::END);
 
-	m_FSM->SetCallbacks((UINT)PLAYER_STATE::NORMAL, ToString(magic_enum::enum_name(PLAYER_STATE::NORMAL)),
-						&CPlayerScript::NormalUpdate, &CPlayerScript::NormalBegin, &CPlayerScript::NormalEnd, nullptr);
-	m_FSM->SetCallbacks((UINT)PLAYER_STATE::ATTACK, ToString(magic_enum::enum_name(PLAYER_STATE::ATTACK)),
-						&CPlayerScript::AttackUpdate, &CPlayerScript::AttackBegin, &CPlayerScript::AttackEnd, nullptr);
+	FSMInit(PLAYER_STATE, CPlayerScript, NormalIdle);
+	FSMInit(PLAYER_STATE, CPlayerScript, NormalReload);
+	FSMInit(PLAYER_STATE, CPlayerScript, NormalAttackStart);
+	FSMInit(PLAYER_STATE, CPlayerScript, NormalAttackIng);
+	FSMInit(PLAYER_STATE, CPlayerScript, NormalAttackDelay);
+	FSMInit(PLAYER_STATE, CPlayerScript, NormalAttackEnd);
+
+	FSMInit(PLAYER_STATE, CPlayerScript, StandIdle);
+	FSMInit(PLAYER_STATE, CPlayerScript, StandReload);
+	FSMInit(PLAYER_STATE, CPlayerScript, StandAttackStart);
+	FSMInit(PLAYER_STATE, CPlayerScript, StandAttackIng);
+	FSMInit(PLAYER_STATE, CPlayerScript, StandAttackDelay);
+	FSMInit(PLAYER_STATE, CPlayerScript, StandAttackEnd);
+
+	FSMInit(PLAYER_STATE, CPlayerScript, KneelIdle);
+	FSMInit(PLAYER_STATE, CPlayerScript, KneelReload);
+	FSMInit(PLAYER_STATE, CPlayerScript, KneelAttackStart);
+	FSMInit(PLAYER_STATE, CPlayerScript, KneelAttackIng);
+	FSMInit(PLAYER_STATE, CPlayerScript, KneelAttackDelay);
+	FSMInit(PLAYER_STATE, CPlayerScript, KneelAttackEnd);
+
+	FSMInit(PLAYER_STATE, CPlayerScript, MoveStartNormal);
+	FSMInit(PLAYER_STATE, CPlayerScript, MoveStartStand);
+	FSMInit(PLAYER_STATE, CPlayerScript, MoveStartKneel);
+	FSMInit(PLAYER_STATE, CPlayerScript, MoveEndNormal);
+	FSMInit(PLAYER_STATE, CPlayerScript, MoveEndStand);
+	FSMInit(PLAYER_STATE, CPlayerScript, MoveEndKneel);
+	FSMInit(PLAYER_STATE, CPlayerScript, MoveIng);
+	FSMInit(PLAYER_STATE, CPlayerScript, MoveJump);
+
+	FSMInit(PLAYER_STATE, CPlayerScript, VitalDeath);
+	FSMInit(PLAYER_STATE, CPlayerScript, VitalPanic);
+	FSMInit(PLAYER_STATE, CPlayerScript, VitalDying);
+	FSMInit(PLAYER_STATE, CPlayerScript, VictoryStart);
+	FSMInit(PLAYER_STATE, CPlayerScript, VictoryEnd);
+
+	FSMInit(PLAYER_STATE, CPlayerScript, SkillDash);
+	FSMInit(PLAYER_STATE, CPlayerScript, SkillThrow);
+	FSMInit(PLAYER_STATE, CPlayerScript, SkillCallsign);
+	FSMInit(PLAYER_STATE, CPlayerScript, SkillEX);
+
+	FSMInit(PLAYER_STATE, CPlayerScript, FormationIdle);
+
+#pragma endregion
+
+	SpringArmInfo info;
+	info.Type								 = true;
+	info.fMaxDistance						 = 250.f;
+	info.fCamSpeed							 = 50.f;
+	info.fCamRotSpeed						 = 20.f;
+	info.vDir								 = Vec3(0.f, 0.4f, -1.f);
+	info.vOffsetPos							 = Vec2(150.f, 250.f);
+	m_mSpringInfos[PLAYER_STATE::NormalIdle] = info;
+
+	info.Type										= false;
+	info.fMaxDistance								= 150.f;
+	info.fCamSpeed									= 30.f;
+	info.fCamRotSpeed								= 20.f;
+	info.vDir										= Vec3(0.f, 0.4f, -1.f);
+	info.vOffsetPos									= Vec2(150.f, 200.f);
+	m_mSpringInfos[PLAYER_STATE::NormalAttackStart] = info;
+
+	info.Type									  = false;
+	info.fMaxDistance							  = 250.f;
+	info.fCamSpeed								  = 30.f;
+	info.fCamRotSpeed							  = 20.f;
+	info.vDir									  = Vec3(0.f, 0.4f, -1.f);
+	info.vOffsetPos								  = Vec2(150.f, 250.f);
+	m_mSpringInfos[PLAYER_STATE::NormalAttackEnd] = info;
+
+	info.Type								= true;
+	info.fMaxDistance						= 350.f;
+	info.fCamSpeed							= 30.f;
+	info.fCamRotSpeed						= 20.f;
+	info.vDir								= Vec3(-0.4f, 0.f, -1.f);
+	info.vOffsetPos							= Vec2(350.f, 250.f);
+	m_mSpringInfos[PLAYER_STATE::StandIdle] = info;
+
+	info.Type									   = true;
+	info.fMaxDistance							   = 150.f;
+	info.fCamSpeed								   = 30.f;
+	info.fCamRotSpeed							   = 20.f;
+	info.vDir									   = Vec3(0.f, 0.f, -1.f);
+	info.vOffsetPos								   = Vec2(300.f, 200.f);
+	m_mSpringInfos[PLAYER_STATE::StandAttackStart] = info;
+
+	info.Type								= true;
+	info.fMaxDistance						= 150.f;
+	info.fCamSpeed							= 30.f;
+	info.fCamRotSpeed						= 20.f;
+	info.vDir								= Vec3(0.f, 0.f, -1.f);
+	info.vOffsetPos							= Vec2(200.f, 150.f);
+	m_mSpringInfos[PLAYER_STATE::KneelIdle] = info;
+
+	info.Type									   = false;
+	info.fMaxDistance							   = 150.f;
+	info.fCamSpeed								   = 30.f;
+	info.fCamRotSpeed							   = 20.f;
+	info.vDir									   = Vec3(0.f, 0.f, -1.f);
+	info.vOffsetPos								   = Vec2(300.f, 200.f);
+	m_mSpringInfos[PLAYER_STATE::KneelAttackStart] = info;
 }
 
 CPlayerScript::CPlayerScript(const CPlayerScript& _origin)
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
-	, m_Speed(_origin.m_Speed)
+	, m_tStatus(_origin.m_tStatus)
+	, m_mSpringInfos(_origin.m_mSpringInfos)
 {
 	m_FSM = _origin.m_FSM->Clone(this);
 }
@@ -40,144 +162,126 @@ CPlayerScript::~CPlayerScript()
 	}
 }
 
-static string state = "";
-void		  CPlayerScript::begin()
+#include <Engine/CRenderMgr.h>
+
+void CPlayerScript::begin()
 {
+	auto vecChild = GetOwner()->GetChild();
+	for (size_t i = 0; i < vecChild.size(); i++)
+	{
+		m_pSpringArm = vecChild[i]->GetScript<CSpringArm>();
+		if (m_pSpringArm)
+			break;
+	}
+
+	if (m_pSpringArm)
+		m_pSpringArm->SetTargetObject(CRenderMgr::GetInst()->GetMainCam()->GetOwner());
+
 	m_FSM->Begin();
-	AppendScriptParam("CurState", SCRIPT_PARAM::STRING, (void*)&state);
-	// Ptr<CTexture> pAltasTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\link.png", L"texture\\link.png");
-	// Animator2D()->Create(L"IDLE_LEFT", pAltasTex, Vec2(0.f, 130.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f,
-	// 200.f), 3, 10); Animator2D()->Create(L"IDLE_RIGHT", pAltasTex, Vec2(0.f, 390.f), Vec2(120.f, 130.f), Vec2(0.f,
-	// 0.f), Vec2(200.f, 200.f), 3, 10);
-
-	// Animator2D()->Create(L"MOVE_UP", pAltasTex, Vec2(0.f, 780.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f,
-	// 200.f), 10, 20); Animator2D()->Create(L"MOVE_DOWN", pAltasTex, Vec2(0.f, 520.f), Vec2(120.f, 130.f), Vec2(0.f,
-	// 0.f), Vec2(200.f, 200.f), 10, 20); Animator2D()->Create(L"MOVE_LEFT", pAltasTex, Vec2(0.f, 650.f), Vec2(120.f,
-	// 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 10, 20); Animator2D()->Create(L"MOVE_RIGHT", pAltasTex, Vec2(0.f,
-	// 910.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 10, 20);
-
-	// GetRenderComponent()->GetDynamicMaterial(0);
-
-	// m_Missile = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"MissilePrefab");
-	// m_Missile = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\missile.pref", L"prefab\\missile.pref");
 }
-
-#include "CSpringArm.h"
 
 void CPlayerScript::tick()
 {
 	m_FSM->Update();
 	state = magic_enum::enum_name((PLAYER_STATE)m_FSM->GetCurState());
+	cover = magic_enum::enum_name((CoverType)GetCoverType());
 
-	// TEST : 스프링 암 정보 저장 세팅 테스트
-	if (KEY_TAP(KEY::_1))
+	CameraRotation();
+	NormalMove();
+
+	// 엄폐 판정 할 수 있게되면 지울 함수
+	SwitchCoverType();
+}
+
+void CPlayerScript::CameraRotation()
+{
+	auto state = m_FSM->GetCurState();
+	if (state != (int)PLAYER_STATE::NormalIdle && state != (int)PLAYER_STATE::NormalReload &&
+		state != (int)PLAYER_STATE::NormalAttackStart && state != (int)PLAYER_STATE::NormalAttackDelay &&
+		state != (int)PLAYER_STATE::NormalAttackIng && state != (int)PLAYER_STATE::NormalAttackEnd &&
+		state != (int)PLAYER_STATE::MoveStartNormal && state != (int)PLAYER_STATE::MoveEndNormal &&
+		state != (int)PLAYER_STATE::MoveIng)
+		return;
+
+	Vec3 vRot		= Transform()->GetRelativeRotation();
+	Vec2 vMouseDiff = CKeyMgr::GetInst()->GetMouseDrag();
+	if (vMouseDiff.x > 0.f)
+		vRot.y += CPlayerController::Sensitivity * DT;
+	else if (vMouseDiff.x < 0.f)
+		vRot.y -= CPlayerController::Sensitivity * DT;
+
+	if (m_pSpringArm && m_pSpringArm->IsActivate())
 	{
-		auto sa	  = GetOwner()->GetScript<CSpringArm>();
-		auto info = sa->GetInfo();
-		info.vDir = Vec3(1.f, 0.f, 1.f);
-		info.vOffset;
-		info.vDirOffset;
-		info.fDistance	  = 1000.f;
-		info.fCamSpeed	  = 30.f;
-		info.fCamRotSpeed = 20.f;
-		info.Type		  = true;
-		sa->SetInfo(info);
-	}
-	if (KEY_TAP(_2))
-	{
-		auto sa	  = GetOwner()->GetScript<CSpringArm>();
-		auto info = sa->GetInfo();
-		info.vDir = Vec3(0.f, 1.f, 1.f);
-		info.vOffset;
-		info.vDirOffset;
-		info.fDistance	  = 500.f;
-		info.fCamSpeed	  = 20.f;
-		info.fCamRotSpeed = 20.f;
-		info.Type		  = true;
-		sa->SetInfo(info);
-	}
-	// 스프링 암 테스트 끝
+		float fYSpeed = 100.f;
+		Vec3  vOffset = m_pSpringArm->GetDirOffset();
+		if (vMouseDiff.y > 0.f)
+			vOffset.y -= CPlayerController::Sensitivity * fYSpeed * DT;
+		else if (vMouseDiff.y < 0.f)
+			vOffset.y += CPlayerController::Sensitivity * fYSpeed * DT;
 
-	Vec3 vPos = Transform()->GetRelativePos();
-	Vec3 vRot = Transform()->GetRelativeRotation();
-
-	if (KEY_PRESSED(KEY::UP))
-		vPos.z += DT * m_Speed;
-	// if (KEY_TAP(KEY::UP))
-	//	Animator2D()->Play(L"MOVE_UP");
-	// if (KEY_RELEASED(UP))
-	//	Animator2D()->Play(L"IDLE_UP");
-
-	if (KEY_PRESSED(KEY::DOWN))
-		vPos.z -= DT * m_Speed;
-	// if (KEY_TAP(KEY::DOWN))
-	//	Animator2D()->Play(L"MOVE_DOWN");
-	// if (KEY_RELEASED(DOWN))
-	//	Animator2D()->Play(L"IDLE_DOWN");
-
-	if (KEY_PRESSED(KEY::LEFT))
-		vPos.x -= DT * m_Speed;
-	// if (KEY_TAP(KEY::LEFT))
-	//	Animator2D()->Play(L"MOVE_LEFT");
-	// if (KEY_RELEASED(LEFT))
-	//	Animator2D()->Play(L"IDLE_LEFT");
-
-	if (KEY_PRESSED(KEY::RIGHT))
-		vPos.x += DT * m_Speed;
-	// if (KEY_TAP(KEY::RIGHT))
-	//	Animator2D()->Play(L"MOVE_RIGHT");
-	// if (KEY_RELEASED(RIGHT))
-	//	Animator2D()->Play(L"IDLE_RIGHT");
-
-	if (KEY_PRESSED(KEY::X))
-	{
-		vRot.x += DT * XM_PI;
+		m_pSpringArm->SetDirOffset(vOffset);
 	}
 
-	if (KEY_PRESSED(KEY::Y))
-	{
-		vRot.y += DT * XM_PI;
-	}
+	Transform()->SetRelativeRotation(vRot);
+}
 
-	if (KEY_PRESSED(KEY::Z))
+void CPlayerScript::NormalMove()
+{
+	auto state = m_FSM->GetCurState();
+	if (state != (int)PLAYER_STATE::MoveStartNormal && state != (int)PLAYER_STATE::MoveEndNormal &&
+		state != (int)PLAYER_STATE::MoveIng)
+		return;
+
+	Vec3 vRight = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+	Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+	Vec3 vPos	= Transform()->GetRelativePos();
+
+	if (KEY_PRESSED(CPlayerController::Front))
 	{
-		vRot.z += DT * XM_PI;
+		vPos += vFront * m_tStatus.MoveSpeed * DT;
+	}
+	if (KEY_PRESSED(CPlayerController::Back))
+	{
+		vPos -= vFront * m_tStatus.MoveSpeed * DT;
+	}
+	if (KEY_PRESSED(CPlayerController::Right))
+	{
+		vPos += vRight * m_tStatus.MoveSpeed * DT;
+	}
+	if (KEY_PRESSED(CPlayerController::Left))
+	{
+		vPos -= vRight * m_tStatus.MoveSpeed * DT;
 	}
 
 	Transform()->SetRelativePos(vPos);
-	Transform()->SetRelativeRotation(vRot);
+}
 
-	if (KEY_TAP(KEY::SPACE))
+int CPlayerScript::SwitchToCoverTypeIdle()
+{
+	switch (GetCoverType())
 	{
-		Instantiate(m_Missile, Transform()->GetWorldPos(), 0);
-		// GamePlayStatic::Play2DSound(L"sound\\DM.wav", 1, 0.5f, false);
-		GamePlayStatic::Play2DBGM(L"sound\\DM.wav", 0.5f);
+	case CoverType::Normal:
+		return (int)PLAYER_STATE::NormalIdle;
+		break;
+	case CoverType::Stand:
+		return (int)PLAYER_STATE::StandIdle;
+		break;
+	case CoverType::Kneel:
+		return (int)PLAYER_STATE::KneelIdle;
+		break;
 	}
 
-	if (KEY_PRESSED(KEY::SPACE))
-	{
-		Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial(0);
-		if (nullptr != pMtrl)
-		{
-			pMtrl->SetScalarParam(SCALAR_PARAM::INT_0, 1);
-		}
-	}
-	else if (KEY_RELEASED(KEY::SPACE))
-	{
-		Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial(0);
-		if (nullptr != pMtrl)
-		{
-			pMtrl->SetScalarParam(SCALAR_PARAM::INT_0, 0);
-		}
-	}
+	return (int)PLAYER_STATE::END;
+}
 
-	// static float f = 0.f;
-	// f += DT * 0.3f;
-	// GetRenderComponent()->GetMaterial()->SetScalarParam(SCALAR_PARAM::FLOAT_1, f);
-
-	// GamePlayStatic::DrawDebugRect(Vec3(0.f, 0.f, 0.f), Vec3(200.f, 200.f, 1.f), Vec3(0.f, 0.f, 0.f),
-	// Vec3(1.f, 1.f, 1.f), true, 20); GamePlayStatic::DrawDebugCircle(Vec3(0.f, 0.f, 0.f), 200.f, Vec3(0.f, 1.f, 1.f),
-	// true);
+void CPlayerScript::SwitchCoverType()
+{
+	if (KEY_TAP(KEY::_1))
+		SetCoverType(CoverType::Normal);
+	if (KEY_TAP(KEY::_2))
+		SetCoverType(CoverType::Stand);
+	if (KEY_TAP(KEY::_3))
+		SetCoverType(CoverType::Kneel);
 }
 
 void CPlayerScript::BeginOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)
@@ -195,55 +299,8 @@ void CPlayerScript::EndOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, C
 
 void CPlayerScript::SaveToFile(FILE* _File)
 {
-	fwrite(&m_Speed, sizeof(float), 1, _File);
 }
 
 void CPlayerScript::LoadFromFile(FILE* _File)
-{
-	fread(&m_Speed, sizeof(float), 1, _File);
-}
-
-void CPlayerScript::NormalBegin()
-{
-}
-
-int CPlayerScript::NormalUpdate()
-{
-	if (KEY_TAP(KEY::C))
-	{
-		return (UINT)PLAYER_STATE::ATTACK;
-	}
-	else
-	{
-		return (UINT)PLAYER_STATE::NORMAL;
-	}
-}
-
-void CPlayerScript::NormalEnd()
-{
-}
-
-static float	   Att_Acctime	= 0.f;
-static const float Att_duration = 1.f;
-
-void CPlayerScript::AttackBegin()
-{
-	Att_Acctime = 0.f;
-}
-
-int CPlayerScript::AttackUpdate()
-{
-	Att_Acctime += DT;
-	if (Att_duration < Att_Acctime)
-	{
-		return (UINT)PLAYER_STATE::NORMAL;
-	}
-	else
-	{
-		return (UINT)PLAYER_STATE::ATTACK;
-	}
-}
-
-void CPlayerScript::AttackEnd()
 {
 }

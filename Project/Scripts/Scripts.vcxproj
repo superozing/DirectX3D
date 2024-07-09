@@ -176,6 +176,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CCrosshair.h" />
     <ClInclude Include="CDamageFont.h" />
     <ClInclude Include="CEditorCameraMoveScript.h" />
+    <ClInclude Include="CHaloScript.h" />
     <ClInclude Include="CImageUIScript.h" />
     <ClInclude Include="CLevelTransition.h" />
     <ClInclude Include="CMemoryPoolMgr.h" />
@@ -187,6 +188,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CPauseBtn.h" />
     <ClInclude Include="CPausePanel.h" />
     <ClInclude Include="CPlayerHP.h" />
+    <ClInclude Include="CPlayerController.h" />
     <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CProgressBar.h" />
     <ClInclude Include="CRenderMgrScript.h" />
@@ -195,6 +197,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CSkillIcon.h" />
     <ClInclude Include="CSpawnSpotScript.h" />
     <ClInclude Include="CSpringArm.h" />
+    <ClInclude Include="CStudentScript.h" />
     <ClInclude Include="CTimeMgrScript.h" />
     <ClInclude Include="CWeaponInfo.h" />
     <ClInclude Include="CWrapImage.h" />
@@ -212,6 +215,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CCrosshair.cpp" />
     <ClCompile Include="CDamageFont.cpp" />
     <ClCompile Include="CEditorCameraMoveScript.cpp" />
+    <ClCompile Include="CHaloScript.cpp" />
     <ClCompile Include="CImageUIScript.cpp" />
     <ClCompile Include="CLevelTransition.cpp" />
     <ClCompile Include="CMemoryPoolMgr.cpp" />
@@ -223,7 +227,9 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CPauseBtn.cpp" />
     <ClCompile Include="CPausePanel.cpp" />
     <ClCompile Include="CPlayerHP.cpp" />
+    <ClCompile Include="CPlayerController.cpp" />
     <ClCompile Include="CPlayerScript.cpp" />
+    <ClCompile Include="CPlayerScript_State.cpp" />
     <ClCompile Include="CProgressBar.cpp" />
     <ClCompile Include="CRenderMgrScript.cpp" />
     <ClCompile Include="CRoRStateMachine.cpp" />
@@ -231,6 +237,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CSkillIcon.cpp" />
     <ClCompile Include="CSpawnSpotScript.cpp" />
     <ClCompile Include="CSpringArm.cpp" />
+    <ClCompile Include="CStudentScript.cpp" />
     <ClCompile Include="CTimeMgrScript.cpp" />
     <ClCompile Include="CWeaponInfo.cpp" />
     <ClCompile Include="CWrapImage.cpp" />

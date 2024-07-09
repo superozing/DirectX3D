@@ -25,6 +25,8 @@
 #include <Scripts/CTimeMgrScript.h>
 #include <Scripts/CCameraEffect.h>
 #include <Scripts/CCameraMoveScript.h>
+#include <Scripts/CStudentScript.h>
+#include <Scripts/CHaloScript.h>
 
 #include <Engine/CAssetMgr.h>
 #include <Engine/CPrefab.h>
@@ -132,31 +134,29 @@ void CCreatePlayerTestLevel::CreateTempLevel()
 	{
 		/*Ptr<CMeshData> pMeshData = nullptr;
 		CGameObject*   pObj		 = nullptr;
+		CGameObject*   pObj2	 = nullptr;
 
-		pMeshData = CAssetMgr::GetInst()->LoadFBX(L"fbx\\serika_better2.fbx");
-		 pMeshData = CAssetMgr::GetInst()->LoadFBX(L"fbx\\serika_Merge.fbx");
-		pObj = pMeshData->Instantiate();
-		pObj->SetName(pMeshData->GetKey());
+		pMeshData = CAssetMgr::GetInst()->LoadFBX(L"fbx\\Azusa.fbx");
+		pObj	  = pMeshData->Instantiate();
+		pObj->SetName(L"Azusa");
+		pObj->AddComponent(new CStudentScript);
 		pObj->Transform()->SetRelativePos(Vec3(-100.f, -40.f, 100.f));
 		pObj->Transform()->SetRelativeScale(Vec3(300.f, 300.f, 300.f));
 		pObj->Transform()->SetRelativeRotation(Vec3(0.f, -XM_PI / 2.f, 0.f));
 
-		pTempLevel->AddObject(pObj, 0, false);*/
+		pMeshData = CAssetMgr::GetInst()->LoadFBX(L"fbx\\AzusaHalo.fbx");
+		pObj2	  = pMeshData->Instantiate();
+		pObj2->SetName(L"Halo");
+		pObj2->AddComponent(new CHaloScript);
+		pObj2->Transform()->SetRelativePos(Vec3(-92.f, 14.f, 66.f));
+		pObj2->Transform()->SetRelativeScale(Vec3(300.f, 300.f, 300.f));
+		Vec3 rot = Vec3(44.f, 11.f, 82.f);
+		rot.ToRadian();
+		pObj2->Transform()->SetRelativeRotation(rot);
+		pObj->AddChild(pObj2);
+
+		pTempLevel->AddObject(pObj, 0, false);
 	}
-
-	//{
-	//	Ptr<CMeshData> pMeshData = nullptr;
-	//	CGameObject* pObj = nullptr;
-
-	//	pMeshData = CAssetMgr::GetInst()->LoadFBX(L"fbx\\serika_Merge.fbx");
-	//	pObj = pMeshData->Instantiate();
-	//	pObj->SetName(pMeshData->GetKey());
-	//	pObj->Transform()->SetRelativePos(Vec3(200.f, -40.f, 100.f));
-	//	pObj->Transform()->SetRelativeScale(Vec3(300.f, 300.f, 300.f));
-	//	pObj->Transform()->SetRelativeRotation(Vec3(0.f, -XM_PI / 2.f, 0.f));
-
-	//	pTempLevel->AddObject(pObj, 0, false);
-	//}
 
 	GamePlayStatic::ChangeLevel(pTempLevel, LEVEL_STATE::STOP);
 
