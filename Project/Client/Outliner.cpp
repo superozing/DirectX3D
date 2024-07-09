@@ -70,7 +70,8 @@ void Outliner::render_update()
 
 	CheckCopy();
 
-	IsFilteredNode(m_Tree->GetRootNode());
+	if (m_Tree->GetRootNode())
+		IsFilteredNode(m_Tree->GetRootNode());
 }
 
 void Outliner::enter()

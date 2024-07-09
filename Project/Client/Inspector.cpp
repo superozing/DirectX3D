@@ -272,6 +272,11 @@ int Inspector::PrefabLayer()
 	int LayerIdx = m_TargetObject->GetLayerIdx();
 	int PrevIdx	 = LayerIdx;
 
+	if (LayerIdx == -1)
+		m_TargetObject->m_iLayerIdx = 0;
+
+	LayerIdx = m_TargetObject->GetLayerIdx();
+
 	ImGui::Text("Layer");
 	ImGui::SameLine();
 

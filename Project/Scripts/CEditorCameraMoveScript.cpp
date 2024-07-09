@@ -18,7 +18,8 @@ CEditorCameraMoveScript::~CEditorCameraMoveScript()
 
 void CEditorCameraMoveScript::tick()
 {
-	if (CLevelMgr::GetInst()->GetCurrentLevel()->GetState() != LEVEL_STATE::STOP)
+	if (!CLevelMgr::GetInst()->GetCurrentLevel() ||
+		CLevelMgr::GetInst()->GetCurrentLevel()->GetState() != LEVEL_STATE::STOP)
 		return;
 
 	if (KEY_TAP(KEY::P))

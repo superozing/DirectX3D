@@ -19,9 +19,6 @@
     <ClInclude Include="CMonsterScript.h">
       <Filter>Scripts\Lecture</Filter>
     </ClInclude>
-    <ClInclude Include="CPlayerScript.h">
-      <Filter>Scripts\Lecture</Filter>
-    </ClInclude>
     <ClInclude Include="CCameraMoveScript.h">
       <Filter>Scripts\Manager\Camera</Filter>
     </ClInclude>
@@ -82,13 +79,6 @@
     <ClInclude Include="CPhysXMgrScript.h">
       <Filter>Scripts\Manager\PhysXMgr</Filter>
     </ClInclude>
-    <ClInclude Include="CPlayerController.h" />
-    <ClInclude Include="CStudentScript.h">
-      <Filter>Scripts\Character</Filter>
-    </ClInclude>
-    <ClInclude Include="CHaloScript.h">
-      <Filter>Scripts\Character</Filter>
-    </ClInclude>
     <ClInclude Include="CSkillIcon.h">
       <Filter>Scripts\UI\ProgressBar\SkillIcon</Filter>
     </ClInclude>
@@ -107,6 +97,16 @@
     <ClInclude Include="CMemoryPoolMgr.h">
       <Filter>Scripts\Manager\MemoryPool</Filter>
     </ClInclude>
+    <ClInclude Include="CHaloScript.h">
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CStudentScript.h">
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayerScript.h">
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayerController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -125,9 +125,6 @@
       <Filter>Scripts\Lecture</Filter>
     </ClCompile>
     <ClCompile Include="CMonsterScript.cpp">
-      <Filter>Scripts\Lecture</Filter>
-    </ClCompile>
-    <ClCompile Include="CPlayerScript.cpp">
       <Filter>Scripts\Lecture</Filter>
     </ClCompile>
     <ClCompile Include="CCameraMoveScript.cpp">
@@ -181,14 +178,6 @@
     <ClCompile Include="CPhysXMgrScript.cpp">
       <Filter>Scripts\Manager\PhysXMgr</Filter>
     </ClCompile>
-    <ClCompile Include="CPlayerScript_State.cpp">
-      <Filter>Scripts\Lecture</Filter>
-    <ClCompile Include="CStudentScript.cpp">
-      <Filter>Scripts\Character</Filter>
-    </ClCompile>
-    <ClCompile Include="CHaloScript.cpp">
-      <Filter>Scripts\Character</Filter>
-    </ClCompile>
     <ClCompile Include="CMonsterHP.cpp">
       <Filter>Scripts\UI\ProgressBar\MonsterHP</Filter>
     </ClCompile>
@@ -215,6 +204,18 @@
     </ClCompile>
     <ClCompile Include="CMemoryPoolMgr.cpp">
       <Filter>Scripts\Manager\MemoryPool</Filter>
+    </ClCompile>
+    <ClCompile Include="CHaloScript.cpp">
+      <Filter>Scripts\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CStudentScript.cpp">
+      <Filter>Scripts\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerScript.cpp">
+      <Filter>Scripts\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerScript_State.cpp">
+      <Filter>Scripts\Player</Filter>
     </ClCompile>
     <ClCompile Include="CPlayerController.cpp" />
   </ItemGroup>
@@ -302,6 +303,9 @@
     </Filter>
     <Filter Include="Scripts\Manager\MemoryPool">
       <UniqueIdentifier>{3ff61ac7-4bc8-4dcf-83a8-b5f5804064c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Player">
+      <UniqueIdentifier>{996f1445-7d4f-4fb9-9dd7-21e6a4e6d11b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

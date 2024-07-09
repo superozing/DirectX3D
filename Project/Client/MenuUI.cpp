@@ -186,6 +186,7 @@ void MenuUI::Level()
 		if (ImGui::MenuItem("Stop", nullptr, nullptr, StopEnable))
 		{
 			CLevel* pLoadedLevel = CLevelSaveLoad::LoadLevel(L"Level//temp.lv");
+			pLoadedLevel->SetRelativePath(CLevelMgr::GetInst()->GetCurrentLevel()->GetRelativePath());
 			GamePlayStatic::ChangeLevel(pLoadedLevel, LEVEL_STATE::STOP);
 
 			Outliner* pOutliner = (Outliner*)CImGuiMgr::GetInst()->FindUI("##Outliner");
