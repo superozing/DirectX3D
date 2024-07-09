@@ -15,11 +15,11 @@ CEditorCameraMoveScript::CEditorCameraMoveScript()
 CEditorCameraMoveScript::~CEditorCameraMoveScript()
 {
 }
+#include <Engine/CRenderMgr.h>
 
 void CEditorCameraMoveScript::tick()
 {
-	if (!CLevelMgr::GetInst()->GetCurrentLevel() ||
-		CLevelMgr::GetInst()->GetCurrentLevel()->GetState() != LEVEL_STATE::STOP)
+	if (!CLevelMgr::GetInst()->GetCurrentLevel())
 		return;
 
 	if (KEY_TAP_ANY(KEY::P))
@@ -93,9 +93,6 @@ void CEditorCameraMoveScript::MoveOrthographic()
 
 void CEditorCameraMoveScript::MovePerspective()
 {
-	if (CLevelMgr::GetInst()->GetCurrentLevel()->GetState() != LEVEL_STATE::STOP)
-		return;
-
 	Vec3 vPos = Transform()->GetRelativePos();
 
 	Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
@@ -141,7 +138,8 @@ void CEditorCameraMoveScript::MovePerspective()
 
 	if (KEY_PRESSED_ANY(KEY::RBTN))
 	{
-		Vec2 vDrag = CKeyMgr::GetInst()->GetMouseDrag();
+		Vec2 vDrag = CRenderMgr::GetInst()->IsEscape() ? CKeyMgr::GetInst()->GetMouseDrag_Editor()
+													   : CKeyMgr::GetInst()->GetMouseDrag();
 		Vec3 vRot  = Transform()->GetRelativeRotation();
 		vRot.y += vDrag.x * DT_ENGINE * XM_PI * 4.f;
 		vRot.x += vDrag.y * DT_ENGINE * XM_PI * 4.f;
