@@ -76,6 +76,9 @@ void CEngine::progress()
 
 	// Level Update
 	CLevelMgr::GetInst()->tick();
+
+	// Font Render
+	CFontMgr::GetInst()->render();
 	CTimeMgr::GetInst()->render();
 	CPhysXMgr::GetInst()->tick();
 

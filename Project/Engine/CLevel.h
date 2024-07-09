@@ -10,6 +10,7 @@ private:
 	CLayer*		m_arrLayer[(UINT)LAYER::LAYER_MAX];
 	LEVEL_STATE m_State;
 	string		m_strRelativePath;
+	bool		m_isActiveUIModal;
 
 public:
 	void begin();
@@ -33,6 +34,9 @@ public:
 
 	void   SetRelativePath(const string& _str) { m_strRelativePath = _str; }
 	string GetRelativePath() { return m_strRelativePath; }
+
+	void		ChangeModalState(bool _isActiveUIModal) { m_isActiveUIModal = _isActiveUIModal; }
+	bool		GetModalState() const { return m_isActiveUIModal; }
 
 private:
 	void clear();

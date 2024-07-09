@@ -44,20 +44,20 @@ void CBtnUIScript::tick()
 
 	// CLogMgr::GetInst()->AddLog(Log_Level::INFO, to_wstring(Transform()->GetWorldPos().x) +
 	// to_wstring(Transform()->GetWorldPos().y));
+	if (m_AllowTexSet && m_CurImg.Get())
+		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_CurImg);
+	else
+		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, nullptr);
 }
 
 void CBtnUIScript::OnHovered()
 {
 	m_CurImg = m_HoverImg;
-	if (m_AllowTexSet && m_CurImg.Get())
-		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_CurImg);
 }
 
 void CBtnUIScript::OnUnHovered()
 {
 	m_CurImg = m_NormalImg;
-	if (m_AllowTexSet && m_CurImg.Get())
-		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_CurImg);
 }
 
 void CBtnUIScript::MouseOn()
@@ -67,30 +67,27 @@ void CBtnUIScript::MouseOn()
 void CBtnUIScript::LBtnDown()
 {
 	m_CurImg = m_PressedImg;
-	if (m_AllowTexSet && m_CurImg.Get())
-		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_CurImg);
 }
 
 void CBtnUIScript::LBtnUp()
 {
 	m_CurImg = m_NormalImg;
-	if (m_AllowTexSet && m_CurImg.Get())
-		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_CurImg);
 }
 
 void CBtnUIScript::LBtnClicked()
 {
 	m_CurImg = m_NormalImg;
-	if (m_AllowTexSet && m_CurImg.Get())
-		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_CurImg);
+	
+	if (m_AllowCallFunc)
+	{
+		// CallBack
+		if (m_CallBackFunc)
+			m_CallBackFunc();
 
-	// CallBack
-	if (m_CallBackFunc)
-		m_CallBackFunc();
-
-	// Delegate
-	if (m_Inst && m_Delegate)
-		(m_Inst->*m_Delegate)();
+		// Delegate
+		if (m_Inst && m_Delegate)
+			(m_Inst->*m_Delegate)();
+	}
 }
 
 void CBtnUIScript::SaveToFile(FILE* _File)

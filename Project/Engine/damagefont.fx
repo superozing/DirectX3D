@@ -1,17 +1,11 @@
-#ifndef _DYNAMICUI
-#define _DYNAMICUI
+#ifndef _DAMAGEFONT
+#define _DAMAGEFONT
 
 #include "value.fx"
 #include "struct.fx"
 
-#define UseExpandCenter     g_bool_0
-#define UseUVxDiscard       g_bool_1
-#define UseMulColor         g_bool_2
-
-#define ExpandCenterRatio   g_float_0
-#define DiscardUVx          g_float_1
-
-#define MulColor         g_vec4_0
+#define DIGIT   g_int_0
+#define DAMAGE  g_int_1
 
 struct VS_IN
 {
@@ -28,7 +22,7 @@ struct VS_OUT
     uint InstID : FOG;
 };
 
-VS_OUT VS_DynamicUI(VS_IN _in)
+VS_OUT VS_DamageFont(VS_IN _in)
 {
     VS_OUT output = (VS_OUT) 0.f;
     
@@ -51,7 +45,7 @@ struct GS_OUT
 };
 
 [maxvertexcount(6)]
-void GS_DynamicUI(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStream)
+void GS_DamageFont(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStream)
 {
     GS_OUT output[4] = { (GS_OUT) 0.f, (GS_OUT) 0.f, (GS_OUT) 0.f, (GS_OUT) 0.f };
     
@@ -74,8 +68,8 @@ void GS_DynamicUI(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStream)
     output[3].vPosition = float4((vWorldScale.x * -0.5f), (vWorldScale.y * -0.5f), 0.f, 1.f);
     
     output[0].vUV = float2(0.f, 0.f);
-    output[1].vUV = float2(1.f, 0.f);
-    output[2].vUV = float2(1.f, 1.f);
+    output[1].vUV = float2(DIGIT, 0.f); // 자릿 수 판별을 쉽게 하기 위해서 UV x를 임의로 늘려놓음.
+    output[2].vUV = float2(DIGIT, 1.f); // 자릿 수 판별을 쉽게 하기 위해서 UV x를 임의로 늘려놓음.
     output[3].vUV = float2(0.f, 1.f);
     
     // 파티클의 ViewSpace 상에서의 중심 포지션 구하기
@@ -89,7 +83,6 @@ void GS_DynamicUI(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStream)
         
         output[i].InstID = _in[0].InstID;
     }
-      
     
     // 0 -- 1	     
 	// | \  |	     
@@ -106,57 +99,57 @@ void GS_DynamicUI(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStream)
         
 }
 
-float4 PS_DynamicUI(GS_OUT _in) : SV_Target
+float4 PS_DamageFont(GS_OUT _in) : SV_Target
 {
+    
+    // 예를 들어 10을 출력한다고 가정하고, 짜보자
+    // DIGIT : 2
+    // DAMAGE: 10
+    
+    // 알아내야 하는 것 
+    // 1. 현재 찍히는 픽셀의 UV값
+    //  0~DIGIT 사이의 값이 들어오니까 
+    //  10의 자리를 찍기 위해서는 입력 UV가 0 ~ 1 여야 하고
+    //  1의 자리를 찍기 위해서는 입력 UV가 1 ~ 2 어야 한다.
+    //  일단 10의 자리를 먼저 떠올려보자.
+    //  첫(가장 큰) 번째 자릿수는 1이고, 입력 UV는 0~1이 들어오겠지?
+    
+    // 2. 현재 찍어야 하는 자릿수
+    //  현재 찍어야 하는 자릿수는 입력 UV의 x 값으로 판단할 수 있다.
+    //  예를 들어서 1보다 같거나 작으면 가장 첫 번째(큰) 자릿수
+    //  2보다 같거나 작으면 두 번째 자릿수.
+    
+    // 3. 현재 찍어야 하는 자릿수에 해당하는 숫자
+    //  일단 UV를 12등분 하면
+    //  0 ~ 1/12까지는 1, 1/12 ~ 2/12까지는 2... 9/12 ~ 10/12까지는 0이 나오겠죠?
+    //  만약 입력 UV가 0~1일 경우, 첫 자리를 찍음.
+    //  10의 (DIGIT - (n번째 자리)) 제곱을 DAMAGE와 / 하면 어떤 숫자를 찍어야 하는지 알 수 있고,
+    //  10^(2 - 1) / 10 = 1
+    //  
+    //  (찍어야 할 숫자) - 1 / 12 를 텍스쳐에서 가져올 UV로 맟추면 된다.
+    
+    
+    // 현재 UV에 해당하는 자릿수 
+    // 예를 들어, 다섯 자리 수가 있다면
+    // 10000의 자리는 1, 1000의 자리는 2, 100의 자리는 3...
+    int digitnum = trunc(_in.vUV.x) + 1;
+    
+
+    // 자릿수에 해당하는 숫자
+    int rendernum = (DAMAGE / pow(10, DIGIT - digitnum)) % 10;
+
+    float UVx = frac(_in.vUV.x);
+    
+    // 최종 샘플링할 UV좌표 계산
+    _in.vUV.x = rendernum == 0 ? (9 + UVx) / 12.f : (rendernum - 1 + UVx) / 12.f;
+    
     // 출력 색상
     float4 vOutColor = (float4) 0.f;
     
-    if (UseUVxDiscard && DiscardUVx < _in.vUV.x)
-        discard;
-    
-    // 중앙 연장 기능을 사용한다면 vUV 조정하기.
-    if (UseExpandCenter)
-    {
-        // 어떻게 float 하나를 가지고 중앙의 uv 값을 조절할 것인가?
-        
-        // 수식을 생각해보아요.
-        
-        // uv x가 
-        // 0.f ~ (0.5 - ExpandCenterRatio / 2) 사이면 0 ~ 0.5의 UVx로 보간
-        // (0.5 - ExpandCenterRatio / 2) ~ (0.5 + ExpandCenterRatio / 2) 사이면 0.5의 UVx로 고정
-        // (0.5 + ExpandCenterRatio / 2) ~ 1.f 사이면 0.5 ~ 1의 UVx로 보간
-        
-        float CenterUVMin = 0.5 - ExpandCenterRatio / 2.f;
-        float CenterUVMax = 0.5 + ExpandCenterRatio / 2.f;
-        
-        float UVx = _in.vUV.x;
-        
-        
-        if (UVx < CenterUVMin)
-        {
-            // 0 ~ CenterUVMin 사이의 비율 계산
-            float t = UVx / CenterUVMin;
-            _in.vUV.x = lerp(0.f, 0.5, t);
-
-        }
-        else if (UVx > CenterUVMax)
-        {
-            // 0 ~ CenterUVMax 사이의 비율 계산
-            float t = (UVx - CenterUVMax) / (1.f - CenterUVMax);
-            _in.vUV.x = lerp(0.5f, 1.f, t);
-
-        }
-        else
-        {
-            _in.vUV.x = 0.5f;
-        }
-    }
-    
     if (g_btex_0)
+    {
         vOutColor = g_tex_0.Sample(g_sam_0, _in.vUV);
-    
-    if (UseMulColor)
-        vOutColor *= MulColor;
+    }
     
     if (vOutColor.a < 0.001f)
         discard;

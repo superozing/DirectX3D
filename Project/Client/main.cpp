@@ -115,6 +115,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		GamePlayStatic::ChangeLevel(pLevel, LEVEL_STATE::STOP);
 	}
 
+	// CCreatePlayerTestLevel::CreateTempLevel();
+
+	// CUITempLevel::Init();
+	// CUITempLevel::CreateTempLevel();
+
 	// ImGui 초기화
 	CImGuiMgr::GetInst()->init(hWnd, DEVICE, CONTEXT);
 

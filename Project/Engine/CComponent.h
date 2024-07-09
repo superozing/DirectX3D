@@ -36,6 +36,7 @@ public:
 	inline class CDecal*		  Decal() { return GetOwner()->Decal(); }
 	inline class CLandScape*	  LandScape() { return GetOwner()->LandScape(); }
 	inline class CPhysX* PhysX() { return GetOwner()->PhysX(); }
+	inline class CFontRender*	  FontRender() { return GetOwner()->FontRender(); }
 
 	class CRenderComponent* GetRenderComponent() { return m_Owner->GetRenderComponent(); }
 	static bool				IsRenderComponent(COMPONENT_TYPE _Type);
