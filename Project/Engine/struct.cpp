@@ -8,6 +8,8 @@
 #define TagWorldDir "[WorldDir]"
 #define TagRadius "[Radius]"
 #define TagAngle "[Angle]"
+#define TagIsToon "[IsToon]"
+#define TagToonRange "[ToonRange]"
 
 ofstream& operator<<(ofstream& fout, const tLightInfo& info)
 {
@@ -35,6 +37,12 @@ ofstream& operator<<(ofstream& fout, const tLightInfo& info)
 
 	fout << TagAngle << endl;
 	fout << info.fAngle;
+
+	fout << TagIsToon << endl;
+	fout << info.ToonShading;
+
+	fout << TagToonRange << endl;
+	fout << info.vToonShadeRange;
 
 	return fout;
 }
@@ -72,6 +80,12 @@ ifstream& operator>>(ifstream& fin, tLightInfo& info)
 
 	Utils::GetLineUntilString(fin, TagAngle);
 	fin >> info.fAngle;
+
+	Utils::GetLineUntilString(fin, TagIsToon);
+	fin >> info.ToonShading;
+
+	Utils::GetLineUntilString(fin, TagToonRange);
+	fin >> info.vToonShadeRange;
 
 	return fin;
 }

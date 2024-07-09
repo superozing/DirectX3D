@@ -461,7 +461,7 @@ void CCamera::Merge()
 	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
 
 	static Ptr<CMesh>	  pRectMesh	 = CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect);
-	static Ptr<CMaterial> pMergeMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"MergeMtrl");
+	static Ptr<CMaterial> pMergeMtrl = CAssetMgr::GetInst()->Load<CMaterial>(MTRLOutLineMerge);
 
 	pMergeMtrl->UpdateData();
 	pRectMesh->render(0);
