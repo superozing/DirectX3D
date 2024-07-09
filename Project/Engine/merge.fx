@@ -93,13 +93,14 @@ float4 PS_Merge(VS_OUT _in) : SV_Target
     float MAP_CX = g_RenderResolution.x;
     float MAP_CY = g_RenderResolution.y;
     const float3 grayScale = float3(0.3, 0.59, 0.11);
-    const float threshold = g_float_0; // 외곽선 검출 임계값
+    const float threshold = 0.5f; //g_float_1; // 외곽선 검출 임계값
 
     float4 vOutColor = (float4) 0.f;
     float4 vColor = g_tex_0.Sample(g_sam_0, _in.vUV);
+    float fBlendIntence = 0.1f; //g_float_1;
 
     // Laplacian Edge Detection START
-    if (true == g_bool_0)
+    if (false)
     {
         float4 vColorBuff = 0;
         if (true == g_bool_3) // 5x5 커널 사용
@@ -119,12 +120,12 @@ float4 PS_Merge(VS_OUT _in) : SV_Target
         float gray = 1 - dot(vColorBuff.xyz, grayScale);
         float4 OutLine = float4(gray, gray, gray, 1) / divider;
         float blendFactor = saturate(gray / threshold);
-        vColor = (gray > threshold) ? vColor : lerp(vColor, OutLine, g_float_1);
+        vColor = (gray > threshold) ? vColor : lerp(vColor, OutLine, fBlendIntence);
     }
     // Laplacian Edge Detection END
 
     // sobel Edge Detection START
-    if (false == g_bool_0 && true == g_bool_1)
+    if (true)
     {
         float4 vColorBuffX = 0;
         float4 vColorBuffY = 0;
@@ -149,11 +150,11 @@ float4 PS_Merge(VS_OUT _in) : SV_Target
         float gray = 1 - sqrt(grayX * grayX + grayY * grayY);
         float4 OutLine = float4(gray, gray, gray, 1) / divider;
         float blendFactor = saturate(gray / threshold);
-        vColor = (gray > threshold) ? vColor : lerp(vColor, OutLine, g_float_1);
+        vColor = (gray > threshold) ? vColor : lerp(vColor, OutLine, fBlendIntence);
     }
     // sobel Edge Detection END
     
-    if (true == g_bool_2)
+    if (true)
     {
     // Gaussian Blur START
         const float blurKernel[9] =
