@@ -119,7 +119,7 @@ float4 PS_Merge(VS_OUT _in) : SV_Target
         float gray = 1 - dot(vColorBuff.xyz, grayScale);
         float4 OutLine = float4(gray, gray, gray, 1) / divider;
         float blendFactor = saturate(gray / threshold);
-        vColor = (gray > threshold) ? vColor : lerp(vColor, OutLine, blendFactor);
+        vColor = (gray > threshold) ? vColor : lerp(vColor, OutLine, g_float_1);
     }
     // Laplacian Edge Detection END
 
@@ -149,7 +149,7 @@ float4 PS_Merge(VS_OUT _in) : SV_Target
         float gray = 1 - sqrt(grayX * grayX + grayY * grayY);
         float4 OutLine = float4(gray, gray, gray, 1) / divider;
         float blendFactor = saturate(gray / threshold);
-        vColor = (gray > threshold) ? vColor : lerp(vColor, OutLine, blendFactor);
+        vColor = (gray > threshold) ? vColor : lerp(vColor, OutLine, g_float_1);
     }
     // sobel Edge Detection END
     
@@ -177,6 +177,7 @@ float4 PS_Merge(VS_OUT _in) : SV_Target
     float4 Emissive = g_tex_3.Sample(g_sam_0, _in.vUV);
         
     vOutColor = (vColor * (vDiffuse + Emissive)) + Specular;
+    //vOutColor = g_tex_4.Sample(g_sam_0, _in.vUV);
     vOutColor.a = 1.f;
     
     return vOutColor;
