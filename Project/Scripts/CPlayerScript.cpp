@@ -135,15 +135,15 @@ CPlayerScript::CPlayerScript()
 	info.fCamSpeed							= 30.f;
 	info.fCamRotSpeed						= 20.f;
 	info.vDir								= Vec3(-20.f, 180.f, 0.f);
-	info.vOffsetPos							= Vec2(200.f, 150.f);
+	info.vOffsetPos							= Vec2(100.f, 50.f);
 	m_mSpringInfos[PLAYER_STATE::KneelIdle] = info;
 
 	info.Type									   = false;
-	info.fMaxDistance							   = 150.f;
+	info.fMaxDistance							   = 70.f;
 	info.fCamSpeed								   = 30.f;
 	info.fCamRotSpeed							   = 20.f;
 	info.vDir									   = Vec3(-20.f, 180.f, 0.f);
-	info.vOffsetPos								   = Vec2(300.f, 200.f);
+	info.vOffsetPos								   = Vec2(100.f, 50.f);
 	m_mSpringInfos[PLAYER_STATE::KneelAttackStart] = info;
 
 #pragma endregion
