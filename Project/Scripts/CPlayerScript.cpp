@@ -192,6 +192,7 @@ void CPlayerScript::tick()
 
 	CameraMove();
 	NormalMove();
+	ChangeToMove();
 
 	// 엄폐 판정 할 수 있게되면 지울 함수
 	SwitchCoverType();
@@ -230,7 +231,8 @@ void CPlayerScript::CameraMove()
 		state == (int)PLAYER_STATE::KneelAttackStart || state == (int)PLAYER_STATE::KneelAttackDelay ||
 		state == (int)PLAYER_STATE::KneelAttackIng || state == (int)PLAYER_STATE::KneelAttackEnd ||
 		state == (int)PLAYER_STATE::MoveStartNormal || state == (int)PLAYER_STATE::MoveEndNormal ||
-		state == (int)PLAYER_STATE::MoveIng)
+		state == (int)PLAYER_STATE::MoveIng || state == (int)PLAYER_STATE::MoveEndStand ||
+		state == (int)PLAYER_STATE::MoveEndKneel)
 	{
 		if (m_pSpringArm && m_pSpringArm->IsActivate())
 		{
@@ -247,7 +249,8 @@ void CPlayerScript::CameraMove()
 				state == (int)PLAYER_STATE::StandAttackIng || state == (int)PLAYER_STATE::StandAttackEnd ||
 				state == (int)PLAYER_STATE::KneelIdle || state == (int)PLAYER_STATE::KneelReload ||
 				state == (int)PLAYER_STATE::KneelAttackStart || state == (int)PLAYER_STATE::KneelAttackDelay ||
-				state == (int)PLAYER_STATE::KneelAttackIng || state == (int)PLAYER_STATE::KneelAttackEnd)
+				state == (int)PLAYER_STATE::KneelAttackIng || state == (int)PLAYER_STATE::KneelAttackEnd ||
+				state == (int)PLAYER_STATE::MoveEndStand || state == (int)PLAYER_STATE::MoveEndKneel)
 			{
 				if (vMouseDiff.x > 0.f)
 					vOffset.x += CPlayerController::Sensitivity * CamRotSpeed * DT;
@@ -267,8 +270,7 @@ void CPlayerScript::CameraMove()
 void CPlayerScript::NormalMove()
 {
 	auto state = m_FSM->GetCurState();
-	if (state != (int)PLAYER_STATE::MoveStartNormal && state != (int)PLAYER_STATE::MoveEndNormal &&
-		state != (int)PLAYER_STATE::MoveIng)
+	if (state != (int)PLAYER_STATE::MoveIng)
 		return;
 
 	Vec3 vRight = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
@@ -311,6 +313,30 @@ int CPlayerScript::SwitchToCoverTypeIdle()
 	}
 
 	return (int)PLAYER_STATE::END;
+}
+
+void CPlayerScript::ChangeToMove()
+{
+	auto state = m_FSM->GetCurState();
+
+	bool bTap = state == (int)PLAYER_STATE::NormalAttackStart || state == (int)PLAYER_STATE::NormalAttackDelay ||
+				state == (int)PLAYER_STATE::NormalAttackIng || state == (int)PLAYER_STATE::StandAttackStart ||
+				state == (int)PLAYER_STATE::StandAttackDelay || state == (int)PLAYER_STATE::StandAttackIng ||
+				state == (int)PLAYER_STATE::KneelAttackStart || state == (int)PLAYER_STATE::KneelAttackDelay ||
+				state == (int)PLAYER_STATE::KneelAttackIng;
+	bool bPress = state == (int)PLAYER_STATE::NormalIdle || state == (int)PLAYER_STATE::StandIdle ||
+				  state == (int)PLAYER_STATE::KneelIdle || state == (int)PLAYER_STATE::MoveEndNormal ||
+				  state == (int)PLAYER_STATE::MoveEndStand || state == (int)PLAYER_STATE::MoveEndKneel ||
+				  state == (int)PLAYER_STATE::NormalAttackEnd || state == (int)PLAYER_STATE::StandAttackEnd ||
+				  state == (int)PLAYER_STATE::KneelAttackEnd;
+
+	if ((bPress && (KEY_PRESSED(CPlayerController::Front) || KEY_PRESSED(CPlayerController::Right) ||
+					KEY_PRESSED(CPlayerController::Back) || KEY_PRESSED(CPlayerController::Left))) ||
+		((bTap || bPress) && (KEY_TAP(CPlayerController::Front) || KEY_TAP(CPlayerController::Right) ||
+							  KEY_TAP(CPlayerController::Back) || KEY_TAP(CPlayerController::Left))))
+	{
+		m_FSM->SetCurState((int)PLAYER_STATE::MoveIng);
+	}
 }
 
 void CPlayerScript::SwitchCoverType()

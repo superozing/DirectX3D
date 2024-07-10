@@ -348,6 +348,7 @@ private:
 	void CameraMove();
 	void NormalMove();
 	int	 SwitchToCoverTypeIdle();
+	void ChangeToMove();
 
 private:
 	// Test 함수

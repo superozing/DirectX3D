@@ -7,12 +7,6 @@
 
 #include "CPlayerController.h"
 
-#define MoveStartCondition                                                              \
-	(KEY_TAP(CPlayerController::Front) || KEY_PRESSED(CPlayerController::Front)) ||     \
-		(KEY_TAP(CPlayerController::Back) || KEY_PRESSED(CPlayerController::Back)) ||   \
-		(KEY_TAP(CPlayerController::Right) || KEY_PRESSED(CPlayerController::Right)) || \
-		(KEY_TAP(CPlayerController::Left) || KEY_PRESSED(CPlayerController::Left))
-
 #define MoveEndCondition                                                                  \
 	(KEY_RELEASED(CPlayerController::Front) || KEY_NONE(CPlayerController::Front)) &&     \
 		(KEY_RELEASED(CPlayerController::Back) || KEY_NONE(CPlayerController::Back)) &&   \
@@ -40,12 +34,6 @@ int CPlayerScript::NormalIdleUpdate()
 	if (KEY_TAP(CPlayerController::Zoom) || KEY_PRESSED(CPlayerController::Zoom))
 	{
 		return (int)PLAYER_STATE::NormalAttackStart;
-	}
-
-	// 이동
-	if (MoveStartCondition)
-	{
-		return (int)PLAYER_STATE::MoveIng;
 	}
 
 	// 스킬
@@ -151,9 +139,9 @@ void CPlayerScript::NormalAttackEndBegin()
 int CPlayerScript::NormalAttackEndUpdate()
 {
 	if (!Animator3D()->IsPlayable())
-	{
 		return (int)PLAYER_STATE::NormalIdle;
-	}
+	if (KEY_TAP(CPlayerController::Zoom))
+		return (int)PLAYER_STATE::NormalAttackStart;
 	return m_FSM->GetCurState();
 }
 
@@ -168,7 +156,7 @@ void CPlayerScript::NormalAttackEndEnd()
 void CPlayerScript::StandIdleBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::StandIdle);
-	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::StandIdle]);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::StandIdle], 0.1f);
 }
 
 int CPlayerScript::StandIdleUpdate()
@@ -187,11 +175,6 @@ int CPlayerScript::StandIdleUpdate()
 		return (int)PLAYER_STATE::StandAttackStart;
 	}
 
-	// 이동
-	if (MoveStartCondition)
-	{
-		return (int)PLAYER_STATE::MoveIng;
-	}
 	return m_FSM->GetCurState();
 }
 
@@ -290,6 +273,8 @@ int CPlayerScript::StandAttackEndUpdate()
 {
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::StandIdle;
+	if (KEY_TAP(CPlayerController::Zoom))
+		return (int)PLAYER_STATE::StandAttackStart;
 
 	return m_FSM->GetCurState();
 }
@@ -322,12 +307,6 @@ int CPlayerScript::KneelIdleUpdate()
 	if (KEY_TAP(CPlayerController::Zoom) || KEY_PRESSED(CPlayerController::Zoom))
 	{
 		return (int)PLAYER_STATE::KneelAttackStart;
-	}
-
-	// 이동
-	if (MoveStartCondition)
-	{
-		return (int)PLAYER_STATE::MoveIng;
 	}
 
 	if (KEY_TAP(CPlayerController::Jump))
@@ -433,6 +412,8 @@ int CPlayerScript::KneelAttackEndUpdate()
 {
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::KneelIdle;
+	if (KEY_TAP(CPlayerController::Zoom))
+		return (int)PLAYER_STATE::KneelAttackStart;
 
 	return m_FSM->GetCurState();
 }
@@ -517,6 +498,11 @@ int CPlayerScript::MoveEndNormalUpdate()
 {
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::NormalIdle;
+
+	// 사격 준비
+	if (KEY_TAP(CPlayerController::Zoom) || KEY_PRESSED(CPlayerController::Zoom))
+		return (int)PLAYER_STATE::NormalAttackStart;
+
 	return m_FSM->GetCurState();
 }
 
@@ -534,6 +520,9 @@ int CPlayerScript::MoveEndStandUpdate()
 {
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::StandIdle;
+	// 사격 준비
+	if (KEY_TAP(CPlayerController::Zoom) || KEY_PRESSED(CPlayerController::Zoom))
+		return (int)PLAYER_STATE::StandAttackStart;
 	return m_FSM->GetCurState();
 }
 
@@ -551,6 +540,9 @@ int CPlayerScript::MoveEndKneelUpdate()
 {
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::KneelIdle;
+	// 사격 준비
+	if (KEY_TAP(CPlayerController::Zoom) || KEY_PRESSED(CPlayerController::Zoom))
+		return (int)PLAYER_STATE::KneelAttackStart;
 	return m_FSM->GetCurState();
 }
 
@@ -561,6 +553,7 @@ void CPlayerScript::MoveEndKneelEnd()
 void CPlayerScript::MoveIngBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::MoveIng);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalIdle]);
 }
 
 int CPlayerScript::MoveIngUpdate()
@@ -581,7 +574,7 @@ int CPlayerScript::MoveIngUpdate()
 		}
 	}
 
-	if (KEY_TAP(CPlayerController::Zoom) || KEY_PRESSED(CPlayerController::Zoom))
+	if (KEY_TAP(CPlayerController::Zoom))
 	{
 		return (int)PLAYER_STATE::NormalAttackStart;
 	}
