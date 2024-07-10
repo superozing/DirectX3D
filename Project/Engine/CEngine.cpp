@@ -60,6 +60,7 @@ int CEngine::init(HWND _hWnd, Vec2 _vResolution, bool bWindowMode)
 	CInstancingBuffer::GetInst()->init();
 	CPhysXMgr::GetInst()->init();
 	CMemoryPool::GetInst()->init();
+	CUIMgr::GetInst()->init();
 
 	return S_OK;
 }

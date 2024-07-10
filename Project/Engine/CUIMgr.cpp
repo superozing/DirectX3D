@@ -13,6 +13,20 @@
 #include "CUIScript.h"
 #include "CGameObject.h"
 
+void CUIMgr::init()
+{
+	m_arrUIActive[(UINT)UI_TYPE::DEFAULT]	 = true;
+	m_arrUIActive[(UINT)UI_TYPE::CROSSHAIR]	 = true;
+	m_arrUIActive[(UINT)UI_TYPE::DAMAGEFONT] = true;
+	m_arrUIActive[(UINT)UI_TYPE::PAUSEBTN]	 = true;
+	m_arrUIActive[(UINT)UI_TYPE::PAUSEPANEL] = true;
+	m_arrUIActive[(UINT)UI_TYPE::AMMO]		 = true;
+	m_arrUIActive[(UINT)UI_TYPE::BOSSHP]	 = true;
+	m_arrUIActive[(UINT)UI_TYPE::MONSTERHP]	 = true;
+	m_arrUIActive[(UINT)UI_TYPE::PLAYERHP]	 = true;
+	m_arrUIActive[(UINT)UI_TYPE::SKILLICON]	 = true;
+}
+
 void CUIMgr::tick()
 {
 	Vec2 vMousePos	   = CKeyMgr::GetInst()->GetMousePos();
@@ -52,9 +66,13 @@ void CUIMgr::tick()
 		// 만약 UI 스크립트가 없는 오브젝트일 경우
 		if (!pUI)
 		{
-			//CLogMgr::GetInst()->AddLog(Log_Level::ERR, "UI Layer Contains Non - UI Objects");
+			// CLogMgr::GetInst()->AddLog(Log_Level::ERR, "UI Layer Contains Non - UI Objects");
 			continue;
 		}
+
+		// 활성화 되지 않은 UI 타입일 경우
+		if (!CUIMgr::GetInst()->IsActiveUIType(pUI->GetUIType()))
+			continue;
 
 		// 만약 마우스 상태를 체크하지 않는 UI일 경우
 		if (!pUI->IsMouseInputEnabled())

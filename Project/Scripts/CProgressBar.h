@@ -24,8 +24,7 @@ private:
 	int m_CurValue;
 
 protected:
-	virtual void	MakeChildObjects() {}
-	CPanelUIScript* GetPanelUI() { return m_pPanelUI; }
+	virtual void MakeChildObjects() {}
 
 	void SetMaxValue(int _MaxValue) { m_MaxValue = _MaxValue; }
 	void SetCurValue(int _CurValue) { m_CurValue = _CurValue; }
@@ -36,6 +35,8 @@ protected:
 public:
 	virtual void begin() override;
 	virtual void tick() override {}
+
+	CPanelUIScript* GetPanelUI() { return m_pPanelUI; }
 
 public:
 	CLONE(CProgressBar);

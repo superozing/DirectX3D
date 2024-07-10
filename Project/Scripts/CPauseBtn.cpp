@@ -47,10 +47,9 @@ void CPauseBtn::begin()
 	m_pPauseBtnUI->EnableMouseInput();
 	m_pPauseBtnUI->SetDeletage(m_pPausePanel, (DelegateFunc)&CPausePanel::ActivePausePanel);
 
+	m_pPauseBtnUI->SetUIType(UI_TYPE::PAUSEBTN);
+
 	CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(pObj, (UINT)LAYER::LAYER_UI);
-
-
-
 }
 
 void CPauseBtn::tick()

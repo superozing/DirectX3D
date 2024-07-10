@@ -31,7 +31,7 @@ void CAmmoInfo::MakeChildObjects()
 
 	// panel texture 설정
 	GetPanelUI()->SetPanelTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/white.png"));
-
+	GetPanelUI()->SetUIType(UI_TYPE::AMMO);
 	CGameObject* pObj = nullptr;
 
 	// HPLine
@@ -51,6 +51,7 @@ void CAmmoInfo::MakeChildObjects()
 
 	m_pAmmoLine->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HPLine.png"));
 	m_pAmmoLine->AllowBindTexPerFrame();
+	m_pAmmoLine->SetUIType(UI_TYPE::AMMO);
 
 	pObj->Transform()->SetRelativePos(Vec3(0, 0, 0.f));
 	pObj->Transform()->SetRelativeScale(Vec3(12, 50.f, 1.f));

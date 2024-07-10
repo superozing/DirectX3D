@@ -36,6 +36,8 @@ void CMonsterHP::MakeChildObjects()
 	// panel texture 설정
 	GetPanelUI()->SetPanelTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HPLine_Bg.png"));
 
+	GetPanelUI()->SetUIType(UI_TYPE::BOSSHP);
+
 	MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::BOOL_0, true);
 	MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, 0.9f);
 

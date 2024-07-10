@@ -32,7 +32,6 @@ void CSkillIcon::tick()
 	m_SkillUsable = m_CurSkillCooldown == 0.f ? true : false;
 
 	MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, m_CurSkillCooldown / m_SkillCooldown);
-
 }
 
 void CSkillIcon::SetSkillIconTex(Ptr<CTexture> _SkillIconTex)
@@ -60,6 +59,8 @@ void CSkillIcon::MakeChildObjects()
 	GetOwner()->AddComponent(new CMeshRender);
 	GetOwner()->AddComponent(m_pSkillIconUI);
 
+	m_pSkillIconUI->SetUIType(UI_TYPE::SKILLICON);
+
 	Transform()->SetRelativePos(Vec3(0.f, 0.f, -10.f));
 	Transform()->SetRelativeScale(Vec3(152.f, 152.f, 1.f));
 
@@ -70,5 +71,4 @@ void CSkillIcon::MakeChildObjects()
 
 	m_pSkillIconUI->SetUIImg(m_pSkillIconTex);
 	m_pSkillIconUI->AllowBindTexPerFrame();
-
 }

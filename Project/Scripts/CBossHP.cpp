@@ -8,10 +8,9 @@
 
 namespace BOSSHP
 {
-#define SINGLE	0
-#define ODD		1
-#define EVEN	2
-
+#define SINGLE 0
+#define ODD 1
+#define EVEN 2
 
 #define BAR_XSCALE 1125
 #define BAR_YSCALE 44
@@ -22,7 +21,7 @@ namespace BOSSHP
 #define SCALE_RATIO 0.7f
 
 #define BASE CProgressBar
-}
+} // namespace BOSSHP
 
 CBossHP::CBossHP()
 	: CProgressBar((UINT)SCRIPT_TYPE::BOSSHP)
@@ -44,17 +43,16 @@ void CBossHP::tick()
 {
 	using namespace BOSSHP;
 
-
 	int CurHP = GetCurHP();
 	int MaxHP = GetMaxHP();
 
 	m_CurLerpHP = RoRMath::Lerp(m_CurLerpHP, CurHP, DT * 0.1f);
 
 	// 현재 남은 줄 개수와 렌더링 할 색상 구하기
-	UINT LineInfo = 0;
-	float HPRatio = 0.f;
+	UINT  LineInfo		 = 0;
+	float HPRatio		 = 0.f;
 	float CurLerpHPRatio = 0.f;
-	int LineCount = 0;
+	int	  LineCount		 = 0;
 
 	if (MaxHP != 0)
 	{
@@ -66,22 +64,21 @@ void CBossHP::tick()
 		}
 		else
 		{
-			// 현재 남은 줄 개수 계산
-			LineCount = CurHP / m_LineHP;
+			// 현재 남은 줄 개수 계산 (만약 LineHP가 0이라면 LineHP를 1이라고 가정함)
+			LineCount = (m_LineHP) ? CurHP / m_LineHP : CurHP;
 
 			// 줄 개수의 홀짝 세팅
 			LineInfo = LineCount % 2 == 1 ? EVEN : ODD;
 		}
 
 		// 체력 비율 계산
-		HPRatio = float(CurHP - LineCount * m_LineHP) / m_LineHP;
+		HPRatio		   = float(CurHP - LineCount * m_LineHP) / m_LineHP;
 		CurLerpHPRatio = float(m_CurLerpHP - LineCount * m_LineHP) / m_LineHP;
 	}
 
 	m_pHPLineUI->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_0, LineInfo);
 	m_pHPLineUI->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, CurLerpHPRatio);
 	m_pHPLineUI->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_1, HPRatio);
-
 }
 
 void CBossHP::SetLineHP(int _LineHP)
@@ -138,9 +135,9 @@ void CBossHP::MakeChildObjects()
 	Transform()->SetRelativeScale(Vec3(1388.f * SCALE_RATIO, 222.f * SCALE_RATIO, 1.f));
 
 	// panel texture 설정
-	GetPanelUI()->SetPanelTex(
-		CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Ingame_Raid_Boss_Gauge.png"));
+	GetPanelUI()->SetPanelTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Ingame_Raid_Boss_Gauge.png"));
 
+	GetPanelUI()->SetUIType(UI_TYPE::BOSSHP);
 
 	CGameObject* pObj = nullptr;
 
@@ -187,7 +184,7 @@ void CBossHP::MakeChildObjects()
 	GetOwner()->AddChild(pObj);
 
 	// m_pHPLineUI
-	pObj		   = new CGameObject;
+	pObj		= new CGameObject;
 	m_pHPLineUI = new CImageUIScript;
 	pObj->SetName(L"OddLineHP");
 	pObj->AddComponent(new CTransform);

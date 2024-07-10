@@ -39,6 +39,8 @@ void CCrosshair::begin()
 	pObj->AddComponent(new CMeshRender);
 	pObj->AddComponent(m_pCrossHair);
 
+	m_pCrossHair->SetUIType(UI_TYPE::CROSSHAIR);
+
 	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
 	pObj->Transform()->SetRelativeScale(Vec3(500.f, 500.f, 1.f));
 
@@ -73,6 +75,7 @@ void CCrosshair::SetParentPanelUI()
 	m_pPanelUI->DisableMouseInput();
 	m_pPanelUI->DisallowDragAndDrop();
 	m_pPanelUI->DisallowTexSet();
+	m_pPanelUI->SetUIType(UI_TYPE::CROSSHAIR);
 
 	auto meshrender = pOwn->MeshRender();
 

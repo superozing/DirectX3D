@@ -19,6 +19,8 @@ private:
 
 	bool m_bActivate; // 활성화 여부
 
+	bool m_tempActiveUIType[(UINT)UI_TYPE::END];
+
 public:
 	virtual void begin() override;
 	virtual void tick() override;

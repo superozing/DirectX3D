@@ -389,3 +389,23 @@ enum class FONT_TYPE
 
 	END
 };
+
+enum class UI_TYPE
+{
+	DEFAULT,
+
+	CROSSHAIR,
+	DAMAGEFONT,
+	PAUSEBTN,
+	PAUSEPANEL,
+
+	AMMO,
+
+	BOSSHP,
+	MONSTERHP,
+	PLAYERHP,
+
+	SKILLICON,
+
+	END
+};
