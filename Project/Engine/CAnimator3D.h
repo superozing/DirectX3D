@@ -21,9 +21,10 @@ private:
 	double m_dCurTime;
 	int	   m_iCurClip; // 클립 인덱스
 
-	int	  m_iFrameIdx;	   // 클립의 현재 프레임
-	int	  m_iNextFrameIdx; // 클립의 다음 프레임
-	float m_fRatio;		   // 프레임 사이 비율
+	int	  m_iFrameIdx;		// 클립의 현재 프레임
+	int	  m_iNextFrameIdx;	// 클립의 다음 프레임
+	float m_fRatio;			// 프레임 사이 비율
+	float m_fPlaybackSpeed; // 프레임 재생 속도
 
 	CStructuredBuffer* m_pBoneFrameMatBuffer; // 본 프레임 행렬정보
 	CStructuredBuffer* m_pBoneFinalMatBuffer; // 특정 프레임의 최종 행렬
@@ -72,8 +73,8 @@ public:
 	float		  GetAnimLength(int _iClipIdx);
 
 public:
-	void Play(int _iClipIdx, int _iLoopCount = -1);
-	void Play(const wstring& _AnimName, int _iLoopCount = -1);
+	void Play(int _iClipIdx, int _iLoopCount = -1, float _fPlaybackSpeed = 1.f);
+	void Play(const wstring& _AnimName, int _iLoopCount = -1, float _fPlaybackSpeed = 1.f);
 
 	void Stop();
 
