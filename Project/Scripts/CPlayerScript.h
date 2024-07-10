@@ -345,7 +345,7 @@ public:
 	~CPlayerScript();
 
 private:
-	void CameraRotation();
+	void CameraMove();
 	void NormalMove();
 	int	 SwitchToCoverTypeIdle();
 

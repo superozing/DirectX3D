@@ -6,7 +6,7 @@ struct SpringArmInfo
 	/// @brief 스프링 암이 향하는 각도
 	Vec3 vDir = Vec3(0.f, 0.f, -1.f);
 	/// @brief 스프링 암이 시작하는 지점 offset
-	Vec2 vOffsetPos = Vec2(0.f, 0.f);
+	Vec3 vOffsetPos = Vec3(0.f, 0.f, 0.f);
 
 	/// @brief 스프링 암의 최대 길이
 	float fMaxDistance = 500.f;
@@ -23,7 +23,6 @@ struct SpringArmInfo
 public:
 	friend ofstream& operator<<(ofstream& fout, const SpringArmInfo _info)
 	{
-		fout << _info.vDir << endl;
 		fout << _info.fMaxDistance << endl;
 		fout << _info.fCamSpeed << endl;
 		fout << _info.fCamRotSpeed << endl;
@@ -33,7 +32,10 @@ public:
 
 	friend ifstream& operator>>(ifstream& fin, SpringArmInfo& _info)
 	{
-		fin >> _info.vDir;
+		// 저장 구조 변경 대응 코드
+		Vec3 temp;
+		fin >> temp;
+
 		fin >> _info.fMaxDistance;
 		fin >> _info.fCamSpeed;
 		fin >> _info.fCamRotSpeed;
@@ -90,11 +92,13 @@ public:
 	void SetMoveType(bool _type) { m_tInfo.Type = _type; }
 
 	SpringArmInfo GetInfo() { return m_tInfo; }
-	void		  SetInfo(const SpringArmInfo& _info, float _moveSpeed = 1.f)
+	void		  SetInfo(const SpringArmInfo& _info, float _moveSpeed = 0.3f)
 	{
 		m_tInfo = _info;
 		SetDistance(m_tInfo.fMaxDistance);
-		Transform()->Lerp(m_tInfo.vOffsetPos, false, Vec3(), false, Vec3(), _moveSpeed);
+
+		m_tInfo.vDir.ToRadian();
+		Transform()->Lerp(m_tInfo.vOffsetPos, true, m_tInfo.vDir, false, Vec3(), _moveSpeed);
 	}
 
 public:

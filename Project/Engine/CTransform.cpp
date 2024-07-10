@@ -69,9 +69,9 @@ void CTransform::tick()
 
 		SetRelativePos(vNPos);
 		if (m_bRotLerp)
-			SetRelativePos(vNPos);
+			SetRelativeRotation(vNRot);
 		if (m_bScaleLerp)
-			SetRelativePos(vNPos);
+			SetRelativeScale(vNScale);
 	}
 }
 

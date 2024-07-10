@@ -45,7 +45,7 @@ int CPlayerScript::NormalIdleUpdate()
 	// 이동
 	if (MoveStartCondition)
 	{
-		return (int)PLAYER_STATE::MoveStartNormal;
+		return (int)PLAYER_STATE::MoveIng;
 	}
 
 	// 스킬
@@ -145,7 +145,7 @@ void CPlayerScript::NormalAttackDelayEnd()
 void CPlayerScript::NormalAttackEndBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::NormalAttackEnd, 0);
-	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalAttackEnd]);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalIdle]);
 }
 
 int CPlayerScript::NormalAttackEndUpdate()
@@ -190,7 +190,7 @@ int CPlayerScript::StandIdleUpdate()
 	// 이동
 	if (MoveStartCondition)
 	{
-		return (int)PLAYER_STATE::MoveStartStand;
+		return (int)PLAYER_STATE::MoveIng;
 	}
 	return m_FSM->GetCurState();
 }
@@ -327,7 +327,7 @@ int CPlayerScript::KneelIdleUpdate()
 	// 이동
 	if (MoveStartCondition)
 	{
-		return (int)PLAYER_STATE::MoveStartKneel;
+		return (int)PLAYER_STATE::MoveIng;
 	}
 
 	if (KEY_TAP(CPlayerController::Jump))

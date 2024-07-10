@@ -87,52 +87,54 @@ CPlayerScript::CPlayerScript()
 
 #pragma endregion
 
+#pragma region CameraSetting
+
 	SpringArmInfo info;
 	info.Type								 = true;
-	info.fMaxDistance						 = 250.f;
+	info.fMaxDistance						 = 150.f;
 	info.fCamSpeed							 = 50.f;
 	info.fCamRotSpeed						 = 20.f;
-	info.vDir								 = Vec3(0.f, 0.4f, -1.f);
-	info.vOffsetPos							 = Vec2(150.f, 250.f);
+	info.vDir								 = Vec3(-20.f, 180.f, 0.f);
+	info.vOffsetPos							 = Vec2(50.f, 50.f);
 	m_mSpringInfos[PLAYER_STATE::NormalIdle] = info;
 
 	info.Type										= false;
-	info.fMaxDistance								= 150.f;
+	info.fMaxDistance								= 70.f;
 	info.fCamSpeed									= 30.f;
 	info.fCamRotSpeed								= 20.f;
-	info.vDir										= Vec3(0.f, 0.4f, -1.f);
-	info.vOffsetPos									= Vec2(150.f, 200.f);
+	info.vDir										= Vec3(-20.f, 180.f, 0.f);
+	info.vOffsetPos									= Vec2(50.f, 50.f);
 	m_mSpringInfos[PLAYER_STATE::NormalAttackStart] = info;
 
-	info.Type									  = false;
-	info.fMaxDistance							  = 250.f;
-	info.fCamSpeed								  = 30.f;
-	info.fCamRotSpeed							  = 20.f;
-	info.vDir									  = Vec3(0.f, 0.4f, -1.f);
-	info.vOffsetPos								  = Vec2(150.f, 250.f);
-	m_mSpringInfos[PLAYER_STATE::NormalAttackEnd] = info;
+	// info.Type									  = false;
+	// info.fMaxDistance							  = 250.f;
+	// info.fCamSpeed								  = 30.f;
+	// info.fCamRotSpeed							  = 20.f;
+	// info.vDir									  = Vec3(0.f, 0.4f, -1.f);
+	// info.vOffsetPos								  = Vec2(150.f, 250.f);
+	// m_mSpringInfos[PLAYER_STATE::NormalAttackEnd] = info;
 
-	info.Type								= true;
-	info.fMaxDistance						= 350.f;
+	info.Type								= false;
+	info.fMaxDistance						= 150.f;
 	info.fCamSpeed							= 30.f;
 	info.fCamRotSpeed						= 20.f;
-	info.vDir								= Vec3(-0.4f, 0.f, -1.f);
-	info.vOffsetPos							= Vec2(350.f, 250.f);
+	info.vDir								= Vec3(-20.f, 180.f, 0.f);
+	info.vOffsetPos							= Vec2(100.f, 50.f);
 	m_mSpringInfos[PLAYER_STATE::StandIdle] = info;
 
-	info.Type									   = true;
-	info.fMaxDistance							   = 150.f;
+	info.Type									   = false;
+	info.fMaxDistance							   = 70.f;
 	info.fCamSpeed								   = 30.f;
 	info.fCamRotSpeed							   = 20.f;
-	info.vDir									   = Vec3(0.f, 0.f, -1.f);
-	info.vOffsetPos								   = Vec2(300.f, 200.f);
+	info.vDir									   = Vec3(-20.f, 180.f, 0.f);
+	info.vOffsetPos								   = Vec2(100.f, 50.f);
 	m_mSpringInfos[PLAYER_STATE::StandAttackStart] = info;
 
 	info.Type								= true;
 	info.fMaxDistance						= 150.f;
 	info.fCamSpeed							= 30.f;
 	info.fCamRotSpeed						= 20.f;
-	info.vDir								= Vec3(0.f, 0.f, -1.f);
+	info.vDir								= Vec3(-20.f, 180.f, 0.f);
 	info.vOffsetPos							= Vec2(200.f, 150.f);
 	m_mSpringInfos[PLAYER_STATE::KneelIdle] = info;
 
@@ -140,9 +142,11 @@ CPlayerScript::CPlayerScript()
 	info.fMaxDistance							   = 150.f;
 	info.fCamSpeed								   = 30.f;
 	info.fCamRotSpeed							   = 20.f;
-	info.vDir									   = Vec3(0.f, 0.f, -1.f);
+	info.vDir									   = Vec3(-20.f, 180.f, 0.f);
 	info.vOffsetPos								   = Vec2(300.f, 200.f);
 	m_mSpringInfos[PLAYER_STATE::KneelAttackStart] = info;
+
+#pragma endregion
 }
 
 CPlayerScript::CPlayerScript(const CPlayerScript& _origin)
@@ -186,43 +190,78 @@ void CPlayerScript::tick()
 	state = magic_enum::enum_name((PLAYER_STATE)m_FSM->GetCurState());
 	cover = magic_enum::enum_name((CoverType)GetCoverType());
 
-	CameraRotation();
+	CameraMove();
 	NormalMove();
 
 	// 엄폐 판정 할 수 있게되면 지울 함수
 	SwitchCoverType();
 }
 
-void CPlayerScript::CameraRotation()
+void CPlayerScript::CameraMove()
 {
 	auto state = m_FSM->GetCurState();
-	if (state != (int)PLAYER_STATE::NormalIdle && state != (int)PLAYER_STATE::NormalReload &&
-		state != (int)PLAYER_STATE::NormalAttackStart && state != (int)PLAYER_STATE::NormalAttackDelay &&
-		state != (int)PLAYER_STATE::NormalAttackIng && state != (int)PLAYER_STATE::NormalAttackEnd &&
-		state != (int)PLAYER_STATE::MoveStartNormal && state != (int)PLAYER_STATE::MoveEndNormal &&
-		state != (int)PLAYER_STATE::MoveIng)
-		return;
 
 	Vec3 vRot		= Transform()->GetRelativeRotation();
 	Vec2 vMouseDiff = CKeyMgr::GetInst()->GetMouseDrag();
-	if (vMouseDiff.x > 0.f)
-		vRot.y += CPlayerController::Sensitivity * DT;
-	else if (vMouseDiff.x < 0.f)
-		vRot.y -= CPlayerController::Sensitivity * DT;
 
-	if (m_pSpringArm && m_pSpringArm->IsActivate())
+	// 캐릭터 좌우 회전
+	if (state == (int)PLAYER_STATE::NormalIdle || state == (int)PLAYER_STATE::NormalReload ||
+		state == (int)PLAYER_STATE::NormalAttackStart || state == (int)PLAYER_STATE::NormalAttackDelay ||
+		state == (int)PLAYER_STATE::NormalAttackIng || state == (int)PLAYER_STATE::NormalAttackEnd ||
+		state == (int)PLAYER_STATE::MoveStartNormal || state == (int)PLAYER_STATE::MoveEndNormal ||
+		state == (int)PLAYER_STATE::MoveIng)
 	{
-		float fYSpeed = 100.f;
-		Vec3  vOffset = m_pSpringArm->GetDirOffset();
-		if (vMouseDiff.y > 0.f)
-			vOffset.y -= CPlayerController::Sensitivity * fYSpeed * DT;
-		else if (vMouseDiff.y < 0.f)
-			vOffset.y += CPlayerController::Sensitivity * fYSpeed * DT;
 
-		m_pSpringArm->SetDirOffset(vOffset);
+		if (vMouseDiff.x > 0.f)
+			vRot.y += CPlayerController::Sensitivity * DT;
+		else if (vMouseDiff.x < 0.f)
+			vRot.y -= CPlayerController::Sensitivity * DT;
+		Transform()->SetRelativeRotation(vRot);
 	}
 
-	Transform()->SetRelativeRotation(vRot);
+	// 카메라 상하 회전
+	if (state == (int)PLAYER_STATE::NormalIdle || state == (int)PLAYER_STATE::NormalReload ||
+		state == (int)PLAYER_STATE::NormalAttackStart || state == (int)PLAYER_STATE::NormalAttackDelay ||
+		state == (int)PLAYER_STATE::NormalAttackIng || state == (int)PLAYER_STATE::NormalAttackEnd ||
+		state == (int)PLAYER_STATE::StandIdle || state == (int)PLAYER_STATE::StandReload ||
+		state == (int)PLAYER_STATE::StandAttackStart || state == (int)PLAYER_STATE::StandAttackDelay ||
+		state == (int)PLAYER_STATE::StandAttackIng || state == (int)PLAYER_STATE::StandAttackEnd ||
+		state == (int)PLAYER_STATE::KneelIdle || state == (int)PLAYER_STATE::KneelReload ||
+		state == (int)PLAYER_STATE::KneelAttackStart || state == (int)PLAYER_STATE::KneelAttackDelay ||
+		state == (int)PLAYER_STATE::KneelAttackIng || state == (int)PLAYER_STATE::KneelAttackEnd ||
+		state == (int)PLAYER_STATE::MoveStartNormal || state == (int)PLAYER_STATE::MoveEndNormal ||
+		state == (int)PLAYER_STATE::MoveIng)
+	{
+		if (m_pSpringArm && m_pSpringArm->IsActivate())
+		{
+			float CamRotSpeed = 10.f;
+			Vec3  vOffset	  = m_pSpringArm->GetDirOffset();
+			if (vMouseDiff.y > 0.f)
+				vOffset.y += CPlayerController::Sensitivity * CamRotSpeed * DT;
+			else if (vMouseDiff.y < 0.f)
+				vOffset.y -= CPlayerController::Sensitivity * CamRotSpeed * DT;
+
+			// 카메라 좌우 회전
+			if (state == (int)PLAYER_STATE::StandIdle || state == (int)PLAYER_STATE::StandReload ||
+				state == (int)PLAYER_STATE::StandAttackStart || state == (int)PLAYER_STATE::StandAttackDelay ||
+				state == (int)PLAYER_STATE::StandAttackIng || state == (int)PLAYER_STATE::StandAttackEnd ||
+				state == (int)PLAYER_STATE::KneelIdle || state == (int)PLAYER_STATE::KneelReload ||
+				state == (int)PLAYER_STATE::KneelAttackStart || state == (int)PLAYER_STATE::KneelAttackDelay ||
+				state == (int)PLAYER_STATE::KneelAttackIng || state == (int)PLAYER_STATE::KneelAttackEnd)
+			{
+				if (vMouseDiff.x > 0.f)
+					vOffset.x += CPlayerController::Sensitivity * CamRotSpeed * DT;
+				else if (vMouseDiff.x < 0.f)
+					vOffset.x -= CPlayerController::Sensitivity * CamRotSpeed * DT;
+			}
+			else
+			{
+				vOffset.x = 0.f;
+			}
+
+			m_pSpringArm->SetDirOffset(vOffset);
+		}
+	}
 }
 
 void CPlayerScript::NormalMove()
