@@ -30,7 +30,7 @@ void CAmmoInfo::MakeChildObjects()
 	Transform()->SetRelativeScale(Vec3(16.f, 54.f, 1.f));
 
 	// panel texture 설정
-	GetPanelUI()->SetPanelTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Color/White.png"));
+	GetPanelUI()->SetPanelTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/ColorTex/White.png"));
 	GetPanelUI()->SetUIType(UI_TYPE::AMMO);
 	CGameObject* pObj = nullptr;
 

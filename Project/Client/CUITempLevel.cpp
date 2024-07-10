@@ -372,7 +372,7 @@ void CUITempLevel::CreateTempLevel()
 	BossHP->SetMaxHP(2000);
 	BossHP->SetCurHP(2000);
 
-	BossHP->SetImgFontTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Boss/ImageFont_Raidboss.png"));
+	BossHP->SetImgFontTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/ImgFont/ImageFont_Raidboss.png"));
 	BossHP->SetPortraitTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Boss/Portrait_Raidboss_KaitenRanger.png"));
 
 	BarObj->Transform()->SetRelativePos(Vec3(0.f, 350.f, 100.f));
@@ -434,7 +434,7 @@ void CUITempLevel::CreateTempLevel()
 	auto AddHPbtnUI = new CBtnUIScript;
 	pObj->AddComponent(AddHPbtnUI);
 	AddHPbtnUI->AllowTexSet();
-	AddHPbtnUI->SetNormalImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Color/Red.png"));
+	AddHPbtnUI->SetNormalImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/ColorTex/Red.png"));
 	AddHPbtnUI->SetDeletage((CEntity*)BossHP, (DelegateFunc)&CBossHP::Sub100);
 
 	pObj->Transform()->SetRelativePos(Vec3(680, -400, 100.f));
@@ -443,8 +443,8 @@ void CUITempLevel::CreateTempLevel()
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
 	pObj->MeshRender()->GetDynamicMaterial(0);
-	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0,
-													CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Color/Red.png"));
+	pObj->MeshRender()->GetMaterial(0)->SetTexParam(
+		TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/ColorTex/Red.png"));
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 
