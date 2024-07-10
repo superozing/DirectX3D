@@ -63,7 +63,7 @@ struct PlayerStatus
 	float Defensive = 5.f;
 
 	float MoveSpeed		  = 500.f;
-	float AttackMoveSpeed = MoveSpeed * 0.04f;
+	float AttackMoveSpeed = MoveSpeed * 0.2f;
 	float RotateSpeed	  = 20.f;
 
 	float AvoidPercent	  = 10.f;
@@ -349,6 +349,7 @@ private:
 	void NormalMove();
 	int	 SwitchToCoverTypeIdle();
 	void ChangeToMove();
+	void NormalAttack();
 
 private:
 	// Test 함수

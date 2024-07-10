@@ -87,6 +87,7 @@ void CPlayerScript::NormalAttackStartEnd()
 void CPlayerScript::NormalAttackIngBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::NormalAttackIng, 0, 5.f);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalAttackStart]);
 }
 
 int CPlayerScript::NormalAttackIngUpdate()
@@ -109,11 +110,6 @@ void CPlayerScript::NormalAttackDelayBegin()
 
 int CPlayerScript::NormalAttackDelayUpdate()
 {
-	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
-	{
-		return (int)PLAYER_STATE::NormalAttackIng;
-	}
-
 	if (KEY_TAP(CPlayerController::Reload))
 	{
 		return (int)PLAYER_STATE::NormalReload;
@@ -575,21 +571,16 @@ int CPlayerScript::MoveIngUpdate()
 	}
 
 	if (KEY_TAP(CPlayerController::Zoom))
-	{
 		return (int)PLAYER_STATE::NormalAttackStart;
-	}
 
 	// TODO: Reload 조건
 	if (KEY_TAP(CPlayerController::Reload))
-	{
 		return (int)PLAYER_STATE::NormalReload;
-	}
 
 	// 스킬
 	if (KEY_TAP(CPlayerController::Dash))
-	{
 		return (int)PLAYER_STATE::SkillDash;
-	}
+
 	return m_FSM->GetCurState();
 }
 
