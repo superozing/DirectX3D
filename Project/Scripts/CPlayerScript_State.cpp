@@ -86,7 +86,7 @@ void CPlayerScript::NormalAttackStartEnd()
 
 void CPlayerScript::NormalAttackIngBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::NormalAttackIng, 0);
+	Animator3D()->Play((int)PLAYER_STATE::NormalAttackIng, 0, 5.f);
 }
 
 int CPlayerScript::NormalAttackIngUpdate()
@@ -219,7 +219,7 @@ void CPlayerScript::StandAttackStartEnd()
 
 void CPlayerScript::StandAttackIngBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::StandAttackIng, 0);
+	Animator3D()->Play((int)PLAYER_STATE::StandAttackIng, 0, 5.f);
 }
 
 int CPlayerScript::StandAttackIngUpdate()
@@ -358,7 +358,7 @@ void CPlayerScript::KneelAttackStartEnd()
 
 void CPlayerScript::KneelAttackIngBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::KneelAttackIng, 0);
+	Animator3D()->Play((int)PLAYER_STATE::KneelAttackIng, 0, 5.f);
 }
 
 int CPlayerScript::KneelAttackIngUpdate()

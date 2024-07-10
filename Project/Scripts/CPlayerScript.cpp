@@ -256,6 +256,11 @@ void CPlayerScript::CameraMove()
 					vOffset.x += CPlayerController::Sensitivity * CamRotSpeed * DT;
 				else if (vMouseDiff.x < 0.f)
 					vOffset.x -= CPlayerController::Sensitivity * CamRotSpeed * DT;
+
+				if (vOffset.x < 0.f)
+					vOffset.x = 0.f;
+				if (vOffset.x > 45.f)
+					vOffset.x = 45.f;
 			}
 			else
 			{
