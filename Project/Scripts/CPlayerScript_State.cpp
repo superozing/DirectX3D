@@ -161,15 +161,14 @@ int CPlayerScript::StandIdleUpdate()
 	// TODO : 재장전 조건 추가 필요 (현재 탄창이 최대 탄창과 같으면 x)
 	// 재장전
 	if (KEY_TAP(CPlayerController::Reload))
-	{
 		return (int)PLAYER_STATE::StandReload;
-	}
 
 	// 사격 준비
 	if (KEY_TAP(CPlayerController::Zoom) || KEY_PRESSED(CPlayerController::Zoom))
-	{
 		return (int)PLAYER_STATE::StandAttackStart;
-	}
+
+	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
+		return (int)PLAYER_STATE::StandAttackIng;
 
 	return m_FSM->GetCurState();
 }
@@ -205,6 +204,8 @@ int CPlayerScript::StandAttackStartUpdate()
 {
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::StandAttackDelay;
+	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
+		return (int)PLAYER_STATE::StandAttackIng;
 
 	return m_FSM->GetCurState();
 }
@@ -216,6 +217,7 @@ void CPlayerScript::StandAttackStartEnd()
 void CPlayerScript::StandAttackIngBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::StandAttackIng, 0, 5.f);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::StandAttackStart]);
 }
 
 int CPlayerScript::StandAttackIngUpdate()
@@ -238,19 +240,13 @@ void CPlayerScript::StandAttackDelayBegin()
 int CPlayerScript::StandAttackDelayUpdate()
 {
 	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
-	{
 		return (int)PLAYER_STATE::StandAttackIng;
-	}
 
 	if (KEY_TAP(CPlayerController::Reload))
-	{
 		return (int)PLAYER_STATE::StandReload;
-	}
 
 	if (KEY_RELEASED(CPlayerController::Zoom) || KEY_NONE(CPlayerController::Zoom))
-	{
 		return (int)PLAYER_STATE::StandAttackEnd;
-	}
 	return m_FSM->GetCurState();
 }
 
@@ -262,7 +258,6 @@ void CPlayerScript::StandAttackEndBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::StandAttackEnd, 0);
 	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::StandIdle]);
-	// m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalAttackEnd]);
 }
 
 int CPlayerScript::StandAttackEndUpdate()
@@ -271,6 +266,9 @@ int CPlayerScript::StandAttackEndUpdate()
 		return (int)PLAYER_STATE::StandIdle;
 	if (KEY_TAP(CPlayerController::Zoom))
 		return (int)PLAYER_STATE::StandAttackStart;
+
+	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
+		return (int)PLAYER_STATE::StandAttackIng;
 
 	return m_FSM->GetCurState();
 }
@@ -295,20 +293,18 @@ int CPlayerScript::KneelIdleUpdate()
 	// TODO : 재장전 조건 추가 필요 (현재 탄창이 최대 탄창과 같으면 x)
 	// 재장전
 	if (KEY_TAP(CPlayerController::Reload))
-	{
 		return (int)PLAYER_STATE::KneelReload;
-	}
 
 	// 사격 준비
 	if (KEY_TAP(CPlayerController::Zoom) || KEY_PRESSED(CPlayerController::Zoom))
-	{
 		return (int)PLAYER_STATE::KneelAttackStart;
-	}
 
 	if (KEY_TAP(CPlayerController::Jump))
-	{
 		return (int)PLAYER_STATE::MoveJump;
-	}
+
+	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
+		return (int)PLAYER_STATE::KneelAttackIng;
+
 	return m_FSM->GetCurState();
 }
 
@@ -345,6 +341,9 @@ int CPlayerScript::KneelAttackStartUpdate()
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::KneelAttackDelay;
 
+	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
+		return (int)PLAYER_STATE::KneelAttackIng;
+
 	return m_FSM->GetCurState();
 }
 
@@ -355,12 +354,16 @@ void CPlayerScript::KneelAttackStartEnd()
 void CPlayerScript::KneelAttackIngBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::KneelAttackIng, 0, 5.f);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::KneelAttackStart], 0.1f);
 }
 
 int CPlayerScript::KneelAttackIngUpdate()
 {
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::KneelAttackDelay;
+
+	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
+		return (int)PLAYER_STATE::KneelAttackIng;
 	return m_FSM->GetCurState();
 }
 
@@ -376,19 +379,13 @@ void CPlayerScript::KneelAttackDelayBegin()
 int CPlayerScript::KneelAttackDelayUpdate()
 {
 	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
-	{
 		return (int)PLAYER_STATE::KneelAttackIng;
-	}
 
 	if (KEY_TAP(CPlayerController::Reload))
-	{
 		return (int)PLAYER_STATE::KneelReload;
-	}
 
 	if (KEY_RELEASED(CPlayerController::Zoom) || KEY_NONE(CPlayerController::Zoom))
-	{
 		return (int)PLAYER_STATE::KneelAttackEnd;
-	}
 
 	return m_FSM->GetCurState();
 }
@@ -410,6 +407,9 @@ int CPlayerScript::KneelAttackEndUpdate()
 		return (int)PLAYER_STATE::KneelIdle;
 	if (KEY_TAP(CPlayerController::Zoom))
 		return (int)PLAYER_STATE::KneelAttackStart;
+
+	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
+		return (int)PLAYER_STATE::KneelAttackIng;
 
 	return m_FSM->GetCurState();
 }
@@ -519,6 +519,9 @@ int CPlayerScript::MoveEndStandUpdate()
 	// 사격 준비
 	if (KEY_TAP(CPlayerController::Zoom) || KEY_PRESSED(CPlayerController::Zoom))
 		return (int)PLAYER_STATE::StandAttackStart;
+
+	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
+		return (int)PLAYER_STATE::StandAttackIng;
 	return m_FSM->GetCurState();
 }
 
@@ -539,6 +542,8 @@ int CPlayerScript::MoveEndKneelUpdate()
 	// 사격 준비
 	if (KEY_TAP(CPlayerController::Zoom) || KEY_PRESSED(CPlayerController::Zoom))
 		return (int)PLAYER_STATE::KneelAttackStart;
+	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
+		return (int)PLAYER_STATE::KneelAttackIng;
 	return m_FSM->GetCurState();
 }
 
