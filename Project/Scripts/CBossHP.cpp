@@ -135,7 +135,7 @@ void CBossHP::MakeChildObjects()
 	Transform()->SetRelativeScale(Vec3(1388.f * SCALE_RATIO, 222.f * SCALE_RATIO, 1.f));
 
 	// panel texture 설정
-	GetPanelUI()->SetPanelTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Ingame_Raid_Boss_Gauge.png"));
+	GetPanelUI()->SetPanelTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Boss/Ingame_Raid_Boss_Gauge.png"));
 
 	GetPanelUI()->SetUIType(UI_TYPE::BOSSHP);
 

@@ -35,7 +35,7 @@ void CDamageFont::begin()
 
 	m_pImageUIScript->AllowBindTexPerFrame();
 	m_pImageUIScript->DisableMouseInput();
-	m_pImageUIScript->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Damage_Font_Number.png"));
+	m_pImageUIScript->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/ImgFont/Damage_Font_Number3.png"));
 }
 
 void CDamageFont::tick()

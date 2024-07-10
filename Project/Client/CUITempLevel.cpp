@@ -372,8 +372,8 @@ void CUITempLevel::CreateTempLevel()
 	BossHP->SetMaxHP(2000);
 	BossHP->SetCurHP(2000);
 
-	BossHP->SetImgFontTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/ImageFont_Raidboss.png"));
-	BossHP->SetPortraitTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Portrait_Raidboss_KaitenRanger.png"));
+	BossHP->SetImgFontTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Boss/ImageFont_Raidboss.png"));
+	BossHP->SetPortraitTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Boss/Portrait_Raidboss_KaitenRanger.png"));
 
 	BarObj->Transform()->SetRelativePos(Vec3(0.f, 350.f, 100.f));
 	BarObj->Transform()->SetRelativeScale(Vec3(1, 1, 1.f));
@@ -434,7 +434,7 @@ void CUITempLevel::CreateTempLevel()
 	auto AddHPbtnUI = new CBtnUIScript;
 	pObj->AddComponent(AddHPbtnUI);
 	AddHPbtnUI->AllowTexSet();
-	AddHPbtnUI->SetNormalImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Red.png"));
+	AddHPbtnUI->SetNormalImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Color/Red.png"));
 	AddHPbtnUI->SetDeletage((CEntity*)BossHP, (DelegateFunc)&CBossHP::Sub100);
 
 	pObj->Transform()->SetRelativePos(Vec3(680, -400, 100.f));
@@ -444,28 +444,10 @@ void CUITempLevel::CreateTempLevel()
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
 	pObj->MeshRender()->GetDynamicMaterial(0);
 	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0,
-													CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Red.png"));
+													CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Color/Red.png"));
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 
-	//// Sub HP Btn
-	// pObj = new CGameObject;
-	// pObj->SetName(L"Sub HP Btn");
-	// pObj->AddComponent(new CTransform);
-	// pObj->AddComponent(new CMeshRender);
-	// auto SubHPbtnUI = new CBtnUIScript;
-	// pObj->AddComponent(SubHPbtnUI);
-	// SubHPbtnUI->AllowTexSet();
-	// SubHPbtnUI->SetNormalImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
-	// SubHPbtnUI->SetDeletage((CEntity*)progressbar, (DelegateFunc)&CProgressBar::Sub100);
-	// pObj->Transform()->SetRelativePos(Vec3(800, -400, 100.f));
-	// pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
-	// pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
-	// pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
-	// pObj->MeshRender()->GetDynamicMaterial(0);
-	// pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0,
-	//												CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HP_Yellow.png"));
-	// pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 #pragma endregion
 #pragma region CCrosshair
 	// CCrosshair
