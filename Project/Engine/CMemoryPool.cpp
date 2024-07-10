@@ -1,12 +1,13 @@
 ﻿#include "pch.h"
 #include "CMemoryPool.h"
 
+#include "CPrefab.h"
 #include "CGameObject.h"
 
 CMemoryPool::CMemoryPool()
 	: m_listObjectPool()
 	, iPoolMaxCount(5)
-	, iCurPopCount(0)
+	, m_PoolPrefab(nullptr)
 {
 }
 
@@ -15,50 +16,45 @@ CMemoryPool::~CMemoryPool()
 	Delete_List(m_listObjectPool);
 }
 
-void CMemoryPool::init()
+void CMemoryPool::begin(wstring strPrefabrRelactivePath)
 {
+
+	Ptr<CPrefab> pPrefab = CAssetMgr::GetInst()->Load<CPrefab>(strPrefabrRelactivePath);
+
+	if (pPrefab == nullptr)
+	{
+		wstring msg;
+		msg += strPrefabrRelactivePath + L" Init Fail";
+		MessageBox(nullptr, msg.c_str(), L"Memory Pool Prefab Load Fail", MB_OK);
+		return;
+	}
+
+	m_PoolPrefab = pPrefab;
+
 	for (int i = 0; i < 5; ++i)
 	{
-		CGameObject*   pObj		 = nullptr;
-		Ptr<CMeshData> pMeshData = nullptr;
-		pMeshData				 = CAssetMgr::GetInst()->LoadFBX(L"fbx\\TutorialTarget.fbx");
-
-		pObj = pMeshData->Instantiate();
-		pObj->SetName(L"Target" + ToWString(std::to_string(i)));
-		m_listObjectPool.push_back(pObj);
+		m_listObjectPool.push_back(pPrefab->Instantiate());
 	}
-}
-
-void CMemoryPool::tick()
-{
 }
 
 CGameObject* CMemoryPool::PopObject()
 {
 	CGameObject* pObj = nullptr;
+	if (m_PoolPrefab == nullptr)
+		return nullptr;
 
-	if (m_listObjectPool.empty() && iCurPopCount == iPoolMaxCount)
+	if (m_listObjectPool.empty())
 	{
-		Ptr<CMeshData> pMeshData = nullptr;
-		pMeshData				 = CAssetMgr::GetInst()->LoadFBX(L"fbx\\TutorialTarget.fbx");
-
-		pObj = pMeshData->Instantiate();
-		pObj->SetName(L"Target" + ToWString(std::to_string(m_listObjectPool.size() + iCurPopCount)));
-
-		++iCurPopCount;
+		pObj = m_PoolPrefab->Instantiate();
 		++iPoolMaxCount;
-
-		return pObj;
 	}
 	else
 	{
 		pObj = m_listObjectPool.front();
 		m_listObjectPool.pop_front();
-
-		pObj->DisconnectWithParent();
-		++iCurPopCount;
-		return pObj;
 	}
+
+	return pObj;
 }
 
 void CMemoryPool::PushObject(CGameObject* _Object)
@@ -67,10 +63,6 @@ void CMemoryPool::PushObject(CGameObject* _Object)
 		_Object->DisconnectWithLayer();
 
 	m_listObjectPool.push_back(_Object);
-	--iCurPopCount;
 
-	if (iCurPopCount == 0)
-	{
-		m_listObjectPool.sort([](CGameObject* a, CGameObject* b) { return a->GetName() < b->GetName(); });
-	}
+	// m_listObjectPool.sort([](CGameObject** a, CGameObject** b) { return (*a)->GetName() < (*b)->GetName(); });
 }

@@ -1,29 +1,23 @@
 ﻿#pragma once
-#include "CManager.h"
 
-class CMemoryPool : public CManager<CMemoryPool>
+class CMemoryPool
 {
-	SINGLE(CMemoryPool);
-
 private:
 	list<CGameObject*> m_listObjectPool;
+	Ptr<CPrefab>	   m_PoolPrefab;
 
 	int iPoolMaxCount;
-	int iCurPopCount;
-
-	CGameObject* PoolMgr;
 
 public:
-	void		 init();
-	virtual void enter() override {}
-	void		 tick();
+	void begin(wstring strPrefabrRelactivePath);
 
 public:
 	CGameObject* PopObject();
 	void		 PushObject(CGameObject* _Object);
 
-	void		 RegisterPoolMgr(CGameObject* _Mgr) { PoolMgr = _Mgr; }
-	CGameObject* GetPoolMgr() { return PoolMgr; }
+	int GetCurCount() { return m_listObjectPool.size(); }
 
-	list<CGameObject*> GetList() { return m_listObjectPool; }
+public:
+	CMemoryPool();
+	~CMemoryPool();
 };

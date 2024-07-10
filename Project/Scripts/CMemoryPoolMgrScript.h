@@ -2,14 +2,9 @@
 
 #include <Engine\CScript.h>
 
-class CMemoryPoolMgr : public CScript
+class CMemoryPoolMgrScript : public CScript
 {
 private:
-	list<CGameObject*> m_listObjectPool;
-
-	int iPoolMaxCount;
-	int iCurPopCount;
-
 public:
 	virtual void tick() override;
 	virtual void begin() override;
@@ -21,11 +16,8 @@ public:
 	CGameObject* PopObject();
 	void		 PushObject(CGameObject* _Object);
 
-	void PopPool();
-	void PushPool();
-
 public:
-	CLONE(CMemoryPoolMgr);
-	CMemoryPoolMgr();
-	~CMemoryPoolMgr();
+	CLONE(CMemoryPoolMgrScript);
+	CMemoryPoolMgrScript();
+	~CMemoryPoolMgrScript();
 };

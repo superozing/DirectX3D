@@ -94,7 +94,7 @@
     <ClInclude Include="CSpawnSpotScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="CMemoryPoolMgr.h">
+    <ClInclude Include="CMemoryPoolMgrScript.h">
       <Filter>Scripts\Manager\MemoryPool</Filter>
     </ClInclude>
     <ClInclude Include="CHaloScript.h">
@@ -202,7 +202,7 @@
     <ClCompile Include="CSpawnSpotScript.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="CMemoryPoolMgr.cpp">
+    <ClCompile Include="CMemoryPoolMgrScript.cpp">
       <Filter>Scripts\Manager\MemoryPool</Filter>
     </ClCompile>
     <ClCompile Include="CHaloScript.cpp">
