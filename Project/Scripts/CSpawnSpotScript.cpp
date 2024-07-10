@@ -17,7 +17,7 @@ CSpawnSpotScript::CSpawnSpotScript()
 {
 	AppendScriptParam("Spawn Position", SCRIPT_PARAM::VEC3, &SpawnBasicPosition);
 	AppendScriptParam("Spawn Scale   ", SCRIPT_PARAM::VEC3, &SpawnBasicScale);
-	AppendScriptObject("Last Add Object", &CurObjectPointer, COMPONENT_TYPE::TRANSFORM);
+	AppendScriptObject("Recent Register Object", &RecentRegisterObj, COMPONENT_TYPE::TRANSFORM);
 
 	AppendScriptParam("SPOT TYPE", SCRIPT_PARAM::STRING, &strDisplayString, 0.f, 0.f, true);
 
@@ -46,7 +46,7 @@ CSpawnSpotScript::CSpawnSpotScript()
 
 CSpawnSpotScript::~CSpawnSpotScript()
 {
-	// Delete_List(m_listSpawnObject);
+	Delete_List(m_listSpawnObject);
 }
 
 void CSpawnSpotScript::SetSpawnTypePlayer()
@@ -103,15 +103,12 @@ void CSpawnSpotScript::RegisterObject()
 {
 	CMemoryPoolMgr* Script = CMemoryPool::GetInst()->GetPoolMgr()->GetScript<CMemoryPoolMgr>();
 
-	for (int i = 0; i < 3; ++i)
-	{
-		CGameObject* pObj = nullptr;
-		pObj			  = Script->PopObject();
+	CGameObject* pObj = nullptr;
+	pObj			  = Script->PopObject();
 
-		m_listSpawnObject.push_back(pObj);
+	m_listSpawnObject.push_back(pObj);
 
-		CurObjectPointer = pObj;
-	}
+	RecentRegisterObj = pObj;
 }
 
 void CSpawnSpotScript::DeAllocateObject()
@@ -123,27 +120,33 @@ void CSpawnSpotScript::DeAllocateObject()
 		Script->PushObject(*iter);
 	}
 
-	// m_CurrentSpawnObject.clear();
+	m_CurrentSpawnObject.clear();
 }
 
 void CSpawnSpotScript::SpawnObject()
 {
-	for (int i = 0; i < m_listSpawnObject.size(); ++i)
+	// spawn count 적용이 필요할듯. 일단 1개먼저 만들기
+	// bool 값으로 크기 선택 여부
+	// 선택한 obj layer - 원래 있던걸로 동작시키기
+
+	if (m_listSpawnObject.size() == 0)
 	{
-		CGameObject* pObj = nullptr;
-		pObj			  = m_listSpawnObject.front();
-		m_listSpawnObject.pop_front();
-		m_CurrentSpawnObject.push_back(pObj);
-
-		Vec3 pos = GetOwner()->Transform()->GetRelativePos();
-		pos.x += 300.f * i;
-
-		pObj->Transform()->SetRelativePos(pos);
-		pObj->Transform()->SetRelativeRotation(GetOwner()->Transform()->GetRelativeRotation());
-		pObj->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 50.f));
-
-		GamePlayStatic::SpawnGameObject(pObj, 0);
+		MessageBox(nullptr, L"등록된 obj가 없음", L"스폰 불가능", MB_OK);
+		return;
 	}
+
+	CGameObject* pObj = nullptr;
+	pObj			  = m_listSpawnObject.front();
+	m_listSpawnObject.pop_front();
+	m_CurrentSpawnObject.push_back(pObj);
+
+	Vec3 pos = GetOwner()->Transform()->GetRelativePos();
+	pObj->Transform()->SetRelativePos(pos);
+
+	pObj->Transform()->SetRelativeRotation(GetOwner()->Transform()->GetRelativeRotation());
+	pObj->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 50.f));
+
+	GamePlayStatic::SpawnGameObject(pObj, 0);
 }
 
 void CSpawnSpotScript::begin()

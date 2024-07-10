@@ -25,7 +25,7 @@ private:
 	string		 strDisplayString;
 	Vec4		 ModeColor;
 
-	CGameObject*	   CurObjectPointer;
+	CGameObject*	   RecentRegisterObj;
 	list<CGameObject*> m_listSpawnObject;
 	list<CGameObject*> m_CurrentSpawnObject;
 

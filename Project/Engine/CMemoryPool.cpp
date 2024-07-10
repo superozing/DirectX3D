@@ -12,6 +12,7 @@ CMemoryPool::CMemoryPool()
 
 CMemoryPool::~CMemoryPool()
 {
+	Delete_List(m_listObjectPool);
 }
 
 void CMemoryPool::init()
@@ -36,15 +37,38 @@ CGameObject* CMemoryPool::PopObject()
 {
 	CGameObject* pObj = nullptr;
 
-	if (m_listObjectPool.size() > 0)
+	if (m_listObjectPool.empty() && iCurPopCount == iPoolMaxCount)
+	{
+		Ptr<CMeshData> pMeshData = nullptr;
+		pMeshData				 = CAssetMgr::GetInst()->LoadFBX(L"fbx\\TutorialTarget.fbx");
+
+		pObj = pMeshData->Instantiate();
+		pObj->SetName(L"Target" + ToWString(std::to_string(m_listObjectPool.size() + iCurPopCount)));
+
+		++iCurPopCount;
+		++iPoolMaxCount;
+
+		return pObj;
+	}
+	else
 	{
 		pObj = m_listObjectPool.front();
 		m_listObjectPool.pop_front();
+
+		pObj->DisconnectWithParent();
+		++iCurPopCount;
+		return pObj;
 	}
-	return pObj;
 }
 
 void CMemoryPool::PushObject(CGameObject* _Object)
 {
+	_Object->DisconnectWithLayer();
 	m_listObjectPool.push_back(_Object);
+	--iCurPopCount;
+
+	if (iCurPopCount == 0)
+	{
+		m_listObjectPool.sort([](CGameObject* a, CGameObject* b) { return a->GetName() < b->GetName(); });
+	}
 }
