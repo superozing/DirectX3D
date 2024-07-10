@@ -15,6 +15,7 @@
 CTaskMgr::CTaskMgr()
 	: m_bCreateObject(false)
 	, m_bDeleteObject(false)
+	, m_bMoveObject(false)
 {
 }
 
@@ -156,6 +157,7 @@ void CTaskMgr::tick()
 void CTaskMgr::Clear()
 {
 	m_bCreateObject = false;
+	m_bMoveObject	= false;
 
 	// 억지
 	if (1 == m_DeleteFrameCount)

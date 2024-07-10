@@ -63,7 +63,9 @@ CGameObject* CMemoryPool::PopObject()
 
 void CMemoryPool::PushObject(CGameObject* _Object)
 {
-	_Object->DisconnectWithLayer();
+	if (_Object->GetLayerIdx() != -1)
+		_Object->DisconnectWithLayer();
+
 	m_listObjectPool.push_back(_Object);
 	--iCurPopCount;
 

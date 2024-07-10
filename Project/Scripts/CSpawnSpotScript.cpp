@@ -46,6 +46,13 @@ CSpawnSpotScript::CSpawnSpotScript()
 
 CSpawnSpotScript::~CSpawnSpotScript()
 {
+	vector<CGameObject*> vecChild = GetOwner()->GetChild();
+
+	for (auto i = 0; i < vecChild.size(); ++i)
+	{
+		vecChild[i]->DisconnectWithParent();
+	}
+
 	Delete_List(m_listSpawnObject);
 }
 
@@ -109,6 +116,8 @@ void CSpawnSpotScript::RegisterObject()
 	m_listSpawnObject.push_back(pObj);
 
 	RecentRegisterObj = pObj;
+
+	GetOwner()->AddChild(pObj);
 }
 
 void CSpawnSpotScript::DeAllocateObject()
@@ -137,6 +146,7 @@ void CSpawnSpotScript::SpawnObject()
 
 	CGameObject* pObj = nullptr;
 	pObj			  = m_listSpawnObject.front();
+	pObj->DisconnectWithParent();
 	m_listSpawnObject.pop_front();
 	m_CurrentSpawnObject.push_back(pObj);
 
