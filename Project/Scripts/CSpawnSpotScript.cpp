@@ -14,6 +14,7 @@ CSpawnSpotScript::CSpawnSpotScript()
 	, strDisplayString(ToString(magic_enum::enum_name(SpawnObjType::None)))
 	, ModeColor{Vec4(1.f, 1.f, 1.f, 1.f)}
 	, m_listSpawnObject()
+	, m_BindingPrefab()
 {
 	AppendScriptParam("Spawn Position", SCRIPT_PARAM::VEC3, &SpawnBasicPosition);
 	AppendScriptParam("Spawn Scale   ", SCRIPT_PARAM::VEC3, &SpawnBasicScale);
@@ -42,6 +43,8 @@ CSpawnSpotScript::CSpawnSpotScript()
 
 	AppendMemberFunction("Register", SCRIPT_PARAM::FUNC_MEMBER, "Register",
 						 std::bind(&CSpawnSpotScript::RegisterObject, this));
+
+	m_BindingPrefab = CAssetMgr::GetInst()->Load<CPrefab>(PREFTempPrefab);
 }
 
 CSpawnSpotScript::~CSpawnSpotScript()

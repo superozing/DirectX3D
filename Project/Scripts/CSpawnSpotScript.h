@@ -26,6 +26,7 @@ private:
 	Vec4		 ModeColor;
 
 	CGameObject*	   RecentRegisterObj;
+	Ptr<CPrefab>	   m_BindingPrefab;
 	list<CGameObject*> m_listSpawnObject;
 	list<CGameObject*> m_CurrentSpawnObject;
 
