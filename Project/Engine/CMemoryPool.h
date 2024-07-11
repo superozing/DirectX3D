@@ -16,6 +16,7 @@ public:
 	void		 PushObject(CGameObject* _Object);
 
 	int GetCurCount() { return m_listObjectPool.size(); }
+	int GetMaxCount() { return iPoolMaxCount; }
 
 public:
 	CMemoryPool();

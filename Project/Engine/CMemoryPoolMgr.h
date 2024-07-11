@@ -24,6 +24,8 @@ public:
 	void		 SetEX(CGameObject* pObj) { m_pMemoryPoolEX = pObj; }
 	CGameObject* GetEX() { return m_pMemoryPoolEX; }
 
+	vector<std::pair<string, int>> GetPoolKeys();
+
 private:
 	CMemoryPool* FindPool(string _strMapKey);
 

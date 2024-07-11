@@ -39,6 +39,22 @@ int CMemoryPoolMgr::GetCurrentCount()
 	return m_pPool->GetCurCount();
 }
 
+vector<std::pair<string, int>> CMemoryPoolMgr::GetPoolKeys()
+{
+	vector<std::pair<string, int>> res;
+
+	for (auto iter = m_mapMemoryPool.begin(); iter != m_mapMemoryPool.end(); ++iter)
+	{
+		std::pair<string, int> p;
+		p.first	 = (iter->first);
+		p.second = iter->second->GetMaxCount();
+
+		res.push_back(p);
+	}
+
+	return res;
+}
+
 CMemoryPool* CMemoryPoolMgr::FindPool(string _strMapKey)
 {
 	map<string, CMemoryPool*>::iterator iter = m_mapMemoryPool.find(_strMapKey);
