@@ -14,9 +14,6 @@
 #define TagResolution "[Resolution(x, y), FullScreen]"
 #define TagLevel "[Level]"
 
-#define TagMemoryPoolPrefab "[Pool Prefab]"
-#define TagMemoryPoolCount "[PoolCount]"
-
 CEnvMgr::CEnvMgr()
 {
 }
@@ -59,9 +56,6 @@ void CEnvMgr::init()
 void CEnvMgr::exit()
 {
 	wstring strEnvSavePath = CPathMgr::GetLogPath();
-
-	wstring strPoolSetPath = strEnvSavePath + L"\\PoolInit.txt";
-
 	strEnvSavePath += L"\\Env.txt";
 
 	// Log 폴더가 없다면 폴더 생성
@@ -88,30 +82,7 @@ void CEnvMgr::exit()
 
 	fout.close();
 
-	// 메모리 풀 초기세팅 저장
-	ofstream fPoolout(strPoolSetPath, ofstream::out | ofstream::trunc);
-
-	if (!fPoolout.is_open())
-	{
-		MessageBox(nullptr, L"MemoryPool Save fail!", L"Client 종료 에러", 0);
-	}
-
-	vector<std::pair<string, int>> PoolKey = CMemoryPoolMgr::GetInst()->GetPoolKeys();
-
-	for (int i = 0; i < PoolKey.size(); ++i)
-	{
-		std::pair<string, int> p = PoolKey[i];
-
-		fPoolout << TagMemoryPoolPrefab << endl;
-		fPoolout << p.first << endl;
-
-		fPoolout << TagMemoryPoolCount << endl;
-		fPoolout << p.second << endl;
-
-		fPoolout << endl;
-	}
-
-	fPoolout.close();
+	CMemoryPoolMgr::GetInst()->SavePool();
 }
 
 void CEnvMgr::tick()

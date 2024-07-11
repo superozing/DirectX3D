@@ -18,7 +18,6 @@ CMemoryPool::~CMemoryPool()
 
 void CMemoryPool::begin(wstring strPrefabrRelactivePath)
 {
-
 	Ptr<CPrefab> pPrefab = CAssetMgr::GetInst()->Load<CPrefab>(strPrefabrRelactivePath);
 
 	if (pPrefab == nullptr)
