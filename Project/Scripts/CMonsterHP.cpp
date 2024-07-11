@@ -61,7 +61,7 @@ void CMonsterHP::MakeChildObjects()
 	pObj->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::BOOL_2, true);
 	pObj->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::BOOL_3, true);
 	pObj->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, Vec4(1.f, 0.2f, 0.2f, 1.f));
-	pObj->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_0, 4);
+	pObj->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_0, 10);
 
 	m_pHPLineUI->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HPLine_Div.png"));
 	m_pHPLineUI->AllowBindTexPerFrame();

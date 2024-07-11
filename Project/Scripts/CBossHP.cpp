@@ -195,6 +195,9 @@ void CBossHP::MakeChildObjects()
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
 	pObj->MeshRender()->GetDynamicMaterial(0);
 	pObj->MeshRender()->GetMaterial(0)->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BossHPShader"));
+	pObj->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::BOOL_0, true);
+	pObj->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_1, 10);
+	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HPLine_Div.png"));
 
 	pObj->Transform()->SetRelativePos(Vec3(100 * SCALE_RATIO, -10 * SCALE_RATIO, 0.f));
 	pObj->Transform()->SetRelativeScale(Vec3(1100.f * SCALE_RATIO, 44.f * SCALE_RATIO, 1.f));
