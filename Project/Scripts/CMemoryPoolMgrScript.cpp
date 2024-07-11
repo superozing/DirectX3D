@@ -16,13 +16,14 @@ CMemoryPoolMgrScript::~CMemoryPoolMgrScript()
 
 void CMemoryPoolMgrScript::begin()
 {
-	CMemoryPoolMgr::GetInst()->begin(PREFTutorialTarget2);
+	CMemoryPoolMgr::GetInst()->begin();
 
-	int iCurruentCount = CMemoryPoolMgr::GetInst()->GetCurrentCount();
+	int							   iCurruentCount = CMemoryPoolMgr::GetInst()->GetMapCount();
+	vector<std::pair<string, int>> PoolInfo		  = CMemoryPoolMgr::GetInst()->GetPoolKeys();
 
 	for (int i = 0; i < iCurruentCount; ++i)
 	{
-		GetOwner()->AddChild(CMemoryPoolMgr::GetInst()->PopObject());
+		GetOwner()->AddChild(CMemoryPoolMgr::GetInst()->PopObject(PoolInfo[i].first));
 	}
 }
 
@@ -30,7 +31,7 @@ void CMemoryPoolMgrScript::tick()
 {
 }
 
-CGameObject* CMemoryPoolMgrScript::PopObject()
+CGameObject* CMemoryPoolMgrScript::PopObject(string _strMapKey)
 {
 	CGameObject*		 pObj	  = nullptr;
 	vector<CGameObject*> vecChild = GetOwner()->GetChild();
@@ -39,7 +40,7 @@ CGameObject* CMemoryPoolMgrScript::PopObject()
 
 	if (vecChild.size() == 0)
 	{
-		pObj = CMemoryPoolMgr::GetInst()->PopObject();
+		pObj = CMemoryPoolMgr::GetInst()->PopObject(_strMapKey);
 	}
 	else
 	{

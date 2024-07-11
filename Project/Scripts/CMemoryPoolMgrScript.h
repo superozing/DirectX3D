@@ -13,7 +13,7 @@ public:
 	virtual void LoadFromFile(FILE* _File) override{};
 
 public:
-	CGameObject* PopObject();
+	CGameObject* PopObject(string _strMapKey);
 	void		 PushObject(CGameObject* _Object);
 
 public:

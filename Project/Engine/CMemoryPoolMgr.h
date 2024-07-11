@@ -9,17 +9,16 @@ class CMemoryPoolMgr : public CManager<CMemoryPoolMgr>
 	SINGLE(CMemoryPoolMgr);
 
 private:
-	CMemoryPool* m_pPool;
-
 	map<string, CMemoryPool*> m_mapMemoryPool;
 
 	CGameObject* m_pMemoryPoolEX;
 
 public:
-	CGameObject* PopObject();
-	void		 PushObject(CGameObject* _Object);
+	CGameObject* PopObject(string _strMapKey);
+	void		 PushObject(string _strMapKey, CGameObject* _Object);
 
-	int GetCurrentCount();
+	int GetMapCount() { return m_mapMemoryPool.size(); }
+	int GetCurrentCount(string _strMapKey);
 
 	void		 SetEX(CGameObject* pObj) { m_pMemoryPoolEX = pObj; }
 	CGameObject* GetEX() { return m_pMemoryPoolEX; }
@@ -33,6 +32,6 @@ private:
 public:
 	virtual void tick() override;
 	virtual void init() override{};
-	void		 begin(wstring strPrefabRelativePath);
+	void		 begin();
 	virtual void enter() override{};
 };

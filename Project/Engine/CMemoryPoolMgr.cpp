@@ -9,21 +9,15 @@
 CMemoryPoolMgr::CMemoryPoolMgr()
 	: m_pMemoryPoolEX(nullptr)
 {
-	m_pPool = new CMemoryPool;
 }
 
 CMemoryPoolMgr::~CMemoryPoolMgr()
 {
-	if (m_pPool != nullptr)
-		delete m_pPool;
-
 	Delete_Map<string, CMemoryPool*>(m_mapMemoryPool);
 }
 
-void CMemoryPoolMgr::begin(wstring strPrefabRelativePath)
+void CMemoryPoolMgr::begin()
 {
-	m_pPool->begin(strPrefabRelativePath);
-
 	wstring PoolBeginPath = CPathMgr::GetLogPath();
 	PoolBeginPath += L"\\PoolInit.txt";
 
@@ -60,19 +54,22 @@ void CMemoryPoolMgr::begin(wstring strPrefabRelativePath)
 	}
 }
 
-CGameObject* CMemoryPoolMgr::PopObject()
+CGameObject* CMemoryPoolMgr::PopObject(string _strMapKey)
 {
-	return m_pPool->PopObject();
+	CMemoryPool* pPool = FindPool(_strMapKey);
+	return pPool->PopObject();
 }
 
-void CMemoryPoolMgr::PushObject(CGameObject* _Object)
+void CMemoryPoolMgr::PushObject(string _strMapKey, CGameObject* _Object)
 {
-	m_pPool->PushObject(_Object);
+	CMemoryPool* pPool = FindPool(_strMapKey);
+	pPool->PushObject(_Object);
 }
 
-int CMemoryPoolMgr::GetCurrentCount()
+int CMemoryPoolMgr::GetCurrentCount(string _strMapKey)
 {
-	return m_pPool->GetCurCount();
+	CMemoryPool* pPool = FindPool(_strMapKey);
+	return pPool->GetCurCount();
 }
 
 vector<std::pair<string, int>> CMemoryPoolMgr::GetPoolKeys()

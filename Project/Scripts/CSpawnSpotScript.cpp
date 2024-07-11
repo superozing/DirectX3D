@@ -110,7 +110,8 @@ void CSpawnSpotScript::RegisterObject()
 {
 
 	CGameObject* pObj = nullptr;
-	pObj			  = CMemoryPoolMgr::GetInst()->GetEX()->GetScript<CMemoryPoolMgrScript>()->PopObject();
+	pObj =
+		CMemoryPoolMgr::GetInst()->GetEX()->GetScript<CMemoryPoolMgrScript>()->PopObject(ToString(PREFTutorialTarget2));
 
 	m_listSpawnObject.push_back(pObj);
 
