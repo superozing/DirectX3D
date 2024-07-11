@@ -25,6 +25,8 @@ void CMemoryPoolMgrScript::begin()
 	{
 		GetOwner()->AddChild(CMemoryPoolMgr::GetInst()->PopObject(PoolInfo[i].first));
 	}
+
+	CTaskMgr::GetInst()->SetMemoryPoolEvent(true);
 }
 
 void CMemoryPoolMgrScript::tick()
