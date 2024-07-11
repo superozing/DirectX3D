@@ -11,6 +11,8 @@ class CMemoryPoolMgr : public CManager<CMemoryPoolMgr>
 private:
 	CMemoryPool* m_pPool;
 
+	map<string, CMemoryPool*> m_mapMemoryPool;
+
 	CGameObject* m_pMemoryPoolEX;
 
 public:
@@ -21,6 +23,9 @@ public:
 
 	void		 SetEX(CGameObject* pObj) { m_pMemoryPoolEX = pObj; }
 	CGameObject* GetEX() { return m_pMemoryPoolEX; }
+
+private:
+	CMemoryPool* FindPool(string _strMapKey);
 
 public:
 	virtual void tick() override;
