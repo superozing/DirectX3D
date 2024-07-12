@@ -23,6 +23,9 @@ struct tScriptParam
 	std::function<void()> MemberFunc;
 	COMPONENT_TYPE		  CompType;
 	UINT				  ScriptType;
+	ASSET_TYPE			  AssetType;
+	int					  length;
+	int*				  idx;
 
 	// public:
 	//     tScriptParam(SCRIPT_PARAM type, void* data, float _min, float _max, bool view, const string& tooltip,
@@ -69,6 +72,21 @@ protected:
 			{_Key, tScriptParam{SCRIPT_PARAM::OBJECT, _Data, 0, 0, _View, _Tooltip, nullptr, nullptr, _CType, _SType}});
 	}
 
+	void AppendScriptAsset(const string& _Key, void* _Data, ASSET_TYPE _Type = ASSET_TYPE::END, bool _View = false,
+						   const string& _Tooltip = {})
+	{
+		m_vScriptParam.push_back({_Key, tScriptParam{SCRIPT_PARAM::ASSET, _Data, 0, 0, _View, _Tooltip, nullptr,
+													 nullptr, COMPONENT_TYPE::END, (UINT)-1, _Type}});
+	}
+
+	void AppendScriptVector(const string& _Key, void* _Data, int _length, int* _idx, bool _View = false,
+							const string& _Tooltip = {})
+	{
+		m_vScriptParam.push_back(
+			{_Key, tScriptParam{SCRIPT_PARAM::VECTOR, _Data, 0, 0, _View, _Tooltip, nullptr, nullptr,
+								COMPONENT_TYPE::END, (UINT)-1, ASSET_TYPE::END, _length, _idx}});
+	}
+
 	void AppendStaticFunction(const string& _Key, SCRIPT_PARAM _Param, string _Desc, StaticFuncPtr _StaticFuncPtr)
 	{
 		// 새로운 스크립트 파라미터 생성 후 맵에 추가
@@ -80,6 +98,9 @@ protected:
 		// 새로운 스크립트 파라미터 생성 후 맵에 추가
 		m_vScriptParam.push_back({_Key, tScriptParam{_Param, nullptr, 0.f, 0.f, false, _Desc, nullptr, _MemberFunc}});
 	}
+
+	void AppendSeperateLine() { m_vScriptParam.push_back({"", tScriptParam{SCRIPT_PARAM::LINE}}); }
+	void SameLine() { m_vScriptParam.push_back({"", tScriptParam{SCRIPT_PARAM::SAMELINE}}); }
 
 public:
 	virtual void finaltick() final {}

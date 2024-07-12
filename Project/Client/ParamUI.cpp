@@ -442,6 +442,63 @@ bool ParamUI::Param_OBJECT(CGameObject** _Object, const string& _Desc, COMPONENT
 	return false;
 }
 
+bool ParamUI::Param_Asset(CAsset** _Asset, const string& _Desc, ASSET_TYPE _Type, bool _View, const string& _Tooltip)
+{
+	ImGui::Text(_Desc.c_str());
+	ImGui::SameLine();
+
+	char szID[256] = {};
+	sprintf_s(szID, "##asset%d", g_ID++);
+
+	string name = "";
+	if (*_Asset)
+		name = ToString((*_Asset)->GetKey());
+
+	if (_View)
+	{
+		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !_Tooltip.empty())
+		{
+			ImGui::SetTooltip(_Tooltip.c_str());
+		}
+		if (ImGui::InputText(szID, (char*)name.c_str(), name.length(), ImGuiInputTextFlags_ReadOnly))
+		{
+			return true;
+		}
+	}
+	else
+	{
+		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !_Tooltip.empty())
+		{
+			ImGui::SetTooltip(_Tooltip.c_str());
+		}
+		if (ImGui::InputText(szID, (char*)name.c_str(), name.length(), ImGuiInputTextFlags_ReadOnly))
+		{
+			return true;
+		}
+		if (ImGui::BeginDragDropTarget())
+		{
+			const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ContentTree");
+
+			if (payload)
+			{
+				DWORD_PTR data	  = *((DWORD_PTR*)payload->Data);
+				CEntity*  ptrData = (CEntity*)data;
+
+				CAsset* asset = dynamic_cast<CAsset*>(ptrData);
+
+				if (asset && _Type == asset->GetType())
+				{
+					*_Asset = asset;
+				}
+			}
+			ImGui::EndDragDropTarget();
+			return true;
+		}
+	}
+
+	return false;
+}
+
 bool ParamUI::Param_FUNC_STATIC(StaticFuncPtr _Func, const string& _Desc)
 {
 	if (ImGui::Button(_Desc.c_str()))
@@ -649,4 +706,14 @@ bool ParamUI::Param_MGR_PHYSX(void* _pPhysXMgr)
 	}
 
 	return true;
+}
+
+void ParamUI::Param_Line()
+{
+	ImGui::Separator();
+}
+
+void ParamUI::Param_SameLine()
+{
+	ImGui::SameLine();
 }
