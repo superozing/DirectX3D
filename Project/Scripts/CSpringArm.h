@@ -32,10 +32,6 @@ public:
 
 	friend ifstream& operator>>(ifstream& fin, SpringArmInfo& _info)
 	{
-		// 저장 구조 변경 대응 코드
-		Vec3 temp;
-		fin >> temp;
-
 		fin >> _info.fMaxDistance;
 		fin >> _info.fCamSpeed;
 		fin >> _info.fCamRotSpeed;

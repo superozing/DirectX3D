@@ -59,6 +59,7 @@ public:
 
 	void SetCurClip(int _Clip) { m_iCurClip = _Clip; }
 	int	 GetCurClip() { return m_iCurClip; }
+	int	 GetCurClipLength() { return m_pVecClip->at(m_iCurClip).iFrameLength; }
 
 	int GetCurFrameIdx() { return m_iFrameIdx; }
 

@@ -26,6 +26,7 @@ CPlayerScript::CPlayerScript()
 	AppendScriptParam("CurState", SCRIPT_PARAM::STRING, (void*)&state);
 	AppendScriptParam("CoverType", SCRIPT_PARAM::STRING, (void*)&cover);
 
+	// TODO : 완성하고 복사 생성자에 추가해야 프리팹에서 동작함
 	AppendScriptParam("IsDead", SCRIPT_PARAM::BOOL, &m_tStatus.IsDead, 0, 0, true);
 	AppendScriptParam("Damage", SCRIPT_PARAM::FLOAT, &m_tStatus.Damage);
 	AppendScriptParam("Health", SCRIPT_PARAM::FLOAT, &m_tStatus.curHealth);
@@ -146,6 +147,14 @@ CPlayerScript::CPlayerScript()
 	info.vOffsetPos								   = Vec2(100.f, 50.f);
 	m_mSpringInfos[PLAYER_STATE::KneelAttackStart] = info;
 
+	info.Type								= true;
+	info.fMaxDistance						= 150.f;
+	info.fCamSpeed							= 20.f;
+	info.fCamRotSpeed						= 20.f;
+	info.vDir								= Vec3(-20.f, 180.f, 0.f);
+	info.vOffsetPos							= Vec2(50.f, 50.f);
+	m_mSpringInfos[PLAYER_STATE::SkillDash] = info;
+
 #pragma endregion
 }
 
@@ -221,6 +230,7 @@ void CPlayerScript::CameraMove()
 		Transform()->SetRelativeRotation(vRot);
 	}
 
+	Vec3 vOffset = m_pSpringArm->GetDirOffset();
 	// 카메라 상하 회전
 	if (state == (int)PLAYER_STATE::NormalIdle || state == (int)PLAYER_STATE::NormalReload ||
 		state == (int)PLAYER_STATE::NormalAttackStart || state == (int)PLAYER_STATE::NormalAttackDelay ||
@@ -233,16 +243,42 @@ void CPlayerScript::CameraMove()
 		state == (int)PLAYER_STATE::KneelAttackIng || state == (int)PLAYER_STATE::KneelAttackEnd ||
 		state == (int)PLAYER_STATE::MoveStartNormal || state == (int)PLAYER_STATE::MoveEndNormal ||
 		state == (int)PLAYER_STATE::MoveIng || state == (int)PLAYER_STATE::MoveEndStand ||
-		state == (int)PLAYER_STATE::MoveEndKneel)
+		state == (int)PLAYER_STATE::MoveEndKneel || state == (int)PLAYER_STATE::SkillDash)
 	{
 		if (m_pSpringArm && m_pSpringArm->IsActivate())
 		{
 			float CamRotSpeed = 10.f;
-			Vec3  vOffset	  = m_pSpringArm->GetDirOffset();
+			Vec3  vRot		  = Transform()->GetRelativeRotation();
+			Vec3  vDiff;
 			if (vMouseDiff.y > 0.f)
+			{
 				vOffset.y += CPlayerController::Sensitivity * CamRotSpeed * DT;
+			}
 			else if (vMouseDiff.y < 0.f)
+			{
 				vOffset.y -= CPlayerController::Sensitivity * CamRotSpeed * DT;
+			}
+			if (vOffset.y < -20)
+				vOffset.y = -20;
+			if (vOffset.y > 5)
+				vOffset.y = 5;
+			vDiff = Vec3(vOffset.y, vOffset.x, vOffset.z);
+			vDiff.ToRadian();
+			vDiff *= 3.f;
+			if (state == (int)PLAYER_STATE::NormalAttackIng || state == (int)PLAYER_STATE::NormalAttackDelay ||
+				state == (int)PLAYER_STATE::NormalAttackStart || state == (int)PLAYER_STATE::StandAttackIng ||
+				state == (int)PLAYER_STATE::StandAttackDelay || state == (int)PLAYER_STATE::StandAttackStart ||
+				state == (int)PLAYER_STATE::KneelAttackStart || state == (int)PLAYER_STATE::KneelAttackIng ||
+				state == (int)PLAYER_STATE::KneelAttackDelay)
+			{
+			}
+			else
+				vDiff.x = 0.f;
+
+			vDiff.y = vRot.y;
+			vDiff.z = vRot.z;
+
+			Transform()->SetRelativeRotation(vDiff);
 
 			// 카메라 좌우 회전
 			if (state == (int)PLAYER_STATE::StandIdle || state == (int)PLAYER_STATE::StandReload ||
@@ -251,26 +287,37 @@ void CPlayerScript::CameraMove()
 				state == (int)PLAYER_STATE::KneelIdle || state == (int)PLAYER_STATE::KneelReload ||
 				state == (int)PLAYER_STATE::KneelAttackStart || state == (int)PLAYER_STATE::KneelAttackDelay ||
 				state == (int)PLAYER_STATE::KneelAttackIng || state == (int)PLAYER_STATE::KneelAttackEnd ||
-				state == (int)PLAYER_STATE::MoveEndStand || state == (int)PLAYER_STATE::MoveEndKneel)
+				state == (int)PLAYER_STATE::MoveEndStand || state == (int)PLAYER_STATE::MoveEndKneel ||
+				state == (int)PLAYER_STATE::SkillDash)
 			{
 				if (vMouseDiff.x > 0.f)
 					vOffset.x += CPlayerController::Sensitivity * CamRotSpeed * DT;
 				else if (vMouseDiff.x < 0.f)
 					vOffset.x -= CPlayerController::Sensitivity * CamRotSpeed * DT;
 
-				if (vOffset.x < 0.f)
-					vOffset.x = 0.f;
-				if (vOffset.x > 45.f)
-					vOffset.x = 45.f;
+				if (state == (int)PLAYER_STATE::SkillDash)
+				{
+					if (vOffset.x < -45.f)
+						vOffset.x = -45.f;
+					if (vOffset.x > 45.f)
+						vOffset.x = 45.f;
+				}
+				else
+				{
+					if (vOffset.x < 0.f)
+						vOffset.x = 0.f;
+					if (vOffset.x > 45.f)
+						vOffset.x = 45.f;
+				}
 			}
 			else
 			{
-				vOffset.x = 0.f;
+				vOffset.x = RoRMath::Lerp(vOffset.x, 0, DT);
 			}
-
-			m_pSpringArm->SetDirOffset(vOffset);
 		}
 	}
+
+	m_pSpringArm->SetDirOffset(vOffset);
 }
 
 void CPlayerScript::NormalMove()
@@ -280,9 +327,16 @@ void CPlayerScript::NormalMove()
 		state == (int)PLAYER_STATE::NormalAttackStart || state == (int)PLAYER_STATE::NormalAttackDelay ||
 		state == (int)PLAYER_STATE::NormalAttackEnd)
 	{
+		Vec3   vRot	   = Transform()->GetRelativeRotation();
+		Matrix matRotX = XMMatrixRotationX(0.f);
+		Matrix matRotY = XMMatrixRotationY(vRot.y);
+		Matrix matRotZ = XMMatrixRotationZ(vRot.z);
+		Matrix matRot  = matRotX * matRotY * matRotZ;
+
 		Vec3 vRight = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
-		Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-		Vec3 vPos	= Transform()->GetRelativePos();
+		Vec3 vFront = matRot.Front();
+		vFront.Normalize();
+		Vec3 vPos = Transform()->GetRelativePos();
 
 		float fMoveSpeed = state == (int)PLAYER_STATE::MoveIng ? m_tStatus.MoveSpeed : m_tStatus.AttackMoveSpeed;
 

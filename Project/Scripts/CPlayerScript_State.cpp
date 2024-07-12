@@ -495,6 +495,19 @@ int CPlayerScript::MoveEndNormalUpdate()
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::NormalIdle;
 
+	int maxFrm = Animator3D()->GetCurClipLength();
+	int curFrm = Animator3D()->GetCurFrameIdx();
+
+	Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+	vFront.Normalize();
+	Vec3 vPos = Transform()->GetRelativePos();
+
+	float fSpeed = RoRMath::SmoothStep(m_tStatus.DashMinSpeed, 0, (float)curFrm / maxFrm);
+
+	vPos += vFront * fSpeed * DT;
+
+	Transform()->SetRelativePos(vPos);
+
 	// 사격 준비
 	if (KEY_TAP(CPlayerController::Zoom) || KEY_PRESSED(CPlayerController::Zoom))
 		return (int)PLAYER_STATE::NormalAttackStart;
@@ -703,10 +716,25 @@ void CPlayerScript::VictoryEndEnd()
 void CPlayerScript::SkillDashBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::SkillDash, 0);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::SkillDash]);
 }
 
 int CPlayerScript::SkillDashUpdate()
 {
+	int curFrm = Animator3D()->GetCurFrameIdx();
+	int maxFrm = Animator3D()->GetCurClipLength();
+	if (curFrm > maxFrm)
+		return SwitchToCoverTypeIdle();
+
+	float speed = RoRMath::SmoothStep(m_tStatus.DashMaxSpeed, m_tStatus.DashMinSpeed, (float)curFrm / maxFrm);
+
+	Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+	vFront.Normalize();
+	Vec3 vPos = Transform()->GetRelativePos();
+	vPos += vFront * speed * DT;
+
+	Transform()->SetRelativePos(vPos);
+
 	if (!Animator3D()->IsPlayable())
 	{
 		return SwitchToCoverTypeIdle();
