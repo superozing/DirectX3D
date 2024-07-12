@@ -81,22 +81,6 @@ void CBossHP::tick()
 	m_pHPLineUI->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_1, HPRatio);
 }
 
-void CBossHP::SaveToFile(FILE* _File)
-{
-}
-
-void CBossHP::SaveToFile(ofstream& fout)
-{
-}
-
-void CBossHP::LoadFromFile(FILE* _File)
-{
-}
-
-void CBossHP::LoadFromFile(ifstream& fin)
-{
-}
-
 void CBossHP::SetLineHP(int _LineHP)
 {
 	using namespace BOSSHP;
@@ -213,10 +197,47 @@ void CBossHP::MakeChildObjects()
 	pObj->MeshRender()->GetMaterial(0)->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BossHPShader"));
 	pObj->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::BOOL_0, true);
 	pObj->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_1, 10);
-	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HPLine_Div.png"));
+	pObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0,
+													CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HPLine_Div.png"));
 
 	pObj->Transform()->SetRelativePos(Vec3(100 * SCALE_RATIO, -10 * SCALE_RATIO, 0.f));
 	pObj->Transform()->SetRelativeScale(Vec3(1100.f * SCALE_RATIO, 44.f * SCALE_RATIO, 1.f));
 
 	GetOwner()->AddChild(pObj);
+}
+
+#define TagLineHP "[Line HP]"
+#define TagPortraitTex "[Portrait Tex]"
+#define TagImgFontTex "[ImgFont Tex]"
+
+void CBossHP::SaveToFile(FILE* _File)
+{
+}
+
+void CBossHP::SaveToFile(ofstream& fout)
+{
+	fout << TagLineHP << endl;
+	fout << m_LineHP << endl;
+
+	fout << TagPortraitTex << endl;
+	SaveAssetRef(m_PortraitTex, fout);
+
+	fout << TagImgFontTex << endl;
+	SaveAssetRef(m_ImgFontTex, fout);
+}
+
+void CBossHP::LoadFromFile(FILE* _File)
+{
+}
+
+void CBossHP::LoadFromFile(ifstream& fin)
+{
+	Utils::GetLineUntilString(fin, TagLineHP);
+	fin >> m_LineHP;
+
+	Utils::GetLineUntilString(fin, TagPortraitTex);
+	LoadAssetRef(m_PortraitTex, fin);
+
+	Utils::GetLineUntilString(fin, TagImgFontTex);
+	LoadAssetRef(m_ImgFontTex, fin);
 }

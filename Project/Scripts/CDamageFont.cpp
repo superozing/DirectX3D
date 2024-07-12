@@ -35,7 +35,11 @@ void CDamageFont::begin()
 
 	m_pImageUIScript->AllowBindTexPerFrame();
 	m_pImageUIScript->DisableMouseInput();
-	m_pImageUIScript->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/ImgFont/Damage_Font_Number3.png"));
+
+	if (!m_FontImg.Get())
+		m_pImageUIScript->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/ImgFont/Damage_Font_Number3.png"));
+	else
+		m_pImageUIScript->SetUIImg(m_FontImg);
 }
 
 void CDamageFont::tick()
@@ -53,12 +57,28 @@ void CDamageFont::tick()
 	GetRenderComponent()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_1, m_Damage);
 }
 
+void CDamageFont::SetFontImg(Ptr<CTexture> _FontImg)
+{
+	m_FontImg = _FontImg;
+
+	// 만약 폰트 이미지가 플레이 중 설정되었을 경우
+	if (m_pImageUIScript)
+		m_pImageUIScript->SetUIImg(m_FontImg);
+}
+
+#define TagFontImg "[Font Img]"
+
 void CDamageFont::SaveToFile(FILE* _File)
 {
 }
 
 void CDamageFont::SaveToFile(ofstream& fout)
 {
+	fout << TagFontImg << endl;
+	if (m_FontImg.Get())
+		SaveAssetRef(m_FontImg, fout);
+	else
+		fout << 0 << endl;
 }
 
 void CDamageFont::LoadFromFile(FILE* _File)
@@ -67,4 +87,6 @@ void CDamageFont::LoadFromFile(FILE* _File)
 
 void CDamageFont::LoadFromFile(ifstream& fin)
 {
+	Utils::GetLineUntilString(fin, TagFontImg);
+	LoadAssetRef(m_FontImg, fin);
 }

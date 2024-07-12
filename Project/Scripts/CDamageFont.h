@@ -11,7 +11,9 @@ class CDamageFont : public CScript
 private:
 	CImageUIScript* m_pImageUIScript;
 
-	int				m_Damage;
+	int m_Damage;
+
+	Ptr<CTexture> m_FontImg;
 
 public:
 	virtual void begin() override;
@@ -24,6 +26,9 @@ public:
 
 public:
 	void SetDamage(int _Damage) { m_Damage = _Damage; }
+
+	void		  SetFontImg(Ptr<CTexture> _FontImg);
+	Ptr<CTexture> GetFontImg() { return m_FontImg; }
 
 public:
 	CLONE(CDamageFont);

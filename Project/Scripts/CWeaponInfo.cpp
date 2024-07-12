@@ -106,22 +106,6 @@ void CWeaponInfo::tick()
 	m_pAmmoProgressBar->SetAmmoRatio(ratio);
 }
 
-void CWeaponInfo::SaveToFile(FILE* _File)
-{
-}
-
-void CWeaponInfo::SaveToFile(ofstream& fout)
-{
-}
-
-void CWeaponInfo::LoadFromFile(FILE* _File)
-{
-}
-
-void CWeaponInfo::LoadFromFile(ifstream& fin)
-{
-}
-
 void CWeaponInfo::Fire()
 {
 	if (!m_CurAmmo)
@@ -158,4 +142,32 @@ void CWeaponInfo::SetParentPanelUI()
 	meshrender->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	meshrender->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
 	meshrender->GetDynamicMaterial(0);
+}
+
+#define TagMaxAmmo "[MaxAmmo]"
+#define TagCurAmmo "[CurAmmo]"
+
+void CWeaponInfo::SaveToFile(FILE* _File)
+{
+}
+
+void CWeaponInfo::SaveToFile(ofstream& fout)
+{
+	fout << TagMaxAmmo << endl;
+	fout << m_MaxAmmo << endl;
+
+	fout << TagCurAmmo << endl;
+	fout << m_CurAmmo << endl;
+}
+
+void CWeaponInfo::LoadFromFile(FILE* _File)
+{
+}
+
+void CWeaponInfo::LoadFromFile(ifstream& fin)
+{
+	Utils::GetLineUntilString(fin, TagMaxAmmo);
+	fin >> m_MaxAmmo;
+	Utils::GetLineUntilString(fin, TagCurAmmo);
+	fin >> m_CurAmmo;
 }

@@ -24,22 +24,6 @@ void CAmmoInfo::tick()
 	m_pAmmoLine->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, m_ratio);
 }
 
-void CAmmoInfo::SaveToFile(FILE* _File)
-{
-}
-
-void CAmmoInfo::SaveToFile(ofstream& fout)
-{
-}
-
-void CAmmoInfo::LoadFromFile(FILE* _File)
-{
-}
-
-void CAmmoInfo::LoadFromFile(ifstream& fin)
-{
-}
-
 void CAmmoInfo::MakeChildObjects()
 {
 	// transform 조정
@@ -65,7 +49,7 @@ void CAmmoInfo::MakeChildObjects()
 	pObj->MeshRender()->GetMaterial(0)->SetShader(
 		CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"AmmoProgressBarShader"));
 
-	m_pAmmoLine->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HPLine.png"));
+	// m_pAmmoLine->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HPLine.png"));
 	m_pAmmoLine->AllowBindTexPerFrame();
 	m_pAmmoLine->SetUIType(UI_TYPE::AMMO);
 
@@ -73,4 +57,20 @@ void CAmmoInfo::MakeChildObjects()
 	pObj->Transform()->SetRelativeScale(Vec3(12, 50.f, 1.f));
 
 	GetOwner()->AddChild(pObj);
+}
+
+void CAmmoInfo::SaveToFile(FILE* _File)
+{
+}
+
+void CAmmoInfo::SaveToFile(ofstream& fout)
+{
+}
+
+void CAmmoInfo::LoadFromFile(FILE* _File)
+{
+}
+
+void CAmmoInfo::LoadFromFile(ifstream& fin)
+{
 }

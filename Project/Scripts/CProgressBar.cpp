@@ -33,3 +33,25 @@ void CProgressBar::begin()
 
 	MakeChildObjects();
 }
+
+#define TagMaxValue "[Max Value]"
+
+void CProgressBar::SaveToFile(FILE* _File)
+{
+}
+
+void CProgressBar::SaveToFile(ofstream& fout)
+{
+	fout << TagMaxValue << endl;
+	fout << m_MaxValue << endl;
+}
+
+void CProgressBar::LoadFromFile(FILE* _File)
+{
+}
+
+void CProgressBar::LoadFromFile(ifstream& fin)
+{
+	Utils::GetLineUntilString(fin, TagMaxValue);
+	fin >> m_MaxValue;
+}

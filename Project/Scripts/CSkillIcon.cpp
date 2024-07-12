@@ -34,22 +34,6 @@ void CSkillIcon::tick()
 	MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, m_CurSkillCooldown / m_SkillCooldown);
 }
 
-void CSkillIcon::SaveToFile(FILE* _File)
-{
-}
-
-void CSkillIcon::SaveToFile(ofstream& fout)
-{
-}
-
-void CSkillIcon::LoadFromFile(FILE* _File)
-{
-}
-
-void CSkillIcon::LoadFromFile(ifstream& fin)
-{
-}
-
 void CSkillIcon::SetSkillIconTex(Ptr<CTexture> _SkillIconTex)
 {
 	m_pSkillIconTex = _SkillIconTex;
@@ -87,4 +71,33 @@ void CSkillIcon::MakeChildObjects()
 
 	m_pSkillIconUI->SetUIImg(m_pSkillIconTex);
 	m_pSkillIconUI->AllowBindTexPerFrame();
+}
+
+#define TagSkillCooldown "[Skill Cooldown]"
+#define TagSkillIconTex "[Skill Icon Tex]"
+
+void CSkillIcon::SaveToFile(FILE* _File)
+{
+}
+
+void CSkillIcon::SaveToFile(ofstream& fout)
+{
+	fout << TagSkillCooldown << endl;
+	fout << m_SkillCooldown << endl;
+
+	fout << TagSkillIconTex << endl;
+	SaveAssetRef(m_pSkillIconTex, fout);
+}
+
+void CSkillIcon::LoadFromFile(FILE* _File)
+{
+}
+
+void CSkillIcon::LoadFromFile(ifstream& fin)
+{
+	Utils::GetLineUntilString(fin, TagSkillCooldown);
+	fin >> m_SkillCooldown;
+
+	Utils::GetLineUntilString(fin, TagSkillIconTex);
+	LoadAssetRef(m_pSkillIconTex, fin);
 }

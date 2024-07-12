@@ -5,22 +5,6 @@
 #include "CImageUIScript.h"
 #include "CPanelUIScript.h"
 
-void CMonsterHP::SaveToFile(FILE* _File)
-{
-}
-
-void CMonsterHP::SaveToFile(ofstream& fout)
-{
-}
-
-void CMonsterHP::LoadFromFile(FILE* _File)
-{
-}
-
-void CMonsterHP::LoadFromFile(ifstream& fin)
-{
-}
-
 CMonsterHP::CMonsterHP()
 	: CProgressBar((UINT)SCRIPT_TYPE::MONSTERHP)
 {
@@ -70,8 +54,7 @@ void CMonsterHP::MakeChildObjects()
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHpoint));
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DynamicUIMtrl"), 0);
 	pObj->MeshRender()->GetDynamicMaterial(0);
-	pObj->MeshRender()->GetMaterial(0)->SetShader(
-		CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"DynamicHPShader"));
+	pObj->MeshRender()->GetMaterial(0)->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"DynamicHPShader"));
 	pObj->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::BOOL_0, false);
 	pObj->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::BOOL_1, true);
 	pObj->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::BOOL_2, true);
@@ -86,4 +69,20 @@ void CMonsterHP::MakeChildObjects()
 	pObj->Transform()->SetRelativeScale(Vec3(300, 20.f, 1.f));
 
 	GetOwner()->AddChild(pObj);
+}
+
+void CMonsterHP::SaveToFile(FILE* _File)
+{
+}
+
+void CMonsterHP::SaveToFile(ofstream& fout)
+{
+}
+
+void CMonsterHP::LoadFromFile(FILE* _File)
+{
+}
+
+void CMonsterHP::LoadFromFile(ifstream& fin)
+{
 }
