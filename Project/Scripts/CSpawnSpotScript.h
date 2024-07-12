@@ -28,6 +28,8 @@ private:
 	list<CGameObject*> m_CurrentSpawnObject;
 
 	vector<string> m_vecPrefabKey;
+	int			   m_ivecCurrentIdx;
+	CPrefab*	   m_CurBindPrefab;
 
 public:
 	void SetSpawnTypePlayer();

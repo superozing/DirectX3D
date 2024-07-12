@@ -14,15 +14,16 @@ CSpawnSpotScript::CSpawnSpotScript()
 	, ModeColor{Vec4(1.f, 1.f, 1.f, 1.f)}
 	, m_listSpawnObject()
 	, m_vecPrefabKey()
+	, m_ivecCurrentIdx(0)
 {
 	AppendScriptParam("Spawn Position", SCRIPT_PARAM::VEC3, &SpawnBasicPosition);
 	AppendScriptParam("BindObj Count", SCRIPT_PARAM::INT, &m_iBindObjCount, 0, 0, true);
+	AppendScriptAsset("Cur Prefab", &m_CurBindPrefab, ASSET_TYPE::PREFAB, false, "vector idx current prefab");
 
-	// APPEND SCRIPT VECTOR로 변경할 수도
-	for (int i = 0; i < m_vecPrefabKey.size(); ++i)
-	{
-		AppendScriptParam("Prefabkey" + std::to_string(i), SCRIPT_PARAM::STRING, &m_vecPrefabKey[i], 0, 0, true, {});
-	}
+	m_vecPrefabKey.push_back("aa");
+	m_vecPrefabKey.push_back("bb");
+
+	AppendScriptVector("Prefab Vector", &m_vecPrefabKey, (int)m_vecPrefabKey.size(), &m_ivecCurrentIdx, true);
 
 	AppendScriptParam("SPOT TYPE", SCRIPT_PARAM::STRING, &strDisplaySpawnTypeString, 0.f, 0.f, true);
 
