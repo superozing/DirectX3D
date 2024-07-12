@@ -57,6 +57,9 @@ inline bool ParamUI::Param_Vector(vector<T>* _vec, const string& _Desc, int _len
 	char szCombID[256] = {};
 	sprintf_s(szID, "##Combo%d", g_ID++);
 
+	if (_length <= 0)
+		return false;
+
 	int idx = *_idx;
 
 	idx = clamp(idx, 0, _length - 1);
