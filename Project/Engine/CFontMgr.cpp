@@ -31,6 +31,10 @@ void CFontMgr::init()
 
 	if (FAILED(m_pFW1Factory->CreateFontWrapper(DEVICE, L"Maplestory", &m_pFontWrapper[(UINT)FONT_TYPE::MAPLE])))
 		assert(NULL);
+
+	if (FAILED(m_pFW1Factory->CreateFontWrapper(DEVICE, L"경기천년제목", &m_pFontWrapper[(UINT)FONT_TYPE::MAIN_BOLD])))
+		assert(NULL);
+
 }
 
 void CFontMgr::DrawFont(const wchar_t* _pStr, float _fPosX, float _fPosY, float _fFontSize, UINT _Color,

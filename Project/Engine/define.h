@@ -384,6 +384,7 @@ enum class Log_Level
 
 enum class FONT_TYPE
 {
+	MAIN_BOLD,
 	ARIAL,
 	MAPLE,
 
