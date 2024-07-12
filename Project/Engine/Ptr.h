@@ -1,19 +1,17 @@
 ﻿#pragma once
 
-template<typename T>
-class Ptr
+template <typename T> class Ptr
 {
 private:
 	T* Asset;
 
 public:
-	T* Get() const { return Asset; }
-	T** GetAdressOf() const { return &Asset; }
-	T* operator->() const { return Asset; }
-
+	T*	Get() const { return Asset; }
+	T** GetAdressOf() { return &Asset; }
+	T*	operator->() const { return Asset; }
 
 public:
-	Ptr<T>& operator = (const Ptr& _ptr)
+	Ptr<T>& operator=(const Ptr& _ptr)
 	{
 		if (nullptr != Asset)
 			Asset->Release();
@@ -26,7 +24,7 @@ public:
 		return *this;
 	}
 
-	Ptr<T>& operator = (T* _Asset)
+	Ptr<T>& operator=(T* _Asset)
 	{
 		if (nullptr != Asset)
 			Asset->Release();
@@ -39,7 +37,7 @@ public:
 		return *this;
 	}
 
-	bool operator ==(const Ptr<T>& _Other) const
+	bool operator==(const Ptr<T>& _Other) const
 	{
 		if (Asset == _Other.Asset)
 		{
@@ -51,12 +49,9 @@ public:
 		}
 	}
 
-	bool operator != (const Ptr<T>& _Other) const
-	{
-		return !(*this == _Other);
-	}
+	bool operator!=(const Ptr<T>& _Other) const { return !(*this == _Other); }
 
-	bool operator ==(const T* _Asset) const
+	bool operator==(const T* _Asset) const
 	{
 		if (Asset == _Asset)
 			return true;
@@ -64,19 +59,16 @@ public:
 			return false;
 	}
 
-	bool operator != (const T* _Asset) const
-	{
-		return !(*this == _Asset);
-	}
-
+	bool operator!=(const T* _Asset) const { return !(*this == _Asset); }
 
 public:
 	Ptr()
 		: Asset(nullptr)
-	{}
+	{
+	}
 
 	Ptr(const Ptr<T>& _Other)
-		:Asset(_Other.Asset)
+		: Asset(_Other.Asset)
 	{
 		if (nullptr != Asset)
 			Asset->AddRef();
@@ -89,8 +81,6 @@ public:
 			Asset->AddRef();
 	}
 
-
-
 	~Ptr()
 	{
 		if (Asset)
@@ -100,8 +90,7 @@ public:
 	}
 };
 
-template<typename T>
-bool operator == (const void* _Asset, const Ptr<T>& _Ptr)
+template <typename T> bool operator==(const void* _Asset, const Ptr<T>& _Ptr)
 {
 	if (_Asset == _Ptr.Get())
 		return true;
@@ -109,8 +98,7 @@ bool operator == (const void* _Asset, const Ptr<T>& _Ptr)
 		return false;
 }
 
-template<typename T>
-bool operator != (const void* _Asset, const Ptr<T>& _Ptr)
+template <typename T> bool operator!=(const void* _Asset, const Ptr<T>& _Ptr)
 {
 	return !(_Asset == _Ptr);
 }
