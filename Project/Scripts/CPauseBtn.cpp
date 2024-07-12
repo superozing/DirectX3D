@@ -55,3 +55,19 @@ void CPauseBtn::begin()
 void CPauseBtn::tick()
 {
 }
+
+void CPauseBtn::SaveToFile(FILE* _File)
+{
+}
+
+void CPauseBtn::SaveToFile(ofstream& fout)
+{
+}
+
+void CPauseBtn::LoadFromFile(FILE* _File)
+{
+}
+
+void CPauseBtn::LoadFromFile(ifstream& fin)
+{
+}

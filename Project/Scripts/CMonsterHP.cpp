@@ -5,6 +5,22 @@
 #include "CImageUIScript.h"
 #include "CPanelUIScript.h"
 
+void CMonsterHP::SaveToFile(FILE* _File)
+{
+}
+
+void CMonsterHP::SaveToFile(ofstream& fout)
+{
+}
+
+void CMonsterHP::LoadFromFile(FILE* _File)
+{
+}
+
+void CMonsterHP::LoadFromFile(ifstream& fin)
+{
+}
+
 CMonsterHP::CMonsterHP()
 	: CProgressBar((UINT)SCRIPT_TYPE::MONSTERHP)
 {

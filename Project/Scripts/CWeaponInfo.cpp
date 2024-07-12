@@ -70,7 +70,7 @@ void CWeaponInfo::begin()
 
 	// Font Info
 	m_MaxAmmoFont.fFontSize = 50.f;
-	m_MaxAmmoFont.FontType	= FONT_TYPE::MAPLE;
+	m_MaxAmmoFont.FontType	= FONT_TYPE::MAIN_BOLD;
 	m_MaxAmmoFont.TextFlag	= FW1_RIGHT;
 
 	m_MaxAmmoFontOffset.x = 200.f;
@@ -104,6 +104,22 @@ void CWeaponInfo::tick()
 		ratio = (float)m_CurAmmo / m_MaxAmmo;
 
 	m_pAmmoProgressBar->SetAmmoRatio(ratio);
+}
+
+void CWeaponInfo::SaveToFile(FILE* _File)
+{
+}
+
+void CWeaponInfo::SaveToFile(ofstream& fout)
+{
+}
+
+void CWeaponInfo::LoadFromFile(FILE* _File)
+{
+}
+
+void CWeaponInfo::LoadFromFile(ifstream& fin)
+{
 }
 
 void CWeaponInfo::Fire()

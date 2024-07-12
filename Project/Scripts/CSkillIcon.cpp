@@ -34,6 +34,22 @@ void CSkillIcon::tick()
 	MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, m_CurSkillCooldown / m_SkillCooldown);
 }
 
+void CSkillIcon::SaveToFile(FILE* _File)
+{
+}
+
+void CSkillIcon::SaveToFile(ofstream& fout)
+{
+}
+
+void CSkillIcon::LoadFromFile(FILE* _File)
+{
+}
+
+void CSkillIcon::LoadFromFile(ifstream& fin)
+{
+}
+
 void CSkillIcon::SetSkillIconTex(Ptr<CTexture> _SkillIconTex)
 {
 	m_pSkillIconTex = _SkillIconTex;

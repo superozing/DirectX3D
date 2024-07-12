@@ -101,6 +101,22 @@ void CPausePanel::tick()
 	}
 }
 
+void CPausePanel::SaveToFile(FILE* _File)
+{
+}
+
+void CPausePanel::SaveToFile(ofstream& fout)
+{
+}
+
+void CPausePanel::LoadFromFile(FILE* _File)
+{
+}
+
+void CPausePanel::LoadFromFile(ifstream& fin)
+{
+}
+
 void CPausePanel::ActivePausePanel()
 {
 	m_pPanelUI->AllowTexSet();

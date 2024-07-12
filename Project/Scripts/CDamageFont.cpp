@@ -52,3 +52,19 @@ void CDamageFont::tick()
 	// 4. 데미지를 텍스쳐 레지스터에 바인딩
 	GetRenderComponent()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_1, m_Damage);
 }
+
+void CDamageFont::SaveToFile(FILE* _File)
+{
+}
+
+void CDamageFont::SaveToFile(ofstream& fout)
+{
+}
+
+void CDamageFont::LoadFromFile(FILE* _File)
+{
+}
+
+void CDamageFont::LoadFromFile(ifstream& fin)
+{
+}

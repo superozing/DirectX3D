@@ -89,3 +89,39 @@ void CCrosshair::SetParentPanelUI()
 	meshrender->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
 	meshrender->GetDynamicMaterial(0);
 }
+
+#define TagBarThikness	"[Bar Thikness]"
+#define TagBarLength	"[Bar Length]"
+#define TagColor		"[Bar Color]"
+
+void CCrosshair::SaveToFile(FILE* _File)
+{
+}
+
+void CCrosshair::SaveToFile(ofstream& fout)
+{
+	fout << TagBarThikness << endl;
+	fout << m_fBarThikness << endl;
+
+	fout << TagBarLength << endl;
+	fout << m_fLength << endl;
+
+	fout << TagColor << endl;
+	fout << m_CrosshairColor << endl;
+}
+
+void CCrosshair::LoadFromFile(FILE* _File)
+{
+}
+
+void CCrosshair::LoadFromFile(ifstream& fin)
+{
+	Utils::GetLineUntilString(fin, TagBarThikness);
+	fin >> m_fBarThikness;
+
+	Utils::GetLineUntilString(fin, TagBarLength);
+	fin >> m_fLength;
+
+	Utils::GetLineUntilString(fin, TagColor);
+	fin >> m_CrosshairColor;
+}

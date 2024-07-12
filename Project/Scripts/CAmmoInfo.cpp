@@ -24,6 +24,22 @@ void CAmmoInfo::tick()
 	m_pAmmoLine->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, m_ratio);
 }
 
+void CAmmoInfo::SaveToFile(FILE* _File)
+{
+}
+
+void CAmmoInfo::SaveToFile(ofstream& fout)
+{
+}
+
+void CAmmoInfo::LoadFromFile(FILE* _File)
+{
+}
+
+void CAmmoInfo::LoadFromFile(ifstream& fin)
+{
+}
+
 void CAmmoInfo::MakeChildObjects()
 {
 	// transform 조정

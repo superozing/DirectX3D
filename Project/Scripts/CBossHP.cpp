@@ -81,6 +81,22 @@ void CBossHP::tick()
 	m_pHPLineUI->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_1, HPRatio);
 }
 
+void CBossHP::SaveToFile(FILE* _File)
+{
+}
+
+void CBossHP::SaveToFile(ofstream& fout)
+{
+}
+
+void CBossHP::LoadFromFile(FILE* _File)
+{
+}
+
+void CBossHP::LoadFromFile(ifstream& fin)
+{
+}
+
 void CBossHP::SetLineHP(int _LineHP)
 {
 	using namespace BOSSHP;
