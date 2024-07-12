@@ -2,8 +2,10 @@
 #include "pch.h"
 #include "CMemoryPoolMgrScript.h"
 
+#include <Engine\CMemoryPool.h>
 #include <Engine\CMemoryPoolMgr.h>
 #include <Engine\CTaskMgr.h>
+#include <Engine\components.h>
 
 CMemoryPoolMgrScript::CMemoryPoolMgrScript()
 	: CScript((UINT)SCRIPT_TYPE::MEMORYPOOLMGRSCRIPT)
@@ -16,14 +18,22 @@ CMemoryPoolMgrScript::~CMemoryPoolMgrScript()
 
 void CMemoryPoolMgrScript::begin()
 {
-	CMemoryPoolMgr::GetInst()->begin();
+	map<string, CMemoryPool*> mapMemory = CMemoryPoolMgr::GetInst()->GetMapPool();
 
-	int							   iCurruentCount = CMemoryPoolMgr::GetInst()->GetMapCount();
-	vector<std::pair<string, int>> PoolInfo		  = CMemoryPoolMgr::GetInst()->GetPoolKeys();
-
-	for (int i = 0; i < iCurruentCount; ++i)
+	for (auto iter = mapMemory.begin(); iter != mapMemory.end(); ++iter)
 	{
-		GetOwner()->AddChild(CMemoryPoolMgr::GetInst()->PopObject(PoolInfo[i].first));
+		CMemoryPool* pPool = iter->second;
+
+		CGameObject* pFilterObj = new CGameObject;
+		pFilterObj->AddComponent(new CTransform);
+		pFilterObj->SetName(iter->first);
+
+		GetOwner()->AddChild(pFilterObj);
+
+		for (int i = 0; pPool->GetCurCount(); ++i)
+		{
+			pFilterObj->AddChild(pPool->PopObject());
+		}
 	}
 
 	CTaskMgr::GetInst()->SetMemoryPoolEvent(true);
@@ -39,22 +49,35 @@ CGameObject* CMemoryPoolMgrScript::PopObject(string _strMapKey)
 	vector<CGameObject*> vecChild = GetOwner()->GetChild();
 
 	CTaskMgr::GetInst()->SetMemoryPoolEvent(true);
-
-	if (vecChild.size() == 0)
+	for (int i = 0; i < vecChild.size(); ++i)
 	{
-		pObj = CMemoryPoolMgr::GetInst()->PopObject(_strMapKey);
+		if (ToString(vecChild[i]->GetName()) == _strMapKey && vecChild[i]->GetChild().size() == 0)
+		{
+			pObj = CMemoryPoolMgr::GetInst()->PopObject(_strMapKey);
+		}
+		else if (ToString(vecChild[i]->GetName()) == _strMapKey && vecChild[i]->GetChild().size() > 0)
+		{
+			pObj = vecChild[i]->GetChild().back();
+			pObj->DisconnectWithParent();
+		}
+		return pObj;
 	}
-	else
-	{
-		pObj = vecChild.back();
-		pObj->DisconnectWithParent();
-	}
-	return pObj;
 }
 
+#include <Engine\CLogMgr.h>
 void CMemoryPoolMgrScript::PushObject(CGameObject* _Object)
 {
-	// 자식에 대한 자식 예정
-	GetOwner()->AddChild(_Object);
+	vector<CGameObject*> vecObj = GetOwner()->GetChild();
+
+	for (int i = 0; i < vecObj.size(); ++i)
+	{
+		string s = ToString(vecObj[i]->GetName());
+
+		if (ToString(_Object->GetName()).find(s))
+		{
+			vecObj[i]->AddChild(_Object);
+		}
+	}
+
 	CTaskMgr::GetInst()->SetMemoryPoolEvent(true);
 }

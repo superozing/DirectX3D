@@ -9,7 +9,7 @@ private:
 	int iPoolMaxCount;
 
 public:
-	void begin(wstring strPrefabrRelactivePath);
+	void begin(string strPrefabrRelactivePath);
 
 public:
 	CGameObject* PopObject();

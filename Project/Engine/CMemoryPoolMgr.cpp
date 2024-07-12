@@ -16,42 +16,16 @@ CMemoryPoolMgr::~CMemoryPoolMgr()
 	Delete_Map<string, CMemoryPool*>(m_mapMemoryPool);
 }
 
-void CMemoryPoolMgr::begin()
+void CMemoryPoolMgr::Poolbegin(string strPrefabRelativePath)
 {
-	wstring PoolBeginPath = CPathMgr::GetLogPath();
-	PoolBeginPath += L"\\PoolInit.txt";
+	CMemoryPool* pFindPool = FindPool(strPrefabRelativePath);
 
-	if (!exists(PoolBeginPath))
+	if (pFindPool == nullptr)
 	{
-		return;
+		CMemoryPool* pPool = CreatePool(strPrefabRelativePath);
 	}
-
-	ifstream fin(PoolBeginPath);
-
-	if (!fin.is_open())
-		MessageBox(nullptr, L"Poolinit Info Load Fail", L"Pool begin 실패", 0);
-
-	int iPoolNum;
-	Utils::GetLineUntilString(fin, TagPoolCount);
-	fin >> iPoolNum;
-
-	for (int i = 0; i < iPoolNum; ++i)
-	{
-		// Pool Key
-		string strPoolKey;
-
-		Utils::GetLineUntilString(fin, TagMemoryPoolPrefab);
-		fin >> strPoolKey;
-
-		// Pool Count
-		int iPoolCount;
-		Utils::GetLineUntilString(fin, TagMemoryPoolCount);
-		fin >> iPoolCount;
-
-		CMemoryPool* pPool = new CMemoryPool;
-		pPool->begin(ToWString(strPoolKey)); // iPoolCount
-		m_mapMemoryPool.insert(make_pair(strPoolKey, pPool));
-	}
+	else
+		pFindPool->begin(strPrefabRelativePath);
 }
 
 CGameObject* CMemoryPoolMgr::PopObject(string _strMapKey)
@@ -72,54 +46,13 @@ int CMemoryPoolMgr::GetCurrentCount(string _strMapKey)
 	return pPool->GetCurCount();
 }
 
-vector<std::pair<string, int>> CMemoryPoolMgr::GetPoolKeys()
+CMemoryPool* CMemoryPoolMgr::CreatePool(string _strMapKey)
 {
-	vector<std::pair<string, int>> res;
+	CMemoryPool* pPool = new CMemoryPool;
+	pPool->begin(_strMapKey);
+	m_mapMemoryPool.insert(make_pair(_strMapKey, pPool));
 
-	for (auto iter = m_mapMemoryPool.begin(); iter != m_mapMemoryPool.end(); ++iter)
-	{
-		std::pair<string, int> p;
-		p.first	 = (iter->first);
-		p.second = iter->second->GetMaxCount();
-
-		res.push_back(p);
-	}
-
-	return res;
-}
-
-void CMemoryPoolMgr::SavePool()
-{
-	wstring strPoolSavePath = CPathMgr::GetLogPath();
-	strPoolSavePath += L"\\PoolInit.txt";
-
-	// 메모리 풀 초기세팅 저장
-	ofstream fPoolout(strPoolSavePath, ofstream::out | ofstream::trunc);
-
-	if (!fPoolout.is_open())
-	{
-		MessageBox(nullptr, L"MemoryPool Save fail!", L"Client 종료 에러", 0);
-	}
-
-	vector<std::pair<string, int>> PoolKey = CMemoryPoolMgr::GetInst()->GetPoolKeys();
-
-	fPoolout << TagPoolCount << endl;
-	fPoolout << PoolKey.size() << endl;
-
-	for (int i = 0; i < PoolKey.size(); ++i)
-	{
-		std::pair<string, int> p = PoolKey[i];
-
-		fPoolout << TagMemoryPoolPrefab << endl;
-		fPoolout << p.first << endl;
-
-		fPoolout << TagMemoryPoolCount << endl;
-		fPoolout << p.second << endl;
-
-		fPoolout << endl;
-	}
-
-	fPoolout.close();
+	return pPool;
 }
 
 CMemoryPool* CMemoryPoolMgr::FindPool(string _strMapKey)

@@ -45,6 +45,7 @@ CSpawnSpotScript::CSpawnSpotScript()
 						 std::bind(&CSpawnSpotScript::RegisterObject, this));
 
 	m_BindingPrefab = CAssetMgr::GetInst()->Load<CPrefab>(PREFTempPrefab);
+	CMemoryPoolMgr::GetInst()->Poolbegin(ToString(PREFTutorialTarget2));
 }
 
 CSpawnSpotScript::~CSpawnSpotScript()
@@ -162,6 +163,7 @@ void CSpawnSpotScript::SpawnObject()
 
 void CSpawnSpotScript::begin()
 {
+
 	SpawnBasicPosition = GetOwner()->Transform()->GetWorldPos();
 
 	for (auto iter = m_listSpawnObject.begin(); iter != m_listSpawnObject.end(); ++iter)

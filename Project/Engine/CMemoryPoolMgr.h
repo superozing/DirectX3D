@@ -23,15 +23,15 @@ public:
 	void		 SetEX(CGameObject* pObj) { m_pMemoryPoolEX = pObj; }
 	CGameObject* GetEX() { return m_pMemoryPoolEX; }
 
-	vector<std::pair<string, int>> GetPoolKeys();
-	void						   SavePool();
+	map<string, CMemoryPool*> GetMapPool() { return m_mapMemoryPool; }
 
 private:
+	CMemoryPool* CreatePool(string _strMapKey);
 	CMemoryPool* FindPool(string _strMapKey);
 
 public:
 	virtual void tick() override;
 	virtual void init() override{};
-	void		 begin();
+	void		 Poolbegin(string strPrefabRelativePath);
 	virtual void enter() override{};
 };

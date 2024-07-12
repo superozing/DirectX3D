@@ -16,14 +16,14 @@ CMemoryPool::~CMemoryPool()
 	Delete_List(m_listObjectPool);
 }
 
-void CMemoryPool::begin(wstring strPrefabrRelactivePath)
+void CMemoryPool::begin(string strPrefabrRelactivePath)
 {
 	Ptr<CPrefab> pPrefab = CAssetMgr::GetInst()->Load<CPrefab>(strPrefabrRelactivePath);
 
 	if (pPrefab == nullptr)
 	{
-		wstring msg;
-		msg += strPrefabrRelactivePath + L" Init Fail";
+		wstring msg = ToWString(strPrefabrRelactivePath);
+		msg += L" Init Fail";
 		MessageBox(nullptr, msg.c_str(), L"Memory Pool Prefab Load Fail", MB_OK);
 		return;
 	}

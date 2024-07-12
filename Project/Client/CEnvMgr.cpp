@@ -81,8 +81,6 @@ void CEnvMgr::exit()
 	fout << ToString(CLevelMgr::GetInst()->GetCurrentLevel()->GetRelativePath()) << endl;
 
 	fout.close();
-
-	CMemoryPoolMgr::GetInst()->SavePool();
 }
 
 void CEnvMgr::tick()
