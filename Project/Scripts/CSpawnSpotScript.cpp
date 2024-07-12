@@ -8,19 +8,23 @@
 CSpawnSpotScript::CSpawnSpotScript()
 	: CScript((UINT)SCRIPT_TYPE::SPAWNSPOTSCRIPT)
 	, SpawnBasicPosition(0.f, 0.f, 0.f)
-	, SpawnBasicScale(0.f, 0.f, 0.f)
-	, SpawnObjectPath("")
-	, SpawnObjType(SpawnObjType::None)
-	, strDisplayString(ToString(magic_enum::enum_name(SpawnObjType::None)))
+	, SpawnType(SpawnObjType::None)
+	, m_iBindObjCount(0)
+	, strDisplaySpawnTypeString(ToString(magic_enum::enum_name(SpawnObjType::None)))
 	, ModeColor{Vec4(1.f, 1.f, 1.f, 1.f)}
 	, m_listSpawnObject()
-	, m_BindingPrefab()
+	, m_vecPrefabKey()
 {
 	AppendScriptParam("Spawn Position", SCRIPT_PARAM::VEC3, &SpawnBasicPosition);
-	AppendScriptParam("Spawn Scale   ", SCRIPT_PARAM::VEC3, &SpawnBasicScale);
-	AppendScriptObject("Recent Register Object", &RecentRegisterObj, COMPONENT_TYPE::TRANSFORM);
+	AppendScriptParam("BindObj Count", SCRIPT_PARAM::INT, &m_iBindObjCount, 0, 0, true);
 
-	AppendScriptParam("SPOT TYPE", SCRIPT_PARAM::STRING, &strDisplayString, 0.f, 0.f, true);
+	// APPEND SCRIPT VECTOR로 변경할 수도
+	for (int i = 0; i < m_vecPrefabKey.size(); ++i)
+	{
+		AppendScriptParam("Prefabkey" + std::to_string(i), SCRIPT_PARAM::STRING, &m_vecPrefabKey[i], 0, 0, true, {});
+	}
+
+	AppendScriptParam("SPOT TYPE", SCRIPT_PARAM::STRING, &strDisplaySpawnTypeString, 0.f, 0.f, true);
 
 	AppendMemberFunction("SpawnTypePlayer", SCRIPT_PARAM::FUNC_MEMBER, "PlayerType",
 						 std::bind(&CSpawnSpotScript::SetSpawnTypePlayer, this));
@@ -43,9 +47,6 @@ CSpawnSpotScript::CSpawnSpotScript()
 
 	AppendMemberFunction("Register", SCRIPT_PARAM::FUNC_MEMBER, "Register",
 						 std::bind(&CSpawnSpotScript::RegisterObject, this));
-
-	m_BindingPrefab = CAssetMgr::GetInst()->Load<CPrefab>(PREFTempPrefab);
-	CMemoryPoolMgr::GetInst()->Poolbegin(ToString(PREFTutorialTarget2));
 }
 
 CSpawnSpotScript::~CSpawnSpotScript()
@@ -62,9 +63,9 @@ CSpawnSpotScript::~CSpawnSpotScript()
 
 void CSpawnSpotScript::SetSpawnTypePlayer()
 {
-	SpawnObjType	 = SpawnObjType::Player;
-	strDisplayString = ToString(magic_enum::enum_name(SpawnObjType::Player));
-	ModeColor		 = Vec4(0.f, 1.f, 0.f, 1.f);
+	SpawnType				  = SpawnObjType::Player;
+	strDisplaySpawnTypeString = ToString(magic_enum::enum_name(SpawnObjType::Player));
+	ModeColor				  = Vec4(0.f, 1.f, 0.f, 1.f);
 
 	GetOwner()->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, ModeColor);
 	GetOwner()->MeshRender()->GetMaterial(1)->SetScalarParam(SCALAR_PARAM::VEC4_0, ModeColor);
@@ -72,9 +73,9 @@ void CSpawnSpotScript::SetSpawnTypePlayer()
 
 void CSpawnSpotScript::SetSpawnTypeMonster()
 {
-	SpawnObjType	 = SpawnObjType::Monster;
-	strDisplayString = ToString(magic_enum::enum_name(SpawnObjType::Monster));
-	ModeColor		 = Vec4(1.f, 0.f, 0.f, 1.f);
+	SpawnType				  = SpawnObjType::Monster;
+	strDisplaySpawnTypeString = ToString(magic_enum::enum_name(SpawnObjType::Monster));
+	ModeColor				  = Vec4(1.f, 0.f, 0.f, 1.f);
 
 	GetOwner()->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, ModeColor);
 	GetOwner()->MeshRender()->GetMaterial(1)->SetScalarParam(SCALAR_PARAM::VEC4_0, ModeColor);
@@ -82,9 +83,9 @@ void CSpawnSpotScript::SetSpawnTypeMonster()
 
 void CSpawnSpotScript::SetSpawnTypeBoss()
 {
-	SpawnObjType	 = SpawnObjType::BOSS;
-	strDisplayString = ToString(magic_enum::enum_name(SpawnObjType::BOSS));
-	ModeColor		 = Vec4(0.f, 0.f, 1.f, 1.f);
+	SpawnType				  = SpawnObjType::BOSS;
+	strDisplaySpawnTypeString = ToString(magic_enum::enum_name(SpawnObjType::BOSS));
+	ModeColor				  = Vec4(0.f, 0.f, 1.f, 1.f);
 
 	GetOwner()->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, ModeColor);
 	GetOwner()->MeshRender()->GetMaterial(1)->SetScalarParam(SCALAR_PARAM::VEC4_0, ModeColor);
@@ -92,9 +93,9 @@ void CSpawnSpotScript::SetSpawnTypeBoss()
 
 void CSpawnSpotScript::SetSpawnTypeETC()
 {
-	SpawnObjType	 = SpawnObjType::Etc;
-	strDisplayString = ToString(magic_enum::enum_name(SpawnObjType::Etc));
-	ModeColor		 = Vec4(0.3f, 0.3f, 0.3f, 1.f);
+	SpawnType				  = SpawnObjType::Etc;
+	strDisplaySpawnTypeString = ToString(magic_enum::enum_name(SpawnObjType::Etc));
+	ModeColor				  = Vec4(0.3f, 0.3f, 0.3f, 1.f);
 
 	GetOwner()->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, ModeColor);
 	GetOwner()->MeshRender()->GetMaterial(1)->SetScalarParam(SCALAR_PARAM::VEC4_0, ModeColor);
@@ -102,9 +103,9 @@ void CSpawnSpotScript::SetSpawnTypeETC()
 
 void CSpawnSpotScript::SetSpawnTypeNone()
 {
-	SpawnObjType	 = SpawnObjType::None;
-	strDisplayString = ToString(magic_enum::enum_name(SpawnObjType::None));
-	ModeColor		 = Vec4(0.f, 0.f, 0.f, 1.f);
+	SpawnType				  = SpawnObjType::None;
+	strDisplaySpawnTypeString = ToString(magic_enum::enum_name(SpawnObjType::None));
+	ModeColor				  = Vec4(0.f, 0.f, 0.f, 1.f);
 
 	GetOwner()->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, ModeColor);
 	GetOwner()->MeshRender()->GetMaterial(1)->SetScalarParam(SCALAR_PARAM::VEC4_0, ModeColor);
@@ -119,7 +120,7 @@ void CSpawnSpotScript::RegisterObject()
 
 	m_listSpawnObject.push_back(pObj);
 
-	RecentRegisterObj = pObj;
+	m_iBindObjCount = m_listSpawnObject.size();
 
 	GetOwner()->AddChild(pObj);
 }
@@ -159,6 +160,8 @@ void CSpawnSpotScript::SpawnObject()
 	pObj->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 50.f));
 
 	GamePlayStatic::SpawnGameObject(pObj, 0);
+
+	m_iBindObjCount = m_listSpawnObject.size();
 }
 
 void CSpawnSpotScript::begin()
@@ -185,10 +188,50 @@ void CSpawnSpotScript::tick()
 {
 }
 
-void CSpawnSpotScript::SaveToFile(FILE* _File)
+#define TagSpawnType "[SpawnType]"
+#define TagPrefabCount "[PrefabCount]"
+#define TagPrefabKey "[PrefabKey]"
+
+void CSpawnSpotScript::SaveToFile(ofstream& fout)
 {
+	fout << TagSpawnType << endl;
+	fout << magic_enum::enum_name(SpawnType) << endl;
+
+	fout << TagPrefabCount << endl;
+	fout << (int)m_vecPrefabKey.size() << endl;
+
+	for (int i = 0; i < m_vecPrefabKey.size(); ++i)
+	{
+		fout << TagPrefabKey << endl;
+		fout << m_vecPrefabKey[i] << endl;
+	}
 }
 
-void CSpawnSpotScript::LoadFromFile(FILE* _File)
+void CSpawnSpotScript::LoadFromFile(ifstream& fin)
 {
+	string strSpawnType;
+
+	Utils::GetLineUntilString(fin, TagSpawnType);
+	getline(fin, strSpawnType);
+
+	auto Type = magic_enum::enum_cast<SpawnObjType>(strSpawnType);
+	SpawnType = Type.value();
+
+	int iPrefabCount;
+	Utils::GetLineUntilString(fin, TagPrefabCount);
+	fin >> iPrefabCount;
+
+	for (int i = 0; i < iPrefabCount; ++i)
+	{
+		string s;
+		Utils::GetLineUntilString(fin, TagPrefabKey);
+		fin >> s;
+
+		m_vecPrefabKey.push_back(s);
+	}
+
+	for (int i = 0; i < m_vecPrefabKey.size(); ++i)
+	{
+		CMemoryPoolMgr::GetInst()->Poolbegin(ToString(m_vecPrefabKey[i]));
+	}
 }
