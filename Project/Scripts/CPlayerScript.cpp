@@ -22,11 +22,49 @@ CPlayerScript::CPlayerScript()
 	, m_tStatus{}
 	, m_pSpringArm(nullptr)
 {
-	// 테스트용
+	// 디버깅용
 	AppendScriptParam("CurState", SCRIPT_PARAM::STRING, (void*)&state);
 	AppendScriptParam("CoverType", SCRIPT_PARAM::STRING, (void*)&cover);
 
 	// TODO : 완성하고 복사 생성자에 추가해야 프리팹에서 동작함
+	// 스크립트 파람 초기화
+	InitScriptParamUI();
+
+	// 스테이트 초기화
+	InitStateMachine();
+
+	// 스프링 암 세팅 초기화
+	InitSpringArmSetting();
+}
+
+CPlayerScript::CPlayerScript(const CPlayerScript& _origin)
+	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
+	, m_tStatus(_origin.m_tStatus)
+	, m_mSpringInfos(_origin.m_mSpringInfos)
+{
+	m_FSM = _origin.m_FSM->Clone(this);
+
+	// 스크립트 파람 초기화
+	InitScriptParamUI();
+
+	// 스테이트 초기화
+	InitStateMachine();
+
+	// 스프링 암 세팅 초기화
+	InitSpringArmSetting();
+}
+
+CPlayerScript::~CPlayerScript()
+{
+	if (nullptr != m_FSM)
+	{
+		delete m_FSM;
+		m_FSM = nullptr;
+	}
+}
+
+void CPlayerScript::InitScriptParamUI()
+{
 	AppendScriptParam("IsDead", SCRIPT_PARAM::BOOL, &m_tStatus.IsDead, 0, 0, true);
 	AppendScriptParam("Damage", SCRIPT_PARAM::FLOAT, &m_tStatus.Damage);
 	AppendScriptParam("Health", SCRIPT_PARAM::FLOAT, &m_tStatus.curHealth);
@@ -37,10 +75,10 @@ CPlayerScript::CPlayerScript()
 	AppendScriptParam("Critical Damage", SCRIPT_PARAM::FLOAT, &m_tStatus.CriticalDamage);
 	AppendScriptParam("MoveSpeed", SCRIPT_PARAM::FLOAT, &m_tStatus.MoveSpeed);
 	AppendScriptParam("AttackMoveSpeed", SCRIPT_PARAM::FLOAT, &m_tStatus.AttackMoveSpeed);
+}
 
-#pragma region StateMachineInit
-
-	// 스테이트 초기화
+void CPlayerScript::InitStateMachine()
+{
 	m_FSM = new CRoRStateMachine<CPlayerScript>(this, (UINT)PLAYER_STATE::END);
 
 	FSMInit(PLAYER_STATE, CPlayerScript, NormalIdle);
@@ -85,11 +123,10 @@ CPlayerScript::CPlayerScript()
 	FSMInit(PLAYER_STATE, CPlayerScript, SkillEX);
 
 	FSMInit(PLAYER_STATE, CPlayerScript, FormationIdle);
+}
 
-#pragma endregion
-
-#pragma region CameraSetting
-
+void CPlayerScript::InitSpringArmSetting()
+{
 	SpringArmInfo info;
 	info.Type								 = true;
 	info.fMaxDistance						 = 150.f;
@@ -154,25 +191,6 @@ CPlayerScript::CPlayerScript()
 	info.vDir								= Vec3(-20.f, 180.f, 0.f);
 	info.vOffsetPos							= Vec2(50.f, 50.f);
 	m_mSpringInfos[PLAYER_STATE::SkillDash] = info;
-
-#pragma endregion
-}
-
-CPlayerScript::CPlayerScript(const CPlayerScript& _origin)
-	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
-	, m_tStatus(_origin.m_tStatus)
-	, m_mSpringInfos(_origin.m_mSpringInfos)
-{
-	m_FSM = _origin.m_FSM->Clone(this);
-}
-
-CPlayerScript::~CPlayerScript()
-{
-	if (nullptr != m_FSM)
-	{
-		delete m_FSM;
-		m_FSM = nullptr;
-	}
 }
 
 #include <Engine/CRenderMgr.h>
@@ -195,14 +213,21 @@ void CPlayerScript::begin()
 
 void CPlayerScript::tick()
 {
+	// FSM Update,
 	m_FSM->Update();
 	state = magic_enum::enum_name((PLAYER_STATE)m_FSM->GetCurState());
 	cover = magic_enum::enum_name((CoverType)GetCoverType());
 
+	// 카메라 움직임
 	CameraMove();
+
+	// 노말상태 움직임
 	NormalMove();
-	ChangeToMove();
+	// 노말상태 공격
 	NormalAttack();
+
+	// 움직일 수 있도록하는 상태 조건들
+	ChangeToMove();
 
 	// 엄폐 판정 할 수 있게되면 지울 함수
 	SwitchCoverType();
@@ -215,14 +240,14 @@ void CPlayerScript::CameraMove()
 	Vec3 vRot		= Transform()->GetRelativeRotation();
 	Vec2 vMouseDiff = CKeyMgr::GetInst()->GetMouseDrag();
 
-	// 캐릭터 좌우 회전
+	// 캐릭터 좌우 회전 - 자식에 붙는 스프링 암도 같이 회전됨
 	if (state == (int)PLAYER_STATE::NormalIdle || state == (int)PLAYER_STATE::NormalReload ||
 		state == (int)PLAYER_STATE::NormalAttackStart || state == (int)PLAYER_STATE::NormalAttackDelay ||
 		state == (int)PLAYER_STATE::NormalAttackIng || state == (int)PLAYER_STATE::NormalAttackEnd ||
 		state == (int)PLAYER_STATE::MoveStartNormal || state == (int)PLAYER_STATE::MoveEndNormal ||
 		state == (int)PLAYER_STATE::MoveIng)
 	{
-
+		// 마우스 x이동에 따라 y축 회전
 		if (vMouseDiff.x > 0.f)
 			vRot.y += CPlayerController::Sensitivity * DT;
 		else if (vMouseDiff.x < 0.f)
@@ -231,6 +256,7 @@ void CPlayerScript::CameraMove()
 	}
 
 	Vec3 vOffset = m_pSpringArm->GetDirOffset();
+
 	// 카메라 상하 회전
 	if (state == (int)PLAYER_STATE::NormalIdle || state == (int)PLAYER_STATE::NormalReload ||
 		state == (int)PLAYER_STATE::NormalAttackStart || state == (int)PLAYER_STATE::NormalAttackDelay ||
@@ -249,36 +275,33 @@ void CPlayerScript::CameraMove()
 		{
 			float CamRotSpeed = 10.f;
 			Vec3  vRot		  = Transform()->GetRelativeRotation();
-			Vec3  vDiff;
-			if (vMouseDiff.y > 0.f)
-			{
-				vOffset.y += CPlayerController::Sensitivity * CamRotSpeed * DT;
-			}
-			else if (vMouseDiff.y < 0.f)
-			{
-				vOffset.y -= CPlayerController::Sensitivity * CamRotSpeed * DT;
-			}
-			if (vOffset.y < -20)
-				vOffset.y = -20;
-			if (vOffset.y > 5)
-				vOffset.y = 5;
-			vDiff = Vec3(vOffset.y, vOffset.x, vOffset.z);
-			vDiff.ToRadian();
-			vDiff *= 3.f;
-			if (state == (int)PLAYER_STATE::NormalAttackIng || state == (int)PLAYER_STATE::NormalAttackDelay ||
-				state == (int)PLAYER_STATE::NormalAttackStart || state == (int)PLAYER_STATE::StandAttackIng ||
-				state == (int)PLAYER_STATE::StandAttackDelay || state == (int)PLAYER_STATE::StandAttackStart ||
-				state == (int)PLAYER_STATE::KneelAttackStart || state == (int)PLAYER_STATE::KneelAttackIng ||
-				state == (int)PLAYER_STATE::KneelAttackDelay)
-			{
-			}
-			else
-				vDiff.x = 0.f;
 
-			vDiff.y = vRot.y;
-			vDiff.z = vRot.z;
+			// 마우스 y 이동에 따라 카메라 x축 회전
+			{
+				if (vMouseDiff.y > 0.f)
+					vOffset.y += CPlayerController::Sensitivity * CamRotSpeed * DT;
+				else if (vMouseDiff.y < 0.f)
+					vOffset.y -= CPlayerController::Sensitivity * CamRotSpeed * DT;
+				vOffset.y = clamp(vOffset.y, -20.f, 5.f);
+			}
 
-			Transform()->SetRelativeRotation(vDiff);
+			// 마우스 y 이동에 따라 캐릭터 회전 예정 (캐릭터 발을 가리는 줌 상태인 공격 스테이트만 해당됨)
+			{
+				Vec3 vDiff = Vec3(vOffset.y, vOffset.x, vOffset.z);
+				vDiff.ToRadian();
+				vDiff *= 3.f;
+				if (!(state == (int)PLAYER_STATE::NormalAttackIng || state == (int)PLAYER_STATE::NormalAttackDelay ||
+					  state == (int)PLAYER_STATE::NormalAttackStart || state == (int)PLAYER_STATE::StandAttackIng ||
+					  state == (int)PLAYER_STATE::StandAttackDelay || state == (int)PLAYER_STATE::StandAttackStart ||
+					  state == (int)PLAYER_STATE::KneelAttackStart || state == (int)PLAYER_STATE::KneelAttackIng ||
+					  state == (int)PLAYER_STATE::KneelAttackDelay))
+					vDiff.x = 0.f;
+
+				vDiff.y = vRot.y;
+				vDiff.z = vRot.z;
+
+				Transform()->SetRelativeRotation(vDiff);
+			}
 
 			// 카메라 좌우 회전
 			if (state == (int)PLAYER_STATE::StandIdle || state == (int)PLAYER_STATE::StandReload ||
@@ -290,28 +313,19 @@ void CPlayerScript::CameraMove()
 				state == (int)PLAYER_STATE::MoveEndStand || state == (int)PLAYER_STATE::MoveEndKneel ||
 				state == (int)PLAYER_STATE::SkillDash)
 			{
+				// 마우스 x 이동에 따라 카메라 y축 회전
 				if (vMouseDiff.x > 0.f)
 					vOffset.x += CPlayerController::Sensitivity * CamRotSpeed * DT;
 				else if (vMouseDiff.x < 0.f)
 					vOffset.x -= CPlayerController::Sensitivity * CamRotSpeed * DT;
 
-				if (state == (int)PLAYER_STATE::SkillDash)
-				{
-					if (vOffset.x < -45.f)
-						vOffset.x = -45.f;
-					if (vOffset.x > 45.f)
-						vOffset.x = 45.f;
-				}
-				else
-				{
-					if (vOffset.x < 0.f)
-						vOffset.x = 0.f;
-					if (vOffset.x > 45.f)
-						vOffset.x = 45.f;
-				}
+				// 대시 스킬과 그 외 상태들의 각도 범위 제한
+				vOffset.x =
+					state == (int)PLAYER_STATE::SkillDash ? clamp(vOffset.x, -45.f, 45.f) : clamp(vOffset.x, 0.f, 45.f);
 			}
 			else
 			{
+				// 카메라 좌우 회전 아닌 스테이트가 되었을 떄 카메라 y축 회전값 0으로 Lerp로 정렬
 				vOffset.x = RoRMath::Lerp(vOffset.x, 0, DT);
 			}
 		}
@@ -323,10 +337,15 @@ void CPlayerScript::CameraMove()
 void CPlayerScript::NormalMove()
 {
 	auto state = m_FSM->GetCurState();
+
+	// 상태 조건
 	if (state == (int)PLAYER_STATE::MoveIng || state == (int)PLAYER_STATE::NormalAttackIng ||
 		state == (int)PLAYER_STATE::NormalAttackStart || state == (int)PLAYER_STATE::NormalAttackDelay ||
 		state == (int)PLAYER_STATE::NormalAttackEnd)
 	{
+
+		// 공격할 때 카메라 상하 회전하면서 캐릭터가 회전을 같이 하게 됨. 무지성 Front벡터를 사용할 수 없게 되고 x축
+		// 회전이 0인 변환행렬 재계산이 필요함
 		Vec3   vRot	   = Transform()->GetRelativeRotation();
 		Matrix matRotX = XMMatrixRotationX(0.f);
 		Matrix matRotY = XMMatrixRotationY(vRot.y);
@@ -340,22 +359,15 @@ void CPlayerScript::NormalMove()
 
 		float fMoveSpeed = state == (int)PLAYER_STATE::MoveIng ? m_tStatus.MoveSpeed : m_tStatus.AttackMoveSpeed;
 
-		if (KEY_PRESSED(CPlayerController::Front))
-		{
+		// 움직임 조건
+		if (KEY_TAP(CPlayerController::Front) || KEY_PRESSED(CPlayerController::Front))
 			vPos += vFront * fMoveSpeed * DT;
-		}
-		if (KEY_PRESSED(CPlayerController::Back))
-		{
+		if (KEY_TAP(CPlayerController::Back) || KEY_PRESSED(CPlayerController::Back))
 			vPos -= vFront * fMoveSpeed * DT;
-		}
-		if (KEY_PRESSED(CPlayerController::Right))
-		{
+		if (KEY_TAP(CPlayerController::Right) || KEY_PRESSED(CPlayerController::Right))
 			vPos += vRight * fMoveSpeed * DT;
-		}
-		if (KEY_PRESSED(CPlayerController::Left))
-		{
+		if (KEY_TAP(CPlayerController::Left) || KEY_PRESSED(CPlayerController::Left))
 			vPos -= vRight * fMoveSpeed * DT;
-		}
 
 		Transform()->SetRelativePos(vPos);
 	}
@@ -383,9 +395,12 @@ void CPlayerScript::ChangeToMove()
 {
 	auto state = m_FSM->GetCurState();
 
+	// 탭 조건 상태들
 	bool bTap = state == (int)PLAYER_STATE::StandAttackStart || state == (int)PLAYER_STATE::StandAttackDelay ||
 				state == (int)PLAYER_STATE::StandAttackIng || state == (int)PLAYER_STATE::KneelAttackStart ||
 				state == (int)PLAYER_STATE::KneelAttackDelay || state == (int)PLAYER_STATE::KneelAttackIng;
+
+	// 프레스 조건 상태들
 	bool bPress = state == (int)PLAYER_STATE::NormalIdle || state == (int)PLAYER_STATE::StandIdle ||
 				  state == (int)PLAYER_STATE::KneelIdle || state == (int)PLAYER_STATE::MoveEndNormal ||
 				  state == (int)PLAYER_STATE::MoveEndStand || state == (int)PLAYER_STATE::MoveEndKneel ||
@@ -403,11 +418,12 @@ void CPlayerScript::ChangeToMove()
 
 void CPlayerScript::NormalAttack()
 {
-
+	// 입력 조건
 	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
 	{
 		auto state = m_FSM->GetCurState();
 
+		// 상태 조건
 		if (state == (int)PLAYER_STATE::NormalAttackDelay || state == (int)PLAYER_STATE::MoveIng ||
 			state == (int)PLAYER_STATE::NormalIdle || state == (int)PLAYER_STATE::MoveEndNormal ||
 			state == (int)PLAYER_STATE::NormalAttackStart || state == (int)PLAYER_STATE::NormalAttackEnd)

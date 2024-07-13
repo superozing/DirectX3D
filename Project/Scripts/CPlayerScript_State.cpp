@@ -26,21 +26,15 @@ int CPlayerScript::NormalIdleUpdate()
 	// TODO : 재장전 조건 추가 필요 (현재 탄창이 최대 탄창과 같으면 x)
 	// 재장전
 	if (KEY_TAP(CPlayerController::Reload))
-	{
 		return (int)PLAYER_STATE::NormalReload;
-	}
 
 	// 사격 준비
 	if (KEY_TAP(CPlayerController::Zoom) || KEY_PRESSED(CPlayerController::Zoom))
-	{
 		return (int)PLAYER_STATE::NormalAttackStart;
-	}
 
 	// 스킬
 	if (KEY_TAP(CPlayerController::Dash))
-	{
 		return (int)PLAYER_STATE::SkillDash;
-	}
 
 	return m_FSM->GetCurState();
 }
@@ -56,6 +50,7 @@ void CPlayerScript::NormalReloadBegin()
 
 int CPlayerScript::NormalReloadUpdate()
 {
+	// 애니메이션 종료시 Idle상태로 전환
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::NormalIdle;
 
@@ -74,6 +69,7 @@ void CPlayerScript::NormalAttackStartBegin()
 
 int CPlayerScript::NormalAttackStartUpdate()
 {
+	// 애니메이션 종료시 AttackDelay상태로 전환
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::NormalAttackDelay;
 
@@ -92,10 +88,10 @@ void CPlayerScript::NormalAttackIngBegin()
 
 int CPlayerScript::NormalAttackIngUpdate()
 {
+	// 애니메이션 종료시 AttackDelay상태로 전환
 	if (!Animator3D()->IsPlayable())
-	{
 		return (int)PLAYER_STATE::NormalAttackDelay;
-	}
+
 	return m_FSM->GetCurState();
 }
 
@@ -111,14 +107,11 @@ void CPlayerScript::NormalAttackDelayBegin()
 int CPlayerScript::NormalAttackDelayUpdate()
 {
 	if (KEY_TAP(CPlayerController::Reload))
-	{
 		return (int)PLAYER_STATE::NormalReload;
-	}
 
 	if (KEY_RELEASED(CPlayerController::Zoom) || KEY_NONE(CPlayerController::Zoom))
-	{
 		return (int)PLAYER_STATE::NormalAttackEnd;
-	}
+
 	return m_FSM->GetCurState();
 }
 
@@ -134,10 +127,13 @@ void CPlayerScript::NormalAttackEndBegin()
 
 int CPlayerScript::NormalAttackEndUpdate()
 {
+	// 애니메이션 종료시 Idle상태로 전환
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::NormalIdle;
+
 	if (KEY_TAP(CPlayerController::Zoom))
 		return (int)PLAYER_STATE::NormalAttackStart;
+
 	return m_FSM->GetCurState();
 }
 
@@ -157,7 +153,6 @@ void CPlayerScript::StandIdleBegin()
 
 int CPlayerScript::StandIdleUpdate()
 {
-	// TODO: 상하 에임 구현해야 함
 	// TODO : 재장전 조건 추가 필요 (현재 탄창이 최대 탄창과 같으면 x)
 	// 재장전
 	if (KEY_TAP(CPlayerController::Reload))
@@ -167,6 +162,7 @@ int CPlayerScript::StandIdleUpdate()
 	if (KEY_TAP(CPlayerController::Zoom) || KEY_PRESSED(CPlayerController::Zoom))
 		return (int)PLAYER_STATE::StandAttackStart;
 
+	// 사격
 	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
 		return (int)PLAYER_STATE::StandAttackIng;
 
@@ -184,6 +180,7 @@ void CPlayerScript::StandReloadBegin()
 
 int CPlayerScript::StandReloadUpdate()
 {
+	// 애니메이션 종료시 Idle상태로 전환
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::StandIdle;
 
@@ -202,8 +199,10 @@ void CPlayerScript::StandAttackStartBegin()
 
 int CPlayerScript::StandAttackStartUpdate()
 {
+	// 애니메이션 종료시 Attack Delay상태로 전환
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::StandAttackDelay;
+
 	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
 		return (int)PLAYER_STATE::StandAttackIng;
 
@@ -222,6 +221,7 @@ void CPlayerScript::StandAttackIngBegin()
 
 int CPlayerScript::StandAttackIngUpdate()
 {
+	// 애니메이션 종료시 Attack Delay상태로 전환
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::StandAttackDelay;
 
@@ -239,14 +239,18 @@ void CPlayerScript::StandAttackDelayBegin()
 
 int CPlayerScript::StandAttackDelayUpdate()
 {
+	// 사격
 	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
 		return (int)PLAYER_STATE::StandAttackIng;
 
+	// 재장전
 	if (KEY_TAP(CPlayerController::Reload))
 		return (int)PLAYER_STATE::StandReload;
 
+	// 사격 종료
 	if (KEY_RELEASED(CPlayerController::Zoom) || KEY_NONE(CPlayerController::Zoom))
 		return (int)PLAYER_STATE::StandAttackEnd;
+
 	return m_FSM->GetCurState();
 }
 
@@ -262,11 +266,15 @@ void CPlayerScript::StandAttackEndBegin()
 
 int CPlayerScript::StandAttackEndUpdate()
 {
+	// 애니메이션 종료시 Idle상태로 전환
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::StandIdle;
+
+	// 사격 준비
 	if (KEY_TAP(CPlayerController::Zoom))
 		return (int)PLAYER_STATE::StandAttackStart;
 
+	// 사격
 	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
 		return (int)PLAYER_STATE::StandAttackIng;
 
@@ -284,7 +292,6 @@ void CPlayerScript::StandAttackEndEnd()
 void CPlayerScript::KneelIdleBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::KneelIdle);
-	float length = Animator3D()->GetAnimLength((int)PLAYER_STATE::KneelIdle);
 	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::KneelIdle], 0.1f);
 }
 
@@ -299,9 +306,11 @@ int CPlayerScript::KneelIdleUpdate()
 	if (KEY_TAP(CPlayerController::Zoom) || KEY_PRESSED(CPlayerController::Zoom))
 		return (int)PLAYER_STATE::KneelAttackStart;
 
+	// 엄폐물 넘기
 	if (KEY_TAP(CPlayerController::Jump))
 		return (int)PLAYER_STATE::MoveJump;
 
+	// 사격
 	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
 		return (int)PLAYER_STATE::KneelAttackIng;
 
@@ -319,6 +328,7 @@ void CPlayerScript::KneelReloadBegin()
 
 int CPlayerScript::KneelReloadUpdate()
 {
+	// 애니메이션 종료시 Idle상태로 전환
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::KneelIdle;
 
@@ -332,15 +342,16 @@ void CPlayerScript::KneelReloadEnd()
 void CPlayerScript::KneelAttackStartBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::KneelAttackStart, 0);
-	float length = Animator3D()->GetAnimLength((int)PLAYER_STATE::KneelAttackStart);
 	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::KneelAttackStart], 0.1f);
 }
 
 int CPlayerScript::KneelAttackStartUpdate()
 {
+	// 애니메이션 종료시 Attack Delay상태로 전환
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::KneelAttackDelay;
 
+	// 사격
 	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
 		return (int)PLAYER_STATE::KneelAttackIng;
 
@@ -359,11 +370,10 @@ void CPlayerScript::KneelAttackIngBegin()
 
 int CPlayerScript::KneelAttackIngUpdate()
 {
+	// 애니메이션 종료시 Attack Delay상태로 전환
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::KneelAttackDelay;
 
-	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
-		return (int)PLAYER_STATE::KneelAttackIng;
 	return m_FSM->GetCurState();
 }
 
@@ -378,12 +388,15 @@ void CPlayerScript::KneelAttackDelayBegin()
 
 int CPlayerScript::KneelAttackDelayUpdate()
 {
+	// 사격
 	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
 		return (int)PLAYER_STATE::KneelAttackIng;
 
+	// 재장전
 	if (KEY_TAP(CPlayerController::Reload))
 		return (int)PLAYER_STATE::KneelReload;
 
+	// 사격 준비
 	if (KEY_RELEASED(CPlayerController::Zoom) || KEY_NONE(CPlayerController::Zoom))
 		return (int)PLAYER_STATE::KneelAttackEnd;
 
@@ -397,17 +410,20 @@ void CPlayerScript::KneelAttackDelayEnd()
 void CPlayerScript::KneelAttackEndBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::KneelAttackEnd, 0);
-	float length = Animator3D()->GetAnimLength((int)PLAYER_STATE::KneelAttackEnd);
-	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::KneelIdle], length);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::KneelIdle], 0.1f);
 }
 
 int CPlayerScript::KneelAttackEndUpdate()
 {
+	// 애니메이션 종료시 Idle상태로 전환
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::KneelIdle;
+
+	// 사격 준비
 	if (KEY_TAP(CPlayerController::Zoom))
 		return (int)PLAYER_STATE::KneelAttackStart;
 
+	// 사격
 	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
 		return (int)PLAYER_STATE::KneelAttackIng;
 
@@ -430,11 +446,14 @@ void CPlayerScript::MoveStartNormalBegin()
 
 int CPlayerScript::MoveStartNormalUpdate()
 {
+	// 움직임 종료
 	if (MoveEndCondition)
 		return (int)PLAYER_STATE::MoveEndNormal;
 
+	// 애니메이션 종료시 MoveIng상태로 전환
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::MoveIng;
+
 	return m_FSM->GetCurState();
 }
 
@@ -450,9 +469,11 @@ void CPlayerScript::MoveStartStandBegin()
 
 int CPlayerScript::MoveStartStandUpdate()
 {
+	// 움직임 종료
 	if (MoveEndCondition)
 		return (int)PLAYER_STATE::MoveEndStand;
 
+	// 애니메이션 종료시 MoveIng상태로 전환
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::MoveIng;
 
@@ -471,9 +492,11 @@ void CPlayerScript::MoveStartKneelBegin()
 
 int CPlayerScript::MoveStartKneelUpdate()
 {
+	// 움직임 종료
 	if (MoveEndCondition)
 		return (int)PLAYER_STATE::MoveEndKneel;
 
+	// 애니메이션 종료시 MoveIng상태로 전환
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::MoveIng;
 
@@ -492,21 +515,25 @@ void CPlayerScript::MoveEndNormalBegin()
 
 int CPlayerScript::MoveEndNormalUpdate()
 {
+	// 애니메이션 종료시 Idle상태로 전환
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::NormalIdle;
 
-	int maxFrm = Animator3D()->GetCurClipLength();
-	int curFrm = Animator3D()->GetCurFrameIdx();
+	// 움직임종료상태 움직임 속도 조절
+	{
+		int maxFrm = Animator3D()->GetCurClipLength();
+		int curFrm = Animator3D()->GetCurFrameIdx();
 
-	Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-	vFront.Normalize();
-	Vec3 vPos = Transform()->GetRelativePos();
+		Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+		vFront.Normalize();
+		Vec3 vPos = Transform()->GetRelativePos();
 
-	float fSpeed = RoRMath::SmoothStep(m_tStatus.DashMinSpeed, 0, (float)curFrm / maxFrm);
+		float fSpeed = RoRMath::SmoothStep(m_tStatus.DashMinSpeed, 0, (float)curFrm / maxFrm);
 
-	vPos += vFront * fSpeed * DT;
+		vPos += vFront * fSpeed * DT;
 
-	Transform()->SetRelativePos(vPos);
+		Transform()->SetRelativePos(vPos);
+	}
 
 	// 사격 준비
 	if (KEY_TAP(CPlayerController::Zoom) || KEY_PRESSED(CPlayerController::Zoom))
@@ -527,14 +554,17 @@ void CPlayerScript::MoveEndStandBegin()
 
 int CPlayerScript::MoveEndStandUpdate()
 {
+	// 애니메이션 종료시 Idle상태로 전환
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::StandIdle;
 	// 사격 준비
 	if (KEY_TAP(CPlayerController::Zoom) || KEY_PRESSED(CPlayerController::Zoom))
 		return (int)PLAYER_STATE::StandAttackStart;
 
+	// 사격
 	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
 		return (int)PLAYER_STATE::StandAttackIng;
+
 	return m_FSM->GetCurState();
 }
 
@@ -550,13 +580,18 @@ void CPlayerScript::MoveEndKneelBegin()
 
 int CPlayerScript::MoveEndKneelUpdate()
 {
+	// 애니메이션 종료시 Idle상태로 전환
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::KneelIdle;
+
 	// 사격 준비
 	if (KEY_TAP(CPlayerController::Zoom) || KEY_PRESSED(CPlayerController::Zoom))
 		return (int)PLAYER_STATE::KneelAttackStart;
+
+	// 사격
 	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
 		return (int)PLAYER_STATE::KneelAttackIng;
+
 	return m_FSM->GetCurState();
 }
 
@@ -588,6 +623,7 @@ int CPlayerScript::MoveIngUpdate()
 		}
 	}
 
+	// 사격 준비
 	if (KEY_TAP(CPlayerController::Zoom))
 		return (int)PLAYER_STATE::NormalAttackStart;
 
@@ -613,6 +649,7 @@ void CPlayerScript::MoveJumpBegin()
 
 int CPlayerScript::MoveJumpUpdate()
 {
+	// 애니메이션 종료시 Idle상태로 전환
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::NormalIdle;
 
@@ -682,6 +719,7 @@ void CPlayerScript::VictoryStartBegin()
 
 int CPlayerScript::VictoryStartUpdate()
 {
+	// 애니메이션 종료시 Victory End상태로 전환
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::VictoryEnd;
 
@@ -699,6 +737,7 @@ void CPlayerScript::VictoryEndBegin()
 
 int CPlayerScript::VictoryEndUpdate()
 {
+	// 애니메이션 종료시 Idle상태로 전환
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::NormalIdle;
 
@@ -721,24 +760,27 @@ void CPlayerScript::SkillDashBegin()
 
 int CPlayerScript::SkillDashUpdate()
 {
-	int curFrm = Animator3D()->GetCurFrameIdx();
-	int maxFrm = Animator3D()->GetCurClipLength();
-	if (curFrm > maxFrm)
-		return SwitchToCoverTypeIdle();
-
-	float speed = RoRMath::SmoothStep(m_tStatus.DashMaxSpeed, m_tStatus.DashMinSpeed, (float)curFrm / maxFrm);
-
-	Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-	vFront.Normalize();
-	Vec3 vPos = Transform()->GetRelativePos();
-	vPos += vFront * speed * DT;
-
-	Transform()->SetRelativePos(vPos);
-
-	if (!Animator3D()->IsPlayable())
+	// 대시상태 움직임 속도 조절
 	{
-		return SwitchToCoverTypeIdle();
+		int curFrm = Animator3D()->GetCurFrameIdx();
+		int maxFrm = Animator3D()->GetCurClipLength();
+		if (curFrm > maxFrm)
+			return SwitchToCoverTypeIdle();
+
+		float speed = RoRMath::SmoothStep(m_tStatus.DashMaxSpeed, m_tStatus.DashMinSpeed, (float)curFrm / maxFrm);
+
+		Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+		vFront.Normalize();
+		Vec3 vPos = Transform()->GetRelativePos();
+		vPos += vFront * speed * DT;
+
+		Transform()->SetRelativePos(vPos);
 	}
+
+	// 애니메이션 종료시 Idle상태로 전환
+	if (!Animator3D()->IsPlayable())
+		return SwitchToCoverTypeIdle();
+
 	return m_FSM->GetCurState();
 }
 
@@ -753,10 +795,10 @@ void CPlayerScript::SkillThrowBegin()
 
 int CPlayerScript::SkillThrowUpdate()
 {
+	// 애니메이션 종료시 Idle상태로 전환
 	if (!Animator3D()->IsPlayable())
-	{
 		return SwitchToCoverTypeIdle();
-	}
+
 	return m_FSM->GetCurState();
 }
 
@@ -771,10 +813,9 @@ void CPlayerScript::SkillCallsignBegin()
 
 int CPlayerScript::SkillCallsignUpdate()
 {
+	// 애니메이션 종료시 Idle상태로 전환
 	if (!Animator3D()->IsPlayable())
-	{
 		return SwitchToCoverTypeIdle();
-	}
 
 	return m_FSM->GetCurState();
 }
@@ -790,10 +831,10 @@ void CPlayerScript::SkillEXBegin()
 
 int CPlayerScript::SkillEXUpdate()
 {
+	// 애니메이션 종료시 Idle상태로 전환
 	if (!Animator3D()->IsPlayable())
-	{
 		return SwitchToCoverTypeIdle();
-	}
+
 	return m_FSM->GetCurState();
 }
 
@@ -813,9 +854,8 @@ void CPlayerScript::FormationIdleBegin()
 int CPlayerScript::FormationIdleUpdate()
 {
 	if (KEY_TAP(KEY::SPACE))
-	{
 		return 0;
-	}
+
 	return m_FSM->GetCurState();
 }
 
