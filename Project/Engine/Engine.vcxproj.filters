@@ -889,6 +889,9 @@
     <FxCompile Include="SpawnPoint.fx">
       <Filter>ShaderCode\02. Render\3DShader</Filter>
     </FxCompile>
+    <FxCompile Include="blur.fx">
+      <Filter>ShaderCode\02. Render\3DShader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine.rc" />
