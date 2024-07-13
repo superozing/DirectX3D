@@ -130,6 +130,9 @@ void CRenderMgr::render_play()
 		// Deferred + 광원 => SwapChain 으로 병합
 		pMainCam->Merge();
 
+		// Blur처리
+		pMainCam->Blur();
+
 		// Foward 렌더링
 		pMainCam->render_forward();
 
@@ -191,6 +194,9 @@ void CRenderMgr::render_editor()
 
 	// Deferred + 광원 => SwapChain 으로 병합
 	m_EditorCam->Merge();
+
+	// Blur처리
+	m_EditorCam->Blur();
 
 	// Foward 렌더링
 	m_EditorCam->render_forward();

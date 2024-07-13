@@ -467,6 +467,35 @@ void CCamera::Merge()
 	pRectMesh->render(0);
 }
 
+void CCamera::Blur()
+{
+	// 리소스,타겟 얻어오기
+	auto BlurResource = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RelativeLuminanceCopyTex");
+	auto BlurTarget	  = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RelativeLuminanceTargetTex");
+
+	static Ptr<CMesh> pRectMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect);
+
+	static Ptr<CMaterial> pBlurMtrl;
+	pBlurMtrl = CAssetMgr::GetInst()->Load<CMaterial>(MTRLBlur);
+	// pBlurMtrl->SetTexParam(TEX_PARAM::TEX_0, BlurResource);
+	pBlurMtrl->UpdateData();
+
+	static int blurcnt = 1;
+	for (int i = 0; i < blurcnt; ++i)
+	{
+		// 타겟->리소스 복사
+		CRenderMgr::GetInst()->CopyFromTextureToTexture(BlurResource, BlurTarget);
+
+		// OM타겟설정
+		CONTEXT->OMSetRenderTargets(1, BlurTarget->GetRTV().GetAddressOf(), nullptr);
+
+		pRectMesh->render(0);
+	}
+
+	// OM 타겟 되돌리기
+	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
+}
+
 void CCamera::SortShadowMapObject()
 {
 	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
