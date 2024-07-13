@@ -483,11 +483,16 @@ void CCamera::Blur()
 	static Ptr<CMaterial> pBlurMtrl;
 	pBlurMtrl = CAssetMgr::GetInst()->Load<CMaterial>(MTRLBlur);
 	// pBlurMtrl->SetTexParam(TEX_PARAM::TEX_0, BlurResource);
-	pBlurMtrl->UpdateData();
 
-	static int blurcnt = 1;
-	for (int i = 0; i < blurcnt; ++i)
+	auto BlurInfo = CRenderMgr::GetInst()->m_BloomInfo;
+
+	int blurcnt = BlurInfo.BlurLevel;
+	for (int i = 0; i < blurcnt * 2; ++i)
 	{
+		bool IsEven = 0 == i % 2 ? true : false;
+		pBlurMtrl->SetScalarParam(SCALAR_PARAM::BOOL_0, IsEven);
+		pBlurMtrl->UpdateData();
+
 		// 타겟->리소스 복사
 		CRenderMgr::GetInst()->CopyFromTextureToTexture(BlurResource, BlurTarget);
 

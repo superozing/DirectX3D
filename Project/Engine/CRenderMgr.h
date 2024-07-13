@@ -10,6 +10,13 @@ class CLight3D;
 class CStructuredBuffer;
 class CMRT;
 
+struct tBloomInfo
+{
+	float Threshold = 0.8f;
+	Vec4  vColor	= Vec4(0.f, 0.f, 1.f, 1.f);
+	int	  BlurLevel = 5;
+};
+
 class CRenderMgr : public CManager<CRenderMgr>
 {
 	SINGLE(CRenderMgr);
@@ -98,6 +105,8 @@ public:
 
 	CCamera* GetMainCam();
 	CCamera* GetEditorCam() { return m_EditorCam; }
+
+	tBloomInfo m_BloomInfo;
 
 public:
 	virtual void init() override;
