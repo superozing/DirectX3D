@@ -767,12 +767,25 @@ int CPlayerScript::SkillDashUpdate()
 		if (curFrm > maxFrm)
 			return SwitchToCoverTypeIdle();
 
-		float speed = RoRMath::SmoothStep(m_tStatus.DashMaxSpeed, m_tStatus.DashMinSpeed, (float)curFrm / maxFrm);
+		float fCurSpeed;
+		int	  iGroudnTapFrm = 20;
+
+		// 땅에 닿는 순간을 분기점으로 스피드 변경
+		if (curFrm < iGroudnTapFrm)
+		{
+			fCurSpeed =
+				RoRMath::SmoothStep(m_tStatus.DashMaxSpeed, m_tStatus.DashGroundSpeed, (float)curFrm / iGroudnTapFrm);
+		}
+		else
+		{
+			fCurSpeed = RoRMath::SmoothStep(m_tStatus.DashGroundSpeed, m_tStatus.DashMinSpeed,
+											(float)(curFrm - iGroudnTapFrm) / (maxFrm - iGroudnTapFrm));
+		}
 
 		Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
 		vFront.Normalize();
 		Vec3 vPos = Transform()->GetRelativePos();
-		vPos += vFront * speed * DT;
+		vPos += vFront * fCurSpeed * DT;
 
 		Transform()->SetRelativePos(vPos);
 	}

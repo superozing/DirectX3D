@@ -64,8 +64,9 @@ struct PlayerStatus
 
 	float MoveSpeed		  = 500.f;
 	float AttackMoveSpeed = MoveSpeed * 0.2f;
-	float DashMaxSpeed	  = MoveSpeed * 1.5f;
-	float DashMinSpeed	  = MoveSpeed * 0.2f;
+	float DashMaxSpeed	  = MoveSpeed * 2.f;
+	float DashGroundSpeed = MoveSpeed * 1.f;
+	float DashMinSpeed	  = MoveSpeed * 0.05f;
 	float RotateSpeed	  = 20.f;
 
 	float AvoidPercent	  = 10.f;
