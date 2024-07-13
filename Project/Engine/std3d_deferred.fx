@@ -15,6 +15,7 @@
 #define ColorTextureCheck   g_btex_0
 #define NormalMapCheck      g_btex_1
 #define LuminanceThreshold  g_float_0
+#define BloomColor          g_vec4_0
 // ======================
 
 struct VS_IN
@@ -133,9 +134,10 @@ PS_OUT PS_Std3D_Deferred(VS_OUT _in) : SV_Target
     }
     
     //Bloom START
-    const static float4 vBloomColor = float4(0.f, 0.f, 1.f, 1.f);
     const static float3 vRLWeight = float3(0.2126f, 0.7152f, 0.0722f);
+    //const static float4 vBloomColor = BloomColor;
     //float fThreshold = g_float_0;
+    const static float4 vBloomColor = float4(1.f, 1.f, 1.f, 1.f);
     float fThreshold = 0.8f;
 
     float brightness = dot(vOutColor.rgb, vRLWeight);
