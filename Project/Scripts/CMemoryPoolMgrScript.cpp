@@ -60,8 +60,20 @@ CGameObject* CMemoryPoolMgrScript::PopObject(string _strMapKey)
 			pObj = vecChild[i]->GetChild().back();
 			pObj->DisconnectWithParent();
 		}
-		return pObj;
 	}
+
+	if (pObj == nullptr)
+	{
+		CGameObject* pFilterObj = new CGameObject;
+		pFilterObj->AddComponent(new CTransform);
+		pFilterObj->SetName(_strMapKey);
+
+		GetOwner()->AddChild(pFilterObj);
+
+		pObj = CMemoryPoolMgr::GetInst()->PopObject(_strMapKey);
+	}
+
+	return pObj;
 }
 
 #include <Engine\CLogMgr.h>
