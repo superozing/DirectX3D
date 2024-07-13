@@ -874,9 +874,6 @@
     <FxCompile Include="ammoprogressbar.fx">
       <Filter>ShaderCode\02. Render\UIShader</Filter>
     </FxCompile>
-    <FxCompile Include="crosshair.fx">
-      <Filter>ShaderCode\02. Render</Filter>
-    </FxCompile>
     <FxCompile Include="bosshp.fx">
       <Filter>ShaderCode\02. Render\UIShader</Filter>
     </FxCompile>
@@ -890,6 +887,9 @@
       <Filter>ShaderCode\02. Render\3DShader</Filter>
     </FxCompile>
     <FxCompile Include="dynamichp.fx">
+      <Filter>ShaderCode\02. Render\UIShader</Filter>
+    </FxCompile>
+    <FxCompile Include="crosshair.fx">
       <Filter>ShaderCode\02. Render\UIShader</Filter>
     </FxCompile>
   </ItemGroup>
