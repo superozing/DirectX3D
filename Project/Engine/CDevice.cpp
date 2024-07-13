@@ -139,6 +139,14 @@ int CDevice::RenewResolution(Vec2 _vResolution, bool bWindowMode)
 		CAssetMgr::GetInst()->CreateTexture(L"PostProcessTex", (UINT)m_vRenderResolution.x, (UINT)m_vRenderResolution.y,
 											DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE);
 
+	CAssetMgr::GetInst()->CreateTexture(L"RelativeLuminanceTargetTex", (UINT)m_vRenderResolution.x,
+										(UINT)m_vRenderResolution.y, DXGI_FORMAT_R32G32B32A32_FLOAT,
+										D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
+
+	CAssetMgr::GetInst()->CreateTexture(L"RelativeLuminanceCopyTex", (UINT)m_vRenderResolution.x,
+										(UINT)m_vRenderResolution.y, DXGI_FORMAT_R32G32B32A32_FLOAT,
+										D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
+
 	RematchMtrlTexParam();
 
 	return S_OK;
@@ -504,6 +512,8 @@ void CDevice::DeleteTexturesForResolutionChange()
 
 	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"CopyRTtex");
 	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"PostProcessTex");
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"RelativeLuminanceTargetTex");
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"RelativeLuminanceCopyTex");
 }
 
 void CDevice::RematchMtrlTexParam()

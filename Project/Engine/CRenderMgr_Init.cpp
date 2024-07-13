@@ -27,6 +27,10 @@ void CRenderMgr::init()
 		CAssetMgr::GetInst()->CreateTexture(L"PostProcessTex", (UINT)vRenderResolution.x, (UINT)vRenderResolution.y,
 											DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE);
 
+	CAssetMgr::GetInst()->CreateTexture(L"RelativeLuminanceCopyTex", (UINT)vRenderResolution.x,
+										(UINT)vRenderResolution.y, DXGI_FORMAT_R32G32B32A32_FLOAT,
+										D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
+
 	// Noise Texture Load
 	m_vecNoiseTex.push_back(
 		CAssetMgr::GetInst()->Load<CTexture>(L"texture\\noise\\noise_01.png", L"texture\\noise\\noise_01.png"));
@@ -183,4 +187,28 @@ Ptr<CTexture> CRenderMgr::CopyRTTex(Ptr<CTexture> pTexture)
 	CONTEXT->CopyResource(pTexture->GetTex2D().Get(), pRTTex->GetTex2D().Get());
 
 	return pTexture;
+}
+
+void CRenderMgr::CopyFromTextureToTexture(Ptr<CTexture> pToTexture, Ptr<CTexture> pFromTexture)
+{
+	// 텍스처가 유효한지 확인
+	if (pToTexture.Get() && pFromTexture.Get())
+	{
+		// 텍스처 형식 및 크기 확인
+		D3D11_TEXTURE2D_DESC toDesc;
+		pToTexture->GetTex2D()->GetDesc(&toDesc);
+
+		D3D11_TEXTURE2D_DESC fromDesc;
+		pFromTexture->GetTex2D()->GetDesc(&fromDesc);
+
+		if (toDesc.Format == fromDesc.Format && toDesc.Width == fromDesc.Width && toDesc.Height == fromDesc.Height)
+		{
+			CONTEXT->CopyResource(pToTexture->GetTex2D().Get(), pFromTexture->GetTex2D().Get());
+		}
+		else
+		{
+			int a = 0;
+			// 형식 또는 크기가 일치하지 않음
+		}
+	}
 }
