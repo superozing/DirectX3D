@@ -43,6 +43,9 @@ public:
 	void RegisterPrefab();
 	void PushBackPrefab();
 
+	void ClearPrefab();
+	void DeletePrefab();
+
 	void RegisterObject();
 	void DeAllocateObject();
 	void SpawnObject();

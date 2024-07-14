@@ -52,6 +52,12 @@ CSpawnSpotScript::CSpawnSpotScript()
 
 	AppendMemberFunction("PushBack Prefab", SCRIPT_PARAM::FUNC_MEMBER, "PushBackPrefab",
 						 std::bind(&CSpawnSpotScript::PushBackPrefab, this));
+
+	AppendMemberFunction("Clear Prefab", SCRIPT_PARAM::FUNC_MEMBER, "ClearPrefab",
+						 std::bind(&CSpawnSpotScript::ClearPrefab, this));
+
+	AppendMemberFunction("Delete Prefab", SCRIPT_PARAM::FUNC_MEMBER, "DeletePrefab",
+						 std::bind(&CSpawnSpotScript::DeletePrefab, this));
 }
 
 CSpawnSpotScript::~CSpawnSpotScript()
@@ -143,6 +149,77 @@ void CSpawnSpotScript::PushBackPrefab()
 	}
 
 	m_ivecSize = m_vecPrefab.size();
+}
+
+void CSpawnSpotScript::ClearPrefab()
+{
+	for (int i = 0; i < m_vecPrefabKey.size(); ++i)
+	{
+		std::list<CGameObject*>::iterator iter = m_listSpawnObject.begin();
+		while (iter != m_listSpawnObject.end())
+		{
+			CGameObject* pObj	 = *iter;
+			string		 strFind = ToString(pObj->GetName());
+
+			if (strFind.find(m_vecPrefabKey[i]))
+			{
+				// 요소를 삭제하기 전에 처리
+				CMemoryPoolMgr::GetInst()->PushObject(m_vecPrefabKey[i], pObj);
+
+				// 요소를 삭제하고, 다음 iterator를 얻기 위해 erase 메서드 사용
+				iter = m_listSpawnObject.erase(iter); // erase가 iterator를 반환함
+			}
+			else
+			{
+				++iter; // 현재 요소를 삭제하지 않은 경우, iterator를 증가시킵니다
+			}
+		}
+	}
+
+	m_vecPrefab.clear();
+	m_vecPrefabKey.clear();
+
+	m_ivecSize = 0;
+}
+
+void CSpawnSpotScript::DeletePrefab()
+{
+	if (m_vecPrefab.size() == 1)
+	{
+		ClearPrefab();
+	}
+	else
+	{
+		string DelPrefab = m_vecPrefabKey[m_ivecCurrentIdx];
+
+		std::list<CGameObject*>::iterator iter = m_listSpawnObject.begin();
+		while (iter != m_listSpawnObject.end())
+		{
+			CGameObject* pObj	 = *iter;
+			string		 strFind = ToString(pObj->GetName());
+
+			if (strFind.find(DelPrefab))
+			{
+				// 요소를 삭제하기 전에 처리
+				CMemoryPoolMgr::GetInst()->PushObject(DelPrefab, pObj);
+
+				// 요소를 삭제하고, 다음 iterator를 얻기 위해 erase 메서드 사용
+				iter = m_listSpawnObject.erase(iter); // erase가 iterator를 반환함
+			}
+			else
+			{
+				++iter; // 현재 요소를 삭제하지 않은 경우, iterator를 증가시킵니다
+			}
+		}
+
+		m_vecPrefab.erase(m_vecPrefab.begin() + m_ivecCurrentIdx);
+		m_vecPrefabKey.erase(m_vecPrefabKey.begin() + m_ivecCurrentIdx);
+
+		--m_ivecSize;
+
+		if (m_ivecCurrentIdx >= m_vecPrefab.size() && m_ivecCurrentIdx != 0)
+			--m_ivecCurrentIdx;
+	}
 }
 
 void CSpawnSpotScript::SetSpawnTypeBoss()
