@@ -30,7 +30,8 @@ private:
 	CStructuredBuffer* m_pBoneFinalMatBuffer; // 특정 프레임의 최종 행렬
 	bool			   m_bFinalMatUpdate;	  // 최종행렬 연산 수행여부
 
-	bool m_bPlay; // 애니메이션 재생 여부
+	bool m_bPlay;  // 애니메이션 재생 여부
+	bool m_bPause; // 애니메이션 일시 정지 여부
 	int m_iLoopCount; // 애니메이션 반복 횟수 (-1 : 무한반복, 0 : 한번만 재생, 1~ : 수치만큼 추가 반복 재생)
 	int m_iCurLoopCount;
 
@@ -76,6 +77,10 @@ public:
 public:
 	void Play(int _iClipIdx, int _iLoopCount = -1, float _fPlaybackSpeed = 1.f);
 	void Play(const wstring& _AnimName, int _iLoopCount = -1, float _fPlaybackSpeed = 1.f);
+
+	void SetPlaybackSpeed(float _speed) { m_fPlaybackSpeed = _speed; }
+
+	void Pause(bool _on) { m_bPause = _on; }
 
 	void Stop();
 

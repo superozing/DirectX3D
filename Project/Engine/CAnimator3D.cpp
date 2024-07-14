@@ -68,8 +68,8 @@ void CAnimator3D::finaltick()
 	m_dCurTime = m_pVecClip->at(m_iCurClip).dStartTime + m_vecClipUpdateTime[m_iCurClip];
 
 	// 현재 재생중인 Clip 의 시간을 진행한다.
-	if (m_bPlay)
-		m_vecClipUpdateTime[m_iCurClip] += DTd_ENGINE * m_fPlaybackSpeed;
+	if (m_bPlay && !m_bPause)
+		m_vecClipUpdateTime[m_iCurClip] += DT * m_fPlaybackSpeed;
 
 	if (m_vecClipUpdateTime[m_iCurClip] >= m_pVecClip->at(m_iCurClip).dTimeLength)
 	{
@@ -193,6 +193,7 @@ void CAnimator3D::Play(int _iClipIdx, int _iLoopCount, float _fPlaybackSpeed)
 	}
 
 	m_bPlay			 = true;
+	m_bPause		 = false;
 	m_iCurClip		 = _iClipIdx;
 	m_fPlaybackSpeed = _fPlaybackSpeed;
 
