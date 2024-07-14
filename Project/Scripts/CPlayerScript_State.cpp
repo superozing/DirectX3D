@@ -7,6 +7,12 @@
 
 #include "CPlayerController.h"
 
+#define MoveStartCondition                                                              \
+	(KEY_TAP(CPlayerController::Front) || KEY_PRESSED(CPlayerController::Front)) &&     \
+		(KEY_TAP(CPlayerController::Back) || KEY_PRESSED(CPlayerController::Back)) &&   \
+		(KEY_TAP(CPlayerController::Right) || KEY_PRESSED(CPlayerController::Right)) && \
+		(KEY_TAP(CPlayerController::Left) || KEY_PRESSED(CPlayerController::Left))
+
 #define MoveEndCondition                                                                  \
 	(KEY_RELEASED(CPlayerController::Front) || KEY_NONE(CPlayerController::Front)) &&     \
 		(KEY_RELEASED(CPlayerController::Back) || KEY_NONE(CPlayerController::Back)) &&   \
@@ -645,19 +651,42 @@ void CPlayerScript::MoveIngEnd()
 void CPlayerScript::MoveJumpBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::MoveJump, 0);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::MoveJump]);
+	m_fJumpY = Transform()->GetRelativePos().y;
 }
 
 int CPlayerScript::MoveJumpUpdate()
 {
 	// 애니메이션 종료시 Idle상태로 전환
 	if (!Animator3D()->IsPlayable())
-		return (int)PLAYER_STATE::NormalIdle;
+	{
+		return MoveStartCondition ? (int)PLAYER_STATE::MoveIng : (int)PLAYER_STATE::MoveEndNormal;
+	}
+
+	Vec3 vPos	= Transform()->GetRelativePos();
+	Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+
+	vPos += vFront * m_tStatus.JumpSpeed * DT;
+
+	int curFrm = Animator3D()->GetCurFrameIdx();
+	int maxFrm = Animator3D()->GetCurClipLength();
+
+	float x = (float)curFrm / maxFrm;
+	// float y		= -(16.f / 9.f) * pow((x - 2.f / 5.f), 2.f) + 1;
+	float y		= -4.f * pow((x - 1.f / 2.f), 2.f) + 1;
+	float scale = 50.f;
+	vPos.y		= m_fJumpY + y * scale;
+
+	Transform()->SetRelativePos(vPos);
 
 	return m_FSM->GetCurState();
 }
 
 void CPlayerScript::MoveJumpEnd()
 {
+	Vec3 vPos = Transform()->GetRelativePos();
+	vPos.y	  = m_fJumpY;
+	Transform()->SetRelativePos(vPos);
 }
 
 #pragma endregion
@@ -715,6 +744,7 @@ void CPlayerScript::VitalDyingEnd()
 void CPlayerScript::VictoryStartBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::VictoryStart, 0);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::VictoryStart]);
 }
 
 int CPlayerScript::VictoryStartUpdate()
@@ -790,9 +820,9 @@ int CPlayerScript::SkillDashUpdate()
 		Transform()->SetRelativePos(vPos);
 	}
 
-	// 애니메이션 종료시 Idle상태로 전환
+	// 애니메이션 종료시 MoveEnd상태로 전환
 	if (!Animator3D()->IsPlayable())
-		return SwitchToCoverTypeIdle();
+		return SwitchToCoverTypeMoveEnd();
 
 	return m_FSM->GetCurState();
 }
@@ -801,16 +831,33 @@ void CPlayerScript::SkillDashEnd()
 {
 }
 
+static bool bThrow = false;
+
 void CPlayerScript::SkillThrowBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::SkillThrow, 0);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::SkillThrow]);
+	bThrow = false;
 }
 
 int CPlayerScript::SkillThrowUpdate()
 {
+	int curFrm = Animator3D()->GetCurFrameIdx();
+
 	// 애니메이션 종료시 Idle상태로 전환
-	if (!Animator3D()->IsPlayable())
+	// 현재 애니메이션 길이가 좀 길어서 50이상이면 끝냄
+	if (curFrm >= 50)
 		return SwitchToCoverTypeIdle();
+
+	if (!bThrow && curFrm == 12)
+	{
+		Animator3D()->Pause(true);
+		if (KEY_TAP(CPlayerController::Skill))
+		{
+			Animator3D()->Pause(false);
+			bThrow = true;
+		}
+	}
 
 	return m_FSM->GetCurState();
 }
@@ -822,6 +869,7 @@ void CPlayerScript::SkillThrowEnd()
 void CPlayerScript::SkillCallsignBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::SkillCallsign, 0);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::SkillCallsign]);
 }
 
 int CPlayerScript::SkillCallsignUpdate()
@@ -837,9 +885,17 @@ void CPlayerScript::SkillCallsignEnd()
 {
 }
 
+static bool bEXFirst  = false;
+static bool bEXSecond = false;
+static bool bEXThird  = false;
+
 void CPlayerScript::SkillEXBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::SkillEX, 0);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::SkillEX]);
+	bEXFirst  = false;
+	bEXSecond = false;
+	bEXThird  = false;
 }
 
 int CPlayerScript::SkillEXUpdate()
@@ -847,6 +903,55 @@ int CPlayerScript::SkillEXUpdate()
 	// 애니메이션 종료시 Idle상태로 전환
 	if (!Animator3D()->IsPlayable())
 		return SwitchToCoverTypeIdle();
+
+	int curFrm = Animator3D()->GetCurFrameIdx();
+
+	auto info = m_mSpringInfos[PLAYER_STATE::SkillEX];
+
+	if (!bEXFirst && curFrm <= 10)
+	{
+	}
+	else if (!bEXFirst && curFrm >= 20)
+	{
+		bEXFirst = true;
+		// CTimeMgr::GetInst()->SetDTScale(0.1f);
+		info.fMaxDistance = 70.f;
+		info.fCamSpeed	  = 10.f;
+		info.fCamRotSpeed = 20.f;
+		info.vDir		  = Vec3(0.f, 180.f, 0.f);
+		// info.vOffsetPos	  = Vec2(50.f, 70.f);
+		m_pSpringArm->SetInfo(info);
+		Animator3D()->SetPlaybackSpeed(0.1f);
+	}
+	else if (!bEXSecond && curFrm >= 28)
+	{
+		// CTimeMgr::GetInst()->SetDTScale(1.f);
+		Animator3D()->SetPlaybackSpeed(1.f);
+		bEXSecond = true;
+		// info.fMaxDistance = 100.f;
+		// info.fCamSpeed	  = 10.f;
+		// info.vDir		  = Vec3(-20.f, 30.f, 0.f);
+		// info.vOffsetPos	  = Vec2(0.f, 50.f);
+		info.fCamSpeed	  = 10.f;
+		info.fCamRotSpeed = 20.f;
+		m_pSpringArm->SetInfo(info);
+	}
+	else if (!bEXThird && curFrm >= 45)
+	{
+		Animator3D()->SetPlaybackSpeed(1.f);
+		bEXThird = true;
+		// info.fMaxDistance = 200.f;
+		info.fCamSpeed	= 10.f;
+		info.vDir		= Vec3(-20.f, 30.f, 0.f);
+		info.vOffsetPos = Vec2(0.f, 50.f);
+		m_pSpringArm->SetInfo(info);
+	}
+	else if (curFrm >= 75)
+	{
+		info.fMaxDistance = 250.f;
+		info.fCamSpeed	  = 10.f;
+		m_pSpringArm->SetInfo(info);
+	}
 
 	return m_FSM->GetCurState();
 }
@@ -861,13 +966,14 @@ void CPlayerScript::SkillEXEnd()
 
 void CPlayerScript::FormationIdleBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::FormationIdle);
+	Animator3D()->Play((int)PLAYER_STATE::FormationIdle, 0);
+	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::FormationIdle]);
 }
 
 int CPlayerScript::FormationIdleUpdate()
 {
-	if (KEY_TAP(KEY::SPACE))
-		return 0;
+	if (!Animator3D()->IsPlayable())
+		return (int)PLAYER_STATE::NormalIdle;
 
 	return m_FSM->GetCurState();
 }

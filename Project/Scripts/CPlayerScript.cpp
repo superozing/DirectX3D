@@ -130,7 +130,7 @@ void CPlayerScript::InitSpringArmSetting()
 	SpringArmInfo info;
 	info.Type								 = true;
 	info.fMaxDistance						 = 150.f;
-	info.fCamSpeed							 = 50.f;
+	info.fCamSpeed							 = 40.f;
 	info.fCamRotSpeed						 = 20.f;
 	info.vDir								 = Vec3(-20.f, 180.f, 0.f);
 	info.vOffsetPos							 = Vec2(50.f, 50.f);
@@ -191,6 +191,46 @@ void CPlayerScript::InitSpringArmSetting()
 	info.vDir								= Vec3(-20.f, 180.f, 0.f);
 	info.vOffsetPos							= Vec2(50.f, 50.f);
 	m_mSpringInfos[PLAYER_STATE::SkillDash] = info;
+
+	info.Type								 = false;
+	info.fMaxDistance						 = 90.f;
+	info.fCamSpeed							 = 30.f;
+	info.fCamRotSpeed						 = 20.f;
+	info.vDir								 = Vec3(-20.f, 180.f, 0.f);
+	info.vOffsetPos							 = Vec2(80.f, 40.f);
+	m_mSpringInfos[PLAYER_STATE::SkillThrow] = info;
+
+	info.Type									= false;
+	info.fMaxDistance							= 100.f;
+	info.fCamSpeed								= 50.f;
+	info.fCamRotSpeed							= 20.f;
+	info.vDir									= Vec3(-30.f, 130.f, 0.f);
+	info.vOffsetPos								= Vec2(0.f, 50.f);
+	m_mSpringInfos[PLAYER_STATE::SkillCallsign] = info;
+
+	info.Type							  = true;
+	info.fMaxDistance					  = 150.f;
+	info.fCamSpeed						  = 20.f;
+	info.fCamRotSpeed					  = 20.f;
+	info.vDir							  = Vec3(-20.f, 160.f, 0.f);
+	info.vOffsetPos						  = Vec2(50.f, 50.f);
+	m_mSpringInfos[PLAYER_STATE::SkillEX] = info;
+
+	info.Type							   = false;
+	info.fMaxDistance					   = 250.f;
+	info.fCamSpeed						   = 10.f;
+	info.fCamRotSpeed					   = 5.f;
+	info.vDir							   = Vec3(-20.f, 180.f, 0.f);
+	info.vOffsetPos						   = Vec2(50.f, 50.f);
+	m_mSpringInfos[PLAYER_STATE::MoveJump] = info;
+
+	info.Type								   = false;
+	info.fMaxDistance						   = 150.f;
+	info.fCamSpeed							   = 10.f;
+	info.fCamRotSpeed						   = 5.f;
+	info.vDir								   = Vec3(-10.f, 0.f, 0.f);
+	info.vOffsetPos							   = Vec2(0.f, 50.f);
+	m_mSpringInfos[PLAYER_STATE::VictoryStart] = info;
 }
 
 #include <Engine/CRenderMgr.h>
@@ -229,8 +269,18 @@ void CPlayerScript::tick()
 	// 움직일 수 있도록하는 상태 조건들
 	ChangeToMove();
 
+	// 엄폐 상태에서 노말 상태로 돌아오는 조건들
+	ChangeToNormal();
+
+	ChangeToVictory();
+
 	// 엄폐 판정 할 수 있게되면 지울 함수
 	SwitchCoverType();
+
+	if (KEY_TAP(CPlayerController::Skill))
+	{
+		m_FSM->SetCurState((int)PLAYER_STATE::SkillThrow);
+	}
 }
 
 void CPlayerScript::CameraMove()
@@ -245,7 +295,7 @@ void CPlayerScript::CameraMove()
 		state == (int)PLAYER_STATE::NormalAttackStart || state == (int)PLAYER_STATE::NormalAttackDelay ||
 		state == (int)PLAYER_STATE::NormalAttackIng || state == (int)PLAYER_STATE::NormalAttackEnd ||
 		state == (int)PLAYER_STATE::MoveStartNormal || state == (int)PLAYER_STATE::MoveEndNormal ||
-		state == (int)PLAYER_STATE::MoveIng)
+		state == (int)PLAYER_STATE::MoveIng || state == (int)PLAYER_STATE::SkillThrow)
 	{
 		// 마우스 x이동에 따라 y축 회전
 		if (vMouseDiff.x > 0.f)
@@ -269,7 +319,8 @@ void CPlayerScript::CameraMove()
 		state == (int)PLAYER_STATE::KneelAttackIng || state == (int)PLAYER_STATE::KneelAttackEnd ||
 		state == (int)PLAYER_STATE::MoveStartNormal || state == (int)PLAYER_STATE::MoveEndNormal ||
 		state == (int)PLAYER_STATE::MoveIng || state == (int)PLAYER_STATE::MoveEndStand ||
-		state == (int)PLAYER_STATE::MoveEndKneel || state == (int)PLAYER_STATE::SkillDash)
+		state == (int)PLAYER_STATE::MoveEndKneel || state == (int)PLAYER_STATE::SkillDash ||
+		state == (int)PLAYER_STATE::SkillThrow)
 	{
 		if (m_pSpringArm && m_pSpringArm->IsActivate())
 		{
@@ -294,7 +345,7 @@ void CPlayerScript::CameraMove()
 					  state == (int)PLAYER_STATE::NormalAttackStart || state == (int)PLAYER_STATE::StandAttackIng ||
 					  state == (int)PLAYER_STATE::StandAttackDelay || state == (int)PLAYER_STATE::StandAttackStart ||
 					  state == (int)PLAYER_STATE::KneelAttackStart || state == (int)PLAYER_STATE::KneelAttackIng ||
-					  state == (int)PLAYER_STATE::KneelAttackDelay))
+					  state == (int)PLAYER_STATE::KneelAttackDelay || state == (int)PLAYER_STATE::SkillThrow))
 					vDiff.x = 0.f;
 
 				vDiff.y = vRot.y;
@@ -330,6 +381,8 @@ void CPlayerScript::CameraMove()
 			}
 		}
 	}
+	if (state == (int)PLAYER_STATE::SkillEX)
+		vOffset.y = RoRMath::Lerp(vOffset.y, 0, DT);
 
 	m_pSpringArm->SetDirOffset(vOffset);
 }
@@ -391,21 +444,33 @@ int CPlayerScript::SwitchToCoverTypeIdle()
 	return (int)PLAYER_STATE::END;
 }
 
+int CPlayerScript::SwitchToCoverTypeMoveEnd()
+{
+	switch (GetCoverType())
+	{
+	case CoverType::Normal:
+		return (int)PLAYER_STATE::MoveEndNormal;
+		break;
+	case CoverType::Stand:
+		return (int)PLAYER_STATE::MoveEndStand;
+		break;
+	case CoverType::Kneel:
+		return (int)PLAYER_STATE::MoveEndKneel;
+		break;
+	}
+	return (int)PLAYER_STATE::END;
+}
+
 void CPlayerScript::ChangeToMove()
 {
 	auto state = m_FSM->GetCurState();
 
 	// 탭 조건 상태들
-	bool bTap = state == (int)PLAYER_STATE::StandAttackStart || state == (int)PLAYER_STATE::StandAttackDelay ||
-				state == (int)PLAYER_STATE::StandAttackIng || state == (int)PLAYER_STATE::KneelAttackStart ||
-				state == (int)PLAYER_STATE::KneelAttackDelay || state == (int)PLAYER_STATE::KneelAttackIng;
+	bool bTap = false;
 
 	// 프레스 조건 상태들
-	bool bPress = state == (int)PLAYER_STATE::NormalIdle || state == (int)PLAYER_STATE::StandIdle ||
-				  state == (int)PLAYER_STATE::KneelIdle || state == (int)PLAYER_STATE::MoveEndNormal ||
-				  state == (int)PLAYER_STATE::MoveEndStand || state == (int)PLAYER_STATE::MoveEndKneel ||
-				  state == (int)PLAYER_STATE::NormalAttackEnd || state == (int)PLAYER_STATE::StandAttackEnd ||
-				  state == (int)PLAYER_STATE::KneelAttackEnd;
+	bool bPress = state == (int)PLAYER_STATE::NormalIdle || state == (int)PLAYER_STATE::MoveEndNormal ||
+				  state == (int)PLAYER_STATE::NormalAttackEnd;
 
 	if ((bPress && (KEY_PRESSED(CPlayerController::Front) || KEY_PRESSED(CPlayerController::Right) ||
 					KEY_PRESSED(CPlayerController::Back) || KEY_PRESSED(CPlayerController::Left))) ||
@@ -413,6 +478,44 @@ void CPlayerScript::ChangeToMove()
 							  KEY_TAP(CPlayerController::Back) || KEY_TAP(CPlayerController::Left))))
 	{
 		m_FSM->SetCurState((int)PLAYER_STATE::MoveIng);
+	}
+}
+
+void CPlayerScript::ChangeToNormal()
+{
+	auto state = m_FSM->GetCurState();
+
+	// 키 조건
+	if (KEY_TAP(KEY::LSHIFT))
+	{
+		// 상태 조건
+		if (state == (int)PLAYER_STATE::StandIdle || state == (int)PLAYER_STATE::StandReload ||
+			state == (int)PLAYER_STATE::StandAttackStart || state == (int)PLAYER_STATE::StandAttackDelay ||
+			state == (int)PLAYER_STATE::StandAttackIng || state == (int)PLAYER_STATE::StandAttackEnd ||
+			state == (int)PLAYER_STATE::KneelIdle || state == (int)PLAYER_STATE::KneelReload ||
+			state == (int)PLAYER_STATE::KneelAttackStart || state == (int)PLAYER_STATE::KneelAttackDelay ||
+			state == (int)PLAYER_STATE::KneelAttackIng || state == (int)PLAYER_STATE::KneelAttackEnd ||
+			state == (int)PLAYER_STATE::MoveEndStand || state == (int)PLAYER_STATE::MoveEndKneel)
+		{
+			m_FSM->SetCurState((int)PLAYER_STATE::NormalIdle);
+		}
+	}
+}
+
+void CPlayerScript::ChangeToVictory()
+{
+	if (KEY_TAP(Z))
+	{
+		m_FSM->SetCurState((int)PLAYER_STATE::VictoryStart);
+	}
+	if (KEY_TAP(X))
+	{
+		m_FSM->SetCurState((int)PLAYER_STATE::SkillCallsign);
+	}
+
+	if (KEY_TAP(C))
+	{
+		m_FSM->SetCurState((int)PLAYER_STATE::SkillEX);
 	}
 }
 
