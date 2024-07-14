@@ -90,17 +90,17 @@ void CSpawnSpotScript::RegisterPrefab()
 {
 	if (m_CurBindPrefab != nullptr)
 	{
-		string strPrefabKey = ToString(m_CurBindPrefab->GetKey());
 
 		if (m_vecPrefabKey.size() <= 0)
 		{
-			m_vecPrefabKey.push_back(strPrefabKey);
+			m_vecPrefab.push_back(m_CurBindPrefab);
 			++m_ivecCurrentIdx;
 		}
 		else
 		{
-			string PrevstrPrefabKey			 = m_vecPrefabKey[m_ivecCurrentIdx];
-			m_vecPrefabKey[m_ivecCurrentIdx] = strPrefabKey;
+			m_vecPrefab[m_ivecCurrentIdx] = m_CurBindPrefab;
+
+			string PrevstrPrefabKey = m_vecPrefabKey[m_ivecCurrentIdx];
 
 			std::list<CGameObject*>::iterator iter = m_listSpawnObject.begin();
 			while (iter != m_listSpawnObject.end())
@@ -121,6 +121,8 @@ void CSpawnSpotScript::RegisterPrefab()
 					++iter; // 현재 요소를 삭제하지 않은 경우, iterator를 증가시킵니다
 				}
 			}
+
+			m_vecPrefabKey[m_ivecCurrentIdx] = ToString(m_vecPrefab[m_ivecCurrentIdx]->GetKey());
 		}
 	}
 }
@@ -131,20 +133,16 @@ void CSpawnSpotScript::PushBackPrefab()
 	{
 		string strPrefabKey = ToString(m_CurBindPrefab->GetKey());
 
-		for (int i = 0; i < m_vecPrefabKey.size(); ++i)
+		if (m_vecPrefab.size() <= 0)
 		{
-			if (m_vecPrefabKey[i] == strPrefabKey)
-			{
-				return;
-			}
+			m_ivecCurrentIdx++;
 		}
 
+		m_vecPrefab.push_back(m_CurBindPrefab);
 		m_vecPrefabKey.push_back(strPrefabKey);
 	}
 
-	m_ivecSize = m_vecPrefabKey.size();
-
-	vector<string> temp;
+	m_ivecSize = m_vecPrefab.size();
 }
 
 void CSpawnSpotScript::SetSpawnTypeBoss()
@@ -297,6 +295,13 @@ void CSpawnSpotScript::LoadFromFile(ifstream& fin)
 	}
 
 	m_ivecSize = m_vecPrefabKey.size();
+
+	for (int i = 0; i < m_vecPrefabKey.size(); ++i)
+	{
+		Ptr<CPrefab> pPrefab = CAssetMgr::GetInst()->Load<CPrefab>(m_vecPrefabKey[i]);
+
+		m_vecPrefab.push_back(pPrefab);
+	}
 
 	AppendScriptVector("Prefab Vector", &m_vecPrefabKey, m_ivecSize, &m_ivecCurrentIdx, true);
 
