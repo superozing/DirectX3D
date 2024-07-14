@@ -3,7 +3,6 @@
 
 #include "CPrefab.h"
 #include "CGameObject.h"
-#include "CTaskMgr.h"
 
 CMemoryPool::CMemoryPool()
 	: m_listObjectPool()
@@ -60,16 +59,9 @@ CGameObject* CMemoryPool::PopObject()
 void CMemoryPool::PushObject(CGameObject* _Object)
 {
 	if (_Object->GetLayerIdx() != -1)
-	{
-		if (_Object->GetParent() != nullptr)
-			_Object->DisconnectWithParent();
-
 		_Object->DisconnectWithLayer();
-	}
 
 	m_listObjectPool.push_back(_Object);
-
-	CTaskMgr::GetInst()->SetMemoryPoolEvent(true);
 
 	// m_listObjectPool.sort([](CGameObject** a, CGameObject** b) { return (*a)->GetName() < (*b)->GetName(); });
 }
