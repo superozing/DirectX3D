@@ -387,10 +387,9 @@ void CCamera::render_Instance(const map<ULONG64, vector<tInstObj>>& m_mapInstGro
 		}
 
 		// Bloom
-		// auto BloomInfo = CRenderMgr::GetInst()->m_BloomInfo;
-		// pMtrl->SetScalarParam(SCALAR_PARAM::FLOAT_0, BloomInfo.Threshold);
-		// pMtrl->SetScalarParam(SCALAR_PARAM::VEC4_0, BloomInfo.vColor);
-		// pMtrl->UpdateData();
+		auto BloomInfo = CRenderMgr::GetInst()->m_BloomInfo;
+		pMtrl->SetScalarParam(SCALAR_PARAM::FLOAT_0, BloomInfo.Threshold);
+		pMtrl->SetScalarParam(SCALAR_PARAM::VEC4_0, BloomInfo.vColor);
 		pMtrl->UpdateData_Inst();
 		pMesh->render_instancing(pair.second[0].iMtrlIdx);
 
@@ -409,9 +408,17 @@ void CCamera::render_Instance(const map<ULONG64, vector<tInstObj>>& m_mapInstGro
 			continue;
 
 		pair.second[0].pObj->Transform()->UpdateData();
+		auto BloomInfo = CRenderMgr::GetInst()->m_BloomInfo;
 
 		for (auto& instObj : pair.second)
 		{
+			instObj.pObj->GetRenderComponent()
+				->GetMaterial(instObj.iMtrlIdx)
+				->SetScalarParam(SCALAR_PARAM::FLOAT_0, BloomInfo.Threshold);
+			instObj.pObj->GetRenderComponent()
+				->GetMaterial(instObj.iMtrlIdx)
+				->SetScalarParam(SCALAR_PARAM::VEC4_0, BloomInfo.vColor);
+
 			instObj.pObj->GetRenderComponent()->render(instObj.iMtrlIdx);
 		}
 

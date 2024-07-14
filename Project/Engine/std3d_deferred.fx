@@ -135,10 +135,10 @@ PS_OUT PS_Std3D_Deferred(VS_OUT _in) : SV_Target
     
     //Bloom START
     const static float3 vRLWeight = float3(0.2126f, 0.7152f, 0.0722f);
-    //const static float4 vBloomColor = BloomColor;
-    //float fThreshold = g_float_0;
-    const static float4 vBloomColor = float4(1.f, 1.f, 1.f, 1.f);
-    float fThreshold = 0.8f;
+    float4 vBloomColor = BloomColor;
+    float fThreshold = g_float_0;
+    //const static float4 vBloomColor = float4(1.f, 1.f, 1.f, 1.f);
+    //float fThreshold = 0.8f;
 
     float brightness = dot(vOutColor.rgb, vRLWeight);
     if (brightness > fThreshold)

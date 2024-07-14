@@ -15,7 +15,7 @@ struct tBloomInfo
 	bool Activate = true;
 	// deferred.fx
 	float Threshold = 0.8f;
-	Vec4  vColor	= Vec4(0.f, 0.f, 1.f, 1.f);
+	Vec4  vColor	= Vec4(1.f, 1.f, 1.f, 1.f);
 	// blur.fx
 	int BlurLevel = 7;
 	// bloom.fx
