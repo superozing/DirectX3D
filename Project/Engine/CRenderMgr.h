@@ -12,9 +12,14 @@ class CMRT;
 
 struct tBloomInfo
 {
+	bool Activate = true;
+	// deferred.fx
 	float Threshold = 0.8f;
 	Vec4  vColor	= Vec4(0.f, 0.f, 1.f, 1.f);
-	int	  BlurLevel = 5;
+	// blur.fx
+	int BlurLevel = 7;
+	// bloom.fx
+	float Ratio = .01f;
 };
 
 class CRenderMgr : public CManager<CRenderMgr>

@@ -506,6 +506,33 @@ void CCamera::Blur()
 	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
 }
 
+void CCamera::Bloom()
+{
+	// 리소스,타겟 얻어오기
+	auto BlurSource	  = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RelativeLuminanceTargetTex");
+	auto ColorCopy	  = CAssetMgr::GetInst()->FindAsset<CTexture>(L"PostProcessTex");
+	auto RenderTarget = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
+
+	// 매쉬,머터리얼 받아오기
+	static Ptr<CMesh>	  pRectMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect);
+	static Ptr<CMaterial> pBloomMtrl;
+	pBloomMtrl = CAssetMgr::GetInst()->Load<CMaterial>(MTRLBloom);
+
+	// 블랜드비율
+	auto  BlurInfo	 = CRenderMgr::GetInst()->m_BloomInfo;
+	float Bloomratio = BlurInfo.Ratio;
+
+	// 텍스쳐, 블랜드비율 바인딩
+	pBloomMtrl->SetTexParam(TEX_PARAM::TEX_0, ColorCopy);
+	pBloomMtrl->SetTexParam(TEX_PARAM::TEX_1, BlurSource);
+	pBloomMtrl->SetScalarParam(SCALAR_PARAM::FLOAT_0, Bloomratio);
+	pBloomMtrl->UpdateData();
+
+	// 타겟->리소스 복사
+	CRenderMgr::GetInst()->CopyFromTextureToTexture(ColorCopy, RenderTarget);
+	pRectMesh->render(0);
+}
+
 void CCamera::SortShadowMapObject()
 {
 	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
