@@ -11,7 +11,7 @@ void CAssetMgr::init()
 
 	CreateDefaultMesh();
 
-	 CreateDefaultGraphicsShader();
+	CreateDefaultGraphicsShader();
 
 	CreateDefaultComputeShader();
 
@@ -1283,7 +1283,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->AddTexParam(TEX_PARAM::TEX_0, "DamageFontTexture");
 
 	AddAsset(L"DamageFontShader", pShader.Get());
-	
+
 	// ================
 	// DynamicHPShader
 	// ----------------
@@ -1360,6 +1360,24 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->AddScalarParam(SCALAR_PARAM::FLOAT_1, "HP Ratio");
 
 	AddAsset(L"BossHPShader", pShader.Get());
+
+	// ================
+	// DialogFontBgShader
+	// ----------------
+	// Mesh: RectMesh
+	// RenderComp: MeshRender
+	// ================
+	pShader = new CGraphicsShader;
+	pShader->CreateVertexShader(L"shader\\dialogfontbg.fx", "VS_DialogFontBg");
+	pShader->CreatePixelShader(L"shader\\dialogfontbg.fx", "PS_DialogFontBg");
+
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+	pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+	pShader->SetTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	AddAsset(L"DialogFontBgShader", pShader.Get());
 
 	// ================
 	// SkillIconShader

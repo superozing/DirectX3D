@@ -892,6 +892,9 @@
     <FxCompile Include="crosshair.fx">
       <Filter>ShaderCode\02. Render\UIShader</Filter>
     </FxCompile>
+    <FxCompile Include="dialogfontbg.fx">
+      <Filter>ShaderCode\02. Render\UIShader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine.rc" />
