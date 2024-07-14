@@ -25,6 +25,7 @@ void CUIMgr::init()
 	m_arrUIActive[(UINT)UI_TYPE::MONSTERHP]	 = true;
 	m_arrUIActive[(UINT)UI_TYPE::PLAYERHP]	 = true;
 	m_arrUIActive[(UINT)UI_TYPE::SKILLICON]	 = true;
+	m_arrUIActive[(UINT)UI_TYPE::DIALOG]	 = true;
 }
 
 void CUIMgr::tick()

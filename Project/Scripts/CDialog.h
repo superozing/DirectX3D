@@ -18,14 +18,14 @@ class CDialog : public CScript
 	// 전부 UI 레이어, UI 카메라 소속
 private:
 	// 부모 패널UI
-	CPanelUIScript* m_pOwnerPanelUI;
+	CPanelUIScript* m_pPanelUI;
 
 	// 캐릭터 이미지
 	CImageUIScript* m_pCharatorUI;
 	Ptr<CTexture>	m_pCharatorTex;
 
 	// 배경 이미지
-	CImageUIScript* m_pCharatorBgUI;
+	CImageUIScript* m_pBgUI;
 	Ptr<CTexture>	m_pBgTex;
 
 	// 폰트 배경 (쉐이더 코드를 사용해서 배경 표시 용도)
@@ -49,6 +49,9 @@ public:
 
 	virtual void begin() override;
 	virtual void tick() override;
+
+private:
+	void SetParentPanelUI();
 
 public:
 	// Get, Set 함수

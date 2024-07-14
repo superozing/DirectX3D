@@ -407,6 +407,7 @@ enum class UI_TYPE
 	PLAYERHP,
 
 	SKILLICON,
+	DIALOG,
 
 	END
 };

@@ -32,6 +32,7 @@
 #include "CHaloScript.h"
 #include "CStudentScript.h"
 #include "CPlayerScript.h"
+#include "CDialog.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -66,6 +67,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CHaloScript");
 	_vec.push_back(L"CStudentScript");
 	_vec.push_back(L"CPlayerScript");
+	_vec.push_back(L"CDialog");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -132,6 +134,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CStudentScript;
 	if (L"CPlayerScript" == _strScriptName)
 		return new CPlayerScript;
+	if (L"CDialog" == _strScriptName)
+		return new CDialog;
 	return nullptr;
 }
 
@@ -231,6 +235,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::PLAYERSCRIPT:
 		return new CPlayerScript;
+		break;
+	case (UINT)SCRIPT_TYPE::DIALOG:
+		return new CDialog;
 		break;
 	}
 	return nullptr;
@@ -362,6 +369,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::PLAYERSCRIPT:
 		return L"CPlayerScript";
+		break;
+
+	case SCRIPT_TYPE::DIALOG:
+		return L"CDialog";
 		break;
 
 	}
