@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "CManager.h"
+#include "CTaskMgr.h"
 
 class CMemoryPool;
 

@@ -28,6 +28,7 @@ private:
 	list<CGameObject*> m_CurrentSpawnObject;
 
 	vector<string> m_vecPrefabKey;
+	int			   m_ivecSize;
 	int			   m_ivecCurrentIdx;
 	CPrefab*	   m_CurBindPrefab;
 
@@ -37,6 +38,9 @@ public:
 	void SetSpawnTypeBoss();
 	void SetSpawnTypeETC();
 	void SetSpawnTypeNone();
+
+	void RegisterPrefab();
+	void PushBackPrefab();
 
 	void RegisterObject();
 	void DeAllocateObject();

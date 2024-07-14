@@ -15,13 +15,11 @@ CSpawnSpotScript::CSpawnSpotScript()
 	, m_listSpawnObject()
 	, m_vecPrefabKey()
 	, m_ivecCurrentIdx(0)
+	, m_ivecSize(0)
 {
 	AppendScriptParam("Spawn Position", SCRIPT_PARAM::VEC3, &SpawnBasicPosition);
 	AppendScriptParam("BindObj Count", SCRIPT_PARAM::INT, &m_iBindObjCount, 0, 0, true);
 	AppendScriptAsset("Cur Prefab", &m_CurBindPrefab, ASSET_TYPE::PREFAB, false, "vector idx current prefab");
-
-	m_vecPrefabKey.push_back("aa");
-	m_vecPrefabKey.push_back("bb");
 
 	AppendScriptVector("Prefab Vector", &m_vecPrefabKey, (int)m_vecPrefabKey.size(), &m_ivecCurrentIdx, true);
 
@@ -48,6 +46,12 @@ CSpawnSpotScript::CSpawnSpotScript()
 
 	AppendMemberFunction("Register", SCRIPT_PARAM::FUNC_MEMBER, "Register",
 						 std::bind(&CSpawnSpotScript::RegisterObject, this));
+
+	AppendMemberFunction("Register Prefab", SCRIPT_PARAM::FUNC_MEMBER, "RegisterPrefab",
+						 std::bind(&CSpawnSpotScript::RegisterPrefab, this));
+
+	AppendMemberFunction("PushBack Prefab", SCRIPT_PARAM::FUNC_MEMBER, "PushBackPrefab",
+						 std::bind(&CSpawnSpotScript::PushBackPrefab, this));
 }
 
 CSpawnSpotScript::~CSpawnSpotScript()
@@ -80,6 +84,67 @@ void CSpawnSpotScript::SetSpawnTypeMonster()
 
 	GetOwner()->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, ModeColor);
 	GetOwner()->MeshRender()->GetMaterial(1)->SetScalarParam(SCALAR_PARAM::VEC4_0, ModeColor);
+}
+
+void CSpawnSpotScript::RegisterPrefab()
+{
+	if (m_CurBindPrefab != nullptr)
+	{
+		string strPrefabKey = ToString(m_CurBindPrefab->GetKey());
+
+		if (m_vecPrefabKey.size() <= 0)
+		{
+			m_vecPrefabKey.push_back(strPrefabKey);
+			++m_ivecCurrentIdx;
+		}
+		else
+		{
+			string PrevstrPrefabKey			 = m_vecPrefabKey[m_ivecCurrentIdx];
+			m_vecPrefabKey[m_ivecCurrentIdx] = strPrefabKey;
+
+			std::list<CGameObject*>::iterator iter = m_listSpawnObject.begin();
+			while (iter != m_listSpawnObject.end())
+			{
+				CGameObject* pObj	 = *iter;
+				string		 strFind = ToString(pObj->GetName());
+
+				if (strFind.find(PrevstrPrefabKey))
+				{
+					// 요소를 삭제하기 전에 처리
+					CMemoryPoolMgr::GetInst()->PushObject(PrevstrPrefabKey, pObj);
+
+					// 요소를 삭제하고, 다음 iterator를 얻기 위해 erase 메서드 사용
+					iter = m_listSpawnObject.erase(iter); // erase가 iterator를 반환함
+				}
+				else
+				{
+					++iter; // 현재 요소를 삭제하지 않은 경우, iterator를 증가시킵니다
+				}
+			}
+		}
+	}
+}
+
+void CSpawnSpotScript::PushBackPrefab()
+{
+	if (m_CurBindPrefab != nullptr)
+	{
+		string strPrefabKey = ToString(m_CurBindPrefab->GetKey());
+
+		for (int i = 0; i < m_vecPrefabKey.size(); ++i)
+		{
+			if (m_vecPrefabKey[i] == strPrefabKey)
+			{
+				return;
+			}
+		}
+
+		m_vecPrefabKey.push_back(strPrefabKey);
+	}
+
+	m_ivecSize = m_vecPrefabKey.size();
+
+	vector<string> temp;
 }
 
 void CSpawnSpotScript::SetSpawnTypeBoss()
@@ -116,8 +181,8 @@ void CSpawnSpotScript::RegisterObject()
 {
 
 	CGameObject* pObj = nullptr;
-	pObj =
-		CMemoryPoolMgr::GetInst()->GetEX()->GetScript<CMemoryPoolMgrScript>()->PopObject(ToString(PREFTutorialTarget2));
+	pObj			  = CMemoryPoolMgr::GetInst()->GetEX()->GetScript<CMemoryPoolMgrScript>()->PopObject(
+		 ToString(m_vecPrefabKey[m_ivecCurrentIdx]));
 
 	m_listSpawnObject.push_back(pObj);
 
@@ -230,6 +295,10 @@ void CSpawnSpotScript::LoadFromFile(ifstream& fin)
 
 		m_vecPrefabKey.push_back(s);
 	}
+
+	m_ivecSize = m_vecPrefabKey.size();
+
+	AppendScriptVector("Prefab Vector", &m_vecPrefabKey, m_ivecSize, &m_ivecCurrentIdx, true);
 
 	for (int i = 0; i < m_vecPrefabKey.size(); ++i)
 	{
