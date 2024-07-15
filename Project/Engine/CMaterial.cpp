@@ -146,8 +146,14 @@ int CMaterial::Save(const wstring& _strRelativePath)
 {
 	wstring strFilePath = CPathMgr::GetContentPath();
 	strFilePath += _strRelativePath;
+	path path_directory = path(strFilePath).parent_path();
+	if (!exists(path_directory))
+	{
+		create_directories(path_directory);
+	}
 
 	ofstream fout(strFilePath);
+
 	if (!fout.is_open())
 		return E_FAIL;
 
