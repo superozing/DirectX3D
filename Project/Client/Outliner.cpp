@@ -287,6 +287,7 @@ void Outliner::CheckCopy()
 			{
 				int			 LayerIdx = m_CopyTarget->GetLayerIdx();
 				CGameObject* pClone	  = m_CopyTarget->Clone();
+				pClone->m_iLayerIdx	  = -1;
 				GamePlayStatic::SpawnGameObject(pClone, LayerIdx);
 
 				Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
