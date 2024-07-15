@@ -23,35 +23,8 @@ void CDialog::begin()
 	// CDialog를 소유한 오브젝트에게 패널 UI 부착
 	SetParentPanelUI();
 
-	// CharatorUI
-	CGameObject* pObj = new CGameObject;
-	m_pCharatorUI	  = new CImageUIScript;
-
-	pObj->SetName(L"Charator Image UI");
-	pObj->AddComponent(new CTransform);
-	pObj->AddComponent(new CMeshRender);
-	pObj->AddComponent(m_pCharatorUI);
-
-	m_pCharatorUI->SetUIType(UI_TYPE::DIALOG);
-
-	// CharatorTex가 Set 되어있을 경우.
-	if (m_pCharatorTex.Get())
-		m_pCharatorUI->SetUIImg(m_pCharatorTex);
-	else // 만약 세팅되어있지 않을 경우에는 기본 이미지를 넣어주어요.
-		m_pCharatorUI->SetUIImg(
-			CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Arona/Operator_Portrait_Arona_00.png"));
-
-	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
-	pObj->Transform()->SetRelativeScale(Vec3(500.f, 500.f, 1.f));
-
-	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
-	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
-	pObj->MeshRender()->GetDynamicMaterial(0);
-
-	GetOwner()->AddChild(pObj);
-
 	// m_pBgUI
-	pObj	= new CGameObject;
+	CGameObject* pObj = new CGameObject;
 	m_pBgUI = new CImageUIScript;
 
 	pObj->SetName(L"Bg");
@@ -66,11 +39,39 @@ void CDialog::begin()
 		m_pBgUI->SetUIImg(m_pBgTex);
 	else // 만약 세팅되어있지 않을 경우에는 기본 이미지를 넣어주어요.
 		m_pBgUI->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Bg/Event_Main_Shop_Bg_817.png"));
-
+	m_pBgUI->AllowBindTexPerFrame();
 	Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
 
-	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, -200.f));
+	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
 	pObj->Transform()->SetRelativeScale(Vec3(vResol, 1.f));
+
+	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
+	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
+	pObj->MeshRender()->GetDynamicMaterial(0);
+
+	GetOwner()->AddChild(pObj);
+
+	// CharatorUI
+	 pObj = new CGameObject;
+	m_pCharatorUI	  = new CImageUIScript;
+
+	pObj->SetName(L"Charator Image UI");
+	pObj->AddComponent(new CTransform);
+	pObj->AddComponent(new CMeshRender);
+	pObj->AddComponent(m_pCharatorUI);
+
+	m_pCharatorUI->SetUIType(UI_TYPE::DIALOG);
+
+	// CharatorTex가 Set 되어있을 경우.
+	if (m_pCharatorTex.Get())
+		m_pCharatorUI->SetUIImg(m_pCharatorTex);
+	else // 만약 세팅되어있지 않을 경우에는 기본 이미지를 넣어주어요.
+		m_pCharatorUI->SetUIImg(
+			CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Arona/arona.png"));
+	m_pCharatorUI->AllowBindTexPerFrame();
+
+	pObj->Transform()->SetRelativePos(Vec3(90.f, -60.f, -10.f));
+	pObj->Transform()->SetRelativeScale(Vec3(503.f, 967.f, 1.f));
 
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
@@ -89,12 +90,13 @@ void CDialog::begin()
 
 	m_pFontBgUI->SetUIType(UI_TYPE::DIALOG);
 
-	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, -200.f));
-	pObj->Transform()->SetRelativeScale(Vec3(vResol.x, 200.f, 1.f));
+	pObj->Transform()->SetRelativePos(Vec3(0.f, -250.f, 100.f));
+	pObj->Transform()->SetRelativeScale(Vec3(vResol.x, 600.f, 1.f));
 
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
 	pObj->MeshRender()->GetDynamicMaterial(0);
+
 	pObj->MeshRender()->GetMaterial(0)->SetShader(
 		CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"DialogFontBgShader"));
 
@@ -125,12 +127,14 @@ void CDialog::begin()
 	m_CharactorNameFontInfo.fFontSize = 60.f;
 	m_CharactorNameFontInfo.FontType  = FONT_TYPE::MAIN_BOLD;
 	m_CharactorNameFontInfo.WStr	  = L"아로나";
+	m_CharactorNameFontInfo.vPos	  = Vec3(200.f, 700.f, 0.f);
 
 	// FontInfo
 	m_DialogFontInfo.Color	   = FONT_RGBA(255, 255, 255, 255);
 	m_DialogFontInfo.fFontSize = 50.f;
 	m_DialogFontInfo.FontType  = FONT_TYPE::MAIN_BOLD;
-	m_DialogFontInfo.WStr	   = L"안녕하세요";
+	m_DialogFontInfo.WStr	   = L"안녕하세요? 안녕하세요? 안녕하세요?";
+	m_DialogFontInfo.vPos	   = Vec3(200.f, 800.f, 0.f);
 }
 
 void CDialog::tick()

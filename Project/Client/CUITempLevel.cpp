@@ -41,6 +41,7 @@
 #include <Scripts/CDamageFont.h>
 #include <Scripts/CPlayerHP.h>
 #include <Scripts/CMonsterHP.h>
+#include <Scripts/CDialog.h>
 
 void CUITempLevel::Init()
 {
@@ -456,6 +457,17 @@ void CUITempLevel::CreateTempLevel()
 	pObj->AddComponent(new CTransform);
 	auto pCrosshair = new CCrosshair;
 	pObj->AddComponent(pCrosshair);
+	pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
+	pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
+	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+#pragma endregion
+#pragma region CDialog
+	// CDialog
+	pObj = new CGameObject;
+	pObj->SetName(L"Dialog");
+	pObj->AddComponent(new CTransform);
+	auto pDialog = new CDialog;
+	pObj->AddComponent(pDialog);
 	pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
 	pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
