@@ -491,8 +491,8 @@ void CCamera::Blur()
 	////////////////
 	auto BlurTarget = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RelativeLuminanceTargetTex");
 
-	// Bloom Level <= 8
-	int BlurLevel = min(8, CRenderMgr::GetInst()->m_BloomInfo.BlurLevel);
+	// Bloom Level <= MAXBLURLEVEL
+	int BlurLevel = min(MAXBLURLEVEL, CRenderMgr::GetInst()->m_BloomInfo.BlurLevel);
 
 	// Blur Tex
 	auto BloomOne = CRenderMgr::GetInst()->m_vecBlurOneTex;

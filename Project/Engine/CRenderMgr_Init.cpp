@@ -220,7 +220,7 @@ void CRenderMgr::CreateBlurTex()
 										DXGI_FORMAT_R32G32B32A32_FLOAT,
 										D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
 	// 1~ 최대9
-	for (int i = 1; i <= 8; ++i)
+	for (int i = 1; i <= MAXBLURLEVEL; ++i)
 	{
 		int div = pow(2, i);
 
