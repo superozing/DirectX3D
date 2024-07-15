@@ -27,10 +27,6 @@ void CRenderMgr::init()
 		CAssetMgr::GetInst()->CreateTexture(L"PostProcessTex", (UINT)vRenderResolution.x, (UINT)vRenderResolution.y,
 											DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE);
 
-	CAssetMgr::GetInst()->CreateTexture(L"RelativeLuminanceCopyTex", (UINT)vRenderResolution.x,
-										(UINT)vRenderResolution.y, DXGI_FORMAT_R32G32B32A32_FLOAT,
-										D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
-
 	// Noise Texture Load
 	m_vecNoiseTex.push_back(
 		CAssetMgr::GetInst()->Load<CTexture>(L"texture\\noise\\noise_01.png", L"texture\\noise\\noise_01.png"));
@@ -44,6 +40,7 @@ void CRenderMgr::init()
 	g_global.g_NoiseTexResolution = Vec2(m_vecNoiseTex[2]->GetWidth(), m_vecNoiseTex[2]->GetHeight());
 
 	// MRT Create
+	CreateBlurTex();
 	CreateMRT();
 }
 
@@ -84,9 +81,7 @@ void CRenderMgr::CreateMRT()
 			CAssetMgr::GetInst()->CreateTexture(L"EmissiveTargetTex", vResolution.x, vResolution.y,
 												DXGI_FORMAT_R32G32B32A32_FLOAT,
 												D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE),
-			CAssetMgr::GetInst()->CreateTexture(L"RelativeLuminanceTargetTex", vResolution.x, vResolution.y,
-												DXGI_FORMAT_R32G32B32A32_FLOAT,
-												D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE),
+			CAssetMgr::GetInst()->FindAsset<CTexture>(L"RelativeLuminanceTargetTex"),
 		};
 
 		Vec4 arrClearColor[5] = {
@@ -211,4 +206,39 @@ void CRenderMgr::CopyFromTextureToTexture(Ptr<CTexture> pToTexture, Ptr<CTexture
 			// 형식 또는 크기가 일치하지 않음
 		}
 	}
+}
+
+void CRenderMgr::CreateBlurTex()
+{
+	Vec2 vResolution = CDevice::GetInst()->GetRenderResolution();
+
+	CAssetMgr::GetInst()->CreateTexture(L"RelativeLuminanceTargetTex", vResolution.x, vResolution.y,
+										DXGI_FORMAT_R8G8B8A8_UNORM,
+										D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
+
+	CAssetMgr::GetInst()->CreateTexture(L"RelativeLuminanceCopyTex", (UINT)vResolution.x, (UINT)vResolution.y,
+										DXGI_FORMAT_R32G32B32A32_FLOAT,
+										D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
+	// 1~ 최대9
+	for (int i = 0; i < 10; ++i)
+	{
+		int div = pow(2, i);
+
+		// Bloom Down Texture
+		Ptr<CTexture> pBloomOneTex = CAssetMgr::GetInst()->CreateTexture(
+			L"BlurOne" + std::to_wstring(i), vResolution.x / div, vResolution.y / div,
+			DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM,
+			D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET | D3D11_BIND_UNORDERED_ACCESS, D3D11_USAGE_DEFAULT);
+		Ptr<CTexture> pBloomTwoTex = CAssetMgr::GetInst()->CreateTexture(
+			L"BlurTwo" + std::to_wstring(i), vResolution.x / div, vResolution.y / div,
+			DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM,
+			D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET | D3D11_BIND_UNORDERED_ACCESS, D3D11_USAGE_DEFAULT);
+
+		m_vecBlurOneTex.push_back(pBloomOneTex);
+		m_vecBlurTwoTex.push_back(pBloomTwoTex);
+	}
+}
+
+void CRenderMgr::DeleteBlurTex()
+{
 }
