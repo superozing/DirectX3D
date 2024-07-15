@@ -481,6 +481,8 @@ void CCamera::Merge()
 
 #include "CBlurX.h"
 #include "CBlurY.h"
+#include "CDownScale.h"
+#include "CUpScale.h"
 
 void CCamera::Blur()
 {
@@ -520,34 +522,61 @@ void CCamera::Blur()
 	////////////////
 	auto BlurTarget = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RelativeLuminanceTargetTex");
 
-	// Bloom Level < 10
-	// int BlurLevel = min(10, CRenderMgr::GetInst()->m_BloomInfo.BlurLevel);
-	int BlurLevel = CRenderMgr::GetInst()->m_BloomInfo.BlurLevel;
+	// Bloom Level <= 8
+	int BlurLevel = min(8, CRenderMgr::GetInst()->m_BloomInfo.BlurLevel);
 
 	// Blur Tex
 	auto BloomOne = CRenderMgr::GetInst()->m_vecBlurOneTex;
 	auto BloomTwo = CRenderMgr::GetInst()->m_vecBlurTwoTex;
 
-	CRenderMgr::GetInst()->CopyFromTextureToTexture(BloomOne[0], BlurTarget);
-
 	// Compute Shader
-	Ptr<CBlurX> BlurXShader = (CBlurX*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"BlurXCS").Get();
-	Ptr<CBlurY> BlurYShader = (CBlurY*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"BlurYCS").Get();
+	Ptr<CBlurX>		BlurXShader = (CBlurX*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"BlurXCS").Get();
+	Ptr<CBlurY>		BlurYShader = (CBlurY*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"BlurYCS").Get();
+	Ptr<CDownScale> DownScaleShader =
+		(CDownScale*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"DownScaleCS").Get();
+	Ptr<CUpScale> UpScaleShader = (CUpScale*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"UpScaleCS").Get();
 
-	for (int i = 1; i <= BlurLevel; ++i)
+	// CRenderMgr::GetInst()->CopyFromTextureToTexture(BloomOne[0], BlurTarget);
+	// DownScale
+	for (int i = 0; i < BlurLevel; ++i)
+	{
+		if (0 == i)
+		{
+			DownScaleShader->SetResourceTex(BlurTarget);
+		}
+		else
+		{
+			DownScaleShader->SetResourceTex(BloomOne[i - 1]);
+		}
+		DownScaleShader->SetTargetTexture(BloomOne[i]);
+		DownScaleShader->Execute();
+	}
+
+	for (int i = BlurLevel - 1; i >= 0; --i)
 	{
 		// Blur X
-		BlurXShader->SetResourceTex(BloomOne[0]);
-		BlurXShader->SetTargetTexture(BloomTwo[0]);
+		BlurXShader->SetResourceTex(BloomOne[i]);
+		BlurXShader->SetTargetTexture(BloomTwo[i]);
 		BlurXShader->Execute();
 
 		// Blur Y
-		BlurYShader->SetResourceTex(BloomTwo[0]);
-		BlurYShader->SetTargetTexture(BloomOne[0]);
+		BlurYShader->SetResourceTex(BloomTwo[i]);
+		BlurYShader->SetTargetTexture(BloomOne[i]);
 		BlurYShader->Execute();
-	}
 
-	CRenderMgr::GetInst()->CopyFromTextureToTexture(BlurTarget, BloomOne[0]);
+		// Up Scaling
+		UpScaleShader->SetResourceTex(BloomOne[i]);
+
+		if (i == 0)
+		{
+			UpScaleShader->SetTargetTexture(BlurTarget);
+		}
+		else
+		{
+			UpScaleShader->SetTargetTexture(BloomOne[i - 1]);
+		}
+		UpScaleShader->Execute();
+	}
 }
 
 void CCamera::Bloom()

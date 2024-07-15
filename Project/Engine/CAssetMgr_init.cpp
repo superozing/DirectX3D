@@ -1555,6 +1555,8 @@ void CAssetMgr::CreateDefaultMaterial()
 #include "CCopyBoneShader.h"
 #include "CBlurX.h"
 #include "CBlurY.h"
+#include "CDownScale.h"
+#include "CUpScale.h"
 void CAssetMgr::CreateDefaultComputeShader()
 {
 	Ptr<CComputeShader> pShader = nullptr;
@@ -1582,6 +1584,14 @@ void CAssetMgr::CreateDefaultComputeShader()
 	// BlurYShader
 	pShader = new CBlurY;
 	AddAsset(L"BlurYCS", pShader.Get());
+
+	// DownScaleShader
+	pShader = new CDownScale;
+	AddAsset(L"DownScaleCS", pShader.Get());
+
+	// UpScaleShader
+	pShader = new CUpScale;
+	AddAsset(L"UpScaleCS", pShader.Get());
 }
 
 #include "CSound.h"

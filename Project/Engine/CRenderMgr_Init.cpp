@@ -212,15 +212,15 @@ void CRenderMgr::CreateBlurTex()
 {
 	Vec2 vResolution = CDevice::GetInst()->GetRenderResolution();
 
-	CAssetMgr::GetInst()->CreateTexture(L"RelativeLuminanceTargetTex", vResolution.x, vResolution.y,
-										DXGI_FORMAT_R8G8B8A8_UNORM,
-										D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
+	CAssetMgr::GetInst()->CreateTexture(
+		L"RelativeLuminanceTargetTex", vResolution.x, vResolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
+		D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS, D3D11_USAGE_DEFAULT);
 
 	CAssetMgr::GetInst()->CreateTexture(L"RelativeLuminanceCopyTex", (UINT)vResolution.x, (UINT)vResolution.y,
 										DXGI_FORMAT_R32G32B32A32_FLOAT,
 										D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
 	// 1~ 최대9
-	for (int i = 0; i < 10; ++i)
+	for (int i = 1; i <= 8; ++i)
 	{
 		int div = pow(2, i);
 
