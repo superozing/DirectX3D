@@ -22,4 +22,6 @@ public:
 	CLONE_DISABLE(CMeshData);
 	CMeshData(bool _Engine = false);
 	~CMeshData();
+
+	friend class MeshDataUI;
 };
