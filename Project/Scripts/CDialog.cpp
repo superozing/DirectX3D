@@ -98,7 +98,7 @@ void CDialog::begin()
 	pObj->MeshRender()->GetDynamicMaterial(0);
 
 	pObj->MeshRender()->GetMaterial(0)->SetShader(
-		CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"DialogFontBgShader"));
+		CAssetMgr::GetInst()->Load<CGraphicsShader>(L"GraphicsShader/DialogFontBgShader.gs"));
 
 	GetOwner()->AddChild(pObj);
 

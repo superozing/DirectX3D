@@ -47,7 +47,7 @@ void CAmmoInfo::MakeChildObjects()
 	pObj->MeshRender()->GetDynamicMaterial(0);
 
 	pObj->MeshRender()->GetMaterial(0)->SetShader(
-		CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"AmmoProgressBarShader"));
+		CAssetMgr::GetInst()->Load<CGraphicsShader>(L"GraphicsShader/AmmoProgressBarShader.gs"));
 
 	// m_pAmmoLine->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HPLine.png"));
 	m_pAmmoLine->AllowBindTexPerFrame();

@@ -11,7 +11,7 @@ void CAssetMgr::init()
 
 	CreateDefaultMesh();
 
-	CreateDefaultGraphicsShader();
+	//CreateDefaultGraphicsShader();
 
 	CreateDefaultComputeShader();
 
@@ -1585,12 +1585,14 @@ void CAssetMgr::CreateDefaultMaterial()
 
 	// StaticUIMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"StaticUIShader"));
+	strShaderPath = "GraphicsShader\\StaticUIShader.gs";
+	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset(L"StaticUIMtrl", pMtrl);
 
 	// DynamicUIMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DynamicUIShader"));
+	strShaderPath = "GraphicsShader\\DynamicUIShader.gs";
+	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset(L"DynamicUIMtrl", pMtrl);
 
 	// ImageWrapMtrl

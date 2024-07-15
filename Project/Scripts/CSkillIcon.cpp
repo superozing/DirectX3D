@@ -67,7 +67,7 @@ void CSkillIcon::MakeChildObjects()
 	MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
 	MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
 	MeshRender()->GetDynamicMaterial(0);
-	MeshRender()->GetMaterial(0)->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"SkillIconShader"));
+	MeshRender()->GetMaterial(0)->SetShader(CAssetMgr::GetInst()->Load<CGraphicsShader>(L"GraphicsShader/SkillIconShader.gs"));
 
 	m_pSkillIconUI->SetUIImg(m_pSkillIconTex);
 	m_pSkillIconUI->AllowBindTexPerFrame();
