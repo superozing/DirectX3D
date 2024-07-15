@@ -6,7 +6,7 @@ class CScript;
 
 class CGameObject : public CEntity
 {
-private:
+protected:
 	CComponent*				m_arrCom[(UINT)COMPONENT_TYPE::END];
 	class CRenderComponent* m_RenderCom;
 
@@ -21,7 +21,7 @@ private:
 
 public:
 	virtual void begin();
-	void		 tick();
+	virtual void tick();
 	virtual void finaltick();
 	void		 render();
 
@@ -46,11 +46,11 @@ public:
 	{
 		return (CParticleSystem*)m_arrCom[(UINT)COMPONENT_TYPE::PARTICLESYSTEM];
 	}
-	inline class CTileMap*	 TileMap() { return (CTileMap*)m_arrCom[(UINT)COMPONENT_TYPE::TILEMAP]; }
-	inline class CSkyBox*	 SkyBox() { return (CSkyBox*)m_arrCom[(UINT)COMPONENT_TYPE::SKYBOX]; }
-	inline class CDecal*	 Decal() { return (CDecal*)m_arrCom[(UINT)COMPONENT_TYPE::DECAL]; }
-	inline class CLandScape* LandScape() { return (CLandScape*)m_arrCom[(UINT)COMPONENT_TYPE::LANDSCAPE]; }
-	inline class CPhysX* PhysX() { return (CPhysX*)m_arrCom[(UINT)COMPONENT_TYPE::PHYSX]; }
+	inline class CTileMap*	  TileMap() { return (CTileMap*)m_arrCom[(UINT)COMPONENT_TYPE::TILEMAP]; }
+	inline class CSkyBox*	  SkyBox() { return (CSkyBox*)m_arrCom[(UINT)COMPONENT_TYPE::SKYBOX]; }
+	inline class CDecal*	  Decal() { return (CDecal*)m_arrCom[(UINT)COMPONENT_TYPE::DECAL]; }
+	inline class CLandScape*  LandScape() { return (CLandScape*)m_arrCom[(UINT)COMPONENT_TYPE::LANDSCAPE]; }
+	inline class CPhysX*	  PhysX() { return (CPhysX*)m_arrCom[(UINT)COMPONENT_TYPE::PHYSX]; }
 	inline class CFontRender* FontRender() { return (CFontRender*)m_arrCom[(UINT)COMPONENT_TYPE::FONTRENDER]; }
 
 	int GetLayerIdx() { return m_iLayerIdx; }
@@ -92,4 +92,6 @@ public:
 	friend class CTaskMgr;
 	friend class CLevelSaveLoad;
 	friend class Inspector;
+	friend class CMemoryPool;
+	friend class CMemoryPoolMgrScript;
 };

@@ -79,8 +79,8 @@ void ScriptUI::render_update()
 			break;
 
 		case SCRIPT_PARAM::VECTOR:
-			ParamUI::Param_Vector((vector<string>*)iter->second.pData, iter->first, iter->second.length,
-								  iter->second.idx, iter->second.View, iter->second.Tooltip);
+			ParamUI::Param_Vector((vector<string>*)iter->second.pData, iter->first, iter->second.idx, iter->second.View,
+								  iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::COLOR:
 			ParamUI::Param_COLOR((Vec4*)iter->second.pData, iter->first, iter->second.View, iter->second.Tooltip);

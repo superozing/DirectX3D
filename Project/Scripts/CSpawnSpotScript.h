@@ -17,23 +17,22 @@ enum class SpawnObjType
 class CSpawnSpotScript : public CScript
 {
 private:
-	Vec3 SpawnBasicPosition;
+	SpawnObjType   SpawnType;
+	string		   strDisplaySpawnTypeString;
+	vector<string> m_vecDisplayMode;
+	int			   m_ivecModeIdx;
+	Vec4		   ModeColor;
 
-	SpawnObjType SpawnType;
-	string		 strDisplaySpawnTypeString;
-	Vec4		 ModeColor;
-
-	int				   m_iBindObjCount;
 	list<CGameObject*> m_listSpawnObject;
 	list<CGameObject*> m_CurrentSpawnObject;
 
 	vector<Ptr<CPrefab>> m_vecPrefab;
 	vector<string>		 m_vecPrefabKey;
-	int					 m_ivecSize;
-	int					 m_ivecCurrentIdx;
 	CPrefab*			 m_CurBindPrefab;
+	int					 m_ivecPrefabIdx;
 
 public:
+	void SetDisplayMode();
 	void SetSpawnTypePlayer();
 	void SetSpawnTypeMonster();
 	void SetSpawnTypeBoss();
@@ -58,7 +57,8 @@ public:
 	virtual void LoadFromFile(ifstream& fin) override;
 
 public:
-	CLONE_DISABLE(CSpawnSpotScript);
+	CLONE(CSpawnSpotScript);
 	CSpawnSpotScript();
+	CSpawnSpotScript(const CSpawnSpotScript& _Origin);
 	~CSpawnSpotScript();
 };

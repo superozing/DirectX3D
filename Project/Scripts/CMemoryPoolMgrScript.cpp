@@ -30,9 +30,18 @@ void CMemoryPoolMgrScript::begin()
 
 		GetOwner()->AddChild(pFilterObj);
 
-		for (int i = 0; pPool->GetCurCount(); ++i)
+		CGameObject* RegisterLayerobj = pPool->PopObject();
+
+		// 레이어가 -1이 아닌 상태에서 자식으로 추가되는것에 대한 예외처리
+		CMemoryPoolMgr::GetInst()->SavePrefabLayer(RegisterLayerobj);
+		RegisterLayerobj->m_iLayerIdx = -1;
+		pFilterObj->AddChild(RegisterLayerobj);
+
+		for (int i = 0; pPool->GetCurCount() - 1; ++i)
 		{
-			pFilterObj->AddChild(pPool->PopObject());
+			CGameObject* pObj = pPool->PopObject();
+			pObj->m_iLayerIdx = -1;
+			pFilterObj->AddChild(pObj);
 		}
 	}
 
@@ -49,6 +58,8 @@ CGameObject* CMemoryPoolMgrScript::PopObject(string _strMapKey)
 	vector<CGameObject*> vecChild = GetOwner()->GetChild();
 
 	CTaskMgr::GetInst()->SetMemoryPoolEvent(true);
+
+	// 이미 POOL이 존재하는 경우(POOL은 있지만 OBJ가 있는가 없는가에 대한 여부)
 	for (int i = 0; i < vecChild.size(); ++i)
 	{
 		if (ToString(vecChild[i]->GetName()) == _strMapKey && vecChild[i]->GetChild().size() == 0)
@@ -62,6 +73,7 @@ CGameObject* CMemoryPoolMgrScript::PopObject(string _strMapKey)
 		}
 	}
 
+	// POOL이 없는 경우 EX에 필터를 만들고 PoolMgr를 통해 pop한다.
 	if (pObj == nullptr)
 	{
 		CGameObject* pFilterObj = new CGameObject;
@@ -76,9 +88,9 @@ CGameObject* CMemoryPoolMgrScript::PopObject(string _strMapKey)
 	return pObj;
 }
 
-#include <Engine\CLogMgr.h>
 void CMemoryPoolMgrScript::PushObject(CGameObject* _Object)
 {
+	// EX OBJ의 Filter를 받아온다.
 	vector<CGameObject*> vecObj = GetOwner()->GetChild();
 
 	for (int i = 0; i < vecObj.size(); ++i)
@@ -88,6 +100,7 @@ void CMemoryPoolMgrScript::PushObject(CGameObject* _Object)
 		if (ToString(_Object->GetName()).find(s))
 		{
 			vecObj[i]->AddChild(_Object);
+			return;
 		}
 	}
 

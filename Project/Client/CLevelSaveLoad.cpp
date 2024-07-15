@@ -384,8 +384,8 @@ CGameObject* CLevelSaveLoad::LoadGameObject(ifstream& fin)
 	pObject->SetName(str);
 
 	// NOTE : 레벨 로드할 때 실패하면 아래 2줄 주석처리 해주어야 함
-	// Utils::GetLineUntilString(fin, TagLayerName);
-	// fin >> pObject->m_iLayerIdx;
+	Utils::GetLineUntilString(fin, TagLayerName);
+	fin >> pObject->m_iLayerIdx;
 
 	while (true)
 	{

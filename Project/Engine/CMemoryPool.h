@@ -3,8 +3,8 @@
 class CMemoryPool
 {
 private:
-	list<CGameObject*> m_listObjectPool;
-	Ptr<CPrefab>	   m_PoolPrefab;
+	list<CGameObject*> m_listObjectPool; // 메모리풀
+	Ptr<CPrefab>	   m_PoolPrefab;	 // 풀에 할당된 prefab
 
 	int iPoolMaxCount;
 

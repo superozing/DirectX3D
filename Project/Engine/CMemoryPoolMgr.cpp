@@ -5,6 +5,8 @@
 #include "CGameObject.h"
 #include "CTaskMgr.h"
 
+#include "CTransform.h"
+
 #define TagPoolCount "[CurrentPoolCount]"
 #define TagMemoryPoolPrefab "[Pool Prefab]"
 #define TagMemoryPoolCount "[PoolCount]"
@@ -21,6 +23,8 @@ CMemoryPoolMgr::~CMemoryPoolMgr()
 
 void CMemoryPoolMgr::Poolbegin(string strPrefabRelativePath)
 {
+	// pool 있으면 넘아가고, 없으면 만들어서 begin 시킨다.
+
 	CMemoryPool* pFindPool = FindPool(strPrefabRelativePath);
 
 	if (pFindPool == nullptr)
@@ -28,17 +32,17 @@ void CMemoryPoolMgr::Poolbegin(string strPrefabRelativePath)
 		CMemoryPool* pPool = CreatePool(strPrefabRelativePath);
 	}
 	else
-		pFindPool->begin(strPrefabRelativePath);
+		return;
 }
 
 CGameObject* CMemoryPoolMgr::PopObject(string _strMapKey)
 {
 	CMemoryPool* pPool = FindPool(_strMapKey);
 
+	// Pool이 없으면 동적으로 만든다.
 	if (pPool == nullptr)
 	{
 		pPool = CreatePool(_strMapKey);
-		pPool->begin(_strMapKey);
 	}
 
 	return pPool->PopObject();
@@ -46,7 +50,7 @@ CGameObject* CMemoryPoolMgr::PopObject(string _strMapKey)
 
 void CMemoryPoolMgr::PushObject(string _strMapKey, CGameObject* _Object)
 {
-
+	// Pool 역할을 하는 EX를 먼저 가져온다. 필터가 존재하면 넣는다.
 	vector<CGameObject*> vecObj = m_pMemoryPoolEX->GetChild();
 
 	for (int i = 0; i < vecObj.size(); ++i)
@@ -69,6 +73,39 @@ int CMemoryPoolMgr::GetCurrentCount(string _strMapKey)
 {
 	CMemoryPool* pPool = FindPool(_strMapKey);
 	return pPool->GetCurCount();
+}
+
+void CMemoryPoolMgr::SavePrefabLayer(CGameObject* pObj)
+{
+	string strObjname = ToString(pObj->GetName());
+	bool   bSetLayer  = false;
+
+	for (int i = 0; i < m_vecPrefabLayer.size(); ++i)
+	{
+		if (strObjname.find(m_vecPrefabLayer[i].first) != string::npos)
+		{
+			bSetLayer = true;
+			break;
+		}
+	}
+
+	if (bSetLayer == true)
+		return;
+	else
+		m_vecPrefabLayer.push_back(make_pair(strObjname, pObj->GetLayerIdx()));
+}
+
+int CMemoryPoolMgr::GetPrefabLayer(CGameObject* pObj)
+{
+	string strObjname = ToString(pObj->GetName());
+
+	for (int i = 0; i < m_vecPrefabLayer.size(); ++i)
+	{
+		if (strObjname.find(m_vecPrefabLayer[i].first) != string::npos)
+		{
+			return m_vecPrefabLayer[i].second;
+		}
+	}
 }
 
 CMemoryPool* CMemoryPoolMgr::CreatePool(string _strMapKey)

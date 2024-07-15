@@ -40,15 +40,16 @@ public:
 	static void Param_SameLine();
 
 	template <typename T>
-	static bool Param_Vector(vector<T>* _vec, const string& _Desc, int _length, int* _idx, bool _View,
-							 const string& _Tooltip);
+	static bool Param_Vector(vector<T>* _vec, const string& _Desc, int* _idx, bool _View, const string& _Tooltip);
 };
 
 template <typename T>
-inline bool ParamUI::Param_Vector(vector<T>* _vec, const string& _Desc, int _length, int* _idx, bool _View,
-								  const string& _Tooltip)
+inline bool ParamUI::Param_Vector(vector<T>* _vec, const string& _Desc, int* _idx, bool _View, const string& _Tooltip)
 {
 	ImGui::Text(_Desc.c_str());
+
+	if (_vec->size() <= 0)
+		return false;
 	ImGui::SameLine();
 
 	char szID[256] = {};
@@ -57,19 +58,16 @@ inline bool ParamUI::Param_Vector(vector<T>* _vec, const string& _Desc, int _len
 	char szCombID[256] = {};
 	sprintf_s(szID, "##Combo%d", g_ID++);
 
-	if (_length <= 0)
-		return false;
-
 	int idx = *_idx;
 
-	idx = clamp(idx, 0, _length - 1);
+	idx = clamp(idx, 0, (int)_vec->size() - 1);
 
 	vector<T> vec = *_vec;
 	string	  str = vec[idx];
 
 	if (ImGui::BeginCombo(szID, str.c_str()))
 	{
-		for (int n = 0; n < _length; n++)
+		for (int n = 0; n < _vec->size(); n++)
 		{
 			bool is_selected = (str == vec[n]);
 			if (ImGui::Selectable(vec[n].c_str(), is_selected))

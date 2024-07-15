@@ -10,7 +10,8 @@ class CMemoryPoolMgr : public CManager<CMemoryPoolMgr>
 	SINGLE(CMemoryPoolMgr);
 
 private:
-	map<string, CMemoryPool*> m_mapMemoryPool;
+	map<string, CMemoryPool*>	   m_mapMemoryPool;
+	vector<std::pair<string, int>> m_vecPrefabLayer;
 
 	CGameObject* m_pMemoryPoolEX;
 
@@ -25,6 +26,9 @@ public:
 	CGameObject* GetEX() { return m_pMemoryPoolEX; }
 
 	map<string, CMemoryPool*> GetMapPool() { return m_mapMemoryPool; }
+
+	void SavePrefabLayer(CGameObject* pObj);
+	int	 GetPrefabLayer(CGameObject* pObj);
 
 private:
 	CMemoryPool* CreatePool(string _strMapKey);

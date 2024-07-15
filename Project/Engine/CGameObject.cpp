@@ -248,7 +248,11 @@ int CGameObject::DisconnectWithLayer()
 
 void CGameObject::AddChild(CGameObject* _Child, bool spawn)
 {
-	if (-1 == _Child->m_iLayerIdx)
+	if (spawn)
+	{
+		// 새로 스폰하는 경우 아무것도 하지 않고 부모자식 연결 해주어야 함
+	}
+	else if (-1 == _Child->m_iLayerIdx)
 	{
 		// 레벨에 속하지 않았던 오브젝트가 자식으로 들어올때는 부모의 레이어를 따라간다.
 		_Child->m_iLayerIdx = m_iLayerIdx;
@@ -259,10 +263,6 @@ void CGameObject::AddChild(CGameObject* _Child, bool spawn)
 		// 원래 레이어를 유지한다.
 		int LayerIdx		= _Child->DisconnectWithParent();
 		_Child->m_iLayerIdx = LayerIdx;
-	}
-	else if (spawn)
-	{
-		// 새로 스폰하는 경우 아무것도 하지 않고 부모자식 연결 해주어야 함
 	}
 	else
 	{
