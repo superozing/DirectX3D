@@ -138,6 +138,12 @@ private:
 	// 리소스 클리어
 	void Clear();
 
+	vector<Ptr<CTexture>> m_vecBlurOneTex;
+	vector<Ptr<CTexture>> m_vecBlurTwoTex;
+	void				  CreateBlurTex();
+	void				  DeleteBlurTex();
+
 	friend class CRenderMgrScript;
 	friend class CDevice;
+	friend class CCamera;
 };

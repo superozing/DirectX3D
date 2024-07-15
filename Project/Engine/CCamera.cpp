@@ -479,38 +479,75 @@ void CCamera::Merge()
 	pRectMesh->render(0);
 }
 
+#include "CBlurX.h"
+#include "CBlurY.h"
+
 void CCamera::Blur()
 {
-	// 리소스,타겟 얻어오기
-	auto BlurResource = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RelativeLuminanceCopyTex");
-	auto BlurTarget	  = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RelativeLuminanceTargetTex");
+	//// 리소스,타겟 얻어오기
+	// auto BlurResource = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RelativeLuminanceCopyTex");
+	// auto BlurTarget	  = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RelativeLuminanceTargetTex");
 
-	static Ptr<CMesh> pRectMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect);
+	// static Ptr<CMesh> pRectMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect);
 
-	static Ptr<CMaterial> pBlurMtrl;
-	pBlurMtrl = CAssetMgr::GetInst()->Load<CMaterial>(MTRLBlur);
-	// pBlurMtrl->SetTexParam(TEX_PARAM::TEX_0, BlurResource);
+	// static Ptr<CMaterial> pBlurMtrl;
+	// pBlurMtrl = CAssetMgr::GetInst()->Load<CMaterial>(MTRLBlur);
+	//// pBlurMtrl->SetTexParam(TEX_PARAM::TEX_0, BlurResource);
 
-	auto BlurInfo = CRenderMgr::GetInst()->m_BloomInfo;
+	// auto BlurInfo = CRenderMgr::GetInst()->m_BloomInfo;
 
-	int blurcnt = BlurInfo.BlurLevel;
-	for (int i = 0; i < blurcnt * 2; ++i)
+	// int blurcnt = BlurInfo.BlurLevel;
+	// for (int i = 0; i < blurcnt * 2; ++i)
+	//{
+	//	bool IsEven = 0 == i % 2 ? true : false;
+	//	pBlurMtrl->SetScalarParam(SCALAR_PARAM::BOOL_0, IsEven);
+	//	pBlurMtrl->UpdateData();
+
+	//	// 타겟->리소스 복사
+	//	CRenderMgr::GetInst()->CopyFromTextureToTexture(BlurResource, BlurTarget);
+
+	//	// OM타겟설정
+	//	CONTEXT->OMSetRenderTargets(1, BlurTarget->GetRTV().GetAddressOf(), nullptr);
+
+	//	pRectMesh->render(0);
+	//}
+
+	//// OM 타겟 되돌리기
+	// CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
+
+	////////////////
+	// CS쉐이더 구현
+	////////////////
+	auto BlurTarget = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RelativeLuminanceTargetTex");
+
+	// Bloom Level < 10
+	// int BlurLevel = min(10, CRenderMgr::GetInst()->m_BloomInfo.BlurLevel);
+	int BlurLevel = CRenderMgr::GetInst()->m_BloomInfo.BlurLevel;
+
+	// Blur Tex
+	auto BloomOne = CRenderMgr::GetInst()->m_vecBlurOneTex;
+	auto BloomTwo = CRenderMgr::GetInst()->m_vecBlurTwoTex;
+
+	CRenderMgr::GetInst()->CopyFromTextureToTexture(BloomOne[0], BlurTarget);
+
+	// Compute Shader
+	Ptr<CBlurX> BlurXShader = (CBlurX*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"BlurXCS").Get();
+	Ptr<CBlurY> BlurYShader = (CBlurY*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"BlurYCS").Get();
+
+	for (int i = 1; i <= BlurLevel; ++i)
 	{
-		bool IsEven = 0 == i % 2 ? true : false;
-		pBlurMtrl->SetScalarParam(SCALAR_PARAM::BOOL_0, IsEven);
-		pBlurMtrl->UpdateData();
+		// Blur X
+		BlurXShader->SetResourceTex(BloomOne[0]);
+		BlurXShader->SetTargetTexture(BloomTwo[0]);
+		BlurXShader->Execute();
 
-		// 타겟->리소스 복사
-		CRenderMgr::GetInst()->CopyFromTextureToTexture(BlurResource, BlurTarget);
-
-		// OM타겟설정
-		CONTEXT->OMSetRenderTargets(1, BlurTarget->GetRTV().GetAddressOf(), nullptr);
-
-		pRectMesh->render(0);
+		// Blur Y
+		BlurYShader->SetResourceTex(BloomTwo[0]);
+		BlurYShader->SetTargetTexture(BloomOne[0]);
+		BlurYShader->Execute();
 	}
 
-	// OM 타겟 되돌리기
-	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
+	CRenderMgr::GetInst()->CopyFromTextureToTexture(BlurTarget, BloomOne[0]);
 }
 
 void CCamera::Bloom()
