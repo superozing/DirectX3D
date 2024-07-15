@@ -373,6 +373,8 @@ private:
 	void ChangeToNormal();
 	/// @brief 상태 조건에 따라 victory상태로 변경하는 함수입니다.
 	void ChangeToVictory();
+	/// @brief 상태 조건에 따라 Dash 상태로 변경하는 함수입니다.
+	void ChangeToDash();
 	/// @brief 조건에 따라 일반 공격으로 변경해주는 함수입니다.
 	void NormalAttack();
 

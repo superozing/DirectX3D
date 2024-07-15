@@ -266,13 +266,11 @@ void CPlayerScript::tick()
 	// 노말상태 공격
 	NormalAttack();
 
-	// 움직일 수 있도록하는 상태 조건들
+	// 조건에 따라 상태 변경해주는 함수
 	ChangeToMove();
-
-	// 엄폐 상태에서 노말 상태로 돌아오는 조건들
 	ChangeToNormal();
-
 	ChangeToVictory();
+	ChangeToDash();
 
 	// 엄폐 판정 할 수 있게되면 지울 함수
 	SwitchCoverType();
@@ -516,6 +514,22 @@ void CPlayerScript::ChangeToVictory()
 	if (KEY_TAP(C))
 	{
 		m_FSM->SetCurState((int)PLAYER_STATE::SkillEX);
+	}
+}
+
+void CPlayerScript::ChangeToDash()
+{
+	auto state = m_FSM->GetCurState();
+
+	if (KEY_TAP(CPlayerController::Dash))
+	{
+		if (state == (int)PLAYER_STATE::NormalIdle || state == (int)PLAYER_STATE::NormalReload ||
+			state == (int)PLAYER_STATE::NormalAttackStart || state == (int)PLAYER_STATE::NormalAttackDelay ||
+			state == (int)PLAYER_STATE::NormalAttackEnd || state == (int)PLAYER_STATE::NormalAttackIng ||
+			state == (int)PLAYER_STATE::MoveIng || state == (int)PLAYER_STATE::MoveEndNormal)
+		{
+			m_FSM->SetCurState((int)PLAYER_STATE::SkillDash);
+		}
 	}
 }
 

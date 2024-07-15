@@ -38,10 +38,6 @@ int CPlayerScript::NormalIdleUpdate()
 	if (KEY_TAP(CPlayerController::Zoom) || KEY_PRESSED(CPlayerController::Zoom))
 		return (int)PLAYER_STATE::NormalAttackStart;
 
-	// 스킬
-	if (KEY_TAP(CPlayerController::Dash))
-		return (int)PLAYER_STATE::SkillDash;
-
 	return m_FSM->GetCurState();
 }
 
@@ -636,10 +632,6 @@ int CPlayerScript::MoveIngUpdate()
 	// TODO: Reload 조건
 	if (KEY_TAP(CPlayerController::Reload))
 		return (int)PLAYER_STATE::NormalReload;
-
-	// 스킬
-	if (KEY_TAP(CPlayerController::Dash))
-		return (int)PLAYER_STATE::SkillDash;
 
 	return m_FSM->GetCurState();
 }
