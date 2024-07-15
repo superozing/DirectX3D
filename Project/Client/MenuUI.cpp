@@ -93,6 +93,7 @@ void MenuUI::File()
 				string name = ToString((wchar_t*)ofn.lpstrFile);
 				name		= path(name).stem().string();
 				pLevel->SetName(name);
+				pLevel->SetRelativePath(name);
 				CLevelSaveLoad::SaveLevel(pLevel, CPathMgr::GetRelativePath(szSelect));
 			}
 		}
