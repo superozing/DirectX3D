@@ -107,6 +107,9 @@
       <Filter>Scripts\Player</Filter>
     </ClInclude>
     <ClInclude Include="CPlayerController.h" />
+    <ClInclude Include="CPlayerDamagedScript.h">
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -218,6 +221,9 @@
       <Filter>Scripts\Player</Filter>
     </ClCompile>
     <ClCompile Include="CPlayerController.cpp" />
+    <ClCompile Include="CPlayerDamagedScript.cpp">
+      <Filter>Scripts\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">

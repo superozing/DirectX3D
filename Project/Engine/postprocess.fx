@@ -80,5 +80,46 @@ float4 PS_Distortion(VS_OUT _in) : SV_Target
     return vColor;
 }
 
+VS_OUT VS_Vignette(VS_IN _in)
+{
+    VS_OUT output = (VS_OUT) 0.f;
+    
+    output.vPosition = float4(_in.vPos * 2.f, 1.f);
+    output.vUV = _in.vUV;
+    
+    return output;
+}
+
+float4 PS_Vignette(VS_OUT _in) : SV_Target
+{
+    float4 vColor = (float4) 0.f;
+    
+    // 블룸 이후의 이미지를 샘플링
+    vColor = g_postprocess.Sample(g_sam_0, _in.vUV);
+
+    float4 vignetteTex = (float4) 0.f;
+    // 비네트 전용 텍스처를 샘플링
+    if (g_int_1 == 0)
+        vignetteTex = g_tex_0.Sample(g_sam_0, _in.vUV);
+    else if (g_int_1 == 1)
+        vignetteTex = g_tex_1.Sample(g_sam_0, _in.vUV);
+    else if (g_int_1 == 2)
+        vignetteTex = g_tex_2.Sample(g_sam_0, _in.vUV);
+    else if (g_int_1 == 3)
+        vignetteTex = g_tex_3.Sample(g_sam_0, _in.vUV);
+    else if (g_int_1 == 4)
+        vignetteTex = g_tex_4.Sample(g_sam_0, _in.vUV);
+
+    // 비네트 효과를 위한 알파 값 설정
+    float alphaValue = vignetteTex.a * g_float_0;
+    
+    // 비네트 색상 정의 (여기서는 빨간색으로 설정)
+    float4 vignetteColor = float4(0.8f, 0.0f, 0.0f, alphaValue);
+
+    // 원래 색상과 비네트 색상을 혼합
+    vColor = lerp(vColor, vignetteColor, vignetteColor.a);
+
+    return vColor;
+}
 
 #endif
