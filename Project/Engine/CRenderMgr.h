@@ -17,9 +17,9 @@ struct tBloomInfo
 	float Threshold = 0.8f;
 	Vec4  vColor	= Vec4(1.f, 1.f, 1.f, 1.f);
 	// blur.fx
-	int BlurLevel = 7;
+	int BlurLevel = 3;
 	// bloom.fx
-	float Ratio = .01f;
+	float Ratio = .14f;
 };
 
 class CRenderMgr : public CManager<CRenderMgr>
