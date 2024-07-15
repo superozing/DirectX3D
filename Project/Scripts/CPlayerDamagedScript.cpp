@@ -10,12 +10,10 @@ CPlayerDamagedScript::CPlayerDamagedScript()
 	: CScript((UINT)SCRIPT_TYPE::PLAYERDAMAGEDSCRIPT)
 	, m_Vignette(nullptr)
 	, m_IsDamaged(false)
-	, m_VignetteType(0)
 	, m_VignetteAlpha(0.f)
 	, m_Duration(0.f)
 {
-	AppendScriptParam("IsDamaged   ", SCRIPT_PARAM::BOOL, &m_IsDamaged);
-	AppendScriptParam("VignetteType", SCRIPT_PARAM::INT, &m_VignetteType, 0, 4);
+	AppendScriptParam("IsDamaged", SCRIPT_PARAM::BOOL, &m_IsDamaged);
 }
 
 CPlayerDamagedScript::~CPlayerDamagedScript()
@@ -30,7 +28,6 @@ void CPlayerDamagedScript::begin()
 void CPlayerDamagedScript::tick()
 {
 	m_Duration += DT;
-	m_Vignette->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_1, m_VignetteType);
 
 	if (m_IsDamaged)
 	{
