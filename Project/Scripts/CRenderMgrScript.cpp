@@ -28,10 +28,12 @@ CRenderMgrScript::CRenderMgrScript()
 	//					 std::bind(&CRenderMgrScript::m_LerpTest, this));
 	AppendScriptParam("Clear Color", SCRIPT_PARAM::COLOR, &(RENDERMGR->m_vClearColor));
 	AppendScriptParam("Bloom::Activate", SCRIPT_PARAM::BOOL, &(RENDERMGR->m_BloomInfo.Activate));
-	AppendScriptParam("Bloom::Threshold", SCRIPT_PARAM::FLOAT, &(RENDERMGR->m_BloomInfo.Threshold));
+	AppendScriptParam("Bloom::Threshold", SCRIPT_PARAM::FLOAT, &(RENDERMGR->m_BloomInfo.Threshold), 0.f, 1.f, false, "",
+					  true);
 	AppendScriptParam("Bloom::Color", SCRIPT_PARAM::COLOR, &(RENDERMGR->m_BloomInfo.vColor));
-	AppendScriptParam("Bloom::BlurCnt", SCRIPT_PARAM::INT, &(RENDERMGR->m_BloomInfo.BlurLevel));
-	AppendScriptParam("Bloom::MergeRatio", SCRIPT_PARAM::FLOAT, &(RENDERMGR->m_BloomInfo.Ratio));
+	AppendScriptParam("Bloom::BlurCnt", SCRIPT_PARAM::INT, &(RENDERMGR->m_BloomInfo.BlurLevel), 0, 9);
+	AppendScriptParam("Bloom::MergeRatio", SCRIPT_PARAM::FLOAT, &(RENDERMGR->m_BloomInfo.Ratio), 0.f, 0.f, false, "",
+					  true);
 }
 
 CRenderMgrScript::~CRenderMgrScript()
