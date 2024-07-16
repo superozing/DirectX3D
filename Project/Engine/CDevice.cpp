@@ -112,6 +112,7 @@ int CDevice::RenewResolution(Vec2 _vResolution, bool bWindowMode)
 {
 	m_vRenderResolution = _vResolution;
 
+	CRenderMgr::GetInst()->DeleteBlurTex();
 	DeleteTexturesForResolutionChange();
 
 	// 스왚체인 생성
@@ -128,6 +129,7 @@ int CDevice::RenewResolution(Vec2 _vResolution, bool bWindowMode)
 		return E_FAIL;
 	}
 
+	CRenderMgr::GetInst()->CreateBlurTex();
 	CRenderMgr::GetInst()->ResetMRT();
 	CRenderMgr::GetInst()->CreateMRT();
 

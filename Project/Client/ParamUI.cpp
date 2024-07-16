@@ -81,7 +81,8 @@ bool ParamUI::Param_INT(int* _Data, const string& _Desc, int _min, int _Max, boo
 	return false;
 }
 
-bool ParamUI::Param_FLOAT(float* _Data, const string& _Desc, float _min, float _Max, bool _View, const string& _Tooltip)
+bool ParamUI::Param_FLOAT(float* _Data, const string& _Desc, float _min, float _Max, bool _View, const string& _Tooltip,
+						  bool _Precision)
 {
 	ImGui::Text(_Desc.c_str());
 	ImGui::SameLine();
@@ -95,7 +96,7 @@ bool ParamUI::Param_FLOAT(float* _Data, const string& _Desc, float _min, float _
 		{
 			ImGui::SetTooltip(_Tooltip.c_str());
 		}
-		if (ImGui::DragFloat(szID, _Data, 0.f, 0.f, 0.f, "%.1f",
+		if (ImGui::DragFloat(szID, _Data, 0.f, 0.f, 0.f, (true == _Precision) ? "%.2f" : "%.1f",
 							 ImGuiSliderFlags_Logarithmic | ImGuiSliderFlags_NoInput))
 		{
 			return true;
@@ -107,7 +108,8 @@ bool ParamUI::Param_FLOAT(float* _Data, const string& _Desc, float _min, float _
 		{
 			ImGui::SetTooltip(_Tooltip.c_str());
 		}
-		if (ImGui::DragFloat(szID, _Data, 0.1f, _min, _Max, "%.1f"))
+		if (ImGui::DragFloat(szID, _Data, (true == _Precision) ? 0.01f : 0.1f, _min, _Max,
+							 (true == _Precision) ? "%.2f" : "%.1f"))
 		{
 			return true;
 		}

@@ -393,3 +393,5 @@ enum class FONT_TYPE
 
 	END
 };
+
+#define MAXBLURLEVEL 9

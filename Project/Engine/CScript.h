@@ -19,6 +19,7 @@ struct tScriptParam
 	float				  fMax;
 	bool				  View;
 	string				  Tooltip;
+	bool				  b_Precision;
 	StaticFuncPtr		  StaticFunc;
 	std::function<void()> MemberFunc;
 	COMPONENT_TYPE		  CompType;
@@ -55,9 +56,9 @@ protected:
 	/// @param _View 변경할 지 말지 여부
 	/// @param _Tooltip 호버했을 때 뜨는 스트링 창
 	void AppendScriptParam(const string& _Key, SCRIPT_PARAM _Param, void* _Data, float _min = 0.f, float _Max = 0.f,
-						   bool _View = false, const string& _Tooltip = {})
+						   bool _View = false, const string& _Tooltip = {}, bool _Precision = false)
 	{
-		m_vScriptParam.push_back({_Key, tScriptParam{_Param, _Data, _min, _Max, _View, _Tooltip}});
+		m_vScriptParam.push_back({_Key, tScriptParam{_Param, _Data, _min, _Max, _View, _Tooltip, _Precision}});
 	}
 
 	/// @brief 파람 UI에 오브젝트를 추가하는 함수, 컴포넌트 타입이나 스크립트 타입으로 받고싶은 오브젝트를 필터링
@@ -67,8 +68,8 @@ protected:
 	void AppendScriptObject(const string& _Key, void* _Data, COMPONENT_TYPE _CType = COMPONENT_TYPE::END,
 							UINT _SType = -1, bool _View = false, const string& _Tooltip = {})
 	{
-		m_vScriptParam.push_back(
-			{_Key, tScriptParam{SCRIPT_PARAM::OBJECT, _Data, 0, 0, _View, _Tooltip, nullptr, nullptr, _CType, _SType}});
+		m_vScriptParam.push_back({_Key, tScriptParam{SCRIPT_PARAM::OBJECT, _Data, 0, 0, _View, _Tooltip, false, nullptr,
+													 nullptr, _CType, _SType}});
 	}
 
 	void AppendScriptAsset(const string& _Key, void* _Data, ASSET_TYPE _Type = ASSET_TYPE::END, bool _View = false,
@@ -87,13 +88,14 @@ protected:
 	void AppendStaticFunction(const string& _Key, SCRIPT_PARAM _Param, string _Desc, StaticFuncPtr _StaticFuncPtr)
 	{
 		// 새로운 스크립트 파라미터 생성 후 맵에 추가
-		m_vScriptParam.push_back({_Key, tScriptParam{_Param, nullptr, 0.f, 0.f, false, _Desc, _StaticFuncPtr}});
+		m_vScriptParam.push_back({_Key, tScriptParam{_Param, nullptr, 0.f, 0.f, false, _Desc, false, _StaticFuncPtr}});
 	}
 
 	void AppendMemberFunction(const string& _Key, SCRIPT_PARAM _Param, string _Desc, std::function<void()> _MemberFunc)
 	{
 		// 새로운 스크립트 파라미터 생성 후 맵에 추가
-		m_vScriptParam.push_back({_Key, tScriptParam{_Param, nullptr, 0.f, 0.f, false, _Desc, nullptr, _MemberFunc}});
+		m_vScriptParam.push_back(
+			{_Key, tScriptParam{_Param, nullptr, 0.f, 0.f, false, _Desc, false, nullptr, _MemberFunc}});
 	}
 
 	void AppendSeperateLine() { m_vScriptParam.push_back({"", tScriptParam{SCRIPT_PARAM::LINE}}); }
