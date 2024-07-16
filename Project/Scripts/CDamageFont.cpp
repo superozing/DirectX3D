@@ -37,7 +37,7 @@ void CDamageFont::begin()
 	m_pImageUIScript->DisableMouseInput();
 
 	if (!m_FontImg.Get())
-		m_pImageUIScript->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/ImgFont/Damage_Font_Number3.png"));
+		m_pImageUIScript->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/ImgFont/D_Font_Normal_crop.png"));
 	else
 		m_pImageUIScript->SetUIImg(m_FontImg);
 }
