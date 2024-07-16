@@ -69,6 +69,37 @@ void CMemoryPoolMgr::PushObject(string _strMapKey, CGameObject* _Object)
 	pPool->PushObject(_Object);
 }
 
+string CMemoryPoolMgr::GetBaseName(const string& strFullname)
+{
+	size_t underscorePos = strFullname.find('_');
+	if (underscorePos != string::npos)
+	{
+		return strFullname.substr(0, underscorePos);
+	}
+	return strFullname;
+}
+
+void CMemoryPoolMgr::PushObject(CGameObject* _Object)
+{
+	// Pool 역할을 하는 EX를 먼저 가져온다. 필터가 존재하면 넣는다.
+	vector<CGameObject*> vecObj = m_pMemoryPoolEX->GetChild();
+
+	string strObjName = ToString(_Object->GetName());
+	strObjName		  = GetBaseName(strObjName);
+
+	for (int i = 0; i < vecObj.size(); ++i)
+	{
+		string strFind = ToString(vecObj[i]->GetName());
+
+		if (strFind.find(strObjName) != string::npos)
+		{
+			vecObj[i]->AddChild(_Object);
+			CTaskMgr::GetInst()->SetMemoryPoolEvent(true);
+			return;
+		}
+	}
+}
+
 int CMemoryPoolMgr::GetCurrentCount(string _strMapKey)
 {
 	CMemoryPool* pPool = FindPool(_strMapKey);

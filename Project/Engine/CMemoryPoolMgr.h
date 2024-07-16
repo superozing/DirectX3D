@@ -19,6 +19,9 @@ public:
 	CGameObject* PopObject(string _strMapKey);
 	void		 PushObject(string _strMapKey, CGameObject* _Object);
 
+	void   PushObject(CGameObject* _Object);
+	string GetBaseName(const string& strFullname);
+
 	int GetMapCount() { return m_mapMemoryPool.size(); }
 	int GetCurrentCount(string _strMapKey);
 

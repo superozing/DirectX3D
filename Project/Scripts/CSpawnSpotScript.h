@@ -46,8 +46,8 @@ public:
 	void DeletePrefab();
 
 	void RegisterObject();
-	void DeAllocateObject();
 	void SpawnObject();
+	void DeAllocateAllObject();
 
 public:
 	virtual void begin() override;

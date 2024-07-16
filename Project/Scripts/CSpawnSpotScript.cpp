@@ -53,7 +53,7 @@ CSpawnSpotScript::CSpawnSpotScript()
 
 	// Spawn되어있는 것들을 다시 풀로 보내는 함수. 디버그용 , spawn 된 물체들을 뺄 수 있다.
 	AppendMemberFunction("Deallocate", SCRIPT_PARAM::FUNC_MEMBER, "DeAlloctae",
-						 std::bind(&CSpawnSpotScript::DeAllocateObject, this));
+						 std::bind(&CSpawnSpotScript::DeAllocateAllObject, this));
 
 	AppendSeperateLine();
 
@@ -106,6 +106,73 @@ CSpawnSpotScript::CSpawnSpotScript(const CSpawnSpotScript& _Origin)
 		CGameObject* CopyObj = pObj->Clone();
 		m_listSpawnObject.push_back(CopyObj);
 	}
+
+	//=================
+	// Debug용 Type
+	//=================
+
+	AppendScriptParam("SPOT TYPE", SCRIPT_PARAM::STRING, &strDisplaySpawnTypeString, 0.f, 0.f, true);
+
+	m_vecDisplayMode.push_back("None");
+	m_vecDisplayMode.push_back("Player");
+	m_vecDisplayMode.push_back("Monster");
+	m_vecDisplayMode.push_back("Boss");
+	m_vecDisplayMode.push_back("Etc");
+
+	AppendScriptVector("Spawn Mode", &m_vecDisplayMode, &m_ivecModeIdx, true, "Display Pin");
+	SameLine();
+	AppendMemberFunction("SetType", SCRIPT_PARAM::FUNC_MEMBER, "Change Pin Color",
+						 std::bind(&CSpawnSpotScript::SetDisplayMode, this));
+
+	AppendSeperateLine();
+	//=====================
+	// Spawn 관련
+	//=====================
+
+	// Register를 해야 script의 spawn list에 담겨서 spawn을 할 수 있다.
+
+	AppendMemberFunction("Register", SCRIPT_PARAM::FUNC_MEMBER, "Register",
+						 std::bind(&CSpawnSpotScript::RegisterObject, this));
+
+	SameLine();
+
+	AppendMemberFunction("Spawn", SCRIPT_PARAM::FUNC_MEMBER, "Spawn", std::bind(&CSpawnSpotScript::SpawnObject, this));
+
+	SameLine();
+
+	// Spawn되어있는 것들을 다시 풀로 보내는 함수. 디버그용 , spawn 된 물체들을 뺄 수 있다.
+	AppendMemberFunction("Deallocate", SCRIPT_PARAM::FUNC_MEMBER, "DeAlloctae",
+						 std::bind(&CSpawnSpotScript::DeAllocateAllObject, this));
+
+	AppendSeperateLine();
+
+	//=====================
+	// 세팅 관련
+	//=====================
+	AppendScriptVector("Prefab Vector", &m_vecPrefabKey, &m_ivecPrefabIdx, true,
+					   "선택한 idx에 Prefab Pointer와 상호작용 가능");
+
+	AppendScriptAsset("Prefab Pointer", &m_CurBindPrefab, ASSET_TYPE::PREFAB, false, "vector idx current prefab");
+
+	// 현재 idx에 있는 prefab을 빼고 해당 자리에 등록
+	AppendMemberFunction("Modify Prefab", SCRIPT_PARAM::FUNC_MEMBER, "RegisterPrefab",
+						 std::bind(&CSpawnSpotScript::RegisterPrefab, this));
+
+	SameLine();
+
+	// 새로운 prefab을 추가로 바인딩하는 것
+	AppendMemberFunction("Add Prefab", SCRIPT_PARAM::FUNC_MEMBER, "PushBackPrefab",
+						 std::bind(&CSpawnSpotScript::PushBackPrefab, this));
+
+	// 해당 script에 할당된 모든 prefab을 지우는 것. + List 내 obj도 지워진다.
+	AppendMemberFunction("Clear All", SCRIPT_PARAM::FUNC_MEMBER, "ClearPrefab",
+						 std::bind(&CSpawnSpotScript::ClearPrefab, this));
+
+	SameLine();
+
+	// idx를 선택하고 지우면 해당 prefab과 obj만 지워진다.
+	AppendMemberFunction("Delete Prefab", SCRIPT_PARAM::FUNC_MEMBER, "DeletePrefab",
+						 std::bind(&CSpawnSpotScript::DeletePrefab, this));
 }
 
 CSpawnSpotScript::~CSpawnSpotScript()
@@ -139,7 +206,7 @@ void CSpawnSpotScript::RegisterObject()
 	GetOwner()->AddChild(pObj, true);
 }
 
-void CSpawnSpotScript::DeAllocateObject()
+void CSpawnSpotScript::DeAllocateAllObject()
 {
 	for (auto iter = m_CurrentSpawnObject.begin(); iter != m_CurrentSpawnObject.end(); ++iter)
 	{
@@ -309,6 +376,8 @@ void CSpawnSpotScript::DeletePrefab()
 
 			if (strFind.find(DelPrefab))
 			{
+				pObj->DisconnectWithParent();
+
 				// 요소를 삭제하기 전에 처리
 				CMemoryPoolMgr::GetInst()->PushObject(DelPrefab, pObj);
 
@@ -339,8 +408,18 @@ void CSpawnSpotScript::begin()
 	m_vecPrefabKey.resize(1);
 }
 
+#include <Engine\CKeyMgr.h>
 void CSpawnSpotScript::tick()
 {
+	if (KEY_TAP(KEY::H))
+	{
+		if (m_CurrentSpawnObject.size() > 0)
+		{
+			CGameObject* pObj = m_CurrentSpawnObject.front();
+			m_CurrentSpawnObject.pop_front();
+			CMemoryPoolMgr::GetInst()->PushObject(pObj);
+		}
+	}
 }
 
 #define TagSpawnType "[SpawnType]"
