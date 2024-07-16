@@ -386,6 +386,10 @@ void CCamera::render_Instance(const map<ULONG64, vector<tInstObj>>& m_mapInstGro
 			pMtrl->SetBoneCount(pMesh->GetBoneCount());
 		}
 
+		// Bloom
+		auto BloomInfo = CRenderMgr::GetInst()->m_BloomInfo;
+		pMtrl->SetScalarParam(SCALAR_PARAM::FLOAT_0, BloomInfo.Threshold);
+		pMtrl->SetScalarParam(SCALAR_PARAM::VEC4_0, BloomInfo.vColor);
 		pMtrl->UpdateData_Inst();
 		pMesh->render_instancing(pair.second[0].iMtrlIdx);
 
@@ -404,9 +408,17 @@ void CCamera::render_Instance(const map<ULONG64, vector<tInstObj>>& m_mapInstGro
 			continue;
 
 		pair.second[0].pObj->Transform()->UpdateData();
+		auto BloomInfo = CRenderMgr::GetInst()->m_BloomInfo;
 
 		for (auto& instObj : pair.second)
 		{
+			instObj.pObj->GetRenderComponent()
+				->GetMaterial(instObj.iMtrlIdx)
+				->SetScalarParam(SCALAR_PARAM::FLOAT_0, BloomInfo.Threshold);
+			instObj.pObj->GetRenderComponent()
+				->GetMaterial(instObj.iMtrlIdx)
+				->SetScalarParam(SCALAR_PARAM::VEC4_0, BloomInfo.vColor);
+
 			instObj.pObj->GetRenderComponent()->render(instObj.iMtrlIdx);
 		}
 
@@ -464,6 +476,101 @@ void CCamera::Merge()
 	static Ptr<CMaterial> pMergeMtrl = CAssetMgr::GetInst()->Load<CMaterial>(MTRLOutLineMerge);
 
 	pMergeMtrl->UpdateData();
+	pRectMesh->render(0);
+}
+
+#include "CBlurX.h"
+#include "CBlurY.h"
+#include "CDownScale.h"
+#include "CUpScale.h"
+
+void CCamera::Blur()
+{
+	////////////////
+	// CS쉐이더 구현
+	////////////////
+	auto BlurTarget = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RelativeLuminanceTargetTex");
+
+	// Bloom Level <= MAXBLURLEVEL
+	int BlurLevel = min(MAXBLURLEVEL, CRenderMgr::GetInst()->m_BloomInfo.BlurLevel);
+
+	// Blur Tex
+	auto BloomOne = CRenderMgr::GetInst()->m_vecBlurOneTex;
+	auto BloomTwo = CRenderMgr::GetInst()->m_vecBlurTwoTex;
+
+	// Compute Shader
+	Ptr<CBlurX>		BlurXShader = (CBlurX*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"BlurXCS").Get();
+	Ptr<CBlurY>		BlurYShader = (CBlurY*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"BlurYCS").Get();
+	Ptr<CDownScale> DownScaleShader =
+		(CDownScale*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"DownScaleCS").Get();
+	Ptr<CUpScale> UpScaleShader = (CUpScale*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"UpScaleCS").Get();
+
+	// DownScale
+	for (int i = 0; i < BlurLevel; ++i)
+	{
+		if (0 == i)
+		{
+			DownScaleShader->SetResourceTex(BlurTarget);
+		}
+		else
+		{
+			DownScaleShader->SetResourceTex(BloomOne[i - 1]);
+		}
+		DownScaleShader->SetTargetTexture(BloomOne[i]);
+		DownScaleShader->Execute();
+	}
+
+	for (int i = BlurLevel - 1; i >= 0; --i)
+	{
+		// Blur X
+		BlurXShader->SetResourceTex(BloomOne[i]);
+		BlurXShader->SetTargetTexture(BloomTwo[i]);
+		BlurXShader->Execute();
+
+		// Blur Y
+		BlurYShader->SetResourceTex(BloomTwo[i]);
+		BlurYShader->SetTargetTexture(BloomOne[i]);
+		BlurYShader->Execute();
+
+		// Up Scaling
+		UpScaleShader->SetResourceTex(BloomOne[i]);
+
+		if (i == 0)
+		{
+			UpScaleShader->SetTargetTexture(BlurTarget);
+		}
+		else
+		{
+			UpScaleShader->SetTargetTexture(BloomOne[i - 1]);
+		}
+		UpScaleShader->Execute();
+	}
+}
+
+void CCamera::Bloom()
+{
+	// 리소스,타겟 얻어오기
+	auto BlurSource	  = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RelativeLuminanceTargetTex");
+	auto ColorCopy	  = CAssetMgr::GetInst()->FindAsset<CTexture>(L"PostProcessTex");
+	auto RenderTarget = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
+
+	// 매쉬,머터리얼 받아오기
+	static Ptr<CMesh>	  pRectMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect);
+	static Ptr<CMaterial> pBloomMtrl;
+	pBloomMtrl = CAssetMgr::GetInst()->Load<CMaterial>(MTRLBloom);
+
+	// 블랜드비율
+	auto  BlurInfo	 = CRenderMgr::GetInst()->m_BloomInfo;
+	float Bloomratio = BlurInfo.Ratio;
+
+	// 텍스쳐, 블랜드비율 바인딩
+	pBloomMtrl->SetTexParam(TEX_PARAM::TEX_0, ColorCopy);
+	pBloomMtrl->SetTexParam(TEX_PARAM::TEX_1, BlurSource);
+	pBloomMtrl->SetScalarParam(SCALAR_PARAM::FLOAT_0, Bloomratio);
+	pBloomMtrl->UpdateData();
+
+	// 타겟->리소스 복사
+	CRenderMgr::GetInst()->CopyFromTextureToTexture(ColorCopy, RenderTarget);
 	pRectMesh->render(0);
 }
 

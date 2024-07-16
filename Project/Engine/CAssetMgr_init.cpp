@@ -1553,6 +1553,10 @@ void CAssetMgr::CreateDefaultMaterial()
 #include "CParticleUpdate.h"
 #include "CAnimation3DShader.h"
 #include "CCopyBoneShader.h"
+#include "CBlurX.h"
+#include "CBlurY.h"
+#include "CDownScale.h"
+#include "CUpScale.h"
 void CAssetMgr::CreateDefaultComputeShader()
 {
 	Ptr<CComputeShader> pShader = nullptr;
@@ -1572,6 +1576,22 @@ void CAssetMgr::CreateDefaultComputeShader()
 	// CopyBoneUpdateShader
 	pShader = new CCopyBoneShader;
 	AddAsset(L"CopyBoneCS", pShader.Get());
+
+	// BlurXShader
+	pShader = new CBlurX;
+	AddAsset(L"BlurXCS", pShader.Get());
+
+	// BlurYShader
+	pShader = new CBlurY;
+	AddAsset(L"BlurYCS", pShader.Get());
+
+	// DownScaleShader
+	pShader = new CDownScale;
+	AddAsset(L"DownScaleCS", pShader.Get());
+
+	// UpScaleShader
+	pShader = new CUpScale;
+	AddAsset(L"UpScaleCS", pShader.Get());
 }
 
 #include "CSound.h"
