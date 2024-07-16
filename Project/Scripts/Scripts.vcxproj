@@ -178,7 +178,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CHaloScript.h" />
     <ClInclude Include="CImageUIScript.h" />
     <ClInclude Include="CLevelTransition.h" />
-    <ClInclude Include="CMemoryPoolMgr.h" />
+    <ClInclude Include="CMemoryPoolMgrScript.h" />
     <ClInclude Include="CMissileScript.h" />
     <ClInclude Include="CMonsterHP.h" />
     <ClInclude Include="CMonsterScript.h" />
@@ -186,6 +186,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CPhysXMgrScript.h" />
     <ClInclude Include="CPauseBtn.h" />
     <ClInclude Include="CPausePanel.h" />
+    <ClInclude Include="CPlayerDamagedScript.h" />
     <ClInclude Include="CPlayerHP.h" />
     <ClInclude Include="CPlayerController.h" />
     <ClInclude Include="CPlayerScript.h" />
@@ -216,7 +217,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CHaloScript.cpp" />
     <ClCompile Include="CImageUIScript.cpp" />
     <ClCompile Include="CLevelTransition.cpp" />
-    <ClCompile Include="CMemoryPoolMgr.cpp" />
+    <ClCompile Include="CMemoryPoolMgrScript.cpp" />
     <ClCompile Include="CMissileScript.cpp" />
     <ClCompile Include="CMonsterHP.cpp" />
     <ClCompile Include="CMonsterScript.cpp" />
@@ -224,6 +225,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CPhysXMgrScript.cpp" />
     <ClCompile Include="CPauseBtn.cpp" />
     <ClCompile Include="CPausePanel.cpp" />
+    <ClCompile Include="CPlayerDamagedScript.cpp" />
     <ClCompile Include="CPlayerHP.cpp" />
     <ClCompile Include="CPlayerController.cpp" />
     <ClCompile Include="CPlayerScript.cpp" />

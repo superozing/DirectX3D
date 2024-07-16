@@ -296,6 +296,17 @@
     <ClInclude Include="CMemoryPool.h">
       <Filter>04. Manager\MemoryPool</Filter>
     </ClInclude>
+    <ClInclude Include="CMemoryPoolMgr.h">
+      <Filter>04. Manager\MemoryPool</Filter>
+    </ClInclude>
+    <ClInclude Include="CBlurX.h">
+      <Filter>ShaderCode\03. Compute\Blur</Filter>
+    </ClInclude>
+    <ClInclude Include="CBlurY.h">
+      <Filter>ShaderCode\03. Compute\Blur</Filter>
+    </ClInclude>
+    <ClInclude Include="CUpScale.h" />
+    <ClInclude Include="CDownScale.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -538,6 +549,17 @@
     <ClCompile Include="CMemoryPool.cpp">
       <Filter>04. Manager\MemoryPool</Filter>
     </ClCompile>
+    <ClCompile Include="CMemoryPoolMgr.cpp">
+      <Filter>04. Manager\MemoryPool</Filter>
+    </ClCompile>
+    <ClCompile Include="CBlurX.cpp">
+      <Filter>ShaderCode\03. Compute\Blur</Filter>
+    </ClCompile>
+    <ClCompile Include="CBlurY.cpp">
+      <Filter>ShaderCode\03. Compute\Blur</Filter>
+    </ClCompile>
+    <ClCompile Include="CUpScale.cpp" />
+    <ClCompile Include="CDownScale.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -783,6 +805,12 @@
     <Filter Include="04. Manager\MemoryPool">
       <UniqueIdentifier>{66c0624b-2d5d-4929-861e-3af9a9b6ac1a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\03. Compute\Blur">
+      <UniqueIdentifier>{502ed013-c196-44c4-97ac-2cfd9d244b75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\03. Compute\Scale">
+      <UniqueIdentifier>{22e38a52-6687-448c-a9fd-49d9ca5b507a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -888,6 +916,24 @@
     </FxCompile>
     <FxCompile Include="SpawnPoint.fx">
       <Filter>ShaderCode\02. Render\3DShader</Filter>
+    </FxCompile>
+    <FxCompile Include="blur.fx">
+      <Filter>ShaderCode\02. Render\3DShader</Filter>
+    </FxCompile>
+    <FxCompile Include="bloom.fx">
+      <Filter>ShaderCode\02. Render\3DShader</Filter>
+    </FxCompile>
+    <FxCompile Include="blurx.fx">
+      <Filter>ShaderCode\03. Compute\Blur</Filter>
+    </FxCompile>
+    <FxCompile Include="blury.fx">
+      <Filter>ShaderCode\03. Compute\Blur</Filter>
+    </FxCompile>
+    <FxCompile Include="downscale.fx">
+      <Filter>ShaderCode\03. Compute\Scale</Filter>
+    </FxCompile>
+    <FxCompile Include="upscale.fx">
+      <Filter>ShaderCode\03. Compute\Scale</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

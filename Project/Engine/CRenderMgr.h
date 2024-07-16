@@ -10,6 +10,18 @@ class CLight3D;
 class CStructuredBuffer;
 class CMRT;
 
+struct tBloomInfo
+{
+	bool Activate = true;
+	// deferred.fx
+	float Threshold = 0.8f;
+	Vec4  vColor	= Vec4(1.f, 1.f, 1.f, 1.f);
+	// blur.fx
+	int BlurLevel = 3;
+	// bloom.fx
+	float Ratio = .14f;
+};
+
 class CRenderMgr : public CManager<CRenderMgr>
 {
 	SINGLE(CRenderMgr);
@@ -38,7 +50,7 @@ private:
 
 	// render function pointer
 	typedef void (CRenderMgr::*RENDER_FUNC)(void);
-	RENDER_FUNC	 m_RenderFunc;
+	RENDER_FUNC m_RenderFunc;
 
 	Vec4 m_vClearColor;
 
@@ -69,6 +81,8 @@ public:
 
 	Ptr<CTexture> CopyRTTex(Ptr<CTexture> pTexture);
 
+	void CopyFromTextureToTexture(Ptr<CTexture> pToTexture, Ptr<CTexture> pFromTexture);
+
 	void RegisterEditorCamera(CCamera* _Cam)
 	{
 		m_EditorCam = _Cam;
@@ -97,6 +111,8 @@ public:
 	CCamera* GetMainCam();
 	CCamera* GetEditorCam() { return m_EditorCam; }
 
+	tBloomInfo m_BloomInfo;
+
 public:
 	virtual void init() override;
 	virtual void tick() override;
@@ -122,6 +138,12 @@ private:
 	// 리소스 클리어
 	void Clear();
 
+	vector<Ptr<CTexture>> m_vecBlurOneTex;
+	vector<Ptr<CTexture>> m_vecBlurTwoTex;
+	void				  CreateBlurTex();
+	void				  DeleteBlurTex();
+
 	friend class CRenderMgrScript;
 	friend class CDevice;
+	friend class CCamera;
 };

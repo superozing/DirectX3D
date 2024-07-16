@@ -264,11 +264,15 @@ enum class SCRIPT_PARAM
 	VEC3,
 	VEC4,
 	OBJECT,
+	ASSET,
 	COLOR,
 	FUNC_STATIC,
 	FUNC_MEMBER,
 	// PhysXMgr 리플렉션용
 	MGR_PHYSX,
+	LINE,
+	SAMELINE,
+	VECTOR,
 };
 
 enum class FUNC_PARAM
@@ -389,3 +393,5 @@ enum class FONT_TYPE
 
 	END
 };
+
+#define MAXBLURLEVEL 9

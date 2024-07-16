@@ -6,7 +6,7 @@ class CScript;
 
 class CGameObject : public CEntity
 {
-private:
+protected:
 	CComponent*				m_arrCom[(UINT)COMPONENT_TYPE::END];
 	class CRenderComponent* m_RenderCom;
 
@@ -21,7 +21,7 @@ private:
 
 public:
 	virtual void begin();
-	void		 tick();
+	virtual void tick();
 	virtual void finaltick();
 	void		 render();
 
@@ -93,4 +93,6 @@ public:
 	friend class CLevelSaveLoad;
 	friend class Inspector;
 	friend class Outliner;
+	friend class CMemoryPool;
+	friend class CMemoryPoolMgrScript;
 };

@@ -40,6 +40,7 @@ void CRenderMgr::init()
 	g_global.g_NoiseTexResolution = Vec2(m_vecNoiseTex[2]->GetWidth(), m_vecNoiseTex[2]->GetHeight());
 
 	// MRT Create
+	CreateBlurTex();
 	CreateMRT();
 }
 
@@ -57,7 +58,7 @@ void CRenderMgr::CreateMRT()
 		Vec4		  vClearColor = (Vec4(0.3f, 0.3f, 0.3f, 1.f));
 
 		if (m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN] == nullptr)
-		m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN] = new CMRT;
+			m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN] = new CMRT;
 
 		m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->Create(&RTTex, 1, DSTex);
 		m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->SetClearColor(&vClearColor, 1);
@@ -67,7 +68,7 @@ void CRenderMgr::CreateMRT()
 	// Deferred MRT
 	// ============
 	{
-		Ptr<CTexture> pRTTex[4] = {
+		Ptr<CTexture> pRTTex[5] = {
 			CAssetMgr::GetInst()->CreateTexture(L"ColorTargetTex", vResolution.x, vResolution.y,
 												DXGI_FORMAT_R8G8B8A8_UNORM,
 												D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE),
@@ -80,22 +81,21 @@ void CRenderMgr::CreateMRT()
 			CAssetMgr::GetInst()->CreateTexture(L"EmissiveTargetTex", vResolution.x, vResolution.y,
 												DXGI_FORMAT_R32G32B32A32_FLOAT,
 												D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE),
+			CAssetMgr::GetInst()->FindAsset<CTexture>(L"RelativeLuminanceTargetTex"),
 		};
 
-		Vec4 arrClearColor[4] = {
-			Vec4(0.f, 0.f, 0.f, 1.f),
-			Vec4(0.f, 0.f, 0.f, -1.f),
-			Vec4(0.f, 0.f, 0.f, 1.f),
-			Vec4(0.f, 0.f, 0.f, 1.f),
+		Vec4 arrClearColor[5] = {
+			Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, -1.f), Vec4(0.f, 0.f, 0.f, 1.f),
+			Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f),
 		};
 
 		Ptr<CTexture> DSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
 
 		if (m_arrMRT[(UINT)MRT_TYPE::DEFERRED] == nullptr)
-		m_arrMRT[(UINT)MRT_TYPE::DEFERRED] = new CMRT;
+			m_arrMRT[(UINT)MRT_TYPE::DEFERRED] = new CMRT;
 
-		m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->Create(pRTTex, 4, DSTex);
-		m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->SetClearColor(arrClearColor, 4);
+		m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->Create(pRTTex, 5, DSTex);
+		m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->SetClearColor(arrClearColor, 5);
 	}
 
 	// ============
@@ -117,7 +117,7 @@ void CRenderMgr::CreateMRT()
 		};
 
 		if (m_arrMRT[(UINT)MRT_TYPE::LIGHT] == nullptr)
-		m_arrMRT[(UINT)MRT_TYPE::LIGHT] = new CMRT;
+			m_arrMRT[(UINT)MRT_TYPE::LIGHT] = new CMRT;
 
 		m_arrMRT[(UINT)MRT_TYPE::LIGHT]->Create(pRTTex, 2, nullptr);
 		m_arrMRT[(UINT)MRT_TYPE::LIGHT]->SetClearColor(arrClearColor, 2);
@@ -138,7 +138,7 @@ void CRenderMgr::CreateMRT()
 		};
 
 		if (m_arrMRT[(UINT)MRT_TYPE::DECAL] == nullptr)
-		m_arrMRT[(UINT)MRT_TYPE::DECAL] = new CMRT;
+			m_arrMRT[(UINT)MRT_TYPE::DECAL] = new CMRT;
 
 		m_arrMRT[(UINT)MRT_TYPE::DECAL]->Create(pRTTex, 2, nullptr);
 		m_arrMRT[(UINT)MRT_TYPE::DECAL]->SetClearColor(arrClearColor, 2);
@@ -153,15 +153,14 @@ void CRenderMgr::CreateMRT()
 												D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE)};
 
 		Vec4 arrClearColor[1] = {
-			Vec4(0.f, 0.f, 0.f, 0.f),
+			Vec4(1.f, 0.f, 0.f, 0.f),
 		};
 
-		Ptr<CTexture> pDepthTex = CAssetMgr::GetInst()->CreateTexture(L"ShadowDepthStencilTex"
-								 , 8192, 8192, DXGI_FORMAT_D32_FLOAT
-								 , D3D11_BIND_DEPTH_STENCIL);
-					
+		Ptr<CTexture> pDepthTex = CAssetMgr::GetInst()->CreateTexture(L"ShadowDepthStencilTex", 8192, 8192,
+																	  DXGI_FORMAT_D32_FLOAT, D3D11_BIND_DEPTH_STENCIL);
+
 		if (m_arrMRT[(UINT)MRT_TYPE::SHADOW_DEPTH] == nullptr)
-		m_arrMRT[(UINT)MRT_TYPE::SHADOW_DEPTH] = new CMRT;
+			m_arrMRT[(UINT)MRT_TYPE::SHADOW_DEPTH] = new CMRT;
 
 		m_arrMRT[(UINT)MRT_TYPE::SHADOW_DEPTH]->Create(pRTTex, 1, pDepthTex);
 		m_arrMRT[(UINT)MRT_TYPE::SHADOW_DEPTH]->SetClearColor(arrClearColor, 1);
@@ -183,4 +182,63 @@ Ptr<CTexture> CRenderMgr::CopyRTTex(Ptr<CTexture> pTexture)
 	CONTEXT->CopyResource(pTexture->GetTex2D().Get(), pRTTex->GetTex2D().Get());
 
 	return pTexture;
+}
+
+void CRenderMgr::CopyFromTextureToTexture(Ptr<CTexture> pToTexture, Ptr<CTexture> pFromTexture)
+{
+	// 텍스처가 유효한지 확인
+	if (pToTexture.Get() && pFromTexture.Get())
+	{
+		// 텍스처 형식 및 크기 확인
+		D3D11_TEXTURE2D_DESC toDesc;
+		pToTexture->GetTex2D()->GetDesc(&toDesc);
+
+		D3D11_TEXTURE2D_DESC fromDesc;
+		pFromTexture->GetTex2D()->GetDesc(&fromDesc);
+
+		if (toDesc.Format == fromDesc.Format && toDesc.Width == fromDesc.Width && toDesc.Height == fromDesc.Height)
+		{
+			CONTEXT->CopyResource(pToTexture->GetTex2D().Get(), pFromTexture->GetTex2D().Get());
+		}
+		else
+		{
+			int a = 0;
+			// 형식 또는 크기가 일치하지 않음
+		}
+	}
+}
+
+void CRenderMgr::CreateBlurTex()
+{
+	Vec2 vResolution = CDevice::GetInst()->GetRenderResolution();
+
+	CAssetMgr::GetInst()->CreateTexture(
+		L"RelativeLuminanceTargetTex", vResolution.x, vResolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
+		D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS, D3D11_USAGE_DEFAULT);
+
+	CAssetMgr::GetInst()->CreateTexture(L"RelativeLuminanceCopyTex", (UINT)vResolution.x, (UINT)vResolution.y,
+										DXGI_FORMAT_R32G32B32A32_FLOAT,
+										D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
+	// 1~ 최대9
+	for (int i = 1; i <= MAXBLURLEVEL; ++i)
+	{
+		int div = pow(2, i);
+
+		// Bloom Down Texture
+		Ptr<CTexture> pBloomOneTex = CAssetMgr::GetInst()->CreateTexture(
+			L"BlurOne" + std::to_wstring(i), vResolution.x / div, vResolution.y / div,
+			DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM,
+			D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET | D3D11_BIND_UNORDERED_ACCESS, D3D11_USAGE_DEFAULT);
+		Ptr<CTexture> pBloomTwoTex = CAssetMgr::GetInst()->CreateTexture(
+			L"BlurTwo" + std::to_wstring(i), vResolution.x / div, vResolution.y / div,
+			DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM,
+			D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET | D3D11_BIND_UNORDERED_ACCESS, D3D11_USAGE_DEFAULT);
+
+		m_vecBlurOneTex.push_back(pBloomOneTex);
+		m_vecBlurTwoTex.push_back(pBloomTwoTex);
+	}
+}
+
+void CRenderMgr::DeleteBlurTex()
+{
 }

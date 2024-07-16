@@ -15,6 +15,8 @@
 #define ColorTextureCheck   g_btex_0
 #define NormalMapCheck      g_btex_1
 #define EmissiveTextureCheck      g_btex_3
+#define LuminanceThreshold  g_float_0
+#define BloomColor          g_vec4_0
 // ======================
 
 struct VS_IN
@@ -95,6 +97,7 @@ struct PS_OUT
     float4 vPosition : SV_Target1;
     float4 vNormal : SV_Target2;
     float4 vEmissive : SV_Target3;
+    float4 vRelativeLuminance : SV_Target4;
 };
 
 PS_OUT PS_Std3D_Deferred(VS_OUT _in) : SV_Target
@@ -130,6 +133,25 @@ PS_OUT PS_Std3D_Deferred(VS_OUT _in) : SV_Target
         vViewNormal = normalize(mul(vNormal, matRot));
 
     }
+    
+    //Bloom START
+    const static float3 vRLWeight = float3(0.2126f, 0.7152f, 0.0722f);
+    float4 vBloomColor = BloomColor;
+    float fThreshold = g_float_0;
+    //const static float4 vBloomColor = float4(1.f, 1.f, 1.f, 1.f);
+    //float fThreshold = 0.8f;
+
+    float brightness = dot(vOutColor.rgb, vRLWeight);
+    if (brightness > fThreshold)
+    {
+        output.vRelativeLuminance = vBloomColor;
+
+    }
+    else
+    {
+        output.vRelativeLuminance = float4(0.f, 0.f, 0.f, 1.f);
+    }
+    //Bloom E N D
     
     output.vNormal = float4(vViewNormal, 1.f);
     

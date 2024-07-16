@@ -117,6 +117,8 @@ public:
 	void render_forward();
 	void render_postprocess();
 	void Merge();
+	void Blur();
+	void Bloom();
 
 	void SortShadowMapObject();
 	void render_shadowmap();

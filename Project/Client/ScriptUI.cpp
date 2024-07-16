@@ -51,7 +51,7 @@ void ScriptUI::render_update()
 			break;
 		case SCRIPT_PARAM::FLOAT:
 			ParamUI::Param_FLOAT((float*)iter->second.pData, iter->first, iter->second.fmin, iter->second.fMax,
-								 iter->second.View, iter->second.Tooltip);
+								 iter->second.View, iter->second.Tooltip, iter->second.b_Precision);
 			break;
 		case SCRIPT_PARAM::STRING:
 			ParamUI::Param_STRING((string*)iter->second.pData, iter->first, iter->second.fmin, iter->second.fMax,
@@ -73,6 +73,15 @@ void ScriptUI::render_update()
 			ParamUI::Param_OBJECT((CGameObject**)iter->second.pData, iter->first, iter->second.CompType,
 								  iter->second.ScriptType, iter->second.View, iter->second.Tooltip);
 			break;
+		case SCRIPT_PARAM::ASSET:
+			ParamUI::Param_Asset((CAsset**)iter->second.pData, iter->first, iter->second.AssetType, iter->second.View,
+								 iter->second.Tooltip);
+			break;
+
+		case SCRIPT_PARAM::VECTOR:
+			ParamUI::Param_Vector((vector<string>*)iter->second.pData, iter->first, iter->second.idx, iter->second.View,
+								  iter->second.Tooltip);
+			break;
 		case SCRIPT_PARAM::COLOR:
 			ParamUI::Param_COLOR((Vec4*)iter->second.pData, iter->first, iter->second.View, iter->second.Tooltip);
 			break;
@@ -84,6 +93,12 @@ void ScriptUI::render_update()
 			break;
 		case SCRIPT_PARAM::MGR_PHYSX:
 			ParamUI::Param_MGR_PHYSX(iter->second.pData);
+			break;
+		case SCRIPT_PARAM::LINE:
+			ParamUI::Param_Line();
+			break;
+		case SCRIPT_PARAM::SAMELINE:
+			ParamUI::Param_SameLine();
 			break;
 		}
 	}

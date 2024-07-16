@@ -17,38 +17,48 @@ enum class SpawnObjType
 class CSpawnSpotScript : public CScript
 {
 private:
-	Vec3   SpawnBasicPosition;
-	Vec3   SpawnBasicScale;
-	string SpawnObjectPath;
+	SpawnObjType   SpawnType;
+	string		   strDisplaySpawnTypeString;
+	vector<string> m_vecDisplayMode;
+	int			   m_ivecModeIdx;
+	Vec4		   ModeColor;
 
-	SpawnObjType SpawnObjType;
-	string		 strDisplayString;
-	Vec4		 ModeColor;
-
-	CGameObject*	   CurObjectPointer;
 	list<CGameObject*> m_listSpawnObject;
 	list<CGameObject*> m_CurrentSpawnObject;
 
+	vector<Ptr<CPrefab>> m_vecPrefab;
+	vector<string>		 m_vecPrefabKey;
+	CPrefab*			 m_CurBindPrefab;
+	int					 m_ivecPrefabIdx;
+
 public:
+	void SetDisplayMode();
 	void SetSpawnTypePlayer();
 	void SetSpawnTypeMonster();
 	void SetSpawnTypeBoss();
 	void SetSpawnTypeETC();
 	void SetSpawnTypeNone();
 
+	void RegisterPrefab();
+	void PushBackPrefab();
+
+	void ClearPrefab();
+	void DeletePrefab();
+
 	void RegisterObject();
-	void DeAllocateObject();
 	void SpawnObject();
+	void DeAllocateAllObject();
 
 public:
 	virtual void begin() override;
 	virtual void tick() override;
 
-	virtual void SaveToFile(FILE* _File) override;
-	virtual void LoadFromFile(FILE* _File) override;
+	virtual void SaveToFile(ofstream& fout) override;
+	virtual void LoadFromFile(ifstream& fin) override;
 
 public:
-	CLONE_DISABLE(CSpawnSpotScript);
+	CLONE(CSpawnSpotScript);
 	CSpawnSpotScript();
+	CSpawnSpotScript(const CSpawnSpotScript& _Origin);
 	~CSpawnSpotScript();
 };
