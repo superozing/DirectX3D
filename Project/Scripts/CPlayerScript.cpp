@@ -174,8 +174,9 @@ void CPlayerScript::begin()
 			break;
 	}
 
-	if (m_pSpringArm)
-		m_pSpringArm->SetTargetObject(CRenderMgr::GetInst()->GetMainCam()->GetOwner());
+	// 저장 재시작하면 터져서 임시로 막아둠
+	// if (m_pSpringArm)
+	//	m_pSpringArm->SetTargetObject(CRenderMgr::GetInst()->GetMainCam()->GetOwner());
 
 	m_FSM->Begin();
 }

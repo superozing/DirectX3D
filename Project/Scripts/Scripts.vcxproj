@@ -178,7 +178,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CHaloScript.h" />
     <ClInclude Include="CImageUIScript.h" />
     <ClInclude Include="CLevelTransition.h" />
-    <ClInclude Include="CMemoryPoolMgr.h" />
+    <ClInclude Include="CMemoryPoolMgrScript.h" />
     <ClInclude Include="CMissileScript.h" />
     <ClInclude Include="CMonsterHP.h" />
     <ClInclude Include="CMonsterScript.h" />
@@ -217,7 +217,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CHaloScript.cpp" />
     <ClCompile Include="CImageUIScript.cpp" />
     <ClCompile Include="CLevelTransition.cpp" />
-    <ClCompile Include="CMemoryPoolMgr.cpp" />
+    <ClCompile Include="CMemoryPoolMgrScript.cpp" />
     <ClCompile Include="CMissileScript.cpp" />
     <ClCompile Include="CMonsterHP.cpp" />
     <ClCompile Include="CMonsterScript.cpp" />

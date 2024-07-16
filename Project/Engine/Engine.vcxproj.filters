@@ -296,6 +296,9 @@
     <ClInclude Include="CMemoryPool.h">
       <Filter>04. Manager\MemoryPool</Filter>
     </ClInclude>
+    <ClInclude Include="CMemoryPoolMgr.h">
+      <Filter>04. Manager\MemoryPool</Filter>
+    </ClInclude>
     <ClInclude Include="CBlurX.h">
       <Filter>ShaderCode\03. Compute\Blur</Filter>
     </ClInclude>
@@ -544,6 +547,9 @@
       <Filter>08. Component\RenderComponent\07. FontRender</Filter>
     </ClCompile>
     <ClCompile Include="CMemoryPool.cpp">
+      <Filter>04. Manager\MemoryPool</Filter>
+    </ClCompile>
+    <ClCompile Include="CMemoryPoolMgr.cpp">
       <Filter>04. Manager\MemoryPool</Filter>
     </ClCompile>
     <ClCompile Include="CBlurX.cpp">

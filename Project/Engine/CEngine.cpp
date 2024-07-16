@@ -17,7 +17,6 @@
 #include "CInstancingBuffer.h"
 #include "CSound.h"
 #include "CPhysXMgr.h"
-#include "CMemoryPool.h"
 
 CEngine::CEngine()
 	: m_hMainWnd(nullptr)
@@ -59,7 +58,6 @@ int CEngine::init(HWND _hWnd, Vec2 _vResolution, bool bWindowMode)
 	CFontMgr::GetInst()->init();
 	CInstancingBuffer::GetInst()->init();
 	CPhysXMgr::GetInst()->init();
-	CMemoryPool::GetInst()->init();
 
 	return S_OK;
 }
