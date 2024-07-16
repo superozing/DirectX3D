@@ -93,11 +93,11 @@ void CSpringArm::SaveToFile(ofstream& fout)
 
 void CSpringArm::LoadFromFile(ifstream& fin)
 {
-	Utils::GetLineUntilString(fin, TagSpringArm);
-	fin >> m_tInfo;
+	// Utils::GetLineUntilString(fin, TagSpringArm);
+	// fin >> m_tInfo;
 
-	Utils::GetLineUntilString(fin, TagActive);
-	fin >> m_bActive;
+	// Utils::GetLineUntilString(fin, TagActive);
+	// fin >> m_bActive;
 }
 
 void CSpringArm::SetTargetObject(CGameObject* _pObject)

@@ -75,13 +75,13 @@ protected:
 	void AppendScriptAsset(const string& _Key, void* _Data, ASSET_TYPE _Type = ASSET_TYPE::END, bool _View = false,
 						   const string& _Tooltip = {})
 	{
-		m_vScriptParam.push_back({_Key, tScriptParam{SCRIPT_PARAM::ASSET, _Data, 0, 0, _View, _Tooltip, nullptr,
+		m_vScriptParam.push_back({_Key, tScriptParam{SCRIPT_PARAM::ASSET, _Data, 0, 0, _View, _Tooltip, false, nullptr,
 													 nullptr, COMPONENT_TYPE::END, (UINT)-1, _Type}});
 	}
 
 	void AppendScriptVector(const string& _Key, void* _Data, int* _idx, bool _View = false, const string& _Tooltip = {})
 	{
-		m_vScriptParam.push_back({_Key, tScriptParam{SCRIPT_PARAM::VECTOR, _Data, 0, 0, _View, _Tooltip, nullptr,
+		m_vScriptParam.push_back({_Key, tScriptParam{SCRIPT_PARAM::VECTOR, _Data, 0, 0, _View, _Tooltip, false, nullptr,
 													 nullptr, COMPONENT_TYPE::END, (UINT)-1, ASSET_TYPE::END, _idx}});
 	}
 

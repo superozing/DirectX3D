@@ -139,12 +139,6 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->AddComponent(new CMeshRender);
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHsphere));
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std3D_DeferredMtrl"), 0);
-	pObj->MeshRender()->GetMaterial(0)->SetTexParam(
-		TEX_PARAM::TEX_0,
-		CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_01.tga", L"texture\\tile\\TILE_01.tga"));
-	pObj->MeshRender()->GetMaterial(0)->SetTexParam(
-		TEX_PARAM::TEX_1,
-		CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_01_N.tga", L"texture\\tile\\TILE_01_N.tga"));
 
 	pObj->AddComponent(new CPhysX);
 	pObj->PhysX()->m_bStaticActor = false;
