@@ -337,6 +337,15 @@ bool ParamUI::Param_TEXTURE(Ptr<CTexture>& _Texture, const string& _Desc, UI* _I
 		ImGui::EndDragDropTarget();
 	}
 
+	ImGui::SameLine();
+	string key = "X##";
+	key += szID;
+	if (ImGui::Button(key.c_str()))
+	{
+		_Texture = nullptr;
+		texid	 = nullptr;
+	}
+
 	// 텍스쳐 이미지 출력
 	static bool use_text_color_for_tint = false;
 	ImVec2		uv_min					= ImVec2(0.0f, 0.0f);

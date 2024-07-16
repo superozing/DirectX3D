@@ -199,6 +199,7 @@ void MeshRenderUI::render_update()
 								Ptr<CTexture> pTex =
 									GetTargetObject()->MeshRender()->GetMaterial(i)->GetTexParam(vecTexParam[j].Type);
 								ParamUI::Param_TEXTURE(pTex, vecTexParam[j].Desc);
+								GetTargetObject()->MeshRender()->GetMaterial(i)->SetTexParam(vecTexParam[j].Type, pTex);
 
 								// Texture payload 체크
 								if (PayloadCheck(&PayloadTexture))
