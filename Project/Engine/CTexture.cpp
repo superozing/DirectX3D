@@ -109,8 +109,8 @@ int CTexture::Load(const wstring& _strFilePath, int _iMipLevel)
 
 	if (FAILED(hRet))
 	{
-		wsprintf(strBuff, L"에러코드 : %d", hRet);
-		MessageBox(nullptr, strBuff, L"텍스쳐 로딩 실패", MB_OK);
+		// wsprintf(strBuff, L"에러코드 : %d", hRet);
+		//  MessageBox(nullptr, strBuff, L"텍스쳐 로딩 실패", MB_OK);
 		return hRet;
 	}
 

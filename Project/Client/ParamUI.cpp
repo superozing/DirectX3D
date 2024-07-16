@@ -345,6 +345,23 @@ bool ParamUI::Param_TEXTURE(Ptr<CTexture>& _Texture, const string& _Desc, UI* _I
 		 use_text_color_for_tint ? ImGui::GetStyleColorVec4(ImGuiCol_Text) : ImVec4(1.0f, 1.0f, 1.0f, 1.0f); // No tint
 	ImVec4 border_col = ImGui::GetStyleColorVec4(ImGuiCol_Border);
 	ImGui::Image(texid, ImVec2(150, 150), uv_min, uv_max, tint_col, border_col);
+	// Texture Drop 체크
+	if (ImGui::BeginDragDropTarget())
+	{
+		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ContentTree");
+
+		if (payload)
+		{
+			DWORD_PTR data	 = *((DWORD_PTR*)payload->Data);
+			CAsset*	  pAsset = (CAsset*)data;
+			if (ASSET_TYPE::TEXTURE == pAsset->GetType())
+			{
+				_Texture = (CTexture*)pAsset;
+			}
+		}
+
+		ImGui::EndDragDropTarget();
+	}
 
 	// 입력된 델리게이트가 있다면
 	if (_Inst && _Func)

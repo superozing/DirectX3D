@@ -14,6 +14,7 @@
 
 #define ColorTextureCheck   g_btex_0
 #define NormalMapCheck      g_btex_1
+#define EmissiveTextureCheck      g_btex_3
 #define LuminanceThreshold  g_float_0
 #define BloomColor          g_vec4_0
 // ======================
@@ -153,7 +154,17 @@ PS_OUT PS_Std3D_Deferred(VS_OUT _in) : SV_Target
     //Bloom E N D
     
     output.vNormal = float4(vViewNormal, 1.f);
-    output.vEmissive = float4(0.f, 0.f, 0.f, 1.f);
+    
+    if (EmissiveTextureCheck)
+    {
+        output.vEmissive = EmissiveMap.Sample(g_sam_0, _in.vUV);
+
+    }
+    else
+    {
+        output.vEmissive = float4(0.f, 0.f, 0.f, 1.f);
+    }
+    
     
     return output;
 }

@@ -92,6 +92,7 @@ public:
 	friend class CTaskMgr;
 	friend class CLevelSaveLoad;
 	friend class Inspector;
+	friend class Outliner;
 	friend class CMemoryPool;
 	friend class CMemoryPoolMgrScript;
 };
