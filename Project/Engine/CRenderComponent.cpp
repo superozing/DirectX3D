@@ -13,6 +13,7 @@ CRenderComponent::CRenderComponent(COMPONENT_TYPE _Type)
 CRenderComponent::CRenderComponent(const CRenderComponent& _OriginRenderCom)
 	: CComponent(_OriginRenderCom)
 	, m_Mesh(_OriginRenderCom.m_Mesh)
+	, m_DrawShadowMap(_OriginRenderCom.m_DrawShadowMap)
 {
 	m_vecMtrls.resize(_OriginRenderCom.m_vecMtrls.size());
 

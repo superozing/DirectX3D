@@ -507,9 +507,43 @@ void CCamera::render_shadowmap()
 
 	for (size_t i = 0; i < m_vecShadow.size(); ++i)
 	{
+		// Animator 업데이트
+		if (m_vecShadow[i]->Animator3D())
+		{
+			m_vecShadow[i]->Animator3D()->UpdateData();
+
+			for (UINT j = 0; j < m_vecShadow[i]->GetRenderComponent()->GetMtrlCount(); ++j)
+			{
+				if (nullptr == m_vecShadow[i]->GetRenderComponent()->GetMaterial(j))
+					continue;
+
+				pShadowMapMtrl->SetAnim3D(true); // Animation Mesh 알리기
+				pShadowMapMtrl->SetBoneCount(m_vecShadow[i]->Animator3D()->GetBoneCount());
+			}
+		}
+
 		m_vecShadow[i]->Transform()->UpdateData();
 		pShadowMapMtrl->UpdateData();
-		m_vecShadow[i]->GetRenderComponent()->GetMesh()->render(0);
+
+		for (UINT k = 0; k < m_vecShadow[i]->GetRenderComponent()->GetMtrlCount(); ++k)
+		{
+			m_vecShadow[i]->GetRenderComponent()->GetMesh()->render(k);
+		}
+
+		if (m_vecShadow[i]->Animator3D())
+		{
+			UINT		   iMtrlCount = m_vecShadow[i]->GetRenderComponent()->GetMtrlCount();
+			Ptr<CMaterial> pMtrl	  = nullptr;
+			for (UINT i = 0; i < iMtrlCount; ++i)
+			{
+				pMtrl = pShadowMapMtrl;
+				if (nullptr == pMtrl)
+					continue;
+
+				pMtrl->SetAnim3D(false); // Animation Mesh 알리기
+				pMtrl->SetBoneCount(0);
+			}
+		}
 	}
 
 	m_vecShadow.clear();

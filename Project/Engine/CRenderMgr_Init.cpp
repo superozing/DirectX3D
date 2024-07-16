@@ -153,7 +153,7 @@ void CRenderMgr::CreateMRT()
 												D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE)};
 
 		Vec4 arrClearColor[1] = {
-			Vec4(0.f, 0.f, 0.f, 0.f),
+			Vec4(1.f, 0.f, 0.f, 0.f),
 		};
 
 		Ptr<CTexture> pDepthTex = CAssetMgr::GetInst()->CreateTexture(L"ShadowDepthStencilTex"
