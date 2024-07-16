@@ -13,6 +13,8 @@ private:
 	void GameObject();
 	void Asset();
 	void ScreenControl();
+	void GameStart();
+	void GameStop();
 
 private:
 	void ContentSaveAll();

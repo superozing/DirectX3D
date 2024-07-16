@@ -55,6 +55,16 @@ void MenuUI::render_update()
 	ImGui::Dummy(ImVec2(Blank.x - 140.f, 0.f));
 
 	ScreenControl();
+
+	if (KEY_TAP_ANY(F5))
+	{
+		GameStart();
+	}
+
+	if (KEY_TAP_ANY(F6))
+	{
+		GameStop();
+	}
 }
 // #include <Engine/CLevel.h>
 
@@ -165,16 +175,7 @@ void MenuUI::Level()
 
 		if (ImGui::MenuItem("Play", nullptr, nullptr, PlayEnable))
 		{
-			if (LEVEL_STATE::STOP == pCurLevel->GetState())
-			{
-				CLevelSaveLoad::SaveLevel(pCurLevel, L"Level//temp.lv");
-			}
-
-			Outliner* pOutliner = (Outliner*)CImGuiMgr::GetInst()->FindUI("##Outliner");
-			auto	  m_Tree	= pOutliner->GetTree()->GetSelectedNode();
-			m_Tree				= nullptr;
-
-			CLevelMgr::GetInst()->ChangeLevelState(LEVEL_STATE::PLAY);
+			GameStart();
 		}
 
 		if (ImGui::MenuItem("Pause", nullptr, nullptr, PauseEnable))
@@ -186,17 +187,7 @@ void MenuUI::Level()
 
 		if (ImGui::MenuItem("Stop", nullptr, nullptr, StopEnable))
 		{
-			CLevel* pLoadedLevel = CLevelSaveLoad::LoadLevel(L"Level//temp.lv");
-			pLoadedLevel->SetRelativePath(CLevelMgr::GetInst()->GetCurrentLevel()->GetRelativePath());
-			GamePlayStatic::ChangeLevel(pLoadedLevel, LEVEL_STATE::STOP);
-
-			Outliner* pOutliner = (Outliner*)CImGuiMgr::GetInst()->FindUI("##Outliner");
-			auto	  m_Tree	= pOutliner->GetTree()->GetSelectedNode();
-			m_Tree				= nullptr;
-
-			// Inspector 의 타겟정보를 nullptr 로 되돌리기
-			Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
-			pInspector->SetTargetObject(nullptr);
+			GameStop();
 		}
 
 		ImGui::EndMenu();
@@ -440,4 +431,35 @@ void MenuUI::ScreenControl()
 	}
 
 	ImGui::PopStyleColor(3);
+}
+
+void MenuUI::GameStart()
+{
+	auto pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+
+	if (LEVEL_STATE::STOP == pCurLevel->GetState())
+	{
+		CLevelSaveLoad::SaveLevel(pCurLevel, L"Level//temp.lv");
+	}
+
+	Outliner* pOutliner = (Outliner*)CImGuiMgr::GetInst()->FindUI("##Outliner");
+	auto	  m_Tree	= pOutliner->GetTree()->GetSelectedNode();
+	m_Tree				= nullptr;
+
+	CLevelMgr::GetInst()->ChangeLevelState(LEVEL_STATE::PLAY);
+}
+
+void MenuUI::GameStop()
+{
+	CLevel* pLoadedLevel = CLevelSaveLoad::LoadLevel(L"Level//temp.lv");
+	pLoadedLevel->SetRelativePath(CLevelMgr::GetInst()->GetCurrentLevel()->GetRelativePath());
+	GamePlayStatic::ChangeLevel(pLoadedLevel, LEVEL_STATE::STOP);
+
+	Outliner* pOutliner = (Outliner*)CImGuiMgr::GetInst()->FindUI("##Outliner");
+	auto	  m_Tree	= pOutliner->GetTree()->GetSelectedNode();
+	m_Tree				= nullptr;
+
+	// Inspector 의 타겟정보를 nullptr 로 되돌리기
+	Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
+	pInspector->SetTargetObject(nullptr);
 }
