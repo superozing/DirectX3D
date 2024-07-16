@@ -388,10 +388,31 @@ enum class Log_Level
 
 enum class FONT_TYPE
 {
+	MAIN_BOLD,
 	ARIAL,
 	MAPLE,
 
 	END
 };
 
+enum class UI_TYPE
+{
+	DEFAULT,
+
+	CROSSHAIR,
+	DAMAGEFONT,
+	PAUSEBTN,
+	PAUSEPANEL,
+
+	AMMO,
+
+	BOSSHP,
+	MONSTERHP,
+	PLAYERHP,
+
+	SKILLICON,
+	DIALOG,
+
+	END
+};
 #define MAXBLURLEVEL 9

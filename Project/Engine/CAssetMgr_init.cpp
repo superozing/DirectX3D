@@ -11,7 +11,7 @@ void CAssetMgr::init()
 
 	CreateDefaultMesh();
 
-	// CreateDefaultGraphicsShader();
+	//CreateDefaultGraphicsShader();
 
 	CreateDefaultComputeShader();
 
@@ -1285,6 +1285,39 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	AddAsset(L"DamageFontShader", pShader.Get());
 
 	// ================
+	// DynamicHPShader
+	// ----------------
+	// Mesh: PointMesh
+	// RenderComp: MeshRender
+	// ================
+	pShader = new CGraphicsShader;
+	pShader->CreateVertexShader(L"shader\\dynamichp.fx", "VS_DynamicHP");
+	pShader->CreateGeometryShader(L"shader\\dynamichp.fx", "GS_DynamicHP");
+	pShader->CreatePixelShader(L"shader\\dynamichp.fx", "PS_DynamicHP");
+
+	pShader->SetRSType(RS_TYPE::CULL_BACK);
+	pShader->SetDSType(DS_TYPE::NO_TEST);
+	pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+	pShader->SetTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
+
+	pShader->AddTexParam(TEX_PARAM::TEX_0, "Dynamic HP Texture");
+
+	pShader->AddScalarParam(SCALAR_PARAM::BOOL_0, "UseExpandCenter");
+	pShader->AddScalarParam(SCALAR_PARAM::FLOAT_0, "ExpandCenterRatio");
+
+	pShader->AddScalarParam(SCALAR_PARAM::BOOL_1, "UseUVxDiscard");
+	pShader->AddScalarParam(SCALAR_PARAM::FLOAT_1, "DiscardUVx");
+
+	pShader->AddScalarParam(SCALAR_PARAM::BOOL_2, "UseMulColor");
+	pShader->AddScalarParam(SCALAR_PARAM::VEC4_0, "MulColor");
+
+	pShader->AddScalarParam(SCALAR_PARAM::BOOL_3, "UseUVSplitRender");
+	pShader->AddScalarParam(SCALAR_PARAM::INT_0, "SplitRenderCount");
+
+	AddAsset(L"DynamicHPShader", pShader.Get());
+
+	// ================
 	// AmmoProgressBarShader
 	// ----------------
 	// Mesh: RectMesh
@@ -1327,6 +1360,24 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->AddScalarParam(SCALAR_PARAM::FLOAT_1, "HP Ratio");
 
 	AddAsset(L"BossHPShader", pShader.Get());
+
+	// ================
+	// DialogFontBgShader
+	// ----------------
+	// Mesh: RectMesh
+	// RenderComp: MeshRender
+	// ================
+	pShader = new CGraphicsShader;
+	pShader->CreateVertexShader(L"shader\\dialogfontbg.fx", "VS_DialogFontBg");
+	pShader->CreatePixelShader(L"shader\\dialogfontbg.fx", "PS_DialogFontBg");
+
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+	pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+	pShader->SetTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	AddAsset(L"DialogFontBgShader", pShader.Get());
 
 	// ================
 	// SkillIconShader
@@ -1534,12 +1585,14 @@ void CAssetMgr::CreateDefaultMaterial()
 
 	// StaticUIMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"StaticUIShader"));
+	strShaderPath = "GraphicsShader\\StaticUIShader.gs";
+	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset(L"StaticUIMtrl", pMtrl);
 
 	// DynamicUIMtrl
 	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DynamicUIShader"));
+	strShaderPath = "GraphicsShader\\DynamicUIShader.gs";
+	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset(L"DynamicUIMtrl", pMtrl);
 
 	// ImageWrapMtrl

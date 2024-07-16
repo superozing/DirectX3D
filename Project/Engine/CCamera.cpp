@@ -21,7 +21,9 @@
 #include "CInstancingBuffer.h"
 
 #include "CLogMgr.h"
+#include "CUIMgr.h"
 
+#include "CUIScript.h"
 ConvertCoord CCamera::ViewportConvertFunc = nullptr;
 
 CCamera::CCamera()
@@ -221,6 +223,14 @@ void CCamera::SortObject()
 			{
 				m_vecTransparent.push_back(vecObjects[j]);
 				continue;
+			}
+
+			// UI일 경우 UI가 활성화 상태인지 체크
+			auto pUI = vecObjects[j]->GetScript<CUIScript>();
+			if (pUI)
+			{
+				if (!CUIMgr::GetInst()->IsActiveUIType(pUI->GetUIType()))
+					continue;
 			}
 
 			// 렌더링 기능이 없는 오브젝트는 제외

@@ -4,6 +4,7 @@
 #include <Engine/CAssetMgr.h>
 #include <Engine/CFontMgr.h>
 #include <Engine/CDevice.h>
+#include <Engine/CUIMgr.h>
 
 #include "CImageUIScript.h"
 #include "CPanelUIScript.h"
@@ -45,6 +46,8 @@ void CWeaponInfo::begin()
 	m_pWeaponUI->AllowBindTexPerFrame();
 	m_pWeaponUI->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Serika_Weapon.png"));
 
+	m_pWeaponUI->SetUIType(UI_TYPE::AMMO);
+
 	GetOwner()->AddChild(pObj);
 
 	// Ammo Info
@@ -67,30 +70,33 @@ void CWeaponInfo::begin()
 
 	// Font Info
 	m_MaxAmmoFont.fFontSize = 50.f;
-	m_MaxAmmoFont.FontType	 = FONT_TYPE::MAPLE;
-	m_MaxAmmoFont.TextFlag	 = FW1_RIGHT;
+	m_MaxAmmoFont.FontType	= FONT_TYPE::MAIN_BOLD;
+	m_MaxAmmoFont.TextFlag	= FW1_RIGHT;
 
 	m_MaxAmmoFontOffset.x = 200.f;
 	m_MaxAmmoFontOffset.y = 50.f;
-
 }
 
 void CWeaponInfo::tick()
 {
-	// 폰트의 색상 설정
-	m_MaxAmmoFont.Color = FONT_RGBA(255, 255, 255, 255);
+	// UI가 활성화 상태일 경우에만 폰트 등록
+	if (CUIMgr::GetInst()->IsActiveUIType(UI_TYPE::AMMO))
+	{
+		// 폰트의 색상 설정
+		m_MaxAmmoFont.Color = FONT_RGBA(255, 255, 255, 255);
 
-	// 폰트의 위치 설정
+		// 폰트의 위치 설정
 
-	Vec3 vWorldPos = Transform()->GetWorldPos();
-	Vec2 vResol	   = CDevice::GetInst()->GetRenderResolution();
+		Vec3 vWorldPos = Transform()->GetWorldPos();
+		Vec2 vResol	   = CDevice::GetInst()->GetRenderResolution();
 
-	m_MaxAmmoFont.vPos = Vec2(vWorldPos.x + (vResol.x / 2) + m_MaxAmmoFontOffset.x,
-							  -vWorldPos.y + (vResol.y / 2) + m_MaxAmmoFontOffset.y);
+		m_MaxAmmoFont.vPos = Vec2(vWorldPos.x + (vResol.x / 2) + m_MaxAmmoFontOffset.x,
+								  -vWorldPos.y + (vResol.y / 2) + m_MaxAmmoFontOffset.y);
 
-	m_MaxAmmoFont.WStr = to_wstring(m_CurAmmo) + L" /" + to_wstring(m_MaxAmmo);
+		m_MaxAmmoFont.WStr = to_wstring(m_CurAmmo) + L" /" + to_wstring(m_MaxAmmo);
 
-	CFontMgr::GetInst()->RegisterFont(m_MaxAmmoFont);
+		CFontMgr::GetInst()->RegisterFont(m_MaxAmmoFont);
+	}
 
 	float ratio = 0;
 
@@ -98,7 +104,6 @@ void CWeaponInfo::tick()
 		ratio = (float)m_CurAmmo / m_MaxAmmo;
 
 	m_pAmmoProgressBar->SetAmmoRatio(ratio);
-
 }
 
 void CWeaponInfo::Fire()
@@ -124,6 +129,7 @@ void CWeaponInfo::SetParentPanelUI()
 	m_pPanelUI->DisableMouseInput();
 	m_pPanelUI->DisallowDragAndDrop();
 	m_pPanelUI->DisallowTexSet();
+	m_pPanelUI->SetUIType(UI_TYPE::AMMO);
 
 	auto meshrender = pOwn->MeshRender();
 
@@ -136,4 +142,32 @@ void CWeaponInfo::SetParentPanelUI()
 	meshrender->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	meshrender->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
 	meshrender->GetDynamicMaterial(0);
+}
+
+#define TagMaxAmmo "[MaxAmmo]"
+#define TagCurAmmo "[CurAmmo]"
+
+void CWeaponInfo::SaveToFile(FILE* _File)
+{
+}
+
+void CWeaponInfo::SaveToFile(ofstream& fout)
+{
+	fout << TagMaxAmmo << endl;
+	fout << m_MaxAmmo << endl;
+
+	fout << TagCurAmmo << endl;
+	fout << m_CurAmmo << endl;
+}
+
+void CWeaponInfo::LoadFromFile(FILE* _File)
+{
+}
+
+void CWeaponInfo::LoadFromFile(ifstream& fin)
+{
+	Utils::GetLineUntilString(fin, TagMaxAmmo);
+	fin >> m_MaxAmmo;
+	Utils::GetLineUntilString(fin, TagCurAmmo);
+	fin >> m_CurAmmo;
 }

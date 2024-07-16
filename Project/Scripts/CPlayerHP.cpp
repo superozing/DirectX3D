@@ -28,6 +28,22 @@ void CPlayerHP::tick()
 		m_pHPLineUI->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_1, (float)CurHP / MaxHP);
 }
 
+void CPlayerHP::SaveToFile(FILE* _File)
+{
+}
+
+void CPlayerHP::SaveToFile(ofstream& fout)
+{
+}
+
+void CPlayerHP::LoadFromFile(FILE* _File)
+{
+}
+
+void CPlayerHP::LoadFromFile(ifstream& fin)
+{
+}
+
 void CPlayerHP::MakeChildObjects()
 {
 	// transform 조정
@@ -35,6 +51,9 @@ void CPlayerHP::MakeChildObjects()
 
 	// panel texture 설정
 	GetPanelUI()->SetPanelTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HPLine_Bg.png"));
+
+	GetPanelUI()->SetUIType(UI_TYPE::BOSSHP);
+
 	MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::BOOL_0, true);
 	MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, 0.9f);
 

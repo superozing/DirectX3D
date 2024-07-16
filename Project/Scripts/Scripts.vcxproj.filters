@@ -107,6 +107,8 @@
       <Filter>Scripts\Player</Filter>
     </ClInclude>
     <ClInclude Include="CPlayerController.h" />
+    <ClInclude Include="CDialog.h">
+      <Filter>Scripts\UI\Image\Dialog</Filter>
     <ClInclude Include="CPlayerDamagedScript.h">
       <Filter>Scripts\Player</Filter>
     </ClInclude>
@@ -221,6 +223,8 @@
       <Filter>Scripts\Player</Filter>
     </ClCompile>
     <ClCompile Include="CPlayerController.cpp" />
+    <ClCompile Include="CDialog.cpp">
+      <Filter>Scripts\UI\Image\Dialog</Filter>
     <ClCompile Include="CPlayerDamagedScript.cpp">
       <Filter>Scripts\Player</Filter>
     </ClCompile>
@@ -312,6 +316,9 @@
     </Filter>
     <Filter Include="Scripts\Player">
       <UniqueIdentifier>{996f1445-7d4f-4fb9-9dd7-21e6a4e6d11b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\Image\Dialog">
+      <UniqueIdentifier>{6fcd3b18-efc0-4025-8cec-ebede13f7e18}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -32,7 +32,6 @@ void CSkillIcon::tick()
 	m_SkillUsable = m_CurSkillCooldown == 0.f ? true : false;
 
 	MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, m_CurSkillCooldown / m_SkillCooldown);
-
 }
 
 void CSkillIcon::SetSkillIconTex(Ptr<CTexture> _SkillIconTex)
@@ -60,15 +59,45 @@ void CSkillIcon::MakeChildObjects()
 	GetOwner()->AddComponent(new CMeshRender);
 	GetOwner()->AddComponent(m_pSkillIconUI);
 
+	m_pSkillIconUI->SetUIType(UI_TYPE::SKILLICON);
+
 	Transform()->SetRelativePos(Vec3(0.f, 0.f, -10.f));
 	Transform()->SetRelativeScale(Vec3(152.f, 152.f, 1.f));
 
 	MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
 	MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
 	MeshRender()->GetDynamicMaterial(0);
-	MeshRender()->GetMaterial(0)->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"SkillIconShader"));
+	MeshRender()->GetMaterial(0)->SetShader(CAssetMgr::GetInst()->Load<CGraphicsShader>(L"GraphicsShader/SkillIconShader.gs"));
 
 	m_pSkillIconUI->SetUIImg(m_pSkillIconTex);
 	m_pSkillIconUI->AllowBindTexPerFrame();
+}
 
+#define TagSkillCooldown "[Skill Cooldown]"
+#define TagSkillIconTex "[Skill Icon Tex]"
+
+void CSkillIcon::SaveToFile(FILE* _File)
+{
+}
+
+void CSkillIcon::SaveToFile(ofstream& fout)
+{
+	fout << TagSkillCooldown << endl;
+	fout << m_SkillCooldown << endl;
+
+	fout << TagSkillIconTex << endl;
+	SaveAssetRef(m_pSkillIconTex, fout);
+}
+
+void CSkillIcon::LoadFromFile(FILE* _File)
+{
+}
+
+void CSkillIcon::LoadFromFile(ifstream& fin)
+{
+	Utils::GetLineUntilString(fin, TagSkillCooldown);
+	fin >> m_SkillCooldown;
+
+	Utils::GetLineUntilString(fin, TagSkillIconTex);
+	LoadAssetRef(m_pSkillIconTex, fin);
 }

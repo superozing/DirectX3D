@@ -30,8 +30,8 @@ void CAmmoInfo::MakeChildObjects()
 	Transform()->SetRelativeScale(Vec3(16.f, 54.f, 1.f));
 
 	// panel texture 설정
-	GetPanelUI()->SetPanelTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/white.png"));
-
+	GetPanelUI()->SetPanelTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/ColorTex/White.png"));
+	GetPanelUI()->SetUIType(UI_TYPE::AMMO);
 	CGameObject* pObj = nullptr;
 
 	// HPLine
@@ -47,13 +47,30 @@ void CAmmoInfo::MakeChildObjects()
 	pObj->MeshRender()->GetDynamicMaterial(0);
 
 	pObj->MeshRender()->GetMaterial(0)->SetShader(
-		CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"AmmoProgressBarShader"));
+		CAssetMgr::GetInst()->Load<CGraphicsShader>(L"GraphicsShader/AmmoProgressBarShader.gs"));
 
-	m_pAmmoLine->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HPLine.png"));
+	// m_pAmmoLine->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HPLine.png"));
 	m_pAmmoLine->AllowBindTexPerFrame();
+	m_pAmmoLine->SetUIType(UI_TYPE::AMMO);
 
 	pObj->Transform()->SetRelativePos(Vec3(0, 0, 0.f));
 	pObj->Transform()->SetRelativeScale(Vec3(12, 50.f, 1.f));
 
 	GetOwner()->AddChild(pObj);
+}
+
+void CAmmoInfo::SaveToFile(FILE* _File)
+{
+}
+
+void CAmmoInfo::SaveToFile(ofstream& fout)
+{
+}
+
+void CAmmoInfo::LoadFromFile(FILE* _File)
+{
+}
+
+void CAmmoInfo::LoadFromFile(ifstream& fin)
+{
 }

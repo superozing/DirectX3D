@@ -20,9 +20,19 @@ private:
 	// HP Line UI
 	CImageUIScript* m_pHPLineUI;
 
+	tFontInfo m_HPFont;
+	tFontInfo m_BossName;
+	tFontInfo m_HPLineFont;
+
+
 public:
 	virtual void begin() override;
 	virtual void tick() override;
+
+	virtual void SaveToFile(FILE* _File) override;
+	virtual void SaveToFile(ofstream& fout) override;
+	virtual void LoadFromFile(FILE* _File) override;
+	virtual void LoadFromFile(ifstream& fin) override;
 
 public:
 	void SetPortraitTex(Ptr<CTexture> _PortraitTex);

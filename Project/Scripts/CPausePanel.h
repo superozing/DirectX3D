@@ -19,9 +19,16 @@ private:
 
 	bool m_bActivate; // 활성화 여부
 
+	bool m_tempActiveUIType[(UINT)UI_TYPE::END];
+
 public:
 	virtual void begin() override;
 	virtual void tick() override;
+
+	virtual void SaveToFile(FILE* _File) override;
+	virtual void SaveToFile(ofstream& fout) override;
+	virtual void LoadFromFile(FILE* _File) override;
+	virtual void LoadFromFile(ifstream& fin) override;
 
 public:
 	void ActivePausePanel();

@@ -104,21 +104,21 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 #ifndef _RELEASE_GAME
 
 	// 임시 레벨 생성
-	// CCreateTempLevel::Init();
-	// CCreateTempLevel::CreateTempLevel();
+	CUITempLevel::Init();
+	CUITempLevel::CreateTempLevel();
 	// MapTestLevel::CreateMapTestLevel();
 
-	string levelPath = CEnvMgr::GetInst()->GetLevelRelativePath();
-	string abPath	 = ToString(CPathMgr::GetContentPath()) + levelPath;
-	if (levelPath == "" || !exists(abPath))
-	{
-		CCreatePlayerTestLevel::CreateTempLevel();
-	}
-	else
-	{
-		auto pLevel = CLevelSaveLoad::LoadLevel(CEnvMgr::GetInst()->GetLevelRelativePath());
-		GamePlayStatic::ChangeLevel(pLevel, LEVEL_STATE::STOP);
-	}
+	//string levelPath = CEnvMgr::GetInst()->GetLevelRelativePath();
+	//string abPath	 = ToString(CPathMgr::GetContentPath()) + levelPath;
+	//if (levelPath == "" || !exists(abPath))
+	//{
+	//	CCreatePlayerTestLevel::CreateTempLevel();
+	//}
+	//else
+	//{
+	//	auto pLevel = CLevelSaveLoad::LoadLevel(CEnvMgr::GetInst()->GetLevelRelativePath());
+	//	GamePlayStatic::ChangeLevel(pLevel, LEVEL_STATE::STOP);
+	//}
 
 	// ImGui 초기화
 	CImGuiMgr::GetInst()->init(hWnd, DEVICE, CONTEXT);
@@ -165,7 +165,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		}
 	}
 
-	CEnvMgr::GetInst()->exit();
+	//CEnvMgr::GetInst()->exit();
 
 	return (int)msg.wParam;
 }

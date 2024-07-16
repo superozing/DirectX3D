@@ -39,13 +39,15 @@ void CCrosshair::begin()
 	pObj->AddComponent(new CMeshRender);
 	pObj->AddComponent(m_pCrossHair);
 
+	m_pCrossHair->SetUIType(UI_TYPE::CROSSHAIR);
+
 	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
 	pObj->Transform()->SetRelativeScale(Vec3(500.f, 500.f, 1.f));
 
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
 	pObj->MeshRender()->GetDynamicMaterial(0);
-	pObj->MeshRender()->GetMaterial(0)->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"CrosshairShader"));
+	pObj->MeshRender()->GetMaterial(0)->SetShader(CAssetMgr::GetInst()->Load<CGraphicsShader>(L"GraphicsShader/CrosshairShader.gs"));
 
 	GetOwner()->AddChild(pObj);
 }
@@ -73,6 +75,7 @@ void CCrosshair::SetParentPanelUI()
 	m_pPanelUI->DisableMouseInput();
 	m_pPanelUI->DisallowDragAndDrop();
 	m_pPanelUI->DisallowTexSet();
+	m_pPanelUI->SetUIType(UI_TYPE::CROSSHAIR);
 
 	auto meshrender = pOwn->MeshRender();
 
@@ -85,4 +88,40 @@ void CCrosshair::SetParentPanelUI()
 	meshrender->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	meshrender->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
 	meshrender->GetDynamicMaterial(0);
+}
+
+#define TagBarThikness	"[Bar Thikness]"
+#define TagBarLength	"[Bar Length]"
+#define TagColor		"[Bar Color]"
+
+void CCrosshair::SaveToFile(FILE* _File)
+{
+}
+
+void CCrosshair::SaveToFile(ofstream& fout)
+{
+	fout << TagBarThikness << endl;
+	fout << m_fBarThikness << endl;
+
+	fout << TagBarLength << endl;
+	fout << m_fLength << endl;
+
+	fout << TagColor << endl;
+	fout << m_CrosshairColor << endl;
+}
+
+void CCrosshair::LoadFromFile(FILE* _File)
+{
+}
+
+void CCrosshair::LoadFromFile(ifstream& fin)
+{
+	Utils::GetLineUntilString(fin, TagBarThikness);
+	fin >> m_fBarThikness;
+
+	Utils::GetLineUntilString(fin, TagBarLength);
+	fin >> m_fLength;
+
+	Utils::GetLineUntilString(fin, TagColor);
+	fin >> m_CrosshairColor;
 }

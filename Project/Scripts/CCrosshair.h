@@ -35,6 +35,12 @@ public:
 	float GetSpreadRatio() const { return m_fSpreadRatio; }
 	Vec4  GetCrosshairColor() const { return m_CrosshairColor; }
 
+
+	virtual void SaveToFile(FILE* _File) override;
+	virtual void SaveToFile(ofstream& fout) override;
+	virtual void LoadFromFile(FILE* _File) override;
+	virtual void LoadFromFile(ifstream& fin) override;
+
 private:
 	void SetParentPanelUI();
 

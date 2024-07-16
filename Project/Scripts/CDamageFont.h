@@ -11,14 +11,24 @@ class CDamageFont : public CScript
 private:
 	CImageUIScript* m_pImageUIScript;
 
-	int				m_Damage;
+	int m_Damage;
+
+	Ptr<CTexture> m_FontImg;
 
 public:
 	virtual void begin() override;
 	virtual void tick() override;
 
+	virtual void SaveToFile(FILE* _File) override;
+	virtual void SaveToFile(ofstream& fout) override;
+	virtual void LoadFromFile(FILE* _File) override;
+	virtual void LoadFromFile(ifstream& fin) override;
+
 public:
 	void SetDamage(int _Damage) { m_Damage = _Damage; }
+
+	void		  SetFontImg(Ptr<CTexture> _FontImg);
+	Ptr<CTexture> GetFontImg() { return m_FontImg; }
 
 public:
 	CLONE(CDamageFont);

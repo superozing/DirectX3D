@@ -13,6 +13,9 @@ private:
 
 	bool m_bMouseLBtnDown;
 
+protected:
+	UI_TYPE m_UIType;
+
 public:
 	virtual void tick() override;
 
@@ -32,6 +35,9 @@ public:
 	bool IsLBtnDown() const { return m_bMouseLBtnDown; }
 
 	bool IsMouseInputEnabled() const { return m_bMouseCheckAble; }
+
+	UI_TYPE GetUIType() const { return m_UIType; }
+	void	SetUIType(UI_TYPE _type) { m_UIType = _type; }
 
 protected:
 	CUIScript(UINT _ScriptType);
