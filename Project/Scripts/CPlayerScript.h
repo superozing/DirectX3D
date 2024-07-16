@@ -63,7 +63,11 @@ struct PlayerStatus
 	float Defensive = 5.f;
 
 	float MoveSpeed		  = 500.f;
-	float AttackMoveSpeed = MoveSpeed * 0.04f;
+	float JumpSpeed		  = 100.f;
+	float AttackMoveSpeed = MoveSpeed * 0.2f;
+	float DashMaxSpeed	  = MoveSpeed * 2.f;
+	float DashGroundSpeed = MoveSpeed * 1.f;
+	float DashMinSpeed	  = MoveSpeed * 0.05f;
 	float RotateSpeed	  = 20.f;
 
 	float AvoidPercent	  = 10.f;
@@ -337,6 +341,9 @@ public:
 	int	 FormationIdleUpdate();
 	void FormationIdleEnd();
 
+private:
+	float m_fJumpY;
+
 #pragma endregion
 
 public:
@@ -345,13 +352,34 @@ public:
 	~CPlayerScript();
 
 private:
-	void CameraRotation();
+	/// @brief 스크립트 파람 UI 들을 초기화하는 함수입니다.
+	void InitScriptParamUI();
+	/// @brief 스테이트 머신의 함수들을 초기화하는 함수입니다.
+	void InitStateMachine();
+	/// @brief 스프링 암의 상태를 초기화하는 함수입니다.
+	void InitSpringArmSetting();
+
+	/// @brief 카메라 움직임을 제어하는 함수입니다.
+	void CameraMove();
+	/// @brief 일반 움직임을 다루는 함수입니다.
 	void NormalMove();
-	int	 SwitchToCoverTypeIdle();
+	/// @brief 커버타입을 구분지어 Idle상태를 돌려주는 함수입니다.
+	int SwitchToCoverTypeIdle();
+	/// @brief 커버타입을 구분지어 MoveEnd상태를 돌려주는 함수입니다.
+	int SwitchToCoverTypeMoveEnd();
+	/// @brief 조건에 따라 일반 움직임으로 변경해주는 함수입니다.
+	void ChangeToMove();
+	/// @brief 엄폐상태에서 상태 조건에 따라 노말 상태로 돌아오는 함수입니다.
+	void ChangeToNormal();
+	/// @brief 상태 조건에 따라 victory상태로 변경하는 함수입니다.
+	void ChangeToVictory();
+	/// @brief 상태 조건에 따라 Dash 상태로 변경하는 함수입니다.
+	void ChangeToDash();
+	/// @brief 조건에 따라 일반 공격으로 변경해주는 함수입니다.
+	void NormalAttack();
 
-private:
 	// Test 함수
-
+private:
 	/// @brief 커버 타입 판정 하기 전까지 필요한 함수
 	void SwitchCoverType();
 };

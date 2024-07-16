@@ -64,14 +64,14 @@ void CTransform::tick()
 			vNRot		= RoRMath::Lerp(m_vTargetRot, m_vStartRot, alpha);
 			vNScale		= RoRMath::Lerp(m_vTargetScale, m_vStartScale, alpha);
 
-			m_fTargetTimer -= DT_ENGINE;
+			m_fTargetTimer -= DT;
 		}
 
 		SetRelativePos(vNPos);
 		if (m_bRotLerp)
-			SetRelativePos(vNPos);
+			SetRelativeRotation(vNRot);
 		if (m_bScaleLerp)
-			SetRelativePos(vNPos);
+			SetRelativeScale(vNScale);
 	}
 }
 

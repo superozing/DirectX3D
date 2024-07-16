@@ -9,6 +9,8 @@
 #include <Engine\CTaskMgr.h>
 #include "CLevelSaveLoad.h"
 
+#include <Engine\CMemoryPoolMgr.h>
+
 #define TagResolution "[Resolution(x, y), FullScreen]"
 #define TagLevel "[Level]"
 
@@ -77,6 +79,8 @@ void CEnvMgr::exit()
 
 	fout << TagLevel << endl;
 	fout << ToString(CLevelMgr::GetInst()->GetCurrentLevel()->GetRelativePath()) << endl;
+
+	fout.close();
 }
 
 void CEnvMgr::tick()

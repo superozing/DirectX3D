@@ -50,6 +50,7 @@ private:
 	bool m_bCreateObject;
 	bool m_bDeleteObject;
 	bool m_bAssetChange;
+	bool m_bMoveObject;
 
 	int m_DeleteFrameCount;
 
@@ -58,8 +59,10 @@ public:
 	virtual void enter() override {}
 
 	void AddTask(const tTask& _Task) { m_vecTask.push_back(_Task); }
-	bool GetObjectEvent() { return m_bCreateObject || m_bDeleteObject; }
+	bool GetObjectEvent() { return m_bCreateObject || m_bDeleteObject || m_bMoveObject; }
 	bool GetAssetEvent() { return m_bAssetChange; }
+
+	void SetMemoryPoolEvent(bool bEvent) { m_bMoveObject = bEvent; }
 
 private:
 	void Clear();

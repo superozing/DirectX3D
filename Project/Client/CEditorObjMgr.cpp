@@ -11,7 +11,8 @@
 
 #include <Scripts/CCameraEffect.h>
 #include <Scripts\CEditorCameraMoveScript.h>
-#include <Scripts\CMemoryPoolMgr.h>
+#include <Engine\CMemoryPoolMgr.h>
+#include <Scripts\CMemoryPoolMgrScript.h>
 
 CEditorObjMgr::CEditorObjMgr()
 {
@@ -70,9 +71,12 @@ void CEditorObjMgr::init()
 
 	m_MemoryPool->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
 	m_MemoryPool->Transform()->SetRelativeRotation(Vec3(.0f, 0.f, 0.f));
-	auto PoolScript = new CMemoryPoolMgr;
+	auto PoolScript = new CMemoryPoolMgrScript;
 	m_MemoryPool->AddComponent(PoolScript);
 	m_vecEditorObj.push_back(m_MemoryPool);
+
+	CGameObject* pObj = dynamic_cast<CGameObject*>(m_MemoryPool);
+	CMemoryPoolMgr::GetInst()->SetEX(pObj);
 
 	CEditorObjMgr::begin();
 }

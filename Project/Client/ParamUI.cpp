@@ -81,7 +81,8 @@ bool ParamUI::Param_INT(int* _Data, const string& _Desc, int _min, int _Max, boo
 	return false;
 }
 
-bool ParamUI::Param_FLOAT(float* _Data, const string& _Desc, float _min, float _Max, bool _View, const string& _Tooltip)
+bool ParamUI::Param_FLOAT(float* _Data, const string& _Desc, float _min, float _Max, bool _View, const string& _Tooltip,
+						  bool _Precision)
 {
 	ImGui::Text(_Desc.c_str());
 	ImGui::SameLine();
@@ -95,7 +96,7 @@ bool ParamUI::Param_FLOAT(float* _Data, const string& _Desc, float _min, float _
 		{
 			ImGui::SetTooltip(_Tooltip.c_str());
 		}
-		if (ImGui::DragFloat(szID, _Data, 0.f, 0.f, 0.f, "%.1f",
+		if (ImGui::DragFloat(szID, _Data, 0.f, 0.f, 0.f, (true == _Precision) ? "%.2f" : "%.1f",
 							 ImGuiSliderFlags_Logarithmic | ImGuiSliderFlags_NoInput))
 		{
 			return true;
@@ -107,7 +108,8 @@ bool ParamUI::Param_FLOAT(float* _Data, const string& _Desc, float _min, float _
 		{
 			ImGui::SetTooltip(_Tooltip.c_str());
 		}
-		if (ImGui::DragFloat(szID, _Data, 0.1f, _min, _Max, "%.1f"))
+		if (ImGui::DragFloat(szID, _Data, (true == _Precision) ? 0.01f : 0.1f, _min, _Max,
+							 (true == _Precision) ? "%.2f" : "%.1f"))
 		{
 			return true;
 		}
@@ -343,6 +345,23 @@ bool ParamUI::Param_TEXTURE(Ptr<CTexture>& _Texture, const string& _Desc, UI* _I
 		 use_text_color_for_tint ? ImGui::GetStyleColorVec4(ImGuiCol_Text) : ImVec4(1.0f, 1.0f, 1.0f, 1.0f); // No tint
 	ImVec4 border_col = ImGui::GetStyleColorVec4(ImGuiCol_Border);
 	ImGui::Image(texid, ImVec2(150, 150), uv_min, uv_max, tint_col, border_col);
+	// Texture Drop 체크
+	if (ImGui::BeginDragDropTarget())
+	{
+		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ContentTree");
+
+		if (payload)
+		{
+			DWORD_PTR data	 = *((DWORD_PTR*)payload->Data);
+			CAsset*	  pAsset = (CAsset*)data;
+			if (ASSET_TYPE::TEXTURE == pAsset->GetType())
+			{
+				_Texture = (CTexture*)pAsset;
+			}
+		}
+
+		ImGui::EndDragDropTarget();
+	}
 
 	// 입력된 델리게이트가 있다면
 	if (_Inst && _Func)
@@ -436,6 +455,63 @@ bool ParamUI::Param_OBJECT(CGameObject** _Object, const string& _Desc, COMPONENT
 				}
 			}
 			ImGui::EndDragDropTarget();
+		}
+	}
+
+	return false;
+}
+
+bool ParamUI::Param_Asset(CAsset** _Asset, const string& _Desc, ASSET_TYPE _Type, bool _View, const string& _Tooltip)
+{
+	ImGui::Text(_Desc.c_str());
+	ImGui::SameLine();
+
+	char szID[256] = {};
+	sprintf_s(szID, "##asset%d", g_ID++);
+
+	string name = "";
+	if (*_Asset)
+		name = ToString((*_Asset)->GetKey());
+
+	if (_View)
+	{
+		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !_Tooltip.empty())
+		{
+			ImGui::SetTooltip(_Tooltip.c_str());
+		}
+		if (ImGui::InputText(szID, (char*)name.c_str(), name.length(), ImGuiInputTextFlags_ReadOnly))
+		{
+			return true;
+		}
+	}
+	else
+	{
+		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !_Tooltip.empty())
+		{
+			ImGui::SetTooltip(_Tooltip.c_str());
+		}
+		if (ImGui::InputText(szID, (char*)name.c_str(), name.length(), ImGuiInputTextFlags_ReadOnly))
+		{
+			return true;
+		}
+		if (ImGui::BeginDragDropTarget())
+		{
+			const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ContentTree");
+
+			if (payload)
+			{
+				DWORD_PTR data	  = *((DWORD_PTR*)payload->Data);
+				CEntity*  ptrData = (CEntity*)data;
+
+				CAsset* asset = dynamic_cast<CAsset*>(ptrData);
+
+				if (asset && _Type == asset->GetType())
+				{
+					*_Asset = asset;
+				}
+			}
+			ImGui::EndDragDropTarget();
+			return true;
 		}
 	}
 
@@ -649,4 +725,14 @@ bool ParamUI::Param_MGR_PHYSX(void* _pPhysXMgr)
 	}
 
 	return true;
+}
+
+void ParamUI::Param_Line()
+{
+	ImGui::Separator();
+}
+
+void ParamUI::Param_SameLine()
+{
+	ImGui::SameLine();
 }

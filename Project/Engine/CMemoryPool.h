@@ -1,29 +1,24 @@
 ﻿#pragma once
-#include "CManager.h"
 
-class CMemoryPool : public CManager<CMemoryPool>
+class CMemoryPool
 {
-	SINGLE(CMemoryPool);
-
 private:
-	list<CGameObject*> m_listObjectPool;
+	list<CGameObject*> m_listObjectPool; // 메모리풀
+	Ptr<CPrefab>	   m_PoolPrefab;	 // 풀에 할당된 prefab
 
 	int iPoolMaxCount;
-	int iCurPopCount;
-
-	CGameObject* PoolMgr;
 
 public:
-	void		 init();
-	virtual void enter() override {}
-	void		 tick();
+	void begin(string strPrefabrRelactivePath);
 
 public:
 	CGameObject* PopObject();
 	void		 PushObject(CGameObject* _Object);
 
-	void		 RegisterPoolMgr(CGameObject* _Mgr) { PoolMgr = _Mgr; }
-	CGameObject* GetPoolMgr() { return PoolMgr; }
+	int GetCurCount() { return m_listObjectPool.size(); }
+	int GetMaxCount() { return iPoolMaxCount; }
 
-	list<CGameObject*> GetList() { return m_listObjectPool; }
+public:
+	CMemoryPool();
+	~CMemoryPool();
 };

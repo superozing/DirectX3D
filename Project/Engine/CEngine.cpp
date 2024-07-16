@@ -17,7 +17,6 @@
 #include "CInstancingBuffer.h"
 #include "CSound.h"
 #include "CPhysXMgr.h"
-#include "CMemoryPool.h"
 
 CEngine::CEngine()
 	: m_hMainWnd(nullptr)

@@ -44,6 +44,7 @@
 #include "RTViewPort.h"
 
 #include "CEnvMgr.h"
+
 // #define _RELEASE_GAME
 
 HINSTANCE hInst;

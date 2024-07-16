@@ -4,7 +4,6 @@
 #include <Engine\CRenderMgr.h>
 #include <Engine/CPhysXMgr.h>
 
-static Vec3 gDir = Vec3();
 CSpringArm::CSpringArm()
 	: CScript((UINT)SCRIPT_TYPE::SPRINGARM)
 	, m_tInfo{}
@@ -15,7 +14,6 @@ CSpringArm::CSpringArm()
 	AppendScriptParam("Distance", SCRIPT_PARAM::FLOAT, &m_tInfo.fMaxDistance);
 	AppendScriptParam("Speed", SCRIPT_PARAM::FLOAT, &m_tInfo.fCamSpeed);
 	AppendScriptParam("RotSpeed", SCRIPT_PARAM::FLOAT, &m_tInfo.fCamRotSpeed);
-	AppendScriptParam("Direction", SCRIPT_PARAM::VEC3, &m_tInfo.vDir);
 
 	AppendScriptObject("Cam", &m_pTarget, COMPONENT_TYPE::TRANSFORM);
 }
@@ -26,6 +24,8 @@ CSpringArm::~CSpringArm()
 
 void CSpringArm::begin()
 {
+	if (!GetOwner() || !Transform() || !m_pTarget || !m_bActive)
+		return;
 }
 
 void CSpringArm::tick()
@@ -37,13 +37,14 @@ void CSpringArm::tick()
 
 	Matrix worldMat = Transform()->GetWorldMat();
 
-	gDir = XMVector3TransformNormal(m_tInfo.vDir, worldMat);
+	Vec3 vDir = XMVector3TransformNormal(Vec3(0.f, 0.f, 1.f), worldMat);
 
 	Vec3 vCenterPos = Transform()->GetWorldPos();
 	Vec3 vTargetPos = m_pTarget->Transform()->GetWorldPos();
 
-	Vec3 vNewPos = vCenterPos + gDir * m_tInfo.fDistance;
+	Vec3 vNewPos = vCenterPos + vDir * m_tInfo.fDistance;
 	Vec3 vNewDir = vCenterPos - vTargetPos;
+	vNewDir.Normalize();
 
 	// false : Lerp, true : Smooth
 	if (m_tInfo.Type)
@@ -71,7 +72,11 @@ void CSpringArm::tick()
 	}
 
 	m_pTarget->Transform()->SetRelativePos(vNewPos);
-	m_pTarget->Transform()->SetDir(m_vDirOffset + vNewDir);
+	m_pTarget->Transform()->SetDir(vNewDir);
+	Vec3 vRot		= m_pTarget->Transform()->GetRelativeRotation();
+	Vec3 vDirOffset = Vec3(m_vDirOffset.y, m_vDirOffset.x, m_vDirOffset.z);
+	vDirOffset.ToRadian();
+	m_pTarget->Transform()->SetRelativeRotation(vRot + vDirOffset);
 }
 
 #define TagSpringArm "[Info]"

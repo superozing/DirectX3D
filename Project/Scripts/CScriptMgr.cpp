@@ -28,7 +28,7 @@
 #include "CLevelTransition.h"
 #include "CEditorCameraMoveScript.h"
 #include "CSpawnSpotScript.h"
-#include "CMemoryPoolMgr.h"
+#include "CMemoryPoolMgrScript.h"
 #include "CHaloScript.h"
 #include "CStudentScript.h"
 #include "CPlayerScript.h"
@@ -63,7 +63,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CLevelTransition");
 	_vec.push_back(L"CEditorCameraMoveScript");
 	_vec.push_back(L"CSpawnSpotScript");
-	_vec.push_back(L"CMemoryPoolMgr");
+	_vec.push_back(L"CMemoryPoolMgrScript");
 	_vec.push_back(L"CHaloScript");
 	_vec.push_back(L"CStudentScript");
 	_vec.push_back(L"CPlayerScript");
@@ -126,8 +126,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CEditorCameraMoveScript;
 	if (L"CSpawnSpotScript" == _strScriptName)
 		return new CSpawnSpotScript;
-	if (L"CMemoryPoolMgr" == _strScriptName)
-		return new CMemoryPoolMgr;
+	if (L"CMemoryPoolMgrScript" == _strScriptName)
+		return new CMemoryPoolMgrScript;
 	if (L"CHaloScript" == _strScriptName)
 		return new CHaloScript;
 	if (L"CStudentScript" == _strScriptName)
@@ -224,8 +224,8 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::SPAWNSPOTSCRIPT:
 		return new CSpawnSpotScript;
 		break;
-	case (UINT)SCRIPT_TYPE::MEMORYPOOLMGR:
-		return new CMemoryPoolMgr;
+	case (UINT)SCRIPT_TYPE::MEMORYPOOLMGRSCRIPT:
+		return new CMemoryPoolMgrScript;
 		break;
 	case (UINT)SCRIPT_TYPE::HALOSCRIPT:
 		return new CHaloScript;
@@ -355,8 +355,8 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CSpawnSpotScript";
 		break;
 
-	case SCRIPT_TYPE::MEMORYPOOLMGR:
-		return L"CMemoryPoolMgr";
+	case SCRIPT_TYPE::MEMORYPOOLMGRSCRIPT:
+		return L"CMemoryPoolMgrScript";
 		break;
 
 	case SCRIPT_TYPE::HALOSCRIPT:
