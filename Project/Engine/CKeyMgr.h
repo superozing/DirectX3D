@@ -66,6 +66,8 @@ private:
 
 	FOCUS_STATE m_FocusState;
 
+	bool m_bHoldMouseCenter;
+
 public:
 	FOCUS_CALLBACK m_FocusCallback;
 
@@ -90,6 +92,8 @@ public:
 
 	FOCUS_STATE GetFocusState() const { return m_FocusState; }
 	void		SetFocuseState(FOCUS_STATE _state) { m_FocusState = _state; }
+
+	void SetHoldMouseCenter(bool _bHoldMouseCenter) { m_bHoldMouseCenter = _bHoldMouseCenter; }
 
 public:
 	virtual void init() override;

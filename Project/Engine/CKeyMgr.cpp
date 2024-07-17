@@ -129,15 +129,55 @@ void CKeyMgr::tick()
 			}
 		}
 
-		// 마우스 좌표 계산
-		m_vMousePrevPos = m_vMousePos;
+		// 마우스 중앙 고정 옵션 시 마우스 숨김.
 
-		POINT pt = {};
-		GetCursorPos(&pt);
-		ScreenToClient(CEngine::GetInst()->GetMainWind(), &pt);
-		m_vMousePos = Vec2((float)pt.x, (float)pt.y);
+		// 마우스 중앙 고정 옵션
+		if (m_bHoldMouseCenter)
+		{
+			POINT pt = {};
+			GetCursorPos(&pt);
+			ScreenToClient(CEngine::GetInst()->GetMainWind(), &pt);
+			m_vMousePos = Vec2((float)pt.x, (float)pt.y);
 
-		// 마우스 이동 방향
+			// 현재 메인 윈도우 가져오기
+			HWND MainWind = CEngine::GetInst()->GetMainWind();
+
+			// RECT 구조체에 전체 화면 상에서 현재 윈도우가 있는 위치 가져오기
+			RECT WindRect{};
+			GetWindowRect(MainWind, &WindRect);
+
+			// 현재 윈도우의 중앙 좌표 구하기
+			POINT WindCenterPos{};
+			WindCenterPos.x = WindRect.left + (WindRect.right - WindRect.left) / 2;
+			WindCenterPos.y = WindRect.top + (WindRect.bottom - WindRect.top) / 2;
+
+			// 윈도우의 중앙 좌표로 커서 위치 이동
+			SetCursorPos(WindCenterPos.x, WindCenterPos.y);
+
+			// 커서 위치를 게임 화면 기준으로 이동시키기
+			ScreenToClient(CEngine::GetInst()->GetMainWind(), &WindCenterPos);
+
+			m_vMousePrevPos = Vec2((float)WindCenterPos.x, (float)WindCenterPos.y);
+		}
+		else
+		{
+			// 이전 마우스 좌표 정보 저장하기
+			m_vMousePrevPos = m_vMousePos;
+
+			POINT pt = {};
+			GetCursorPos(&pt);
+			ScreenToClient(CEngine::GetInst()->GetMainWind(), &pt);
+			m_vMousePos = Vec2((float)pt.x, (float)pt.y);
+		}
+
+		// 마우스 이동 방향 계산
 		m_vMouseDrag = m_vMousePos - m_vMousePrevPos;
+
+		// Temp Escape Key
+		if (KEY_TAP(KEY::RBTN))
+		{
+			m_bHoldMouseCenter = !m_bHoldMouseCenter;
+			ShowCursor(!m_bHoldMouseCenter);
+		}
 	}
 }

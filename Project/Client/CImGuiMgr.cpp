@@ -60,14 +60,18 @@ void CImGuiMgr::init(HWND _hMainWnd, ComPtr<ID3D11Device> _Device, ComPtr<ID3D11
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;	  // Enable Docking
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;	  // Enable Multi-Viewport / Platform Windows
-	// io.ConfigViewportsNoAutoMerge = true;
-	// io.ConfigViewportsNoTaskBarIcon = true;
-	// io.ConfigViewportsNoDefaultParent = true;
-	// io.ConfigDockingAlwaysTabBar = true;
-	// io.ConfigDockingTransparentPayload = true;
-	// io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleFonts;     // FIXME-DPI: Experimental. THIS CURRENTLY DOESN'T
-	// WORK AS EXPECTED. DON'T USE IN USER APP! io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleViewports; //
-	// FIXME-DPI: Experimental.
+	// io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange; // ImGui가 커서를 제어하지 않도록 설정
+	// io.MouseDrawCursor = false;
+	// ShowCursor(FALSE);
+
+	//  io.ConfigViewportsNoAutoMerge = true;
+	//  io.ConfigViewportsNoTaskBarIcon = true;
+	//  io.ConfigViewportsNoDefaultParent = true;
+	//  io.ConfigDockingAlwaysTabBar = true;
+	//  io.ConfigDockingTransparentPayload = true;
+	//  io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleFonts;     // FIXME-DPI: Experimental. THIS CURRENTLY DOESN'T
+	//  WORK AS EXPECTED. DON'T USE IN USER APP! io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleViewports; //
+	//  FIXME-DPI: Experimental.
 
 	// Setup Dear ImGui style
 	// ImGui::StyleColorsDark();
