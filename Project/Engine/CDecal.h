@@ -8,6 +8,7 @@ private:
 
 public:
 	void SetDecalAsEmissive(bool _bTrue) { m_bAsEmissive = _bTrue; }
+	int	 GetDecalAsEmissive() { return m_bAsEmissive; }
 
 public:
 	virtual void SaveToFile(ofstream& fout) override;

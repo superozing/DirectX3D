@@ -17,7 +17,7 @@ CDecal::~CDecal()
 
 void CDecal::finaltick()
 {
-	GamePlayStatic::DrawDebugCube(Transform()->GetWorldMat(), Vec3(0.f, 1.f, 0.f), true);
+	GamePlayStatic::DrawDebugCube(Transform()->GetWorldMat(), Vec3(0.f, 1.f, 0.f), false);
 }
 
 void CDecal::UpdateData()
