@@ -196,10 +196,17 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 
 	PxRigidActor* actor = nullptr;
 
-	if (true == PhysX->m_bStaticActor)
+	if (PhysBodyType::STATIC == PhysX->m_bPhysBodyType)
 	{
 		// 고정된 물리 객체 생성
 		actor = gPhysics->createRigidStatic(transform);
+	}
+	else if (PhysBodyType::KINEMATIC == PhysX->m_bPhysBodyType)
+	{
+		// 운동학적 물리 객체 생성
+		PxRigidDynamic* dynamicActor = gPhysics->createRigidDynamic(transform);
+		dynamicActor->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
+		actor = dynamicActor;
 	}
 	else
 	{
@@ -265,6 +272,7 @@ void CPhysXMgr::init()
 	LayerCheck((UINT)LAYER::LAYER_MONSTER, (UINT)LAYER::LAYER_RAYCAST);
 	LayerCheck((UINT)LAYER::LAYER_PLAYER, (UINT)LAYER::LAYER_RAYCAST);
 	LayerCheck((UINT)LAYER::LAYER_WALL, (UINT)LAYER::LAYER_RAYCAST);
+	LayerCheck((UINT)LAYER::LAYER_DEFAULT, (UINT)LAYER::LAYER_DEFAULT);
 
 	sceneDesc.filterShader = CustomFilterShader;
 

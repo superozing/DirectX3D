@@ -107,7 +107,7 @@ void CPhysX::finaltick()
 	}
 	m_bImguiDirtyFlag = false;
 
-	if (m_bStaticActor)
+	if (PhysBodyType::RIGID != m_bPhysBodyType)
 	{
 		updateToPhysics();
 	}
@@ -134,7 +134,7 @@ void CPhysX::finaltick()
 	}
 }
 
-#define TagStatic "[IsStatic]"
+#define TagBodyType "[IsStatic]"
 #define TagShape "[Shape]"
 #define TagScale "[Scale]"
 #define TagOffsetPos "[OffsetPos]"
@@ -144,8 +144,8 @@ void CPhysX::SaveToFile(FILE* _File)
 
 void CPhysX::SaveToFile(ofstream& fout)
 {
-	fout << TagStatic << endl;
-	fout << m_bStaticActor << endl;
+	fout << TagBodyType << endl;
+	fout << magic_enum::enum_name<PhysBodyType>(m_bPhysBodyType) << endl;
 
 	fout << TagShape << endl;
 	auto shape = magic_enum::enum_name<PhysShape>(m_Shape);
@@ -165,8 +165,9 @@ void CPhysX::LoadFromFile(FILE* _File)
 void CPhysX::LoadFromFile(ifstream& fin)
 {
 	string tag, str;
-	Utils::GetLineUntilString(fin, TagStatic);
-	fin >> m_bStaticActor;
+	Utils::GetLineUntilString(fin, TagBodyType);
+	getline(fin, str);
+	m_bPhysBodyType = magic_enum::enum_cast<PhysBodyType>(str).value();
 
 	Utils::GetLineUntilString(fin, TagShape);
 	getline(fin, str);

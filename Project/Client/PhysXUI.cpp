@@ -34,10 +34,27 @@ void PhysXUI::render_update()
 	static auto Shape	 = phys->m_Shape;
 	auto		strShape = ToString(magic_enum::enum_name<PhysShape>(Shape));
 
-	static auto IsStatic = phys->m_bStaticActor;
-	if (ImGui::Checkbox("IsStatic", &IsStatic))
+	static auto BodyType = phys->m_bPhysBodyType;
+	auto		strType	 = ToString(magic_enum::enum_name<PhysBodyType>(BodyType));
+
+	if (ImGui::BeginCombo("##BodyType", strType.c_str()))
 	{
-		phys->m_bStaticActor = IsStatic;
+		for (size_t i = 0; i < (UINT)PhysBodyType::END; ++i)
+		{
+			bool isSelected = (i == (UINT)Shape);
+			auto TypeName	= ToString(magic_enum::enum_name<PhysBodyType>((PhysBodyType)i));
+			if (ImGui::Selectable(TypeName.c_str(), isSelected))
+			{
+				phys->m_bPhysBodyType = (PhysBodyType)i;
+			}
+
+			if (isSelected)
+			{
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+
+		ImGui::EndCombo();
 	}
 
 	if (ImGui::BeginCombo("##Shape", strShape.c_str()))
