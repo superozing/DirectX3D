@@ -466,6 +466,7 @@ void Inspector::CheckTargetComponent(COMPONENT_TYPE _type)
 		m_TargetObject->AddComponent(new CParticleSystem);
 		SetTargetObject(GetTargetObject());
 		break;
+	case COMPONENT_TYPE::SKYBOX:
 		m_TargetObject->AddComponent(new CSkyBox);
 		SetTargetObject(GetTargetObject());
 		break;
