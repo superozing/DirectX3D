@@ -21,6 +21,7 @@ void Inspector::CreateChildUI()
 #include "Light3DUI.h"
 #include "SkyBoxUI.h"
 #include "ParticleSystemUI.h"
+#include "DecalUI.h"
 #include "LandScapeUI.h"
 #include "PhysXUI.h"
 
@@ -57,6 +58,10 @@ void Inspector::CreateComponentUI()
 	m_arrComUI[(UINT)COMPONENT_TYPE::SKYBOX] = new SkyBoxUI;
 	m_arrComUI[(UINT)COMPONENT_TYPE::SKYBOX]->Deactivate();
 	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::SKYBOX]);
+
+	m_arrComUI[(UINT)COMPONENT_TYPE::DECAL] = new DecalUI;
+	m_arrComUI[(UINT)COMPONENT_TYPE::DECAL]->Deactivate();
+	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::DECAL]);
 
 	m_arrComUI[(UINT)COMPONENT_TYPE::LANDSCAPE] = new LandScapeUI;
 	m_arrComUI[(UINT)COMPONENT_TYPE::LANDSCAPE]->Deactivate();
