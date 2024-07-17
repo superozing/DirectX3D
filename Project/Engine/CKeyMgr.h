@@ -61,6 +61,8 @@ private:
 
 	Vec2 m_vMouseDrag;
 
+	Vec2 m_vMouseOffset;
+
 	WHEEL_STATE _inWheel;
 	WHEEL_STATE m_ThisFrameWheel;
 
@@ -86,6 +88,9 @@ public:
 			return m_vMouseDrag;
 		return Vec2();
 	}
+
+	// 마우스 현재 위치를 계산할 때 Offset을 줍니다.
+	void AddMouseOffset(Vec2 _MouseOffset) { m_vMouseOffset += _MouseOffset; }
 
 	void		SetWheel(WHEEL_STATE _in) { _inWheel = _in; }
 	WHEEL_STATE GetWheel() { return m_ThisFrameWheel; }
