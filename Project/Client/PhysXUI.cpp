@@ -31,17 +31,17 @@ void PhysXUI::render_update()
 		return;
 	}
 
-	static auto Shape	 = phys->m_Shape;
-	auto		strShape = ToString(magic_enum::enum_name<PhysShape>(Shape));
+	auto Shape	  = phys->m_Shape;
+	auto strShape = ToString(magic_enum::enum_name<PhysShape>(Shape));
 
-	static auto BodyType = phys->m_bPhysBodyType;
-	auto		strType	 = ToString(magic_enum::enum_name<PhysBodyType>(BodyType));
+	auto BodyType = phys->m_bPhysBodyType;
+	auto strType  = ToString(magic_enum::enum_name<PhysBodyType>(BodyType));
 
 	if (ImGui::BeginCombo("##BodyType", strType.c_str()))
 	{
 		for (size_t i = 0; i < (UINT)PhysBodyType::END; ++i)
 		{
-			bool isSelected = (i == (UINT)Shape);
+			bool isSelected = (i == (UINT)BodyType);
 			auto TypeName	= ToString(magic_enum::enum_name<PhysBodyType>((PhysBodyType)i));
 			if (ImGui::Selectable(TypeName.c_str(), isSelected))
 			{
