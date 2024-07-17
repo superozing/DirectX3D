@@ -19,6 +19,27 @@ void CEventDetector::PushCallBack(CScript* _script, Delegate_S _delegate)
 	m_vecListners.push_back({_script, _delegate});
 }
 
+bool CEventDetector::PushCallBack(const wstring& _detectorName, CScript* _script, Delegate_S _delegate)
+{
+	// 이벤트 디텍팅 예제
+	CGameObject* pEventLisnter = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(_detectorName);
+
+	if (pEventLisnter)
+	{
+		CEventDetector* pEventScript = pEventLisnter->GetScript<CEventDetector>();
+		if (pEventScript)
+			pEventScript->PushCallBack(_script, _delegate);
+		else
+			return false;
+	}
+	else
+	{
+		return false;
+	}
+
+	return true;
+}
+
 void CEventDetector::tick()
 {
 	GamePlayStatic::DrawDebugCube(Transform()->GetWorldMat(), Vec3(0.f, 1.f, 1.f), false);

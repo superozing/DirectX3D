@@ -85,9 +85,6 @@
     <ClInclude Include="CWrapImage.h">
       <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="CLevelTransition.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="CEditorCameraMoveScript.h">
       <Filter>Scripts\Manager\Camera</Filter>
     </ClInclude>
@@ -116,6 +113,13 @@
     <ClInclude Include="CEventDetector.h">
       <Filter>Scripts\Event</Filter>
     </ClInclude>
+    <ClInclude Include="CLevelTransition.h">
+      <Filter>Scripts\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="CTutorialGameMode.h">
+      <Filter>Scripts\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="CGameMode.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -202,9 +206,6 @@
     <ClCompile Include="CWrapImage.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="CLevelTransition.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
     <ClCompile Include="CEditorCameraMoveScript.cpp">
       <Filter>Scripts\Manager\Camera</Filter>
     </ClCompile>
@@ -235,6 +236,12 @@
     </ClCompile>
     <ClCompile Include="CEventDetector.cpp">
       <Filter>Scripts\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevelTransition.cpp">
+      <Filter>Scripts\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="CTutorialGameMode.cpp">
+      <Filter>Scripts\Level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -330,6 +337,9 @@
     </Filter>
     <Filter Include="Scripts\Event">
       <UniqueIdentifier>{505d9bec-f8a3-4da8-bf5f-de0d1958364b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Level">
+      <UniqueIdentifier>{52f14424-e2cb-42b2-bef6-84812d371633}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

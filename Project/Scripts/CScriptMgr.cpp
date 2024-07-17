@@ -25,7 +25,6 @@
 #include "CPhysXMgrScript.h"
 #include "CSkillIcon.h"
 #include "CWrapImage.h"
-#include "CLevelTransition.h"
 #include "CEditorCameraMoveScript.h"
 #include "CSpawnSpotScript.h"
 #include "CMemoryPoolMgrScript.h"
@@ -35,6 +34,8 @@
 #include "CDialog.h"
 #include "CPlayerDamagedScript.h"
 #include "CEventDetector.h"
+#include "CLevelTransition.h"
+#include "CTutorialGameMode.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -62,7 +63,6 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPhysXMgrScript");
 	_vec.push_back(L"CSkillIcon");
 	_vec.push_back(L"CWrapImage");
-	_vec.push_back(L"CLevelTransition");
 	_vec.push_back(L"CEditorCameraMoveScript");
 	_vec.push_back(L"CSpawnSpotScript");
 	_vec.push_back(L"CMemoryPoolMgrScript");
@@ -72,6 +72,8 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CDialog");
 	_vec.push_back(L"CPlayerDamagedScript");
 	_vec.push_back(L"CEventDetector");
+	_vec.push_back(L"CLevelTransition");
+	_vec.push_back(L"CTutorialGameMode");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -124,8 +126,6 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CSkillIcon;
 	if (L"CWrapImage" == _strScriptName)
 		return new CWrapImage;
-	if (L"CLevelTransition" == _strScriptName)
-		return new CLevelTransition;
 	if (L"CEditorCameraMoveScript" == _strScriptName)
 		return new CEditorCameraMoveScript;
 	if (L"CSpawnSpotScript" == _strScriptName)
@@ -144,6 +144,10 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPlayerDamagedScript;
 	if (L"CEventDetector" == _strScriptName)
 		return new CEventDetector;
+	if (L"CLevelTransition" == _strScriptName)
+		return new CLevelTransition;
+	if (L"CTutorialGameMode" == _strScriptName)
+		return new CTutorialGameMode;
 	return nullptr;
 }
 
@@ -223,9 +227,6 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::WRAPIMAGE:
 		return new CWrapImage;
 		break;
-	case (UINT)SCRIPT_TYPE::LEVELTRANSITION:
-		return new CLevelTransition;
-		break;
 	case (UINT)SCRIPT_TYPE::EDITORCAMERAMOVESCRIPT:
 		return new CEditorCameraMoveScript;
 		break;
@@ -252,6 +253,12 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::EVENTDETECTOR:
 		return new CEventDetector;
+		break;
+	case (UINT)SCRIPT_TYPE::LEVELTRANSITION:
+		return new CLevelTransition;
+		break;
+	case (UINT)SCRIPT_TYPE::TUTORIALGAMEMODE:
+		return new CTutorialGameMode;
 		break;
 	}
 	return nullptr;
@@ -357,10 +364,6 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CWrapImage";
 		break;
 
-	case SCRIPT_TYPE::LEVELTRANSITION:
-		return L"CLevelTransition";
-		break;
-
 	case SCRIPT_TYPE::EDITORCAMERAMOVESCRIPT:
 		return L"CEditorCameraMoveScript";
 		break;
@@ -395,6 +398,14 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::EVENTDETECTOR:
 		return L"CEventDetector";
+		break;
+
+	case SCRIPT_TYPE::LEVELTRANSITION:
+		return L"CLevelTransition";
+		break;
+
+	case SCRIPT_TYPE::TUTORIALGAMEMODE:
+		return L"CTutorialGameMode";
 		break;
 
 	}

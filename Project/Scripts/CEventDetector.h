@@ -15,6 +15,8 @@ private:
 public:
 	void PushCallBack(CScript* _script, Delegate_S _delegate);
 
+	static bool PushCallBack(const wstring& _detectorName, CScript* _script, Delegate_S _delegate);
+
 public:
 	virtual void tick() override;
 	virtual void begin() override;

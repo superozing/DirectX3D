@@ -177,6 +177,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CDialog.h" />
     <ClInclude Include="CEditorCameraMoveScript.h" />
     <ClInclude Include="CEventDetector.h" />
+    <ClInclude Include="CGameMode.h" />
     <ClInclude Include="CHaloScript.h" />
     <ClInclude Include="CImageUIScript.h" />
     <ClInclude Include="CLevelTransition.h" />
@@ -201,6 +202,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CSpringArm.h" />
     <ClInclude Include="CStudentScript.h" />
     <ClInclude Include="CTimeMgrScript.h" />
+    <ClInclude Include="CTutorialGameMode.h" />
     <ClInclude Include="CWeaponInfo.h" />
     <ClInclude Include="CWrapImage.h" />
     <ClInclude Include="framework.h" />
@@ -243,6 +245,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CSpringArm.cpp" />
     <ClCompile Include="CStudentScript.cpp" />
     <ClCompile Include="CTimeMgrScript.cpp" />
+    <ClCompile Include="CTutorialGameMode.cpp" />
     <ClCompile Include="CWeaponInfo.cpp" />
     <ClCompile Include="CWrapImage.cpp" />
     <ClCompile Include="pch.cpp">
