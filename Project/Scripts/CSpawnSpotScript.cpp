@@ -420,6 +420,8 @@ void CSpawnSpotScript::tick()
 			CMemoryPoolMgr::GetInst()->PushObject(pObj);
 		}
 	}
+
+	GamePlayStatic::DrawDebugCube(GetOwner()->Transform()->GetWorldMat(), Vec3(1.f, 0.f, 0.f), false);
 }
 
 #define TagSpawnType "[SpawnType]"

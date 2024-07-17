@@ -9,6 +9,8 @@ CDecal::CDecal()
 {
 	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHcube));
 	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DecalMtrl"), 0);
+
+	pDecalTex = GetMaterial(0)->GetTexParam(TEX_PARAM::TEX_0);
 }
 
 CDecal::~CDecal()
@@ -45,6 +47,12 @@ void CDecal::render()
 }
 
 #define TagAsEmissive "[AsEmissive]"
+
+void CDecal::SetDecalTex(Ptr<CTexture> Texture)
+{
+	GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, Texture);
+	pDecalTex = GetMaterial(0)->GetTexParam(TEX_PARAM::TEX_0);
+}
 
 void CDecal::SaveToFile(ofstream& fout)
 {

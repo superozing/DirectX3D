@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "ComponentUI.h"
+
 class DecalUI : public ComponentUI
 {
 private:
