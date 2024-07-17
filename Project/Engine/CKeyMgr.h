@@ -91,6 +91,10 @@ public:
 
 	// 마우스 현재 위치를 계산할 때 Offset을 줍니다.
 	void AddMouseOffset(Vec2 _MouseOffset) { m_vMouseOffset += _MouseOffset; }
+	void SetMouseOffset(Vec2 _MouseOffset) { m_vMouseOffset = _MouseOffset; }
+	void ClearMouseOffset() { m_vMouseOffset = Vec2(); }
+
+	Vec2 GetMouseOffset() const { return m_vMouseOffset; }
 
 	void		SetWheel(WHEEL_STATE _in) { _inWheel = _in; }
 	WHEEL_STATE GetWheel() { return m_ThisFrameWheel; }

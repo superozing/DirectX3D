@@ -171,11 +171,8 @@ void CKeyMgr::tick()
 		// 마우스 이동 방향 계산
 		m_vMouseDrag = m_vMousePos - m_vMousePrevPos;
 
-		// 마우스 오프셋 초기화
-		m_vMouseOffset = Vec2();
-
 		// Temp Escape Key
-		if (KEY_TAP(KEY::RBTN))
+		if (KEY_TAP(KEY::TAB))
 		{
 			m_bHoldMouseCenter = !m_bHoldMouseCenter;
 
