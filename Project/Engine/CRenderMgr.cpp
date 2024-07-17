@@ -131,8 +131,11 @@ void CRenderMgr::render_play()
 		pMainCam->Merge();
 
 		// Blur&Bloom처리
-		pMainCam->Blur();
-		pMainCam->Bloom();
+		if (true == CRenderMgr::GetInst()->m_BloomInfo.Activate)
+		{
+			pMainCam->Blur();
+			pMainCam->Bloom();
+		}
 
 		// Foward 렌더링
 		pMainCam->render_forward();

@@ -22,7 +22,7 @@ void CEditorCameraMoveScript::tick()
 	if (!CLevelMgr::GetInst()->GetCurrentLevel())
 		return;
 
-	if (KEY_TAP_ANY(KEY::P))
+	if (KEY_TAP(KEY::P))
 	{
 		if (Camera()->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)
 			Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
