@@ -1,6 +1,10 @@
 ﻿#include "pch.h"
 #include "CEventDetector.h"
 
+#include <Engine\CLevelMgr.h>
+#include <Engine\CLevel.h>
+#include <Engine\CLogMgr.h>
+
 CEventDetector::CEventDetector()
 	: CScript((UINT)SCRIPT_TYPE::EVENTDETECTOR)
 {
@@ -10,7 +14,7 @@ CEventDetector::~CEventDetector()
 {
 }
 
-void CEventDetector::PushCallBack(CScript* _script, void (CScript::*_delegate)())
+void CEventDetector::PushCallBack(CScript* _script, Delegate_S _delegate)
 {
 	m_vecListners.push_back({_script, _delegate});
 }
@@ -24,6 +28,8 @@ void CEventDetector::begin()
 {
 	if (!ComponentCheck())
 		return;
+
+	// Example();
 }
 
 void CEventDetector::BeginOverlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider)
@@ -64,4 +70,22 @@ bool CEventDetector::ComponentCheck()
 		return false;
 	}
 	return true;
+}
+
+void CEventDetector::Example()
+{
+	// 이벤트 디텍팅 예제
+	CGameObject* pEventLisnter = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"EventListner");
+
+	if (pEventLisnter)
+	{
+		CEventDetector* pEventScript = pEventLisnter->GetScript<CEventDetector>();
+		if (pEventScript)
+			pEventScript->PushCallBack(this, (Delegate_S)&CEventDetector::eventTestFunc);
+	}
+}
+
+void CEventDetector::eventTestFunc()
+{
+	CLogMgr::GetInst()->AddLog(Log_Level::WARN, L"Event Success");
 }

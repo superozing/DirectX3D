@@ -34,7 +34,6 @@
 #include "CPlayerScript.h"
 #include "CDialog.h"
 #include "CPlayerDamagedScript.h"
-#include "CEventListner.h"
 #include "CEventDetector.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
@@ -72,7 +71,6 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPlayerScript");
 	_vec.push_back(L"CDialog");
 	_vec.push_back(L"CPlayerDamagedScript");
-	_vec.push_back(L"CEventListner");
 	_vec.push_back(L"CEventDetector");
 }
 
@@ -144,8 +142,6 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CDialog;
 	if (L"CPlayerDamagedScript" == _strScriptName)
 		return new CPlayerDamagedScript;
-	if (L"CEventListner" == _strScriptName)
-		return new CEventListner;
 	if (L"CEventDetector" == _strScriptName)
 		return new CEventDetector;
 	return nullptr;
@@ -253,9 +249,6 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::PLAYERDAMAGEDSCRIPT:
 		return new CPlayerDamagedScript;
-		break;
-	case (UINT)SCRIPT_TYPE::EVENTLISTNER:
-		return new CEventListner;
 		break;
 	case (UINT)SCRIPT_TYPE::EVENTDETECTOR:
 		return new CEventDetector;
@@ -398,10 +391,6 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::PLAYERDAMAGEDSCRIPT:
 		return L"CPlayerDamagedScript";
-		break;
-
-	case SCRIPT_TYPE::EVENTLISTNER:
-		return L"CEventListner";
 		break;
 
 	case SCRIPT_TYPE::EVENTDETECTOR:

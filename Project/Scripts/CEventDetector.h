@@ -13,7 +13,7 @@ private:
 	vector<Listner> m_vecListners;
 
 public:
-	void PushCallBack(CScript* _script, void (CScript::*_delegate)());
+	void PushCallBack(CScript* _script, Delegate_S _delegate);
 
 public:
 	virtual void tick() override;
@@ -30,4 +30,7 @@ public:
 
 private:
 	bool ComponentCheck();
+
+	void Example();
+	void eventTestFunc();
 };
