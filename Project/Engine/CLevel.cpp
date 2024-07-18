@@ -222,6 +222,11 @@ void CLevel::CheckObjectName(CGameObject* _Object)
 	}
 }
 
+void CLevel::ChangeLayer(CGameObject* _Object, int _LayerIdx, bool _bChildMove)
+{
+	m_arrLayer[_LayerIdx]->AddObject(_Object, _bChildMove);
+}
+
 void CLevel::clear()
 {
 	for (UINT i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)
