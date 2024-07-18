@@ -31,13 +31,20 @@ void PhysXUI::render_update()
 		return;
 	}
 
-	static auto Shape	 = phys->m_Shape;
-	auto		strShape = ToString(magic_enum::enum_name<PhysShape>(Shape));
+	auto Shape	  = phys->m_Shape;
+	auto strShape = ToString(magic_enum::enum_name<PhysShape>(Shape));
 
-	static auto IsStatic = phys->m_bStaticActor;
+	auto IsStatic = phys->m_bStaticActor;
 	if (ImGui::Checkbox("IsStatic", &IsStatic))
 	{
 		phys->m_bStaticActor = IsStatic;
+	}
+
+	ImGui::SameLine();
+	auto IsDrawing = phys->m_bDrawing;
+	if (ImGui::Checkbox("Draw", &IsDrawing))
+	{
+		phys->m_bDrawing = IsDrawing;
 	}
 
 	if (ImGui::BeginCombo("##Shape", strShape.c_str()))
