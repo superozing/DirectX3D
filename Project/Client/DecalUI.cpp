@@ -7,6 +7,7 @@
 
 DecalUI::DecalUI()
 	: ComponentUI("Decal", "##Decal", COMPONENT_TYPE::DECAL)
+	, strDecalMtrl(" ")
 	, strEmissiveCondition(" ")
 	, iDecalPriority(0)
 	, fDecalRenderDistance(0)
@@ -22,12 +23,25 @@ DecalUI::~DecalUI()
 {
 }
 
+#include <Engine\CLogMgr.h>
 void DecalUI::render_update()
 {
 	ComponentUI::render_update();
 
 	if (!TitleCollapse("Decal"))
 		return;
+
+	ImGui::Text("Decal Mtrl : ");
+	ImGui::SameLine();
+
+	strDecalMtrl = ToString(GetTargetObject()->GetRenderComponent()->GetMaterial(0)->GetKey());
+	ImGui::InputText("##Decal Material", (char*)strDecalMtrl.c_str(), ImGuiInputTextFlags_ReadOnly);
+
+	CMaterial* PayloadMaterial = nullptr;
+	if (PayloadCheck(&PayloadMaterial))
+	{
+		GetTargetObject()->Decal()->ChangeMtrl(PayloadMaterial->GetKey());
+	}
 
 	ImGui::SeparatorText("Decal Texture");
 
@@ -86,8 +100,14 @@ void DecalUI::render_update()
 	ImGui::SameLine();
 
 	iDecalPriority = GetTargetObject()->Decal()->GetDecalPriority();
-	if (ImGui::InputInt("##Decal Priority", &iDecalPriority, 0, DecalPriorityMax))
+	if (ImGui::InputInt("##Decal Priority", &iDecalPriority))
 	{
+		if (iDecalPriority > DecalPriorityMax)
+			iDecalPriority = DecalPriorityMax;
+
+		if (iDecalPriority < 0)
+			iDecalPriority = 0;
+
 		GetTargetObject()->Decal()->SetDecalPriority(iDecalPriority);
 	}
 

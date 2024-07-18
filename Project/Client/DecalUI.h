@@ -4,6 +4,7 @@
 class DecalUI : public ComponentUI
 {
 private:
+	string strDecalMtrl;
 	string strEmissiveCondition;
 	int	   iDecalPriority;
 	float  fDecalRenderDistance;

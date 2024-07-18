@@ -7,7 +7,7 @@ CDecal::CDecal()
 	: CRenderComponent(COMPONENT_TYPE::DECAL)
 	, m_bAsEmissive(false)
 	, m_DecalPriority(0)
-	, m_RenderDistance(500.f)
+	, m_RenderDistance(5000.f)
 	, m_bCustomAlpha(false)
 	, m_fCustomAlpha(1.f)
 {
@@ -52,14 +52,34 @@ void CDecal::render()
 	GetMesh()->render(0);
 }
 
-#define TagAsEmissive "[AsEmissive]"
+void CDecal::ChangeMtrl(wstring _MtrlKey)
+{
+	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(_MtrlKey), 0);
+}
 
+#define TagAsEmissive "[AsEmissive]"
+#define TagDecalPriority "[DecalPriority]"
+#define TagRenderDistance "[RenderDistance]"
+#define TagUseCustomAlpha "[UseCustomAlpha]"
+#define TagCustomAlphaParameter "[CustomAlphaParameter]"
 void CDecal::SaveToFile(ofstream& fout)
 {
 	CRenderComponent::SaveToFile(fout);
 
 	fout << TagAsEmissive << endl;
 	fout << m_bAsEmissive << endl;
+
+	fout << TagDecalPriority << endl;
+	fout << m_DecalPriority << endl;
+
+	fout << TagRenderDistance << endl;
+	fout << m_RenderDistance << endl;
+
+	fout << TagUseCustomAlpha << endl;
+	fout << m_bCustomAlpha << endl;
+
+	fout << TagCustomAlphaParameter << endl;
+	fout << m_fCustomAlpha << endl;
 }
 
 void CDecal::LoadFromFile(ifstream& fin)
@@ -68,4 +88,16 @@ void CDecal::LoadFromFile(ifstream& fin)
 
 	Utils::GetLineUntilString(fin, TagAsEmissive);
 	fin >> m_bAsEmissive;
+
+	Utils::GetLineUntilString(fin, TagDecalPriority);
+	fin >> m_DecalPriority;
+
+	Utils::GetLineUntilString(fin, TagRenderDistance);
+	fin >> m_RenderDistance;
+
+	Utils::GetLineUntilString(fin, TagUseCustomAlpha);
+	fin >> m_bCustomAlpha;
+
+	Utils::GetLineUntilString(fin, TagCustomAlphaParameter);
+	fin >> m_fCustomAlpha;
 }

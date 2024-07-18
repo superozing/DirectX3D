@@ -25,6 +25,8 @@ public:
 	void  SetCustomAlpha(float _alpha) { m_fCustomAlpha = _alpha; }
 	float GetCustomAlpha() { return m_fCustomAlpha; }
 
+	void ChangeMtrl(wstring _MtrlKey);
+
 public:
 	virtual void SaveToFile(ofstream& fout) override;
 	virtual void LoadFromFile(ifstream& fin) override;

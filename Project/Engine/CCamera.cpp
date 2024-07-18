@@ -84,7 +84,7 @@ struct CmpDecalPriority
 {
 	bool operator()(CGameObject* _First, CGameObject* _Second)
 	{
-		return _First->Decal()->GetDecalPriority() >= _Second->Decal()->GetDecalPriority();
+		return _First->Decal()->GetDecalPriority() > _Second->Decal()->GetDecalPriority();
 	}
 };
 
@@ -456,7 +456,7 @@ void CCamera::render_Instance(const map<ULONG64, vector<tInstObj>>& m_mapInstGro
 
 void CCamera::render_decal()
 {
-	std::sort(m_vecDecal.begin(), m_vecDecal.end());
+	std::sort(m_vecDecal.begin(), m_vecDecal.end(), CmpDecalPriority());
 
 	for (size_t i = 0; i < m_vecDecal.size(); ++i)
 	{
