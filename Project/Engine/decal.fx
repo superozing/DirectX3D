@@ -79,7 +79,7 @@ PS_OUT PS_Decal(VS_OUT _in)
     {
         output.vColor = g_tex_0.Sample(g_sam_0, vLocal.xz);
         
-        if (bCustomAlpha)
+        if (bCustomAlpha && output.vColor.a > 0.5f)
         {
             output.vColor.a = CustomAlpha;
         }
