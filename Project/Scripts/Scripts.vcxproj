@@ -169,6 +169,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CAmmoInfo.h" />
     <ClInclude Include="CBackgroundScript.h" />
     <ClInclude Include="CBossHP.h" />
+    <ClInclude Include="CBossScript.h" />
     <ClInclude Include="CBtnUIScript.h" />
     <ClInclude Include="CCameraEffect.h" />
     <ClInclude Include="CCameraMoveScript.h" />
@@ -209,6 +210,8 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CAmmoInfo.cpp" />
     <ClCompile Include="CBackgroundScript.cpp" />
     <ClCompile Include="CBossHP.cpp" />
+    <ClCompile Include="CBossScript.cpp" />
+    <ClCompile Include="CBossScript_State.cpp" />
     <ClCompile Include="CBtnUIScript.cpp" />
     <ClCompile Include="CCameraEffect.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
