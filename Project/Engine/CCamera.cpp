@@ -84,7 +84,7 @@ struct CmpDecalPriority
 {
 	bool operator()(CGameObject* _First, CGameObject* _Second)
 	{
-		return _First->Decal()->GetDecalPriority() > _Second->Decal()->GetDecalPriority();
+		return _First->Decal()->GetDecalPriority() < _Second->Decal()->GetDecalPriority();
 	}
 };
 
