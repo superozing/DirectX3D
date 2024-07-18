@@ -6,11 +6,13 @@
 CDecal::CDecal()
 	: CRenderComponent(COMPONENT_TYPE::DECAL)
 	, m_bAsEmissive(false)
+	, m_DecalPriority(0)
+	, m_RenderDistance(500.f)
+	, m_bCustomAlpha(false)
+	, m_fCustomAlpha(1.f)
 {
 	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHcube));
 	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DecalMtrl"), 0);
-
-	pDecalTex = GetMaterial(0)->GetTexParam(TEX_PARAM::TEX_0);
 }
 
 CDecal::~CDecal()
@@ -33,6 +35,10 @@ void CDecal::UpdateData()
 	// AsEmissive
 	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_0, m_bAsEmissive);
 
+	// CustomAlpha
+	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_1, m_bCustomAlpha);
+	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, m_fCustomAlpha);
+
 	GetMaterial(0)->UpdateData();
 }
 
@@ -47,12 +53,6 @@ void CDecal::render()
 }
 
 #define TagAsEmissive "[AsEmissive]"
-
-void CDecal::SetDecalTex(Ptr<CTexture> Texture)
-{
-	GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, Texture);
-	pDecalTex = GetMaterial(0)->GetTexParam(TEX_PARAM::TEX_0);
-}
 
 void CDecal::SaveToFile(ofstream& fout)
 {

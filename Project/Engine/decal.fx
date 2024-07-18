@@ -4,6 +4,8 @@
 #include "value.fx"
 #include "func.fx"
 
+#define bCustomAlpha g_int_1
+#define CustomAlpha g_float_0
 // ==========================
 // Decal Shader
 // Domain   : DOMAIN_DECAL
@@ -14,9 +16,12 @@
 
 // Parameter
 // g_int_0 : As Emissive
+// g_int_1 : Use CustomAlpha
+// g_float_0 : CustomAlpha
 // g_mat_0  : ViewInv * WorldInv
 // g_tex_0  : Output Texture
-// g_tex_1  : PositionTargetTex
+// g_tex_1  : Emissive Texture
+// g_tex_2  : PositionTargetTex
 // ===========================
 struct VS_IN
 {
@@ -51,7 +56,7 @@ PS_OUT PS_Decal(VS_OUT _in)
     float2 vScreenUV = _in.vPosition.xy / g_RenderResolution;
     
     // PositionTarget 에서 현재 호출된 픽셀쉐이더랑 동일한 지점에 접근해서 좌표값을 확인
-    float4 vViewPos = g_tex_1.Sample(g_sam_0, vScreenUV);
+    float4 vViewPos = g_tex_2.Sample(g_sam_0, vScreenUV);
     
     // Deferred 단계에서 그려진게 없다면 빛을 줄 수 없다.
     if (-1.f == vViewPos.w)
@@ -70,13 +75,28 @@ PS_OUT PS_Decal(VS_OUT _in)
     }
     
     // 볼륨메쉬 내부 판정 성공 시
-    if(g_btex_0)
+    if (g_btex_0)
     {
         output.vColor = g_tex_0.Sample(g_sam_0, vLocal.xz);
         
+        if (bCustomAlpha)
+        {
+            output.vColor.a = CustomAlpha;
+        }
+        
         if (g_int_0)
         {
-            output.vEmissive.rgb = output.vColor.rgb * output.vColor.a;
+            if (g_btex_1)
+            {
+                output.vEmissive.rgb = g_tex_1.Sample(g_sam_0, vLocal.xz);
+            }
+            else
+            {
+                if (bCustomAlpha)
+                    output.vEmissive.rgb = output.vColor.rgb * CustomAlpha;
+                else
+                    output.vEmissive.rgb = output.vColor.rgb * output.vColor.a;
+            }
         }
     }
     else
