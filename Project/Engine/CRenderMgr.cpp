@@ -47,7 +47,9 @@ void CRenderMgr::tick()
 	CheckEscape();
 
 	(this->*m_RenderFunc)();
-	render_debug();
+
+	if (m_DebugPosition)
+		render_debug();
 
 	Clear();
 }
