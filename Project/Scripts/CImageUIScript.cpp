@@ -4,6 +4,7 @@
 CImageUIScript::CImageUIScript()
 	: CUIScript((UINT)SCRIPT_TYPE::IMAGEUISCRIPT)
 {
+	AppendScriptAsset("Img", &m_UIImg, ASSET_TYPE::TEXTURE);
 }
 
 CImageUIScript::CImageUIScript(const CImageUIScript& _Other)
@@ -17,6 +18,15 @@ CImageUIScript::~CImageUIScript()
 
 void CImageUIScript::begin()
 {
+	if (!MeshRender())
+	{
+		wstring str;
+		str += GetOwner()->GetName();
+		str += L"의 매쉬 렌더가 없습니다.";
+		MessageBox(nullptr, str.c_str(), L"ImageUI Script", 0);
+
+		return;
+	}
 	GetOwner()->MeshRender()->GetDynamicMaterial(0);
 }
 
