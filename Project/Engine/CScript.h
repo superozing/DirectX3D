@@ -123,3 +123,4 @@ public:
 	~CScript();
 };
 typedef void (CScript::*Delegate_S)();
+typedef bool (CScript::*Delegate_BS)();

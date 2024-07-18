@@ -110,7 +110,7 @@
     <ClInclude Include="CPlayerDamagedScript.h">
       <Filter>Scripts\Player</Filter>
     </ClInclude>
-    <ClInclude Include="CEventDetector.h">
+    <ClInclude Include="CEventListener.h">
       <Filter>Scripts\Event</Filter>
     </ClInclude>
     <ClInclude Include="CLevelTransition.h">
@@ -234,7 +234,7 @@
     <ClCompile Include="CPlayerDamagedScript.cpp">
       <Filter>Scripts\Player</Filter>
     </ClCompile>
-    <ClCompile Include="CEventDetector.cpp">
+    <ClCompile Include="CEventListener.cpp">
       <Filter>Scripts\Event</Filter>
     </ClCompile>
     <ClCompile Include="CLevelTransition.cpp">

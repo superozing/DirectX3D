@@ -33,7 +33,7 @@
 #include "CPlayerScript.h"
 #include "CDialog.h"
 #include "CPlayerDamagedScript.h"
-#include "CEventDetector.h"
+#include "CEventListener.h"
 #include "CLevelTransition.h"
 #include "CTutorialGameMode.h"
 
@@ -71,7 +71,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPlayerScript");
 	_vec.push_back(L"CDialog");
 	_vec.push_back(L"CPlayerDamagedScript");
-	_vec.push_back(L"CEventDetector");
+	_vec.push_back(L"CEventListener");
 	_vec.push_back(L"CLevelTransition");
 	_vec.push_back(L"CTutorialGameMode");
 }
@@ -142,8 +142,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CDialog;
 	if (L"CPlayerDamagedScript" == _strScriptName)
 		return new CPlayerDamagedScript;
-	if (L"CEventDetector" == _strScriptName)
-		return new CEventDetector;
+	if (L"CEventListener" == _strScriptName)
+		return new CEventListener;
 	if (L"CLevelTransition" == _strScriptName)
 		return new CLevelTransition;
 	if (L"CTutorialGameMode" == _strScriptName)
@@ -251,8 +251,8 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::PLAYERDAMAGEDSCRIPT:
 		return new CPlayerDamagedScript;
 		break;
-	case (UINT)SCRIPT_TYPE::EVENTDETECTOR:
-		return new CEventDetector;
+	case (UINT)SCRIPT_TYPE::EVENTLISTENER:
+		return new CEventListener;
 		break;
 	case (UINT)SCRIPT_TYPE::LEVELTRANSITION:
 		return new CLevelTransition;
@@ -396,8 +396,8 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CPlayerDamagedScript";
 		break;
 
-	case SCRIPT_TYPE::EVENTDETECTOR:
-		return L"CEventDetector";
+	case SCRIPT_TYPE::EVENTLISTENER:
+		return L"CEventListener";
 		break;
 
 	case SCRIPT_TYPE::LEVELTRANSITION:

@@ -1,21 +1,25 @@
 ﻿#pragma once
 #include <Engine\CScript.h>
 
-struct Listner
+struct tListenerData
 {
-	CScript* m_pLisnter;
-	void	 (CScript::*Delegate)();
+	CGameObject* Target;
+
+	CScript*   Reciever;
+	Delegate_S Callback;
 };
 
-class CEventDetector : public CScript
+class CEventListener : public CScript
 {
 private:
-	vector<Listner> m_vecListners;
+	vector<tListenerData> m_vecEvent;
+	bool				  m_bDrawing;
 
 public:
-	void PushCallBack(CScript* _script, Delegate_S _delegate);
+	void PushCallBack(CGameObject* _target, CScript* _receiver, Delegate_S _callback);
 
-	static bool PushCallBack(const wstring& _detectorName, CScript* _script, Delegate_S _delegate);
+	static bool PushCallBack(const wstring& _detectorName, CGameObject* _target, CScript* _receiver,
+							 Delegate_S _callback);
 
 public:
 	virtual void tick() override;
@@ -26,9 +30,9 @@ public:
 	virtual void EndOverlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider) {}
 
 public:
-	CLONE(CEventDetector);
-	CEventDetector();
-	~CEventDetector();
+	CLONE(CEventListener);
+	CEventListener();
+	~CEventListener();
 
 private:
 	bool ComponentCheck();

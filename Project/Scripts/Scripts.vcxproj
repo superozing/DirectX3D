@@ -176,7 +176,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CDamageFont.h" />
     <ClInclude Include="CDialog.h" />
     <ClInclude Include="CEditorCameraMoveScript.h" />
-    <ClInclude Include="CEventDetector.h" />
+    <ClInclude Include="CEventListener.h" />
     <ClInclude Include="CGameMode.h" />
     <ClInclude Include="CHaloScript.h" />
     <ClInclude Include="CImageUIScript.h" />
@@ -219,7 +219,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CDamageFont.cpp" />
     <ClCompile Include="CDialog.cpp" />
     <ClCompile Include="CEditorCameraMoveScript.cpp" />
-    <ClCompile Include="CEventDetector.cpp" />
+    <ClCompile Include="CEventListener.cpp" />
     <ClCompile Include="CHaloScript.cpp" />
     <ClCompile Include="CImageUIScript.cpp" />
     <ClCompile Include="CLevelTransition.cpp" />

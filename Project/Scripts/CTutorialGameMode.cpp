@@ -4,14 +4,14 @@
 #include <Engine\CLevelMgr.h>
 #include <Engine\CLevel.h>
 
-#include "CEventDetector.h"
+#include "CEventListener.h"
 
 static string state = "";
 
-#define EvntListnerToDash L"EventListner1"
-#define EvntListnerToShooting L"EventListner2"
-#define EvntListnerToCombatFirst L"EventListner3"
-#define EvntListnerToCombatSecond L"EventListner4"
+#define EvntListnerToDash L"EventListener1"
+#define EvntListnerToShooting L"EventListener2"
+#define EvntListnerToCombatFirst L"EventListener3"
+#define EvntListnerToCombatSecond L"EventListener4"
 
 CTutorialGameMode::CTutorialGameMode()
 	: CGameMode((UINT)SCRIPT_TYPE::TUTORIALGAMEMODE)
@@ -38,12 +38,15 @@ void CTutorialGameMode::begin()
 	m_FSM->Begin();
 
 	// 이벤트 디텍팅 예제
-	CGameObject* pEventLisnter = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"EventListner");
+	CGameObject* pPlayer = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Azusa");
 
-	CEventDetector::PushCallBack(EvntListnerToDash, this, (Delegate_S)&CTutorialGameMode::ChangeToDash);
-	CEventDetector::PushCallBack(EvntListnerToShooting, this, (Delegate_S)&CTutorialGameMode::ChangeToShooting);
-	CEventDetector::PushCallBack(EvntListnerToCombatFirst, this, (Delegate_S)&CTutorialGameMode::ChangeToCombatFirst);
-	CEventDetector::PushCallBack(EvntListnerToCombatSecond, this, (Delegate_S)&CTutorialGameMode::ChangeToCombatSecond);
+	CEventListener::PushCallBack(EvntListnerToDash, pPlayer, this, (Delegate_S)&CTutorialGameMode::ChangeToDash);
+	CEventListener::PushCallBack(EvntListnerToShooting, pPlayer, this,
+								 (Delegate_S)&CTutorialGameMode::ChangeToShooting);
+	CEventListener::PushCallBack(EvntListnerToCombatFirst, pPlayer, this,
+								 (Delegate_S)&CTutorialGameMode::ChangeToCombatFirst);
+	CEventListener::PushCallBack(EvntListnerToCombatSecond, pPlayer, this,
+								 (Delegate_S)&CTutorialGameMode::ChangeToCombatSecond);
 }
 
 void CTutorialGameMode::tick()
@@ -168,56 +171,52 @@ void CTutorialGameMode::CombatSecondEnd()
 bool CTutorialGameMode::ClearBasicMove()
 {
 	m_arrIsClear[(UINT)TutorialState::BasicMove] = true;
+	return false;
 }
 
 void CTutorialGameMode::ChangeToDash()
 {
 	if (m_arrIsClear[m_FSM->GetCurState()])
 		m_FSM->SetCurState((int)TutorialState::Dash);
-	else
-		CEventDetector::PushCallBack(EvntListnerToDash, this, (Delegate_S)&CTutorialGameMode::ChangeToDash);
 }
 
 bool CTutorialGameMode::ClearDash()
 {
-	m_arrIsClear[(UINT)TutorialState::Dash] = true;
+	return false;
 }
 
 void CTutorialGameMode::ChangeToShooting()
 {
 	if (m_arrIsClear[m_FSM->GetCurState()])
 		m_FSM->SetCurState((int)TutorialState::Shooting);
-	else
-		CEventDetector::PushCallBack(EvntListnerToDash, this, (Delegate_S)&CTutorialGameMode::ChangeToShooting);
 }
 
 bool CTutorialGameMode::ClearShooting()
 {
 	m_arrIsClear[(UINT)TutorialState::Shooting] = true;
+	return false;
 }
 
 void CTutorialGameMode::ChangeToCombatFirst()
 {
 	if (m_arrIsClear[m_FSM->GetCurState()])
 		m_FSM->SetCurState((int)TutorialState::CombatFirst);
-	else
-		CEventDetector::PushCallBack(EvntListnerToDash, this, (Delegate_S)&CTutorialGameMode::ChangeToCombatFirst);
 }
 
 bool CTutorialGameMode::ClearCombatFirst()
 {
 	m_arrIsClear[(UINT)TutorialState::CombatFirst] = true;
+	return false;
 }
 
 void CTutorialGameMode::ChangeToCombatSecond()
 {
 	if (m_arrIsClear[m_FSM->GetCurState()])
 		m_FSM->SetCurState((int)TutorialState::CombatSecond);
-	else
-		CEventDetector::PushCallBack(EvntListnerToDash, this, (Delegate_S)&CTutorialGameMode::ChangeToCombatSecond);
 }
 
 bool CTutorialGameMode::ClearCombatSecond()
 {
 	m_arrIsClear[(UINT)TutorialState::CombatSecond] = true;
+	return false;
 }
