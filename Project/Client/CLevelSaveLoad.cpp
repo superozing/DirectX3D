@@ -472,6 +472,8 @@ CGameObject* CLevelSaveLoad::LoadGameObject(ifstream& fin)
 		Utils::GetLineUntilString(fin, TagScriptName);
 		getline(fin, str);
 		CScript* pScript = CScriptMgr::GetScript(ToWString(str));
+		if (!pScript)
+			continue;
 		pScript->LoadFromFile(fin);
 		pObject->AddComponent(pScript);
 	}
