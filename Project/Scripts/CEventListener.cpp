@@ -50,7 +50,7 @@ void CEventListener::tick()
 		if (m_vecEvent.size() == 0)
 			GamePlayStatic::DrawDebugCube(Transform()->GetWorldMat(), Vec3(0.f, 1.f, 1.f), false);
 		else
-			GamePlayStatic::DrawDebugCube(Transform()->GetWorldMat(), Vec3(1.f, 0.f, 1.f), false);
+			GamePlayStatic::DrawDebugCube(Transform()->GetWorldMat(), Vec3(1.f, 1.f, 0.f), false);
 	}
 }
 
