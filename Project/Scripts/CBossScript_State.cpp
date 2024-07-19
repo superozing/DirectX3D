@@ -43,6 +43,9 @@ void CBossScript::NormalAttackStartBegin()
 
 int CBossScript::NormalAttackStartUpdate()
 {
+	if (!Animator3D()->IsPlayable())
+		return (int)BOSS_STATE::NormalAttackIng;
+
 	return m_FSM->GetCurState();
 }
 
@@ -57,9 +60,8 @@ void CBossScript::NormalAttackIngBegin()
 
 int CBossScript::NormalAttackIngUpdate()
 {
-	// 애니메이션 종료시 AttackDelay상태로 전환
 	if (!Animator3D()->IsPlayable())
-		return (int)BOSS_STATE::NormalAttackDelay;
+		return (int)BOSS_STATE::NormalAttackEnd;
 
 	return m_FSM->GetCurState();
 }
@@ -75,7 +77,6 @@ void CBossScript::NormalAttackDelayBegin()
 
 int CBossScript::NormalAttackDelayUpdate()
 {
-	// 애니메이션 종료시 AttackEnd상태로 전환
 	if (!Animator3D()->IsPlayable())
 		return (int)BOSS_STATE::NormalAttackEnd;
 
@@ -105,7 +106,6 @@ void CBossScript::NormalAttackEndEnd()
 
 #pragma endregion
 
-
 #pragma region EXs
 
 void CBossScript::EXs1Begin()
@@ -115,6 +115,9 @@ void CBossScript::EXs1Begin()
 
 int CBossScript::EXs1Update()
 {
+	if (!Animator3D()->IsPlayable())
+		return (int)BOSS_STATE::NormalIdle;
+
 	return m_FSM->GetCurState();
 }
 
@@ -129,6 +132,9 @@ void CBossScript::EXs2Begin()
 
 int CBossScript::EXs2Update()
 {
+	if (!Animator3D()->IsPlayable())
+		return (int)BOSS_STATE::NormalIdle;
+
 	return m_FSM->GetCurState();
 }
 
@@ -143,6 +149,9 @@ void CBossScript::EXs3Begin()
 
 int CBossScript::EXs3Update()
 {
+	if (!Animator3D()->IsPlayable())
+		return (int)BOSS_STATE::NormalIdle;
+
 	return m_FSM->GetCurState();
 }
 
@@ -157,6 +166,9 @@ void CBossScript::EXs4Begin()
 
 int CBossScript::EXs4Update()
 {
+	if (!Animator3D()->IsPlayable())
+		return (int)BOSS_STATE::NormalIdle;
+
 	return m_FSM->GetCurState();
 }
 
@@ -171,6 +183,9 @@ void CBossScript::EXs5Begin()
 
 int CBossScript::EXs5Update()
 {
+	if (!Animator3D()->IsPlayable())
+		return (int)BOSS_STATE::NormalIdle;
+
 	return m_FSM->GetCurState();
 }
 
@@ -179,7 +194,6 @@ void CBossScript::EXs5End()
 }
 
 #pragma endregion
-
 
 #pragma region Vital
 
@@ -204,6 +218,11 @@ void CBossScript::VitalGroggyBegin()
 
 int CBossScript::VitalGroggyUpdate()
 {
+	if (!m_BossStatus.IsDead && !Animator3D()->IsPlayable())
+		return (int)BOSS_STATE::NormalIdle;
+	else if (m_BossStatus.IsDead)
+		return (int)BOSS_STATE::VitalGroggyDeath;
+
 	return m_FSM->GetCurState();
 }
 
@@ -226,7 +245,6 @@ void CBossScript::VitalGroggyDeathEnd()
 }
 
 #pragma endregion
-
 
 #pragma region BattleReady
 

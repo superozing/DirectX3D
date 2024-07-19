@@ -23,30 +23,18 @@ enum class BOSS_STATE
 	END,
 };
 
-enum class BOSS_GAMESTATE
-{
-	BATTLEREADY,
-	IDLE,
-	ATTACK,
-	EXS,
-	GROGGY,
-	DEATH,
-	GROGGYDEATH,
-
-	END,
-};
-
 struct tBossStatus
 {
 	float MaxHP = 1000.f;
 	float CurHP = MaxHP;
 
 	float ATTDamage = 10.f;
-	float ATTSpeed = 1.f;
+	float ATTSpeed	= 2.f;
 
 	float EXsCoolTime = 5.f;
 
-	bool IsDead = false;
+	bool IsGroggy = false;
+	bool IsDead	  = false;
 };
 
 template <typename T> class CRoRStateMachine;
@@ -63,9 +51,11 @@ private:
 	bool m_ActiveAttack;
 	bool m_ActiveEXs;
 
-	BOSS_GAMESTATE m_GameState;
+	// @@디버그용
+	int m_EXsType; // 현재 선택된 EX 타입
 
 #pragma region About State
+
 public:
 	void NormalIdleBegin();
 	int	 NormalIdleUpdate();
@@ -77,7 +67,7 @@ public:
 
 	void NormalAttackStartBegin();
 	int	 NormalAttackStartUpdate();
-	void NormalAttackStartEnd();	
+	void NormalAttackStartEnd();
 	void NormalAttackIngBegin();
 	int	 NormalAttackIngUpdate();
 	void NormalAttackIngEnd();
@@ -120,6 +110,7 @@ public:
 	void Ready2Begin();
 	int	 Ready2Update();
 	void Ready2End();
+
 #pragma endregion
 
 public:
@@ -127,9 +118,6 @@ public:
 	void CheckNormalAttack();
 	void CheckEXs();
 	void CheckVital();
-
-	void		   SetBossGameState(BOSS_GAMESTATE _state) { m_GameState = _state; }
-	BOSS_GAMESTATE GetBossGameState() { return m_GameState; }
 
 public:
 	virtual void begin() override;
