@@ -8,11 +8,6 @@
 
 static string state = "";
 
-#define EvntListnerToDash L"EventListener1"
-#define EvntListnerToShooting L"EventListener2"
-#define EvntListnerToCombatFirst L"EventListener3"
-#define EvntListnerToCombatSecond L"EventListener4"
-
 CTutorialGameMode::CTutorialGameMode()
 	: CGameMode((UINT)SCRIPT_TYPE::TUTORIALGAMEMODE)
 {
@@ -36,17 +31,6 @@ CTutorialGameMode::~CTutorialGameMode()
 void CTutorialGameMode::begin()
 {
 	m_FSM->Begin();
-
-	// 이벤트 디텍팅 예제
-	CGameObject* pPlayer = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Azusa");
-
-	CEventListener::PushCallBack(EvntListnerToDash, pPlayer, this, (Delegate_S)&CTutorialGameMode::ChangeToDash);
-	CEventListener::PushCallBack(EvntListnerToShooting, pPlayer, this,
-								 (Delegate_S)&CTutorialGameMode::ChangeToShooting);
-	CEventListener::PushCallBack(EvntListnerToCombatFirst, pPlayer, this,
-								 (Delegate_S)&CTutorialGameMode::ChangeToCombatFirst);
-	CEventListener::PushCallBack(EvntListnerToCombatSecond, pPlayer, this,
-								 (Delegate_S)&CTutorialGameMode::ChangeToCombatSecond);
 }
 
 void CTutorialGameMode::tick()

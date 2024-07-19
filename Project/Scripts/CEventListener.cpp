@@ -5,49 +5,38 @@
 #include <Engine\CLevel.h>
 #include <Engine\CLogMgr.h>
 
+static string strNotation = "This Is EvenetListen Script";
 CEventListener::CEventListener()
 	: CScript((UINT)SCRIPT_TYPE::EVENTLISTENER)
 	, m_bDrawing(true)
 {
 	AppendScriptParam("Draw", SCRIPT_PARAM::BOOL, &m_bDrawing);
+	AppendScriptParam("", SCRIPT_PARAM::STRING, &strNotation);
 }
 
 CEventListener::~CEventListener()
 {
 }
 
-void CEventListener::PushCallBack(CGameObject* _target, CScript* _receiver, Delegate_S _callback)
+void CEventListener::AddTarget(SCRIPT_TYPE _type)
 {
-	m_vecEvent.push_back({_target, _receiver, _callback});
+	auto iter = find(m_vecTargets.begin(), m_vecTargets.end(), _type);
+	if (iter == m_vecTargets.end())
+		m_vecTargets.push_back(_type);
 }
 
-bool CEventListener::PushCallBack(const wstring& _detectorName, CGameObject* _target, CScript* _receiver,
-								  Delegate_S _callback)
+void CEventListener::SubTarget(SCRIPT_TYPE _type)
 {
-	// 이벤트 디텍팅 예제
-	CGameObject* pEventLisnter = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(_detectorName);
-
-	if (pEventLisnter)
-	{
-		CEventListener* pEventScript = pEventLisnter->GetScript<CEventListener>();
-		if (pEventScript)
-			pEventScript->PushCallBack(_target, _receiver, _callback);
-		else
-			return false;
-	}
-	else
-	{
-		return false;
-	}
-
-	return true;
+	auto iter = find(m_vecTargets.begin(), m_vecTargets.end(), _type);
+	if (iter == m_vecTargets.end())
+		m_vecTargets.erase(iter);
 }
 
 void CEventListener::tick()
 {
 	if (m_bDrawing)
 	{
-		if (m_vecEvent.size() == 0)
+		if (HasTargets())
 			GamePlayStatic::DrawDebugCube(Transform()->GetWorldMat(), Vec3(0.f, 1.f, 1.f), false);
 		else
 			GamePlayStatic::DrawDebugCube(Transform()->GetWorldMat(), Vec3(1.f, 1.f, 0.f), false);
@@ -59,25 +48,38 @@ void CEventListener::begin()
 	if (!ComponentCheck())
 		return;
 
-	GetOwner()->DeleteComponent(COMPONENT_TYPE::MESHRENDER);
+	if (MeshRender())
+		GetOwner()->DeleteComponent(COMPONENT_TYPE::MESHRENDER);
 }
 
 void CEventListener::BeginOverlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider)
 {
-	for (auto iter = m_vecEvent.begin(); iter != m_vecEvent.end();)
+	for (size_t i = 0; i < m_vecTargets.size(); i++)
 	{
-		if (iter->Target == _OtherObj)
+		auto scripts = _OtherObj->GetScripts();
+		for (size_t j = 0; j < scripts.size(); j++)
 		{
-			auto data = *iter;
-
-			if (data.Reciever && data.Callback)
-				(data.Reciever->*data.Callback)();
-
-			iter = m_vecEvent.erase(iter);
+			if (scripts[j]->GetScriptType() == (UINT)m_vecTargets[i])
+			{
+				m_iInternalTargetCnt++;
+				return;
+			}
 		}
-		else
+	}
+}
+
+void CEventListener::EndOverlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider)
+{
+	for (size_t i = 0; i < m_vecTargets.size(); i++)
+	{
+		auto scripts = _OtherObj->GetScripts();
+		for (size_t j = 0; j < scripts.size(); j++)
 		{
-			++iter;
+			if (scripts[j]->GetScriptType() == (UINT)m_vecTargets[i])
+			{
+				m_iInternalTargetCnt--;
+				return;
+			}
 		}
 	}
 }
@@ -105,22 +107,4 @@ bool CEventListener::ComponentCheck()
 		return false;
 	}
 	return true;
-}
-
-void CEventListener::Example()
-{
-	// 이벤트 디텍팅 예제
-	CGameObject* pEventLisnter = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"EventListner");
-	CGameObject* pPlayer	   = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"azusa");
-	if (pEventLisnter)
-	{
-		CEventListener* pEventScript = pEventLisnter->GetScript<CEventListener>();
-		if (pEventScript)
-			pEventScript->PushCallBack(pPlayer, this, (Delegate_S)&CEventListener::eventTestFunc);
-	}
-}
-
-void CEventListener::eventTestFunc()
-{
-	CLogMgr::GetInst()->AddLog(Log_Level::WARN, L"Event Success");
 }
