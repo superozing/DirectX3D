@@ -121,6 +121,9 @@
       <Filter>Scripts\Event</Filter>
     </ClInclude>
     <ClInclude Include="CEventListener.h" />
+    <ClInclude Include="strings.h">
+      <Filter>Default</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
