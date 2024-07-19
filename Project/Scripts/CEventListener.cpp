@@ -172,18 +172,3 @@ bool CEventListener::ComponentCheck()
 	}
 	return true;
 }
-
-void CEventListener::Test()
-{
-	if (KEY_TAP(_1))
-	{
-		static int addtype = 0;
-		AddTarget((SCRIPT_TYPE)addtype++);
-	}
-
-	if (KEY_TAP(_2))
-	{
-		static int subtype = 0;
-		SubTarget((SCRIPT_TYPE)subtype++);
-	}
-}

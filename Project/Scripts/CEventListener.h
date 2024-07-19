@@ -55,7 +55,4 @@ public:
 private:
 	/// @brief 필요한 컴포넌트들을 모두 보유하는지 검사합니다.
 	bool ComponentCheck();
-
-	/// @brief 개발된 기능들을 검사하기 위한 함수입니다.
-	void Test();
 };
