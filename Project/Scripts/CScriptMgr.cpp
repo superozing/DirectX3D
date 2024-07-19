@@ -36,6 +36,7 @@
 #include "CLevelTransition.h"
 #include "CTutorialGameMode.h"
 #include "CCoverObject.h"
+#include "CCoverUI.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -74,6 +75,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CLevelTransition");
 	_vec.push_back(L"CTutorialGameMode");
 	_vec.push_back(L"CCoverObject");
+	_vec.push_back(L"CCoverUI");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -148,6 +150,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CTutorialGameMode;
 	if (L"CCoverObject" == _strScriptName)
 		return new CCoverObject;
+	if (L"CCoverUI" == _strScriptName)
+		return new CCoverUI;
 	return nullptr;
 }
 
@@ -259,6 +263,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::COVEROBJECT:
 		return new CCoverObject;
+		break;
+	case (UINT)SCRIPT_TYPE::COVERUI:
+		return new CCoverUI;
 		break;
 	}
 	return nullptr;
@@ -406,6 +413,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::COVEROBJECT:
 		return L"CCoverObject";
+		break;
+
+	case SCRIPT_TYPE::COVERUI:
+		return L"CCoverUI";
 		break;
 
 	}

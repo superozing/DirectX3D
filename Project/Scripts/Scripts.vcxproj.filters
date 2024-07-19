@@ -120,9 +120,12 @@
     <ClInclude Include="CCoverObject.h">
       <Filter>Scripts\Event</Filter>
     </ClInclude>
-    <ClInclude Include="CEventListener.h" />
     <ClInclude Include="strings.h">
       <Filter>Default</Filter>
+    </ClInclude>
+    <ClInclude Include="CEventListener.h" />
+    <ClInclude Include="CCoverUI.h">
+      <Filter>Scripts\Event</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -248,6 +251,9 @@
       <Filter>Scripts\Event</Filter>
     </ClCompile>
     <ClCompile Include="CEventListener.cpp" />
+    <ClCompile Include="CCoverUI.cpp">
+      <Filter>Scripts\Event</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
