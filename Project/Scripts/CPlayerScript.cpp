@@ -235,6 +235,30 @@ void CPlayerScript::InitSpringArmSetting()
 
 #include <Engine/CRenderMgr.h>
 
+void CPlayerScript::SetCoverType(CoverType _type)
+{
+	m_iCorverType = _type;
+
+	PLAYER_STATE state;
+	switch (_type)
+	{
+	case CoverType::Normal:
+		state = PLAYER_STATE::NormalIdle;
+		break;
+	case CoverType::Stand:
+		state = PLAYER_STATE::StandIdle;
+		break;
+	case CoverType::Kneel:
+		state = PLAYER_STATE::StandIdle;
+		break;
+	case CoverType::End:
+		break;
+	default:
+		break;
+	}
+	m_FSM->SetCurState((int)state);
+}
+
 void CPlayerScript::begin()
 {
 	auto vecChild = GetOwner()->GetChild();

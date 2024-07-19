@@ -221,8 +221,15 @@ public:
 	bool IsDead() { return m_tStatus.IsDead; }
 #pragma endregion
 
-	void	  SetCoverType(CoverType _type) { m_iCorverType = _type; }
+	void	  SetCoverType(CoverType _type);
 	CoverType GetCoverType() { return m_iCorverType; }
+	bool	  IsRight() { return Transform()->GetRelativeScale().x > 0.f; }
+	void	  SetRight(bool _right)
+	{
+		Vec3 vScale = Transform()->GetRelativeScale();
+		vScale.x	= _right ? abs(vScale.x) : -abs(vScale.x);
+		Transform()->SetRelativeScale(vScale);
+	}
 
 public:
 	virtual void begin() override;
