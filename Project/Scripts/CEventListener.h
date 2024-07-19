@@ -40,9 +40,12 @@ public:
 
 	/// @brief 판정하는 스크립트를 갖고있다면 카운트를 증가시킵니다.
 	virtual void BeginOverlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider) override;
-	virtual void Overlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider) {}
+	// virtual void Overlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider) {}
 	/// @brief 판정하는 스크립트를 갖고있다면 카운트를 감소시킵니다.
 	virtual void EndOverlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider) override;
+
+	virtual void SaveToFile(ofstream& fout) override;
+	virtual void LoadFromFile(ifstream& fin) override;
 
 public:
 	CLONE(CEventListener);

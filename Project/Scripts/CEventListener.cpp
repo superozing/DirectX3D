@@ -122,6 +122,32 @@ void CEventListener::EndOverlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhys
 	}
 }
 
+#define TagTargets "[TargetScripts]"
+void CEventListener::SaveToFile(ofstream& fout)
+{
+	fout << TagTargets << endl;
+	fout << m_vecTargets.size() << endl;
+	for (size_t i = 0; i < m_vecTargets.size(); i++)
+	{
+		fout << m_vecScriptNames[i] << endl;
+	}
+}
+
+void CEventListener::LoadFromFile(ifstream& fin)
+{
+	Utils::GetLineUntilString(fin, TagTargets);
+	string str;
+	getline(fin, str);
+	int size = stoi(str);
+
+	for (size_t i = 0; i < size; i++)
+	{
+		getline(fin, str);
+		auto type = magic_enum::enum_cast<SCRIPT_TYPE>(str);
+		AddTarget(type.value());
+	}
+}
+
 bool CEventListener::ComponentCheck()
 {
 	wstring msg;
