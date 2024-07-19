@@ -75,6 +75,8 @@ struct PlayerStatus
 	float CriticalDamage  = 1.2f;
 
 	bool IsDead = false;
+
+	bool Invincibility = false;
 };
 
 template <typename T> class CRoRStateMachine;
@@ -96,13 +98,23 @@ private:
 
 public:
 #pragma region StatusFunc
+	/// @brief 현재 무적 여부를 리턴합니다.
+	bool IsInvincivility() { return m_tStatus.Invincibility; }
+
+	/// @brief 무적 판정을 결정합니다.
+	void SetInvincivility(bool _invincivility) { m_tStatus.Invincibility = _invincivility; }
+
 	/// @brief 플레이어 캐릭터에 파라미터 만큼 데미지를 줍니다. 현재 체력이 0 이하로 떨어지면 Dead상태로 만듭니다.
 	/// 아직은 회피율을 계산하지 않습니다.
-	void Hit(float _damage)
+	bool Hit(float _damage)
 	{
+		if (IsInvincivility())
+			return false;
+
 		m_tStatus.curHealth -= _damage;
 		if (m_tStatus.curHealth <= 0.f)
 			m_tStatus.IsDead = true;
+		return true;
 	}
 	/// @brief 플레이어 캐릭터에게 파라미터 만큼 회복을 합니다. 최대체력 캡이 보장됩니다.
 	void Recursive(float _heal)

@@ -778,6 +778,7 @@ void CPlayerScript::SkillDashBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::SkillDash, 0);
 	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::SkillDash]);
+	SetInvincivility(true);
 }
 
 int CPlayerScript::SkillDashUpdate()
@@ -792,7 +793,7 @@ int CPlayerScript::SkillDashUpdate()
 		float fCurSpeed;
 		int	  iGroudnTapFrm = 20;
 
-		// 땅에 닿는 순간을 분기점으로 스피드 변경
+		// 땅에 닿는 순간을 분기점으로 스피드 변경 + 무적 판정 해제
 		if (curFrm < iGroudnTapFrm)
 		{
 			fCurSpeed =
@@ -802,6 +803,7 @@ int CPlayerScript::SkillDashUpdate()
 		{
 			fCurSpeed = RoRMath::SmoothStep(m_tStatus.DashGroundSpeed, m_tStatus.DashMinSpeed,
 											(float)(curFrm - iGroudnTapFrm) / (maxFrm - iGroudnTapFrm));
+			SetInvincivility(true);
 		}
 
 		Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
