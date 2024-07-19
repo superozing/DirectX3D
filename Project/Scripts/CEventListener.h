@@ -6,6 +6,13 @@ class CEventListener : public CScript
 private:
 	/// @brief 판정하고싶은 스크립트들을 갖고있는 벡터입니다.
 	vector<SCRIPT_TYPE> m_vecTargets;
+	/// @brief 에디터 창에서 보여지는 타겟 스크립트들 이름 벡터입니다.
+	vector<string> m_vecScriptNames;
+	int			   m_iNamesIdx;
+
+	/// @brief 에디터 창에서 타겟을 추가하기 위해 모든 목록의 스크립트를 갖고있는 벡터입니다.
+	vector<string> m_vecAllScriptNames;
+	int			   m_iAllNamesIdx;
 
 	/// @brief 판정하는 바운더리 안에 있는 해당 스크립트를 갖고있는 오브젝트 개수입니다.
 	int m_iInternalTargetCnt;
@@ -22,6 +29,10 @@ public:
 	const vector<SCRIPT_TYPE>& GetTargets() { return m_vecTargets; }
 
 	bool HasTargets() { return m_iInternalTargetCnt; }
+
+public:
+	void AddTargetEditor();
+	void SubTargetEditor();
 
 public:
 	virtual void tick() override;
@@ -41,4 +52,7 @@ public:
 private:
 	/// @brief 필요한 컴포넌트들을 모두 보유하는지 검사합니다.
 	bool ComponentCheck();
+
+	/// @brief 개발된 기능들을 검사하기 위한 함수입니다.
+	void Test();
 };
