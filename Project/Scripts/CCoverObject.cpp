@@ -2,7 +2,7 @@
 #include "CCoverObject.h"
 
 CCoverObject::CCoverObject()
-	: CScript((UINT)SCRIPT_TYPE::COVEROBJECT)
+	: CEventListener((UINT)SCRIPT_TYPE::COVEROBJECT)
 {
 }
 
@@ -16,6 +16,8 @@ void CCoverObject::begin()
 
 void CCoverObject::tick()
 {
+	CEventListener::tick();
+
 	Vec3 vPos	= Transform()->GetRelativePos();
 	Vec3 vScale = Transform()->GetRelativeScale();
 	Vec3 vRot	= Transform()->GetRelativeRotation();

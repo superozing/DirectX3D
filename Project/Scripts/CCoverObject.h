@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include <Engine\CScript.h>
+#include "CEventListener.h"
 
-class CCoverObject : public CScript
+class CCoverObject : public CEventListener
 {
 public:
 	virtual void begin() override;

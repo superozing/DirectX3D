@@ -7,8 +7,8 @@
 
 static string strNotation = "This Is EvenetListen Script";
 
-CEventListener::CEventListener()
-	: CScript((UINT)SCRIPT_TYPE::EVENTLISTENER)
+CEventListener::CEventListener(UINT _type)
+	: CScript((UINT)_type)
 	, m_bDrawing(true)
 {
 	AppendScriptParam("Draw", SCRIPT_PARAM::BOOL, &m_bDrawing);
@@ -77,8 +77,6 @@ void CEventListener::tick()
 		else
 			GamePlayStatic::DrawDebugCube(Transform()->GetWorldMat(), Vec3(1.f, 1.f, 0.f), false);
 	}
-
-	Test();
 }
 
 void CEventListener::begin()

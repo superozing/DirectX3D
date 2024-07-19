@@ -33,9 +33,9 @@
 #include "CPlayerScript.h"
 #include "CDialog.h"
 #include "CPlayerDamagedScript.h"
-#include "CEventListener.h"
 #include "CLevelTransition.h"
 #include "CTutorialGameMode.h"
+#include "CCoverObject.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -71,12 +71,12 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPlayerScript");
 	_vec.push_back(L"CDialog");
 	_vec.push_back(L"CPlayerDamagedScript");
-	_vec.push_back(L"CEventListener");
 	_vec.push_back(L"CLevelTransition");
 	_vec.push_back(L"CTutorialGameMode");
+	_vec.push_back(L"CCoverObject");
 }
 
-CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
+CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 {
 	if (L"CBackgroundScript" == _strScriptName)
 		return new CBackgroundScript;
@@ -142,16 +142,16 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CDialog;
 	if (L"CPlayerDamagedScript" == _strScriptName)
 		return new CPlayerDamagedScript;
-	if (L"CEventListener" == _strScriptName)
-		return new CEventListener;
 	if (L"CLevelTransition" == _strScriptName)
 		return new CLevelTransition;
 	if (L"CTutorialGameMode" == _strScriptName)
 		return new CTutorialGameMode;
+	if (L"CCoverObject" == _strScriptName)
+		return new CCoverObject;
 	return nullptr;
 }
 
-CScript* CScriptMgr::GetScript(UINT _iScriptType)
+CScript * CScriptMgr::GetScript(UINT _iScriptType)
 {
 	switch (_iScriptType)
 	{
@@ -251,20 +251,20 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::PLAYERDAMAGEDSCRIPT:
 		return new CPlayerDamagedScript;
 		break;
-	case (UINT)SCRIPT_TYPE::EVENTLISTENER:
-		return new CEventListener;
-		break;
 	case (UINT)SCRIPT_TYPE::LEVELTRANSITION:
 		return new CLevelTransition;
 		break;
 	case (UINT)SCRIPT_TYPE::TUTORIALGAMEMODE:
 		return new CTutorialGameMode;
 		break;
+	case (UINT)SCRIPT_TYPE::COVEROBJECT:
+		return new CCoverObject;
+		break;
 	}
 	return nullptr;
 }
 
-const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
+const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 {
 	switch ((SCRIPT_TYPE)_pScript->GetScriptType())
 	{
@@ -396,16 +396,16 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CPlayerDamagedScript";
 		break;
 
-	case SCRIPT_TYPE::EVENTLISTENER:
-		return L"CEventListener";
-		break;
-
 	case SCRIPT_TYPE::LEVELTRANSITION:
 		return L"CLevelTransition";
 		break;
 
 	case SCRIPT_TYPE::TUTORIALGAMEMODE:
 		return L"CTutorialGameMode";
+		break;
+
+	case SCRIPT_TYPE::COVEROBJECT:
+		return L"CCoverObject";
 		break;
 
 	}
