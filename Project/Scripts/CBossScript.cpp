@@ -1,9 +1,13 @@
 ﻿#include "pch.h"
 #include "CBossScript.h"
 
+#include <Engine\CLevelMgr.h>
+#include <Engine\CLevel.h>
 #include <Engine\CTimeMgr.h>
 #include <Engine\CRandomMgr.h>
+#include <Engine\CAssetMgr.h>
 #include "CRoRStateMachine.h"
+#include "CMegaFistScript.h"
 
 static string DebugState = "";
 
@@ -15,6 +19,7 @@ CBossScript::CBossScript()
 	, m_ActiveAttack(false)
 	, m_ActiveEXs(false)
 	, m_EXsType(0)
+	, m_Target(nullptr)
 {
 	AppendScriptParam("CurState    ", SCRIPT_PARAM::STRING, &DebugState);
 
@@ -36,6 +41,8 @@ void CBossScript::begin()
 {
 	m_FSM->Begin();
 	m_FSM->SetCurState((int)BOSS_STATE::NormalIdle);
+
+	m_Target = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Azusa");
 }
 
 void CBossScript::tick()
@@ -48,11 +55,6 @@ void CBossScript::tick()
 		// 평타, 스킬 쿨타임 체크
 		CheckDuration();
 	}
-	//// NormalAttack 상태
-	// CheckNormalAttack();
-
-	//// EXs 상태
-	// CheckEXs();
 
 	// Vital 상태
 	CheckVital();
@@ -68,6 +70,7 @@ void CBossScript::CheckDuration()
 		{
 			m_AttDuration  = 0.f;
 			m_ActiveAttack = true;
+			m_FSM->SetCurState((int)BOSS_STATE::NormalAttackStart);
 		}
 	}
 
@@ -107,24 +110,9 @@ void CBossScript::CheckDuration()
 	}
 	else if (m_ActiveAttack)
 	{
-		m_FSM->SetCurState((int)BOSS_STATE::NormalAttackStart);
-		m_ActiveAttack = false;
+		// m_FSM->SetCurState((int)BOSS_STATE::NormalAttackStart);
+		// m_ActiveAttack = false;
 	}
-}
-
-void CBossScript::CheckNormalAttack()
-{
-	auto state = m_FSM->GetCurState();
-
-	if ((int)BOSS_STATE::NormalIdle == state)
-	{
-		m_FSM->SetCurState((int)BOSS_STATE::NormalAttackStart);
-		m_AttDuration = 0.f;
-	}
-}
-
-void CBossScript::CheckEXs()
-{
 }
 
 void CBossScript::CheckVital()
@@ -138,6 +126,20 @@ void CBossScript::CheckVital()
 		m_FSM->SetCurState((int)BOSS_STATE::VitalDeath);
 	else if (m_BossStatus.IsGroggy && m_BossStatus.IsDead)
 		m_FSM->SetCurState((int)BOSS_STATE::VitalGroggyDeath);
+}
+
+void CBossScript::FireMegaFist()
+{
+	if (nullptr == m_Target)
+		return;
+
+	Vec3 HandBonePos = (Animator3D()->FindBoneMat(L"Bip001 R Hand_01") * Transform()->GetWorldMat()).Translation();
+
+	CGameObject* megafist = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Kaiten_Punch2.pref")->Instantiate();
+	megafist->GetScript<CMegaFistScript>()->InitMegaFistInfo(GetOwner(), m_Target, HandBonePos, 100.f, 100.f, 3.f, 10.f,
+															 false, true);
+	int layeridx = megafist->GetLayerIdx();
+	GamePlayStatic::SpawnGameObject(megafist, layeridx);
 }
 
 void CBossScript::InitStateMachine()

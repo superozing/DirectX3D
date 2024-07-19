@@ -44,6 +44,7 @@ class CBossScript : public CScript
 private:
 	CRoRStateMachine<CBossScript>* m_FSM;
 	tBossStatus					   m_BossStatus;
+	class CGameObject*			   m_Target;
 
 	float m_AttDuration;
 	float m_EXsDuration;
@@ -115,9 +116,14 @@ public:
 
 public:
 	void CheckDuration();
-	void CheckNormalAttack();
-	void CheckEXs();
 	void CheckVital();
+
+	void FireMegaFist();
+
+	CRoRStateMachine<CBossScript>* GetBossFSM() { return m_FSM; }
+
+	CGameObject* GetTarget() { return m_Target; }
+	void		 SetTarget(CGameObject* _Target) { m_Target = _Target; }
 
 public:
 	virtual void begin() override;

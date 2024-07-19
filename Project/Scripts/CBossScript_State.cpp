@@ -51,6 +51,7 @@ int CBossScript::NormalAttackStartUpdate()
 
 void CBossScript::NormalAttackStartEnd()
 {
+	FireMegaFist();
 }
 
 void CBossScript::NormalAttackIngBegin()
