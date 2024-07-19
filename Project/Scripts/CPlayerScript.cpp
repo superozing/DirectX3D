@@ -246,10 +246,10 @@ void CPlayerScript::SetCoverType(CoverType _type)
 		state = PLAYER_STATE::NormalIdle;
 		break;
 	case CoverType::Stand:
-		state = PLAYER_STATE::StandIdle;
+		state = PLAYER_STATE::MoveEndStand;
 		break;
 	case CoverType::Kneel:
-		state = PLAYER_STATE::StandIdle;
+		state = PLAYER_STATE::MoveEndKneel;
 		break;
 	case CoverType::End:
 		break;
