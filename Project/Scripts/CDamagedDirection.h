@@ -16,8 +16,10 @@ private:
 	// 최대 데미지를 입을 경우의 반지름
 	float m_fMaxDamageRadius;
 
-	float m_DamageRadiusRatio; 
-	
+	float m_DamageRadiusRatio;
+
+	float m_Alpha;
+
 	Vec3 m_DamagedDirection;
 
 public:
@@ -32,6 +34,7 @@ public:
 public:
 	void SetDamagedDirection(Vec3 _DamagedDirection) { m_DamagedDirection = _DamagedDirection; }
 	void SetMaxDamageRadius(float _Angle) { m_fMaxDamageRadius = _Angle; }
+	void SetAlpha(float _Alpha) { m_Alpha = _Alpha; }
 
 private:
 	void SetParentPanelUI();
