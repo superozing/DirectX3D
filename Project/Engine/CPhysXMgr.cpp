@@ -205,7 +205,7 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 		actor = gPhysics->createRigidStatic(transform);
 		// actor = PxCreatePlane(*gPhysics, PxPlane(0, 1, 0, 0), *gMaterial);
 	}
-	else if (PhysBodyType::KINEMATIC == PhysX->m_bPhysBodyType)
+	else if (PhysBodyType::TRIGGER == PhysX->m_bPhysBodyType)
 	{
 		// 운동학적 물리 객체 생성
 		// PxRigidDynamic* dynamicActor = gPhysics->createRigidDynamic(transform);
@@ -254,16 +254,16 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 
 	shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
 
-	if (PhysBodyType::RIGID == PhysX->m_bPhysBodyType)
+	if (PhysBodyType::DYNAMIC == PhysX->m_bPhysBodyType)
 	{
 		shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
 	}
-	if (PhysBodyType::KINEMATIC != PhysX->m_bPhysBodyType)
+	if (PhysBodyType::TRIGGER != PhysX->m_bPhysBodyType)
 	{
 		shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
 		shape->setRestOffset(200.f);
 	}
-	if (PhysBodyType::KINEMATIC == PhysX->m_bPhysBodyType)
+	if (PhysBodyType::TRIGGER == PhysX->m_bPhysBodyType)
 	{
 		shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
 	}

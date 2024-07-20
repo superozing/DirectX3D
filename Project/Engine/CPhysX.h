@@ -19,8 +19,8 @@ enum class PhysShape
 enum class PhysBodyType
 {
 	STATIC,
-	KINEMATIC,
-	RIGID,
+	TRIGGER,
+	DYNAMIC,
 	END,
 };
 

@@ -107,7 +107,7 @@ void CPhysX::finaltick()
 	}
 	m_bImguiDirtyFlag = false;
 
-	if (PhysBodyType::RIGID != m_bPhysBodyType)
+	if (PhysBodyType::DYNAMIC != m_bPhysBodyType)
 	{
 		updateToPhysics();
 	}
