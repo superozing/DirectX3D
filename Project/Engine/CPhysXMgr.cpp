@@ -327,6 +327,19 @@ void CPhysXMgr::tick()
 	acctime -= ThresholdTime;
 	gScene->simulate(ThresholdTime);
 	gScene->fetchResults(true);
+
+	for (auto& e : m_vecColInfo)
+	{
+		if (PxPairFlag::eNOTIFY_TOUCH_PERSISTS == e.State)
+		{
+			RoRCollisionCallback::handleOverlap(e.Actor1, e.Actor2);
+		}
+		if (PxPairFlag::eNOTIFY_TOUCH_FOUND == e.State)
+		{
+			// 다음 프레임부터 Persist처리
+			e.State = PxPairFlag::eNOTIFY_TOUCH_PERSISTS;
+		}
+	}
 }
 
 void CPhysXMgr::ClearAllActors()
@@ -355,6 +368,7 @@ void CPhysXMgr::ClearAllActors()
 void CPhysXMgr::exit()
 {
 	ClearAllActors();
+	m_vecColInfo.clear();
 }
 
 CPhysXMgr::~CPhysXMgr()
