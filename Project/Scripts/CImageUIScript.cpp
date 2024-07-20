@@ -27,7 +27,7 @@ void CImageUIScript::begin()
 
 		return;
 	}
-	GetOwner()->MeshRender()->GetDynamicMaterial(0);
+	GetOwner()->MeshRender()->GetDynamicMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_UIImg);
 }
 
 void CImageUIScript::tick()
