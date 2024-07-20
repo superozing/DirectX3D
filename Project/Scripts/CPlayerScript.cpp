@@ -304,6 +304,11 @@ void CPlayerScript::tick()
 	{
 		m_FSM->SetCurState((int)PLAYER_STATE::SkillThrow);
 	}
+
+	// if (KEY_TAP(H))
+	//{
+	//	SetRight(!IsRight());
+	// }
 }
 
 void CPlayerScript::CameraMove()
