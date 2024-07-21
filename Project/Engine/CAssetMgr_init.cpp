@@ -11,7 +11,7 @@ void CAssetMgr::init()
 
 	CreateDefaultMesh();
 
-	//CreateDefaultGraphicsShader();
+	// CreateDefaultGraphicsShader();
 
 	CreateDefaultComputeShader();
 
@@ -1514,7 +1514,8 @@ void CAssetMgr::CreateDefaultMaterial()
 	// pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DecalShader"));
 	strShaderPath = "GraphicsShader\\DecalShader.gs";
 	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
-	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
+	// pMtrl->SetTexParam(TEX_PARAM::TEX)
 	AddAsset<CMaterial>(MTRL_decal, pMtrl);
 
 	// BackgroundMtrl
@@ -1584,13 +1585,13 @@ void CAssetMgr::CreateDefaultMaterial()
 	AddAsset(L"LandScapeMtrl", pMtrl);
 
 	// StaticUIMtrl
-	pMtrl = new CMaterial(true);
+	pMtrl		  = new CMaterial(true);
 	strShaderPath = "GraphicsShader\\StaticUIShader.gs";
 	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset(L"StaticUIMtrl", pMtrl);
 
 	// DynamicUIMtrl
-	pMtrl = new CMaterial(true);
+	pMtrl		  = new CMaterial(true);
 	strShaderPath = "GraphicsShader\\DynamicUIShader.gs";
 	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset(L"DynamicUIMtrl", pMtrl);
