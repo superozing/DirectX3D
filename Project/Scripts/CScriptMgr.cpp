@@ -34,6 +34,7 @@
 #include "CPlayerScript.h"
 #include "CDialog.h"
 #include "CPlayerDamagedScript.h"
+#include "CDamagedDirection.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -70,6 +71,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPlayerScript");
 	_vec.push_back(L"CDialog");
 	_vec.push_back(L"CPlayerDamagedScript");
+	_vec.push_back(L"CDamagedDirection");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -140,6 +142,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CDialog;
 	if (L"CPlayerDamagedScript" == _strScriptName)
 		return new CPlayerDamagedScript;
+	if (L"CDamagedDirection" == _strScriptName)
+		return new CDamagedDirection;
 	return nullptr;
 }
 
@@ -245,6 +249,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::PLAYERDAMAGEDSCRIPT:
 		return new CPlayerDamagedScript;
+		break;
+	case (UINT)SCRIPT_TYPE::DAMAGEDDIRECTION:
+		return new CDamagedDirection;
 		break;
 	}
 	return nullptr;
@@ -384,6 +391,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::PLAYERDAMAGEDSCRIPT:
 		return L"CPlayerDamagedScript";
+		break;
+
+	case SCRIPT_TYPE::DAMAGEDDIRECTION:
+		return L"CDamagedDirection";
 		break;
 
 	}
