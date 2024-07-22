@@ -36,7 +36,7 @@ void CDamagedDirectionMgr::tick()
 {
 	// 매 틱마다 알파 값 줄이기
 	for (int i = 0; i < 3; ++i)
-		m_arrDamagedDirectionUI[i]->SetAlpha(m_arrDamagedDirectionUI[i]->GetAlpha() - 1.f * DT);
+		m_arrDamagedDirectionUI[i]->SetAlpha(m_arrDamagedDirectionUI[i]->GetAlpha() - DT);
 }
 
 void CDamagedDirectionMgr::SetParentPanelUI()

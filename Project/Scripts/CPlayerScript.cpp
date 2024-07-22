@@ -345,10 +345,10 @@ void CPlayerScript::tick()
 	m_pCrosshair->SetSpreadRatio(m_tStatus.SpreadRatio);
 
 	// 임시로 키 입력 시 피격 효과 추가
-	if (KEY_TAP(KEY::F))
+	if (KEY_TAP(KEY::B))
 	{
 		auto pMon = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Temp Monster Cube");
-		m_pDamagedDirectionMgr->AddDamagedDirection(pMon->Transform()->GetWorldPos(), 0.3f);
+		m_pDamagedDirectionMgr->AddDamagedDirection(pMon->Transform()->GetWorldPos(), 0.1f);
 	}
 }
 

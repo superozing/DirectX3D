@@ -65,16 +65,12 @@ void CDamagedDirection::tick()
 	// 쉐이더 코드에서 위 쪽을 기준으로 렌더링 하기 때문에, 내적 결과가 -1 일 경우 0 만큼 회전, 1 일 경우 PI 만큼 z축
 	// 회전.
 
-	// 렌더 매니저에게서 메인 카메라 가져오기
-	CGameObject* pCam = CRenderMgr::GetInst()->GetMainCam()->GetOwner();
-
 	// 몬스터로부터 플레이어의 방향 벡터
-	Vec3 MonToPlayer   = pCam->Transform()->GetWorldPos() - m_EnemyPos;
+	Vec3 MonToPlayer   = m_PlayerPos - m_EnemyPos;
 	Vec2 MonToPlayerXZ = Vec2(MonToPlayer.x, MonToPlayer.z);
 
 	// 플레이어의 front 벡터
-	Vec3 PlayerDir	 = pCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-	Vec2 PlayerDirXZ = Vec2(PlayerDir.x, PlayerDir.z);
+	Vec2 PlayerDirXZ = Vec2(m_PlayerDir.x, m_PlayerDir.z);
 
 	// 벡터 정규화
 	MonToPlayerXZ.Normalize();
@@ -141,4 +137,11 @@ void CDamagedDirection::LoadFromFile(FILE* _File)
 
 void CDamagedDirection::LoadFromFile(ifstream& fin)
 {
+}
+
+void CDamagedDirection::SetEnemyPos(Vec3 _EnemyPos)
+{
+	m_EnemyPos = _EnemyPos;
+	m_PlayerPos = CRenderMgr::GetInst()->GetMainCam()->Transform()->GetWorldPos();
+	m_PlayerDir = CRenderMgr::GetInst()->GetMainCam()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
 }
