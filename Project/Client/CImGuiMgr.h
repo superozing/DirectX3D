@@ -83,4 +83,5 @@ public:
 	void AddUI(const string& _strKey, UI* _UI);
 
 	friend class MenuUI;
+	friend class CEnvMgr;
 };
