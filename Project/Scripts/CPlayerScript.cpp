@@ -20,6 +20,7 @@
 #include "CSpringArm.h"
 
 #include "CCrosshair.h"
+#include "CDamagedDirectionMgr.h"
 
 static string state = "";
 static string cover = "";
@@ -259,7 +260,7 @@ void CPlayerScript::begin()
 
 	m_FSM->Begin();
 
-	auto pObj = new CGameObject;
+	auto pObj	 = new CGameObject;
 	m_pCrosshair = new CCrosshair;
 	pObj->AddComponent(new CTransform);
 	pObj->AddComponent(new CMeshRender);
@@ -267,6 +268,9 @@ void CPlayerScript::begin()
 	pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
 	pObj->SetName(L"Crosshair");
 	GamePlayStatic::SpawnGameObject(pObj, (UINT)LAYER::LAYER_UI);
+
+	m_pDamagedDirectionMgr = new CDamagedDirectionMgr;
+	GetOwner()->AddComponent(m_pDamagedDirectionMgr);
 }
 
 void CPlayerScript::tick()
@@ -299,33 +303,30 @@ void CPlayerScript::tick()
 	}
 
 	// 일반 Raycast
-	//int mask = RayCastDebugFlag::EndPointVisible;
+	// int mask = RayCastDebugFlag::EndPointVisible;
 
-	tRoRHitInfo hitInfo	  = {};
-	auto pMainCam = CRenderMgr::GetInst()->GetMainCam();
-	auto FrontDir  = pMainCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+	tRoRHitInfo hitInfo	 = {};
+	auto		pMainCam = CRenderMgr::GetInst()->GetMainCam();
+	auto		FrontDir = pMainCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
 
-	bool isContact =
-		CPhysXMgr::GetInst()->PerfomRaycast(pMainCam->Transform()->GetWorldPos(), 
-											FrontDir, hitInfo,
-											(UINT)LAYER::LAYER_RAYCAST, RayCastDebugFlag::AllVisible);
+	bool isContact = CPhysXMgr::GetInst()->PerfomRaycast(pMainCam->Transform()->GetWorldPos(), FrontDir, hitInfo,
+														 (UINT)LAYER::LAYER_RAYCAST, RayCastDebugFlag::AllVisible);
 
 	if (isContact)
 	{
-		//m_tStatus.SpreadRatio = RoRMath::ClampFloat(m_tStatus.SpreadRatio + 0.7f * DT, 0.f, 1.f);
+		// m_tStatus.SpreadRatio = RoRMath::ClampFloat(m_tStatus.SpreadRatio + 0.7f * DT, 0.f, 1.f);
 		m_pCrosshair->SetCrosshairColor(Vec4(255.f, 0.f, 0.f, 255.f));
 	}
 	else
 	{
-		//m_tStatus.SpreadRatio = RoRMath::ClampFloat(m_tStatus.SpreadRatio - 0.7f * DT, 0.f, 1.f);
+		// m_tStatus.SpreadRatio = RoRMath::ClampFloat(m_tStatus.SpreadRatio - 0.7f * DT, 0.f, 1.f);
 		m_pCrosshair->SetCrosshairColor(Vec4(255.f, 255.f, 255.f, 255.f));
 	}
 
 	m_pCrosshair->SetSpreadRatio(m_tStatus.SpreadRatio);
 
-
-	hitInfo = {};
-	float		MaxSpread = 0.3f;
+	hitInfo			= {};
+	float MaxSpread = 0.3f;
 
 	float RotX = m_tStatus.SpreadRatio * CRandomMgr::GetInst()->GetRandomFloat() * MaxSpread;
 	float RotY = m_tStatus.SpreadRatio * CRandomMgr::GetInst()->GetRandomFloat() * MaxSpread;
@@ -333,10 +334,8 @@ void CPlayerScript::tick()
 	FrontDir.x += RotX;
 	FrontDir.y += RotY;
 
-	bool isBulletHit =
-		CPhysXMgr::GetInst()->PerfomRaycast(pMainCam->Transform()->GetWorldPos(), 
-											FrontDir, hitInfo,
-											(UINT)LAYER::LAYER_RAYCAST, RayCastDebugFlag::AllVisible);
+	bool isBulletHit = CPhysXMgr::GetInst()->PerfomRaycast(pMainCam->Transform()->GetWorldPos(), FrontDir, hitInfo,
+														   (UINT)LAYER::LAYER_RAYCAST, RayCastDebugFlag::AllVisible);
 
 	if (isBulletHit)
 	{
@@ -344,6 +343,13 @@ void CPlayerScript::tick()
 	}
 
 	m_pCrosshair->SetSpreadRatio(m_tStatus.SpreadRatio);
+
+	// 임시로 키 입력 시 피격 효과 추가
+	if (KEY_TAP(KEY::F))
+	{
+		auto pMon = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Temp Monster Cube");
+		m_pDamagedDirectionMgr->AddDamagedDirection(pMon->Transform()->GetWorldPos(), 0.3f);
+	}
 }
 
 void CPlayerScript::CameraMove()

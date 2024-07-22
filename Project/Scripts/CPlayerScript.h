@@ -74,7 +74,7 @@ struct PlayerStatus
 	float CriticalPercent = 0.f;
 	float CriticalDamage  = 1.2f;
 
-	float SpreadRatio  = 0.f;
+	float SpreadRatio = 0.f;
 
 	bool IsDead = false;
 };
@@ -96,8 +96,9 @@ private:
 
 	map<PLAYER_STATE, SpringArmInfo> m_mSpringInfos;
 
-	class CCrosshair* m_pCrosshair;
-	
+	class CCrosshair*			m_pCrosshair;
+	class CDamagedDirectionMgr* m_pDamagedDirectionMgr;
+
 public:
 #pragma region StatusFunc
 	/// @brief 플레이어 캐릭터에 파라미터 만큼 데미지를 줍니다. 현재 체력이 0 이하로 떨어지면 Dead상태로 만듭니다.
