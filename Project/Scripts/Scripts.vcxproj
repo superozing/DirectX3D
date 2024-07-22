@@ -173,6 +173,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CCameraEffect.h" />
     <ClInclude Include="CCameraMoveScript.h" />
     <ClInclude Include="CCrosshair.h" />
+    <ClInclude Include="CDamagedDirectionMgr.h" />
     <ClInclude Include="CDamageFont.h" />
     <ClInclude Include="CDialog.h" />
     <ClInclude Include="CEditorCameraMoveScript.h" />
@@ -214,6 +215,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CCameraEffect.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
     <ClCompile Include="CCrosshair.cpp" />
+    <ClCompile Include="CDamagedDirectionMgr.cpp" />
     <ClCompile Include="CDamageFont.cpp" />
     <ClCompile Include="CDialog.cpp" />
     <ClCompile Include="CEditorCameraMoveScript.cpp" />

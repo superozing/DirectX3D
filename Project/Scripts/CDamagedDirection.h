@@ -33,8 +33,11 @@ public:
 
 public:
 	void SetDamagedDirection(Vec3 _DamagedDirection) { m_DamagedDirection = _DamagedDirection; }
-	void SetMaxDamageRadius(float _Angle) { m_fMaxDamageRadius = _Angle; }
-	void SetAlpha(float _Alpha) { m_Alpha = _Alpha; }
+	void SetMaxDamageRadius(float _Angle) { m_fMaxDamageRadius = RoRMath::ClampFloat(_Angle, 0.f, XM_2PI); }
+	void SetDamageRatio(float _Ratio) { m_DamageRadiusRatio = RoRMath::ClampFloat(_Ratio, 0.f, 1.f); }
+	void SetAlpha(float _Alpha) { m_Alpha = RoRMath::ClampFloat(_Alpha, 0.f, 1.f); }
+
+	float GetAlpha() const { return m_Alpha; }
 
 private:
 	void SetParentPanelUI();
