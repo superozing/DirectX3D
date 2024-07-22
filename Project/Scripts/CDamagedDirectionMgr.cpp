@@ -3,7 +3,7 @@
 #include "CDamagedDirection.h"
 
 CDamagedDirectionMgr::CDamagedDirectionMgr()
-	: CScript(SCRIPT_TYPE::DAMAGEDDIRECTIONMGR)
+	: CScript((UINT)SCRIPT_TYPE::DAMAGEDDIRECTIONMGR)
 {
 }
 
@@ -30,14 +30,13 @@ void CDamagedDirectionMgr::begin()
 
 		GamePlayStatic::SpawnGameObject(pObj, (UINT)LAYER::LAYER_UI);
 	}
-
-	
 }
 
 void CDamagedDirectionMgr::tick()
 {
 	// 매 틱마다 알파 값 줄이기
-	
+	for (int i = 0; i < 3; ++i)
+		m_arrDamagedDirectionUI[i]->SetAlpha(m_arrDamagedDirectionUI[i]->GetAlpha() - 1.f * DT);
 }
 
 void CDamagedDirectionMgr::SetParentPanelUI()
@@ -46,13 +45,14 @@ void CDamagedDirectionMgr::SetParentPanelUI()
 
 void CDamagedDirectionMgr::AddDamagedDirection(Vec3 _EnemyPos, float _RadiusRatio)
 {
-	m_arrDamagedDirectionUI[m_Idx]
+	m_arrDamagedDirectionUI[m_Idx]->SetAlpha(0.5f);
+	m_arrDamagedDirectionUI[m_Idx]->SetDamageRatio(_RadiusRatio);
+	m_arrDamagedDirectionUI[m_Idx]->SetEnemyPos(_EnemyPos);
 
-
-
-	
-
+	AddIdx();
 }
+
+/////
 
 void CDamagedDirectionMgr::SaveToFile(FILE* _File)
 {

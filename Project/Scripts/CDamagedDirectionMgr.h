@@ -3,11 +3,6 @@
 
 class CDamagedDirection;
 
-struct tDamagedDirectionUI
-{
-
-};
-
 // 피격 방향 UI를 관리하기 위한 스크립트
 class CDamagedDirectionMgr : public CScript
 {
