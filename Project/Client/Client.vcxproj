@@ -180,6 +180,7 @@
     <ClInclude Include="Light3DUI.h" />
     <ClInclude Include="MapTestLevel.h" />
     <ClInclude Include="MapTutorial.h" />
+    <ClInclude Include="ModelUI.h" />
     <ClInclude Include="ParticleSystemUI.h" />
     <ClInclude Include="LogUI.h" />
     <ClInclude Include="PhysXUI.h" />
@@ -242,6 +243,7 @@
     <ClCompile Include="LogUI.cpp" />
     <ClCompile Include="MapTestLevel.cpp" />
     <ClCompile Include="MapTutorial.cpp" />
+    <ClCompile Include="ModelUI.cpp" />
     <ClCompile Include="ParticleSystemUI.cpp" />
     <ClCompile Include="PhysXUI.cpp" />
     <ClCompile Include="ScriptUI.cpp" />

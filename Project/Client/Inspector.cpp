@@ -20,6 +20,7 @@
 #include "ParticleSystemUI.h"
 
 #include "AssetUI.h"
+#include "ModelUI.h"
 
 void Inspector::ResetTargetObject()
 {
@@ -160,6 +161,10 @@ void Inspector::SetTargetObject(CGameObject* _Object, bool _bPrefab)
 			m_arrComUI[i]->SetTargetObject(_Object);
 		}
 	}
+
+	auto mUI = (ModelUI*)CImGuiMgr::GetInst()->FindUI("##ModelUI");
+	if (m_arrComUI[(UINT)COMPONENT_TYPE::ANIMATOR3D] && !_bPrefab)
+		mUI->SetModel(_Object);
 
 	RefreshScriptUI();
 

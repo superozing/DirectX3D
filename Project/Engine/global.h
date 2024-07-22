@@ -11,10 +11,12 @@
 #include <list>
 #include <map>
 #include <unordered_map>
+#include <queue>
 
 using std::list;
 using std::make_pair;
 using std::map;
+using std::queue;
 using std::unordered_map;
 using std::vector;
 
