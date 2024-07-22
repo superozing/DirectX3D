@@ -14,8 +14,13 @@
 #include <Engine/CScript.h>
 
 #include "CImGuiMgr.h"
-#include "Inspector.h"
 #include "Outliner.h"
+#include "Content.h"
+#include "Inspector.h"
+#include "LogUI.h"
+#include "ModelUI.h"
+#include "RTViewPort.h"
+
 #include "TreeUI.h"
 #include "CLevelSaveLoad.h"
 
@@ -50,6 +55,8 @@ void MenuUI::render_update()
 	GameObject();
 
 	Asset();
+
+	View();
 
 	ImVec2 Blank = ImGui::GetContentRegionAvail();
 	ImGui::Dummy(ImVec2(Blank.x - 140.f, 0.f));
@@ -284,6 +291,56 @@ void MenuUI::Asset()
 		if (ImGui::MenuItem("Create Default GraphicsShader"))
 		{
 			CAssetMgr::GetInst()->SaveDefaultGraphicsShader();
+		}
+
+		ImGui::EndMenu();
+	}
+}
+
+void MenuUI::View()
+{
+	if (ImGui::BeginMenu("View"))
+	{
+		auto pOutliner = (Outliner*)CImGuiMgr::GetInst()->FindUI("##Outliner");
+		if (ImGui::MenuItem("Outliner", "", false, !pOutliner->IsActivate()))
+		{
+			pOutliner->Activate();
+		}
+
+		auto pContent = (Content*)CImGuiMgr::GetInst()->FindUI("##Content");
+		if (ImGui::MenuItem("Content", "", false, !pContent->IsActivate()))
+		{
+			pContent->Activate();
+		}
+
+		auto pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
+		if (ImGui::MenuItem("Inspector", "", false, !pInspector->IsActivate()))
+		{
+			pInspector->Activate();
+		}
+
+		auto pLogUI = (LogUI*)CImGuiMgr::GetInst()->FindUI("##LogUI");
+		if (ImGui::MenuItem("LogUI", "", false, !pLogUI->IsActivate()))
+		{
+			pLogUI->Activate();
+		}
+
+		auto pModelUI = (ModelUI*)CImGuiMgr::GetInst()->FindUI("##ModelUI");
+		if (ImGui::MenuItem("ModelUI", "", false, !pModelUI->IsActivate()))
+		{
+			pModelUI->Activate();
+		}
+
+		auto pRTViewPort = (RTViewPort*)CImGuiMgr::GetInst()->FindUI("##Viewport");
+		if (ImGui::MenuItem("RTViewPort", "", false, !pRTViewPort->IsActivate()))
+		{
+			pRTViewPort->Activate();
+		}
+
+		ImGui::Separator();
+		if (ImGui::MenuItem("ImguiDemo", "", false, !CImGuiMgr::GetInst()->m_bDemoUI))
+		{
+			CImGuiMgr::GetInst()->m_bDemoUI = true;
 		}
 
 		ImGui::EndMenu();

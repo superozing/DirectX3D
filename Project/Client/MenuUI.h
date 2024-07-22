@@ -12,6 +12,7 @@ private:
 	void Level();
 	void GameObject();
 	void Asset();
+	void View();
 	void ScreenControl();
 	void GameStart();
 	void GameStop();
