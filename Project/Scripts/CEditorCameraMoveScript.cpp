@@ -48,12 +48,12 @@ void CEditorCameraMoveScript::tick()
 	Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
 
 	// 줌 인, 줌 아웃
-	if (WHEEL_CHECK_ANY(WHEEL_UP))
+	if (WHEEL_CHECK(WHEEL_UP))
 	{
 		vPos += DT_ENGINE * m_CamSpeed * vFront;
 	}
 
-	if (WHEEL_CHECK_ANY(WHEEL_DOWN))
+	if (WHEEL_CHECK(WHEEL_DOWN))
 	{
 		vPos += DT_ENGINE * m_CamSpeed * -vFront;
 	}
