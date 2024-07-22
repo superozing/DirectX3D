@@ -4,7 +4,6 @@
 #include "value.fx"
 #include "func.fx"
 
-#define DotProduct  g_float_0 
 #define RenderAngle g_float_1
 #define Alpha       g_float_2
 
@@ -40,29 +39,21 @@ float4 PS_DamagedDirection(VS_OUT _in) : SV_Target
     
     // 아크탄젠트 함수를 사용해서 비율로 각도 구하기
     float UVAngle = atan2(centeredUV.y, centeredUV.x);
-    
-    // 내적 값을 각도로 변환 (라디안)
-    float angle = acos(DotProduct);
 
-    // UVAngle을 [-PI, PI] 범위로 조정
+    // UVAngle을 [0, 2*PI] 범위로 조정
     if (UVAngle < 0.0)
     {
         UVAngle += 2.0 * PI;
     }
 
-    // hitAngle을 [-PI, PI] 범위로 조정
-    float hitAngleRange = angle;
-    if (hitAngleRange < 0.0)
-    {
-        hitAngleRange += 2.0 * PI;
-    }
+    // 기준 각도 설정 (상단)
+    float baseAngle = PI / 2;
 
     // 피격 UI 범위 계산
-    float minAngle = hitAngleRange - RenderAngle * 0.5;
-    float maxAngle = hitAngleRange + RenderAngle * 0.5;
+    float minAngle = baseAngle - RenderAngle * 0.5;
+    float maxAngle = baseAngle + RenderAngle * 0.5;
 
-    
-    // 내적을 사용하여 현재 UV 각도가 샘플링 범위 내에 있는지 확인
+    // UV 좌표의 각도가 샘플링 범위 내에 있는지 확인
     if (UVAngle >= minAngle && UVAngle <= maxAngle)
     {
         // 텍스처 샘플링
@@ -78,13 +69,7 @@ float4 PS_DamagedDirection(VS_OUT _in) : SV_Target
         discard;
     }
     
-    
     return vColor;
 }
-
-
-
-
-
 
 #endif
