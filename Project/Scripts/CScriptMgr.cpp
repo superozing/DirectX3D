@@ -34,6 +34,8 @@
 #include "CPlayerScript.h"
 #include "CDialog.h"
 #include "CPlayerDamagedScript.h"
+#include "CBossScript.h"
+#include "CMegaFistScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -70,6 +72,8 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPlayerScript");
 	_vec.push_back(L"CDialog");
 	_vec.push_back(L"CPlayerDamagedScript");
+	_vec.push_back(L"CBossScript");
+	_vec.push_back(L"CMegaFistScript");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -140,6 +144,10 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CDialog;
 	if (L"CPlayerDamagedScript" == _strScriptName)
 		return new CPlayerDamagedScript;
+	if (L"CBossScript" == _strScriptName)
+		return new CBossScript;
+	if (L"CMegaFistScript" == _strScriptName)
+		return new CMegaFistScript;
 	return nullptr;
 }
 
@@ -245,6 +253,12 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::PLAYERDAMAGEDSCRIPT:
 		return new CPlayerDamagedScript;
+		break;
+	case (UINT)SCRIPT_TYPE::BOSSSCRIPT:
+		return new CBossScript;
+		break;
+	case (UINT)SCRIPT_TYPE::MEGAFISTSCRIPT:
+		return new CMegaFistScript;
 		break;
 	}
 	return nullptr;
@@ -384,6 +398,14 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::PLAYERDAMAGEDSCRIPT:
 		return L"CPlayerDamagedScript";
+		break;
+
+	case SCRIPT_TYPE::BOSSSCRIPT:
+		return L"CBossScript";
+		break;
+
+	case SCRIPT_TYPE::MEGAFISTSCRIPT:
+		return L"CMegaFistScript";
 		break;
 
 	}

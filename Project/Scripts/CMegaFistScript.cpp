@@ -18,9 +18,9 @@ CMegaFistScript::CMegaFistScript()
 	, m_Target(nullptr)
 	, m_CurState((int)BOSS_STATE::END)
 	, m_TargetPos(0.f, 0.f, 0.f)
-	, m_Direction(0.f, 0.f, 0.f)
-	, m_Gravity(0.f, -9.81f, 0.f)
-	, m_FistSpeed(0.f, 0.f, 0.f)
+	//, m_Direction(0.f, 0.f, 0.f)
+	, m_Gravity(0.f, -981.f * 3.f, 0.f)
+//, m_FistSpeed(0.f, 0.f, 0.f)
 {
 	AppendScriptParam("Shooter", SCRIPT_PARAM::STRING, &shooter);
 	AppendScriptParam("Target ", SCRIPT_PARAM::STRING, &target);
@@ -37,18 +37,23 @@ void CMegaFistScript::begin()
 	shooter = ToString(m_Shooter->GetName());
 	target	= ToString(m_Target->GetName());
 
-	m_CurState = m_Shooter->GetScript<CBossScript>()->GetBossFSM()->GetCurState();
-
 	Transform()->SetRelativePos(m_Pos);
 
-	m_Direction	  = m_TargetPos - m_Pos;
-	m_Direction.y = m_Pos.y;
-	m_Direction.Normalize();
-	m_FistSpeed = m_Direction * m_InitialSpeed;
+	// 수평거리
+	float dx		   = m_TargetPos.x - m_Pos.x;
+	float dz		   = m_TargetPos.z - m_Pos.z;
+	float d_horizontal = std::sqrt(dx * dx + dz * dz);
 
-	m_FistSpeed += m_Gravity;
+	// 수직거리
+	float dy = m_TargetPos.y - m_Pos.y;
 
-	Transform()->SetDir(m_FistSpeed);
+	// 초기속도
+	float v = std::sqrt((m_Gravity.y / (2 * dy)) * (d_horizontal * d_horizontal));
+
+	Vec3 VelDir = m_TargetPos - m_Pos;
+	VelDir.y	= 0.f;
+	VelDir.Normalize();
+	m_CurVel = VelDir * v;
 }
 
 void CMegaFistScript::tick()
@@ -66,15 +71,18 @@ void CMegaFistScript::tick()
 		}
 	}
 
-	CalVelocity();
+	// CalVelocity();
 
 	// m_FistSpeed += m_Gravity;
-	// Transform()->SetDir(m_FistSpeed);
+	m_CurVel += m_Gravity * DT;
 
-	m_Pos		= Transform()->GetRelativePos();
-	Vec3 vFront = m_FistSpeed;
-	vFront.Normalize();
-	m_Pos += vFront * m_InitialSpeed * DT;
+	Transform()->SetDir(m_CurVel);
+
+	m_Pos = Transform()->GetRelativePos();
+	// Vec3 vFront = m_FistSpeed;
+	// vFront.Normalize();
+	// m_Pos += vFront * m_InitialSpeed * DT;
+	m_Pos = m_Pos + m_CurVel * DT;
 	Transform()->SetRelativePos(m_Pos);
 
 	// Vec3 vPos = Transform()->GetRelativePos();
@@ -100,16 +108,16 @@ void CMegaFistScript::InitMegaFistInfo(CGameObject* _Shooter, CGameObject* _Targ
 
 	m_TargetPos = m_Target->Transform()->GetRelativePos();
 
-	m_Direction = m_TargetPos - m_Pos;
+	// m_Direction = m_TargetPos - m_Pos;
 }
 
 void CMegaFistScript::CalVelocity()
 {
-	m_Direction = m_TargetPos - m_Pos;
-	m_Direction.Normalize();
-	m_FistSpeed = m_Direction * m_InitialSpeed;
+	// m_Direction = m_TargetPos - m_Pos;
+	// m_Direction.Normalize();
+	// m_FistSpeed = m_Direction * m_InitialSpeed;
 
-	m_FistSpeed += m_Gravity * DT;
+	// m_FistSpeed += m_Gravity * DT;
 
-	Transform()->SetDir(m_FistSpeed);
+	// Transform()->SetDir(m_FistSpeed);
 }

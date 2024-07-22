@@ -9,9 +9,8 @@ private:
 	Vec3 m_TargetPos; // 투사체가 향하는 객체 초기 위치
 	int	 m_CurState;  // 슈터의 현재 스테이트
 
-	Vec3 m_FistSpeed;
+	Vec3 m_CurVel;
 	Vec3 m_Gravity; // 중력
-	Vec3 m_Direction;
 
 public:
 	virtual void OnHit() override;
