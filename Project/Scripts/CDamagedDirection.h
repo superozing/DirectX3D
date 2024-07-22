@@ -20,7 +20,7 @@ private:
 
 	float m_Alpha;
 
-	Vec3 m_DamagedDirection;
+	Vec3 m_EnemyPos;
 
 public:
 	virtual void begin() override;
@@ -32,7 +32,7 @@ public:
 	virtual void LoadFromFile(ifstream& fin) override;
 
 public:
-	void SetDamagedDirection(Vec3 _DamagedDirection) { m_DamagedDirection = _DamagedDirection; }
+	void SetEnemyPos(Vec3 _EnemyPos) { m_EnemyPos = _EnemyPos; }
 	void SetMaxDamageRadius(float _Angle) { m_fMaxDamageRadius = RoRMath::ClampFloat(_Angle, 0.f, XM_2PI); }
 	void SetDamageRatio(float _Ratio) { m_DamageRadiusRatio = RoRMath::ClampFloat(_Ratio, 0.f, 1.f); }
 	void SetAlpha(float _Alpha) { m_Alpha = RoRMath::ClampFloat(_Alpha, 0.f, 1.f); }

@@ -18,19 +18,19 @@ CDamagedDirection::~CDamagedDirection()
 
 void CDamagedDirection::begin()
 {
-	AppendScriptParam("Enemy Front Vector", SCRIPT_PARAM::VEC3, &m_DamagedDirection);
+	AppendScriptParam("Enemy Pos", SCRIPT_PARAM::VEC3, &m_EnemyPos);
 	AppendScriptParam("Max Radius", SCRIPT_PARAM::FLOAT, &m_fMaxDamageRadius);
 	AppendScriptParam("Damage Ratio", SCRIPT_PARAM::FLOAT, &m_DamageRadiusRatio);
 	AppendScriptParam("AlphaBlend", SCRIPT_PARAM::FLOAT, &m_Alpha);
 
 	SetParentPanelUI();
 
-	m_fMaxDamageRadius = XM_PI;
+	m_fMaxDamageRadius	= XM_PI;
 	m_DamageRadiusRatio = 1.f;
-	m_Alpha			   = 0.7f;
+	m_Alpha				= 0.7f;
 
 	CGameObject* pObj = new CGameObject;
-	m_pImageUI = new CImageUIScript;
+	m_pImageUI		  = new CImageUIScript;
 
 	pObj->AddComponent(new CTransform);
 	pObj->AddComponent(new CMeshRender);
@@ -43,12 +43,12 @@ void CDamagedDirection::begin()
 	m_pImageUI->Transform()->SetRelativeScale(Vec3(500.f, 500.f, 1.f));
 
 	auto pMR = pObj->MeshRender();
-	
+
 	pMR->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
 	pMR->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
 	pMR->GetDynamicMaterial(0);
 	pMR->GetMaterial(0)->SetShader(CAssetMgr::GetInst()->Load<CGraphicsShader>(L"GraphicsShader/DamagedDirection.gs"));
-	
+
 	GetOwner()->AddChild(pObj);
 }
 
@@ -56,26 +56,24 @@ void CDamagedDirection::tick()
 {
 	// 1. 입력받은 데미지 비율에 따라서 표시할 각도 바인딩
 	m_pImageUI->MeshRender()->GetDynamicMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_1,
-														m_fMaxDamageRadius * m_DamageRadiusRatio);
+																	m_fMaxDamageRadius * m_DamageRadiusRatio);
 
 	// 2. 알파 값 바인딩
 	m_pImageUI->MeshRender()->GetDynamicMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_2, m_Alpha);
 
 	// 3. 회전 적용
-	// 쉐이더 코드에서 위 쪽을 기준으로 렌더링 하기 때문에, 내적 결과가 -1 일 경우 0 만큼 회전, 1 일 경우 PI 만큼 z축 회전.
+	// 쉐이더 코드에서 위 쪽을 기준으로 렌더링 하기 때문에, 내적 결과가 -1 일 경우 0 만큼 회전, 1 일 경우 PI 만큼 z축
+	// 회전.
 
-	// 임시로 적 객체의 이름을 통해서 위치 값 받아오기
-	CGameObject* pMonster = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Temp Monster Cube");
-	
 	// 렌더 매니저에게서 메인 카메라 가져오기
 	CGameObject* pCam = CRenderMgr::GetInst()->GetMainCam()->GetOwner();
 
 	// 몬스터로부터 플레이어의 방향 벡터
-	m_DamagedDirection = pCam->Transform()->GetWorldPos() - pMonster->Transform()->GetWorldPos();
-	Vec2 MonToPlayerXZ = Vec2(m_DamagedDirection.x, m_DamagedDirection.z);
+	Vec3 MonToPlayer   = pCam->Transform()->GetWorldPos() - m_EnemyPos;
+	Vec2 MonToPlayerXZ = Vec2(MonToPlayer.x, MonToPlayer.z);
 
 	// 플레이어의 front 벡터
-	Vec3 PlayerDir = pCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+	Vec3 PlayerDir	 = pCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
 	Vec2 PlayerDirXZ = Vec2(PlayerDir.x, PlayerDir.z);
 
 	// 벡터 정규화
@@ -84,7 +82,7 @@ void CDamagedDirection::tick()
 
 	// 내적으로 회전 각도 계산
 	float dotProduct = MonToPlayerXZ.Dot(PlayerDirXZ);
-	float angle = acos(dotProduct);
+	float angle		 = acos(dotProduct);
 
 	// 외적으로 회전 방향 계산
 	float crossProduct = MonToPlayerXZ.x * PlayerDirXZ.y - MonToPlayerXZ.y * PlayerDirXZ.x;
@@ -94,9 +92,7 @@ void CDamagedDirection::tick()
 	}
 
 	Transform()->SetRelativeRotation(Vec3(0.f, 0.f, angle));
-
 }
-
 
 void CDamagedDirection::SetParentPanelUI()
 {
