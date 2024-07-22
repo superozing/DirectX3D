@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <Engine\singleton.h>
+#include <Engine/CGameObject.h>
 
 class CGameObjectEx;
 
@@ -23,6 +24,8 @@ public:
 
 	CGameObjectEx*				 GetEditorCam() { return m_EditorCam; }
 	const vector<CGameObjectEx*> GetEditorGameObjects() { return m_vecEditorObj; }
+
+	void SetEditorCam(CGameObject* _obj);
 
 	CGameObjectEx* GetMemoryPoolObj() { return m_MemoryPool; }
 };

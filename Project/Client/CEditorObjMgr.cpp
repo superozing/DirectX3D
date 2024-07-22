@@ -101,3 +101,12 @@ void CEditorObjMgr::progress()
 		m_vecEditorObj[i]->finaltick();
 	}
 }
+
+void CEditorObjMgr::SetEditorCam(CGameObject* _obj)
+{
+	if (m_EditorCam)
+		delete m_EditorCam;
+	m_EditorCam		  = (CGameObjectEx*)_obj;
+	m_vecEditorObj[0] = m_EditorCam;
+	CRenderMgr::GetInst()->RegisterEditorCamera(m_EditorCam->Camera());
+}
