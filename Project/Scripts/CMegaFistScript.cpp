@@ -11,6 +11,7 @@
 
 static string shooter = "";
 static string target  = "";
+#include "Engine\CRandomMgr.h"
 
 CMegaFistScript::CMegaFistScript()
 	: CProjectileScript((UINT)SCRIPT_TYPE::MEGAFISTSCRIPT)
@@ -19,7 +20,7 @@ CMegaFistScript::CMegaFistScript()
 	, m_CurState((int)BOSS_STATE::END)
 	, m_TargetPos(0.f, 0.f, 0.f)
 	//, m_Direction(0.f, 0.f, 0.f)
-	, m_Gravity(0.f, -981.f * 3.f, 0.f)
+	, m_Gravity(0.f, -981.f * .5f, 0.f)
 //, m_FistSpeed(0.f, 0.f, 0.f)
 {
 	AppendScriptParam("Shooter", SCRIPT_PARAM::STRING, &shooter);
@@ -74,7 +75,20 @@ void CMegaFistScript::tick()
 	// CalVelocity();
 
 	// m_FistSpeed += m_Gravity;
-	m_CurVel += m_Gravity * DT;
+
+	m_ForceAccTime += DT;
+	if (m_ForceAccTime > m_ForceDuration)
+	{
+		float			   x, y, z;
+		static const float maxval = 5000.f;
+		x						  = CRandomMgr::GetInst()->GetRandomFloat(-maxval, maxval);
+		y						  = CRandomMgr::GetInst()->GetRandomFloat(-maxval, maxval);
+		z						  = CRandomMgr::GetInst()->GetRandomFloat(0.f, maxval);
+		m_CurForce				  = Vec3(x, y, z);
+		m_ForceAccTime			  = 0.f;
+	}
+
+	m_CurVel += m_Gravity * DT + m_CurForce * DT;
 
 	Transform()->SetDir(m_CurVel);
 
