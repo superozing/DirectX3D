@@ -136,11 +136,87 @@ int CBossScript::EXs2Update()
 	if (!Animator3D()->IsPlayable())
 		return (int)BOSS_STATE::NormalIdle;
 
+	int idx = Animator3D()->GetCurFrameIdx();
+
+	switch (idx)
+	{
+	case 167:
+		if (!m_ArrMissile[0])
+		{
+			// 167번 프레임 1번 미사일 발사
+			FireBossMissile(idx);
+			m_ArrMissile[0] = true;
+		}
+		break;
+	case 169:
+		if (!m_ArrMissile[1])
+		{
+			// 169번 프레임 2번 미사일 발사
+			FireBossMissile(idx);
+			m_ArrMissile[1] = true;
+		}
+		break;
+	case 173:
+		if (!m_ArrMissile[2])
+		{
+			// 173번 프레임 3번 미사일 발사
+			FireBossMissile(idx);
+			m_ArrMissile[2] = true;
+		}
+		break;
+	case 177:
+		if (!m_ArrMissile[3])
+		{
+			// 177번 프레임 4번 미사일 발사
+			FireBossMissile(idx);
+			m_ArrMissile[3] = true;
+		}
+		break;
+	case 180:
+		if (!m_ArrMissile[4])
+		{
+			// 180번 프레임 5번 미사일 발사
+			FireBossMissile(idx);
+			m_ArrMissile[4] = true;
+		}
+		break;
+	case 182:
+		if (!m_ArrMissile[5])
+		{
+			// 182번 프레임 6번 미사일 발사
+			FireBossMissile(idx);
+			m_ArrMissile[5] = true;
+		}
+		break;
+	case 186:
+		if (!m_ArrMissile[6])
+		{
+			// 186번 프레임 7번 미사일 발사
+			FireBossMissile(idx);
+			m_ArrMissile[6] = true;
+		}
+		break;
+	case 190:
+		if (!m_ArrMissile[7])
+		{
+			// 190번 프레임 8번 미사일 발사
+			FireBossMissile(idx);
+			m_ArrMissile[7] = true;
+		}
+		break;
+	default:
+		break;
+	}
+
 	return m_FSM->GetCurState();
 }
 
 void CBossScript::EXs2End()
 {
+	for (int i = 0; i < 8; ++i)
+	{
+		m_ArrMissile[i] = false;
+	}
 }
 
 void CBossScript::EXs3Begin()

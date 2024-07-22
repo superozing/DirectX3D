@@ -8,6 +8,7 @@
 #include <Engine\CAssetMgr.h>
 #include "CRoRStateMachine.h"
 #include "CMegaFistScript.h"
+#include "CBossMissileScript.h"
 
 static string DebugState = "";
 
@@ -20,6 +21,7 @@ CBossScript::CBossScript()
 	, m_ActiveEXs(false)
 	, m_EXsType(0)
 	, m_Target(nullptr)
+	, m_ArrMissile{}
 {
 	AppendScriptParam("CurState    ", SCRIPT_PARAM::STRING, &DebugState);
 
@@ -50,6 +52,9 @@ void CBossScript::tick()
 	m_FSM->Update();
 	DebugState = magic_enum::enum_name((BOSS_STATE)m_FSM->GetCurState());
 
+	Vec3 vDir = m_Target->Transform()->GetRelativePos() - Transform()->GetRelativePos();
+	Transform()->SetDir(vDir);
+
 	if ((int)BOSS_STATE::NormalIdle == m_FSM->GetCurState())
 	{
 		// 평타, 스킬 쿨타임 체크
@@ -70,7 +75,7 @@ void CBossScript::CheckDuration()
 		{
 			m_AttDuration  = 0.f;
 			m_ActiveAttack = true;
-			m_FSM->SetCurState((int)BOSS_STATE::NormalAttackStart);
+			// m_FSM->SetCurState((int)BOSS_STATE::NormalAttackStart);
 		}
 	}
 
@@ -88,7 +93,7 @@ void CBossScript::CheckDuration()
 	if (m_ActiveEXs)
 	{
 		// m_EXsType = CRandomMgr::GetInst()->GetRandomInt(4);
-
+		m_EXsType = 1;
 		switch (m_EXsType)
 		{
 		case 0:
@@ -110,8 +115,8 @@ void CBossScript::CheckDuration()
 	}
 	else if (m_ActiveAttack)
 	{
-		// m_FSM->SetCurState((int)BOSS_STATE::NormalAttackStart);
-		// m_ActiveAttack = false;
+		m_FSM->SetCurState((int)BOSS_STATE::NormalAttackStart);
+		m_ActiveAttack = false;
 	}
 }
 
@@ -135,11 +140,56 @@ void CBossScript::FireMegaFist()
 
 	Vec3 HandBonePos = (Animator3D()->FindBoneMat(L"Bip001 R Hand_01") * Transform()->GetWorldMat()).Translation();
 
-	CGameObject* megafist = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Kaiten_Punch2.pref")->Instantiate();
+	CGameObject* megafist = CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Punch)->Instantiate();
 	megafist->GetScript<CMegaFistScript>()->InitMegaFistInfo(GetOwner(), m_Target, HandBonePos, 500.f, 500.f, 3.f, 10.f,
 															 false, true);
 	int layeridx = megafist->GetLayerIdx();
 	GamePlayStatic::SpawnGameObject(megafist, layeridx);
+}
+
+void CBossScript::FireBossMissile(int _idx)
+{
+	if (nullptr == m_Target)
+		return;
+
+	Vec3 MissileBonePos = {};
+
+	switch (_idx)
+	{
+	case 167:
+		MissileBonePos = (Animator3D()->FindBoneMat(L"Bone_Missile001") * Transform()->GetWorldMat()).Translation();
+		break;
+	case 169:
+		MissileBonePos = (Animator3D()->FindBoneMat(L"Bone_Missile002") * Transform()->GetWorldMat()).Translation();
+		break;
+	case 173:
+		MissileBonePos = (Animator3D()->FindBoneMat(L"Bone_Missile003") * Transform()->GetWorldMat()).Translation();
+		break;
+	case 177:
+		MissileBonePos = (Animator3D()->FindBoneMat(L"Bone_Missile004") * Transform()->GetWorldMat()).Translation();
+		break;
+	case 180:
+		MissileBonePos = (Animator3D()->FindBoneMat(L"Bone_Missile005") * Transform()->GetWorldMat()).Translation();
+		break;
+	case 182:
+		MissileBonePos = (Animator3D()->FindBoneMat(L"Bone_Missile006") * Transform()->GetWorldMat()).Translation();
+		break;
+	case 186:
+		MissileBonePos = (Animator3D()->FindBoneMat(L"Bone_Missile007") * Transform()->GetWorldMat()).Translation();
+		break;
+	case 190:
+		MissileBonePos = (Animator3D()->FindBoneMat(L"Bone_Missile008") * Transform()->GetWorldMat()).Translation();
+		break;
+	default:
+		break;
+	}
+
+	CGameObject* Missile = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Kaiten_Missile.pref")->Instantiate();
+	Missile->GetScript<CBossMissileScript>()->InitBossMissileInfo(GetOwner(), m_Target, MissileBonePos, 600.f, 1200.f,
+																  3.f, 10.f, true, true);
+
+	int layeridx = Missile->GetLayerIdx();
+	GamePlayStatic::SpawnGameObject(Missile, layeridx);
 }
 
 void CBossScript::InitStateMachine()

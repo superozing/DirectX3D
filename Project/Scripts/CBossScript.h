@@ -52,6 +52,8 @@ private:
 	bool m_ActiveAttack;
 	bool m_ActiveEXs;
 
+	bool m_ArrMissile[8]; // 미사일 발사여부
+
 	// @@디버그용
 	int m_EXsType; // 현재 선택된 EX 타입
 
@@ -119,6 +121,7 @@ public:
 	void CheckVital();
 
 	void FireMegaFist();
+	void FireBossMissile(int _idx);
 
 	CRoRStateMachine<CBossScript>* GetBossFSM() { return m_FSM; }
 
