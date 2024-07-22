@@ -4,6 +4,8 @@
 #include "CImageUIScript.h"
 
 #include <Engine/CRenderMgr.h>
+#include <Engine/CLevelMgr.h>
+#include <Engine/CLevel.h>
 
 CDamagedDirection::CDamagedDirection()
 	: CScript((UINT)SCRIPT_TYPE::DAMAGEDDIRECTION)
@@ -52,22 +54,47 @@ void CDamagedDirection::begin()
 
 void CDamagedDirection::tick()
 {
-
-	// 상수 버퍼에 필요한 정보를 바인딩
-	// 1. 입력받은 적의 Front 벡터와 메인 카메라의 Front 벡터를 내적을 바인딩 - x 축을 제외한 y축, z축.
-	Vec3 camDir = CRenderMgr::GetInst()->GetMainCam()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-
-	Vec2 playerFront = Vec2(camDir.y, camDir.z);
-	Vec2 enemyFront	 = Vec2(m_DamagedDirection.y, m_DamagedDirection.z);
-	//playerFront.Dot(enemyFront)
-	m_pImageUI->MeshRender()->GetDynamicMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, 0);
-
-	// 2. 입력받은 데미지 비율에 따라서 표시할 각도 바인딩
+	// 1. 입력받은 데미지 비율에 따라서 표시할 각도 바인딩
 	m_pImageUI->MeshRender()->GetDynamicMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_1,
 														m_fMaxDamageRadius * m_DamageRadiusRatio);
 
-	// 3. 알파 값 바인딩
+	// 2. 알파 값 바인딩
 	m_pImageUI->MeshRender()->GetDynamicMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_2, m_Alpha);
+
+	// 3. 회전 적용
+	// 쉐이더 코드에서 위 쪽을 기준으로 렌더링 하기 때문에, 내적 결과가 -1 일 경우 0 만큼 회전, 1 일 경우 PI 만큼 z축 회전.
+
+	// 임시로 적 객체의 이름을 통해서 위치 값 받아오기
+	CGameObject* pMonster = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Temp Monster Cube");
+	
+	// 렌더 매니저에게서 메인 카메라 가져오기
+	CGameObject* pCam = CRenderMgr::GetInst()->GetMainCam()->GetOwner();
+
+	// 몬스터로부터 플레이어의 방향 벡터
+	m_DamagedDirection = pCam->Transform()->GetWorldPos() - pMonster->Transform()->GetWorldPos();
+	Vec2 MonToPlayerXZ = Vec2(m_DamagedDirection.x, m_DamagedDirection.z);
+
+	// 플레이어의 front 벡터
+	Vec3 PlayerDir = pCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+	Vec2 PlayerDirXZ = Vec2(PlayerDir.x, PlayerDir.z);
+
+	// 벡터 정규화
+	MonToPlayerXZ.Normalize();
+	PlayerDirXZ.Normalize();
+
+	// 내적으로 회전 각도 계산
+	float dotProduct = MonToPlayerXZ.Dot(PlayerDirXZ);
+	float angle = acos(dotProduct);
+
+	// 외적으로 회전 방향 계산
+	float crossProduct = MonToPlayerXZ.x * PlayerDirXZ.y - MonToPlayerXZ.y * PlayerDirXZ.x;
+	if (crossProduct > 0)
+	{
+		angle = -angle;
+	}
+
+	Transform()->SetRelativeRotation(Vec3(0.f, 0.f, angle));
+
 }
 
 
