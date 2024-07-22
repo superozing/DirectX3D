@@ -6,7 +6,7 @@ private:
 	CGameObject*  m_pModel;
 	class TreeUI* m_pBoneTree;
 
-	float m_fSphereSize;
+	float m_fDrawSize;
 	bool  m_bDraw;
 
 public:

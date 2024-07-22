@@ -10,7 +10,7 @@
 ModelUI::ModelUI()
 	: UI("ModelUI", "##ModelUI")
 	, m_bDraw(true)
-	, m_fSphereSize(1.f)
+	, m_fDrawSize(1.f)
 {
 	m_pBoneTree = new TreeUI("ModelUI");
 	m_pBoneTree->UseDragDrop(false);
@@ -66,7 +66,7 @@ void ModelUI::tick()
 
 		const Matrix& mat = m_pModel->Animator3D()->FindBoneMat(ToWString(node->GetName()));
 
-		Matrix scaleMat = XMMatrixScalingFromVector(Vec3(m_fSphereSize, m_fSphereSize, m_fSphereSize) * 0.01f);
+		Matrix scaleMat = XMMatrixScalingFromVector(Vec3(m_fDrawSize, m_fDrawSize, m_fDrawSize) * 0.01f);
 
 		if (node->IsSelected())
 		{
@@ -89,7 +89,7 @@ void ModelUI::render_update()
 {
 	ImGui::Checkbox("Draw", &m_bDraw);
 
-	ImGui::SliderFloat("SphereSize", &m_fSphereSize, 1.f, 100.f);
+	ImGui::SliderFloat("Size", &m_fDrawSize, 1.f, 100.f);
 
 	ImGui::Separator();
 }
