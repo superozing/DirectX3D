@@ -17,6 +17,10 @@ CMegaFistScript::CMegaFistScript()
 	, m_Shooter(nullptr)
 	, m_Target(nullptr)
 	, m_CurState((int)BOSS_STATE::END)
+	, m_TargetPos(0.f, 0.f, 0.f)
+	, m_Direction(0.f, 0.f, 0.f)
+	, m_Gravity(0.f, -9.81f, 0.f)
+	, m_FistSpeed(0.f, 0.f, 0.f)
 {
 	AppendScriptParam("Shooter", SCRIPT_PARAM::STRING, &shooter);
 	AppendScriptParam("Target ", SCRIPT_PARAM::STRING, &target);
@@ -30,13 +34,21 @@ void CMegaFistScript::begin()
 {
 	CProjectileScript::begin();
 
-	m_CurState = m_Shooter->GetScript<CBossScript>()->GetBossFSM()->GetCurState();
-
 	shooter = ToString(m_Shooter->GetName());
 	target	= ToString(m_Target->GetName());
 
+	m_CurState = m_Shooter->GetScript<CBossScript>()->GetBossFSM()->GetCurState();
+
 	Transform()->SetRelativePos(m_Pos);
-	Transform()->SetDir(-Transform()->GetWorldDir(DIR_TYPE::UP));
+
+	m_Direction	  = m_TargetPos - m_Pos;
+	m_Direction.y = m_Pos.y;
+	m_Direction.Normalize();
+	m_FistSpeed = m_Direction * m_InitialSpeed;
+
+	m_FistSpeed += m_Gravity;
+
+	Transform()->SetDir(m_FistSpeed);
 }
 
 void CMegaFistScript::tick()
@@ -54,15 +66,25 @@ void CMegaFistScript::tick()
 		}
 	}
 
-	Vec3 vPos		= Transform()->GetRelativePos();
-	Vec3 vTargetPos = m_Target->Transform()->GetRelativePos();
-	Vec3 vDir		= vTargetPos - vPos;
-	Transform()->SetDir(vDir);
+	CalVelocity();
 
-	Vec3 vFront = vDir;
+	// m_FistSpeed += m_Gravity;
+	// Transform()->SetDir(m_FistSpeed);
+
+	m_Pos		= Transform()->GetRelativePos();
+	Vec3 vFront = m_FistSpeed;
 	vFront.Normalize();
-	vPos += vFront * m_InitialSpeed * DT;
-	Transform()->SetRelativePos(vPos);
+	m_Pos += vFront * m_InitialSpeed * DT;
+	Transform()->SetRelativePos(m_Pos);
+
+	// Vec3 vPos = Transform()->GetRelativePos();
+	// Vec3 vDir = m_TargetPos - vPos;
+	// Transform()->SetDir(vDir);
+
+	// Vec3 vFront = vDir;
+	// vFront.Normalize();
+	// vPos += vFront * m_InitialSpeed * DT;
+	// Transform()->SetRelativePos(vPos);
 }
 
 void CMegaFistScript::OnHit()
@@ -75,4 +97,19 @@ void CMegaFistScript::InitMegaFistInfo(CGameObject* _Shooter, CGameObject* _Targ
 	m_Shooter = _Shooter;
 	m_Target  = _Target;
 	CProjectileScript::InitProjectileInfo(_Pos, _InitSpeed, _MaxSpeed, _LifeSpan, _Damage, _Explode, _Alive);
+
+	m_TargetPos = m_Target->Transform()->GetRelativePos();
+
+	m_Direction = m_TargetPos - m_Pos;
+}
+
+void CMegaFistScript::CalVelocity()
+{
+	m_Direction = m_TargetPos - m_Pos;
+	m_Direction.Normalize();
+	m_FistSpeed = m_Direction * m_InitialSpeed;
+
+	m_FistSpeed += m_Gravity * DT;
+
+	Transform()->SetDir(m_FistSpeed);
 }

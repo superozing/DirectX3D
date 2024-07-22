@@ -136,7 +136,7 @@ void CBossScript::FireMegaFist()
 	Vec3 HandBonePos = (Animator3D()->FindBoneMat(L"Bip001 R Hand_01") * Transform()->GetWorldMat()).Translation();
 
 	CGameObject* megafist = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Kaiten_Punch2.pref")->Instantiate();
-	megafist->GetScript<CMegaFistScript>()->InitMegaFistInfo(GetOwner(), m_Target, HandBonePos, 100.f, 100.f, 3.f, 10.f,
+	megafist->GetScript<CMegaFistScript>()->InitMegaFistInfo(GetOwner(), m_Target, HandBonePos, 500.f, 500.f, 3.f, 10.f,
 															 false, true);
 	int layeridx = megafist->GetLayerIdx();
 	GamePlayStatic::SpawnGameObject(megafist, layeridx);
