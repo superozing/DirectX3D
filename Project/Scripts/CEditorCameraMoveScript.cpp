@@ -126,12 +126,12 @@ void CEditorCameraMoveScript::MovePerspective()
 
 	if (KEY_PRESSED_ANY(KEY::RBTN) && KEY_PRESSED_ANY(KEY::Q))
 	{
-		vPos += DT_ENGINE * m_CamSpeed * -vUp;
+		vPos += DT_ENGINE * camspeed * -vUp;
 	}
 
 	if (KEY_PRESSED_ANY(KEY::RBTN) && KEY_PRESSED_ANY(KEY::E))
 	{
-		vPos += DT_ENGINE * m_CamSpeed * vUp;
+		vPos += DT_ENGINE * camspeed * vUp;
 	}
 
 	Transform()->SetRelativePos(vPos);
