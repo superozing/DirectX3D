@@ -95,4 +95,5 @@ public:
 	friend class Outliner;
 	friend class CMemoryPool;
 	friend class CMemoryPoolMgrScript;
+	friend class RTViewPort;
 };

@@ -5,6 +5,7 @@
 #include <Engine\CLevel.h>
 #include <Engine\CLayer.h>
 #include <Engine/components.h>
+#include <Engine/CRenderMgr.h>
 
 #include "CImGuiMgr.h"
 #include "Outliner.h"
@@ -90,10 +91,16 @@ void Inspector::render_update()
 
 			if (ImGui::Button("Spawn Prefab"))
 			{
-				m_TargetObject				= m_TargetObject->Clone();
-				int idx						= m_TargetObject->GetLayerIdx();
-				m_TargetObject->m_iLayerIdx = -1;
-				GamePlayStatic::SpawnGameObject(m_TargetObject, idx);
+				auto Target			= m_TargetObject->Clone();
+				int	 idx			= Target->GetLayerIdx();
+				Target->m_iLayerIdx = -1;
+				GamePlayStatic::SpawnGameObject(Target, idx);
+
+				auto cam	= CRenderMgr::GetInst()->GetMainCam();
+				auto vPos	= cam->Transform()->GetRelativePos();
+				auto vFront = cam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+				vPos += vFront * 100.f;
+				Target->Transform()->SetRelativePos(vPos);
 			}
 
 			if (ImGui::Button("parent"))
