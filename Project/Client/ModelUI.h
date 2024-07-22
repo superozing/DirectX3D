@@ -8,6 +8,7 @@ private:
 
 	float m_fDrawSize;
 	bool  m_bDraw;
+	bool  m_bDrawOnlySelected;
 
 public:
 	void SetModel(CGameObject* _obj);

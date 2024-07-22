@@ -10,6 +10,7 @@
 ModelUI::ModelUI()
 	: UI("ModelUI", "##ModelUI")
 	, m_bDraw(true)
+	, m_bDrawOnlySelected(true)
 	, m_fDrawSize(1.f)
 {
 	m_pBoneTree = new TreeUI("ModelUI");
@@ -74,7 +75,8 @@ void ModelUI::tick()
 		}
 		else
 		{
-			GamePlayStatic::DrawDebugCube((scaleMat * mat * matModel), Vec3(0.f, 1.f, 0.f), false);
+			if (!m_bDrawOnlySelected)
+				GamePlayStatic::DrawDebugCube((scaleMat * mat * matModel), Vec3(0.f, 1.f, 0.f), false);
 		}
 
 		const auto& childs = node->GetChildNode();
@@ -87,7 +89,9 @@ void ModelUI::tick()
 
 void ModelUI::render_update()
 {
-	ImGui::Checkbox("Draw", &m_bDraw);
+	ImGui::Checkbox("Draw##ModelUI", &m_bDraw);
+
+	ImGui::Checkbox("DrawOnlySelected##ModelUI", &m_bDrawOnlySelected);
 
 	ImGui::SliderFloat("Size", &m_fDrawSize, 1.f, 100.f);
 
