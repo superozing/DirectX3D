@@ -13,6 +13,35 @@ TransformUI::~TransformUI()
 {
 }
 
+void TransformUI::CopyPaste(const string& _id, Vec3& _vec)
+{
+	static Vec3 vClipBoard = Vec3();
+	static Vec3 vReturn	   = Vec3();
+
+	ImGui::SameLine();
+	string id;
+	id = "C##Transform" + _id;
+	if (ImGui::Button(id.c_str()))
+	{
+		vClipBoard = _vec;
+	}
+
+	ImGui::SameLine();
+	id = "P##Transform" + _id;
+	if (ImGui::Button(id.c_str()))
+	{
+		vReturn = _vec;
+		_vec	= vClipBoard;
+	}
+
+	ImGui::SameLine();
+	id = "R##Transform" + _id;
+	if (ImGui::Button(id.c_str()))
+	{
+		_vec = vReturn;
+	}
+}
+
 void TransformUI::render_update()
 {
 	ComponentUI::render_update();
@@ -28,12 +57,17 @@ void TransformUI::render_update()
 	ImGui::Text("Position");
 	ImGui::SameLine();
 	ImGui::DragFloat3("##Relative Position", vPos);
+	CopyPaste("Pos", vPos);
+
 	ImGui::Text("Scale   ");
 	ImGui::SameLine();
 	ImGui::DragFloat3("##Relative Scale", vScale);
+	CopyPaste("Scale", vScale);
+
 	ImGui::Text("Rotation");
 	ImGui::SameLine();
 	ImGui::DragFloat3("##Relative Rotation", vRot);
+	CopyPaste("Rotation", vRot);
 
 	vRot.ToRadian();
 	GetTargetObject()->Transform()->SetRelativePos(vPos);

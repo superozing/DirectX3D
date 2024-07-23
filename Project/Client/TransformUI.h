@@ -11,4 +11,7 @@ public:
 public:
 	TransformUI();
 	~TransformUI();
+
+private:
+	void CopyPaste(const string& _id, Vec3& _vec);
 };
