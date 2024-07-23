@@ -128,12 +128,12 @@ void CCameraMoveScript::MovePerspective()
 
 	if (KEY_PRESSED(KEY::RBTN) && KEY_PRESSED(KEY::Q))
 	{
-		vPos += DT_ENGINE * m_CamSpeed * -vUp;
+		vPos += DT_ENGINE * camspeed * -vUp;
 	}
 
 	if (KEY_PRESSED(KEY::RBTN) && KEY_PRESSED(KEY::E))
 	{
-		vPos += DT_ENGINE * m_CamSpeed * vUp;
+		vPos += DT_ENGINE * camspeed * vUp;
 	}
 
 	Transform()->SetRelativePos(vPos);

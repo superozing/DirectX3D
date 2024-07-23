@@ -1,326 +1,344 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<ItemGroup>
-		<ClInclude Include="framework.h">
-			<Filter>Default</Filter>
-		</ClInclude>
-		<ClInclude Include="pch.h">
-			<Filter>Default</Filter>
-		</ClInclude>
-		<ClInclude Include="CScriptMgr.h">
-			<Filter>ScriptMgr</Filter>
-		</ClInclude>
-		<ClInclude Include="CBackgroundScript.h">
-			<Filter>Scripts\Lecture</Filter>
-		</ClInclude>
-		<ClInclude Include="CMissileScript.h">
-			<Filter>Scripts\Lecture</Filter>
-		</ClInclude>
-		<ClInclude Include="CMonsterScript.h">
-			<Filter>Scripts\Lecture</Filter>
-		</ClInclude>
-		<ClInclude Include="CCameraMoveScript.h">
-			<Filter>Scripts\Manager\Camera</Filter>
-		</ClInclude>
-		<ClInclude Include="CRenderMgrScript.h">
-			<Filter>Scripts\Manager\Render</Filter>
-		</ClInclude>
-		<ClInclude Include="CTimeMgrScript.h">
-			<Filter>Scripts\Manager\Time</Filter>
-		</ClInclude>
-		<ClInclude Include="CCameraEffect.h">
-			<Filter>Scripts\Manager\Camera</Filter>
-		</ClInclude>
-		<ClInclude Include="CSpringArm.h">
-			<Filter>Scripts</Filter>
-		</ClInclude>
-		<ClInclude Include="CBtnUIScript.h">
-			<Filter>Scripts\DefaultUI\Button</Filter>
-		</ClInclude>
-		<ClInclude Include="CImageUIScript.h">
-			<Filter>Scripts\DefaultUI\Image</Filter>
-		</ClInclude>
-		<ClInclude Include="CPanelUIScript.h">
-			<Filter>Scripts\DefaultUI\Panel</Filter>
-		</ClInclude>
-		<ClInclude Include="CRoRStateMachine.h">
-			<Filter>RoRStateMachine</Filter>
-		</ClInclude>
-		<ClInclude Include="CCrosshair.h">
-			<Filter>Scripts\UI\Image\Crosshair</Filter>
-		</ClInclude>
-		<ClInclude Include="CWeaponInfo.h">
-			<Filter>Scripts\UI\Image\WeaponInfo</Filter>
-		</ClInclude>
-		<ClInclude Include="CPausePanel.h">
-			<Filter>Scripts\UI\Image\PausePanel</Filter>
-		</ClInclude>
-		<ClInclude Include="CPauseBtn.h">
-			<Filter>Scripts\UI\Image\PauseBtn</Filter>
-		</ClInclude>
-		<ClInclude Include="CDamageFont.h">
-			<Filter>Scripts\UI\Image\DamageFont</Filter>
-		</ClInclude>
-		<ClInclude Include="CProgressBar.h">
-			<Filter>Scripts\UI\ProgressBar</Filter>
-		</ClInclude>
-		<ClInclude Include="CBossHP.h">
-			<Filter>Scripts\UI\ProgressBar\BossHP</Filter>
-		</ClInclude>
-		<ClInclude Include="CMonsterHP.h">
-			<Filter>Scripts\UI\ProgressBar\MonsterHP</Filter>
-		</ClInclude>
-		<ClInclude Include="CPlayerHP.h">
-			<Filter>Scripts\UI\ProgressBar\PlayerHP</Filter>
-		</ClInclude>
-		<ClInclude Include="CAmmoInfo.h">
-			<Filter>Scripts\UI\ProgressBar\AmmoInfo</Filter>
-		</ClInclude>
-		<ClInclude Include="CPhysXMgrScript.h">
-			<Filter>Scripts\Manager\PhysXMgr</Filter>
-		</ClInclude>
-		<ClInclude Include="CSkillIcon.h">
-			<Filter>Scripts\UI\ProgressBar\SkillIcon</Filter>
-		</ClInclude>
-		<ClInclude Include="CWrapImage.h">
-			<Filter>Scripts</Filter>
-		</ClInclude>
-		<ClInclude Include="CLevelTransition.h">
-			<Filter>Scripts</Filter>
-		</ClInclude>
-		<ClInclude Include="CEditorCameraMoveScript.h">
-			<Filter>Scripts\Manager\Camera</Filter>
-		</ClInclude>
-		<ClInclude Include="CSpawnSpotScript.h">
-			<Filter>Scripts</Filter>
-		</ClInclude>
-		<ClInclude Include="CMemoryPoolMgrScript.h">
-			<Filter>Scripts\Manager\MemoryPool</Filter>
-		</ClInclude>
-		<ClInclude Include="CHaloScript.h">
-			<Filter>Scripts\Player</Filter>
-		</ClInclude>
-		<ClInclude Include="CStudentScript.h">
-			<Filter>Scripts\Player</Filter>
-		</ClInclude>
-		<ClInclude Include="CPlayerScript.h">
-			<Filter>Scripts\Player</Filter>
-		</ClInclude>
-		<ClInclude Include="CPlayerController.h" />
-		<ClInclude Include="CDialog.h">
-			<Filter>Scripts\UI\Image\Dialog</Filter>
-		</ClInclude>
-		<ClInclude Include="CPlayerDamagedScript.h">
-			<Filter>Scripts\Player</Filter>
-		</ClInclude>
-	</ItemGroup>
-	<ItemGroup>
-		<ClCompile Include="pch.cpp">
-			<Filter>Default</Filter>
-		</ClCompile>
-		<ClCompile Include="Scripts.cpp">
-			<Filter>Default</Filter>
-		</ClCompile>
-		<ClCompile Include="CScriptMgr.cpp">
-			<Filter>ScriptMgr</Filter>
-		</ClCompile>
-		<ClCompile Include="CBackgroundScript.cpp">
-			<Filter>Scripts\Lecture</Filter>
-		</ClCompile>
-		<ClCompile Include="CMissileScript.cpp">
-			<Filter>Scripts\Lecture</Filter>
-		</ClCompile>
-		<ClCompile Include="CMonsterScript.cpp">
-			<Filter>Scripts\Lecture</Filter>
-		</ClCompile>
-		<ClCompile Include="CCameraMoveScript.cpp">
-			<Filter>Scripts\Manager\Camera</Filter>
-		</ClCompile>
-		<ClCompile Include="CRenderMgrScript.cpp">
-			<Filter>Scripts\Manager\Render</Filter>
-		</ClCompile>
-		<ClCompile Include="CTimeMgrScript.cpp">
-			<Filter>Scripts\Manager\Time</Filter>
-		</ClCompile>
-		<ClCompile Include="CCameraEffect.cpp">
-			<Filter>Scripts\Manager\Camera</Filter>
-		</ClCompile>
-		<ClCompile Include="CSpringArm.cpp">
-			<Filter>Scripts</Filter>
-		</ClCompile>
-		<ClCompile Include="CBtnUIScript.cpp">
-			<Filter>Scripts\DefaultUI\Button</Filter>
-		</ClCompile>
-		<ClCompile Include="CImageUIScript.cpp">
-			<Filter>Scripts\DefaultUI\Image</Filter>
-		</ClCompile>
-		<ClCompile Include="CPanelUIScript.cpp">
-			<Filter>Scripts\DefaultUI\Panel</Filter>
-		</ClCompile>
-		<ClCompile Include="CRoRStateMachine.cpp">
-			<Filter>RoRStateMachine</Filter>
-		</ClCompile>
-		<ClCompile Include="CCrosshair.cpp">
-			<Filter>Scripts\UI\Image\Crosshair</Filter>
-		</ClCompile>
-		<ClCompile Include="CWeaponInfo.cpp">
-			<Filter>Scripts\UI\Image\WeaponInfo</Filter>
-		</ClCompile>
-		<ClCompile Include="CPausePanel.cpp">
-			<Filter>Scripts\UI\Image\PausePanel</Filter>
-		</ClCompile>
-		<ClCompile Include="CPauseBtn.cpp">
-			<Filter>Scripts\UI\Image\PauseBtn</Filter>
-		</ClCompile>
-		<ClCompile Include="CDamageFont.cpp">
-			<Filter>Scripts\UI\Image\DamageFont</Filter>
-		</ClCompile>
-		<ClCompile Include="CProgressBar.cpp">
-			<Filter>Scripts\UI\ProgressBar</Filter>
-		</ClCompile>
-		<ClCompile Include="CBossHP.cpp">
-			<Filter>Scripts\UI\ProgressBar\BossHP</Filter>
-		</ClCompile>
-		<ClCompile Include="CPhysXMgrScript.cpp">
-			<Filter>Scripts\Manager\PhysXMgr</Filter>
-		</ClCompile>
-		<ClCompile Include="CMonsterHP.cpp">
-			<Filter>Scripts\UI\ProgressBar\MonsterHP</Filter>
-		</ClCompile>
-		<ClCompile Include="CPlayerHP.cpp">
-			<Filter>Scripts\UI\ProgressBar\PlayerHP</Filter>
-		</ClCompile>
-		<ClCompile Include="CAmmoInfo.cpp">
-			<Filter>Scripts\UI\ProgressBar\AmmoInfo</Filter>
-		</ClCompile>
-		<ClCompile Include="CSkillIcon.cpp">
-			<Filter>Scripts\UI\ProgressBar\SkillIcon</Filter>
-		</ClCompile>
-		<ClCompile Include="CWrapImage.cpp">
-			<Filter>Scripts</Filter>
-		</ClCompile>
-		<ClCompile Include="CLevelTransition.cpp">
-			<Filter>Scripts</Filter>
-		</ClCompile>
-		<ClCompile Include="CEditorCameraMoveScript.cpp">
-			<Filter>Scripts\Manager\Camera</Filter>
-		</ClCompile>
-		<ClCompile Include="CSpawnSpotScript.cpp">
-			<Filter>Scripts</Filter>
-		</ClCompile>
-		<ClCompile Include="CMemoryPoolMgrScript.cpp">
-			<Filter>Scripts\Manager\MemoryPool</Filter>
-		</ClCompile>
-		<ClCompile Include="CHaloScript.cpp">
-			<Filter>Scripts\Player</Filter>
-		</ClCompile>
-		<ClCompile Include="CStudentScript.cpp">
-			<Filter>Scripts\Player</Filter>
-		</ClCompile>
-		<ClCompile Include="CPlayerScript.cpp">
-			<Filter>Scripts\Player</Filter>
-		</ClCompile>
-		<ClCompile Include="CPlayerScript_State.cpp">
-			<Filter>Scripts\Player</Filter>
-		</ClCompile>
-		<ClCompile Include="CPlayerController.cpp" />
-		<ClCompile Include="CDialog.cpp">
-			<Filter>Scripts\UI\Image\Dialog</Filter>
-		</ClCompile>
-		<ClCompile Include="CPlayerDamagedScript.cpp">
-			<Filter>Scripts\Player</Filter>
-		</ClCompile>
-	</ItemGroup>
-	<ItemGroup>
-		<Filter Include="Default">
-			<UniqueIdentifier>{4f2f6642-c0f0-494a-9d81-0124398fdb95}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts">
-			<UniqueIdentifier>{af5c3808-4d30-476b-b2ab-d844558017d2}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="ScriptMgr">
-			<UniqueIdentifier>{b42de7fc-e585-40cf-9c65-79e91e2b59d4}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\Lecture">
-			<UniqueIdentifier>{4d80f442-9779-4484-a06b-9160bbb02db5}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\Manager">
-			<UniqueIdentifier>{7e2618a0-fa56-4b89-93a1-fc7f7083d374}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\Manager\Camera">
-			<UniqueIdentifier>{2e1568fc-db48-4110-923e-f26dd8be0036}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\Manager\Render">
-			<UniqueIdentifier>{99d3dd37-f3db-4c46-bc52-10d6c56fd614}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\Manager\Time">
-			<UniqueIdentifier>{9b5c2bf2-2681-42e9-b790-8b4aba881373}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\DefaultUI">
-			<UniqueIdentifier>{949d4c11-e4a8-4d1b-8d31-20202e70f9dc}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\DefaultUI\Button">
-			<UniqueIdentifier>{d563a445-59fa-4a54-9b9c-700bf54e43d2}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\DefaultUI\Image">
-			<UniqueIdentifier>{a8345db0-a049-4493-b2e4-cec8fdf207f2}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\DefaultUI\Panel">
-			<UniqueIdentifier>{239cd80d-3287-4e2a-b122-6447aac778ae}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\UI">
-			<UniqueIdentifier>{cb982d5c-819e-4bec-aaf2-577bd2b82280}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="RoRStateMachine">
-			<UniqueIdentifier>{86892923-b05a-4177-80fe-2f8aebe68887}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\Manager\PhysXMgr">
-			<UniqueIdentifier>{85af28fd-4fb9-47c5-b0d2-100e2dae1ca2}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\UI\Image">
-			<UniqueIdentifier>{4c858d1c-f5d2-4b6f-b0de-d26a867f62bb}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\UI\Image\Crosshair">
-			<UniqueIdentifier>{34c9d88f-7a17-4733-81e3-09cf4048d6c9}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\UI\Image\DamageFont">
-			<UniqueIdentifier>{0b661eb9-4e4a-43d3-9edf-5093ab788785}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\UI\Image\PauseBtn">
-			<UniqueIdentifier>{5511a975-3f3a-4029-8368-2ae1a53ecf41}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\UI\Image\PausePanel">
-			<UniqueIdentifier>{78fd96b1-f585-4066-88dc-0a7b73c075a9}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\UI\Image\WeaponInfo">
-			<UniqueIdentifier>{ed447ae9-d1c6-45b7-92af-d3e4daf01425}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\UI\ProgressBar">
-			<UniqueIdentifier>{e8beecff-8dff-41b8-8ccd-cd06f6600281}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\UI\ProgressBar\BossHP">
-			<UniqueIdentifier>{2be96e02-7796-457e-b422-6aa6ecb85aae}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\UI\ProgressBar\PlayerHP">
-			<UniqueIdentifier>{a4f4a420-e7cd-4f98-b9cc-eb77d7f93edb}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\UI\ProgressBar\MonsterHP">
-			<UniqueIdentifier>{41b13e7f-f4e2-41a0-9eb2-f1742d335840}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\UI\ProgressBar\AmmoInfo">
-			<UniqueIdentifier>{428b9d57-cfd8-4bf1-b2ca-3905db9d780b}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\UI\ProgressBar\SkillIcon">
-			<UniqueIdentifier>{904a9997-8eee-4e3b-ab19-3f8341cb7464}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\Manager\MemoryPool">
-			<UniqueIdentifier>{3ff61ac7-4bc8-4dcf-83a8-b5f5804064c8}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\Player">
-			<UniqueIdentifier>{996f1445-7d4f-4fb9-9dd7-21e6a4e6d11b}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\UI\Image\Dialog">
-			<UniqueIdentifier>{6fcd3b18-efc0-4025-8cec-ebede13f7e18}</UniqueIdentifier>
-		</Filter>
-	</ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h">
+      <Filter>Default</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Default</Filter>
+    </ClInclude>
+    <ClInclude Include="CScriptMgr.h">
+      <Filter>ScriptMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CBackgroundScript.h">
+      <Filter>Scripts\Lecture</Filter>
+    </ClInclude>
+    <ClInclude Include="CMissileScript.h">
+      <Filter>Scripts\Lecture</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonsterScript.h">
+      <Filter>Scripts\Lecture</Filter>
+    </ClInclude>
+    <ClInclude Include="CCameraMoveScript.h">
+      <Filter>Scripts\Manager\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CRenderMgrScript.h">
+      <Filter>Scripts\Manager\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="CTimeMgrScript.h">
+      <Filter>Scripts\Manager\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="CCameraEffect.h">
+      <Filter>Scripts\Manager\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CSpringArm.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="CBtnUIScript.h">
+      <Filter>Scripts\DefaultUI\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="CImageUIScript.h">
+      <Filter>Scripts\DefaultUI\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="CPanelUIScript.h">
+      <Filter>Scripts\DefaultUI\Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="CRoRStateMachine.h">
+      <Filter>RoRStateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="CCrosshair.h">
+      <Filter>Scripts\UI\Image\Crosshair</Filter>
+    </ClInclude>
+    <ClInclude Include="CWeaponInfo.h">
+      <Filter>Scripts\UI\Image\WeaponInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="CPausePanel.h">
+      <Filter>Scripts\UI\Image\PausePanel</Filter>
+    </ClInclude>
+    <ClInclude Include="CPauseBtn.h">
+      <Filter>Scripts\UI\Image\PauseBtn</Filter>
+    </ClInclude>
+    <ClInclude Include="CDamageFont.h">
+      <Filter>Scripts\UI\Image\DamageFont</Filter>
+    </ClInclude>
+    <ClInclude Include="CProgressBar.h">
+      <Filter>Scripts\UI\ProgressBar</Filter>
+    </ClInclude>
+    <ClInclude Include="CBossHP.h">
+      <Filter>Scripts\UI\ProgressBar\BossHP</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonsterHP.h">
+      <Filter>Scripts\UI\ProgressBar\MonsterHP</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayerHP.h">
+      <Filter>Scripts\UI\ProgressBar\PlayerHP</Filter>
+    </ClInclude>
+    <ClInclude Include="CAmmoInfo.h">
+      <Filter>Scripts\UI\ProgressBar\AmmoInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="CPhysXMgrScript.h">
+      <Filter>Scripts\Manager\PhysXMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CSkillIcon.h">
+      <Filter>Scripts\UI\ProgressBar\SkillIcon</Filter>
+    </ClInclude>
+    <ClInclude Include="CWrapImage.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="CLevelTransition.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="CEditorCameraMoveScript.h">
+      <Filter>Scripts\Manager\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CSpawnSpotScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="CMemoryPoolMgrScript.h">
+      <Filter>Scripts\Manager\MemoryPool</Filter>
+    </ClInclude>
+    <ClInclude Include="CHaloScript.h">
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CStudentScript.h">
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayerScript.h">
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayerController.h" />
+    <ClInclude Include="CDialog.h">
+      <Filter>Scripts\UI\Image\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayerDamagedScript.h">
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CWallScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="CCoverLow.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="CCoverHigh.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp">
+      <Filter>Default</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts.cpp">
+      <Filter>Default</Filter>
+    </ClCompile>
+    <ClCompile Include="CScriptMgr.cpp">
+      <Filter>ScriptMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CBackgroundScript.cpp">
+      <Filter>Scripts\Lecture</Filter>
+    </ClCompile>
+    <ClCompile Include="CMissileScript.cpp">
+      <Filter>Scripts\Lecture</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonsterScript.cpp">
+      <Filter>Scripts\Lecture</Filter>
+    </ClCompile>
+    <ClCompile Include="CCameraMoveScript.cpp">
+      <Filter>Scripts\Manager\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CRenderMgrScript.cpp">
+      <Filter>Scripts\Manager\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="CTimeMgrScript.cpp">
+      <Filter>Scripts\Manager\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="CCameraEffect.cpp">
+      <Filter>Scripts\Manager\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CSpringArm.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CBtnUIScript.cpp">
+      <Filter>Scripts\DefaultUI\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="CImageUIScript.cpp">
+      <Filter>Scripts\DefaultUI\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="CPanelUIScript.cpp">
+      <Filter>Scripts\DefaultUI\Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="CRoRStateMachine.cpp">
+      <Filter>RoRStateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="CCrosshair.cpp">
+      <Filter>Scripts\UI\Image\Crosshair</Filter>
+    </ClCompile>
+    <ClCompile Include="CWeaponInfo.cpp">
+      <Filter>Scripts\UI\Image\WeaponInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="CPausePanel.cpp">
+      <Filter>Scripts\UI\Image\PausePanel</Filter>
+    </ClCompile>
+    <ClCompile Include="CPauseBtn.cpp">
+      <Filter>Scripts\UI\Image\PauseBtn</Filter>
+    </ClCompile>
+    <ClCompile Include="CDamageFont.cpp">
+      <Filter>Scripts\UI\Image\DamageFont</Filter>
+    </ClCompile>
+    <ClCompile Include="CProgressBar.cpp">
+      <Filter>Scripts\UI\ProgressBar</Filter>
+    </ClCompile>
+    <ClCompile Include="CBossHP.cpp">
+      <Filter>Scripts\UI\ProgressBar\BossHP</Filter>
+    </ClCompile>
+    <ClCompile Include="CPhysXMgrScript.cpp">
+      <Filter>Scripts\Manager\PhysXMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonsterHP.cpp">
+      <Filter>Scripts\UI\ProgressBar\MonsterHP</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerHP.cpp">
+      <Filter>Scripts\UI\ProgressBar\PlayerHP</Filter>
+    </ClCompile>
+    <ClCompile Include="CAmmoInfo.cpp">
+      <Filter>Scripts\UI\ProgressBar\AmmoInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="CSkillIcon.cpp">
+      <Filter>Scripts\UI\ProgressBar\SkillIcon</Filter>
+    </ClCompile>
+    <ClCompile Include="CWrapImage.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevelTransition.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CEditorCameraMoveScript.cpp">
+      <Filter>Scripts\Manager\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CSpawnSpotScript.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CMemoryPoolMgrScript.cpp">
+      <Filter>Scripts\Manager\MemoryPool</Filter>
+    </ClCompile>
+    <ClCompile Include="CHaloScript.cpp">
+      <Filter>Scripts\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CStudentScript.cpp">
+      <Filter>Scripts\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerScript.cpp">
+      <Filter>Scripts\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerScript_State.cpp">
+      <Filter>Scripts\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerController.cpp" />
+    <ClCompile Include="CDialog.cpp">
+      <Filter>Scripts\UI\Image\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerDamagedScript.cpp">
+      <Filter>Scripts\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CWallScript.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CCoverLow.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CCoverHigh.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Default">
+      <UniqueIdentifier>{4f2f6642-c0f0-494a-9d81-0124398fdb95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts">
+      <UniqueIdentifier>{af5c3808-4d30-476b-b2ab-d844558017d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ScriptMgr">
+      <UniqueIdentifier>{b42de7fc-e585-40cf-9c65-79e91e2b59d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Lecture">
+      <UniqueIdentifier>{4d80f442-9779-4484-a06b-9160bbb02db5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager">
+      <UniqueIdentifier>{7e2618a0-fa56-4b89-93a1-fc7f7083d374}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager\Camera">
+      <UniqueIdentifier>{2e1568fc-db48-4110-923e-f26dd8be0036}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager\Render">
+      <UniqueIdentifier>{99d3dd37-f3db-4c46-bc52-10d6c56fd614}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager\Time">
+      <UniqueIdentifier>{9b5c2bf2-2681-42e9-b790-8b4aba881373}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\DefaultUI">
+      <UniqueIdentifier>{949d4c11-e4a8-4d1b-8d31-20202e70f9dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\DefaultUI\Button">
+      <UniqueIdentifier>{d563a445-59fa-4a54-9b9c-700bf54e43d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\DefaultUI\Image">
+      <UniqueIdentifier>{a8345db0-a049-4493-b2e4-cec8fdf207f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\DefaultUI\Panel">
+      <UniqueIdentifier>{239cd80d-3287-4e2a-b122-6447aac778ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI">
+      <UniqueIdentifier>{cb982d5c-819e-4bec-aaf2-577bd2b82280}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RoRStateMachine">
+      <UniqueIdentifier>{86892923-b05a-4177-80fe-2f8aebe68887}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager\PhysXMgr">
+      <UniqueIdentifier>{85af28fd-4fb9-47c5-b0d2-100e2dae1ca2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\Image">
+      <UniqueIdentifier>{4c858d1c-f5d2-4b6f-b0de-d26a867f62bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\Image\Crosshair">
+      <UniqueIdentifier>{34c9d88f-7a17-4733-81e3-09cf4048d6c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\Image\DamageFont">
+      <UniqueIdentifier>{0b661eb9-4e4a-43d3-9edf-5093ab788785}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\Image\PauseBtn">
+      <UniqueIdentifier>{5511a975-3f3a-4029-8368-2ae1a53ecf41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\Image\PausePanel">
+      <UniqueIdentifier>{78fd96b1-f585-4066-88dc-0a7b73c075a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\Image\WeaponInfo">
+      <UniqueIdentifier>{ed447ae9-d1c6-45b7-92af-d3e4daf01425}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\ProgressBar">
+      <UniqueIdentifier>{e8beecff-8dff-41b8-8ccd-cd06f6600281}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\ProgressBar\BossHP">
+      <UniqueIdentifier>{2be96e02-7796-457e-b422-6aa6ecb85aae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\ProgressBar\PlayerHP">
+      <UniqueIdentifier>{a4f4a420-e7cd-4f98-b9cc-eb77d7f93edb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\ProgressBar\MonsterHP">
+      <UniqueIdentifier>{41b13e7f-f4e2-41a0-9eb2-f1742d335840}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\ProgressBar\AmmoInfo">
+      <UniqueIdentifier>{428b9d57-cfd8-4bf1-b2ca-3905db9d780b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\ProgressBar\SkillIcon">
+      <UniqueIdentifier>{904a9997-8eee-4e3b-ab19-3f8341cb7464}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager\MemoryPool">
+      <UniqueIdentifier>{3ff61ac7-4bc8-4dcf-83a8-b5f5804064c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Player">
+      <UniqueIdentifier>{996f1445-7d4f-4fb9-9dd7-21e6a4e6d11b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\Image\Dialog">
+      <UniqueIdentifier>{6fcd3b18-efc0-4025-8cec-ebede13f7e18}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
 </Project>

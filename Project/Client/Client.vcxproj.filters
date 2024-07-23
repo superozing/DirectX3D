@@ -152,8 +152,8 @@
     <Filter Include="01. Manager\05. EnvMgr">
       <UniqueIdentifier>{62f88023-0e58-4337-aecb-a172fcd9d6e4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. UI\3. Inspector\ComponentUI\Decal">
-      <UniqueIdentifier>{049225c8-7276-48a6-85a4-cf11c5696641}</UniqueIdentifier>
+    <Filter Include="02. UI\9. Model">
+      <UniqueIdentifier>{7936e6ad-88c6-4311-b8db-31e85d7058f5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -335,8 +335,8 @@
     <ClInclude Include="MapTutorial.h">
       <Filter>01. Manager\03. CreateTempLevel</Filter>
     </ClInclude>
-    <ClInclude Include="DecalUI.h">
-      <Filter>02. UI\3. Inspector\ComponentUI\Decal</Filter>
+    <ClInclude Include="ModelUI.h">
+      <Filter>02. UI\9. Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -520,8 +520,8 @@
     <ClCompile Include="MapTutorial.cpp">
       <Filter>01. Manager\03. CreateTempLevel</Filter>
     </ClCompile>
-    <ClCompile Include="DecalUI.cpp">
-      <Filter>02. UI\3. Inspector\ComponentUI\Decal</Filter>
+    <ClCompile Include="ModelUI.cpp">
+      <Filter>02. UI\9. Model</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

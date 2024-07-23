@@ -81,4 +81,7 @@ private:
 public:
 	UI*	 FindUI(const string& _strUIName);
 	void AddUI(const string& _strKey, UI* _UI);
+
+	friend class MenuUI;
+	friend class CEnvMgr;
 };

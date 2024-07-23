@@ -172,6 +172,8 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CBtnUIScript.h" />
     <ClInclude Include="CCameraEffect.h" />
     <ClInclude Include="CCameraMoveScript.h" />
+    <ClInclude Include="CCoverHigh.h" />
+    <ClInclude Include="CCoverLow.h" />
     <ClInclude Include="CCrosshair.h" />
     <ClInclude Include="CDamageFont.h" />
     <ClInclude Include="CDialog.h" />
@@ -200,6 +202,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CSpringArm.h" />
     <ClInclude Include="CStudentScript.h" />
     <ClInclude Include="CTimeMgrScript.h" />
+    <ClInclude Include="CWallScript.h" />
     <ClInclude Include="CWeaponInfo.h" />
     <ClInclude Include="CWrapImage.h" />
     <ClInclude Include="framework.h" />
@@ -212,6 +215,8 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CBtnUIScript.cpp" />
     <ClCompile Include="CCameraEffect.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
+    <ClCompile Include="CCoverHigh.cpp" />
+    <ClCompile Include="CCoverLow.cpp" />
     <ClCompile Include="CCrosshair.cpp" />
     <ClCompile Include="CDamageFont.cpp" />
     <ClCompile Include="CDialog.cpp" />
@@ -241,6 +246,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CSpringArm.cpp" />
     <ClCompile Include="CStudentScript.cpp" />
     <ClCompile Include="CTimeMgrScript.cpp" />
+    <ClCompile Include="CWallScript.cpp" />
     <ClCompile Include="CWeaponInfo.cpp" />
     <ClCompile Include="CWrapImage.cpp" />
     <ClCompile Include="pch.cpp">

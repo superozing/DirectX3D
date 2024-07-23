@@ -23,6 +23,7 @@
 #include "ListUI.h"
 #include "RTViewPort.h"
 #include "LogUI.h"
+#include "ModelUI.h"
 
 #include "ParamUI.h"
 
@@ -314,6 +315,10 @@ void CImGuiMgr::create_ui()
 
 	// Log
 	pUI = new LogUI;
+	AddUI(pUI->GetID(), pUI);
+
+	// ModelUI
+	pUI = new ModelUI;
 	AddUI(pUI->GetID(), pUI);
 }
 

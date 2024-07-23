@@ -107,7 +107,7 @@ void CPhysX::finaltick()
 	}
 	m_bImguiDirtyFlag = false;
 
-	if (m_bStaticActor)
+	if (PhysBodyType::DYNAMIC != m_bPhysBodyType)
 	{
 		updateToPhysics();
 	}
@@ -126,15 +126,15 @@ void CPhysX::finaltick()
 	if (PhysShape::BOX == m_Shape)
 	{
 		GamePlayStatic::DrawDebugCube(DebugFinalPos, m_vScale, Vec4(Rot.x, Rot.y, Rot.z, Rot.w), Vec3(0.3f, .3f, 0.3f),
-									  true);
+									  false);
 	}
 	else
 	{
-		GamePlayStatic::DrawDebugSphere(DebugFinalPos, m_vScale.x / 2.f, Vec3(0.3f, .3f, 0.3f), true);
+		GamePlayStatic::DrawDebugSphere(DebugFinalPos, m_vScale.x / 2.f, Vec3(0.3f, .3f, 0.3f), false);
 	}
 }
 
-#define TagStatic "[IsStatic]"
+#define TagBodyType "[IsStatic]"
 #define TagShape "[Shape]"
 #define TagScale "[Scale]"
 #define TagOffsetPos "[OffsetPos]"
@@ -144,8 +144,8 @@ void CPhysX::SaveToFile(FILE* _File)
 
 void CPhysX::SaveToFile(ofstream& fout)
 {
-	fout << TagStatic << endl;
-	fout << m_bStaticActor << endl;
+	fout << TagBodyType << endl;
+	fout << magic_enum::enum_name<PhysBodyType>(m_bPhysBodyType) << endl;
 
 	fout << TagShape << endl;
 	auto shape = magic_enum::enum_name<PhysShape>(m_Shape);
@@ -165,8 +165,9 @@ void CPhysX::LoadFromFile(FILE* _File)
 void CPhysX::LoadFromFile(ifstream& fin)
 {
 	string tag, str;
-	Utils::GetLineUntilString(fin, TagStatic);
-	fin >> m_bStaticActor;
+	Utils::GetLineUntilString(fin, TagBodyType);
+	getline(fin, str);
+	m_bPhysBodyType = magic_enum::enum_cast<PhysBodyType>(str).value();
 
 	Utils::GetLineUntilString(fin, TagShape);
 	getline(fin, str);

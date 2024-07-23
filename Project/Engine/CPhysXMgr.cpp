@@ -123,8 +123,11 @@ PxFilterFlags CustomFilterShader(PxFilterObjectAttributes attributes0, PxFilterD
 	}
 
 	// 모든 충돌에 대해 충돌 보고 활성화
+	// pairFlags = PxPairFlag::eCONTACT_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_FOUND | PxPairFlag::eNOTIFY_TOUCH_PERSISTS |
+	//			PxPairFlag::eNOTIFY_TOUCH_LOST | PxPairFlag::eNOTIFY_CONTACT_POINTS | PxPairFlag::eSOLVE_CONTACT |
+	//			PxPairFlag::eDETECT_DISCRETE_CONTACT | PxPairFlag::eDETECT_CCD_CONTACT;
 	pairFlags = PxPairFlag::eCONTACT_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_FOUND | PxPairFlag::eNOTIFY_TOUCH_PERSISTS |
-				PxPairFlag::eNOTIFY_TOUCH_LOST;
+				PxPairFlag::eNOTIFY_TOUCH_LOST | PxPairFlag::eNOTIFY_TOUCH_CCD;
 	return PxFilterFlag::eDEFAULT;
 }
 
@@ -196,16 +199,34 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 
 	PxRigidActor* actor = nullptr;
 
-	if (true == PhysX->m_bStaticActor)
+	if (PhysBodyType::STATIC == PhysX->m_bPhysBodyType)
 	{
 		// 고정된 물리 객체 생성
 		actor = gPhysics->createRigidStatic(transform);
+		// actor = PxCreatePlane(*gPhysics, PxPlane(0, 1, 0, 0), *gMaterial);
+	}
+	else if (PhysBodyType::TRIGGER == PhysX->m_bPhysBodyType)
+	{
+		// 운동학적 물리 객체 생성
+		// PxRigidDynamic* dynamicActor = gPhysics->createRigidDynamic(transform);
+		// dynamicActor->setKinematicTarget(transform);
+		// dynamicActor->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
+		// actor = dynamicActor;
+
+		// 동적 물리 객체 생성
+		PxRigidDynamic* dynamicActor = gPhysics->createRigidDynamic(transform);
+		PxRigidBodyExt::updateMassAndInertia(*dynamicActor, 10.0f);
+		// dynamicActor->setMass(1.0f);
+		actor = dynamicActor;
 	}
 	else
 	{
 		// 동적 물리 객체 생성
 		PxRigidDynamic* dynamicActor = gPhysics->createRigidDynamic(transform);
-		dynamicActor->setMass(1.0f);
+		PxRigidBodyExt::updateMassAndInertia(*dynamicActor, 10.0f);
+		// dynamicActor->setMass(1.0f);
+		dynamicActor->setRigidBodyFlag(PxRigidBodyFlag::eENABLE_CCD, true);
+		dynamicActor->setRigidBodyFlag(PxRigidBodyFlag::eENABLE_SPECULATIVE_CCD, true);
 		actor = dynamicActor;
 	}
 
@@ -231,6 +252,22 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 	// 필터정보 세팅
 	setFillterData(shape, (UINT)object->GetLayerIdx());
 
+	shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
+
+	if (PhysBodyType::DYNAMIC == PhysX->m_bPhysBodyType)
+	{
+		shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
+	}
+	if (PhysBodyType::TRIGGER != PhysX->m_bPhysBodyType)
+	{
+		shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
+		shape->setRestOffset(200.f);
+	}
+	if (PhysBodyType::TRIGGER == PhysX->m_bPhysBodyType)
+	{
+		shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
+	}
+
 	actor->attachShape(*shape);
 
 	// Collider 추가 후, 씬에 배우 추가
@@ -249,14 +286,15 @@ void CPhysXMgr::init()
 	gFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, gAllocator, gErrorCallback);
 
 	//// PVD 연결 설정
-	// gPvd = PxCreatePvd(*gFoundation);
-	// PxPvdTransport* transport = PxDefaultPvdSocketTransportCreate("127.0.0.1", 5425, 10);
-	// gPvd->connect(*transport, PxPvdInstrumentationFlag::eALL);
+	gPvd					  = PxCreatePvd(*gFoundation);
+	PxPvdTransport* transport = PxDefaultPvdSocketTransportCreate("127.0.0.1", 5425, 10);
+	gPvd->connect(*transport, PxPvdInstrumentationFlag::eALL);
 
 	// PhysX 초기화
 	gPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *gFoundation, PxTolerancesScale(), true, gPvd);
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
-	sceneDesc.gravity		= PxVec3(0.0f, -981.f, 0.0f);
+	const float gravityMul	= 10.f;
+	sceneDesc.gravity		= PxVec3(0.0f, -9.81f * gravityMul, 0.0f);
 	gDispatcher				= PxDefaultCpuDispatcherCreate(2);
 	sceneDesc.cpuDispatcher = gDispatcher;
 
@@ -265,11 +303,15 @@ void CPhysXMgr::init()
 	LayerCheck((UINT)LAYER::LAYER_MONSTER, (UINT)LAYER::LAYER_RAYCAST);
 	LayerCheck((UINT)LAYER::LAYER_PLAYER, (UINT)LAYER::LAYER_RAYCAST);
 	LayerCheck((UINT)LAYER::LAYER_WALL, (UINT)LAYER::LAYER_RAYCAST);
+	LayerCheck((UINT)LAYER::LAYER_DEFAULT, (UINT)LAYER::LAYER_DEFAULT);
 
-	sceneDesc.filterShader = CustomFilterShader;
+	sceneDesc.filterShader			  = CustomFilterShader;
+	sceneDesc.kineKineFilteringMode	  = PxPairFilteringMode::eKEEP;
+	sceneDesc.staticKineFilteringMode = PxPairFilteringMode::eKEEP;
+	// sceneDesc.flags |= PxSceneFlag::eENABLE_CCD;
 
 	gScene = gPhysics->createScene(sceneDesc);
-	gMaterial = gPhysics->createMaterial(0.5f, 0.5f, 0.5f); // (정지 마찰 계수, 동적 마찰 계수, 반발 계수)
+	gMaterial = gPhysics->createMaterial(0.5f, 0.5f, 0.f); // (정지 마찰 계수, 동적 마찰 계수, 반발 계수)
 
 	gCollisionCalback = new RoRCollisionCallback;
 	gScene->setSimulationEventCallback(gCollisionCalback);
@@ -277,8 +319,27 @@ void CPhysXMgr::init()
 
 void CPhysXMgr::tick()
 {
-	gScene->simulate(DT);
+	static const float ThresholdTime = 1.f / 60.f;
+	static float	   acctime		 = 0.f;
+	acctime += DT;
+	if (acctime < ThresholdTime)
+		return;
+	acctime -= ThresholdTime;
+	gScene->simulate(ThresholdTime);
 	gScene->fetchResults(true);
+
+	for (auto& e : m_vecColInfo)
+	{
+		if (PxPairFlag::eNOTIFY_TOUCH_PERSISTS == e.State)
+		{
+			RoRCollisionCallback::handleOverlap(e.Actor1, e.Actor2);
+		}
+		if (PxPairFlag::eNOTIFY_TOUCH_FOUND == e.State)
+		{
+			// 다음 프레임부터 Persist처리
+			e.State = PxPairFlag::eNOTIFY_TOUCH_PERSISTS;
+		}
+	}
 }
 
 void CPhysXMgr::ClearAllActors()
@@ -307,6 +368,7 @@ void CPhysXMgr::ClearAllActors()
 void CPhysXMgr::exit()
 {
 	ClearAllActors();
+	m_vecColInfo.clear();
 }
 
 CPhysXMgr::~CPhysXMgr()

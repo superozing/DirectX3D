@@ -4,6 +4,43 @@
 #include "CPhysX.h"
 #include "CLevelMgr.h"
 #include "CLevel.h"
+#include "CPhysXMgr.h"
+
+void RoRCollisionCallback::onTrigger(PxTriggerPair* pairs, PxU32 count)
+{
+	int	 a		= 0;
+	auto actor1 = pairs->triggerActor;
+	auto actor2 = pairs->otherActor;
+
+	if (pairs->status & PxPairFlag::eNOTIFY_TOUCH_FOUND)
+	{
+		handleBeginOverlap(actor1, actor2);
+		FlagActorColInfo ColInfo = {};
+		ColInfo.Actor1			 = actor1;
+		ColInfo.Actor2			 = actor2;
+		ColInfo.State			 = PxPairFlag::eNOTIFY_TOUCH_FOUND;
+		CPhysXMgr::GetInst()->m_vecColInfo.push_back(ColInfo);
+	}
+	// Note : Flag방식은 PERSIST이벤트가 들어오지않으므로 별도의 자료구조로 관리해야 한다
+	// if (pairs->status & PxPairFlag::eNOTIFY_TOUCH_PERSISTS)
+	//{
+	//	handleOverlap(actor1, actor2);
+	// }
+	if (pairs->status & PxPairFlag::eNOTIFY_TOUCH_LOST)
+	{
+		handleEndOverlap(actor1, actor2);
+		auto iter = CPhysXMgr::GetInst()->m_vecColInfo.begin();
+		while (CPhysXMgr::GetInst()->m_vecColInfo.end() != iter)
+		{
+			if (actor1 == iter->Actor1 && actor2 == iter->Actor2)
+			{
+				iter = CPhysXMgr::GetInst()->m_vecColInfo.erase(iter);
+				break;
+			}
+			++iter;
+		}
+	}
+}
 
 void RoRCollisionCallback::onContact(const PxContactPairHeader& pairHeader, const PxContactPair* pairs, PxU32 nbPairs)
 {

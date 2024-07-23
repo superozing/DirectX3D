@@ -42,7 +42,7 @@ CPlayerScript::CPlayerScript(const CPlayerScript& _origin)
 	, m_tStatus(_origin.m_tStatus)
 	, m_mSpringInfos(_origin.m_mSpringInfos)
 {
-	m_FSM = _origin.m_FSM->Clone(this);
+	// m_FSM = _origin.m_FSM->Clone(this);
 
 	// 스크립트 파람 초기화
 	InitScriptParamUI();

@@ -85,12 +85,22 @@ void RTViewPort::render_update()
 			else
 			{
 				// FBX, MeshData일 경우 오브젝트 로드
-				CAsset* pAsset = (CAsset*)data;
-				if (ASSET_TYPE::MESHDATA == pAsset->GetType())
-				{
-					Ptr<CMeshData> pMD = (CMeshData*)pAsset;
-					CGameObject*   pGO = pMD->Instantiate();
+				CAsset*		 pAsset = (CAsset*)data;
+				CGameObject* pGO	= nullptr;
 
+				if (ASSET_TYPE::MESHDATA == pAsset->GetType() || ASSET_TYPE::PREFAB == pAsset->GetType())
+				{
+					if (ASSET_TYPE::MESHDATA == pAsset->GetType())
+					{
+						Ptr<CMeshData> pMD = (CMeshData*)pAsset;
+						pGO				   = pMD->Instantiate();
+					}
+
+					if (ASSET_TYPE::PREFAB == pAsset->GetType())
+					{
+						Ptr<CPrefab> pPrefab = (CPrefab*)pAsset;
+						pGO					 = pPrefab->Instantiate();
+					}
 					string name = path(ToString(pAsset->GetKey())).stem().string();
 					pGO->SetName(name);
 
@@ -98,11 +108,21 @@ void RTViewPort::render_update()
 					CCamera* pCam	   = CRenderMgr::GetInst()->GetMainCam();
 					Vec3	 vDir	   = pCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
 					Vec3	 vPos	   = pCam->Transform()->GetWorldPos();
-					float	 fDist	   = 500.f;
+					float	 fDist	   = 100.f;
 					Vec3	 vSpawnPos = vPos + vDir * fDist;
 					pGO->Transform()->SetRelativePos(vSpawnPos);
 
-					GamePlayStatic::SpawnGameObject(pGO, 0);
+					// TODO : 진우 코드 들어오면 변경해야 하는 부분
+					if (ASSET_TYPE::PREFAB == pAsset->GetType())
+					{
+						int idx			 = pGO->GetLayerIdx();
+						pGO->m_iLayerIdx = -1;
+						GamePlayStatic::SpawnGameObject(pGO, idx);
+					}
+					else
+					{
+						GamePlayStatic::SpawnGameObject(pGO, 0);
+					}
 
 					auto pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
 					pInspector->SetTargetObject(pGO);
@@ -254,8 +274,8 @@ void EditTransform(float* cameraView, float* cameraProjection, float* matrix, bo
 	ImGuizmo::SetDrawlist();
 	ImGuizmo::Manipulate(cameraView, cameraProjection, mCurrentGizmoOperation, mCurrentGizmoMode, matrix, NULL,
 						 useSnap ? &snap[0] : NULL, boundSizing ? bounds : NULL, boundSizingSnap ? boundsSnap : NULL);
-	// ImGuizmo::ViewManipulate(cameraView, _distance, ImVec2(viewManipulateRight - 128, viewManipulateTop), ImVec2(128,
-	// 128), 0x10101010);
+	// ImGuizmo::ViewManipulate(cameraView, _distance, ImVec2(viewManipulateRight - 128, viewManipulateTop),
+	// ImVec2(128, 128), 0x10101010);
 }
 
 void RTViewPort::SetTargetObject(CGameObject* _target)
