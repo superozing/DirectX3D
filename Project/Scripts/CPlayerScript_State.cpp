@@ -521,21 +521,21 @@ int CPlayerScript::MoveEndNormalUpdate()
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::NormalIdle;
 
-	// 움직임종료상태 움직임 속도 조절
-	{
-		int maxFrm = Animator3D()->GetCurClipLength();
-		int curFrm = Animator3D()->GetCurFrameIdx();
+	// 움직임종료상태 움직임 속도 조절 - 좌우 움직일때 어색함으로 삭제
+	//{
+	//	int maxFrm = Animator3D()->GetCurClipLength();
+	//	int curFrm = Animator3D()->GetCurFrameIdx();
 
-		Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-		vFront.Normalize();
-		Vec3 vPos = Transform()->GetRelativePos();
+	//	Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+	//	vFront.Normalize();
+	//	Vec3 vPos = Transform()->GetRelativePos();
 
-		float fSpeed = RoRMath::SmoothStep(m_tStatus.DashMinSpeed, 0, (float)curFrm / maxFrm);
+	//	float fSpeed = RoRMath::SmoothStep(m_tStatus.DashMinSpeed, 0, (float)curFrm / maxFrm);
 
-		vPos += vFront * fSpeed * DT;
+	//	vPos += vFront * fSpeed * DT;
 
-		Transform()->SetRelativePos(vPos);
-	}
+	//	Transform()->SetRelativePos(vPos);
+	//}
 
 	// 사격 준비
 	if (KEY_TAP(CPlayerController::Zoom) || KEY_PRESSED(CPlayerController::Zoom))
@@ -778,6 +778,7 @@ void CPlayerScript::SkillDashBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::SkillDash, 0);
 	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::SkillDash]);
+	SetInvincivility(true);
 }
 
 int CPlayerScript::SkillDashUpdate()
@@ -792,7 +793,7 @@ int CPlayerScript::SkillDashUpdate()
 		float fCurSpeed;
 		int	  iGroudnTapFrm = 20;
 
-		// 땅에 닿는 순간을 분기점으로 스피드 변경
+		// 땅에 닿는 순간을 분기점으로 스피드 변경 + 무적 판정 해제
 		if (curFrm < iGroudnTapFrm)
 		{
 			fCurSpeed =
@@ -802,6 +803,7 @@ int CPlayerScript::SkillDashUpdate()
 		{
 			fCurSpeed = RoRMath::SmoothStep(m_tStatus.DashGroundSpeed, m_tStatus.DashMinSpeed,
 											(float)(curFrm - iGroudnTapFrm) / (maxFrm - iGroudnTapFrm));
+			SetInvincivility(true);
 		}
 
 		Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);

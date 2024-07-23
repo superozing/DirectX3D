@@ -19,5 +19,6 @@
 #endif
 
 #include "CScriptMgr.h"
+#include "strings.h"
 
-#endif //PCH_H
+#endif // PCH_H

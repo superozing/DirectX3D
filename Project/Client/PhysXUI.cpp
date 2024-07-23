@@ -57,6 +57,13 @@ void PhysXUI::render_update()
 		ImGui::EndCombo();
 	}
 
+	ImGui::SameLine();
+	auto IsDrawing = phys->m_bDrawing;
+	if (ImGui::Checkbox("Draw", &IsDrawing))
+	{
+		phys->m_bDrawing = IsDrawing;
+	}
+
 	if (ImGui::BeginCombo("##Shape", strShape.c_str()))
 	{
 		for (size_t i = 0; i < (UINT)PhysShape::END; ++i)

@@ -123,14 +123,17 @@ void CPhysX::finaltick()
 	auto		DebugFinalPos = ObjWorldPos + m_vOffsetPos;
 	auto		Rot			  = getTransform().q;
 
-	if (PhysShape::BOX == m_Shape)
+	if (m_bDrawing)
 	{
-		GamePlayStatic::DrawDebugCube(DebugFinalPos, m_vScale, Vec4(Rot.x, Rot.y, Rot.z, Rot.w), Vec3(0.3f, .3f, 0.3f),
-									  false);
-	}
-	else
-	{
-		GamePlayStatic::DrawDebugSphere(DebugFinalPos, m_vScale.x / 2.f, Vec3(0.3f, .3f, 0.3f), false);
+		if (PhysShape::BOX == m_Shape)
+		{
+			GamePlayStatic::DrawDebugCube(DebugFinalPos, m_vScale, Vec4(Rot.x, Rot.y, Rot.z, Rot.w),
+										  Vec3(0.3f, .3f, 0.3f), false);
+		}
+		else
+		{
+			GamePlayStatic::DrawDebugSphere(DebugFinalPos, m_vScale.x / 2.f, Vec3(0.3f, .3f, 0.3f), false);
+		}
 	}
 }
 

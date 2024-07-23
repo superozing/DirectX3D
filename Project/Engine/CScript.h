@@ -122,3 +122,5 @@ public:
 	CScript(UINT _ScriptType);
 	~CScript();
 };
+typedef void (CScript::*Delegate_S)();
+typedef bool (CScript::*Delegate_BS)();

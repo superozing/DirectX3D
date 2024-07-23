@@ -244,6 +244,30 @@ void CPlayerScript::InitSpringArmSetting()
 
 #include <Engine/CRenderMgr.h>
 
+void CPlayerScript::SetCoverType(CoverType _type)
+{
+	m_iCorverType = _type;
+
+	PLAYER_STATE state;
+	switch (_type)
+	{
+	case CoverType::Normal:
+		state = PLAYER_STATE::NormalIdle;
+		break;
+	case CoverType::Stand:
+		state = PLAYER_STATE::MoveEndStand;
+		break;
+	case CoverType::Kneel:
+		state = PLAYER_STATE::MoveEndKneel;
+		break;
+	case CoverType::End:
+		break;
+	default:
+		break;
+	}
+	m_FSM->SetCurState((int)state);
+}
+
 void CPlayerScript::begin()
 {
 	auto vecChild = GetOwner()->GetChild();
@@ -350,6 +374,11 @@ void CPlayerScript::tick()
 		auto pMon = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Temp Monster Cube");
 		m_pDamagedDirectionMgr->AddDamagedDirection(pMon->Transform()->GetWorldPos(), 0.1f);
 	}
+
+	// if (KEY_TAP(H))
+	//{
+	//	SetRight(!IsRight());
+	// }
 }
 
 void CPlayerScript::CameraMove()
