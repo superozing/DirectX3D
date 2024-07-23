@@ -27,6 +27,7 @@ void ModelUI::SetModel(CGameObject* _obj)
 {
 	// 트리 내용을 삭제
 	m_pBoneTree->ClearNode();
+	m_pModel = nullptr;
 
 	if (_obj && _obj->Animator3D())
 	{

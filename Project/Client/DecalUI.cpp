@@ -2,8 +2,10 @@
 #include "DecalUI.h"
 
 #include <Engine\CDecal.h>
-#include <Engine\CMeshRender.h>
 #include <Engine\CMaterial.h>
+
+#include "ListUI.h"
+#include "ParamUI.h"
 
 DecalUI::DecalUI()
 	: ComponentUI("Decal", "##Decal", COMPONENT_TYPE::DECAL)
@@ -31,48 +33,173 @@ void DecalUI::render_update()
 	if (!TitleCollapse("Decal"))
 		return;
 
-	ImGui::Text("Decal Mtrl : ");
-	ImGui::SameLine();
+	CGameObject*	  pTarget  = GetTargetObject();
+	CRenderComponent* pRenComp = pTarget->GetRenderComponent();
 
-	strDecalMtrl = ToString(GetTargetObject()->GetRenderComponent()->GetMaterial(0)->GetKey());
-	ImGui::InputText("##Decal Material", (char*)strDecalMtrl.c_str(), ImGuiInputTextFlags_ReadOnly);
+	string meshname, mtrlname;
 
-	CMaterial* PayloadMaterial = nullptr;
-	if (PayloadCheck(&PayloadMaterial))
+	Ptr<CMaterial> pMtrl = pRenComp->GetMaterial(0);
+
+	if (nullptr != pMtrl)
 	{
-		GetTargetObject()->Decal()->ChangeMtrl(PayloadMaterial->GetKey());
+		mtrlname = ToString(pMtrl->GetKey()).c_str();
 	}
 
-	ImGui::SeparatorText("Decal Texture");
+	string label = "Material" + std::to_string(0);
 
-	Ptr<CTexture> pTex = GetTargetObject()->GetRenderComponent()->GetMaterial(0)->GetTexParam(TEX_PARAM::TEX_0).Get();
-
-	if (pTex.Get() != nullptr)
+	if (ImGui::TreeNodeEx(label.c_str()))
 	{
-		ImVec2 UIsize = ImGui::GetWindowSize();
+		ImGui::Text("Material");
+		ImGui::SameLine();
+		ImGui::InputText("##MtrlName", (char*)mtrlname.c_str(), mtrlname.length(), ImGuiInputTextFlags_ReadOnly);
+		ImGui::SameLine();
 
-		static bool use_text_color_for_tint = false;
-		ImVec2		uv_min					= ImVec2(0.0f, 0.0f); // Top-left
-		ImVec2		uv_max					= ImVec2(1.0f, 1.0f); // Lower-right
-		ImVec4		tint_col				= use_text_color_for_tint ? ImGui::GetStyleColorVec4(ImGuiCol_Text)
-																	  : ImVec4(1.0f, 1.0f, 1.0f, 1.0f); // No tint
-		ImVec4		border_col				= ImGui::GetStyleColorVec4(ImGuiCol_Border);
+		// Material payload 체크
+		CMaterial* PayloadMaterial = nullptr;
+		if (PayloadCheck(&PayloadMaterial))
+		{
+			GetTargetObject()->GetRenderComponent()->SetMaterial((CMaterial*)PayloadMaterial, 0);
+		}
 
-		ImGui::Image(pTex->GetSRV().Get(), ImVec2(UIsize.x - 10.f, 150.f), uv_min, uv_max, tint_col, border_col);
+		if (ImGui::Button("##MtrlBtn", ImVec2(20, 20)))
+		{
+			// 리스트 UI
+			ListUI* pListUI = (ListUI*)CImGuiMgr::GetInst()->FindUI("##List");
 
-		ImGui::Spacing();
+			vector<string> vecMtrlName;
+			CAssetMgr::GetInst()->GetAssetName(ASSET_TYPE::MATERIAL, vecMtrlName);
+
+			pListUI->AddString(vecMtrlName);
+			pListUI->SetDbClickDelegate(this, (Delegate_3)&DecalUI::MaterialSelect, 0);
+			pListUI->Activate();
+		}
+
 		ImGui::Separator();
 		ImGui::Spacing();
+		ImGui::Text("Material Parameter");
+		ImGui::Spacing();
 
-		pTex = GetTargetObject()->GetRenderComponent()->GetMaterial(0)->GetTexParam(TEX_PARAM::TEX_1).Get();
+		if (GetTargetObject()->GetRenderComponent() && GetTargetObject()->GetRenderComponent()->GetMaterial(0).Get())
+		{
+			Ptr<CGraphicsShader> pShader = GetTargetObject()->GetRenderComponent()->GetMaterial(0)->GetShader();
 
-		if (pTex.Get() != nullptr)
-			ImGui::Image(pTex->GetSRV().Get(), ImVec2(UIsize.x - 10.f, 150.f), uv_min, uv_max, tint_col, border_col);
-		else
-			ImGui::Text("No Decal Emissive Texture");
+			// Shader Parameter
+			if (nullptr != pShader)
+			{
+				const auto& vecScalarParam = pShader->GetScalarParam();
+				const auto& vecTexParam	   = pShader->GetTexParam();
+
+				for (size_t j = 0; j < (UINT)SCALAR_PARAM::END; ++j)
+				{
+					if (vecScalarParam[j].IsUse)
+					{
+						switch (vecScalarParam[j].Type)
+						{
+						case SCALAR_PARAM::BOOL_0:
+						case SCALAR_PARAM::BOOL_1:
+						case SCALAR_PARAM::BOOL_2:
+						case SCALAR_PARAM::BOOL_3:
+							ParamUI::Param_BOOL(
+								(bool*)GetTargetObject()->GetRenderComponent()->GetMaterial(0)->GetScalarParam(
+									vecScalarParam[j].Type),
+								vecScalarParam[j].Desc, vecScalarParam[j].View, vecScalarParam[j].Tooltip);
+							break;
+						case SCALAR_PARAM::INT_0:
+						case SCALAR_PARAM::INT_1:
+						case SCALAR_PARAM::INT_2:
+						case SCALAR_PARAM::INT_3:
+							ParamUI::Param_INT(
+								(int*)GetTargetObject()->GetRenderComponent()->GetMaterial(0)->GetScalarParam(
+									vecScalarParam[j].Type),
+								vecScalarParam[j].Desc, vecScalarParam[j].Min, vecScalarParam[j].Max,
+								vecScalarParam[j].View, vecScalarParam[j].Tooltip);
+							break;
+						case SCALAR_PARAM::FLOAT_0:
+						case SCALAR_PARAM::FLOAT_1:
+						case SCALAR_PARAM::FLOAT_2:
+						case SCALAR_PARAM::FLOAT_3:
+							ParamUI::Param_FLOAT(
+								(float*)GetTargetObject()->GetRenderComponent()->GetMaterial(0)->GetScalarParam(
+									vecScalarParam[j].Type),
+								vecScalarParam[j].Desc, vecScalarParam[j].Min, vecScalarParam[j].Max,
+								vecScalarParam[j].View, vecScalarParam[j].Tooltip);
+							break;
+						case SCALAR_PARAM::VEC2_0:
+						case SCALAR_PARAM::VEC2_1:
+						case SCALAR_PARAM::VEC2_2:
+						case SCALAR_PARAM::VEC2_3:
+							ParamUI::Param_VEC2(
+								(Vec2*)GetTargetObject()->GetRenderComponent()->GetMaterial(0)->GetScalarParam(
+									vecScalarParam[j].Type),
+								vecScalarParam[j].Desc, vecScalarParam[j].Min, vecScalarParam[j].Max,
+								vecScalarParam[j].View, vecScalarParam[j].Tooltip);
+							break;
+						case SCALAR_PARAM::VEC4_0:
+						case SCALAR_PARAM::VEC4_1:
+						case SCALAR_PARAM::VEC4_2:
+						case SCALAR_PARAM::VEC4_3:
+							ParamUI::Param_VEC4(
+								(Vec4*)GetTargetObject()->GetRenderComponent()->GetMaterial(0)->GetScalarParam(
+									vecScalarParam[j].Type),
+								vecScalarParam[j].Desc, vecScalarParam[j].Min, vecScalarParam[j].Max,
+								vecScalarParam[j].View, vecScalarParam[j].Tooltip);
+							break;
+						case SCALAR_PARAM::MAT_0:
+						case SCALAR_PARAM::MAT_1:
+						case SCALAR_PARAM::MAT_2:
+						case SCALAR_PARAM::MAT_3:
+							break;
+						}
+					}
+				}
+
+				for (size_t j = 0; j < (UINT)TEX_PARAM::END; j++)
+				{
+					CTexture* PayloadTexture = nullptr;
+
+					if (vecTexParam[j].IsUse)
+					{
+						switch (vecTexParam[j].Type)
+						{
+						case TEX_PARAM::TEX_0:
+						case TEX_PARAM::TEX_1:
+						case TEX_PARAM::TEX_2:
+						case TEX_PARAM::TEX_3:
+						case TEX_PARAM::TEX_4:
+						case TEX_PARAM::TEX_5: {
+							Ptr<CTexture> pTex = GetTargetObject()->GetRenderComponent()->GetMaterial(0)->GetTexParam(
+								vecTexParam[j].Type);
+							ParamUI::Param_TEXTURE(pTex, vecTexParam[j].Desc);
+							GetTargetObject()->GetRenderComponent()->GetMaterial(0)->SetTexParam(vecTexParam[j].Type,
+																								 pTex);
+
+							// Texture payload 체크
+							if (PayloadCheck(&PayloadTexture))
+							{
+								GetTargetObject()->GetRenderComponent()->GetMaterial(0)->SetTexParam((TEX_PARAM)j,
+																									 PayloadTexture);
+							}
+							break;
+						}
+						case TEX_PARAM::TEXCUBE_0:
+							break;
+						case TEX_PARAM::TEXCUBE_1:
+							break;
+						case TEX_PARAM::TEXARR_0:
+							break;
+						case TEX_PARAM::TEXARR_1:
+							break;
+						case TEX_PARAM::END:
+							break;
+						default:
+							break;
+						}
+					}
+				}
+			}
+		}
+		ImGui::TreePop();
 	}
-	else
-		ImGui::Text("No Decal Texture");
 
 	ImGui::SeparatorText("Decal Option");
 
@@ -148,4 +275,14 @@ void DecalUI::render_update()
 	{
 		GetTargetObject()->Decal()->SetCustomAlpha(fCustomAlpha);
 	}
+}
+
+void DecalUI::MaterialSelect(DWORD_PTR _ptr)
+{
+	string	strMtrl		= (char*)_ptr;
+	wstring strMtrlName = ToWString(strMtrl);
+
+	Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(strMtrlName);
+
+	GetTargetObject()->GetRenderComponent()->SetMaterial(pMtrl, 0);
 }

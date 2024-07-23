@@ -14,6 +14,8 @@ private:
 public:
 	virtual void render_update() override;
 
+	void MaterialSelect(DWORD_PTR _ptr);
+
 public:
 	DecalUI();
 	~DecalUI();

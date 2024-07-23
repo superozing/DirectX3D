@@ -452,7 +452,7 @@ void CFBXLoader::CreateMaterial(const wstring& _path)
 			if (strMtrlName.empty())
 				strMtrlName = path(m_vecContainer[i].vecMtrl[j].strDiff).stem();
 
-			strPath = L"material\\" + strDirectory + L"\\";
+			strPath = L"material\\FBX\\" + strDirectory + L"\\";
 			strPath += strMtrlName + L".mtrl";
 
 			// 재질 이름
