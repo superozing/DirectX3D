@@ -24,6 +24,7 @@ public:
 
 	void SetOpen(bool _Open) { m_bOpen = _Open; }
 	bool IsOpen() { return m_bOpen; }
+	bool IsSelected() { return m_bSelected; }
 
 	void SetFilterState(bool _Filter) { m_bFilter = _Filter; }
 	bool IsFiltered() { return m_bFilter; }
@@ -100,6 +101,7 @@ public:
 
 	void ShowRootNode(bool _bShow) { m_bShowRoot = _bShow; }
 	void UseDragDrop(bool _Use) { m_bDragDrop = _Use; }
+	void AllNodeOpen(bool _show);
 
 	TreeNode* AddTreeNode(TreeNode* _Parent, string _strName, DWORD_PTR _dwData);
 	void	  ClearNode()

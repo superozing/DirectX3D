@@ -25,7 +25,7 @@ VS_OUT VS_Bloom(VS_IN _in)
     return output;
 }
 
-float4 PS_Bloom(VS_IN _in) : SV_Target
+float4 PS_Bloom(VS_OUT _in) : SV_Target
 {
     //float BloomRatio = 2.f;
     float BloomRatio = g_float_0;

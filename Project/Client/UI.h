@@ -29,6 +29,8 @@ protected:
 
 	template <typename T> bool PayloadCheck(T** _Ptr);
 
+	const vector<UI*>& GetChildUI() { return m_vecChildUI; }
+
 public:
 	void		  SetName(const string& _name) { m_strName = _name; }
 	const string& GetName() { return m_strName; }

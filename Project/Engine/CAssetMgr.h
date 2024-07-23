@@ -80,6 +80,7 @@ private:
 
 	friend class CTaskMgr;
 	friend class CDevice;
+	friend class CRenderMgr;
 };
 
 template <typename T> ASSET_TYPE GetAssetType()

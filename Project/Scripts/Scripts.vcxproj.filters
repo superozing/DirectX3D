@@ -113,15 +113,14 @@
     <ClInclude Include="CPlayerDamagedScript.h">
       <Filter>Scripts\Player</Filter>
     </ClInclude>
-    <ClInclude Include="CBossScript.h">
-      <Filter>Scripts\Boss</Filter>
+    <ClInclude Include="CWallScript.h">
+      <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="CProjectileScript.h" />
-    <ClInclude Include="CMegaFistScript.h">
-      <Filter>Scripts\Boss\MegaFist</Filter>
+    <ClInclude Include="CCoverLow.h">
+      <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="CBossMissileScript.h">
-      <Filter>Scripts\Boss\BossMissile</Filter>
+    <ClInclude Include="CCoverHigh.h">
+      <Filter>Scripts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -240,18 +239,14 @@
     <ClCompile Include="CPlayerDamagedScript.cpp">
       <Filter>Scripts\Player</Filter>
     </ClCompile>
-    <ClCompile Include="CBossScript.cpp">
-      <Filter>Scripts\Boss</Filter>
+    <ClCompile Include="CWallScript.cpp">
+      <Filter>Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="CBossScript_State.cpp">
-      <Filter>Scripts\Boss</Filter>
+    <ClCompile Include="CCoverLow.cpp">
+      <Filter>Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="CProjectileScript.cpp" />
-    <ClCompile Include="CMegaFistScript.cpp">
-      <Filter>Scripts\Boss\MegaFist</Filter>
-    </ClCompile>
-    <ClCompile Include="CBossMissileScript.cpp">
-      <Filter>Scripts\Boss\BossMissile</Filter>
+    <ClCompile Include="CCoverHigh.cpp">
+      <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -344,15 +339,6 @@
     </Filter>
     <Filter Include="Scripts\UI\Image\Dialog">
       <UniqueIdentifier>{6fcd3b18-efc0-4025-8cec-ebede13f7e18}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Boss">
-      <UniqueIdentifier>{8af1811a-05bd-4e43-82a4-0b1dc12c5a1a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Boss\MegaFist">
-      <UniqueIdentifier>{5971330e-eb8e-4207-a102-f4b51ab97435}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Boss\BossMissile">
-      <UniqueIdentifier>{709fb674-67a6-44fe-9cbc-fa31e6168a33}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

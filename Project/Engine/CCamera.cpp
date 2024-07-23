@@ -80,6 +80,14 @@ struct CmpDescending
 	}
 };
 
+struct CmpDecalPriority
+{
+	bool operator()(CGameObject* _First, CGameObject* _Second)
+	{
+		return _First->Decal()->GetDecalPriority() < _Second->Decal()->GetDecalPriority();
+	}
+};
+
 void CCamera::SetShake()
 {
 	m_pShake = make_shared<CCameraShake>(GetOwner());
@@ -297,9 +305,16 @@ void CCamera::SortObject()
 					}
 				}
 				break;
-				case SHADER_DOMAIN::DOMAIN_DECAL:
-					m_vecDecal.push_back(vecObjects[j]);
-					break;
+				case SHADER_DOMAIN::DOMAIN_DECAL: {
+					Vec3 CamPos	  = this->Transform()->GetWorldPos();
+					Vec3 DecalPos = vecObjects[j]->Transform()->GetWorldPos();
+
+					float fDist = Vec3::Distance(CamPos, DecalPos);
+
+					if (fDist < vecObjects[j]->Decal()->GetRenderDistance())
+						m_vecDecal.push_back(vecObjects[j]);
+				}
+				break;
 				case SHADER_DOMAIN::DOMAIN_TRANSPARENT:
 					m_vecTransparent.push_back(vecObjects[j]);
 					break;
@@ -397,9 +412,9 @@ void CCamera::render_Instance(const map<ULONG64, vector<tInstObj>>& m_mapInstGro
 		}
 
 		// Bloom
-		auto BloomInfo = CRenderMgr::GetInst()->m_BloomInfo;
-		pMtrl->SetScalarParam(SCALAR_PARAM::FLOAT_0, BloomInfo.Threshold);
-		pMtrl->SetScalarParam(SCALAR_PARAM::VEC4_0, BloomInfo.vColor);
+		// auto BloomInfo = CRenderMgr::GetInst()->m_BloomInfo;
+		// pMtrl->SetScalarParam(SCALAR_PARAM::FLOAT_0, BloomInfo.Threshold);
+		// pMtrl->SetScalarParam(SCALAR_PARAM::VEC4_0, BloomInfo.vColor);
 		pMtrl->UpdateData_Inst();
 		pMesh->render_instancing(pair.second[0].iMtrlIdx);
 
@@ -418,16 +433,16 @@ void CCamera::render_Instance(const map<ULONG64, vector<tInstObj>>& m_mapInstGro
 			continue;
 
 		pair.second[0].pObj->Transform()->UpdateData();
-		auto BloomInfo = CRenderMgr::GetInst()->m_BloomInfo;
-
+		// auto BloomInfo = CRenderMgr::GetInst()->m_BloomInfo;
 		for (auto& instObj : pair.second)
 		{
-			instObj.pObj->GetRenderComponent()
-				->GetMaterial(instObj.iMtrlIdx)
-				->SetScalarParam(SCALAR_PARAM::FLOAT_0, BloomInfo.Threshold);
-			instObj.pObj->GetRenderComponent()
-				->GetMaterial(instObj.iMtrlIdx)
-				->SetScalarParam(SCALAR_PARAM::VEC4_0, BloomInfo.vColor);
+			// Bloom
+			// instObj.pObj->GetRenderComponent()
+			//	->GetMaterial(instObj.iMtrlIdx)
+			//	->SetScalarParam(SCALAR_PARAM::FLOAT_0, BloomInfo.Threshold);
+			// instObj.pObj->GetRenderComponent()
+			//	->GetMaterial(instObj.iMtrlIdx)
+			//	->SetScalarParam(SCALAR_PARAM::VEC4_0, BloomInfo.vColor);
 
 			instObj.pObj->GetRenderComponent()->render(instObj.iMtrlIdx);
 		}
@@ -441,6 +456,8 @@ void CCamera::render_Instance(const map<ULONG64, vector<tInstObj>>& m_mapInstGro
 
 void CCamera::render_decal()
 {
+	std::sort(m_vecDecal.begin(), m_vecDecal.end(), CmpDecalPriority());
+
 	for (size_t i = 0; i < m_vecDecal.size(); ++i)
 	{
 		m_vecDecal[i]->render();

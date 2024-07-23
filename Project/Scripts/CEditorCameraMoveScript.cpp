@@ -22,7 +22,7 @@ void CEditorCameraMoveScript::tick()
 	if (!CLevelMgr::GetInst()->GetCurrentLevel())
 		return;
 
-	if (KEY_TAP_ANY(KEY::P))
+	if (KEY_TAP(KEY::P))
 	{
 		if (Camera()->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)
 			Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
@@ -48,12 +48,12 @@ void CEditorCameraMoveScript::tick()
 	Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
 
 	// 줌 인, 줌 아웃
-	if (WHEEL_CHECK_ANY(WHEEL_UP))
+	if (WHEEL_CHECK(WHEEL_UP))
 	{
 		vPos += DT_ENGINE * m_CamSpeed * vFront;
 	}
 
-	if (WHEEL_CHECK_ANY(WHEEL_DOWN))
+	if (WHEEL_CHECK(WHEEL_DOWN))
 	{
 		vPos += DT_ENGINE * m_CamSpeed * -vFront;
 	}
@@ -126,12 +126,12 @@ void CEditorCameraMoveScript::MovePerspective()
 
 	if (KEY_PRESSED_ANY(KEY::RBTN) && KEY_PRESSED_ANY(KEY::Q))
 	{
-		vPos += DT_ENGINE * m_CamSpeed * -vUp;
+		vPos += DT_ENGINE * camspeed * -vUp;
 	}
 
 	if (KEY_PRESSED_ANY(KEY::RBTN) && KEY_PRESSED_ANY(KEY::E))
 	{
-		vPos += DT_ENGINE * m_CamSpeed * vUp;
+		vPos += DT_ENGINE * camspeed * vUp;
 	}
 
 	Transform()->SetRelativePos(vPos);

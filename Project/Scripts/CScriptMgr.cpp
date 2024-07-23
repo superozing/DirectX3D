@@ -34,8 +34,9 @@
 #include "CPlayerScript.h"
 #include "CDialog.h"
 #include "CPlayerDamagedScript.h"
-#include "CBossScript.h"
-#include "CMegaFistScript.h"
+#include "CWallScript.h"
+#include "CCoverLow.h"
+#include "CCoverHigh.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -72,8 +73,9 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPlayerScript");
 	_vec.push_back(L"CDialog");
 	_vec.push_back(L"CPlayerDamagedScript");
-	_vec.push_back(L"CBossScript");
-	_vec.push_back(L"CMegaFistScript");
+	_vec.push_back(L"CWallScript");
+	_vec.push_back(L"CCoverLow");
+	_vec.push_back(L"CCoverHigh");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -144,10 +146,12 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CDialog;
 	if (L"CPlayerDamagedScript" == _strScriptName)
 		return new CPlayerDamagedScript;
-	if (L"CBossScript" == _strScriptName)
-		return new CBossScript;
-	if (L"CMegaFistScript" == _strScriptName)
-		return new CMegaFistScript;
+	if (L"CWallScript" == _strScriptName)
+		return new CWallScript;
+	if (L"CCoverLow" == _strScriptName)
+		return new CCoverLow;
+	if (L"CCoverHigh" == _strScriptName)
+		return new CCoverHigh;
 	return nullptr;
 }
 
@@ -254,11 +258,14 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::PLAYERDAMAGEDSCRIPT:
 		return new CPlayerDamagedScript;
 		break;
-	case (UINT)SCRIPT_TYPE::BOSSSCRIPT:
-		return new CBossScript;
+	case (UINT)SCRIPT_TYPE::WALLSCRIPT:
+		return new CWallScript;
 		break;
-	case (UINT)SCRIPT_TYPE::MEGAFISTSCRIPT:
-		return new CMegaFistScript;
+	case (UINT)SCRIPT_TYPE::COVERLOW:
+		return new CCoverLow;
+		break;
+	case (UINT)SCRIPT_TYPE::COVERHIGH:
+		return new CCoverHigh;
 		break;
 	}
 	return nullptr;
@@ -400,12 +407,16 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CPlayerDamagedScript";
 		break;
 
-	case SCRIPT_TYPE::BOSSSCRIPT:
-		return L"CBossScript";
+	case SCRIPT_TYPE::WALLSCRIPT:
+		return L"CWallScript";
 		break;
 
-	case SCRIPT_TYPE::MEGAFISTSCRIPT:
-		return L"CMegaFistScript";
+	case SCRIPT_TYPE::COVERLOW:
+		return L"CCoverLow";
+		break;
+
+	case SCRIPT_TYPE::COVERHIGH:
+		return L"CCoverHigh";
 		break;
 
 	}

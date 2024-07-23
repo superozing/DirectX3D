@@ -47,7 +47,9 @@ void CRenderMgr::tick()
 	CheckEscape();
 
 	(this->*m_RenderFunc)();
-	render_debug();
+
+	if (m_DebugPosition)
+		render_debug();
 
 	Clear();
 }
@@ -131,8 +133,11 @@ void CRenderMgr::render_play()
 		pMainCam->Merge();
 
 		// Blur&Bloom처리
-		pMainCam->Blur();
-		pMainCam->Bloom();
+		if (true == CRenderMgr::GetInst()->m_BloomInfo.Activate)
+		{
+			pMainCam->Blur();
+			pMainCam->Bloom();
+		}
 
 		// Foward 렌더링
 		pMainCam->render_forward();
@@ -396,7 +401,7 @@ void CRenderMgr::RePositionDebugCam()
 
 	MainCamFrontDir.Normalize();
 
-	MainCamFrontDir *= -250.f;
+	MainCamFrontDir *= -100.f;
 	MainCamPos += MainCamFrontDir;
 
 	m_EditorCam->Transform()->SetRelativePos(MainCamPos);
@@ -415,6 +420,7 @@ void CRenderMgr::CheckEscape()
 
 			m_bEscape ? CKeyMgr::GetInst()->SetFocuseState(FOCUS_STATE::OTHER)
 					  : CKeyMgr::GetInst()->SetFocuseState(FOCUS_STATE::MAIN);
+			RePositionDebugCam();
 		}
 	}
 }

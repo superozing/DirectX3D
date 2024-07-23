@@ -21,6 +21,13 @@ enum RayCastDebugFlag
 	AllVisible		  = (StartPointVisible | EndPointVisible | RayLineVisible),
 };
 
+struct FlagActorColInfo
+{
+	PxActor*		 Actor1;
+	PxActor*		 Actor2;
+	PxPairFlag::Enum State;
+};
+
 using namespace physx;
 
 class CPhysXMgr : public CManager<CPhysXMgr>
@@ -37,6 +44,7 @@ private:
 	PxScene*					gScene			  = nullptr;
 	PxMaterial*					gMaterial		  = nullptr;
 	class RoRCollisionCallback* gCollisionCalback = nullptr;
+	vector<FlagActorColInfo>	m_vecColInfo;
 
 	void LayerCheck(UINT _left, UINT _right);
 	void LayerCheckToggle(UINT _left, UINT _right);
@@ -101,4 +109,5 @@ private:
 
 	friend class ParamUI;
 	friend class CPhysXMgrScript;
+	friend class RoRCollisionCallback;
 };
