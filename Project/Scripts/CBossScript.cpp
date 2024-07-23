@@ -156,7 +156,7 @@ void CBossScript::FireMegaFist()
 
 	Vec3 HandBonePos = (Animator3D()->FindBoneMat(L"Bip001 R Hand_01") * Transform()->GetWorldMat()).Translation();
 
-	CGameObject* megafist = CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Punch)->Instantiate();
+	CGameObject* megafist = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Boss\\Kaiten_Punch.pref")->Instantiate();
 	megafist->GetScript<CMegaFistScript>()->InitMegaFistInfo(GetOwner(), m_Target, HandBonePos, 500.f, 500.f, 3.f, 10.f,
 															 false, true);
 	int layeridx = megafist->GetLayerIdx();
@@ -200,7 +200,7 @@ void CBossScript::FireBossMissile(int _idx)
 		break;
 	}
 
-	CGameObject* Missile = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Kaiten_Missile.pref")->Instantiate();
+	CGameObject* Missile = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Boss\\Kaiten_Missile.pref")->Instantiate();
 	Missile->GetScript<CBossMissileScript>()->InitBossMissileInfo(GetOwner(), m_Target, MissileBonePos, 600.f, 1200.f,
 																  3.f, 10.f, true, true);
 
