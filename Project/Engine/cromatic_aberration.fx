@@ -3,6 +3,11 @@
 
 #include "value.fx"
 
+#define Activate g_bool_0
+#define RedOffset g_vec2_0
+#define GreenOffset g_vec2_1
+#define BlueOffset g_vec2_2
+
 // mesh : RectMesh
 struct VS_IN
 {
@@ -31,15 +36,38 @@ VS_OUT VS_CromaticAberration(VS_IN _in)
 
 float4 PS_CromaticAberration(VS_OUT _in) : SV_Target
 {
-    float4 vColor = (float4) 0.f;
+
+    if (false == Activate)
+    {
+        float4 vColor = (float4) 0.f;
         
-    vColor = g_postprocess.Sample(g_sam_0, _in.vUV);
+        vColor = g_postprocess.Sample(g_sam_0, _in.vUV);
     
-    float aver = (vColor.r + vColor.g + vColor.b) / 3.f;
+        return vColor;
+    }
+    else
+    {
+        float4 vColor = (float4) 0.f;
+        
+        float Width = g_RenderResolution.x;
+        float Height = g_RenderResolution.y;
+        float2 texelSize = float2(1.0f / Width, 1.0f / Height);
+        
+        //float red = g_postprocess.Sample(g_sam_0, _in.vUV).r;
+        //float green = g_postprocess.Sample(g_sam_0, _in.vUV).g;
+        //float blue = g_postprocess.Sample(g_sam_0, _in.vUV).b;
+        
+        float red = g_postprocess.Sample(g_sam_0, _in.vUV + g_vec2_0 * texelSize).r;
+        float green = g_postprocess.Sample(g_sam_0, _in.vUV + g_vec2_1 * texelSize).g;
+        float blue = g_postprocess.Sample(g_sam_0, _in.vUV + g_vec2_2 * texelSize).b;
     
-    vColor.rgb = float3(aver, aver, aver);
-    
-    return vColor;
+        
+        vColor.rgb = float3(red, green, blue);
+        vColor.a = 1;
+        return vColor;
+    }
+
+    return float4(1, 1, 1, 1);
 }
 
 #endif
