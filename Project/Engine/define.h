@@ -416,3 +416,5 @@ enum class UI_TYPE
 	END
 };
 #define MAXBLURLEVEL 9
+
+#define DecalPriorityMax 20

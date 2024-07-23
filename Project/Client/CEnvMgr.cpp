@@ -11,8 +11,12 @@
 
 #include <Engine\CMemoryPoolMgr.h>
 
+#include "CImGuiMgr.h"
+#include "UI.h"
+
 #define TagResolution "[Resolution(x, y), FullScreen]"
 #define TagLevel "[Level]"
+#define TagIMGUI "[Imgui]"
 
 CEnvMgr::CEnvMgr()
 {
@@ -51,6 +55,48 @@ void CEnvMgr::init()
 	Utils::GetLineUntilString(fin, TagLevel);
 	fin >> levelName;
 	m_strLevelRelativePath = levelName;
+
+	Utils::GetLineUntilString(fin, TagIMGUI);
+	bool b;
+	// Outliner
+	fin >> b;
+	m_bImguiActivate.push_back(b);
+	// Content
+	fin >> b;
+	m_bImguiActivate.push_back(b);
+	// Inspector
+	fin >> b;
+	m_bImguiActivate.push_back(b);
+	// LogUI
+	fin >> b;
+	m_bImguiActivate.push_back(b);
+	// ModelUI
+	fin >> b;
+	m_bImguiActivate.push_back(b);
+	// Viewport
+	fin >> b;
+	m_bImguiActivate.push_back(b);
+	// Demo
+	fin >> b;
+	m_bImguiActivate.push_back(b);
+}
+
+void CEnvMgr::ImguiInit()
+{
+	m_bImguiActivate[0] ? CImGuiMgr::GetInst()->FindUI("##Outliner")->Activate()
+						: CImGuiMgr::GetInst()->FindUI("##Outliner")->Deactivate();
+	m_bImguiActivate[1] ? CImGuiMgr::GetInst()->FindUI("##Content")->Activate()
+						: CImGuiMgr::GetInst()->FindUI("##Content")->Deactivate();
+	m_bImguiActivate[2] ? CImGuiMgr::GetInst()->FindUI("##Inspector")->Activate()
+						: CImGuiMgr::GetInst()->FindUI("##Inspector")->Deactivate();
+	m_bImguiActivate[3] ? CImGuiMgr::GetInst()->FindUI("##LogUI")->Activate()
+						: CImGuiMgr::GetInst()->FindUI("##LogUI")->Deactivate();
+	m_bImguiActivate[4] ? CImGuiMgr::GetInst()->FindUI("##ModelUI")->Activate()
+						: CImGuiMgr::GetInst()->FindUI("##ModelUI")->Deactivate();
+	m_bImguiActivate[5] ? CImGuiMgr::GetInst()->FindUI("##Viewport")->Activate()
+						: CImGuiMgr::GetInst()->FindUI("##Viewport")->Deactivate();
+
+	CImGuiMgr::GetInst()->m_bDemoUI = m_bImguiActivate[6] ? true : false;
 }
 
 void CEnvMgr::exit()
@@ -79,6 +125,14 @@ void CEnvMgr::exit()
 
 	fout << TagLevel << endl;
 	fout << ToString(CLevelMgr::GetInst()->GetCurrentLevel()->GetRelativePath()) << endl;
+
+	fout << TagIMGUI << endl;
+	fout << CImGuiMgr::GetInst()->m_mapUI["##Outliner"]->IsActivate() << " "
+		 << CImGuiMgr::GetInst()->m_mapUI["##Content"]->IsActivate() << " "
+		 << CImGuiMgr::GetInst()->m_mapUI["##Inspector"]->IsActivate() << " "
+		 << CImGuiMgr::GetInst()->m_mapUI["##LogUI"]->IsActivate() << " "
+		 << CImGuiMgr::GetInst()->m_mapUI["##ModelUI"]->IsActivate() << " "
+		 << CImGuiMgr::GetInst()->m_mapUI["##Viewport"]->IsActivate() << " " << CImGuiMgr::GetInst()->m_bDemoUI;
 
 	fout.close();
 }

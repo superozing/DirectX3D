@@ -2,7 +2,7 @@
 
 enum class TASK_TYPE
 {
-	// Param1 : Layer Index, Param2 : Object Adress
+	// Param1 : Layer Index, Param2 : Object Adress, Param3 : IsPrefab
 	CREATE_OBJECT,
 
 	// Param1 : Object Adress
@@ -38,6 +38,7 @@ struct tTask
 	TASK_TYPE Type;
 	UINT_PTR  Param_1;
 	UINT_PTR  Param_2;
+	UINT_PTR  Param_3;
 };
 
 class CTaskMgr : public CManager<CTaskMgr>

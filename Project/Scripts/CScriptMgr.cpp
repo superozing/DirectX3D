@@ -25,6 +25,7 @@
 #include "CPhysXMgrScript.h"
 #include "CSkillIcon.h"
 #include "CWrapImage.h"
+#include "CLevelTransition.h"
 #include "CEditorCameraMoveScript.h"
 #include "CSpawnSpotScript.h"
 #include "CMemoryPoolMgrScript.h"
@@ -33,10 +34,9 @@
 #include "CPlayerScript.h"
 #include "CDialog.h"
 #include "CPlayerDamagedScript.h"
-#include "CLevelTransition.h"
-#include "CTutorialGameMode.h"
-#include "CCoverObject.h"
-#include "CCoverUI.h"
+#include "CWallScript.h"
+#include "CCoverLow.h"
+#include "CCoverHigh.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -64,6 +64,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPhysXMgrScript");
 	_vec.push_back(L"CSkillIcon");
 	_vec.push_back(L"CWrapImage");
+	_vec.push_back(L"CLevelTransition");
 	_vec.push_back(L"CEditorCameraMoveScript");
 	_vec.push_back(L"CSpawnSpotScript");
 	_vec.push_back(L"CMemoryPoolMgrScript");
@@ -72,10 +73,9 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPlayerScript");
 	_vec.push_back(L"CDialog");
 	_vec.push_back(L"CPlayerDamagedScript");
-	_vec.push_back(L"CLevelTransition");
-	_vec.push_back(L"CTutorialGameMode");
-	_vec.push_back(L"CCoverObject");
-	_vec.push_back(L"CCoverUI");
+	_vec.push_back(L"CWallScript");
+	_vec.push_back(L"CCoverLow");
+	_vec.push_back(L"CCoverHigh");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -128,6 +128,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CSkillIcon;
 	if (L"CWrapImage" == _strScriptName)
 		return new CWrapImage;
+	if (L"CLevelTransition" == _strScriptName)
+		return new CLevelTransition;
 	if (L"CEditorCameraMoveScript" == _strScriptName)
 		return new CEditorCameraMoveScript;
 	if (L"CSpawnSpotScript" == _strScriptName)
@@ -144,14 +146,12 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CDialog;
 	if (L"CPlayerDamagedScript" == _strScriptName)
 		return new CPlayerDamagedScript;
-	if (L"CLevelTransition" == _strScriptName)
-		return new CLevelTransition;
-	if (L"CTutorialGameMode" == _strScriptName)
-		return new CTutorialGameMode;
-	if (L"CCoverObject" == _strScriptName)
-		return new CCoverObject;
-	if (L"CCoverUI" == _strScriptName)
-		return new CCoverUI;
+	if (L"CWallScript" == _strScriptName)
+		return new CWallScript;
+	if (L"CCoverLow" == _strScriptName)
+		return new CCoverLow;
+	if (L"CCoverHigh" == _strScriptName)
+		return new CCoverHigh;
 	return nullptr;
 }
 
@@ -231,6 +231,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::WRAPIMAGE:
 		return new CWrapImage;
 		break;
+	case (UINT)SCRIPT_TYPE::LEVELTRANSITION:
+		return new CLevelTransition;
+		break;
 	case (UINT)SCRIPT_TYPE::EDITORCAMERAMOVESCRIPT:
 		return new CEditorCameraMoveScript;
 		break;
@@ -255,17 +258,14 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::PLAYERDAMAGEDSCRIPT:
 		return new CPlayerDamagedScript;
 		break;
-	case (UINT)SCRIPT_TYPE::LEVELTRANSITION:
-		return new CLevelTransition;
+	case (UINT)SCRIPT_TYPE::WALLSCRIPT:
+		return new CWallScript;
 		break;
-	case (UINT)SCRIPT_TYPE::TUTORIALGAMEMODE:
-		return new CTutorialGameMode;
+	case (UINT)SCRIPT_TYPE::COVERLOW:
+		return new CCoverLow;
 		break;
-	case (UINT)SCRIPT_TYPE::COVEROBJECT:
-		return new CCoverObject;
-		break;
-	case (UINT)SCRIPT_TYPE::COVERUI:
-		return new CCoverUI;
+	case (UINT)SCRIPT_TYPE::COVERHIGH:
+		return new CCoverHigh;
 		break;
 	}
 	return nullptr;
@@ -371,6 +371,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CWrapImage";
 		break;
 
+	case SCRIPT_TYPE::LEVELTRANSITION:
+		return L"CLevelTransition";
+		break;
+
 	case SCRIPT_TYPE::EDITORCAMERAMOVESCRIPT:
 		return L"CEditorCameraMoveScript";
 		break;
@@ -403,20 +407,16 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CPlayerDamagedScript";
 		break;
 
-	case SCRIPT_TYPE::LEVELTRANSITION:
-		return L"CLevelTransition";
+	case SCRIPT_TYPE::WALLSCRIPT:
+		return L"CWallScript";
 		break;
 
-	case SCRIPT_TYPE::TUTORIALGAMEMODE:
-		return L"CTutorialGameMode";
+	case SCRIPT_TYPE::COVERLOW:
+		return L"CCoverLow";
 		break;
 
-	case SCRIPT_TYPE::COVEROBJECT:
-		return L"CCoverObject";
-		break;
-
-	case SCRIPT_TYPE::COVERUI:
-		return L"CCoverUI";
+	case SCRIPT_TYPE::COVERHIGH:
+		return L"CCoverHigh";
 		break;
 
 	}

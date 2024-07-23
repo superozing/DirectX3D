@@ -4,12 +4,13 @@
 #include "CRenderMgr.h"
 #include "CLevel.h"
 
-void GamePlayStatic::SpawnGameObject(CGameObject* _Target, int _LayerIdx)
+void GamePlayStatic::SpawnGameObject(CGameObject* _Target, int _LayerIdx, bool _IsPrefab)
 {
 	tTask task	 = {};
 	task.Type	 = TASK_TYPE::CREATE_OBJECT;
 	task.Param_1 = (DWORD_PTR)_LayerIdx;
 	task.Param_2 = (DWORD_PTR)_Target;
+	task.Param_3 = (DWORD_PTR)_IsPrefab;
 	CTaskMgr::GetInst()->AddTask(task);
 }
 

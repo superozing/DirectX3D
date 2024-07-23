@@ -10,6 +10,8 @@ CCrosshair::CCrosshair()
 	: CScript((UINT)SCRIPT_TYPE::CROSSHAIR)
 	, m_CrosshairColor(Vec4(255, 255, 255, 255))
 	, m_fSpreadRatio(0.2)
+	, m_fBarThikness(2)
+	, m_fLength(5)
 {
 }
 

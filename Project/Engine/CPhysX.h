@@ -16,6 +16,14 @@ enum class PhysShape
 	END,
 };
 
+enum class PhysBodyType
+{
+	STATIC,
+	TRIGGER,
+	DYNAMIC,
+	END,
+};
+
 struct tCollisionData
 {
 	CGameObject* Other;
@@ -40,8 +48,8 @@ private:
 
 public:
 	vector<tCollisionData> m_vThisFrameContact;
-	bool				   m_bStaticActor = false;
-	PhysShape			   m_Shape		  = PhysShape::BOX;
+	PhysBodyType		   m_bPhysBodyType = PhysBodyType::STATIC;
+	PhysShape			   m_Shape		   = PhysShape::BOX;
 	Vec3				   m_vScale;
 	Vec3				   m_vOffsetPos;
 	virtual void		   begin() override;

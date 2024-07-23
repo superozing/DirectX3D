@@ -12,6 +12,9 @@
 #include <Scripts/CScriptMgr.h>
 #include <Engine/CScript.h>
 
+#include "CEditorObjMgr.h"
+#include "CGameObjectEx.h"
+
 #define TagLevelName "[LevelName]"
 #define TagLayerName "[LayerName]"
 #define TagObjCount "[ObjCount]"
@@ -23,6 +26,7 @@
 #define TagScriptName "[ScriptName]"
 #define TagObjectChildCountS "[" + ToString(_Obj->GetName()) + "'s ChildCount]"
 #define TagObjectChildCountL "[" + ToString(pObject->GetName()) + "'s ChildCount]"
+#define TagEditorObjects "[EditorObjects]"
 
 void CLevelSaveLoad::SaveLevel(CLevel* _Level, const wstring& _strLevelPath)
 {
@@ -52,6 +56,21 @@ void CLevelSaveLoad::SaveLevel(CLevel* _Level, const wstring& _strLevelPath)
 	{
 		SaveLayer(_Level->GetLayer(i), fout);
 	}
+
+	fout << TagEditorObjects << endl;
+	auto editcam = CEditorObjMgr::GetInst()->GetEditorCam();
+	SaveGameObject(editcam, fout);
+
+	// 여러개 저장해야할 때 주석 제외하고 세팅 방법 고려해야 함
+	// auto objs = CEditorObjMgr::GetInst()->GetEditorGameObjects();
+
+	// fout << TagEditorObjects << endl;
+	// fout << objs.size() << endl;
+
+	// for (auto& obj : objs)
+	//{
+	//	SaveGameObject(obj, fout);
+	// }
 }
 
 void CLevelSaveLoad::SaveCheckPoint(CLevel* _Level)
@@ -235,6 +254,10 @@ CLevel* CLevelSaveLoad::LoadLevel(const wstring& _strLevelPath)
 	{
 		LoadLayer(pLevel->GetLayer(i), fin);
 	}
+
+	Utils::GetLineUntilString(fin, TagEditorObjects);
+	auto editorCam = LoadGameObject(fin);
+	CEditorObjMgr::GetInst()->SetEditorCam(editorCam);
 
 	return pLevel;
 }

@@ -61,10 +61,14 @@ private:
 
 	Vec2 m_vMouseDrag;
 
+	Vec2 m_vMouseOffset;
+
 	WHEEL_STATE _inWheel;
 	WHEEL_STATE m_ThisFrameWheel;
 
 	FOCUS_STATE m_FocusState;
+
+	bool m_bHoldMouseCenter;
 
 public:
 	FOCUS_CALLBACK m_FocusCallback;
@@ -85,11 +89,20 @@ public:
 		return Vec2();
 	}
 
+	// 마우스 현재 위치를 계산할 때 Offset을 줍니다.
+	void AddMouseOffset(Vec2 _MouseOffset) { m_vMouseOffset += _MouseOffset; }
+	void SetMouseOffset(Vec2 _MouseOffset) { m_vMouseOffset = _MouseOffset; }
+	void ClearMouseOffset() { m_vMouseOffset = Vec2(); }
+
+	Vec2 GetMouseOffset() const { return m_vMouseOffset; }
+
 	void		SetWheel(WHEEL_STATE _in) { _inWheel = _in; }
 	WHEEL_STATE GetWheel() { return m_ThisFrameWheel; }
 
 	FOCUS_STATE GetFocusState() const { return m_FocusState; }
 	void		SetFocuseState(FOCUS_STATE _state) { m_FocusState = _state; }
+
+	void SetHoldMouseCenter(bool _bHoldMouseCenter) { m_bHoldMouseCenter = _bHoldMouseCenter; }
 
 public:
 	virtual void init() override;

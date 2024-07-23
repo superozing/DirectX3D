@@ -47,7 +47,9 @@ void CRenderMgr::tick()
 	CheckEscape();
 
 	(this->*m_RenderFunc)();
-	render_debug();
+
+	if (m_DebugPosition)
+		render_debug();
 
 	Clear();
 }
@@ -399,7 +401,7 @@ void CRenderMgr::RePositionDebugCam()
 
 	MainCamFrontDir.Normalize();
 
-	MainCamFrontDir *= -250.f;
+	MainCamFrontDir *= -100.f;
 	MainCamPos += MainCamFrontDir;
 
 	m_EditorCam->Transform()->SetRelativePos(MainCamPos);
@@ -418,6 +420,7 @@ void CRenderMgr::CheckEscape()
 
 			m_bEscape ? CKeyMgr::GetInst()->SetFocuseState(FOCUS_STATE::OTHER)
 					  : CKeyMgr::GetInst()->SetFocuseState(FOCUS_STATE::MAIN);
+			RePositionDebugCam();
 		}
 	}
 }

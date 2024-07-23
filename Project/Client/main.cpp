@@ -122,7 +122,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	// ImGui 초기화
 	CImGuiMgr::GetInst()->init(hWnd, DEVICE, CONTEXT);
-
+	CEnvMgr::GetInst()->ImguiInit();
 	// EditorObjectManager 초기화
 	CEditorObjMgr::GetInst()->init();
 
@@ -165,7 +165,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		}
 	}
 
-	// CEnvMgr::GetInst()->exit();
+	CEnvMgr::GetInst()->exit();
 
 	return (int)msg.wParam;
 }

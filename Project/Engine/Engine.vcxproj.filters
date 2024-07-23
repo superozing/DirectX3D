@@ -941,7 +941,7 @@
     <FxCompile Include="upscale.fx">
       <Filter>ShaderCode\03. Compute\Scale</Filter>
     </FxCompile>
-    <FxCompile Include="event_detect.fx">
+    <FxCompile Include="cromatic_aberration.fx">
       <Filter>ShaderCode\02. Render\3DShader</Filter>
     </FxCompile>
   </ItemGroup>

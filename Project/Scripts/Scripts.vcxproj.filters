@@ -85,6 +85,9 @@
     <ClInclude Include="CWrapImage.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CLevelTransition.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
     <ClInclude Include="CEditorCameraMoveScript.h">
       <Filter>Scripts\Manager\Camera</Filter>
     </ClInclude>
@@ -110,22 +113,14 @@
     <ClInclude Include="CPlayerDamagedScript.h">
       <Filter>Scripts\Player</Filter>
     </ClInclude>
-    <ClInclude Include="CLevelTransition.h">
-      <Filter>Scripts\Level</Filter>
+    <ClInclude Include="CWallScript.h">
+      <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="CTutorialGameMode.h">
-      <Filter>Scripts\Level</Filter>
+    <ClInclude Include="CCoverLow.h">
+      <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="CGameMode.h" />
-    <ClInclude Include="CCoverObject.h">
-      <Filter>Scripts\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="strings.h">
-      <Filter>Default</Filter>
-    </ClInclude>
-    <ClInclude Include="CEventListener.h" />
-    <ClInclude Include="CCoverUI.h">
-      <Filter>Scripts\Event</Filter>
+    <ClInclude Include="CCoverHigh.h">
+      <Filter>Scripts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -213,6 +208,9 @@
     <ClCompile Include="CWrapImage.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="CLevelTransition.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
     <ClCompile Include="CEditorCameraMoveScript.cpp">
       <Filter>Scripts\Manager\Camera</Filter>
     </ClCompile>
@@ -241,18 +239,14 @@
     <ClCompile Include="CPlayerDamagedScript.cpp">
       <Filter>Scripts\Player</Filter>
     </ClCompile>
-    <ClCompile Include="CLevelTransition.cpp">
-      <Filter>Scripts\Level</Filter>
+    <ClCompile Include="CWallScript.cpp">
+      <Filter>Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="CTutorialGameMode.cpp">
-      <Filter>Scripts\Level</Filter>
+    <ClCompile Include="CCoverLow.cpp">
+      <Filter>Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="CCoverObject.cpp">
-      <Filter>Scripts\Event</Filter>
-    </ClCompile>
-    <ClCompile Include="CEventListener.cpp" />
-    <ClCompile Include="CCoverUI.cpp">
-      <Filter>Scripts\Event</Filter>
+    <ClCompile Include="CCoverHigh.cpp">
+      <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -345,12 +339,6 @@
     </Filter>
     <Filter Include="Scripts\UI\Image\Dialog">
       <UniqueIdentifier>{6fcd3b18-efc0-4025-8cec-ebede13f7e18}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Event">
-      <UniqueIdentifier>{505d9bec-f8a3-4da8-bf5f-de0d1958364b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Level">
-      <UniqueIdentifier>{52f14424-e2cb-42b2-bef6-84812d371633}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

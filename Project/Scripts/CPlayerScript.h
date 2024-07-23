@@ -74,6 +74,8 @@ struct PlayerStatus
 	float CriticalPercent = 0.f;
 	float CriticalDamage  = 1.2f;
 
+	float SpreadRatio = 0.f;
+
 	bool IsDead = false;
 
 	bool Invincibility = false;
@@ -95,6 +97,9 @@ private:
 	class CSpringArm* m_pSpringArm;
 
 	map<PLAYER_STATE, SpringArmInfo> m_mSpringInfos;
+
+	class CCrosshair*			m_pCrosshair;
+	class CDamagedDirectionMgr* m_pDamagedDirectionMgr;
 
 public:
 #pragma region StatusFunc
