@@ -129,15 +129,59 @@ void CKeyMgr::tick()
 			}
 		}
 
-		// 마우스 좌표 계산
-		m_vMousePrevPos = m_vMousePos;
+		// 마우스 중앙 고정 옵션
+		if (m_bHoldMouseCenter)
+		{
+			POINT pt = {};
+			GetCursorPos(&pt);
+			ScreenToClient(CEngine::GetInst()->GetMainWind(), &pt);
+			m_vMousePos = Vec2((float)pt.x, (float)pt.y) + m_vMouseOffset;
 
-		POINT pt = {};
-		GetCursorPos(&pt);
-		ScreenToClient(CEngine::GetInst()->GetMainWind(), &pt);
-		m_vMousePos = Vec2((float)pt.x, (float)pt.y);
+			// 현재 메인 윈도우 가져오기
+			HWND MainWind = CEngine::GetInst()->GetMainWind();
 
-		// 마우스 이동 방향
+			// RECT 구조체에 전체 화면 상에서 현재 윈도우가 있는 위치 가져오기
+			RECT WindRect{};
+			GetWindowRect(MainWind, &WindRect);
+
+			// 현재 윈도우의 중앙 좌표 구하기
+			POINT WindCenterPos{};
+			WindCenterPos.x = WindRect.left + (WindRect.right - WindRect.left) / 2;
+			WindCenterPos.y = WindRect.top + (WindRect.bottom - WindRect.top) / 2;
+
+			// 윈도우의 중앙 좌표로 커서 위치 이동
+			SetCursorPos(WindCenterPos.x, WindCenterPos.y);
+
+			// 커서 위치를 게임 화면 기준으로 이동시키기
+			ScreenToClient(CEngine::GetInst()->GetMainWind(), &WindCenterPos);
+
+			m_vMousePrevPos = Vec2((float)WindCenterPos.x, (float)WindCenterPos.y);
+		}
+		else
+		{
+			// 이전 마우스 좌표 정보 저장하기
+			m_vMousePrevPos = m_vMousePos;
+
+			POINT pt = {};
+			GetCursorPos(&pt);
+			ScreenToClient(CEngine::GetInst()->GetMainWind(), &pt);
+			m_vMousePos = Vec2((float)pt.x, (float)pt.y) + m_vMouseOffset;
+		}
+
+		// 마우스 이동 방향 계산
 		m_vMouseDrag = m_vMousePos - m_vMousePrevPos;
+
+		// Temp Escape Key
+		if (KEY_TAP(KEY::TAB))
+		{
+			m_bHoldMouseCenter = !m_bHoldMouseCenter;
+
+			// 마우스 중앙 고정 옵션 시 마우스 숨김.
+			// ShowCursor()를 매 틱 호출하면 안되는 이유:
+			//	이 함수는 내부적으로 카운트를 가지고 이 카운트를 인자의 bool 값 여부에 따라서 증가, 감소 시킨다.
+			//	카운트가 0 이상일 경우 마우스를 보이게 하고, 카운트가 0 이하일 경우 마우스를 보이지 않게 한다.
+			//	매 틱 호출할 경우 카운트가 필요 이상으로 쌓이기 때문에 적은 횟수만큼 호출해주는 예외 처리가 필요하다.
+			ShowCursor(!m_bHoldMouseCenter);
+		}
 	}
 }

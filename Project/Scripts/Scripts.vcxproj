@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -177,6 +177,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CCoverHigh.h" />
     <ClInclude Include="CCoverLow.h" />
     <ClInclude Include="CCrosshair.h" />
+    <ClInclude Include="CDamagedDirectionMgr.h" />
     <ClInclude Include="CDamageFont.h" />
     <ClInclude Include="CDialog.h" />
     <ClInclude Include="CEditorCameraMoveScript.h" />
@@ -201,6 +202,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CRenderMgrScript.h" />
     <ClInclude Include="CRoRStateMachine.h" />
     <ClInclude Include="CScriptMgr.h" />
+    <ClInclude Include="CDamagedDirection.h" />
     <ClInclude Include="CSkillIcon.h" />
     <ClInclude Include="CSpawnSpotScript.h" />
     <ClInclude Include="CSpringArm.h" />
@@ -225,6 +227,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CCoverHigh.cpp" />
     <ClCompile Include="CCoverLow.cpp" />
     <ClCompile Include="CCrosshair.cpp" />
+    <ClCompile Include="CDamagedDirectionMgr.cpp" />
     <ClCompile Include="CDamageFont.cpp" />
     <ClCompile Include="CDialog.cpp" />
     <ClCompile Include="CEditorCameraMoveScript.cpp" />
@@ -250,6 +253,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CRenderMgrScript.cpp" />
     <ClCompile Include="CRoRStateMachine.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
+    <ClCompile Include="CDamagedDirection.cpp" />
     <ClCompile Include="CSkillIcon.cpp" />
     <ClCompile Include="CSpawnSpotScript.cpp" />
     <ClCompile Include="CSpringArm.cpp" />
