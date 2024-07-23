@@ -169,6 +169,8 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CAmmoInfo.h" />
     <ClInclude Include="CBackgroundScript.h" />
     <ClInclude Include="CBossHP.h" />
+    <ClInclude Include="CBossMissileScript.h" />
+    <ClInclude Include="CBossScript.h" />
     <ClInclude Include="CBtnUIScript.h" />
     <ClInclude Include="CCameraEffect.h" />
     <ClInclude Include="CCameraMoveScript.h" />
@@ -181,6 +183,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CHaloScript.h" />
     <ClInclude Include="CImageUIScript.h" />
     <ClInclude Include="CLevelTransition.h" />
+    <ClInclude Include="CMegaFistScript.h" />
     <ClInclude Include="CMemoryPoolMgrScript.h" />
     <ClInclude Include="CMissileScript.h" />
     <ClInclude Include="CMonsterHP.h" />
@@ -194,6 +197,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CPlayerController.h" />
     <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CProgressBar.h" />
+    <ClInclude Include="CProjectileScript.h" />
     <ClInclude Include="CRenderMgrScript.h" />
     <ClInclude Include="CRoRStateMachine.h" />
     <ClInclude Include="CScriptMgr.h" />
@@ -212,6 +216,9 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CAmmoInfo.cpp" />
     <ClCompile Include="CBackgroundScript.cpp" />
     <ClCompile Include="CBossHP.cpp" />
+    <ClCompile Include="CBossMissileScript.cpp" />
+    <ClCompile Include="CBossScript.cpp" />
+    <ClCompile Include="CBossScript_State.cpp" />
     <ClCompile Include="CBtnUIScript.cpp" />
     <ClCompile Include="CCameraEffect.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
@@ -224,6 +231,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CHaloScript.cpp" />
     <ClCompile Include="CImageUIScript.cpp" />
     <ClCompile Include="CLevelTransition.cpp" />
+    <ClCompile Include="CMegaFistScript.cpp" />
     <ClCompile Include="CMemoryPoolMgrScript.cpp" />
     <ClCompile Include="CMissileScript.cpp" />
     <ClCompile Include="CMonsterHP.cpp" />
@@ -238,6 +246,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CPlayerScript.cpp" />
     <ClCompile Include="CPlayerScript_State.cpp" />
     <ClCompile Include="CProgressBar.cpp" />
+    <ClCompile Include="CProjectileScript.cpp" />
     <ClCompile Include="CRenderMgrScript.cpp" />
     <ClCompile Include="CRoRStateMachine.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />

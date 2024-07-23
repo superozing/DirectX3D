@@ -31,7 +31,7 @@ class CLevel;
 struct LayerMap;
 namespace GamePlayStatic
 {
-void SpawnGameObject(CGameObject* _Target, int _LayerIdx);
+void SpawnGameObject(CGameObject* _Target, int _LayerIdx, bool _IsPrefab = true);
 void DestroyGameObject(CGameObject* _Target);
 
 void AddAsset(CAsset* _Asset);

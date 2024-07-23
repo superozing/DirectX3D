@@ -273,7 +273,7 @@ void Inspector::ObjectLayer()
 
 			if (PrevIdx != LayerIdx)
 			{
-				CurLevel->AddObject(m_TargetObject, LayerIdx);
+				CurLevel->ChangeLayer(m_TargetObject, LayerIdx, false);
 			}
 		}
 	}
