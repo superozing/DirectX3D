@@ -30,6 +30,22 @@ CBossScript::CBossScript()
 	InitStateMachine();
 }
 
+CBossScript::CBossScript(const CBossScript& _Origin)
+	: CScript((UINT)SCRIPT_TYPE::BOSSSCRIPT)
+	, m_BossStatus(_Origin.m_BossStatus)
+	, m_AttDuration(0.f)
+	, m_EXsDuration(0.f)
+	, m_ActiveAttack(false)
+	, m_ActiveEXs(false)
+	, m_EXsType(0)
+	, m_Target(nullptr)
+	, m_ArrMissile{}
+{
+	InitScriptParamUI();
+
+	InitStateMachine();
+}
+
 CBossScript::~CBossScript()
 {
 	if (nullptr != m_FSM)

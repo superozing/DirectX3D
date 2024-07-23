@@ -135,6 +135,7 @@ public:
 public:
 	CLONE(CBossScript);
 	CBossScript();
+	CBossScript(const CBossScript& _Origin);
 	~CBossScript();
 
 private:
