@@ -37,6 +37,11 @@
 #include "CWallScript.h"
 #include "CCoverLow.h"
 #include "CCoverHigh.h"
+#include "CBossMissileScript.h"
+#include "CBossScript.h"
+#include "CDamagedDirection.h"
+#include "CDamagedDirectionMgr.h"
+#include "CMegaFistScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -76,6 +81,11 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CWallScript");
 	_vec.push_back(L"CCoverLow");
 	_vec.push_back(L"CCoverHigh");
+	_vec.push_back(L"CBossMissileScript");
+	_vec.push_back(L"CBossScript");
+	_vec.push_back(L"CDamagedDirection");
+	_vec.push_back(L"CDamagedDirectionMgr");
+	_vec.push_back(L"CMegaFistScript");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -152,6 +162,16 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CCoverLow;
 	if (L"CCoverHigh" == _strScriptName)
 		return new CCoverHigh;
+	if (L"CBossMissileScript" == _strScriptName)
+		return new CBossMissileScript;
+	if (L"CBossScript" == _strScriptName)
+		return new CBossScript;
+	if (L"CDamagedDirection" == _strScriptName)
+		return new CDamagedDirection;
+	if (L"CDamagedDirectionMgr" == _strScriptName)
+		return new CDamagedDirectionMgr;
+	if (L"CMegaFistScript" == _strScriptName)
+		return new CMegaFistScript;
 	return nullptr;
 }
 
@@ -266,6 +286,21 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::COVERHIGH:
 		return new CCoverHigh;
+		break;
+	case (UINT)SCRIPT_TYPE::BOSSMISSILESCRIPT:
+		return new CBossMissileScript;
+		break;
+	case (UINT)SCRIPT_TYPE::BOSSSCRIPT:
+		return new CBossScript;
+		break;
+	case (UINT)SCRIPT_TYPE::DAMAGEDDIRECTION:
+		return new CDamagedDirection;
+		break;
+	case (UINT)SCRIPT_TYPE::DAMAGEDDIRECTIONMGR:
+		return new CDamagedDirectionMgr;
+		break;
+	case (UINT)SCRIPT_TYPE::MEGAFISTSCRIPT:
+		return new CMegaFistScript;
 		break;
 	}
 	return nullptr;
@@ -417,6 +452,26 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::COVERHIGH:
 		return L"CCoverHigh";
+		break;
+
+	case SCRIPT_TYPE::BOSSMISSILESCRIPT:
+		return L"CBossMissileScript";
+		break;
+
+	case SCRIPT_TYPE::BOSSSCRIPT:
+		return L"CBossScript";
+		break;
+
+	case SCRIPT_TYPE::DAMAGEDDIRECTION:
+		return L"CDamagedDirection";
+		break;
+
+	case SCRIPT_TYPE::DAMAGEDDIRECTIONMGR:
+		return L"CDamagedDirectionMgr";
+		break;
+
+	case SCRIPT_TYPE::MEGAFISTSCRIPT:
+		return L"CMegaFistScript";
 		break;
 
 	}

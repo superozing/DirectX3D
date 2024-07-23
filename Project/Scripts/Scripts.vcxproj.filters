@@ -122,6 +122,22 @@
     <ClInclude Include="CCoverHigh.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CBossMissileScript.h">
+      <Filter>Scripts\Boss\BossMissile</Filter>
+    </ClInclude>
+    <ClInclude Include="CBossScript.h">
+      <Filter>Scripts\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="CDamagedDirection.h">
+      <Filter>Scripts\UI\Image\DamagedDirection</Filter>
+    </ClInclude>
+    <ClInclude Include="CDamagedDirectionMgr.h">
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CMegaFistScript.h">
+      <Filter>Scripts\Boss\MegaFist</Filter>
+    </ClInclude>
+    <ClInclude Include="CProjectileScript.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -248,6 +264,25 @@
     <ClCompile Include="CCoverHigh.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="CBossMissileScript.cpp">
+      <Filter>Scripts\Boss\BossMissile</Filter>
+    </ClCompile>
+    <ClCompile Include="CBossScript.cpp">
+      <Filter>Scripts\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="CBossScript_State.cpp">
+      <Filter>Scripts\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="CDamagedDirection.cpp">
+      <Filter>Scripts\UI\Image\DamagedDirection</Filter>
+    </ClCompile>
+    <ClCompile Include="CDamagedDirectionMgr.cpp">
+      <Filter>Scripts\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CMegaFistScript.cpp">
+      <Filter>Scripts\Boss\MegaFist</Filter>
+    </ClCompile>
+    <ClCompile Include="CProjectileScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -339,6 +374,18 @@
     </Filter>
     <Filter Include="Scripts\UI\Image\Dialog">
       <UniqueIdentifier>{6fcd3b18-efc0-4025-8cec-ebede13f7e18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Boss">
+      <UniqueIdentifier>{f1743032-7d9a-42a0-8a97-a473347181c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Boss\BossMissile">
+      <UniqueIdentifier>{9b1b2bfe-d0f3-48fd-991e-768b8f6a434a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\Image\DamagedDirection">
+      <UniqueIdentifier>{e273dbd1-bdcc-4219-a846-990944988409}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Boss\MegaFist">
+      <UniqueIdentifier>{9c149e25-d8c2-48b9-a482-f90aa4f51703}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

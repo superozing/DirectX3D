@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "C:\Users\lee\source\repos\PortOrigin\External\Include\Engine\CScript.h"
+#include <Engine/CScript.h>
 class CCoverLow : public CScript
 {
 private:
