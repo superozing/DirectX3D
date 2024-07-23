@@ -5,6 +5,7 @@
 #include <Engine\CLevel.h>
 #include <Engine\CLayer.h>
 #include <Engine/components.h>
+#include <Engine/CRenderMgr.h>
 
 #include "CImGuiMgr.h"
 #include "Outliner.h"
@@ -19,6 +20,7 @@
 #include "ParticleSystemUI.h"
 
 #include "AssetUI.h"
+#include "ModelUI.h"
 
 void Inspector::ResetTargetObject()
 {
@@ -90,10 +92,16 @@ void Inspector::render_update()
 
 			if (ImGui::Button("Spawn Prefab"))
 			{
-				m_TargetObject				= m_TargetObject->Clone();
-				int idx						= m_TargetObject->GetLayerIdx();
-				m_TargetObject->m_iLayerIdx = -1;
-				GamePlayStatic::SpawnGameObject(m_TargetObject, idx);
+				auto Target			= m_TargetObject->Clone();
+				int	 idx			= Target->GetLayerIdx();
+				Target->m_iLayerIdx = -1;
+				GamePlayStatic::SpawnGameObject(Target, idx);
+
+				auto cam	= CRenderMgr::GetInst()->GetMainCam();
+				auto vPos	= cam->Transform()->GetRelativePos();
+				auto vFront = cam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+				vPos += vFront * 100.f;
+				Target->Transform()->SetRelativePos(vPos);
 			}
 
 			if (ImGui::Button("parent"))
@@ -153,6 +161,10 @@ void Inspector::SetTargetObject(CGameObject* _Object, bool _bPrefab)
 			m_arrComUI[i]->SetTargetObject(_Object);
 		}
 	}
+
+	auto mUI = (ModelUI*)CImGuiMgr::GetInst()->FindUI("##ModelUI");
+	if (m_arrComUI[(UINT)COMPONENT_TYPE::ANIMATOR3D] && !_bPrefab)
+		mUI->SetModel(_Object);
 
 	RefreshScriptUI();
 
@@ -261,7 +273,7 @@ void Inspector::ObjectLayer()
 
 			if (PrevIdx != LayerIdx)
 			{
-				CurLevel->AddObject(m_TargetObject, LayerIdx);
+				CurLevel->ChangeLayer(m_TargetObject, LayerIdx, false);
 			}
 		}
 	}

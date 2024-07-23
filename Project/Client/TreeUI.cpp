@@ -329,6 +329,28 @@ void TreeUI::render_update()
 	m_bDragDropEvent = false;
 }
 
+void TreeUI::AllNodeOpen(bool _show)
+{
+	std::queue<TreeNode*> q;
+
+	q.push(m_Root);
+
+	while (!q.empty())
+	{
+		auto node = q.front();
+		q.pop();
+
+		node->SetOpen(_show);
+
+		auto childs = node->GetChildNode();
+
+		for (auto& child : childs)
+		{
+			q.push(child);
+		}
+	}
+}
+
 TreeNode* TreeUI::AddTreeNode(TreeNode* _Parent, string _strName, DWORD_PTR _dwData)
 {
 	TreeNode* pNewNode = new TreeNode;

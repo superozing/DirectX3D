@@ -11,8 +11,9 @@ class CEnvMgr : public CManager<CEnvMgr>
 	SINGLE(CEnvMgr);
 
 private:
-	tRes   m_tRes;
-	string m_strLevelRelativePath;
+	tRes		 m_tRes;
+	string		 m_strLevelRelativePath;
+	vector<bool> m_bImguiActivate;
 
 public:
 	tRes   GetResolutionData() { return m_tRes; }
@@ -20,6 +21,7 @@ public:
 
 public:
 	void init();
+	void ImguiInit();
 	void exit();
 	void tick();
 

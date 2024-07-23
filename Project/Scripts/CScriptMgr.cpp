@@ -34,8 +34,9 @@
 #include "CPlayerScript.h"
 #include "CDialog.h"
 #include "CPlayerDamagedScript.h"
-#include "CDamagedDirection.h"
-#include "CDamagedDirectionMgr.h"
+#include "CWallScript.h"
+#include "CCoverLow.h"
+#include "CCoverHigh.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -72,8 +73,9 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPlayerScript");
 	_vec.push_back(L"CDialog");
 	_vec.push_back(L"CPlayerDamagedScript");
-	_vec.push_back(L"CDamagedDirection");
-	_vec.push_back(L"CDamagedDirectionMgr");
+	_vec.push_back(L"CWallScript");
+	_vec.push_back(L"CCoverLow");
+	_vec.push_back(L"CCoverHigh");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -144,10 +146,12 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CDialog;
 	if (L"CPlayerDamagedScript" == _strScriptName)
 		return new CPlayerDamagedScript;
-	if (L"CDamagedDirection" == _strScriptName)
-		return new CDamagedDirection;
-	if (L"CDamagedDirectionMgr" == _strScriptName)
-		return new CDamagedDirectionMgr;
+	if (L"CWallScript" == _strScriptName)
+		return new CWallScript;
+	if (L"CCoverLow" == _strScriptName)
+		return new CCoverLow;
+	if (L"CCoverHigh" == _strScriptName)
+		return new CCoverHigh;
 	return nullptr;
 }
 
@@ -254,11 +258,14 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::PLAYERDAMAGEDSCRIPT:
 		return new CPlayerDamagedScript;
 		break;
-	case (UINT)SCRIPT_TYPE::DAMAGEDDIRECTION:
-		return new CDamagedDirection;
+	case (UINT)SCRIPT_TYPE::WALLSCRIPT:
+		return new CWallScript;
 		break;
-	case (UINT)SCRIPT_TYPE::DAMAGEDDIRECTIONMGR:
-		return new CDamagedDirectionMgr;
+	case (UINT)SCRIPT_TYPE::COVERLOW:
+		return new CCoverLow;
+		break;
+	case (UINT)SCRIPT_TYPE::COVERHIGH:
+		return new CCoverHigh;
 		break;
 	}
 	return nullptr;
@@ -400,12 +407,16 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CPlayerDamagedScript";
 		break;
 
-	case SCRIPT_TYPE::DAMAGEDDIRECTION:
-		return L"CDamagedDirection";
+	case SCRIPT_TYPE::WALLSCRIPT:
+		return L"CWallScript";
 		break;
 
-	case SCRIPT_TYPE::DAMAGEDDIRECTIONMGR:
-		return L"CDamagedDirectionMgr";
+	case SCRIPT_TYPE::COVERLOW:
+		return L"CCoverLow";
+		break;
+
+	case SCRIPT_TYPE::COVERHIGH:
+		return L"CCoverHigh";
 		break;
 
 	}

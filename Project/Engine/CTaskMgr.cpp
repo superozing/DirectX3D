@@ -34,6 +34,10 @@ void CTaskMgr::tick()
 		case TASK_TYPE::CREATE_OBJECT: {
 			int			 LayerIdx = (int)m_vecTask[i].Param_1;
 			CGameObject* Object	  = (CGameObject*)m_vecTask[i].Param_2;
+			bool		 IsPrefab = (bool)m_vecTask[i].Param_3;
+
+			if (IsPrefab)
+				Object->m_iLayerIdx = -1;
 
 			CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
 			pCurLevel->AddObject(Object, LayerIdx, false);

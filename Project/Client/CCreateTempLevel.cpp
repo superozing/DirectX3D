@@ -141,8 +141,8 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std3D_DeferredMtrl"), 0);
 
 	pObj->AddComponent(new CPhysX);
-	pObj->PhysX()->m_bStaticActor = false;
-	pObj->PhysX()->m_Shape		  = PhysShape::SPHERE;
+	// pObj->PhysX()->m_bStaticActor = false;
+	pObj->PhysX()->m_Shape = PhysShape::SPHERE;
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_PLAYER, false);
 	pObj = nullptr;
@@ -191,8 +191,8 @@ void CCreateTempLevel::CreateTempLevel()
 		CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_01_N.tga", L"texture\\tile\\TILE_01_N.tga"));
 
 	pObj->AddComponent(new CPhysX);
-	pObj->PhysX()->m_bStaticActor = true;
-	// pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_TILE, false);
+	// pObj->PhysX()->m_bStaticActor = true;
+	//  pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_TILE, false);
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_MONSTER, false);
 
 #pragma region About LandScape

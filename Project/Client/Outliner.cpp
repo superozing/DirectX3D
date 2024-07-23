@@ -110,7 +110,7 @@ void Outliner::ResetCurrentLevel()
 
 	auto vecEditorObj = CEditorObjMgr::GetInst()->GetEditorGameObjects();
 
-	for (size_t i = 0; i < vecEditorObj.size(); ++i)
+	for (size_t i = 0; i < (UINT)EDITOROBJ_TYPE::END; ++i)
 	{
 		AddObjectToTree(pEditorRootNode, vecEditorObj[i]);
 	}

@@ -38,6 +38,8 @@ public:
 	void		ChangeModalState(bool _isActiveUIModal) { m_isActiveUIModal = _isActiveUIModal; }
 	bool		GetModalState() const { return m_isActiveUIModal; }
 
+	void ChangeLayer(CGameObject* _Object, int _LayerIdx, bool _bChildMove = true);
+
 private:
 	void clear();
 

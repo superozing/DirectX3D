@@ -17,6 +17,7 @@
 // Parameter
 // g_int_0 : As Emissive
 // g_int_1 : Use CustomAlpha
+// g_int_2 : Use Custom Decal
 // g_float_0 : CustomAlpha
 // g_mat_0  : ViewInv * WorldInv
 // g_tex_0  : Output Texture
