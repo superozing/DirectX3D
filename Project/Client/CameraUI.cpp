@@ -146,6 +146,11 @@ void CameraUI::render_update()
 
 	ImGui::Text(("CameraPriority:" + std::to_string(m_CameraPriority)).c_str());
 
+	static int iCamPriority = pCamera->GetCameraPriority();
+	if (ImGui::InputInt("##ChnageCamPriority", &iCamPriority))
+	{
+		pCamera->SetCameraPriority(iCamPriority);
+	}
 	const static auto winsize = ImVec2(0, 0);
 
 	ImGui::NewLine();

@@ -1,30 +1,28 @@
 ﻿#include "pch.h"
 #include "CWrapImage.h"
 
+static string staticstrWrapMode = "";
+
 CWrapImage::CWrapImage()
 	: CScript((UINT)SCRIPT_TYPE::WRAPIMAGE)
 	, m_Mode(WrapMode::BasedOnTexture)
 	, WrapSize(0.f, 0.f)
 	, OriginTexSize(0.f, 0.f)
+	, ToSaveWrapSize(0.f, 0.f)
 {
+	staticstrWrapMode = ToString(magic_enum::enum_name(m_Mode));
+	AppendScriptParam("Wrap Mode", SCRIPT_PARAM::STRING, (void*)&staticstrWrapMode);
+	AppendMemberFunction("ChangeMode", SCRIPT_PARAM::FUNC_MEMBER, "Wrap", std::bind(&CWrapImage::ChangeWrapMode, this));
+	AppendScriptParam("Custom Wrap Size", SCRIPT_PARAM::VEC2, (void*)&WrapSize);
 }
 
 CWrapImage::~CWrapImage()
 {
 }
 
-static string WrapMode = "";
-
 void CWrapImage::begin()
 {
 	PlaneScale = Vec2(GetOwner()->Transform()->GetRelativeScale().x, GetOwner()->Transform()->GetRelativeScale().y);
-
-	string strMode = ToString(magic_enum::enum_name(m_Mode));
-
-	AppendScriptParam("##Wrap Mode", SCRIPT_PARAM::STRING, (void*)&WrapMode);
-	AppendMemberFunction("ChangeMode", SCRIPT_PARAM::FUNC_MEMBER, "Wrap", std::bind(&CWrapImage::ChangeWrapMode, this));
-
-	AppendScriptParam("Custom Wrap Size", SCRIPT_PARAM::VEC2, (void*)&WrapSize);
 
 	OriginTexSize = Vec2(GetOwner()->MeshRender()->GetMaterial(0)->GetTexParam(TEX_PARAM::TEX_0).Get()->GetWidth(),
 						 GetOwner()->MeshRender()->GetMaterial(0)->GetTexParam(TEX_PARAM::TEX_0).Get()->GetHeight());
@@ -32,7 +30,7 @@ void CWrapImage::begin()
 
 void CWrapImage::tick()
 {
-	WrapMode = ToString(magic_enum::enum_name(m_Mode));
+	staticstrWrapMode = ToString(magic_enum::enum_name(m_Mode));
 
 	Vec2 ObjPlaneScale =
 		Vec2(GetOwner()->Transform()->GetRelativeScale().x, GetOwner()->Transform()->GetRelativeScale().y);
@@ -54,7 +52,44 @@ void CWrapImage::tick()
 void CWrapImage::ChangeWrapMode()
 {
 	if (m_Mode == WrapMode::BasedOnTexture)
+	{
 		m_Mode = WrapMode::Custom;
+	}
 	else
+	{
 		m_Mode = WrapMode::BasedOnTexture;
+	}
+
+	staticstrWrapMode = ToString(magic_enum::enum_name(m_Mode));
+}
+
+#define TagWrapType "[WrapType]"
+#define TagWrapSize "[TagWrapSize]"
+
+void CWrapImage::SaveToFile(ofstream& fout)
+{
+	fout << TagWrapType << endl;
+	fout << magic_enum::enum_name(m_Mode) << endl;
+
+	fout << TagWrapSize << endl;
+	fout << (int)WrapSize.x << " " << (int)WrapSize.y << endl;
+}
+
+void CWrapImage::LoadFromFile(ifstream& fin)
+{
+	string strWrapType;
+
+	Utils::GetLineUntilString(fin, TagWrapType);
+	getline(fin, strWrapType);
+
+	auto Type = magic_enum::enum_cast<WrapMode>(strWrapType);
+	m_Mode	  = Type.value();
+
+	staticstrWrapMode = ToString(magic_enum::enum_name(m_Mode));
+
+	Vec2 TempWrapSize;
+	Utils::GetLineUntilString(fin, TagWrapSize);
+	fin >> TempWrapSize.x >> TempWrapSize.y;
+
+	WrapSize = TempWrapSize;
 }
