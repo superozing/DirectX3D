@@ -15,3 +15,5 @@
 #define MTRL_grayfilter L"GrayFilterMtrl"
 #define MTRL_distortion L"DistortionMtrl"
 #define MTRL_debugshape L"DebugShapeMtrl"
+#define MTRL_dynamicUI L"DynamicUIMtrl"
+#define MTRL_staticUI L"StaticUIMtrl"
