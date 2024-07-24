@@ -6,6 +6,9 @@
 #include "CPhysX.h"
 #include "RoRCollisionCallback.h"
 
+#include "CLevelMgr.h"
+#include "CLevel.h"
+
 UINT CPhysXMgr::m_layerMasks[32] = {0};
 
 CPhysXMgr::CPhysXMgr()
@@ -319,6 +322,8 @@ void CPhysXMgr::init()
 
 void CPhysXMgr::tick()
 {
+	RETURN_IF_NOT_PLAYING
+
 	static const float ThresholdTime = 1.f / 60.f;
 	static float	   acctime		 = 0.f;
 	acctime += DT;
