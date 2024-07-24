@@ -314,7 +314,7 @@ void CPlayerScript::tick()
 
 	// 조건에 따라 상태 변경해주는 함수
 	ChangeToMove();
-	ChangeToNormal();
+	// ChangeToNormal();
 	ChangeToVictory();
 	ChangeToDash();
 

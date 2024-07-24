@@ -119,9 +119,6 @@
     <ClInclude Include="CCoverLow.h">
       <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="CCoverHigh.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="CBossMissileScript.h">
       <Filter>Scripts\Boss\BossMissile</Filter>
     </ClInclude>
@@ -138,6 +135,18 @@
       <Filter>Scripts\Boss\MegaFist</Filter>
     </ClInclude>
     <ClInclude Include="CProjectileScript.h" />
+    <ClInclude Include="CEventListener.h" />
+    <ClInclude Include="CGameMode.h" />
+    <ClInclude Include="strings.h" />
+    <ClInclude Include="CCoverArea.h">
+      <Filter>Scripts\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="CCoverUI.h">
+      <Filter>Scripts\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="CTutorialGameMode.h">
+      <Filter>Scripts\Level</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -261,9 +270,6 @@
     <ClCompile Include="CCoverLow.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="CCoverHigh.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
     <ClCompile Include="CBossMissileScript.cpp">
       <Filter>Scripts\Boss\BossMissile</Filter>
     </ClCompile>
@@ -283,6 +289,16 @@
       <Filter>Scripts\Boss\MegaFist</Filter>
     </ClCompile>
     <ClCompile Include="CProjectileScript.cpp" />
+    <ClCompile Include="CEventListener.cpp" />
+    <ClCompile Include="CCoverArea.cpp">
+      <Filter>Scripts\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="CCoverUI.cpp">
+      <Filter>Scripts\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="CTutorialGameMode.cpp">
+      <Filter>Scripts\Level</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -386,6 +402,12 @@
     </Filter>
     <Filter Include="Scripts\Boss\MegaFist">
       <UniqueIdentifier>{9c149e25-d8c2-48b9-a482-f90aa4f51703}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Event">
+      <UniqueIdentifier>{1ab1a3c0-46e2-4f9e-ad0a-58265382538b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Level">
+      <UniqueIdentifier>{1666e7d2-5bff-44b3-88d6-1f00319dfd14}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

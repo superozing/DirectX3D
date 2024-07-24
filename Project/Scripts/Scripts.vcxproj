@@ -174,13 +174,16 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CBtnUIScript.h" />
     <ClInclude Include="CCameraEffect.h" />
     <ClInclude Include="CCameraMoveScript.h" />
-    <ClInclude Include="CCoverHigh.h" />
     <ClInclude Include="CCoverLow.h" />
+    <ClInclude Include="CCoverArea.h" />
+    <ClInclude Include="CCoverUI.h" />
     <ClInclude Include="CCrosshair.h" />
     <ClInclude Include="CDamagedDirectionMgr.h" />
     <ClInclude Include="CDamageFont.h" />
     <ClInclude Include="CDialog.h" />
     <ClInclude Include="CEditorCameraMoveScript.h" />
+    <ClInclude Include="CEventListener.h" />
+    <ClInclude Include="CGameMode.h" />
     <ClInclude Include="CHaloScript.h" />
     <ClInclude Include="CImageUIScript.h" />
     <ClInclude Include="CLevelTransition.h" />
@@ -208,11 +211,13 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CSpringArm.h" />
     <ClInclude Include="CStudentScript.h" />
     <ClInclude Include="CTimeMgrScript.h" />
+    <ClInclude Include="CTutorialGameMode.h" />
     <ClInclude Include="CWallScript.h" />
     <ClInclude Include="CWeaponInfo.h" />
     <ClInclude Include="CWrapImage.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="strings.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAmmoInfo.cpp" />
@@ -224,13 +229,15 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CBtnUIScript.cpp" />
     <ClCompile Include="CCameraEffect.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
-    <ClCompile Include="CCoverHigh.cpp" />
     <ClCompile Include="CCoverLow.cpp" />
+    <ClCompile Include="CCoverArea.cpp" />
+    <ClCompile Include="CCoverUI.cpp" />
     <ClCompile Include="CCrosshair.cpp" />
     <ClCompile Include="CDamagedDirectionMgr.cpp" />
     <ClCompile Include="CDamageFont.cpp" />
     <ClCompile Include="CDialog.cpp" />
     <ClCompile Include="CEditorCameraMoveScript.cpp" />
+    <ClCompile Include="CEventListener.cpp" />
     <ClCompile Include="CHaloScript.cpp" />
     <ClCompile Include="CImageUIScript.cpp" />
     <ClCompile Include="CLevelTransition.cpp" />
@@ -259,6 +266,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CSpringArm.cpp" />
     <ClCompile Include="CStudentScript.cpp" />
     <ClCompile Include="CTimeMgrScript.cpp" />
+    <ClCompile Include="CTutorialGameMode.cpp" />
     <ClCompile Include="CWallScript.cpp" />
     <ClCompile Include="CWeaponInfo.cpp" />
     <ClCompile Include="CWrapImage.cpp" />
