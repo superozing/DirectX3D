@@ -229,11 +229,20 @@ int CBossScript::EXs3Update()
 	if (!Animator3D()->IsPlayable())
 		return (int)BOSS_STATE::NormalIdle;
 
+	int idx = Animator3D()->GetCurFrameIdx();
+
+	if (idx == 36 && !m_ActiveShield)
+	{
+		ActiveShield();
+		m_ActiveShield = true;
+	}
+
 	return m_FSM->GetCurState();
 }
 
 void CBossScript::EXs3End()
 {
+	m_ActiveShield = false;
 }
 
 void CBossScript::EXs4Begin()

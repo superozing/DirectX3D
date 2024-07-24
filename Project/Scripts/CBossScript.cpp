@@ -9,6 +9,7 @@
 #include "CRoRStateMachine.h"
 #include "CMegaFistScript.h"
 #include "CBossMissileScript.h"
+#include "CBossShieldScript.h"
 
 static string DebugState = "";
 
@@ -22,6 +23,7 @@ CBossScript::CBossScript()
 	, m_EXsType(0)
 	, m_Target(nullptr)
 	, m_ArrMissile{}
+	, m_ActiveShield(false)
 {
 	AppendScriptParam("CurState    ", SCRIPT_PARAM::STRING, &DebugState);
 
@@ -40,6 +42,7 @@ CBossScript::CBossScript(const CBossScript& _Origin)
 	, m_EXsType(0)
 	, m_Target(nullptr)
 	, m_ArrMissile{}
+	, m_ActiveShield(false)
 {
 	InitScriptParamUI();
 
@@ -109,7 +112,7 @@ void CBossScript::CheckDuration()
 	if (m_ActiveEXs)
 	{
 		// m_EXsType = CRandomMgr::GetInst()->GetRandomInt(4);
-		m_EXsType = 1;
+		m_EXsType = 2;
 		switch (m_EXsType)
 		{
 		case 0:
@@ -206,6 +209,20 @@ void CBossScript::FireBossMissile(int _idx)
 
 	int layeridx = Missile->GetLayerIdx();
 	GamePlayStatic::SpawnGameObject(Missile, layeridx);
+}
+
+void CBossScript::ActiveShield()
+{
+	if (nullptr == m_Target)
+		return;
+
+	Vec3 ShieldPos = (Animator3D()->FindBoneMat(L"Bone_shield_03") * Transform()->GetWorldMat()).Translation();
+
+	CGameObject* Shield = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Boss\\Kaiten_Shield.pref")->Instantiate();
+	Shield->GetScript<CBossShieldScript>()->SetParent(GetOwner());
+
+	int layeridx = Shield->GetLayerIdx();
+	GamePlayStatic::SpawnGameObject(Shield, layeridx);
 }
 
 void CBossScript::InitStateMachine()

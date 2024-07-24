@@ -138,6 +138,9 @@
       <Filter>Scripts\Boss\MegaFist</Filter>
     </ClInclude>
     <ClInclude Include="CProjectileScript.h" />
+    <ClInclude Include="CBossShieldScript.h">
+      <Filter>Scripts\Boss\BossShield</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -283,6 +286,9 @@
       <Filter>Scripts\Boss\MegaFist</Filter>
     </ClCompile>
     <ClCompile Include="CProjectileScript.cpp" />
+    <ClCompile Include="CBossShieldScript.cpp">
+      <Filter>Scripts\Boss\BossShield</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -386,6 +392,9 @@
     </Filter>
     <Filter Include="Scripts\Boss\MegaFist">
       <UniqueIdentifier>{9c149e25-d8c2-48b9-a482-f90aa4f51703}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Boss\BossShield">
+      <UniqueIdentifier>{c815b89f-c5f7-4054-bff8-7d2e77c50425}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

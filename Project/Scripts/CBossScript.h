@@ -53,6 +53,7 @@ private:
 	bool m_ActiveEXs;
 
 	bool m_ArrMissile[8]; // 미사일 발사여부
+	bool m_ActiveShield;
 
 	// @@디버그용
 	int m_EXsType; // 현재 선택된 EX 타입
@@ -122,6 +123,7 @@ public:
 
 	void FireMegaFist();
 	void FireBossMissile(int _idx);
+	void ActiveShield();
 
 	CRoRStateMachine<CBossScript>* GetBossFSM() { return m_FSM; }
 
