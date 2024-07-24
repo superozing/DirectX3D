@@ -811,6 +811,12 @@
     <Filter Include="ShaderCode\03. Compute\Scale">
       <UniqueIdentifier>{22e38a52-6687-448c-a9fd-49d9ca5b507a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\04. Content">
+      <UniqueIdentifier>{30eeaa4d-56c7-431a-9f11-90a933515b0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\04. Content\BossShield">
+      <UniqueIdentifier>{5176bbda-93d0-4fff-b6e5-ac2671b2d542}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -943,6 +949,11 @@
     </FxCompile>
     <FxCompile Include="cromatic_aberration.fx">
       <Filter>ShaderCode\02. Render\3DShader</Filter>
+    </FxCompile>
+    <FxCompile Include="damageddirection.fx" />
+    <FxCompile Include="event_detect.fx" />
+    <FxCompile Include="BossShield.fx">
+      <Filter>ShaderCode\04. Content\BossShield</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
