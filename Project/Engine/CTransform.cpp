@@ -299,21 +299,25 @@ void CTransform::CalWorldMat()
 
 		if (m_bAbsolute)
 		{
-			// Vec3 vParentScale = GetOwner()->GetParent()->Transform()->GetRelativeScale();
-
-			// Matrix matParentScaleInv =
-			//	XMMatrixScaling(1.f / vParentScale.x, 1.f / vParentScale.y, 1.f / vParentScale.z);
-
-			// m_matWorld = m_matWorld * matParentScaleInv * matParentWorld;
 			Matrix FinalMat = m_matFrame * matParentWorld;
 
 			XMVECTOR vScale, vRot, vTrans;
 			XMMatrixDecompose(&vScale, &vRot, &vTrans, FinalMat);
 
-			Matrix scaleMat	   = XMMatrixScalingFromVector(vScale);
-			Matrix scaleMatInv = XMMatrixInverse(nullptr, scaleMat);
+			float scaleX = XMVectorGetX(vScale);
+			float scaleY = XMVectorGetY(vScale);
+			float scaleZ = XMVectorGetZ(vScale);
 
-			m_matWorld = m_matWorld * scaleMatInv * FinalMat;
+			if (scaleX < 0.0f)
+				scaleX = -scaleX;
+			if (scaleY < 0.0f)
+				scaleY = -scaleY;
+			if (scaleZ < 0.0f)
+				scaleZ = -scaleZ;
+
+			Matrix scaleMat	   = XMMatrixScaling(scaleX, scaleY, scaleZ);
+			Matrix scaleMatInv = XMMatrixInverse(nullptr, scaleMat);
+			m_matWorld		   = m_matWorld * scaleMatInv * FinalMat;
 		}
 		else
 		{
