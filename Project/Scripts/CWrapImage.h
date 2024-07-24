@@ -16,12 +16,17 @@ private:
 	Vec2 OriginTexSize;
 	Vec2 WrapSize;
 
+	Vec2 ToSaveWrapSize;
+
 private:
 	void ChangeWrapMode();
 
 public:
 	virtual void begin() override;
 	virtual void tick() override;
+
+	virtual void SaveToFile(ofstream& fout);
+	virtual void LoadFromFile(ifstream& fin);
 
 public:
 	CLONE(CWrapImage);
