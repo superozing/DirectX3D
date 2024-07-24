@@ -3,13 +3,18 @@
 
 CImageUIScript::CImageUIScript()
 	: CUIScript((UINT)SCRIPT_TYPE::IMAGEUISCRIPT)
+	, m_bDraw(true)
 {
 	AppendScriptAsset("Img", &m_UIImg, ASSET_TYPE::TEXTURE);
+	AppendScriptParam("Draw", SCRIPT_PARAM::BOOL, &m_bDraw);
 }
 
 CImageUIScript::CImageUIScript(const CImageUIScript& _Other)
 	: CUIScript(_Other.GetScriptType())
+	, m_bDraw(_Other.m_bDraw)
 {
+	AppendScriptAsset("Img", &m_UIImg, ASSET_TYPE::TEXTURE);
+	AppendScriptParam("Draw", SCRIPT_PARAM::BOOL, &m_bDraw);
 }
 
 CImageUIScript::~CImageUIScript()
@@ -67,6 +72,9 @@ void CImageUIScript::tick()
 {
 	if (m_bAllowBindTexPerFrame && m_UIImg.Get())
 		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_UIImg);
+
+	m_bDraw ? GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_UIImg)
+			: GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, nullptr);
 }
 
 void CImageUIScript::BindUIImgOnTexParam()
@@ -79,6 +87,7 @@ void CImageUIScript::BindUIImgOnTexParam()
 
 #define TagUIImg "[UIImg]"
 #define TagAllowBindTexPerFrame "[AllowBindTexPerFrame]"
+#define TagDraw "[Draw]"
 
 void CImageUIScript::SaveToFile(FILE* _File)
 {
@@ -95,6 +104,9 @@ void CImageUIScript::SaveToFile(ofstream& fout)
 
 	fout << TagAllowBindTexPerFrame << endl;
 	fout << m_bAllowBindTexPerFrame << endl;
+
+	fout << TagDraw << endl;
+	fout << m_bDraw << endl;
 }
 
 void CImageUIScript::LoadFromFile(ifstream& fin)
@@ -104,4 +116,7 @@ void CImageUIScript::LoadFromFile(ifstream& fin)
 
 	Utils::GetLineUntilString(fin, TagAllowBindTexPerFrame);
 	fin >> m_bAllowBindTexPerFrame;
+
+	Utils::GetLineUntilString(fin, TagDraw);
+	fin >> m_bDraw;
 }

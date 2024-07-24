@@ -8,6 +8,7 @@
 #include <Engine\CLevel.h>
 
 #include "CImageUIScript.h"
+#include "CCoverUI.h"
 
 CCoverArea::CCoverArea()
 	: CEventListener((UINT)SCRIPT_TYPE::COVERAREA)
@@ -22,7 +23,7 @@ CCoverArea::~CCoverArea()
 {
 }
 
-void CCoverArea::SetPlayerCoverRight()
+void CCoverArea::SetPlayerCover()
 {
 	Vec3 vPos		  = Transform()->GetWorldPos();
 	Vec3 vRot		  = Transform()->GetWorldRot();
@@ -39,6 +40,15 @@ void CCoverArea::SetPlayerCoverRight()
 	m_pPlayer->Transform()->SetRelativeScale(vPlayerScale);
 
 	m_bPlayerCover = true;
+
+	// Area들 UI 제거
+	m_UIMgr->DrawUI(false);
+}
+
+void CCoverArea::PrintUI(bool _print)
+{
+	if (m_pUI)
+		m_pUI->Draw(_print);
 }
 
 void CCoverArea::begin()
@@ -55,6 +65,22 @@ void CCoverArea::begin()
 		if (script)
 			m_pUI = script;
 	}
+
+	const auto& pChilds = GetOwner()->GetParent()->GetChild();
+	for (const auto& pChild : pChilds)
+	{
+		const auto& script = pChild->GetScript<CCoverUI>();
+		if (script)
+			m_UIMgr = script;
+	}
+
+	if (m_pUI)
+	{
+		Vec3 vPos = Vec3();
+		vPos.y += 50.f;
+		vPos.z += m_pPlayer->Transform()->GetRelativeScale().z / 2.f;
+		m_pUI->Transform()->SetRelativePos(vPos);
+	}
 }
 
 void CCoverArea::tick()
@@ -70,10 +96,13 @@ void CCoverArea::tick()
 		Vec3 vPlayerScale = m_pPlayer->Transform()->GetRelativeScale();
 		vPlayerScale.x	  = abs(vPlayerScale.x);
 		m_pPlayer->Transform()->SetRelativeScale(vPlayerScale);
+
+		// Area들 UI 그리기
+		m_UIMgr->DrawUI(true);
 	}
 	else if (HasTargets() && KEY_TAP(CPlayerController::Cover) && !m_bPlayerCover)
 	{
-		SetPlayerCoverRight();
+		SetPlayerCover();
 	}
 }
 

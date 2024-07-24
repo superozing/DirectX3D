@@ -19,7 +19,7 @@ void CCoverUI::DrawUI(bool _draw)
 {
 	// UI 띄우기
 	for (auto& ui : m_vecUI)
-		ui->PrintUI(HasTargets());
+		ui->PrintUI(_draw);
 }
 
 void CCoverUI::begin()

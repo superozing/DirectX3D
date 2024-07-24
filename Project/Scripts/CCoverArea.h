@@ -10,14 +10,13 @@ private:
 	CGameObject*		  m_pPlayer;
 	class CPlayerScript*  m_pScript;
 	class CImageUIScript* m_pUI;
-
-	bool m_bDraw;
+	class CCoverUI*		  m_UIMgr;
 
 private:
-	void SetPlayerCoverRight();
+	void SetPlayerCover();
 
 public:
-	void PrintUI(bool _print) { m_bDraw = _print; };
+	void PrintUI(bool _print);
 
 public:
 	virtual void begin() override;
