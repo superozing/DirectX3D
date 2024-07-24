@@ -12,10 +12,8 @@
 
 CCoverArea::CCoverArea()
 	: CEventListener((UINT)SCRIPT_TYPE::COVERAREA)
-	, m_bRight(true)
 	, m_bStand(true)
 {
-	AppendScriptParam("IsRight", SCRIPT_PARAM::BOOL, &m_bRight);
 	AppendScriptParam("IsStand", SCRIPT_PARAM::BOOL, &m_bStand);
 }
 
@@ -30,8 +28,6 @@ void CCoverArea::SetPlayerCover()
 	Vec3 vPlayerScale = m_pPlayer->Transform()->GetRelativeScale();
 
 	vPos.y -= m_pPlayer->Transform()->GetRelativeScale().y / 2.f;
-
-	vPlayerScale.x = m_bRight ? abs(vPlayerScale.x) : -abs(vPlayerScale.x);
 
 	m_bStand ? m_pScript->SetCoverType(CoverType::Stand) : m_pScript->SetCoverType(CoverType::Kneel);
 
@@ -92,11 +88,6 @@ void CCoverArea::tick()
 		m_pScript->SetCoverType(CoverType::Normal);
 		m_bPlayerCover = false;
 
-		// 왼엄폐의 경우 정상으로 돌려주는 작업 필요
-		Vec3 vPlayerScale = m_pPlayer->Transform()->GetRelativeScale();
-		vPlayerScale.x	  = abs(vPlayerScale.x);
-		m_pPlayer->Transform()->SetRelativeScale(vPlayerScale);
-
 		// Area들 UI 그리기
 		m_UIMgr->DrawUI(true);
 	}
@@ -113,9 +104,6 @@ void CCoverArea::SaveToFile(ofstream& fout)
 {
 	CEventListener::SaveToFile(fout);
 
-	fout << TagIsRight << endl;
-	fout << m_bRight << endl;
-
 	fout << TagIsStand << endl;
 	fout << m_bStand << endl;
 }
@@ -124,8 +112,6 @@ void CCoverArea::LoadFromFile(ifstream& fin)
 {
 	CEventListener::LoadFromFile(fin);
 
-	Utils::GetLineUntilString(fin, TagIsRight);
-	fin >> m_bRight;
 	Utils::GetLineUntilString(fin, TagIsStand);
 	fin >> m_bStand;
 }

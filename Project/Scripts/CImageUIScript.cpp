@@ -12,6 +12,7 @@ CImageUIScript::CImageUIScript()
 CImageUIScript::CImageUIScript(const CImageUIScript& _Other)
 	: CUIScript(_Other.GetScriptType())
 	, m_bDraw(_Other.m_bDraw)
+	, m_UIImg(_Other.m_UIImg)
 {
 	AppendScriptAsset("Img", &m_UIImg, ASSET_TYPE::TEXTURE);
 	AppendScriptParam("Draw", SCRIPT_PARAM::BOOL, &m_bDraw);

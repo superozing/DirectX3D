@@ -375,10 +375,10 @@ void CPlayerScript::tick()
 		m_pDamagedDirectionMgr->AddDamagedDirection(pMon->Transform()->GetWorldPos(), 0.1f);
 	}
 
-	// if (KEY_TAP(H))
-	//{
-	//	SetRight(!IsRight());
-	// }
+	if (KEY_TAP(TAB))
+	{
+		SetRight(!IsRight());
+	}
 }
 
 void CPlayerScript::CameraMove()
@@ -511,14 +511,28 @@ void CPlayerScript::NormalMove()
 		float fMoveSpeed = state == (int)PLAYER_STATE::MoveIng ? m_tStatus.MoveSpeed : m_tStatus.AttackMoveSpeed;
 
 		// 움직임 조건
-		if (KEY_TAP(CPlayerController::Front) || KEY_PRESSED(CPlayerController::Front))
-			vPos += vFront * fMoveSpeed * DT;
-		if (KEY_TAP(CPlayerController::Back) || KEY_PRESSED(CPlayerController::Back))
-			vPos -= vFront * fMoveSpeed * DT;
-		if (KEY_TAP(CPlayerController::Right) || KEY_PRESSED(CPlayerController::Right))
-			vPos += vRight * fMoveSpeed * DT;
-		if (KEY_TAP(CPlayerController::Left) || KEY_PRESSED(CPlayerController::Left))
-			vPos -= vRight * fMoveSpeed * DT;
+		if (IsRight())
+		{
+			if (KEY_TAP(CPlayerController::Front) || KEY_PRESSED(CPlayerController::Front))
+				vPos += vFront * fMoveSpeed * DT;
+			if (KEY_TAP(CPlayerController::Back) || KEY_PRESSED(CPlayerController::Back))
+				vPos -= vFront * fMoveSpeed * DT;
+			if (KEY_TAP(CPlayerController::Right) || KEY_PRESSED(CPlayerController::Right))
+				vPos += vRight * fMoveSpeed * DT;
+			if (KEY_TAP(CPlayerController::Left) || KEY_PRESSED(CPlayerController::Left))
+				vPos -= vRight * fMoveSpeed * DT;
+		}
+		else
+		{
+			if (KEY_TAP(CPlayerController::Front) || KEY_PRESSED(CPlayerController::Front))
+				vPos += vFront * fMoveSpeed * DT;
+			if (KEY_TAP(CPlayerController::Back) || KEY_PRESSED(CPlayerController::Back))
+				vPos -= vFront * fMoveSpeed * DT;
+			if (KEY_TAP(CPlayerController::Right) || KEY_PRESSED(CPlayerController::Right))
+				vPos -= vRight * fMoveSpeed * DT;
+			if (KEY_TAP(CPlayerController::Left) || KEY_PRESSED(CPlayerController::Left))
+				vPos += vRight * fMoveSpeed * DT;
+		}
 
 		Transform()->SetRelativePos(vPos);
 	}

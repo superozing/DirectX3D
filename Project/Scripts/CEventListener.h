@@ -28,7 +28,7 @@ public:
 	/// @brief 판정하고 싶은 스크립트 보유 목록을 가져옵니다.
 	const vector<SCRIPT_TYPE>& GetTargets() { return m_vecTargets; }
 
-	bool HasTargets() { return m_iInternalTargetCnt; }
+	bool HasTargets() { return m_iInternalTargetCnt <= 0; }
 
 public:
 	void AddTargetEditor();
