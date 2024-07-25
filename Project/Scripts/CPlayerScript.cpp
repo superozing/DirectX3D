@@ -326,6 +326,14 @@ void CPlayerScript::tick()
 		m_FSM->SetCurState((int)PLAYER_STATE::SkillThrow);
 	}
 
+	// TODO : 디버깅용 스피드 상승
+	static float originSpeed = m_tStatus.MoveSpeed;
+	m_tStatus.MoveSpeed		 = originSpeed;
+	if (KEY_PRESSED(LSHIFT))
+	{
+		m_tStatus.MoveSpeed = 5 * originSpeed;
+	}
+
 	// 일반 Raycast
 	// int mask = RayCastDebugFlag::EndPointVisible;
 

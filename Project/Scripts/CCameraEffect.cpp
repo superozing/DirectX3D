@@ -3,6 +3,11 @@
 
 #include <Engine\CRandomMgr.h>
 
+Vec3  CCameraEffect::m_vInitialPos;
+Vec3  CCameraEffect::m_vInitialRotation;
+float CCameraEffect::m_fInitialFOV;
+float CCameraEffect::m_fInitialScale;
+
 CCameraEffect::CCameraEffect()
 	: CScript((UINT)SCRIPT_TYPE::CAMERAEFFECT)
 {

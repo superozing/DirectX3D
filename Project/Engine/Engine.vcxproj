@@ -448,6 +448,8 @@ call CodeGen.exe</Command>
     <FxCompile Include="copybone.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="cromatic_aberration.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
@@ -536,6 +538,8 @@ call CodeGen.exe</Command>
     <FxCompile Include="ImageWrap.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="landscape.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
@@ -564,6 +568,8 @@ call CodeGen.exe</Command>
     <FxCompile Include="particle_update.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="postprocess.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
@@ -598,10 +604,14 @@ call CodeGen.exe</Command>
     <FxCompile Include="skybox.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="SpawnPoint.fx">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="std2d.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
@@ -618,6 +628,8 @@ call CodeGen.exe</Command>
     <FxCompile Include="std3d_deferred.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="struct.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
@@ -666,6 +678,8 @@ call CodeGen.exe</Command>
     <FxCompile Include="weightmap.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

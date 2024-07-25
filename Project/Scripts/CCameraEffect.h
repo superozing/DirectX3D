@@ -3,10 +3,10 @@
 class CCameraEffect : public CScript
 {
 private:
-	Vec3  m_vInitialPos;
-	Vec3  m_vInitialRotation;
-	float m_fInitialFOV;
-	float m_fInitialScale;
+	static Vec3	 m_vInitialPos;
+	static Vec3	 m_vInitialRotation;
+	static float m_fInitialFOV;
+	static float m_fInitialScale;
 
 public:
 	void RegistInitial();
