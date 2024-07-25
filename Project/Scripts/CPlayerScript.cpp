@@ -21,6 +21,7 @@
 
 #include "CCrosshair.h"
 #include "CDamagedDirectionMgr.h"
+#include "CBulletMarkSpawner.h"
 
 static string state = "";
 static string cover = "";
@@ -295,6 +296,9 @@ void CPlayerScript::begin()
 
 	m_pDamagedDirectionMgr = new CDamagedDirectionMgr;
 	GetOwner()->AddComponent(m_pDamagedDirectionMgr);
+
+	m_pBulletMarkDecalSpawner = new CBulletMarkSpawner;
+	GetOwner()->AddComponent(m_pBulletMarkDecalSpawner);
 }
 
 void CPlayerScript::tick()
@@ -355,10 +359,9 @@ void CPlayerScript::tick()
 	float RotX = m_tStatus.SpreadRatio * CRandomMgr::GetInst()->GetRandomFloat() * MaxSpread;
 	float RotY = m_tStatus.SpreadRatio * CRandomMgr::GetInst()->GetRandomFloat() * MaxSpread;
 
-	FrontDir.x += RotX;
-	FrontDir.y += RotY;
+	Vec3 ShootDir = Vec3(FrontDir.x + RotX, FrontDir.y + RotY, FrontDir.z);
 
-	bool isBulletHit = CPhysXMgr::GetInst()->PerfomRaycast(pMainCam->Transform()->GetWorldPos(), FrontDir, hitInfo,
+	bool isBulletHit = CPhysXMgr::GetInst()->PerfomRaycast(pMainCam->Transform()->GetWorldPos(), ShootDir, hitInfo,
 														   (UINT)LAYER::LAYER_RAYCAST, RayCastDebugFlag::AllVisible);
 
 	if (isBulletHit)
@@ -366,7 +369,7 @@ void CPlayerScript::tick()
 		// 데미지 처리, 파티클 시스템 등등...
 
 		// 데칼 오브젝트 스폰
-
+		m_pBulletMarkDecalSpawner->SpawnBulletMarkDecal(hitInfo.vHitPos, FrontDir);
 	}
 
 	m_pCrosshair->SetSpreadRatio(m_tStatus.SpreadRatio);

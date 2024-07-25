@@ -4,7 +4,7 @@
 class CBulletMarkSpawner : public CScript
 {
 private:
-	list<CGameObject*> m_BulletDecalList;
+	list<pair<CGameObject*, float>> m_BulletDecalList;
 
 public:
 	virtual void begin() override;
@@ -15,11 +15,8 @@ public:
 	virtual void LoadFromFile(FILE* _File) override;
 	virtual void LoadFromFile(ifstream& fin) override;
 
-private:
-	void SetParentPanelUI();
-
 public:
-	void SpawnBulletMarkDecal();
+	void SpawnBulletMarkDecal(Vec3 _PlayerFrontDir, Vec3 _HitPos, float _ActiveTime = 3.f);
 
 public:
 	CLONE(CBulletMarkSpawner);

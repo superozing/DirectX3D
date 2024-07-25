@@ -100,6 +100,7 @@ private:
 
 	class CCrosshair*			m_pCrosshair;
 	class CDamagedDirectionMgr* m_pDamagedDirectionMgr;
+	class CBulletMarkSpawner*	m_pBulletMarkDecalSpawner;
 
 public:
 #pragma region StatusFunc
