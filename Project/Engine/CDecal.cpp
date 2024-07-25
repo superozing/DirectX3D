@@ -54,6 +54,11 @@ void CDecal::UpdateData()
 	if (m_fAnimationActionTime <= 0.f && m_fAnimationActionTime != -100.f)
 		m_fAnimationActionTime = 0.f;
 
+	// 애니메이션 관련 정보
+	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, m_AnimationOutlinerColor);
+	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_1, m_AnimationOutsideColor);
+	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_2, m_AnimationInsideColor);
+
 	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_1, m_fAnimationActionTime);
 
 	GetMaterial(0)->UpdateData();
@@ -82,6 +87,9 @@ void CDecal::ChangeMtrl(wstring _MtrlKey)
 #define TagRenderDistance "[RenderDistance]"
 #define TagUseCustomAlpha "[UseCustomAlpha]"
 #define TagCustomAlphaParameter "[CustomAlphaParameter]"
+#define TagAninationOutlinerColor "[Animation Outliner Color]"
+#define TagAnimationInsideColor "[Animation Inside Color]"
+#define TagAnimationOutsideColor "[Animation Outside Color]"
 
 void CDecal::SaveToFile(ofstream& fout)
 {
@@ -110,6 +118,18 @@ void CDecal::SaveToFile(ofstream& fout)
 
 	fout << TagDecalActionTime << endl;
 	fout << m_OriginAnimationActionTime << endl;
+
+	fout << TagAninationOutlinerColor << endl;
+	fout << m_AnimationOutlinerColor.x << " " << m_AnimationOutlinerColor.y << " " << m_AnimationOutlinerColor.z << " "
+		 << m_AnimationOutlinerColor.w << endl;
+
+	fout << TagAnimationInsideColor << endl;
+	fout << m_AnimationInsideColor.x << " " << m_AnimationInsideColor.y << " " << m_AnimationInsideColor.z << " "
+		 << m_AnimationInsideColor.w << endl;
+
+	fout << TagAnimationOutsideColor << endl;
+	fout << m_AnimationOutsideColor.x << " " << m_AnimationOutsideColor.y << " " << m_AnimationOutsideColor.z << " "
+		 << m_AnimationOutsideColor.w << endl;
 }
 
 void CDecal::LoadFromFile(ifstream& fin)
@@ -145,6 +165,20 @@ void CDecal::LoadFromFile(ifstream& fin)
 
 	Utils::GetLineUntilString(fin, TagDecalActionTime);
 	fin >> m_OriginAnimationActionTime;
+
+	Vec4 AnimationColor;
+
+	Utils::GetLineUntilString(fin, TagAninationOutlinerColor);
+	fin >> AnimationColor.x >> AnimationColor.y >> AnimationColor.z >> AnimationColor.w;
+	m_AnimationOutlinerColor = AnimationColor;
+
+	Utils::GetLineUntilString(fin, TagAnimationInsideColor);
+	fin >> AnimationColor.x >> AnimationColor.y >> AnimationColor.z >> AnimationColor.w;
+	m_AnimationInsideColor = AnimationColor;
+
+	Utils::GetLineUntilString(fin, TagAnimationOutsideColor);
+	fin >> AnimationColor.x >> AnimationColor.y >> AnimationColor.z >> AnimationColor.w;
+	m_AnimationOutsideColor = AnimationColor;
 
 	SyncTime();
 }

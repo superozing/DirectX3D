@@ -26,9 +26,8 @@ public:
 	void SetDecalAsEmissive(bool _bTrue) { m_bAsEmissive = _bTrue; }
 	int	 GetDecalAsEmissive() { return m_bAsEmissive; }
 
-	void SetDecalPriority(int _NumPriority) { m_DecalPriority = std::clamp(_NumPriority, 0, DecalPriorityMax); }
-	int	 GetDecalPriority() { return m_DecalPriority; }
-
+	void  SetDecalPriority(int _NumPriority) { m_DecalPriority = std::clamp(_NumPriority, 0, DecalPriorityMax); }
+	int	  GetDecalPriority() { return m_DecalPriority; }
 	void  SetRenderDistance(float _Distance) { m_RenderDistance = _Distance; }
 	float GetRenderDistance() { return m_RenderDistance; }
 

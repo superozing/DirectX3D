@@ -25,7 +25,7 @@
 // g_float_1 :AnimationTime
 
 // g_vec2_0 : DecalInfo : x = shape, y = type
-//  g_vec4_0 : Animation OutLinerColor
+// g_vec4_0 : Animation OutLinerColor
 // g_vec4_1 : Circle OutColor
 // g_vec4_2 : Circle InsideColor
 // g_mat_0  : ViewInv * WorldInv

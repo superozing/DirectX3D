@@ -335,6 +335,62 @@ void DecalUI::render_update()
 			pTarget->Decal()->SetAnimationActionOriginTime(fDecalAnimationActionTime);
 			pTarget->Decal()->SyncTime();
 		}
+
+		ImGui::SameLine();
+
+		if (ImGui::Button("Reset"))
+		{
+			pTarget->Decal()->SyncTime();
+		}
+
+		static Vec3 ColorPicker[3];
+
+		ColorPicker[0] = pTarget->Decal()->GetAnimationOutlinerColor();
+		ColorPicker[1] = pTarget->Decal()->GetAnimationInsideColor();
+		ColorPicker[2] = pTarget->Decal()->GetAnimationOutsideColor();
+
+		ImGui::Text("Outliner Color");
+		ImGui::SameLine();
+		ImGui::PushItemWidth(200.f);
+		ImGui::ColorPicker3("##AnimationDecalOutlinerColor", ColorPicker[0],
+							ImGuiColorEditFlags_HDR | ImGuiColorEditFlags_PickerHueWheel);
+
+		ImGui::Text("Inside Color");
+		ImGui::SameLine();
+		ImGui::PushItemWidth(200.f);
+		ImGui::ColorPicker3("##AnimationDecalInsideColor", ColorPicker[1],
+							ImGuiColorEditFlags_HDR | ImGuiColorEditFlags_PickerHueWheel);
+
+		ImGui::Text("Outside Color");
+		ImGui::SameLine();
+		ImGui::PushItemWidth(200.f);
+		ImGui::ColorPicker3("##AninationDecalOusideColor", ColorPicker[2],
+							ImGuiColorEditFlags_HDR | ImGuiColorEditFlags_PickerHueWheel);
+
+		static float AnimDecalAlpha[3] = {1.f, 1.f, 1.f};
+
+		AnimationOutlinerColor = Vec4(ColorPicker[0], AnimDecalAlpha[0]);
+		AnimationInsideColor   = Vec4(ColorPicker[1], AnimDecalAlpha[1]);
+		AnimationOutsideColor  = Vec4(ColorPicker[2], AnimDecalAlpha[2]);
+
+		ImGui::Text("Outliner Color : ");
+		ImGui::SameLine();
+		ImGui::InputFloat4("##OutlinerColor", AnimationOutlinerColor);
+
+		pTarget->Decal()->SetAnimationOutlinerColor(AnimationOutlinerColor);
+
+		ImGui::Text("Inside Color : ");
+		ImGui::SameLine();
+		ImGui::InputFloat4("##InsideColor", AnimationInsideColor);
+
+		pTarget->Decal()->SetAnimationInsideColor(AnimationInsideColor);
+
+		ImGui::Text("Outside Color : ");
+		ImGui::SameLine();
+
+		ImGui::InputFloat4("##OutsideColor", AnimationOutsideColor);
+
+		pTarget->Decal()->SetAnimationOutsideColor(AnimationOutsideColor);
 	}
 }
 
