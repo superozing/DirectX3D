@@ -39,12 +39,13 @@
 #include "CBossMissileScript.h"
 #include "CBossScript.h"
 #include "CDamagedDirection.h"
-#include "CDamagedDirectionMgr.h"
 #include "CMegaFistScript.h"
 #include "CCoverArea.h"
 #include "CCoverUI.h"
 #include "CTutorialGameMode.h"
 #include "CAtlasImageUIScript.h"
+#include "CDamagedDirectionMgr.h"
+#include "CHUD.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -86,12 +87,13 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CBossMissileScript");
 	_vec.push_back(L"CBossScript");
 	_vec.push_back(L"CDamagedDirection");
-	_vec.push_back(L"CDamagedDirectionMgr");
 	_vec.push_back(L"CMegaFistScript");
 	_vec.push_back(L"CCoverArea");
 	_vec.push_back(L"CCoverUI");
 	_vec.push_back(L"CTutorialGameMode");
 	_vec.push_back(L"CAtlasImageUIScript");
+	_vec.push_back(L"CDamagedDirectionMgr");
+	_vec.push_back(L"CHUD");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -172,8 +174,6 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CBossScript;
 	if (L"CDamagedDirection" == _strScriptName)
 		return new CDamagedDirection;
-	if (L"CDamagedDirectionMgr" == _strScriptName)
-		return new CDamagedDirectionMgr;
 	if (L"CMegaFistScript" == _strScriptName)
 		return new CMegaFistScript;
 	if (L"CCoverArea" == _strScriptName)
@@ -184,6 +184,10 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CTutorialGameMode;
 	if (L"CAtlasImageUIScript" == _strScriptName)
 		return new CAtlasImageUIScript;
+	if (L"CDamagedDirectionMgr" == _strScriptName)
+		return new CDamagedDirectionMgr;
+	if (L"CHUD" == _strScriptName)
+		return new CHUD;
 	return nullptr;
 }
 
@@ -305,9 +309,6 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::DAMAGEDDIRECTION:
 		return new CDamagedDirection;
 		break;
-	case (UINT)SCRIPT_TYPE::DAMAGEDDIRECTIONMGR:
-		return new CDamagedDirectionMgr;
-		break;
 	case (UINT)SCRIPT_TYPE::MEGAFISTSCRIPT:
 		return new CMegaFistScript;
 		break;
@@ -322,6 +323,12 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::ATLASIMAGEUISCRIPT:
 		return new CAtlasImageUIScript;
+		break;
+	case (UINT)SCRIPT_TYPE::DAMAGEDDIRECTIONMGR:
+		return new CDamagedDirectionMgr;
+		break;
+	case (UINT)SCRIPT_TYPE::HUD:
+		return new CHUD;
 		break;
 	}
 	return nullptr;
@@ -483,10 +490,6 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CDamagedDirection";
 		break;
 
-	case SCRIPT_TYPE::DAMAGEDDIRECTIONMGR:
-		return L"CDamagedDirectionMgr";
-		break;
-
 	case SCRIPT_TYPE::MEGAFISTSCRIPT:
 		return L"CMegaFistScript";
 		break;
@@ -505,6 +508,14 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::ATLASIMAGEUISCRIPT:
 		return L"CAtlasImageUIScript";
+		break;
+
+	case SCRIPT_TYPE::DAMAGEDDIRECTIONMGR:
+		return L"CDamagedDirectionMgr";
+		break;
+
+	case SCRIPT_TYPE::HUD:
+		return L"CHUD";
 		break;
 
 	}

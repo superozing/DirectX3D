@@ -9,7 +9,6 @@
 #include <Engine/CRenderComponent.h>
 
 #include <Engine/CKeyMgr.h>
-#include <Engine/CPhysXMgr.h>
 #include <Engine/CLogMgr.h>
 #include <Engine/CLevelMgr.h>
 #include <Engine/CLevel.h>
@@ -20,7 +19,7 @@
 #include "CSpringArm.h"
 
 #include "CCrosshair.h"
-#include "CDamagedDirectionMgr.h"
+#include "CHUD.h"
 
 static string state = "";
 static string cover = "";
@@ -284,14 +283,8 @@ void CPlayerScript::begin()
 
 	m_FSM->Begin();
 
-	auto pObj	 = new CGameObject;
-	m_pCrosshair = new CCrosshair;
-	pObj->AddComponent(new CTransform);
-	pObj->AddComponent(new CMeshRender);
-	pObj->AddComponent(m_pCrosshair);
-	pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
-	pObj->SetName(L"Crosshair");
-	GamePlayStatic::SpawnGameObject(pObj, (UINT)LAYER::LAYER_UI);
+	m_pShootingSystem =
+		CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"HUD")->GetScript<CHUD>()->GetHUD<CCrosshair>();
 }
 
 void CPlayerScript::tick()
@@ -330,48 +323,6 @@ void CPlayerScript::tick()
 	{
 		m_tStatus.MoveSpeed = 5 * originSpeed;
 	}
-
-	// 일반 Raycast
-	// int mask = RayCastDebugFlag::EndPointVisible;
-
-	tRoRHitInfo hitInfo	 = {};
-	auto		pMainCam = CRenderMgr::GetInst()->GetMainCam();
-	auto		FrontDir = pMainCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-
-	bool isContact = CPhysXMgr::GetInst()->PerfomRaycast(pMainCam->Transform()->GetWorldPos(), FrontDir, hitInfo,
-														 (UINT)LAYER::LAYER_RAYCAST, RayCastDebugFlag::AllVisible);
-
-	if (isContact)
-	{
-		// m_tStatus.SpreadRatio = RoRMath::ClampFloat(m_tStatus.SpreadRatio + 0.7f * DT, 0.f, 1.f);
-		m_pCrosshair->SetCrosshairColor(Vec4(255.f, 0.f, 0.f, 255.f));
-	}
-	else
-	{
-		// m_tStatus.SpreadRatio = RoRMath::ClampFloat(m_tStatus.SpreadRatio - 0.7f * DT, 0.f, 1.f);
-		m_pCrosshair->SetCrosshairColor(Vec4(255.f, 255.f, 255.f, 255.f));
-	}
-
-	m_pCrosshair->SetSpreadRatio(m_tStatus.SpreadRatio);
-
-	hitInfo			= {};
-	float MaxSpread = 0.3f;
-
-	float RotX = m_tStatus.SpreadRatio * CRandomMgr::GetInst()->GetRandomFloat() * MaxSpread;
-	float RotY = m_tStatus.SpreadRatio * CRandomMgr::GetInst()->GetRandomFloat() * MaxSpread;
-
-	FrontDir.x += RotX;
-	FrontDir.y += RotY;
-
-	bool isBulletHit = CPhysXMgr::GetInst()->PerfomRaycast(pMainCam->Transform()->GetWorldPos(), FrontDir, hitInfo,
-														   (UINT)LAYER::LAYER_RAYCAST, RayCastDebugFlag::AllVisible);
-
-	if (isBulletHit)
-	{
-		// 데미지 처리, 데칼 오브젝트 추가 등등...
-	}
-
-	m_pCrosshair->SetSpreadRatio(m_tStatus.SpreadRatio);
 
 	if (KEY_TAP(TAB))
 	{

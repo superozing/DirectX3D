@@ -41,17 +41,14 @@ void CDamagedDirectionMgr::begin()
 		pObj->AddComponent(new CImageUIScript);
 
 		pObj->Transform()->SetRelativeScale(Vec3(500.f, 500.f, 1.f));
-
 		auto pMR = pObj->MeshRender();
 
 		pMR->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
-		pMR->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
-		pMR->GetDynamicMaterial(0);
-		pMR->GetMaterial(0)->SetShader(
-			CAssetMgr::GetInst()->Load<CGraphicsShader>(L"GraphicsShader/DamagedDirection.gs"));
+		pMR->SetMaterial(CAssetMgr::GetInst()->Load<CMaterial>(MTRLDmgDirection), 0);
 
 		GetOwner()->AddChild(pObj);
 	}
+	GamePlayStatic::ResetOutliner();
 }
 
 void CDamagedDirectionMgr::tick()

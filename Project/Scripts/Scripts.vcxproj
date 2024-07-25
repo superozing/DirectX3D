@@ -217,6 +217,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CWeaponInfo.h" />
     <ClInclude Include="CWrapImage.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="CHUD.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="strings.h" />
   </ItemGroup>
@@ -272,6 +273,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CWallScript.cpp" />
     <ClCompile Include="CWeaponInfo.cpp" />
     <ClCompile Include="CWrapImage.cpp" />
+    <ClCompile Include="CHUD.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

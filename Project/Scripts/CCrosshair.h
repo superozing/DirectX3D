@@ -7,12 +7,6 @@ class CPanelUIScript;
 class CCrosshair : public CScript
 {
 private:
-	// 기반 패널UI
-	CPanelUIScript* m_pPanelUI;
-
-	// 상, 하, 좌, 우 조준선 이미지
-	CImageUIScript* m_pCrossHair;
-
 	// 조준선이 벌어지는 비율
 	float m_fSpreadRatio;
 
@@ -25,6 +19,13 @@ private:
 	// 조준선 색상
 	Vec4 m_CrosshairColor;
 
+	bool m_bShootAvailable;
+
+public:
+	void SetShootAvailable(bool _avail);
+	bool IsShootingAvailable() { return m_bShootAvailable; }
+	void CurAimLayer(LAYER _layer);
+
 public:
 	virtual void begin() override;
 	virtual void tick() override;
@@ -35,14 +36,10 @@ public:
 	float GetSpreadRatio() const { return m_fSpreadRatio; }
 	Vec4  GetCrosshairColor() const { return m_CrosshairColor; }
 
-
 	virtual void SaveToFile(FILE* _File) override;
 	virtual void SaveToFile(ofstream& fout) override;
 	virtual void LoadFromFile(FILE* _File) override;
 	virtual void LoadFromFile(ifstream& fin) override;
-
-private:
-	void SetParentPanelUI();
 
 public:
 	CLONE(CCrosshair);

@@ -150,6 +150,9 @@
     <ClInclude Include="CDamagedDirectionMgr.h">
       <Filter>Scripts\UI\Image\DamagedDirection</Filter>
     </ClInclude>
+    <ClInclude Include="CHUD.h">
+      <Filter>Scripts\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -304,6 +307,9 @@
     </ClCompile>
     <ClCompile Include="CDamagedDirectionMgr.cpp">
       <Filter>Scripts\UI\Image\DamagedDirection</Filter>
+    </ClCompile>
+    <ClCompile Include="CHUD.cpp">
+      <Filter>Scripts\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
