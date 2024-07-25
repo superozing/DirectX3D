@@ -18,18 +18,16 @@
 // BS_TYPE  : DECAL
 
 // Parameter
-// g_bool_0 : Limit Time
 // g_int_0 : As Emissive
 // g_int_1 : Use CustomAlpha
 // g_int_2 : Use Custom Decal
-///   g_int_3 : CirlceCount 일단 보류
 // g_float_0 : CustomAlpha
-//   g_float_1 :AnimationTime
+// g_float_1 :AnimationTime
 
 // g_vec2_0 : DecalInfo : x = shape, y = type
-///  g_vec4_0 : Animation OutLinerColor
-/// g_vec4_1 : Circle OutColor
-/// g_vec4_2 : Circle InsideColor
+//  g_vec4_0 : Animation OutLinerColor
+// g_vec4_1 : Circle OutColor
+// g_vec4_2 : Circle InsideColor
 // g_mat_0  : ViewInv * WorldInv
 // g_tex_0  : Output Texture
 // g_tex_1  : Emissive Texture
@@ -63,9 +61,6 @@ struct PS_OUT
 PS_OUT PS_Decal(VS_OUT _in)
 {
     PS_OUT output = (PS_OUT) 0.f;
-    
-    if (LimitTime == true && g_float_1 <= 0.f)
-        discard;
     
     // 호출된 픽셀의 위치를 UV 값으로 환산
     float2 vScreenUV = _in.vPosition.xy / g_RenderResolution;

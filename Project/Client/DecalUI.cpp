@@ -15,8 +15,7 @@ DecalUI::DecalUI()
 	, fDecalRenderDistance(0)
 	, strCustomAlpha(" ")
 	, fCustomAlpha(1.f)
-	, strDecalAction(" ")
-	, fDecalActionTime(0.f)
+	, fDecalAnimationActionTime(0.f)
 	, AnimationOutlinerColor(0.f, 0.f, 0.f, 1.f)
 	, AnimationOutsideColor(0.f, 0.f, 0.f, 1.f)
 	, AnimationInsideColor(0.f, 0.f, 0.f, 1.f)
@@ -42,9 +41,9 @@ void DecalUI::render_update()
 	CRenderComponent* pRenComp = pTarget->GetRenderComponent();
 
 	string meshname, mtrlname;
-	UIDecalShape	 = pTarget->Decal()->GetDecalShape();
-	UIDecalType		 = pTarget->Decal()->GetDecalType();
-	fDecalActionTime = pTarget->Decal()->GetActionTime();
+	UIDecalShape			  = pTarget->Decal()->GetDecalShape();
+	UIDecalType				  = pTarget->Decal()->GetDecalType();
+	fDecalAnimationActionTime = pTarget->Decal()->GetAnimationActionTime();
 
 	AnimationOutlinerColor = pTarget->Decal()->GetAnimationOutlinerColor();
 	AnimationOutsideColor  = pTarget->Decal()->GetAnimationOutsideColor();
@@ -249,46 +248,6 @@ void DecalUI::render_update()
 		}
 	}
 
-	// 데칼 시간 설정
-	ImGui::Text("Decal Acction Time : ");
-	ImGui::SameLine();
-
-	string DecalTime;
-
-	if (pTarget->Decal()->GetActionTime() == -100.f)
-	{
-		DecalTime = "Off";
-	}
-	else
-		DecalTime = "On";
-
-	if (ImGui::Button(DecalTime.c_str()))
-	{
-		if (DecalTime == "On")
-		{
-			DecalTime = "Off";
-			pTarget->Decal()->SetActionTime(-100.f);
-		}
-		else
-		{
-			DecalTime = "On";
-		}
-	}
-
-	if (DecalTime == "On")
-	{
-		if (fDecalActionTime <= 0.f)
-			pTarget->Decal()->SyncTime();
-
-		ImGui::SameLine();
-
-		if (ImGui::InputFloat("##Decal Acction Time", &fDecalActionTime))
-		{
-			pTarget->Decal()->SetActionOriginTime(fDecalActionTime);
-			pTarget->Decal()->SyncTime();
-		}
-	}
-
 	ImGui::Text("Decal Emissive : ");
 	ImGui::SameLine();
 
@@ -362,9 +321,20 @@ void DecalUI::render_update()
 		GetTargetObject()->Decal()->SetCustomAlpha(fCustomAlpha);
 	}
 
+	// 데칼 에니메이션 옵션 설정
+
 	if (UIDecalType == DecalType::Animation)
 	{
 		ImGui::SeparatorText("Animation Option");
+
+		ImGui::Text("Decal Acction Time : ");
+		ImGui::SameLine();
+
+		if (ImGui::InputFloat("##Decal Animation", &fDecalAnimationActionTime))
+		{
+			pTarget->Decal()->SetAnimationActionOriginTime(fDecalAnimationActionTime);
+			pTarget->Decal()->SyncTime();
+		}
 	}
 }
 

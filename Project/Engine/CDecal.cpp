@@ -13,7 +13,7 @@ CDecal::CDecal()
 	, m_fCustomAlpha(1.f)
 	, m_DecalShape(DecalShape::Rect)
 	, m_DecalType(DecalType::Texture)
-	, m_fActionTime(-100.f)
+	, m_fAnimationActionTime(0.f)
 {
 	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHcube));
 	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DecalMtrl"), 0);
@@ -27,10 +27,10 @@ void CDecal::finaltick()
 {
 	GamePlayStatic::DrawDebugCube(Transform()->GetWorldMat(), Vec3(0.f, 1.f, 0.f), false);
 
-	if (m_fActionTime != -100.f)
-	{
-		m_fActionTime -= DT;
-	}
+	m_fAnimationActionTime -= DT;
+
+	if (m_fAnimationActionTime <= 0.f)
+		m_fAnimationActionTime = 0.f;
 }
 
 void CDecal::UpdateData()
@@ -51,17 +51,10 @@ void CDecal::UpdateData()
 	Vec2 DecalInfo = Vec2{(int)m_DecalShape, (int)m_DecalType};
 	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC2_0, DecalInfo);
 
-	bool ActionTime = false;
+	if (m_fAnimationActionTime <= 0.f && m_fAnimationActionTime != -100.f)
+		m_fAnimationActionTime = 0.f;
 
-	if (m_fActionTime != -100.f)
-		ActionTime = true;
-
-	if (m_fActionTime <= 0.f && m_fActionTime != -100.f)
-		m_fActionTime = 0.f;
-
-	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_1, m_fActionTime);
-
-	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::BOOL_0, ActionTime);
+	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_1, m_fAnimationActionTime);
 
 	GetMaterial(0)->UpdateData();
 }
@@ -83,7 +76,6 @@ void CDecal::ChangeMtrl(wstring _MtrlKey)
 
 #define TagDecalShape "[DecalShape]"
 #define TagDecalType "[DecalType]"
-#define TagDecalTimeUse "[DecalUse]"
 #define TagDecalActionTime "[DecalActionTime]"
 #define TagAsEmissive "[AsEmissive]"
 #define TagDecalPriority "[DecalPriority]"
@@ -101,12 +93,6 @@ void CDecal::SaveToFile(ofstream& fout)
 	fout << TagDecalType << endl;
 	fout << (int)m_DecalType << endl;
 
-	fout << TagDecalTimeUse << endl;
-	fout << m_fActionTime << endl;
-
-	fout << TagDecalActionTime << endl;
-	fout << m_OriginActionTime << endl;
-
 	fout << TagAsEmissive << endl;
 	fout << m_bAsEmissive << endl;
 
@@ -121,6 +107,9 @@ void CDecal::SaveToFile(ofstream& fout)
 
 	fout << TagCustomAlphaParameter << endl;
 	fout << m_fCustomAlpha << endl;
+
+	fout << TagDecalActionTime << endl;
+	fout << m_OriginAnimationActionTime << endl;
 }
 
 void CDecal::LoadFromFile(ifstream& fin)
@@ -139,15 +128,6 @@ void CDecal::LoadFromFile(ifstream& fin)
 
 	m_DecalType = (DecalType)iDecalInfo;
 
-	Utils::GetLineUntilString(fin, TagDecalTimeUse);
-	fin >> m_fActionTime;
-
-	Utils::GetLineUntilString(fin, TagDecalActionTime);
-	fin >> m_OriginActionTime;
-
-	if (m_fActionTime != -100.f)
-		SyncTime();
-
 	Utils::GetLineUntilString(fin, TagAsEmissive);
 	fin >> m_bAsEmissive;
 
@@ -162,4 +142,9 @@ void CDecal::LoadFromFile(ifstream& fin)
 
 	Utils::GetLineUntilString(fin, TagCustomAlphaParameter);
 	fin >> m_fCustomAlpha;
+
+	Utils::GetLineUntilString(fin, TagDecalActionTime);
+	fin >> m_OriginAnimationActionTime;
+
+	SyncTime();
 }

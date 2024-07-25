@@ -10,8 +10,8 @@ private:
 	float m_RenderDistance;
 	int	  m_bCustomAlpha;
 	float m_fCustomAlpha;
-	float m_fActionTime;
-	float m_OriginActionTime;
+	float m_fAnimationActionTime;
+	float m_OriginAnimationActionTime;
 
 	// animation 설정
 	Vec4 m_AnimationOutlinerColor;
@@ -45,13 +45,13 @@ public:
 	DecalType GetDecalType() { return m_DecalType; }
 	void	  SetDecalType(DecalType _Type) { m_DecalType = _Type; }
 
-	void  SetActionTime(float _Time) { m_fActionTime = _Time; }
-	float GetActionTime() { return m_fActionTime; }
+	void  SetAnimationActionTime(float _Time) { m_fAnimationActionTime = _Time; }
+	float GetAnimationActionTime() { return m_fAnimationActionTime; }
 
-	void  SetActionOriginTime(float _Time) { m_OriginActionTime = _Time; }
-	float GetActionOriginTime() { return m_OriginActionTime; }
+	void  SetAnimationActionOriginTime(float _Time) { m_OriginAnimationActionTime = _Time; }
+	float GetAnimationActionOriginTime() { return m_OriginAnimationActionTime; }
 
-	void SyncTime() { m_fActionTime = m_OriginActionTime; }
+	void SyncTime() { m_fAnimationActionTime = m_OriginAnimationActionTime; }
 
 	Vec4 GetAnimationOutlinerColor() { return m_AnimationOutlinerColor; }
 	Vec4 GetAnimationInsideColor() { return m_AnimationInsideColor; }

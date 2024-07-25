@@ -10,8 +10,7 @@ private:
 	float	   fDecalRenderDistance;
 	string	   strCustomAlpha;
 	float	   fCustomAlpha;
-	string	   strDecalAction;
-	float	   fDecalActionTime;
+	float	   fDecalAnimationActionTime;
 	Vec4	   AnimationOutlinerColor;
 	Vec4	   AnimationOutsideColor;
 	Vec4	   AnimationInsideColor;
