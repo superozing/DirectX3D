@@ -40,8 +40,9 @@
 #include "CBossMissileScript.h"
 #include "CBossScript.h"
 #include "CDamagedDirection.h"
-#include "CDamagedDirectionMgr.h"
 #include "CMegaFistScript.h"
+#include "CDamagedDirectionMgr.h"
+#include "CBulletMarkSpawner.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -84,8 +85,9 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CBossMissileScript");
 	_vec.push_back(L"CBossScript");
 	_vec.push_back(L"CDamagedDirection");
-	_vec.push_back(L"CDamagedDirectionMgr");
 	_vec.push_back(L"CMegaFistScript");
+	_vec.push_back(L"CDamagedDirectionMgr");
+	_vec.push_back(L"CBulletMarkSpawner");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -168,10 +170,12 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CBossScript;
 	if (L"CDamagedDirection" == _strScriptName)
 		return new CDamagedDirection;
-	if (L"CDamagedDirectionMgr" == _strScriptName)
-		return new CDamagedDirectionMgr;
 	if (L"CMegaFistScript" == _strScriptName)
 		return new CMegaFistScript;
+	if (L"CDamagedDirectionMgr" == _strScriptName)
+		return new CDamagedDirectionMgr;
+	if (L"CBulletMarkSpawner" == _strScriptName)
+		return new CBulletMarkSpawner;
 	return nullptr;
 }
 
@@ -296,11 +300,14 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::DAMAGEDDIRECTION:
 		return new CDamagedDirection;
 		break;
+	case (UINT)SCRIPT_TYPE::MEGAFISTSCRIPT:
+		return new CMegaFistScript;
+		break;
 	case (UINT)SCRIPT_TYPE::DAMAGEDDIRECTIONMGR:
 		return new CDamagedDirectionMgr;
 		break;
-	case (UINT)SCRIPT_TYPE::MEGAFISTSCRIPT:
-		return new CMegaFistScript;
+	case (UINT)SCRIPT_TYPE::BULLETMARKSPAWNER:
+		return new CBulletMarkSpawner;
 		break;
 	}
 	return nullptr;
@@ -466,12 +473,16 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CDamagedDirection";
 		break;
 
+	case SCRIPT_TYPE::MEGAFISTSCRIPT:
+		return L"CMegaFistScript";
+		break;
+
 	case SCRIPT_TYPE::DAMAGEDDIRECTIONMGR:
 		return L"CDamagedDirectionMgr";
 		break;
 
-	case SCRIPT_TYPE::MEGAFISTSCRIPT:
-		return L"CMegaFistScript";
+	case SCRIPT_TYPE::BULLETMARKSPAWNER:
+		return L"CBulletMarkSpawner";
 		break;
 
 	}

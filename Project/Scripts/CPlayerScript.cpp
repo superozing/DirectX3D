@@ -363,7 +363,10 @@ void CPlayerScript::tick()
 
 	if (isBulletHit)
 	{
-		// 데미지 처리, 데칼 오브젝트 추가 등등...
+		// 데미지 처리, 파티클 시스템 등등...
+
+		// 데칼 오브젝트 스폰
+
 	}
 
 	m_pCrosshair->SetSpreadRatio(m_tStatus.SpreadRatio);

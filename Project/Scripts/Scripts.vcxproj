@@ -172,6 +172,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CBossMissileScript.h" />
     <ClInclude Include="CBossScript.h" />
     <ClInclude Include="CBtnUIScript.h" />
+    <ClInclude Include="CBulletMarkSpawner.h" />
     <ClInclude Include="CCameraEffect.h" />
     <ClInclude Include="CCameraMoveScript.h" />
     <ClInclude Include="CCoverHigh.h" />
@@ -222,6 +223,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CBossScript.cpp" />
     <ClCompile Include="CBossScript_State.cpp" />
     <ClCompile Include="CBtnUIScript.cpp" />
+    <ClCompile Include="CBulletMarkSpawner.cpp" />
     <ClCompile Include="CCameraEffect.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
     <ClCompile Include="CCoverHigh.cpp" />

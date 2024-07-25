@@ -131,13 +131,16 @@
     <ClInclude Include="CDamagedDirection.h">
       <Filter>Scripts\UI\Image\DamagedDirection</Filter>
     </ClInclude>
-    <ClInclude Include="CDamagedDirectionMgr.h">
-      <Filter>Scripts\Player</Filter>
-    </ClInclude>
     <ClInclude Include="CMegaFistScript.h">
       <Filter>Scripts\Boss\MegaFist</Filter>
     </ClInclude>
     <ClInclude Include="CProjectileScript.h" />
+    <ClInclude Include="CDamagedDirectionMgr.h">
+      <Filter>Scripts\Player\DamagedDirection</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletMarkSpawner.h">
+      <Filter>Scripts\Player\BulletMark</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -276,13 +279,16 @@
     <ClCompile Include="CDamagedDirection.cpp">
       <Filter>Scripts\UI\Image\DamagedDirection</Filter>
     </ClCompile>
-    <ClCompile Include="CDamagedDirectionMgr.cpp">
-      <Filter>Scripts\Player</Filter>
-    </ClCompile>
     <ClCompile Include="CMegaFistScript.cpp">
       <Filter>Scripts\Boss\MegaFist</Filter>
     </ClCompile>
     <ClCompile Include="CProjectileScript.cpp" />
+    <ClCompile Include="CDamagedDirectionMgr.cpp">
+      <Filter>Scripts\Player\DamagedDirection</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletMarkSpawner.cpp">
+      <Filter>Scripts\Player\BulletMark</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -386,6 +392,12 @@
     </Filter>
     <Filter Include="Scripts\Boss\MegaFist">
       <UniqueIdentifier>{9c149e25-d8c2-48b9-a482-f90aa4f51703}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Player\DamagedDirection">
+      <UniqueIdentifier>{202a3c60-718c-43cd-bbce-9b7e24ec6a82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Player\BulletMark">
+      <UniqueIdentifier>{72c3003f-7ed8-4511-9c0e-b7bd7e9c2645}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
