@@ -15,6 +15,11 @@ DecalUI::DecalUI()
 	, fDecalRenderDistance(0)
 	, strCustomAlpha(" ")
 	, fCustomAlpha(1.f)
+	, strDecalAction(" ")
+	, fDecalActionTime(0.f)
+	, AnimationOutlinerColor(0.f, 0.f, 0.f, 1.f)
+	, AnimationOutsideColor(0.f, 0.f, 0.f, 1.f)
+	, AnimationInsideColor(0.f, 0.f, 0.f, 1.f)
 {
 	SetComponentTitle("Decal");
 	strEmissiveCondition = "Emissive Off";
@@ -37,6 +42,13 @@ void DecalUI::render_update()
 	CRenderComponent* pRenComp = pTarget->GetRenderComponent();
 
 	string meshname, mtrlname;
+	UIDecalShape	 = pTarget->Decal()->GetDecalShape();
+	UIDecalType		 = pTarget->Decal()->GetDecalType();
+	fDecalActionTime = pTarget->Decal()->GetActionTime();
+
+	AnimationOutlinerColor = pTarget->Decal()->GetAnimationOutlinerColor();
+	AnimationOutsideColor  = pTarget->Decal()->GetAnimationOutsideColor();
+	AnimationInsideColor   = pTarget->Decal()->GetAnimationInsideColor();
 
 	Ptr<CMaterial> pMtrl = pRenComp->GetMaterial(0);
 
@@ -203,6 +215,80 @@ void DecalUI::render_update()
 
 	ImGui::SeparatorText("Decal Option");
 
+	ImGui::Text("Decal Shape : ");
+	ImGui::SameLine();
+
+	string strDecalShape = ToString(magic_enum::enum_name(UIDecalShape));
+
+	if (ImGui::Button(strDecalShape.c_str()))
+	{
+		if (strDecalShape == "Rect")
+		{
+			GetTargetObject()->Decal()->SetDecalShape(DecalShape::Circle);
+		}
+		else
+		{
+			GetTargetObject()->Decal()->SetDecalShape(DecalShape::Rect);
+		}
+	}
+
+	ImGui::Text("Decal Type : ");
+	ImGui::SameLine();
+
+	string strDecalType = ToString(magic_enum::enum_name(UIDecalType));
+
+	if (ImGui::Button(strDecalType.c_str()))
+	{
+		if (strDecalType == "Texture")
+		{
+			GetTargetObject()->Decal()->SetDecalType(DecalType::Animation);
+		}
+		else
+		{
+			GetTargetObject()->Decal()->SetDecalType(DecalType::Texture);
+		}
+	}
+
+	// 데칼 시간 설정
+	ImGui::Text("Decal Acction Time : ");
+	ImGui::SameLine();
+
+	string DecalTime;
+
+	if (pTarget->Decal()->GetActionTime() == -100.f)
+	{
+		DecalTime = "Off";
+	}
+	else
+		DecalTime = "On";
+
+	if (ImGui::Button(DecalTime.c_str()))
+	{
+		if (DecalTime == "On")
+		{
+			DecalTime = "Off";
+			pTarget->Decal()->SetActionTime(-100.f);
+		}
+		else
+		{
+			DecalTime = "On";
+		}
+	}
+
+	if (DecalTime == "On")
+	{
+		if (fDecalActionTime <= 0.f)
+			pTarget->Decal()->SyncTime();
+
+		ImGui::SameLine();
+
+		if (ImGui::InputFloat("##Decal Acction Time", &fDecalActionTime))
+		{
+			pTarget->Decal()->SetActionOriginTime(fDecalActionTime);
+			pTarget->Decal()->SyncTime();
+		}
+	}
+
 	ImGui::Text("Decal Emissive : ");
 	ImGui::SameLine();
 
@@ -253,7 +339,7 @@ void DecalUI::render_update()
 	// CustomAlpha 설정
 	if (ImGui::Button(strCustomAlpha.c_str(), ImVec2(120.f, 20.f)))
 	{
-		int iCAlpha = GetTargetObject()->Decal()->GetUsetCustomAlpha();
+		int iCAlpha = GetTargetObject()->Decal()->GetUseCustomAlpha();
 
 		if (iCAlpha > 0)
 		{
@@ -274,6 +360,11 @@ void DecalUI::render_update()
 	if (ImGui::DragFloat("##DecalCustomfAlpha", &fCustomAlpha, 0.01f, 0.f, 1.f))
 	{
 		GetTargetObject()->Decal()->SetCustomAlpha(fCustomAlpha);
+	}
+
+	if (UIDecalType == DecalType::Animation)
+	{
+		ImGui::SeparatorText("Animation Option");
 	}
 }
 

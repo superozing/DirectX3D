@@ -6,6 +6,9 @@
 
 #define bCustomAlpha g_int_1
 #define CustomAlpha g_float_0
+#define DecalShape g_vec2_0.x
+#define DecalType g_vec2_0.y
+#define LimitTime g_bool_0
 // ==========================
 // Decal Shader
 // Domain   : DOMAIN_DECAL
@@ -15,10 +18,18 @@
 // BS_TYPE  : DECAL
 
 // Parameter
+// g_bool_0 : Limit Time
 // g_int_0 : As Emissive
 // g_int_1 : Use CustomAlpha
 // g_int_2 : Use Custom Decal
+///   g_int_3 : CirlceCount 일단 보류
 // g_float_0 : CustomAlpha
+//   g_float_1 :AnimationTime
+
+// g_vec2_0 : DecalInfo : x = shape, y = type
+///  g_vec4_0 : Animation OutLinerColor
+/// g_vec4_1 : Circle OutColor
+/// g_vec4_2 : Circle InsideColor
 // g_mat_0  : ViewInv * WorldInv
 // g_tex_0  : Output Texture
 // g_tex_1  : Emissive Texture
@@ -53,6 +64,9 @@ PS_OUT PS_Decal(VS_OUT _in)
 {
     PS_OUT output = (PS_OUT) 0.f;
     
+    if (LimitTime == true && g_float_1 <= 0.f)
+        discard;
+    
     // 호출된 픽셀의 위치를 UV 값으로 환산
     float2 vScreenUV = _in.vPosition.xy / g_RenderResolution;
     
@@ -76,39 +90,74 @@ PS_OUT PS_Decal(VS_OUT _in)
     }
     
     // 볼륨메쉬 내부 판정 성공 시
-    if (g_btex_0)
+    
+    if (DecalShape == 1)
     {
-        output.vColor = g_tex_0.Sample(g_sam_0, vLocal.xz);
+        float2 CircleCenter = float2(0.5f, 0.5f);
+        float fRaidus = 0.5f;
         
-        if (bCustomAlpha && output.vColor.a > 0.5f)
-        {
-            output.vColor.a = CustomAlpha;
-        }
+        float PixelDistance = distance(vLocal.xz, CircleCenter);
         
-        if (g_int_0)
+        if (fRaidus < PixelDistance)
+            discard;
+
+    }
+    
+    if (DecalType == 0)
+    {
+        if (g_btex_0)
         {
-            if (g_btex_1)
+            output.vColor = g_tex_0.Sample(g_sam_0, vLocal.xz);
+        
+            if (bCustomAlpha && output.vColor.a > 0.5f)
             {
-                output.vEmissive.rgb = g_tex_1.Sample(g_sam_0, vLocal.xz);
+                output.vColor.a = CustomAlpha;
             }
-            else
+        
+            if (g_int_0)
             {
-                if (bCustomAlpha)
-                    output.vEmissive.rgb = output.vColor.rgb * CustomAlpha;
+                if (g_btex_1)
+                {
+                    output.vEmissive.rgb = g_tex_1.Sample(g_sam_0, vLocal.xz);
+                }
                 else
-                    output.vEmissive.rgb = output.vColor.rgb * output.vColor.a;
+                {
+                    if (bCustomAlpha)
+                        output.vEmissive.rgb = output.vColor.rgb * CustomAlpha;
+                    else
+                        output.vEmissive.rgb = output.vColor.rgb * output.vColor.a;
+                }
+            }
+        }
+        else
+        {
+            output.vColor = float4(1.f, 0.f, 1.f, 1.f);
+        
+            if (g_int_0)
+            {
+                output.vEmissive = float4(0.4f, 0.4f, 0.4f, 1.f);
             }
         }
     }
     else
     {
-        output.vColor = float4(1.f, 0.f, 1.f, 1.f);
+       //if (vLocal.x > 0.95f || vLocal.z > 0.95f || vLocal.x < 0.05f || vLocal.z < 0.05f) 
+       //    output.vColor = float4(1.f, 0.f, 0.f, 1.f);
         
-        if (g_int_0)
-        {
-            output.vEmissive = float4(0.4f, 0.4f, 0.4f, 1.f);
-        }
+        float2 CircleCenter = float2(0.5f, 0.5f);
+        float fRadius = 0.5f;
+        float PixelDistance = distance(vLocal.xz, CircleCenter);
+        float lineWidth = 0.01f; // 선의 두께
+
+        if (abs(fRadius - PixelDistance) < lineWidth)
+            output.vColor = float4(1.f, 0.f, 0.f, 1.f);
+        
+        static float fSecondCircleRadius = 0.01 + (g_time * 0.03);
+        
+        if (PixelDistance < fSecondCircleRadius)
+            output.vColor = float4(0.7f, 0.f, 0.f, 1.f);
     }
+    
     
     return output;
 }

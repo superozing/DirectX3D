@@ -4,11 +4,23 @@
 class CDecal : public CRenderComponent
 {
 private:
+	// Decal 기본 설정
 	int	  m_bAsEmissive;
 	int	  m_DecalPriority;
 	float m_RenderDistance;
 	int	  m_bCustomAlpha;
 	float m_fCustomAlpha;
+	float m_fActionTime;
+	float m_OriginActionTime;
+
+	// animation 설정
+	Vec4 m_AnimationOutlinerColor;
+	Vec4 m_AnimationInsideColor;
+	Vec4 m_AnimationOutsideColor;
+
+	// info
+	DecalShape m_DecalShape;
+	DecalType  m_DecalType;
 
 public:
 	void SetDecalAsEmissive(bool _bTrue) { m_bAsEmissive = _bTrue; }
@@ -21,11 +33,33 @@ public:
 	float GetRenderDistance() { return m_RenderDistance; }
 
 	void  SetUseCustomAlpha(bool _bTrue) { m_bCustomAlpha = _bTrue; }
-	int	  GetUsetCustomAlpha() { return m_bCustomAlpha; }
+	int	  GetUseCustomAlpha() { return m_bCustomAlpha; }
 	void  SetCustomAlpha(float _alpha) { m_fCustomAlpha = _alpha; }
 	float GetCustomAlpha() { return m_fCustomAlpha; }
 
 	void ChangeMtrl(wstring _MtrlKey);
+
+	DecalShape GetDecalShape() { return m_DecalShape; }
+	void	   SetDecalShape(DecalShape _Shape) { m_DecalShape = _Shape; }
+
+	DecalType GetDecalType() { return m_DecalType; }
+	void	  SetDecalType(DecalType _Type) { m_DecalType = _Type; }
+
+	void  SetActionTime(float _Time) { m_fActionTime = _Time; }
+	float GetActionTime() { return m_fActionTime; }
+
+	void  SetActionOriginTime(float _Time) { m_OriginActionTime = _Time; }
+	float GetActionOriginTime() { return m_OriginActionTime; }
+
+	void SyncTime() { m_fActionTime = m_OriginActionTime; }
+
+	Vec4 GetAnimationOutlinerColor() { return m_AnimationOutlinerColor; }
+	Vec4 GetAnimationInsideColor() { return m_AnimationInsideColor; }
+	Vec4 GetAnimationOutsideColor() { return m_AnimationOutsideColor; }
+
+	void SetAnimationOutlinerColor(Vec4 _Color) { m_AnimationOutlinerColor = _Color; }
+	void SetAnimationInsideColor(Vec4 _Color) { m_AnimationInsideColor = _Color; }
+	void SetAnimationOutsideColor(Vec4 _Color) { m_AnimationOutsideColor = _Color; }
 
 public:
 	virtual void SaveToFile(ofstream& fout) override;
