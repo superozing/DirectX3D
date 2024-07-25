@@ -292,9 +292,6 @@ void CPlayerScript::begin()
 	pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
 	pObj->SetName(L"Crosshair");
 	GamePlayStatic::SpawnGameObject(pObj, (UINT)LAYER::LAYER_UI);
-
-	m_pDamagedDirectionMgr = new CDamagedDirectionMgr;
-	GetOwner()->AddComponent(m_pDamagedDirectionMgr);
 }
 
 void CPlayerScript::tick()
@@ -375,13 +372,6 @@ void CPlayerScript::tick()
 	}
 
 	m_pCrosshair->SetSpreadRatio(m_tStatus.SpreadRatio);
-
-	// 임시로 키 입력 시 피격 효과 추가
-	if (KEY_TAP(KEY::B))
-	{
-		auto pMon = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Temp Monster Cube");
-		m_pDamagedDirectionMgr->AddDamagedDirection(pMon->Transform()->GetWorldPos(), 0.1f);
-	}
 
 	if (KEY_TAP(TAB))
 	{

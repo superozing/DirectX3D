@@ -73,7 +73,6 @@ float4 PS_StaticUI(VS_OUT _in) : SV_Target
             // 0 ~ CenterUVMax 사이의 비율 계산
             float t = (UVx - CenterUVMax) / (1.f - CenterUVMax);
             _in.vUV.x = lerp(0.5f, 1.f, t);
-
         }
         else
         {

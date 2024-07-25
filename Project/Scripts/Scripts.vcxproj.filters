@@ -128,9 +128,6 @@
     <ClInclude Include="CDamagedDirection.h">
       <Filter>Scripts\UI\Image\DamagedDirection</Filter>
     </ClInclude>
-    <ClInclude Include="CDamagedDirectionMgr.h">
-      <Filter>Scripts\Player</Filter>
-    </ClInclude>
     <ClInclude Include="CMegaFistScript.h">
       <Filter>Scripts\Boss\MegaFist</Filter>
     </ClInclude>
@@ -149,6 +146,9 @@
     </ClInclude>
     <ClInclude Include="CAtlasImageUIScript.h">
       <Filter>Scripts\DefaultUI\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="CDamagedDirectionMgr.h">
+      <Filter>Scripts\UI\Image\DamagedDirection</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -285,9 +285,6 @@
     <ClCompile Include="CDamagedDirection.cpp">
       <Filter>Scripts\UI\Image\DamagedDirection</Filter>
     </ClCompile>
-    <ClCompile Include="CDamagedDirectionMgr.cpp">
-      <Filter>Scripts\Player</Filter>
-    </ClCompile>
     <ClCompile Include="CMegaFistScript.cpp">
       <Filter>Scripts\Boss\MegaFist</Filter>
     </ClCompile>
@@ -304,6 +301,9 @@
     </ClCompile>
     <ClCompile Include="CAtlasImageUIScript.cpp">
       <Filter>Scripts\DefaultUI\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="CDamagedDirectionMgr.cpp">
+      <Filter>Scripts\UI\Image\DamagedDirection</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

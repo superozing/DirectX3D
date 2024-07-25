@@ -49,7 +49,8 @@ void CCrosshair::begin()
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
 	pObj->MeshRender()->GetDynamicMaterial(0);
-	pObj->MeshRender()->GetMaterial(0)->SetShader(CAssetMgr::GetInst()->Load<CGraphicsShader>(L"GraphicsShader/CrosshairShader.gs"));
+	pObj->MeshRender()->GetMaterial(0)->SetShader(
+		CAssetMgr::GetInst()->Load<CGraphicsShader>(L"GraphicsShader/CrosshairShader.gs"));
 
 	GetOwner()->AddChild(pObj);
 }
@@ -60,6 +61,7 @@ void CCrosshair::tick()
 	m_pCrossHair->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_1, m_fBarThikness);
 	m_pCrossHair->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_2, m_fLength);
 	m_pCrossHair->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, m_CrosshairColor);
+	m_pCrossHair->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, nullptr);
 }
 
 void CCrosshair::SetParentPanelUI()
@@ -92,9 +94,9 @@ void CCrosshair::SetParentPanelUI()
 	meshrender->GetDynamicMaterial(0);
 }
 
-#define TagBarThikness	"[Bar Thikness]"
-#define TagBarLength	"[Bar Length]"
-#define TagColor		"[Bar Color]"
+#define TagBarThikness "[Bar Thikness]"
+#define TagBarLength "[Bar Length]"
+#define TagColor "[Bar Color]"
 
 void CCrosshair::SaveToFile(FILE* _File)
 {
