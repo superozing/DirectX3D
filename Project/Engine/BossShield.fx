@@ -55,6 +55,7 @@ float4 PS_BossShield(VS_OUT _in) : SV_Target
     float3 vEye = normalize(_in.vViewPos);
     
     float shieldTime = saturate(g_float_0) * 0.5f;
+    //float shieldTime = 1.f;
     
     // 프레넬 효과 계산
     float fresnel = dot(_in.vViewNormal, -vEye);

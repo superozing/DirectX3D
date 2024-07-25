@@ -231,10 +231,16 @@ int CBossScript::EXs3Update()
 
 	int idx = Animator3D()->GetCurFrameIdx();
 
-	if (idx == 36 && !m_ActiveShield)
+	if (idx == 36 && !m_ArrShield[0])
 	{
-		ActiveShield();
-		m_ActiveShield = true;
+		ActiveInnerShield();
+		m_ArrShield[0] = true;
+	}
+	
+	if (idx == 40 && !m_ArrShield[1])
+	{
+		ActiveOutsideShield();
+		m_ArrShield[1] = true;
 	}
 
 	return m_FSM->GetCurState();
@@ -242,7 +248,10 @@ int CBossScript::EXs3Update()
 
 void CBossScript::EXs3End()
 {
-	m_ActiveShield = false;
+	for (size_t i = 0; i < 2; ++i)
+	{
+		m_ArrShield[i] = false;
+	}
 }
 
 void CBossScript::EXs4Begin()

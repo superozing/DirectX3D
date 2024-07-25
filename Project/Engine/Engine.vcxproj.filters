@@ -955,6 +955,9 @@
     <FxCompile Include="BossShield.fx">
       <Filter>ShaderCode\04. Content\BossShield</Filter>
     </FxCompile>
+    <FxCompile Include="BossTriangle.fx">
+      <Filter>ShaderCode\04. Content\BossShield</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine.rc" />

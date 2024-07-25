@@ -23,7 +23,7 @@ CBossScript::CBossScript()
 	, m_EXsType(0)
 	, m_Target(nullptr)
 	, m_ArrMissile{}
-	, m_ActiveShield(false)
+	, m_ArrShield{}
 {
 	AppendScriptParam("CurState    ", SCRIPT_PARAM::STRING, &DebugState);
 
@@ -42,7 +42,7 @@ CBossScript::CBossScript(const CBossScript& _Origin)
 	, m_EXsType(0)
 	, m_Target(nullptr)
 	, m_ArrMissile{}
-	, m_ActiveShield(false)
+	, m_ArrShield{}
 {
 	InitScriptParamUI();
 
@@ -211,7 +211,7 @@ void CBossScript::FireBossMissile(int _idx)
 	GamePlayStatic::SpawnGameObject(Missile, layeridx);
 }
 
-void CBossScript::ActiveShield()
+void CBossScript::ActiveInnerShield()
 {
 	if (nullptr == m_Target)
 		return;
@@ -220,6 +220,22 @@ void CBossScript::ActiveShield()
 
 	CGameObject* Shield = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Boss\\Kaiten_Shield.pref")->Instantiate();
 	Shield->GetScript<CBossShieldScript>()->SetParent(GetOwner());
+	Shield->GetScript<CBossShieldScript>()->SetShieldType(SHIELD_TYPE::InnerShield);
+
+	int layeridx = Shield->GetLayerIdx();
+	GamePlayStatic::SpawnGameObject(Shield, layeridx);
+}
+
+void CBossScript::ActiveOutsideShield()
+{
+	if (nullptr == m_Target)
+		return;
+
+	Vec3 ShieldPos = (Animator3D()->FindBoneMat(L"Bone_shield_03") * Transform()->GetWorldMat()).Translation();
+
+	CGameObject* Shield = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Boss\\Kaiten_Shield2.pref")->Instantiate();
+	Shield->GetScript<CBossShieldScript>()->SetParent(GetOwner());
+	Shield->GetScript<CBossShieldScript>()->SetShieldType(SHIELD_TYPE::OutsideShield);
 
 	int layeridx = Shield->GetLayerIdx();
 	GamePlayStatic::SpawnGameObject(Shield, layeridx);
