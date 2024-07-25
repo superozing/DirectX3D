@@ -236,8 +236,8 @@ int CBossScript::EXs3Update()
 		ActiveInnerShield();
 		m_ArrShield[0] = true;
 	}
-	
-	if (idx == 40 && !m_ArrShield[1])
+
+	if (idx == 46 && !m_ArrShield[1])
 	{
 		ActiveOutsideShield();
 		m_ArrShield[1] = true;

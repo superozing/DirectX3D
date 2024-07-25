@@ -21,7 +21,6 @@ CBossShieldScript::~CBossShieldScript()
 {
 }
 
-
 void CBossShieldScript::begin()
 {
 	m_Parent->AddChild(GetOwner());
@@ -43,7 +42,6 @@ void CBossShieldScript::tick()
 	else if (SHIELD_TYPE::OutsideShield == m_ShieldType)
 		CheckOutsideShield();
 }
-
 
 void CBossShieldScript::CheckInnerShield()
 {
@@ -71,7 +69,7 @@ void CBossShieldScript::CheckOutsideShield()
 	int	  idx	= m_Parent->Animator3D()->GetCurFrameIdx();
 	float ftime = DT * 3.f;
 
-	if (40 <= idx && idx <= 145)
+	if (46 <= idx && idx <= 145)
 		m_ShieldTime += ftime;
 	else if (idx > 145)
 		m_ShieldTime -= ftime;
@@ -85,6 +83,6 @@ void CBossShieldScript::CheckOutsideShield()
 	m_Triangle->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, m_ShieldTime);
 	m_Triangle->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_1, m_ShieldTime);
 
-	if (idx > 145&& m_ShieldTime <= 0.f)
+	if (idx > 145 && m_ShieldTime <= 0.f)
 		GamePlayStatic::DestroyGameObject(GetOwner());
 }
