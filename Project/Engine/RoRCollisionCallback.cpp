@@ -8,6 +8,8 @@
 
 void RoRCollisionCallback::onTrigger(PxTriggerPair* pairs, PxU32 count)
 {
+	RETURN_IF_NOT_PLAYING
+
 	int	 a		= 0;
 	auto actor1 = pairs->triggerActor;
 	auto actor2 = pairs->otherActor;
@@ -44,8 +46,8 @@ void RoRCollisionCallback::onTrigger(PxTriggerPair* pairs, PxU32 count)
 
 void RoRCollisionCallback::onContact(const PxContactPairHeader& pairHeader, const PxContactPair* pairs, PxU32 nbPairs)
 {
-	if (LEVEL_STATE::PLAY != CLevelMgr::GetInst()->GetCurrentLevel()->GetState())
-		return;
+	RETURN_IF_NOT_PLAYING
+
 	for (PxU32 i = 0; i < nbPairs; i++)
 	{
 		const PxContactPair& cp = pairs[i];
