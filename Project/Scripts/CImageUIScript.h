@@ -3,7 +3,7 @@
 
 class CImageUIScript : public CUIScript
 {
-private:
+protected:
 	Ptr<CTexture> m_UIImg;
 	bool		  m_bAllowBindTexPerFrame;
 	bool		  m_bDraw;
@@ -28,6 +28,7 @@ public:
 public:
 	CLONE(CImageUIScript);
 	CImageUIScript();
+	CImageUIScript(UINT _type);
 	CImageUIScript(const CImageUIScript& _Other);
 	~CImageUIScript();
 };

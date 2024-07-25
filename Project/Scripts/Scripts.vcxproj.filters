@@ -147,6 +147,9 @@
     <ClInclude Include="CTutorialGameMode.h">
       <Filter>Scripts\Level</Filter>
     </ClInclude>
+    <ClInclude Include="CAtlasImageUIScript.h">
+      <Filter>Scripts\DefaultUI\Image</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -298,6 +301,9 @@
     </ClCompile>
     <ClCompile Include="CTutorialGameMode.cpp">
       <Filter>Scripts\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="CAtlasImageUIScript.cpp">
+      <Filter>Scripts\DefaultUI\Image</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

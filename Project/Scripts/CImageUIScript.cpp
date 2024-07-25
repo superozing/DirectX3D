@@ -9,6 +9,14 @@ CImageUIScript::CImageUIScript()
 	AppendScriptParam("Draw", SCRIPT_PARAM::BOOL, &m_bDraw);
 }
 
+CImageUIScript::CImageUIScript(UINT _type)
+	: CUIScript(_type)
+	, m_bDraw(true)
+{
+	AppendScriptAsset("Img", &m_UIImg, ASSET_TYPE::TEXTURE);
+	AppendScriptParam("Draw", SCRIPT_PARAM::BOOL, &m_bDraw);
+}
+
 CImageUIScript::CImageUIScript(const CImageUIScript& _Other)
 	: CUIScript(_Other.GetScriptType())
 	, m_bDraw(_Other.m_bDraw)

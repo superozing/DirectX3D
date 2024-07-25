@@ -44,6 +44,7 @@
 #include "CCoverArea.h"
 #include "CCoverUI.h"
 #include "CTutorialGameMode.h"
+#include "CAtlasImageUIScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -90,6 +91,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CCoverArea");
 	_vec.push_back(L"CCoverUI");
 	_vec.push_back(L"CTutorialGameMode");
+	_vec.push_back(L"CAtlasImageUIScript");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -180,6 +182,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CCoverUI;
 	if (L"CTutorialGameMode" == _strScriptName)
 		return new CTutorialGameMode;
+	if (L"CAtlasImageUIScript" == _strScriptName)
+		return new CAtlasImageUIScript;
 	return nullptr;
 }
 
@@ -315,6 +319,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::TUTORIALGAMEMODE:
 		return new CTutorialGameMode;
+		break;
+	case (UINT)SCRIPT_TYPE::ATLASIMAGEUISCRIPT:
+		return new CAtlasImageUIScript;
 		break;
 	}
 	return nullptr;
@@ -494,6 +501,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::TUTORIALGAMEMODE:
 		return L"CTutorialGameMode";
+		break;
+
+	case SCRIPT_TYPE::ATLASIMAGEUISCRIPT:
+		return L"CAtlasImageUIScript";
 		break;
 
 	}
