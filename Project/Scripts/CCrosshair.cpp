@@ -6,6 +6,10 @@
 #include <Engine/CPhysXMgr.h>
 #include <Engine/CRenderMgr.h>
 #include <Engine/CRandomMgr.h>
+#include <Engine\CLevelMgr.h>
+#include <Engine\CLevel.h>
+
+#include "CPlayerScript.h"
 
 CCrosshair::CCrosshair()
 	: CScript((UINT)SCRIPT_TYPE::CROSSHAIR)
@@ -35,8 +39,11 @@ void CCrosshair::CurAimLayer(LAYER _layer)
 	// 처리 레이어 많아지면 switch문으로 변경 필요
 	if (_layer == LAYER::LAYER_WALL)
 	{
-		SetCrosshairColor(Vec4(255.f, 0.f, 0.f, 255.f));
-		SetShootAvailable(false);
+		if (m_pPlayerScript->GetCoverType() != CoverType::Normal)
+		{
+			SetCrosshairColor(Vec4(255.f, 0.f, 0.f, 255.f));
+			SetShootAvailable(false);
+		}
 	}
 	else
 	{
@@ -47,6 +54,8 @@ void CCrosshair::CurAimLayer(LAYER _layer)
 
 void CCrosshair::begin()
 {
+	m_pPlayer		= CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(PlayerName);
+	m_pPlayerScript = m_pPlayer->GetScript<CPlayerScript>();
 }
 
 void CCrosshair::tick()

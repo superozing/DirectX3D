@@ -21,6 +21,9 @@ private:
 
 	bool m_bShootAvailable;
 
+	CGameObject*		 m_pPlayer;
+	class CPlayerScript* m_pPlayerScript;
+
 public:
 	void SetShootAvailable(bool _avail);
 	bool IsShootingAvailable() { return m_bShootAvailable; }

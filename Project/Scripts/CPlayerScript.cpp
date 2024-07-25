@@ -283,8 +283,9 @@ void CPlayerScript::begin()
 
 	m_FSM->Begin();
 
-	m_pShootingSystem =
-		CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"HUD")->GetScript<CHUD>()->GetHUD<CCrosshair>();
+	auto pObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"HUD");
+	if (pObj)
+		m_pShootingSystem = pObj->GetScript<CHUD>()->GetHUD<CCrosshair>();
 }
 
 void CPlayerScript::tick()
