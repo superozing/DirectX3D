@@ -304,9 +304,10 @@ void CPhysXMgr::init()
 	// 필터
 	LayerCheck((UINT)LAYER::LAYER_MONSTER, (UINT)LAYER::LAYER_PLAYER);
 	LayerCheck((UINT)LAYER::LAYER_MONSTER, (UINT)LAYER::LAYER_RAYCAST);
-	LayerCheck((UINT)LAYER::LAYER_PLAYER, (UINT)LAYER::LAYER_RAYCAST);
+	// LayerCheck((UINT)LAYER::LAYER_PLAYER, (UINT)LAYER::LAYER_RAYCAST);
 	LayerCheck((UINT)LAYER::LAYER_WALL, (UINT)LAYER::LAYER_RAYCAST);
 	LayerCheck((UINT)LAYER::LAYER_DEFAULT, (UINT)LAYER::LAYER_DEFAULT);
+	LayerCheck((UINT)LAYER::LAYER_DEFAULT, (UINT)LAYER::LAYER_PLAYER);
 
 	sceneDesc.filterShader			  = CustomFilterShader;
 	sceneDesc.kineKineFilteringMode	  = PxPairFilteringMode::eKEEP;
@@ -322,7 +323,7 @@ void CPhysXMgr::init()
 
 void CPhysXMgr::tick()
 {
-	RETURN_IF_NOT_PLAYING
+	// RETURN_IF_NOT_PLAYING
 
 	static const float ThresholdTime = 1.f / 60.f;
 	static float	   acctime		 = 0.f;

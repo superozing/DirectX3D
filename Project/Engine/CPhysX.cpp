@@ -91,10 +91,10 @@ void CPhysX::begin()
 void CPhysX::finaltick()
 {
 	// 콘텍트벡터를 초기화
-	if (0 != m_vThisFrameContact.size())
-	{
-		m_vThisFrameContact.resize(0);
-	}
+	// if (0 != m_vThisFrameContact.size())
+	//{
+	//	m_vThisFrameContact.resize(0);
+	//}
 
 	// imgui가 포커스되어있으면 ,현재프레임에 충돌한 오브젝트정보를 수집
 	if (true == m_bImguiDirtyFlag)
@@ -195,8 +195,9 @@ PxTransform CPhysX::getTransform() const
 
 void CPhysX::BeginOverlap(CGameObject* other)
 {
-	m_vThisFrameContact.push_back(tCollisionData{other, eColType::COL_BEGINE});
 	++m_CollisionCount;
+
+	m_vThisFrameContact.push_back(tCollisionData{other, eColType::COL_ON});
 
 	const vector<CScript*>& vecScript = GetOwner()->GetScripts();
 	for (size_t i = 0; i < vecScript.size(); ++i)
@@ -207,7 +208,6 @@ void CPhysX::BeginOverlap(CGameObject* other)
 
 void CPhysX::Overlap(CGameObject* other)
 {
-	m_vThisFrameContact.push_back(tCollisionData{other, eColType::COL_ON});
 	const vector<CScript*>& vecScript = GetOwner()->GetScripts();
 	for (size_t i = 0; i < vecScript.size(); ++i)
 	{
@@ -217,8 +217,20 @@ void CPhysX::Overlap(CGameObject* other)
 
 void CPhysX::EndOverlap(CGameObject* other)
 {
+	for (auto iter = m_vThisFrameContact.begin(); iter != m_vThisFrameContact.end();)
+	{
+		if (iter->Other == other)
+		{
+			iter = m_vThisFrameContact.erase(iter);
+			break;
+		}
+		else
+		{
+			++iter;
+		}
+	}
+
 	--m_CollisionCount;
-	m_vThisFrameContact.push_back(tCollisionData{other, eColType::COL_END});
 	const vector<CScript*>& vecScript = GetOwner()->GetScripts();
 	for (size_t i = 0; i < vecScript.size(); ++i)
 	{

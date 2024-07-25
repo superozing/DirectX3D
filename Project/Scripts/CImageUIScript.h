@@ -3,9 +3,10 @@
 
 class CImageUIScript : public CUIScript
 {
-private:
+protected:
 	Ptr<CTexture> m_UIImg;
 	bool		  m_bAllowBindTexPerFrame;
+	bool		  m_bDraw;
 
 public:
 	virtual void begin() override;
@@ -14,6 +15,7 @@ public:
 public:
 	void SetUIImg(Ptr<CTexture> _UIImg) { m_UIImg = _UIImg; }
 	void BindUIImgOnTexParam();
+	void Draw(bool _draw) { m_bDraw = _draw; }
 
 	void AllowBindTexPerFrame() { m_bAllowBindTexPerFrame = true; }
 	void DisallowBindTexPerFrame() { m_bAllowBindTexPerFrame = false; }
@@ -26,6 +28,7 @@ public:
 public:
 	CLONE(CImageUIScript);
 	CImageUIScript();
+	CImageUIScript(UINT _type);
 	CImageUIScript(const CImageUIScript& _Other);
 	~CImageUIScript();
 };

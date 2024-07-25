@@ -3,7 +3,8 @@
 
 // 플레이 상태가 아니면 리턴합니다.
 #define RETURN_IF_NOT_PLAYING                                                     \
-	if (LEVEL_STATE::PLAY != CLevelMgr::GetInst()->GetCurrentLevel()->GetState()) \
+	if (CLevelMgr::GetInst()->GetCurrentLevel() &&                                \
+		LEVEL_STATE::PLAY != CLevelMgr::GetInst()->GetCurrentLevel()->GetState()) \
 		return;
 
 typedef CLevel* (*Restart_Level)(const string& _strLevelPath);
