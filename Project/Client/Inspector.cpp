@@ -21,6 +21,7 @@
 
 #include "AssetUI.h"
 #include "ModelUI.h"
+#include "Content.h"
 
 void Inspector::ResetTargetObject()
 {
@@ -63,7 +64,6 @@ void Inspector::render_update()
 			ImGui::SameLine();
 			if (ImGui::Button("Save Prefab"))
 			{
-
 				SavePrefab();
 			}
 
@@ -78,12 +78,6 @@ void Inspector::render_update()
 				{
 					SetTargetObject(m_TargetObject->GetParent(), true);
 				}
-				wstring ContentPath = CPathMgr::GetContentPath();
-				ContentPath += L"prefab\\";
-
-				wstring FileName = m_TargetObject->GetName();
-				FileName += L".pref";
-
 				SavePrefab();
 			}
 
@@ -500,9 +494,14 @@ void Inspector::CheckTargetComponent(COMPONENT_TYPE _type)
 void Inspector::SavePrefab()
 {
 	wstring ContentPath = CPathMgr::GetContentPath();
-	ContentPath += L"prefab\\";
-	wstring FileName = path(m_TargetObject->GetName()).stem();
+	wstring FileName	= L"prefab\\";
+	FileName += path(m_TargetObject->GetName()).stem();
 	FileName += L".pref";
+
+	if (m_bPrefab)
+	{
+		FileName = path(m_TargetAsset->GetKey()).wstring();
+	}
 
 	filesystem::path file_path = filesystem::path(ContentPath) / FileName;
 
@@ -514,11 +513,15 @@ void Inspector::SavePrefab()
 	CGameObject* pObj = GetTargetObject();
 	pObj			  = pObj->Clone();
 	wstring Key;
-	Key = L"prefab\\" + FileName;
+	Key = FileName;
 
 	Ptr<CPrefab> pPrefab = new CPrefab(pObj, false);
 	CAssetMgr::GetInst()->AddAsset<CPrefab>(Key, pPrefab.Get());
 	pPrefab->Save(Key);
+
+	Content* ContentUI = (Content*)CImGuiMgr::GetInst()->FindUI("##Content");
+	ContentUI->ResetBrowser();
+	ContentUI->SetTargetDirectory(path(FileName).parent_path().string());
 }
 
 void Inspector::DeleteTargetComponent(COMPONENT_TYPE _type)
