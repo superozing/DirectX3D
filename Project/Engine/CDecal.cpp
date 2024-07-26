@@ -56,10 +56,16 @@ void CDecal::UpdateData()
 
 	// 애니메이션 관련 정보
 	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, m_AnimationOutlinerColor);
-	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_1, m_AnimationOutsideColor);
-	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_2, m_AnimationInsideColor);
+	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_1, m_AnimationInsideColor);
 
 	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_1, m_fAnimationActionTime);
+
+	float ScaleRatio = GetOwner()->Transform()->GetRelativeScale().x / GetOwner()->Transform()->GetRelativeScale().z;
+
+	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_1, ScaleRatio);
+
+	Vec2 AnimationInfo = {m_OriginAnimationActionTime, m_fAnimationActionTime};
+	GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC2_1, AnimationInfo);
 
 	GetMaterial(0)->UpdateData();
 }

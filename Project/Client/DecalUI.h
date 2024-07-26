@@ -12,7 +12,6 @@ private:
 	float	   fCustomAlpha;
 	float	   fDecalAnimationActionTime;
 	Vec4	   AnimationOutlinerColor;
-	Vec4	   AnimationOutsideColor;
 	Vec4	   AnimationInsideColor;
 	DecalShape UIDecalShape;
 	DecalType  UIDecalType;

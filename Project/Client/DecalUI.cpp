@@ -17,7 +17,6 @@ DecalUI::DecalUI()
 	, fCustomAlpha(1.f)
 	, fDecalAnimationActionTime(0.f)
 	, AnimationOutlinerColor(0.f, 0.f, 0.f, 1.f)
-	, AnimationOutsideColor(0.f, 0.f, 0.f, 1.f)
 	, AnimationInsideColor(0.f, 0.f, 0.f, 1.f)
 {
 	SetComponentTitle("Decal");
@@ -46,7 +45,6 @@ void DecalUI::render_update()
 	fDecalAnimationActionTime = pTarget->Decal()->GetAnimationActionTime();
 
 	AnimationOutlinerColor = pTarget->Decal()->GetAnimationOutlinerColor();
-	AnimationOutsideColor  = pTarget->Decal()->GetAnimationOutsideColor();
 	AnimationInsideColor   = pTarget->Decal()->GetAnimationInsideColor();
 
 	Ptr<CMaterial> pMtrl = pRenComp->GetMaterial(0);
@@ -343,11 +341,10 @@ void DecalUI::render_update()
 			pTarget->Decal()->SyncTime();
 		}
 
-		static Vec3 ColorPicker[3];
+		static Vec3 ColorPicker[2];
 
 		ColorPicker[0] = pTarget->Decal()->GetAnimationOutlinerColor();
 		ColorPicker[1] = pTarget->Decal()->GetAnimationInsideColor();
-		ColorPicker[2] = pTarget->Decal()->GetAnimationOutsideColor();
 
 		ImGui::Text("Outliner Color");
 		ImGui::SameLine();
@@ -361,17 +358,10 @@ void DecalUI::render_update()
 		ImGui::ColorPicker3("##AnimationDecalInsideColor", ColorPicker[1],
 							ImGuiColorEditFlags_HDR | ImGuiColorEditFlags_PickerHueWheel);
 
-		ImGui::Text("Outside Color");
-		ImGui::SameLine();
-		ImGui::PushItemWidth(200.f);
-		ImGui::ColorPicker3("##AninationDecalOusideColor", ColorPicker[2],
-							ImGuiColorEditFlags_HDR | ImGuiColorEditFlags_PickerHueWheel);
-
-		static float AnimDecalAlpha[3] = {1.f, 1.f, 1.f};
+		static float AnimDecalAlpha[2] = {1.f, 1.f};
 
 		AnimationOutlinerColor = Vec4(ColorPicker[0], AnimDecalAlpha[0]);
 		AnimationInsideColor   = Vec4(ColorPicker[1], AnimDecalAlpha[1]);
-		AnimationOutsideColor  = Vec4(ColorPicker[2], AnimDecalAlpha[2]);
 
 		ImGui::Text("Outliner Color : ");
 		ImGui::SameLine();
@@ -384,13 +374,6 @@ void DecalUI::render_update()
 		ImGui::InputFloat4("##InsideColor", AnimationInsideColor);
 
 		pTarget->Decal()->SetAnimationInsideColor(AnimationInsideColor);
-
-		ImGui::Text("Outside Color : ");
-		ImGui::SameLine();
-
-		ImGui::InputFloat4("##OutsideColor", AnimationOutsideColor);
-
-		pTarget->Decal()->SetAnimationOutsideColor(AnimationOutsideColor);
 	}
 }
 
