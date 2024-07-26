@@ -1,4 +1,4 @@
-#ifndef _PARTICLE_UPDATE
+    #ifndef _PARTICLE_UPDATE
 #define _PARTICLE_UPDATE
 
 #include "value.fx"
@@ -69,13 +69,13 @@ void CS_ParticleUpdate(uint3 id : SV_DispatchThreadID)
                    
                     // Particle 컴포넌트(본체) 의 중심위치(월드) 에서
                     // 랜덤 각도, 랜덤 반지름에 해당하는 위치를 계산해서 파티클의 초기 위치로 준다.
-                    Particle.vLocalPos.xyz = float3(cos(RandomAngle), sin(RandomAngle), 0.f) * RandomRadius;
+                    Particle.vLocalPos.xyz = float3(cos(RandomAngle), sin(RandomAngle), cos(RandomAngle)) * RandomRadius;
                 }
                 else
                 {
                     Particle.vLocalPos.x = vRand[0] * Module.vSpawnBoxScale.x - (Module.vSpawnBoxScale.x / 2.f);
                     Particle.vLocalPos.y = vRand[1] * Module.vSpawnBoxScale.y - (Module.vSpawnBoxScale.y / 2.f);
-                    Particle.vLocalPos.z = 0.f;
+                    Particle.vLocalPos.z = vRand[2] * Module.vSpawnBoxScale.y - (Module.vSpawnBoxScale.y / 2.f);
                 }               
                 
                 Particle.vWorldPos.xyz = Particle.vLocalPos.xyz + CenterPos;                
@@ -127,7 +127,7 @@ void CS_ParticleUpdate(uint3 id : SV_DispatchThreadID)
     // 파티클이 활성화 상태라면
     else
     {        
-        Particle.Age += g_dt;
+        Particle.Age += g_EngineDT;
         if(Particle.Life < Particle.Age)
         {
             Particle.Active = 0;
@@ -183,7 +183,7 @@ void CS_ParticleUpdate(uint3 id : SV_DispatchThreadID)
             float3 vAccel = Particle.vForce.xyz / Particle.Mass;
             
             // Accel 연산
-            Particle.vVelocity.xyz += vAccel * g_dt;
+            Particle.vVelocity.xyz += vAccel * g_EngineDT;
             
             // Drag 모듈이 켜져있으면
             if (Module.arrModuleCheck[1])
@@ -204,12 +204,12 @@ void CS_ParticleUpdate(uint3 id : SV_DispatchThreadID)
             // Velocity 에 따른 위치이동 연산
             if (0 == Module.SpaceType)
             {
-                Particle.vLocalPos.xyz += Particle.vVelocity.xyz * g_dt;
+                Particle.vLocalPos.xyz += Particle.vVelocity.xyz * g_EngineDT;
                 Particle.vWorldPos.xyz = Particle.vLocalPos.xyz + CenterPos;
             }
             else if (1 == Module.SpaceType)
             {
-                Particle.vWorldPos.xyz += Particle.vVelocity.xyz * g_dt;
+                Particle.vWorldPos.xyz += Particle.vVelocity.xyz * g_EngineDT;
             }            
         }
     }    
