@@ -36,6 +36,9 @@ void ScriptUI::render_update()
 
 	const auto& vParam = m_TargetScript->GetScriptParam();
 
+	if (vParam.size() <= 0)
+		return;
+
 	auto iter = vParam.begin();
 
 	for (; iter != vParam.end(); ++iter)
