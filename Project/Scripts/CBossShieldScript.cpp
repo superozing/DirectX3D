@@ -6,6 +6,7 @@
 #include <Engine\CLevel.h>
 #include <Engine\CGameObject.h>
 #include <Engine\components.h>
+#include "CBossScript.h"
 
 CBossShieldScript::CBossShieldScript()
 	: CScript((UINT)SCRIPT_TYPE::BOSSSHIELDSCRIPT)
@@ -41,6 +42,8 @@ void CBossShieldScript::tick()
 		CheckInnerShield();
 	else if (SHIELD_TYPE::OutsideShield == m_ShieldType)
 		CheckOutsideShield();
+	else if (SHIELD_TYPE::HexShield == m_ShieldType)
+		CheckHexShield();
 }
 
 void CBossShieldScript::CheckInnerShield()
@@ -85,4 +88,22 @@ void CBossShieldScript::CheckOutsideShield()
 
 	if (idx > 145 && m_ShieldTime <= 0.f)
 		GamePlayStatic::DestroyGameObject(GetOwner());
+}
+
+void CBossShieldScript::CheckHexShield()
+{
+	int idx = m_Parent->Animator3D()->GetCurFrameIdx();
+	float ftime = DT;
+
+	if (idx > 30 && idx < 155)
+		m_ShieldTime += ftime;
+	else if (idx > 155)
+		m_ShieldTime -= ftime;
+
+	if (m_ShieldTime >= 1.f)
+		m_ShieldTime = 1.f;
+	else if (m_ShieldTime <= 0.f)
+		m_ShieldTime = 0.f;
+
+	MeshRender()->GetDynamicMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, m_ShieldTime);
 }

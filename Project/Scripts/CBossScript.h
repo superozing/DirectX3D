@@ -125,8 +125,11 @@ public:
 	void FireBossMissile(int _idx);
 	void ActiveInnerShield();
 	void ActiveOutsideShield();
+	void ActiveHexShield();
+	void DeActiveHexShield();
 
 	CRoRStateMachine<CBossScript>* GetBossFSM() { return m_FSM; }
+
 
 	CGameObject* GetTarget() { return m_Target; }
 	void		 SetTarget(CGameObject* _Target) { m_Target = _Target; }

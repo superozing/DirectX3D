@@ -241,6 +241,25 @@ void CBossScript::ActiveOutsideShield()
 	GamePlayStatic::SpawnGameObject(Shield, layeridx);
 }
 
+void CBossScript::ActiveHexShield()
+{
+	if (nullptr == m_Target)
+		return;
+
+	CGameObject* Shield = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Boss\\Kaiten_HexShield.pref")->Instantiate();
+	Shield->GetScript<CBossShieldScript>()->SetParent(GetOwner());
+	Shield->GetScript<CBossShieldScript>()->SetShieldType(SHIELD_TYPE::HexShield);
+
+	int layeridx = Shield->GetLayerIdx();
+	GamePlayStatic::SpawnGameObject(Shield, layeridx);
+}
+
+void CBossScript::DeActiveHexShield()
+{
+	CGameObject* pObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Kaiten_HexShield");
+	GamePlayStatic::DestroyGameObject(pObj);
+}
+
 void CBossScript::InitStateMachine()
 {
 	m_FSM = new CRoRStateMachine<CBossScript>(this, (UINT)BOSS_STATE::END);

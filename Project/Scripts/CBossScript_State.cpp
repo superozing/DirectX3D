@@ -222,6 +222,8 @@ void CBossScript::EXs2End()
 void CBossScript::EXs3Begin()
 {
 	Animator3D()->Play((int)BOSS_STATE::EXs3, 0);
+
+	ActiveHexShield();
 }
 
 int CBossScript::EXs3Update()
@@ -252,6 +254,8 @@ void CBossScript::EXs3End()
 	{
 		m_ArrShield[i] = false;
 	}
+
+	DeActiveHexShield();
 }
 
 void CBossScript::EXs4Begin()

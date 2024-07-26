@@ -5,6 +5,7 @@ enum class SHIELD_TYPE
 {
 	InnerShield,
 	OutsideShield,
+	HexShield,
 	END,
 };
 
@@ -24,6 +25,7 @@ public:
 
 	void CheckInnerShield();
 	void CheckOutsideShield();
+	void CheckHexShield();
 
 public:
 	virtual void begin() override;
