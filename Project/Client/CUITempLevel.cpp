@@ -35,7 +35,6 @@
 #include <Scripts/CProgressBar.h>
 #include <Scripts/CBossHP.h>
 #include <Scripts/CCrosshair.h>
-#include <Scripts/CWeaponInfo.h>
 #include <Scripts/CPausePanel.h>
 #include <Scripts/CPauseBtn.h>
 #include <Scripts/CDamageFont.h>
@@ -153,7 +152,7 @@ void CUITempLevel::CreateTempLevel()
 
 #pragma region how to add UI Script
 
-	//auto pBtnTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Background.jpg", L"texture\\Background.jpg");
+	// auto pBtnTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Background.jpg", L"texture\\Background.jpg");
 
 	// DynamicUI Object 생성
 	// MESHpoint
@@ -264,71 +263,71 @@ void CUITempLevel::CreateTempLevel()
 
 #pragma endregion
 
-//#pragma region CWeaponInfo
-//
-//	// CWeaponInfo
-//	pObj = new CGameObject;
-//	pObj->SetName(L"WeaponInfo");
-//
-//	pObj->AddComponent(new CTransform);
-//
-//	auto pWeaponInfo = new CWeaponInfo;
-//	pObj->AddComponent(pWeaponInfo);
-//	pWeaponInfo->SetMaxAmmo(30);
-//	pWeaponInfo->SetCurAmmo(30);
-//
-//	pObj->Transform()->SetRelativePos(Vec3(700, -300, 0));
-//	pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
-//
-//	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
-//
-//#pragma endregion
-//
-//#pragma region Image UI
-//
-//	// CPausePanel
-//	pObj = new CGameObject;
-//	pObj->SetName(L"Pause Panel");
-//
-//	pObj->AddComponent(new CTransform);
-//
-//	auto pPausePanel = new CPausePanel;
-//	pObj->AddComponent(pPausePanel);
-//
-//	pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
-//	pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
-//
-//	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
-//
-//	// CPauseBtn
-//	pObj = new CGameObject;
-//	pObj->SetName(L"Pause Btn");
-//	pObj->AddComponent(new CTransform);
-//
-//	auto PauseBtn = new CPauseBtn;
-//	pObj->AddComponent(PauseBtn);
-//
-//	PauseBtn->SetPausePanel(pPausePanel);
-//
-//	pObj->Transform()->SetRelativePos(Vec3(1, 1, 100.f));
-//	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
-//
-//	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
-//
-//	// DamageFont
-//	CGameObject* pDamageFontObj = new CGameObject;
-//	auto		 DamageFont		= new CDamageFont;
-//	pDamageFontObj->SetName(L"DamageFont");
-//
-//	pDamageFontObj->AddComponent(new CTransform);
-//	pDamageFontObj->AddComponent(DamageFont);
-//
-//	pDamageFontObj->Transform()->SetRelativePos(Vec3(200, 0, 0.f));
-//	pDamageFontObj->Transform()->SetRelativeScale(Vec3(50, 50, 1.f));
-//
-//	DamageFont->SetDamage(10012312);
-//
-//	pTempLevel->AddObject(pDamageFontObj, (UINT)LAYER::LAYER_PLAYER, false);
+	// #pragma region CWeaponInfo
+	//
+	//	// CWeaponInfo
+	//	pObj = new CGameObject;
+	//	pObj->SetName(L"WeaponInfo");
+	//
+	//	pObj->AddComponent(new CTransform);
+	//
+	//	auto pWeaponInfo = new CWeaponInfo;
+	//	pObj->AddComponent(pWeaponInfo);
+	//	pWeaponInfo->SetMaxAmmo(30);
+	//	pWeaponInfo->SetCurAmmo(30);
+	//
+	//	pObj->Transform()->SetRelativePos(Vec3(700, -300, 0));
+	//	pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
+	//
+	//	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+	//
+	// #pragma endregion
+	//
+	// #pragma region Image UI
+	//
+	//	// CPausePanel
+	//	pObj = new CGameObject;
+	//	pObj->SetName(L"Pause Panel");
+	//
+	//	pObj->AddComponent(new CTransform);
+	//
+	//	auto pPausePanel = new CPausePanel;
+	//	pObj->AddComponent(pPausePanel);
+	//
+	//	pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
+	//	pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
+	//
+	//	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+	//
+	//	// CPauseBtn
+	//	pObj = new CGameObject;
+	//	pObj->SetName(L"Pause Btn");
+	//	pObj->AddComponent(new CTransform);
+	//
+	//	auto PauseBtn = new CPauseBtn;
+	//	pObj->AddComponent(PauseBtn);
+	//
+	//	PauseBtn->SetPausePanel(pPausePanel);
+	//
+	//	pObj->Transform()->SetRelativePos(Vec3(1, 1, 100.f));
+	//	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+	//
+	//	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+	//
+	//	// DamageFont
+	//	CGameObject* pDamageFontObj = new CGameObject;
+	//	auto		 DamageFont		= new CDamageFont;
+	//	pDamageFontObj->SetName(L"DamageFont");
+	//
+	//	pDamageFontObj->AddComponent(new CTransform);
+	//	pDamageFontObj->AddComponent(DamageFont);
+	//
+	//	pDamageFontObj->Transform()->SetRelativePos(Vec3(200, 0, 0.f));
+	//	pDamageFontObj->Transform()->SetRelativeScale(Vec3(50, 50, 1.f));
+	//
+	//	DamageFont->SetDamage(10012312);
+	//
+	//	pTempLevel->AddObject(pDamageFontObj, (UINT)LAYER::LAYER_PLAYER, false);
 
 	//// Test Font
 	// pObj = new CGameObject;
@@ -348,7 +347,7 @@ void CUITempLevel::CreateTempLevel()
 	// pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 #pragma endregion
 
-//#pragma region ProgressBar UI
+// #pragma region ProgressBar UI
 //
 //	// Boss HP
 //	auto BarObj = new CGameObject;
@@ -443,7 +442,7 @@ void CUITempLevel::CreateTempLevel()
 //
 //	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 //
-//#pragma endregion
+// #pragma endregion
 #pragma region CCrosshair
 	// CCrosshair
 	pObj = new CGameObject;
@@ -457,14 +456,14 @@ void CUITempLevel::CreateTempLevel()
 #pragma endregion
 #pragma region CDialog
 	//// CDialog
-	//pObj = new CGameObject;
-	//pObj->SetName(L"Dialog");
-	//pObj->AddComponent(new CTransform);
-	//auto pDialog = new CDialog;
-	//pObj->AddComponent(pDialog);
-	//pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
-	//pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
-	//pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
+	// pObj = new CGameObject;
+	// pObj->SetName(L"Dialog");
+	// pObj->AddComponent(new CTransform);
+	// auto pDialog = new CDialog;
+	// pObj->AddComponent(pDialog);
+	// pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
+	// pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
+	// pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_UI, false);
 #pragma endregion
 	GamePlayStatic::ChangeLevel(pTempLevel, LEVEL_STATE::STOP);
 	CLevelSaveLoad::SaveLevel(pTempLevel, L"level\\UITest.lv");

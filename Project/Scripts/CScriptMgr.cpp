@@ -13,7 +13,6 @@
 #include "CImageUIScript.h"
 #include "CPanelUIScript.h"
 #include "CCrosshair.h"
-#include "CWeaponInfo.h"
 #include "CPausePanel.h"
 #include "CPauseBtn.h"
 #include "CDamageFont.h"
@@ -46,6 +45,7 @@
 #include "CAtlasImageUIScript.h"
 #include "CDamagedDirectionMgr.h"
 #include "CHUD.h"
+#include "CTextUI.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -61,7 +61,6 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CImageUIScript");
 	_vec.push_back(L"CPanelUIScript");
 	_vec.push_back(L"CCrosshair");
-	_vec.push_back(L"CWeaponInfo");
 	_vec.push_back(L"CPausePanel");
 	_vec.push_back(L"CPauseBtn");
 	_vec.push_back(L"CDamageFont");
@@ -94,6 +93,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CAtlasImageUIScript");
 	_vec.push_back(L"CDamagedDirectionMgr");
 	_vec.push_back(L"CHUD");
+	_vec.push_back(L"CTextUI");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -122,8 +122,6 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPanelUIScript;
 	if (L"CCrosshair" == _strScriptName)
 		return new CCrosshair;
-	if (L"CWeaponInfo" == _strScriptName)
-		return new CWeaponInfo;
 	if (L"CPausePanel" == _strScriptName)
 		return new CPausePanel;
 	if (L"CPauseBtn" == _strScriptName)
@@ -188,6 +186,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CDamagedDirectionMgr;
 	if (L"CHUD" == _strScriptName)
 		return new CHUD;
+	if (L"CTextUI" == _strScriptName)
+		return new CTextUI;
 	return nullptr;
 }
 
@@ -230,9 +230,6 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::CROSSHAIR:
 		return new CCrosshair;
-		break;
-	case (UINT)SCRIPT_TYPE::WEAPONINFO:
-		return new CWeaponInfo;
 		break;
 	case (UINT)SCRIPT_TYPE::PAUSEPANEL:
 		return new CPausePanel;
@@ -330,6 +327,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::HUD:
 		return new CHUD;
 		break;
+	case (UINT)SCRIPT_TYPE::TEXTUI:
+		return new CTextUI;
+		break;
 	}
 	return nullptr;
 }
@@ -384,10 +384,6 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::CROSSHAIR:
 		return L"CCrosshair";
-		break;
-
-	case SCRIPT_TYPE::WEAPONINFO:
-		return L"CWeaponInfo";
 		break;
 
 	case SCRIPT_TYPE::PAUSEPANEL:
@@ -516,6 +512,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::HUD:
 		return L"CHUD";
+		break;
+
+	case SCRIPT_TYPE::TEXTUI:
+		return L"CTextUI";
 		break;
 
 	}

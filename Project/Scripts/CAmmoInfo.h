@@ -1,12 +1,11 @@
 ﻿#pragma once
-#include <Engine/CUIScript.h>
+#include "CTextUI.h"
 
-class CAmmoInfo : public CUIScript
+class CAmmoInfo : public CTextUI
 {
 private:
-	tFontInfo m_tAmmoFont;
-
-	bool m_bDraw;
+	int m_iCurAmmo;
+	int m_iMaxAmmo;
 
 public:
 	virtual void begin() override;

@@ -9,6 +9,7 @@
 CDamageFont::CDamageFont()
 	: CScript((UINT)SCRIPT_TYPE::DAMAGEFONT)
 {
+	AppendScriptParam("Damage", SCRIPT_PARAM::INT, &m_Damage);
 }
 
 CDamageFont::~CDamageFont()
@@ -28,7 +29,7 @@ void CDamageFont::begin()
 	m_pImageUIScript->SetUIType(UI_TYPE::DAMAGEFONT);
 
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHpoint));
-	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DynamicUIMtrl"), 0);
+	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
 	pObj->MeshRender()->GetDynamicMaterial(0);
 	pObj->MeshRender()->GetMaterial(0)->SetShader(
 		CAssetMgr::GetInst()->Load<CGraphicsShader>(L"GraphicsShader/DamageFontShader.gs"));
@@ -75,10 +76,7 @@ void CDamageFont::SaveToFile(FILE* _File)
 void CDamageFont::SaveToFile(ofstream& fout)
 {
 	fout << TagFontImg << endl;
-	if (m_FontImg.Get())
-		SaveAssetRef(m_FontImg, fout);
-	else
-		fout << 0 << endl;
+	SaveAssetRef(m_FontImg, fout);
 }
 
 void CDamageFont::LoadFromFile(FILE* _File)

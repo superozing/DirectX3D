@@ -98,14 +98,6 @@ void CImageUIScript::BindUIImgOnTexParam()
 #define TagAllowBindTexPerFrame "[AllowBindTexPerFrame]"
 #define TagDraw "[Draw]"
 
-void CImageUIScript::SaveToFile(FILE* _File)
-{
-}
-
-void CImageUIScript::LoadFromFile(FILE* _File)
-{
-}
-
 void CImageUIScript::SaveToFile(ofstream& fout)
 {
 	fout << TagUIImg << endl;

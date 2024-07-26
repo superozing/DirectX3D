@@ -71,7 +71,7 @@
       <Filter>Scripts\UI\ProgressBar\PlayerHP</Filter>
     </ClInclude>
     <ClInclude Include="CAmmoInfo.h">
-      <Filter>Scripts\UI\ProgressBar\AmmoInfo</Filter>
+      <Filter>Scripts\UI\Text\AmmoInfo</Filter>
     </ClInclude>
     <ClInclude Include="CPhysXMgrScript.h">
       <Filter>Scripts\Manager\PhysXMgr</Filter>
@@ -150,6 +150,9 @@
     <ClInclude Include="CHUD.h">
       <Filter>Scripts\UI</Filter>
     </ClInclude>
+    <ClInclude Include="CTextUI.h">
+      <Filter>Scripts\UI\Text</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -225,7 +228,7 @@
       <Filter>Scripts\UI\ProgressBar\PlayerHP</Filter>
     </ClCompile>
     <ClCompile Include="CAmmoInfo.cpp">
-      <Filter>Scripts\UI\ProgressBar\AmmoInfo</Filter>
+      <Filter>Scripts\UI\Text\AmmoInfo</Filter>
     </ClCompile>
     <ClCompile Include="CSkillIcon.cpp">
       <Filter>Scripts\UI\ProgressBar\SkillIcon</Filter>
@@ -305,6 +308,9 @@
     <ClCompile Include="CHUD.cpp">
       <Filter>Scripts\UI</Filter>
     </ClCompile>
+    <ClCompile Include="CTextUI.cpp">
+      <Filter>Scripts\UI\Text</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -379,9 +385,6 @@
     <Filter Include="Scripts\UI\ProgressBar\MonsterHP">
       <UniqueIdentifier>{41b13e7f-f4e2-41a0-9eb2-f1742d335840}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\UI\ProgressBar\AmmoInfo">
-      <UniqueIdentifier>{428b9d57-cfd8-4bf1-b2ca-3905db9d780b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\UI\ProgressBar\SkillIcon">
       <UniqueIdentifier>{904a9997-8eee-4e3b-ab19-3f8341cb7464}</UniqueIdentifier>
     </Filter>
@@ -411,6 +414,12 @@
     </Filter>
     <Filter Include="Scripts\Level">
       <UniqueIdentifier>{1666e7d2-5bff-44b3-88d6-1f00319dfd14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\Text">
+      <UniqueIdentifier>{7ac96835-7c2b-4b8e-844f-e776fda9d4e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\Text\AmmoInfo">
+      <UniqueIdentifier>{428b9d57-cfd8-4bf1-b2ca-3905db9d780b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
