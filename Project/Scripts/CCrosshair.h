@@ -24,10 +24,16 @@ private:
 	CGameObject*		 m_pPlayer;
 	class CPlayerScript* m_pPlayerScript;
 
+	class CDamagedDirectionMgr* m_pDamagedDirectionMgr;
+
+	class CBulletMarkSpawner* m_pBulletMarkDecalSpawner;
+
 public:
 	void SetShootAvailable(bool _avail);
 	bool IsShootingAvailable() { return m_bShootAvailable; }
 	void CurAimLayer(LAYER _layer);
+
+	void ShootBulletRay();
 
 public:
 	virtual void begin() override;

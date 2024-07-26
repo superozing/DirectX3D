@@ -11,6 +11,9 @@
 
 #include "CPlayerScript.h"
 
+#include "CDamagedDirectionMgr.h"
+#include "CBulletMarkSpawner.h"
+
 CCrosshair::CCrosshair()
 	: CScript((UINT)SCRIPT_TYPE::CROSSHAIR)
 	, m_CrosshairColor(Vec4(255, 255, 255, 255))
@@ -52,10 +55,44 @@ void CCrosshair::CurAimLayer(LAYER _layer)
 	}
 }
 
+void CCrosshair::ShootBulletRay()
+{
+	float fSpreadRatio = m_pPlayerScript->GetSpreadRatio();
+
+	SetSpreadRatio(fSpreadRatio);
+
+	tRoRHitInfo hitInfo = {};
+	auto		pMainCam  = CRenderMgr::GetInst()->GetMainCam();
+	auto		FrontDir  = pMainCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+	float MaxSpread = 0.3f;
+
+	float RotX = fSpreadRatio * CRandomMgr::GetInst()->GetRandomFloat() * MaxSpread;
+	float RotY = fSpreadRatio * CRandomMgr::GetInst()->GetRandomFloat() * MaxSpread;
+
+	Vec3 ShootDir = Vec3(FrontDir.x + RotX, FrontDir.y + RotY, FrontDir.z);
+
+	bool isBulletHit = CPhysXMgr::GetInst()->PerfomRaycast(pMainCam->Transform()->GetWorldPos(), ShootDir, hitInfo,
+														   (UINT)LAYER::LAYER_RAYCAST, RayCastDebugFlag::AllVisible);
+
+	if (isBulletHit)
+	{
+		// 데미지 처리, 파티클 시스템 등등...
+
+		// 데칼 오브젝트 스폰
+		m_pBulletMarkDecalSpawner->SpawnBulletMarkDecal(hitInfo.vHitPos, FrontDir);
+	}
+}
+
 void CCrosshair::begin()
 {
 	m_pPlayer		= CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(PlayerName);
 	m_pPlayerScript = m_pPlayer->GetScript<CPlayerScript>();
+
+	m_pDamagedDirectionMgr = new CDamagedDirectionMgr;
+	GetOwner()->AddComponent(m_pDamagedDirectionMgr);
+
+	m_pBulletMarkDecalSpawner = new CBulletMarkSpawner;
+	GetOwner()->AddComponent(m_pBulletMarkDecalSpawner);
 }
 
 void CCrosshair::tick()
@@ -83,17 +120,6 @@ void CCrosshair::tick()
 		CurAimLayer((LAYER)hitInfo.pOtherObj->GetLayerIdx());
 	}
 
-	// hitInfo			= {};
-	// float MaxSpread = 0.3f;
-
-	// float RotX = m_fSpreadRatio * CRandomMgr::GetInst()->GetRandomFloat() * MaxSpread;
-	// float RotY = m_fSpreadRatio * CRandomMgr::GetInst()->GetRandomFloat() * MaxSpread;
-
-	// FrontDir.x += RotX;
-	// FrontDir.y += RotY;
-
-	// bool isBulletHit = CPhysXMgr::GetInst()->PerfomRaycast(pMainCam->Transform()->GetWorldPos(), FrontDir, hitInfo,
-	//													   (UINT)LAYER::LAYER_RAYCAST, RayCastDebugFlag::AllVisible);
 }
 
 #define TagBarThikness "[Bar Thikness]"
