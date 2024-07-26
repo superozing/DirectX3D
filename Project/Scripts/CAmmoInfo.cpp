@@ -1,13 +1,21 @@
 ﻿#include "pch.h"
 #include "CAmmoInfo.h"
-#include <Engine/CAssetMgr.h>
 
-#include "CImageUIScript.h"
-#include "CPanelUIScript.h"
+#include <Engine/CFontMgr.h>
+#include <Engine/CDevice.h>
 
 CAmmoInfo::CAmmoInfo()
-	: CProgressBar((UINT)SCRIPT_TYPE::AMMOINFO)
+	: CUIScript((UINT)SCRIPT_TYPE::AMMOINFO)
+	, m_bDraw(true)
 {
+	AppendScriptParam("Draw", SCRIPT_PARAM::BOOL, &m_bDraw);
+}
+
+CAmmoInfo::CAmmoInfo(const CAmmoInfo& _Origin)
+	: CUIScript((UINT)SCRIPT_TYPE::AMMOINFO)
+	, m_bDraw(_Origin.m_bDraw)
+{
+	AppendScriptParam("Draw", SCRIPT_PARAM::BOOL, &m_bDraw);
 }
 
 CAmmoInfo::~CAmmoInfo()
@@ -16,58 +24,30 @@ CAmmoInfo::~CAmmoInfo()
 
 void CAmmoInfo::begin()
 {
-	CProgressBar::begin();
 }
 
 void CAmmoInfo::tick()
 {
-	m_pAmmoLine->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, m_ratio);
-}
+	// UI가 활성화 상태일 경우에만 폰트 등록
+	if (m_bDraw)
+	{
+		// 폰트의 색상 설정
+		m_tAmmoFont.Color = FONT_RGBA(255, 255, 255, 255);
 
-void CAmmoInfo::MakeChildObjects()
-{
-	// transform 조정
-	Transform()->SetRelativeScale(Vec3(16.f, 54.f, 1.f));
+		// 폰트의 위치 설정
 
-	// panel texture 설정
-	GetPanelUI()->SetPanelTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/ColorTex/White.png"));
-	GetPanelUI()->SetUIType(UI_TYPE::AMMO);
-	CGameObject* pObj = nullptr;
+		Vec3 vWorldPos = Transform()->GetWorldPos();
+		Vec2 vResol	   = CDevice::GetInst()->GetRenderResolution();
 
-	// HPLine
-	pObj		= new CGameObject;
-	m_pAmmoLine = new CImageUIScript;
-	pObj->SetName(L"Ammo Line");
-	pObj->AddComponent(new CTransform);
-	pObj->AddComponent(new CMeshRender);
-	pObj->AddComponent(m_pAmmoLine);
+		m_tAmmoFont.vPos = Vec2(vWorldPos.x + (vResol.x / 2), -vWorldPos.y + (vResol.y / 2));
 
-	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
-	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
-	pObj->MeshRender()->GetDynamicMaterial(0);
+		m_tAmmoFont.WStr = L"TEST";
 
-	pObj->MeshRender()->GetMaterial(0)->SetShader(
-		CAssetMgr::GetInst()->Load<CGraphicsShader>(L"GraphicsShader/AmmoProgressBarShader.gs"));
-
-	// m_pAmmoLine->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HPLine.png"));
-	m_pAmmoLine->AllowBindTexPerFrame();
-	m_pAmmoLine->SetUIType(UI_TYPE::AMMO);
-
-	pObj->Transform()->SetRelativePos(Vec3(0, 0, 0.f));
-	pObj->Transform()->SetRelativeScale(Vec3(12, 50.f, 1.f));
-
-	GetOwner()->AddChild(pObj);
-}
-
-void CAmmoInfo::SaveToFile(FILE* _File)
-{
+		CFontMgr::GetInst()->RegisterFont(m_tAmmoFont);
+	}
 }
 
 void CAmmoInfo::SaveToFile(ofstream& fout)
-{
-}
-
-void CAmmoInfo::LoadFromFile(FILE* _File)
 {
 }
 

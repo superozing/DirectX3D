@@ -49,9 +49,6 @@
     <ClInclude Include="CCrosshair.h">
       <Filter>Scripts\UI\Image\Crosshair</Filter>
     </ClInclude>
-    <ClInclude Include="CWeaponInfo.h">
-      <Filter>Scripts\UI\Image\WeaponInfo</Filter>
-    </ClInclude>
     <ClInclude Include="CPausePanel.h">
       <Filter>Scripts\UI\Image\PausePanel</Filter>
     </ClInclude>
@@ -202,9 +199,6 @@
     </ClCompile>
     <ClCompile Include="CCrosshair.cpp">
       <Filter>Scripts\UI\Image\Crosshair</Filter>
-    </ClCompile>
-    <ClCompile Include="CWeaponInfo.cpp">
-      <Filter>Scripts\UI\Image\WeaponInfo</Filter>
     </ClCompile>
     <ClCompile Include="CPausePanel.cpp">
       <Filter>Scripts\UI\Image\PausePanel</Filter>
@@ -372,9 +366,6 @@
     </Filter>
     <Filter Include="Scripts\UI\Image\PausePanel">
       <UniqueIdentifier>{78fd96b1-f585-4066-88dc-0a7b73c075a9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\UI\Image\WeaponInfo">
-      <UniqueIdentifier>{ed447ae9-d1c6-45b7-92af-d3e4daf01425}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\UI\ProgressBar">
       <UniqueIdentifier>{e8beecff-8dff-41b8-8ccd-cd06f6600281}</UniqueIdentifier>

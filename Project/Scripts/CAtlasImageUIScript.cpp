@@ -27,6 +27,9 @@ CAtlasImageUIScript::~CAtlasImageUIScript()
 
 void CAtlasImageUIScript::Apply()
 {
+	if (!m_UIImg.Get())
+		return;
+
 	Vec2 vAtlasSize = Vec2(m_UIImg->GetWidth(), m_UIImg->GetHeight());
 
 	MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC2_0, m_vLeftTop / vAtlasSize);

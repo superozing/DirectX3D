@@ -214,7 +214,6 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CTimeMgrScript.h" />
     <ClInclude Include="CTutorialGameMode.h" />
     <ClInclude Include="CWallScript.h" />
-    <ClInclude Include="CWeaponInfo.h" />
     <ClInclude Include="CWrapImage.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="CHUD.h" />
@@ -271,7 +270,6 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CTimeMgrScript.cpp" />
     <ClCompile Include="CTutorialGameMode.cpp" />
     <ClCompile Include="CWallScript.cpp" />
-    <ClCompile Include="CWeaponInfo.cpp" />
     <ClCompile Include="CWrapImage.cpp" />
     <ClCompile Include="CHUD.cpp" />
     <ClCompile Include="pch.cpp">
