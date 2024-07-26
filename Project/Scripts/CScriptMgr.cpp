@@ -46,6 +46,7 @@
 #include "CAtlasImageUIScript.h"
 #include "CDamagedDirectionMgr.h"
 #include "CHUD.h"
+#include "CAfterImage.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -94,6 +95,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CAtlasImageUIScript");
 	_vec.push_back(L"CDamagedDirectionMgr");
 	_vec.push_back(L"CHUD");
+	_vec.push_back(L"CAfterImage");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -188,6 +190,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CDamagedDirectionMgr;
 	if (L"CHUD" == _strScriptName)
 		return new CHUD;
+	if (L"CAfterImage" == _strScriptName)
+		return new CAfterImage;
 	return nullptr;
 }
 
@@ -329,6 +333,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::HUD:
 		return new CHUD;
+		break;
+	case (UINT)SCRIPT_TYPE::AFTERIMAGE:
+		return new CAfterImage;
 		break;
 	}
 	return nullptr;
@@ -516,6 +523,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::HUD:
 		return L"CHUD";
+		break;
+
+	case SCRIPT_TYPE::AFTERIMAGE:
+		return L"CAfterImage";
 		break;
 
 	}

@@ -320,4 +320,35 @@ void Skinning(inout float3 _vPos, inout float3 _vTangent, inout float3 _vBinorma
     _vNormal = normalize(info.vNormal);
 }
 
+float3x3 CreateRotationMatrix(float3 rotation)
+{
+    float3 s, c;
+    sincos(rotation, s, c);
+
+    // X축 회전
+    float3x3 rotX = float3x3(
+        1, 0, 0,
+        0, c.x, -s.x,
+        0, s.x, c.x
+    );
+
+    // Y축 회전
+    float3x3 rotY = float3x3(
+        c.y, 0, s.y,
+        0, 1, 0,
+        -s.y, 0, c.y
+    );
+
+    // Z축 회전
+    float3x3 rotZ = float3x3(
+        c.z, -s.z, 0,
+        s.z, c.z, 0,
+        0, 0, 1
+    );
+
+    // XYZ 순서로 회전 적용
+    return mul(mul(rotX, rotY), rotZ);
+}
+
 #endif
+

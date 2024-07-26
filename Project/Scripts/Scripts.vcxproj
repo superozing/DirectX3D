@@ -166,6 +166,7 @@ call ScriptsCopy.bat</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CAfterImage.h" />
     <ClInclude Include="CAmmoInfo.h" />
     <ClInclude Include="CAtlasImageUIScript.h" />
     <ClInclude Include="CBackgroundScript.h" />
@@ -222,6 +223,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="strings.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CAfterImage.cpp" />
     <ClCompile Include="CAmmoInfo.cpp" />
     <ClCompile Include="CAtlasImageUIScript.cpp" />
     <ClCompile Include="CBackgroundScript.cpp" />
