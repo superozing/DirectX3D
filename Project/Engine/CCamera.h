@@ -117,6 +117,8 @@ public:
 	void render_forward();
 	void render_postprocess();
 	void Merge();
+
+	// PostProcess;
 	void Blur();
 	void Bloom();
 

@@ -478,20 +478,27 @@ void CCamera::render_forward()
 
 void CCamera::render_postprocess()
 {
-	for (size_t i = 0; i < m_vecPostProcess.size(); ++i)
+	// Blur&Bloom처리
+	if (true == CRenderMgr::GetInst()->m_BloomInfo.Activate)
 	{
-		// 최종 렌더링 이미지를 후처리 타겟에 복사
-		CRenderMgr::GetInst()->CopyRenderTargetToPostProcessTarget();
-
-		// 복사받은 후처리 텍스쳐를 t13 레지스터에 바인딩
-		Ptr<CTexture> pPostProcessTex = CRenderMgr::GetInst()->GetPostProcessTex();
-		pPostProcessTex->UpdateData(13);
-
-		// 후처리 오브젝트 렌더링
-		m_vecPostProcess[i]->render();
+		Blur();
+		Bloom();
 	}
 
-	m_vecPostProcess.clear();
+	// for (size_t i = 0; i < m_vecPostProcess.size(); ++i)
+	//{
+	//	// 최종 렌더링 이미지를 후처리 타겟에 복사
+	//	CRenderMgr::GetInst()->CopyRenderTargetToPostProcessTarget();
+
+	//	// 복사받은 후처리 텍스쳐를 t13 레지스터에 바인딩
+	//	Ptr<CTexture> pPostProcessTex = CRenderMgr::GetInst()->GetPostProcessTex();
+	//	pPostProcessTex->UpdateData(13);
+
+	//	// 후처리 오브젝트 렌더링
+	//	m_vecPostProcess[i]->render();
+	//}
+
+	// m_vecPostProcess.clear();
 }
 
 void CCamera::Merge()
