@@ -486,7 +486,7 @@ int CDevice::CreateStructuredBuffer()
 	m_arrSB[(UINT)SB_TYPE::WEIGHTMAP]->Create(sizeof(tWeight_4), 1024 * 1024, SB_READ_TYPE::READ_WRITE, false);
 
 	m_arrSB[(UINT)SB_TYPE::AFTERIMAGE] = new CStructuredBuffer;
-	m_arrSB[(UINT)SB_TYPE::AFTERIMAGE]->Create(sizeof(tWeight_4), 1024 * 1024, SB_READ_TYPE::READ_ONLY, false);
+	m_arrSB[(UINT)SB_TYPE::AFTERIMAGE]->Create(sizeof(AfterImageInfo), 1, SB_READ_TYPE::READ_ONLY, true);
 
 	return S_OK;
 }

@@ -78,29 +78,29 @@ cbuffer MATERIAL_CONST : register(b1)
 
 cbuffer ANIM_DATA2D : register(b2)
 {
-    float2  g_vLeftTop;
-    float2  g_vSlizeSize;
-    float2  g_vBackground;
-    float2  g_vOffset;    
-    int     g_UseAnim2D;
-    float3  padding;
+    float2 g_vLeftTop;
+    float2 g_vSlizeSize;
+    float2 g_vBackground;
+    float2 g_vOffset;
+    int g_UseAnim2D;
+    float3 padding;
 }
 
 cbuffer GLOBAL_DATA : register(b3)
 {
-    float2  g_RenderResolution;     // 렌더링 해상도
-    float2  g_NoiseTexResolution;   // Noise 텍스쳐 해상도
+    float2 g_RenderResolution; // 렌더링 해상도
+    float2 g_NoiseTexResolution; // Noise 텍스쳐 해상도
     
-    float   g_dt;                   // Delta Time
-    float   g_time;                 // 누적 시간
+    float g_dt; // Delta Time
+    float g_time; // 누적 시간
     
-    float   g_EngineDT;             // Engine Delta Time
-    float   g_EngineTime;           // Engine 누적 시간
+    float g_EngineDT; // Engine Delta Time
+    float g_EngineTime; // Engine 누적 시간
     
-    int     g_Light2DCount;         // 2D 광원 개수
-    int     g_Light3DCount;         // 3D 광원 개수
+    int g_Light2DCount; // 2D 광원 개수
+    int g_Light3DCount; // 3D 광원 개수
     
-    float2  globalpadding;
+    float2 globalpadding;
 }
 
 
@@ -128,6 +128,9 @@ Texture2D g_NoiseTex : register(t14);
 
 SamplerState g_sam_0 : register(s0);
 SamplerState g_sam_1 : register(s1);
+
+//AfterImage Buffer
+StructuredBuffer<AfterImageInfo> g_AfterImage : register(t29);
 
 // Animation3D Bone Matrix Buffer
 StructuredBuffer<Matrix> g_arrBoneMat : register(t30);

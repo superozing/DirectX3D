@@ -9,6 +9,7 @@
 #include "CAnimator3D.h"
 #include "CTransform.h"
 #include "CMaterial.h"
+#include "CScript.h"
 
 #include "CRenderMgr.h"
 
@@ -105,6 +106,13 @@ void CMeshRender::render(UINT _Subset)
 		GetMaterial(_Subset)->SetBoneCount(Animator3D()->GetBoneCount());
 	}
 
+	vector<CScript*> pvecScript = GetOwner()->GetScripts();
+
+	for (int i = 0; i < pvecScript.size(); ++i)
+	{
+		pvecScript[i]->UpdateData();
+	}
+
 	// 사용할 재질 업데이트
 	GetMaterial(_Subset)->UpdateData();
 
@@ -117,4 +125,9 @@ void CMeshRender::render(UINT _Subset)
 
 	if (Animator3D())
 		Animator3D()->ClearData();
+
+	for (int i = 0; i < pvecScript.size(); ++i)
+	{
+		pvecScript[i]->Clear();
+	}
 }

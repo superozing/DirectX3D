@@ -46,7 +46,7 @@ void GS_AfterImage(point VS_OUT _in[1], inout LineStream<GS_OUT> _OutStream)
     GS_OUT output = (GS_OUT) 0;
     float3 parentPosition = _in[0].vPosition.xyz;
     float3 currentCenter = parentPosition;
-    float3 worldRotation = -WorldRotation.xyz;
+    float3 worldRotation = -g_AfterImage[0].NodeRotation[0];
     float3x3 worldRotationMatrix = CreateRotationMatrix(worldRotation);
 
     // 트레일의 초기 방향 벡터 계산

@@ -119,4 +119,12 @@ struct tSkinningInfo
     float3 vNormal;
 };
 
+struct AfterImageInfo
+{
+    int NodeCount;
+    float3 NodePosition[19];
+    float3 NodeRotation[19];
+    float TimeStep;
+};
+
 #endif
