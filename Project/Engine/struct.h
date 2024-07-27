@@ -312,7 +312,7 @@ struct tFontInfo
 
 	// X, Y - 윈도우 좌표 기준 x, y
 	// Z - 깊이 판정을 위한 용도
-	Vec3  vPos;
+	Vec3 vPos;
 
 	float fFontSize; // 폰트의 크기
 
@@ -325,4 +325,12 @@ struct tFontInfo
 	// FW1_CENTER - 중앙 정렬
 	// FW1_LEFT - 왼 쪽 정렬
 	FW1_TEXT_FLAG TextFlag = FW1_RESTORESTATE;
+};
+
+struct AfterImageInfo
+{
+	int	  NodeCount; // max는 19개
+	Vec3  NodePosition[19];
+	Vec3  NodeRotation[19];
+	float TimeStep;
 };
