@@ -15,7 +15,7 @@
 #include "CCrosshair.h"
 #include "CPausePanel.h"
 #include "CPauseBtn.h"
-#include "CDamageFont.h"
+#include "CDigitUI.h"
 #include "CProgressBar.h"
 #include "CBossHP.h"
 #include "CMonsterHP.h"
@@ -63,7 +63,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CCrosshair");
 	_vec.push_back(L"CPausePanel");
 	_vec.push_back(L"CPauseBtn");
-	_vec.push_back(L"CDamageFont");
+	_vec.push_back(L"CDigitUI");
 	_vec.push_back(L"CProgressBar");
 	_vec.push_back(L"CBossHP");
 	_vec.push_back(L"CMonsterHP");
@@ -126,8 +126,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPausePanel;
 	if (L"CPauseBtn" == _strScriptName)
 		return new CPauseBtn;
-	if (L"CDamageFont" == _strScriptName)
-		return new CDamageFont;
+	if (L"CDigitUI" == _strScriptName)
+		return new CDigitUI;
 	if (L"CProgressBar" == _strScriptName)
 		return new CProgressBar;
 	if (L"CBossHP" == _strScriptName)
@@ -237,8 +237,8 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::PAUSEBTN:
 		return new CPauseBtn;
 		break;
-	case (UINT)SCRIPT_TYPE::DAMAGEFONT:
-		return new CDamageFont;
+	case (UINT)SCRIPT_TYPE::DIGITUI:
+		return new CDigitUI;
 		break;
 	case (UINT)SCRIPT_TYPE::PROGRESSBAR:
 		return new CProgressBar;
@@ -394,8 +394,8 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CPauseBtn";
 		break;
 
-	case SCRIPT_TYPE::DAMAGEFONT:
-		return L"CDamageFont";
+	case SCRIPT_TYPE::DIGITUI:
+		return L"CDigitUI";
 		break;
 
 	case SCRIPT_TYPE::PROGRESSBAR:

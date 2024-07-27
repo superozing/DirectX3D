@@ -55,7 +55,7 @@
     <ClInclude Include="CPauseBtn.h">
       <Filter>Scripts\UI\Image\PauseBtn</Filter>
     </ClInclude>
-    <ClInclude Include="CDamageFont.h">
+    <ClInclude Include="CDigitUI.h">
       <Filter>Scripts\UI\Image\DamageFont</Filter>
     </ClInclude>
     <ClInclude Include="CProgressBar.h">
@@ -209,7 +209,7 @@
     <ClCompile Include="CPauseBtn.cpp">
       <Filter>Scripts\UI\Image\PauseBtn</Filter>
     </ClCompile>
-    <ClCompile Include="CDamageFont.cpp">
+    <ClCompile Include="CDigitUI.cpp">
       <Filter>Scripts\UI\Image\DamageFont</Filter>
     </ClCompile>
     <ClCompile Include="CProgressBar.cpp">

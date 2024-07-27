@@ -37,7 +37,6 @@
 #include <Scripts/CCrosshair.h>
 #include <Scripts/CPausePanel.h>
 #include <Scripts/CPauseBtn.h>
-#include <Scripts/CDamageFont.h>
 #include <Scripts/CPlayerHP.h>
 #include <Scripts/CMonsterHP.h>
 #include <Scripts/CDialog.h>

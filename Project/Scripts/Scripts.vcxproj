@@ -180,7 +180,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CCoverUI.h" />
     <ClInclude Include="CCrosshair.h" />
     <ClInclude Include="CDamagedDirectionMgr.h" />
-    <ClInclude Include="CDamageFont.h" />
+    <ClInclude Include="CDigitUI.h" />
     <ClInclude Include="CDialog.h" />
     <ClInclude Include="CEditorCameraMoveScript.h" />
     <ClInclude Include="CEventListener.h" />
@@ -237,7 +237,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CCoverUI.cpp" />
     <ClCompile Include="CCrosshair.cpp" />
     <ClCompile Include="CDamagedDirectionMgr.cpp" />
-    <ClCompile Include="CDamageFont.cpp" />
+    <ClCompile Include="CDigitUI.cpp" />
     <ClCompile Include="CDialog.cpp" />
     <ClCompile Include="CEditorCameraMoveScript.cpp" />
     <ClCompile Include="CEventListener.cpp" />

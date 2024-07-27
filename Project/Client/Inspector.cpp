@@ -501,6 +501,7 @@ void Inspector::SavePrefab()
 	if (m_bPrefab)
 	{
 		FileName = path(m_TargetAsset->GetKey()).wstring();
+		if (FileName == L"") return;
 	}
 
 	filesystem::path file_path = filesystem::path(ContentPath) / FileName;

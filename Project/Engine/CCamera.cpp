@@ -80,6 +80,14 @@ struct CmpDescending
 	}
 };
 
+struct CmpUIDescending
+{
+	bool operator()(CGameObject* _First, CGameObject* _Second)
+	{
+		return _First->Transform()->GetWorldPos().z > _Second->Transform()->GetWorldPos().z;
+	}
+};
+
 struct CmpDecalPriority
 {
 	bool operator()(CGameObject* _First, CGameObject* _Second)
@@ -327,7 +335,14 @@ void CCamera::SortObject()
 	}
 
 	// Depth Sorting
-	std::sort(m_vecTransparent.begin(), m_vecTransparent.end(), CmpDescending());
+	if (this == CRenderMgr::GetInst()->GetMainCam())
+	{
+		std::sort(m_vecTransparent.begin(), m_vecTransparent.end(), CmpDescending());
+	}
+	else
+	{
+		std::sort(m_vecTransparent.begin(), m_vecTransparent.end(), CmpUIDescending());
+	}
 }
 
 void CCamera::render_deferred()
