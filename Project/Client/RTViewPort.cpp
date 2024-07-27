@@ -193,7 +193,7 @@ void RTViewPort::Gizmo()
 	RoRMath::MatrixToFloat16(cameraProjection, cameraProjMat);
 	RoRMath::MatrixToFloat16(objectMatrix, objmat);
 
-	EditTransform(cameraView, cameraProjection, objectMatrix, true, distance);
+	EditTransform(cameraView, cameraProjection, objectMatrix, false, distance);
 
 	RoRMath::Float16ToMatrix(cameraViewMat, cameraView);
 	RoRMath::Float16ToMatrix(cameraProjMat, cameraProjection);

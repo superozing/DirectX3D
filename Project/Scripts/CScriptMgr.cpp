@@ -46,6 +46,7 @@
 #include "CDamagedDirectionMgr.h"
 #include "CHUD.h"
 #include "CTextUI.h"
+#include "CStretchUIScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -94,6 +95,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CDamagedDirectionMgr");
 	_vec.push_back(L"CHUD");
 	_vec.push_back(L"CTextUI");
+	_vec.push_back(L"CStretchUIScript");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -188,6 +190,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CHUD;
 	if (L"CTextUI" == _strScriptName)
 		return new CTextUI;
+	if (L"CStretchUIScript" == _strScriptName)
+		return new CStretchUIScript;
 	return nullptr;
 }
 
@@ -329,6 +333,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::TEXTUI:
 		return new CTextUI;
+		break;
+	case (UINT)SCRIPT_TYPE::STRETCHUISCRIPT:
+		return new CStretchUIScript;
 		break;
 	}
 	return nullptr;
@@ -516,6 +523,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::TEXTUI:
 		return L"CTextUI";
+		break;
+
+	case SCRIPT_TYPE::STRETCHUISCRIPT:
+		return L"CStretchUIScript";
 		break;
 
 	}

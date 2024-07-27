@@ -2,12 +2,13 @@
 #include "CImageUIScript.h"
 class CAtlasImageUIScript : public CImageUIScript
 {
-private:
+protected:
 	Vec2 m_vLeftTop;
 	Vec2 m_vSize;
 
 public:
 	void Apply();
+	void init();
 
 public:
 	virtual void begin() override;
@@ -20,5 +21,6 @@ public:
 	CLONE(CAtlasImageUIScript);
 	CAtlasImageUIScript();
 	CAtlasImageUIScript(const CAtlasImageUIScript& _Origin);
+	CAtlasImageUIScript(UINT _type);
 	~CAtlasImageUIScript();
 };
