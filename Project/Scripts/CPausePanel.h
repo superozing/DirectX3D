@@ -4,8 +4,16 @@
 class CPausePanel : public CImageUIScript
 {
 private:
-	bool m_bOpening;
-	Vec2 m_vOpenSpeed;
+	bool m_bIncreaseX;
+	bool m_bIncreaseY;
+
+	Vec2 m_vIncreaseSpeed;
+
+	vector<class CBtnUIScript*> m_vecBtns;
+
+private:
+	void Continue();
+	void Exit();
 
 public:
 	virtual void begin() override;

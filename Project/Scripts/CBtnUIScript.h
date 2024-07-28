@@ -7,6 +7,8 @@ typedef void (CEntity::*DelegateFunc)(void);
 class CBtnUIScript : public CUIScript
 {
 private:
+	bool m_bDraw;
+
 	Ptr<CTexture> m_NormalImg;
 	Ptr<CTexture> m_HoverImg;
 	Ptr<CTexture> m_PressedImg;
@@ -21,6 +23,10 @@ private:
 	// 델리게이트(맴버함수 포인터, 객체)
 	CEntity*	 m_Inst;
 	DelegateFunc m_Delegate;
+
+public:
+	void Draw(bool _draw) { m_bDraw = _draw; }
+	bool IsDraw() { return m_bDraw; }
 
 public:
 	void SetNormalImg(Ptr<CTexture> _NormalImg) { m_NormalImg = _NormalImg; }

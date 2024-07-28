@@ -2,15 +2,32 @@
 #include "CPausePanel.h"
 
 #include <Engine\CDevice.h>
+#include <Engine\CLevelMgr.h>
+#include <Engine\CLevel.h>
+
+#include "CBtnUIScript.h"
 
 CPausePanel::CPausePanel()
 	: CImageUIScript((UINT)SCRIPT_TYPE::PAUSEPANEL)
-	, m_vOpenSpeed(0.3f, 0.3f)
+	, m_vIncreaseSpeed(0.3f, 0.3f)
 {
-	AppendScriptParam("OpenSpeed", SCRIPT_PARAM::VEC2, &m_vOpenSpeed);
+	AppendScriptParam("OpenSpeed", SCRIPT_PARAM::VEC2, &m_vIncreaseSpeed);
 }
 
 CPausePanel::~CPausePanel()
+{
+}
+
+void CPausePanel::Continue()
+{
+	Draw(false);
+	for (const auto& btn : m_vecBtns)
+	{
+		btn->Draw(false);
+	}
+}
+
+void CPausePanel::Exit()
 {
 }
 
@@ -90,26 +107,48 @@ void CPausePanel::tick()
 {
 	CImageUIScript::tick();
 	static float xTimer = 0.f;
-	if (KEY_TAP(ESC))
+	static float yTimer = 0.f;
+
+	Vec2 vRes = CDevice::GetInst()->GetRenderResolution();
+
+	// 열리기 시작
+	if (KEY_TAP(ESC) && !IsDraw())
 	{
 		Draw(true);
 		Transform()->SetRelativeScale(Vec3(10.f, 10.f, 1.f));
 
-		m_bOpening = true;
-		xTimer	   = 0.f;
-		auto res   = CDevice::GetInst()->GetRenderResolution();
-		GetOwner()->Transform()->Lerp(Vec3(), false, Vec3(), true, Vec3(res.x - 350.f, 10.f, 1.f), m_vOpenSpeed.x);
+		CTimeMgr::GetInst()->SetDTScale(0.f);
+
+		m_bIncreaseX = true;
+		xTimer		 = 0.f;
+		GetOwner()->Transform()->Lerp(Vec3(), false, Vec3(), true, Vec3(vRes.x - 350.f, 10.f, 1.f), m_vIncreaseSpeed.x);
 	}
 
-	if (m_bOpening)
+	// x축 크기 증가시작
+	if (m_bIncreaseX && !m_bIncreaseY)
 	{
-		xTimer += DT;
-		if (xTimer >= m_vOpenSpeed.x)
+		xTimer += DT_ENGINE;
+		// x축 크기 증가완료 y축 크기 증가 시작
+		if (xTimer >= m_vIncreaseSpeed.x)
 		{
-			m_bOpening = false;
-			auto res   = CDevice::GetInst()->GetRenderResolution();
-			Transform()->Lerp(Vec3(), false, Vec3(), true, Vec3(Transform()->GetRelativeScale().x, res.y - 250.f, 1.f),
-							  m_vOpenSpeed.y);
+			yTimer		 = 0.f;
+			m_bIncreaseY = true;
+			Transform()->Lerp(Vec3(), false, Vec3(), true, Vec3(Transform()->GetRelativeScale().x, vRes.y - 250.f, 1.f),
+							  m_vIncreaseSpeed.y);
+		}
+	}
+
+	// y축 크기 증가 시작
+	if (m_bIncreaseX && m_bIncreaseY)
+	{
+		yTimer += DT_ENGINE;
+		// x축 크기 증가 완료, y축 크기 증가 완료
+		if (yTimer >= m_vIncreaseSpeed.y)
+		{
+			for (const auto& btn : m_vecBtns)
+			{
+				btn->Draw(true);
+			}
 		}
 	}
 }
