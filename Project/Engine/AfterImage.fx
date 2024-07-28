@@ -5,11 +5,7 @@
 #include "struct.fx"
 #include "func.fx"
 
-#define NodeCount     g_int_0
-#define WorldRotation g_vec4_0
-#define NodeLength g_float_0
-
-
+#define NodeRender g_bool_0
 
 struct VS_IN
 {
@@ -44,15 +40,12 @@ VS_OUT VS_AfterImage(VS_IN _in)
 void GS_AfterImage(point VS_OUT _in[1], inout LineStream<GS_OUT> _OutStream)
 {
     GS_OUT output = (GS_OUT) 0;
-    float3 parentPosition = _in[0].vPosition.xyz;
+    float3 parentPosition = g_AfterImage[0].NodePosition[0];
     float3 currentCenter = parentPosition;
     float3 worldRotation = -g_AfterImage[0].NodeRotation[0];
     float3x3 worldRotationMatrix = CreateRotationMatrix(worldRotation);
 
-    // 트레일의 초기 방향 벡터 계산
-    float3 trailDirection = mul(float3(0, 0, -1), worldRotationMatrix);
-
-    for (int j = 0; j < NodeCount; ++j)
+    for (int j = 0; j < g_AfterImage[0].NodeCount; ++j)
     {
         // 중심점 출력
         output.vPosition = mul(mul(float4(currentCenter, 1), g_matView), g_matProj);
@@ -81,27 +74,47 @@ void GS_AfterImage(point VS_OUT _in[1], inout LineStream<GS_OUT> _OutStream)
             _OutStream.RestartStrip();
         }
 
-        // 추가 선 그리기
-        output.vPosition = mul(mul(float4(currentCenter, 1), g_matView), g_matProj);
-        _OutStream.Append(output);
+        if (j < g_AfterImage[0].NodeCount - 1)
+        {
+            // 추가 선 그리기
+            output.vPosition = mul(mul(float4(currentCenter, 1), g_matView), g_matProj);
+            _OutStream.Append(output);
+            
+            // 다음 노드의 위치 계산 (트레일 방향을 따라)
+            float3 nextCenter = g_AfterImage[0].NodePosition[j + 1];
+            output.vPosition = mul(mul(float4(nextCenter, 1), g_matView), g_matProj);
+            _OutStream.Append(output);
+            _OutStream.RestartStrip();
 
-        // 다음 노드의 위치 계산 (트레일 방향을 따라)
-        float3 nextCenter = currentCenter + (trailDirection * NodeLength);
-        output.vPosition = mul(mul(float4(nextCenter, 1), g_matView), g_matProj);
-        _OutStream.Append(output);
-        _OutStream.RestartStrip();
-
-        // 다음 반복을 위해 현재 위치 업데이트
-        currentCenter = nextCenter;
+            // 다음 반복을 위해 현재 위치 업데이트
+            currentCenter = nextCenter;
+            worldRotation = -g_AfterImage[0].NodeRotation[j + 1];
+            worldRotationMatrix = CreateRotationMatrix(worldRotation);
+        }
+        
+    
     }
+    
+   
 }
 
 
 PS_OUT PS_AfterImage(GS_OUT _in) : SV_Target
 {
     PS_OUT output = (PS_OUT) 0.f;
-    output.vColor = float4(1.f, 0.f, 0.f, 1.f);
+   
+    if (NodeRender == true)
+    {
+        output.vColor = float4(1.f, 0.f, 0.f, 1.f);
+        
+    }
+    else
+    {
+        discard;
+    }
+    
     return output;
+  
 };
 
 #endif
