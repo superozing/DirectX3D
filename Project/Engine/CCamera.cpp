@@ -429,7 +429,7 @@ void CCamera::render_Instance(const map<ULONG64, vector<tInstObj>>& m_mapInstGro
 			continue;
 
 		pair.second[0].pObj->Transform()->UpdateData();
-		// auto BloomInfo = CRenderMgr::GetInst()->m_BloomInfo;
+		// auto BloomInfo = CRenderMgr::GetInst()->m_GlobalBloomInfo;
 		for (auto& instObj : pair.second)
 		{
 			instObj.pObj->GetRenderComponent()->render(instObj.iMtrlIdx);
@@ -467,7 +467,7 @@ void CCamera::render_forward()
 void CCamera::render_postprocess()
 {
 	// Blur&Bloom처리
-	if (true == CRenderMgr::GetInst()->m_BloomInfo.Activate)
+	if (true == CRenderMgr::GetInst()->m_GlobalBloomInfo.BloomActivate)
 	{
 		Blur();
 		Bloom();
@@ -514,7 +514,7 @@ void CCamera::Blur()
 	auto BlurTarget = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RelativeLuminanceTargetTex");
 
 	// Bloom Level <= MAXBLURLEVEL
-	int BlurLevel = min(MAXBLURLEVEL, CRenderMgr::GetInst()->m_BloomInfo.BlurLevel);
+	int BlurLevel = min(MAXBLURLEVEL, CRenderMgr::GetInst()->m_GlobalBloomInfo.BlurLevel);
 
 	// Blur Tex
 	auto BloomOne = CRenderMgr::GetInst()->m_vecBlurOneTex;
@@ -582,7 +582,7 @@ void CCamera::Bloom()
 	pBloomMtrl = CAssetMgr::GetInst()->Load<CMaterial>(MTRLBloom);
 
 	// 블랜드비율
-	auto  BlurInfo	 = CRenderMgr::GetInst()->m_BloomInfo;
+	auto  BlurInfo	 = CRenderMgr::GetInst()->m_GlobalBloomInfo;
 	float Bloomratio = BlurInfo.Ratio;
 
 	// 텍스쳐, 블랜드비율 바인딩

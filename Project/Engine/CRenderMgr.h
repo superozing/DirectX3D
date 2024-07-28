@@ -10,16 +10,15 @@ class CLight3D;
 class CStructuredBuffer;
 class CMRT;
 
-struct tBloomInfo
+struct tGlobalBloomInfo
 {
-	bool Activate = true;
-	// deferred.fx
-	float Threshold = 0.8f;
-	Vec4  vColor	= Vec4(1.f, 1.f, 1.f, 1.f);
+	bool BloomActivate = true;
+	bool GlobalBloom   = false;
 	// blur.fx
 	int BlurLevel = 3;
 	// bloom.fx
-	float Ratio = .14f;
+	float  Ratio = .14f;
+	tBloom GlbalBloomSetting{Vec4(1.f, 1.f, 1.f, 1.f), 0.8f};
 };
 
 class CRenderMgr : public CManager<CRenderMgr>
@@ -111,7 +110,7 @@ public:
 	CCamera* GetMainCam();
 	CCamera* GetEditorCam() { return m_EditorCam; }
 
-	tBloomInfo m_BloomInfo;
+	tGlobalBloomInfo m_GlobalBloomInfo;
 
 public:
 	virtual void init() override;
