@@ -42,6 +42,7 @@
 #include "CDamagedDirection.h"
 #include "CDamagedDirectionMgr.h"
 #include "CMegaFistScript.h"
+#include "CBloomScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -86,6 +87,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CDamagedDirection");
 	_vec.push_back(L"CDamagedDirectionMgr");
 	_vec.push_back(L"CMegaFistScript");
+	_vec.push_back(L"CBloomScript");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -172,6 +174,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CDamagedDirectionMgr;
 	if (L"CMegaFistScript" == _strScriptName)
 		return new CMegaFistScript;
+	if (L"CBloomScript" == _strScriptName)
+		return new CBloomScript;
 	return nullptr;
 }
 
@@ -301,6 +305,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::MEGAFISTSCRIPT:
 		return new CMegaFistScript;
+		break;
+	case (UINT)SCRIPT_TYPE::BLOOMSCRIPT:
+		return new CBloomScript;
 		break;
 	}
 	return nullptr;
@@ -472,6 +479,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::MEGAFISTSCRIPT:
 		return L"CMegaFistScript";
+		break;
+
+	case SCRIPT_TYPE::BLOOMSCRIPT:
+		return L"CBloomScript";
 		break;
 
 	}

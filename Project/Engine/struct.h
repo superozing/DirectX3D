@@ -57,6 +57,14 @@ struct tPixel
 };
 
 // 광선 구조체
+struct tBloom
+{
+	Vec4  vBloomColor;
+	float fThreshold;
+	int	  iPadding[3];
+};
+
+// 광선 구조체
 struct tRay
 {
 	Vec3 vStart;
@@ -260,6 +268,10 @@ struct tMtrlConst
 	// 3D Animation 정보
 	int arrAnimData[2];
 
+	// 블룸 정보
+	int iBloomUse;
+	int iPadding[3];
+
 	friend ofstream& operator<<(ofstream& fout, const tMtrlConst& _mtrlConst);
 	friend ifstream& operator>>(ifstream& fin, tMtrlConst& _mtrlConst);
 };
@@ -312,7 +324,7 @@ struct tFontInfo
 
 	// X, Y - 윈도우 좌표 기준 x, y
 	// Z - 깊이 판정을 위한 용도
-	Vec3  vPos;
+	Vec3 vPos;
 
 	float fFontSize; // 폰트의 크기
 
