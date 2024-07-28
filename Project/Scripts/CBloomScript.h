@@ -13,6 +13,8 @@ public:
 	virtual void tick() override;
 	virtual void UpdateData() override;
 	virtual void Clear() override;
+	virtual void SaveToFile(ofstream& fout);
+	virtual void LoadFromFile(ifstream& fin);
 
 public:
 	CLONE(CBloomScript);

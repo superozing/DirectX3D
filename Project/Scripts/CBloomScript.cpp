@@ -60,3 +60,30 @@ void CBloomScript::Clear()
 	GetOwner()->GetRenderComponent()->GetMaterial(0)->SetBloom(false);
 	m_Buffer->Clear(REGISTER_NUM_BLOOM);
 }
+
+#define TagBloomActivate "[BloomActivate]"
+#define TagBloomColor "[BloomColor]"
+#define TagBloomThreshold "[BloomThreshold]"
+void CBloomScript::SaveToFile(ofstream& fout)
+{
+	fout << TagBloomActivate << endl;
+	fout << m_bBloomActive << endl;
+
+	fout << TagBloomColor << endl;
+	fout << m_Info.vBloomColor << endl;
+
+	fout << TagBloomThreshold << endl;
+	fout << m_Info.fThreshold << endl;
+}
+
+void CBloomScript::LoadFromFile(ifstream& fin)
+{
+	Utils::GetLineUntilString(fin, TagBloomActivate);
+	fin >> m_bBloomActive;
+
+	Utils::GetLineUntilString(fin, TagBloomColor);
+	fin >> m_Info.vBloomColor;
+
+	Utils::GetLineUntilString(fin, TagBloomThreshold);
+	fin >> m_Info.fThreshold;
+}
