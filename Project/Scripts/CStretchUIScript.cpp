@@ -9,8 +9,8 @@ CStretchUIScript::CStretchUIScript()
 
 CStretchUIScript::CStretchUIScript(const CStretchUIScript& _Origin)
 	: CAtlasImageUIScript(_Origin)
+	, m_vBaseSize(_Origin.m_vBaseSize)
 {
-	AppendScriptParam("BaseSize", SCRIPT_PARAM::VEC2, &m_vBaseSize);
 }
 
 CStretchUIScript::~CStretchUIScript()

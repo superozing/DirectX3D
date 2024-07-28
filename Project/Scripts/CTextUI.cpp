@@ -19,7 +19,7 @@ CTextUI::CTextUI(const CTextUI& _Origin)
 	, m_bDraw(true)
 	, m_strText(_Origin.m_strText)
 {
-	init();
+	m_tInfo.fFontSize = _Origin.m_tInfo.fFontSize;
 }
 
 CTextUI::CTextUI(UINT _type)

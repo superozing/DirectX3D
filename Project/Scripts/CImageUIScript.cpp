@@ -23,7 +23,6 @@ CImageUIScript::CImageUIScript(const CImageUIScript& _Other)
 	, m_UIImg(_Other.m_UIImg)
 	, m_vBlendColor(_Other.m_vBlendColor)
 {
-	init();
 }
 
 CImageUIScript::~CImageUIScript()
@@ -89,10 +88,16 @@ void CImageUIScript::tick()
 	if (m_bAllowBindTexPerFrame && m_UIImg.Get())
 		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_UIImg);
 
-	m_bDraw ? GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_UIImg)
-			: GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, nullptr);
-
-	MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, m_vBlendColor);
+	if (m_bDraw)
+	{
+		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_UIImg);
+		MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, m_vBlendColor);
+	}
+	else
+	{
+		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, nullptr);
+		MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, Vec4(0.f, 0.f, 0.f, 0.f));
+	}
 }
 
 void CImageUIScript::BindUIImgOnTexParam()

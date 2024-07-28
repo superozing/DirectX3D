@@ -150,11 +150,14 @@
     <ClInclude Include="CHUD.h">
       <Filter>Scripts\UI</Filter>
     </ClInclude>
-    <ClInclude Include="CTextUI.h">
-      <Filter>Scripts\UI\Text</Filter>
-    </ClInclude>
     <ClInclude Include="CStretchUIScript.h">
       <Filter>Scripts\DefaultUI\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="CTextUI.h">
+      <Filter>Scripts\DefaultUI\TextUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CReloadUI.h">
+      <Filter>Scripts\UI\Image\Reload</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -311,11 +314,14 @@
     <ClCompile Include="CHUD.cpp">
       <Filter>Scripts\UI</Filter>
     </ClCompile>
-    <ClCompile Include="CTextUI.cpp">
-      <Filter>Scripts\UI\Text</Filter>
-    </ClCompile>
     <ClCompile Include="CStretchUIScript.cpp">
       <Filter>Scripts\DefaultUI\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="CTextUI.cpp">
+      <Filter>Scripts\DefaultUI\TextUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CReloadUI.cpp">
+      <Filter>Scripts\UI\Image\Reload</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -426,6 +432,12 @@
     </Filter>
     <Filter Include="Scripts\UI\Digit">
       <UniqueIdentifier>{0b661eb9-4e4a-43d3-9edf-5093ab788785}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\DefaultUI\TextUI">
+      <UniqueIdentifier>{1c435064-82c6-4d54-85d3-432043f5adff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\Image\Reload">
+      <UniqueIdentifier>{158b20c1-cb18-445f-92ec-c746df4b9de8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -14,7 +14,6 @@ CAtlasImageUIScript::CAtlasImageUIScript(const CAtlasImageUIScript& _Origin)
 	, m_vLeftTop(_Origin.m_vLeftTop)
 	, m_vSize(_Origin.m_vSize)
 {
-	init();
 }
 
 CAtlasImageUIScript::CAtlasImageUIScript(UINT _type)

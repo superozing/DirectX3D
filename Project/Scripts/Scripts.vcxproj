@@ -220,6 +220,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="framework.h" />
     <ClInclude Include="CHUD.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="CReloadUI.h" />
     <ClInclude Include="strings.h" />
   </ItemGroup>
   <ItemGroup>
@@ -282,6 +283,7 @@ call ScriptsCopy.bat</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="CReloadUI.cpp" />
     <ClCompile Include="Scripts.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -36,7 +36,7 @@ VS_OUT VS_StaticUI(VS_IN _in)
 float4 PS_StaticUI(VS_OUT _in) : SV_Target
 {
     // 출력 색상
-    float4 vOutColor = (float4) (1.f, 0.f, 1.f, 1.f);
+    float4 vOutColor = (float4) (0.f);
     
     if (AtlasCheck)
     {
