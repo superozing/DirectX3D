@@ -61,7 +61,7 @@ void CPauseBtn::begin()
 		assert(nullptr);
 	}
 
-	m_pPauseBtnUI->SetDeletage(m_pPausePanel, (DelegateFunc)&CPausePanel::ActivePausePanel);
+	// m_pPauseBtnUI->SetDeletage(m_pPausePanel, (DelegateFunc)&CPausePanel::ActivePausePanel);
 
 	m_pPauseBtnUI->SetUIType(UI_TYPE::PAUSEBTN);
 
