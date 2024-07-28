@@ -41,10 +41,13 @@ float4 PS_CromaticAberration(VS_OUT _in) : SV_Target
     float Width = g_RenderResolution.x;
     float Height = g_RenderResolution.y;
     float2 texelSize = float2(1.0f / Width, 1.0f / Height);
+    float2 uv = _in.vUV - float2(0.5f, 0.5f);
+    uv = uv * g_vec2_3;
+    uv = uv + float2(0.5f, 0.5f);
         
-    float red = g_tex_0.Sample(g_sam_0, _in.vUV + g_vec2_0 * texelSize).r;
-    float green = g_tex_0.Sample(g_sam_0, _in.vUV + g_vec2_1 * texelSize).g;
-    float blue = g_tex_0.Sample(g_sam_0, _in.vUV + g_vec2_2 * texelSize).b;
+    float red = g_tex_0.Sample(g_sam_0, uv + g_vec2_0 * texelSize).r;
+    float green = g_tex_0.Sample(g_sam_0, uv + g_vec2_1 * texelSize).g;
+    float blue = g_tex_0.Sample(g_sam_0, uv + g_vec2_2 * texelSize).b;
     
         
     vColor.rgb = float3(red, green, blue);
