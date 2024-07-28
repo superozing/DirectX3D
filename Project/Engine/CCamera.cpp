@@ -411,10 +411,6 @@ void CCamera::render_Instance(const map<ULONG64, vector<tInstObj>>& m_mapInstGro
 			pMtrl->SetBoneCount(pMesh->GetBoneCount());
 		}
 
-		// Bloom
-		// auto BloomInfo = CRenderMgr::GetInst()->m_BloomInfo;
-		// pMtrl->SetScalarParam(SCALAR_PARAM::FLOAT_0, BloomInfo.Threshold);
-		// pMtrl->SetScalarParam(SCALAR_PARAM::VEC4_0, BloomInfo.vColor);
 		pMtrl->UpdateData_Inst();
 		pMesh->render_instancing(pair.second[0].iMtrlIdx);
 
@@ -436,14 +432,6 @@ void CCamera::render_Instance(const map<ULONG64, vector<tInstObj>>& m_mapInstGro
 		// auto BloomInfo = CRenderMgr::GetInst()->m_BloomInfo;
 		for (auto& instObj : pair.second)
 		{
-			// Bloom
-			// instObj.pObj->GetRenderComponent()
-			//	->GetMaterial(instObj.iMtrlIdx)
-			//	->SetScalarParam(SCALAR_PARAM::FLOAT_0, BloomInfo.Threshold);
-			// instObj.pObj->GetRenderComponent()
-			//	->GetMaterial(instObj.iMtrlIdx)
-			//	->SetScalarParam(SCALAR_PARAM::VEC4_0, BloomInfo.vColor);
-
 			instObj.pObj->GetRenderComponent()->render(instObj.iMtrlIdx);
 		}
 
