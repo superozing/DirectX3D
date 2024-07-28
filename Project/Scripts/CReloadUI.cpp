@@ -2,8 +2,12 @@
 #include "CReloadUI.h"
 
 #include <Engine\CGameObject.h>
+#include <Engine\CLevelMgr.h>
+#include <Engine\CLevel.h>
+
 #include "CAtlasImageUIScript.h"
 #include "CPlayerController.h"
+#include "CPlayerScript.h"
 
 CReloadUI::CReloadUI()
 	: CScript((UINT)SCRIPT_TYPE::RELOADUI)
@@ -28,8 +32,11 @@ void CReloadUI::begin()
 		}
 	}
 
-	// TODO : 사격시스템 들어오면 리로드 시간 받아야 함
-	m_fReloadTime = 2.f;
+	m_fReloadTime = CLevelMgr::GetInst()
+						->GetCurrentLevel()
+						->FindObjectByName(PlayerName)
+						->Animator3D()
+						->GetAnimLength((int)PLAYER_STATE::NormalReload);
 
 	m_tBlankBullet.LeftTop = Vec2(740, 348);
 	m_tBlankBullet.Size	   = Vec2(20, 55);
@@ -46,8 +53,16 @@ void CReloadUI::tick()
 
 	Timer += DT;
 
-	// TODO : 사격시스템 들어오면 변경해야 함
-	if (KEY_TAP(CPlayerController::Reload))
+	int state = CLevelMgr::GetInst()
+					->GetCurrentLevel()
+					->FindObjectByName(PlayerName)
+					->GetScript<CPlayerScript>()
+					->GetCurState();
+
+	// 재장전 시작하면 초기화
+	if (!GetOwner()->GetScript<CAtlasImageUIScript>()->IsDraw() &&
+		(state == (int)PLAYER_STATE::NormalReload || state == (int)PLAYER_STATE::KneelReload ||
+		 state == (int)PLAYER_STATE::StandReload))
 	{
 		Timer = 0.f;
 		GetOwner()->GetScript<CAtlasImageUIScript>()->Draw(true);
@@ -59,6 +74,7 @@ void CReloadUI::tick()
 		}
 	}
 
+	// 재장전 종료될 때 삭제
 	if (GetOwner()->GetScript<CAtlasImageUIScript>()->IsDraw() && Timer >= m_fReloadTime)
 	{
 		GetOwner()->GetScript<CAtlasImageUIScript>()->Draw(false);
@@ -69,6 +85,7 @@ void CReloadUI::tick()
 		}
 	}
 
+	// 하나씩 총알 이미지 변경
 	if (Timer < m_fReloadTime)
 	{
 		int idx = Timer / m_fReloadTime * m_vecBullets.size();
