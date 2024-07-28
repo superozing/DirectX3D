@@ -600,9 +600,17 @@ void CCamera::Bloom()
 
 void CCamera::Cromatic_Aberration()
 {
-	auto& Info = CRenderMgr::GetInst()->m_CAInfo;
-	if (false == Info.Activate)
+	auto& RefInfo = CRenderMgr::GetInst()->m_CAInfo;
+	if (false == RefInfo.Activate)
 		return;
+
+	RefInfo.RemainTime -= DT;
+	if (0.f >= RefInfo.RemainTime)
+	{
+		RefInfo.Activate   = false;
+		RefInfo.RemainTime = 0.f;
+	}
+	float LifeRatio = RefInfo.RemainTime / RefInfo.Duration;
 
 	auto ColorCopy	  = CAssetMgr::GetInst()->FindAsset<CTexture>(L"PostProcessTex");
 	auto RenderTarget = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
@@ -614,10 +622,10 @@ void CCamera::Cromatic_Aberration()
 
 	// 텍스쳐, 오프셋바인딩
 	pCAMat->SetTexParam(TEX_PARAM::TEX_0, ColorCopy);
-	pCAMat->SetScalarParam(SCALAR_PARAM::VEC2_0, Info.MaxRedOffSet);
-	pCAMat->SetScalarParam(SCALAR_PARAM::VEC2_1, Info.MaxGreenOffset);
-	pCAMat->SetScalarParam(SCALAR_PARAM::VEC2_2, Info.MaxBlueOffset);
-	pCAMat->SetScalarParam(SCALAR_PARAM::VEC2_3, Info.CropOffset);
+	pCAMat->SetScalarParam(SCALAR_PARAM::VEC2_0, RefInfo.MaxRedOffSet * LifeRatio);
+	pCAMat->SetScalarParam(SCALAR_PARAM::VEC2_1, RefInfo.MaxGreenOffset * LifeRatio);
+	pCAMat->SetScalarParam(SCALAR_PARAM::VEC2_2, RefInfo.MaxBlueOffset * LifeRatio);
+	pCAMat->SetScalarParam(SCALAR_PARAM::VEC2_3, RoRMath::Lerp(Vec2(1.f, 1.f), RefInfo.CropOffset, LifeRatio));
 	pCAMat->UpdateData();
 
 	// 타겟->리소스 복사

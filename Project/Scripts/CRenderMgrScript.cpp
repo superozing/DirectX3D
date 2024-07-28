@@ -43,7 +43,10 @@ CRenderMgrScript::CRenderMgrScript()
 					  "", true);
 
 	// CromaticAberration
+	AppendMemberFunction("CA::PushEvent", SCRIPT_PARAM::FUNC_MEMBER, "PushEvent",
+						 std::bind(&CRenderMgr::PushCAEvent, RENDERMGR));
 	AppendScriptParam("CA::Activate", SCRIPT_PARAM::BOOL, &(RENDERMGR->m_CAInfo.Activate));
+	AppendScriptParam("CA::Duration", SCRIPT_PARAM::FLOAT, &(RENDERMGR->m_CAInfo.Duration));
 	AppendScriptParam("CA::RedOffset", SCRIPT_PARAM::VEC2, &(RENDERMGR->m_CAInfo.MaxRedOffSet));
 	AppendScriptParam("CA::GreenOffset", SCRIPT_PARAM::VEC2, &(RENDERMGR->m_CAInfo.MaxGreenOffset));
 	AppendScriptParam("CA::BlueOffset", SCRIPT_PARAM::VEC2, &(RENDERMGR->m_CAInfo.MaxBlueOffset));

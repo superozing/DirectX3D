@@ -23,15 +23,15 @@ struct tGlobalBloomInfo
 
 struct tCromatic_AberrationInfo
 {
-	bool  Activate		 = false;
-	float Duration		 = 10.f;
-	float Acctime		 = 0.f;
-	Vec2  MaxRedOffSet	 = Vec2(0.f, 0.f);
-	Vec2  MaxGreenOffset = Vec2(0.f, 0.f);
-	Vec2  MaxBlueOffset	 = Vec2(0.f, 0.f);
-	// Vec2  MaxRedOffSet	 = Vec2(-10.f, -10.f);
-	// Vec2  MaxGreenOffset = Vec2(10.f, 10.f);
-	// Vec2  MaxBlueOffset	 = Vec2(30.f, 30.f);
+	bool  Activate	 = false;
+	float Duration	 = 10.f;
+	float RemainTime = 0.f;
+	// Vec2  MaxRedOffSet	 = Vec2(0.f, 0.f);
+	// Vec2  MaxGreenOffset = Vec2(0.f, 0.f);
+	// Vec2  MaxBlueOffset	 = Vec2(0.f, 0.f);
+	Vec2 MaxRedOffSet	= Vec2(-10.f, -10.f);
+	Vec2 MaxGreenOffset = Vec2(10.f, 10.f);
+	Vec2 MaxBlueOffset	= Vec2(30.f, 30.f);
 	//  Vec2  CurRedOffSet	 = {};
 	//  Vec2  CurGreenOffset = {};
 	//  Vec2  CurBlueOffset	 = {};
@@ -160,6 +160,11 @@ private:
 	vector<Ptr<CTexture>> m_vecBlurTwoTex;
 	void				  CreateBlurTex();
 	void				  DeleteBlurTex();
+	void				  PushCAEvent()
+	{
+		m_CAInfo.Activate	= true;
+		m_CAInfo.RemainTime = m_CAInfo.Duration;
+	}
 
 	friend class CRenderMgrScript;
 	friend class CDevice;
