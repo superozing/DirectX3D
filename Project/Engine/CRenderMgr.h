@@ -26,9 +26,9 @@ struct tCromatic_AberrationInfo
 	bool  Activate		 = false;
 	float Duration		 = 10.f;
 	float Acctime		 = 0.f;
-	Vec2  MaxRedOffSet	 = Vec2(10.f, 10.f);
+	Vec2  MaxRedOffSet	 = Vec2(-10.f, -10.f);
 	Vec2  MaxGreenOffset = Vec2(10.f, 10.f);
-	Vec2  MaxBlueOffset	 = Vec2(10.f, 10.f);
+	Vec2  MaxBlueOffset	 = Vec2(30.f, 30.f);
 	// Vec2  CurRedOffSet	 = {};
 	// Vec2  CurGreenOffset = {};
 	// Vec2  CurBlueOffset	 = {};
