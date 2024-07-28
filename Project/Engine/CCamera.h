@@ -118,9 +118,10 @@ public:
 	void render_postprocess();
 	void Merge();
 
-	// PostProcess;
+	// PostProcess
 	void Blur();
 	void Bloom();
+	void Cromatic_Aberration();
 
 	void SortShadowMapObject();
 	void render_shadowmap();

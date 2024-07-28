@@ -21,6 +21,20 @@ struct tGlobalBloomInfo
 	tBloom GlbalBloomSetting{Vec4(1.f, 1.f, 1.f, 1.f), 0.8f};
 };
 
+struct tCromatic_AberrationInfo
+{
+	bool  Activate		 = false;
+	float Duration		 = 10.f;
+	float Acctime		 = 0.f;
+	Vec2  MaxRedOffSet	 = Vec2(10.f, 10.f);
+	Vec2  MaxGreenOffset = Vec2(10.f, 10.f);
+	Vec2  MaxBlueOffset	 = Vec2(10.f, 10.f);
+	// Vec2  CurRedOffSet	 = {};
+	// Vec2  CurGreenOffset = {};
+	// Vec2  CurBlueOffset	 = {};
+	Vec2 CropOffset = {};
+};
+
 class CRenderMgr : public CManager<CRenderMgr>
 {
 	SINGLE(CRenderMgr);
@@ -110,7 +124,8 @@ public:
 	CCamera* GetMainCam();
 	CCamera* GetEditorCam() { return m_EditorCam; }
 
-	tGlobalBloomInfo m_GlobalBloomInfo;
+	tGlobalBloomInfo		 m_GlobalBloomInfo;
+	tCromatic_AberrationInfo m_CAInfo;
 
 public:
 	virtual void init() override;
@@ -137,6 +152,7 @@ private:
 	// 리소스 클리어
 	void Clear();
 
+	// 블러관련
 	vector<Ptr<CTexture>> m_vecBlurOneTex;
 	vector<Ptr<CTexture>> m_vecBlurTwoTex;
 	void				  CreateBlurTex();

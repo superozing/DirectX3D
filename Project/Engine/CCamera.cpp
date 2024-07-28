@@ -473,6 +473,8 @@ void CCamera::render_postprocess()
 		Bloom();
 	}
 
+	Cromatic_Aberration();
+
 	// for (size_t i = 0; i < m_vecPostProcess.size(); ++i)
 	//{
 	//	// 최종 렌더링 이미지를 후처리 타겟에 복사
@@ -590,6 +592,29 @@ void CCamera::Bloom()
 	pBloomMtrl->SetTexParam(TEX_PARAM::TEX_1, BlurSource);
 	pBloomMtrl->SetScalarParam(SCALAR_PARAM::FLOAT_0, Bloomratio);
 	pBloomMtrl->UpdateData();
+
+	// 타겟->리소스 복사
+	CRenderMgr::GetInst()->CopyFromTextureToTexture(ColorCopy, RenderTarget);
+	pRectMesh->render(0);
+}
+
+void CCamera::Cromatic_Aberration()
+{
+	auto ColorCopy	  = CAssetMgr::GetInst()->FindAsset<CTexture>(L"PostProcessTex");
+	auto RenderTarget = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
+
+	// 매쉬,머터리얼 받아오기
+	static Ptr<CMesh>	  pRectMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect);
+	static Ptr<CMaterial> pCAMat;
+	pCAMat = CAssetMgr::GetInst()->Load<CMaterial>(MTRLCromatic_Aberration);
+
+	auto& Info = CRenderMgr::GetInst()->m_CAInfo;
+	// 텍스쳐, 오프셋바인딩
+	pCAMat->SetTexParam(TEX_PARAM::TEX_0, ColorCopy);
+	pCAMat->SetScalarParam(SCALAR_PARAM::VEC2_0, Info.MaxRedOffSet);
+	pCAMat->SetScalarParam(SCALAR_PARAM::VEC2_1, Info.MaxGreenOffset);
+	pCAMat->SetScalarParam(SCALAR_PARAM::VEC2_2, Info.MaxBlueOffset);
+	pCAMat->UpdateData();
 
 	// 타겟->리소스 복사
 	CRenderMgr::GetInst()->CopyFromTextureToTexture(ColorCopy, RenderTarget);
