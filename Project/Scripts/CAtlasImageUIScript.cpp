@@ -10,7 +10,7 @@ CAtlasImageUIScript::CAtlasImageUIScript()
 }
 
 CAtlasImageUIScript::CAtlasImageUIScript(const CAtlasImageUIScript& _Origin)
-	: CImageUIScript((UINT)SCRIPT_TYPE::ATLASIMAGEUISCRIPT)
+	: CImageUIScript(_Origin)
 	, m_vLeftTop(_Origin.m_vLeftTop)
 	, m_vSize(_Origin.m_vSize)
 {

@@ -18,7 +18,7 @@ CImageUIScript::CImageUIScript(UINT _type)
 }
 
 CImageUIScript::CImageUIScript(const CImageUIScript& _Other)
-	: CUIScript(_Other.GetScriptType())
+	: CUIScript(_Other)
 	, m_bDraw(_Other.m_bDraw)
 	, m_UIImg(_Other.m_UIImg)
 	, m_vBlendColor(_Other.m_vBlendColor)
