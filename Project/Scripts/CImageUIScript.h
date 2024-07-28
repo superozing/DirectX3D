@@ -7,8 +7,10 @@ protected:
 	Ptr<CTexture> m_UIImg;
 	bool		  m_bAllowBindTexPerFrame;
 	bool		  m_bDraw;
+	Vec4		  m_vBlendColor;
 
 public:
+	void		 init();
 	virtual void begin() override;
 	virtual void tick() override;
 

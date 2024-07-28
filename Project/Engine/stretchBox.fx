@@ -7,6 +7,7 @@
 #define LeftTop g_vec2_0
 #define Size g_vec2_1
 #define Ratio g_vec2_2
+#define BlendColor g_vec4_0
 
 #define AtlasCheck g_btex_0
 #define Atlas g_tex_0
@@ -59,6 +60,7 @@ float4 PS_StaticUI(VS_OUT _in) : SV_Target
         }
         
         vOutColor = Atlas.Sample(g_sam_0, uv);
+        vOutColor *= BlendColor;
     }
     
     return vOutColor;
