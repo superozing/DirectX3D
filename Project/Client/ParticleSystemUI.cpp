@@ -184,7 +184,7 @@ void ParticleSystemUI::render_update()
 
 			ImGui::Text("Burst Interval");
 			ImGui::SameLine();
-			ImGui::DragInt("##BurstInterval", &NewModule.BurstInterval, 1.f, 0);
+			ImGui::DragFloat("##BurstInterval", &NewModule.BurstInterval, 0.1f, 0.f, 1000.f, "%.1f");
 		}
 		else
 		{
