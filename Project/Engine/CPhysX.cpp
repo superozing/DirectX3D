@@ -15,6 +15,19 @@ CPhysX::~CPhysX()
 {
 }
 
+void CPhysX::setLinearVelocity(const Vec3& _vLVel)
+{
+	if (nullptr == m_DActor)
+		return;
+	m_DActor->setLinearVelocity(PxVec3(_vLVel.x, _vLVel.y, _vLVel.z));
+}
+
+void CPhysX::setAngularVelocity(const Vec3& _vAVel)
+{
+	if (nullptr == m_DActor)
+		return;
+	m_DActor->setLinearVelocity(PxVec3(_vAVel.x, _vAVel.y, _vAVel.z));
+}
 void CPhysX::updateFromPhysics()
 {
 	if (nullptr == m_Actor)

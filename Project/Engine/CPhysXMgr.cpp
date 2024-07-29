@@ -307,7 +307,8 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 		PxRigidDynamic* dynamicActor = gPhysics->createRigidDynamic(transform);
 		PxRigidBodyExt::updateMassAndInertia(*dynamicActor, 10.0f);
 		// dynamicActor->setMass(1.0f);
-		actor = dynamicActor;
+		PhysX->m_DActor = dynamicActor;
+		actor			= dynamicActor;
 	}
 	else
 	{
@@ -317,7 +318,8 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 		// dynamicActor->setMass(1.0f);
 		dynamicActor->setRigidBodyFlag(PxRigidBodyFlag::eENABLE_CCD, true);
 		dynamicActor->setRigidBodyFlag(PxRigidBodyFlag::eENABLE_SPECULATIVE_CCD, true);
-		actor = dynamicActor;
+		PhysX->m_DActor = dynamicActor;
+		actor			= dynamicActor;
 	}
 
 	// 게임 오브젝트의 스케일 정보
