@@ -363,6 +363,7 @@ enum class MRT_TYPE
 	DECAL,		  // RT 2, DS 0
 	LIGHT,		  // RT 2, DS 0
 	SHADOW_DEPTH, // RT 1, DS 1
+	AFTER_IMAGE,  // RT 1, DS 0
 
 	END,
 };

@@ -165,6 +165,23 @@ void CRenderMgr::CreateMRT()
 		m_arrMRT[(UINT)MRT_TYPE::SHADOW_DEPTH]->Create(pRTTex, 1, pDepthTex);
 		m_arrMRT[(UINT)MRT_TYPE::SHADOW_DEPTH]->SetClearColor(arrClearColor, 1);
 	}
+
+	// ============
+	// AFTER_IMAGE
+	// ============
+	{
+		Ptr<CTexture> pRTTex[1] = {CAssetMgr::GetInst()->CreateTexture(
+			L"AfterImageTargetTex", vResolution.x, vResolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
+			D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE)};
+
+		Vec4 arrClearColor[1] = {Vec4(1.f, 0.f, 1.f, 1.f)};
+
+		if (m_arrMRT[(UINT)MRT_TYPE::AFTER_IMAGE] == nullptr)
+			m_arrMRT[(UINT)MRT_TYPE::AFTER_IMAGE] = new CMRT;
+
+		m_arrMRT[(UINT)MRT_TYPE::AFTER_IMAGE]->Create(pRTTex, 1, nullptr);
+		m_arrMRT[(UINT)MRT_TYPE::AFTER_IMAGE]->SetClearColor(arrClearColor, 1);
+	}
 }
 
 void CRenderMgr::CopyRenderTargetToPostProcessTarget()
