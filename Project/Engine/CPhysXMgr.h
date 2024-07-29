@@ -45,6 +45,8 @@ private:
 	PxMaterial*					gMaterial		  = nullptr;
 	class RoRCollisionCallback* gCollisionCalback = nullptr;
 	vector<FlagActorColInfo>	m_vecColInfo;
+	float						m_fGravityMul = 60.f;
+	float						m_fLestOffset = 1000.f;
 
 	void LayerCheck(UINT _left, UINT _right);
 	void LayerCheckToggle(UINT _left, UINT _right);

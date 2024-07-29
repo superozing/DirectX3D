@@ -264,7 +264,7 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 	if (PhysBodyType::TRIGGER != PhysX->m_bPhysBodyType)
 	{
 		shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
-		shape->setRestOffset(200.f);
+		shape->setRestOffset(m_fLestOffset);
 	}
 	if (PhysBodyType::TRIGGER == PhysX->m_bPhysBodyType)
 	{
@@ -296,8 +296,7 @@ void CPhysXMgr::init()
 	// PhysX 초기화
 	gPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *gFoundation, PxTolerancesScale(), true, gPvd);
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
-	const float gravityMul	= 10.f;
-	sceneDesc.gravity		= PxVec3(0.0f, -9.81f * gravityMul, 0.0f);
+	sceneDesc.gravity		= PxVec3(0.0f, -9.81f * m_fGravityMul, 0.0f);
 	gDispatcher				= PxDefaultCpuDispatcherCreate(2);
 	sceneDesc.cpuDispatcher = gDispatcher;
 
@@ -325,7 +324,7 @@ void CPhysXMgr::tick()
 {
 	// RETURN_IF_NOT_PLAYING
 
-	static const float ThresholdTime = 1.f / 60.f;
+	static const float ThresholdTime = 1.f / 180.f;
 	static float	   acctime		 = 0.f;
 	acctime += DT;
 	if (acctime < ThresholdTime)
