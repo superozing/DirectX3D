@@ -106,6 +106,9 @@ public:
 	bool ViewPortRaycast(tRoRHitInfo& _HitInfo, UINT _LAYER = (UINT)LAYER::LAYER_RAYCAST,
 						 int _DebugFlagMask = RayCastDebugFlag::StartEndVisible);
 
+	PxShape* createConeShape(PxRigidActor* actor, PxPhysics* gPhysics, PxMaterial* gMaterial, float radius,
+							 float height, int numSides);
+
 private:
 	void ClearAllActors();
 

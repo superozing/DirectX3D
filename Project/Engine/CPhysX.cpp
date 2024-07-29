@@ -130,9 +130,14 @@ void CPhysX::finaltick()
 			GamePlayStatic::DrawDebugCube(DebugFinalPos, m_vScale, Vec4(Rot.x, Rot.y, Rot.z, Rot.w),
 										  Vec3(0.3f, .3f, 0.3f), false);
 		}
-		else
+		else if (PhysShape::SPHERE == m_Shape)
 		{
 			GamePlayStatic::DrawDebugSphere(DebugFinalPos, m_vScale.x / 2.f, Vec3(0.3f, .3f, 0.3f), false);
+		}
+		else if (PhysShape::SPHERE == m_Shape)
+		{
+			GamePlayStatic::DrawDebugCone(DebugFinalPos, m_vScale, Vec4(Rot.x, Rot.y, Rot.z, Rot.w),
+										  Vec3(0.3f, .3f, 0.3f), false);
 		}
 	}
 }
