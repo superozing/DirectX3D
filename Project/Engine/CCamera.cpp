@@ -683,6 +683,32 @@ void CCamera::render_shadowmap()
 	m_vecShadow.clear();
 }
 
+void CCamera::render_afterimage()
+{
+	for (size_t i = 0; i < m_vecAfterImage.size(); ++i)
+	{
+		vector<tMtrlSet> pMtrls = m_vecAfterImage[i].first->GetRenderComponent()->GetVecMtrls();
+
+		for (int j = 0; j < pMtrls.size(); ++j)
+		{
+
+			Ptr<CMaterial> pDynamicMtrl = m_vecAfterImage[j].first->GetRenderComponent()->GetDynamicMaterial(j);
+			// pDynamicMtrl->SetShader(AfterImageShader);
+		}
+
+		m_vecAfterImage[i].first->render();
+
+		for (int k = 0; k < pMtrls.size(); ++k)
+		{
+
+			Ptr<CMaterial> pShareddMtrl = m_vecAfterImage[k].first->GetRenderComponent()->GetSharedMaterial(k);
+			m_vecAfterImage[k].first->GetRenderComponent()->SetMaterial(pShareddMtrl, k);
+		}
+	}
+
+	m_vecAfterImage.clear();
+}
+
 #include "CKeyMgr.h"
 void CCamera::CalculateRay()
 {

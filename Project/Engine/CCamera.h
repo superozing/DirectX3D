@@ -58,7 +58,8 @@ private:
 	vector<CGameObject*> m_vecTransparent;
 	vector<CGameObject*> m_vecPostProcess;
 
-	vector<CGameObject*> m_vecShadow;
+	vector<CGameObject*>							m_vecShadow;
+	vector<std::pair<CGameObject*, AfterImageInfo>> m_vecAfterImage;
 
 public:
 	PROJ_TYPE GetProjType() { return m_ProjType; }
@@ -122,6 +123,7 @@ public:
 
 	void SortShadowMapObject();
 	void render_shadowmap();
+	void render_afterimage();
 
 	void CalculateRay();
 
