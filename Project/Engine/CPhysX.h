@@ -66,6 +66,9 @@ public:
 	PxTransform getTransform() const;
 	void		setLinearVelocity(const Vec3& _vLVel);
 	void		setAngularVelocity(const Vec3& _vAVel);
+	// void		applyBulletImpact(PxRigidDynamic* rigidActor, const PxVec3& bulletVelocity, float bulletMass,
+	//							  const PxVec3& hitPoint);
+	void applyBulletImpact(const PxVec3& bulletVelocity, float bulletMass, const PxVec3& hitPoint);
 
 	PxRigidActor* getActor() const { return m_Actor; }
 

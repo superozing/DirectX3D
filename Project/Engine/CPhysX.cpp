@@ -28,6 +28,42 @@ void CPhysX::setAngularVelocity(const Vec3& _vAVel)
 		return;
 	m_DActor->setLinearVelocity(PxVec3(_vAVel.x, _vAVel.y, _vAVel.z));
 }
+
+void CPhysX::applyBulletImpact(const PxVec3& bulletVelocity, float bulletMass, const PxVec3& hitPoint)
+{
+	if (nullptr == m_DActor)
+		return;
+
+	// 충격량 계산
+	PxVec3 impulse = bulletMass * bulletVelocity;
+
+	// 물체의 중심
+	PxVec3 actorCenter = m_DActor->getGlobalPose().p;
+
+	// 충돌 지점과 중심 사이의 벡터
+	PxVec3 r = hitPoint - actorCenter;
+
+	// 충돌 지점이 중심에서 멀어질수록 충격량 감소 비율 계산
+	float distance			= r.magnitude();
+	float attenuationFactor = 1.0f / (1.0f + distance); // 거리 증가에 따른 충격량 감소 비율
+
+	// 충격량 감소 적용
+	PxVec3 adjustedImpulse = impulse * attenuationFactor;
+
+	// 충격량의 방향 변화 고려
+	PxVec3 impulseDirection = adjustedImpulse.getNormalized();
+	adjustedImpulse			= impulseDirection * adjustedImpulse.magnitude();
+
+	// 토크 계산 (외적)
+	PxVec3 torque = r.cross(adjustedImpulse);
+
+	// 물체에 충격량 적용
+	m_DActor->addForce(adjustedImpulse, PxForceMode::eIMPULSE);
+
+	// 물체에 토크 적용
+	m_DActor->addTorque(torque, PxForceMode::eIMPULSE);
+}
+
 void CPhysX::updateFromPhysics()
 {
 	if (nullptr == m_Actor)
