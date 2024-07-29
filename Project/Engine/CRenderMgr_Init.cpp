@@ -174,7 +174,7 @@ void CRenderMgr::CreateMRT()
 			L"AfterImageTargetTex", vResolution.x, vResolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
 			D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE)};
 
-		Vec4 arrClearColor[1] = {Vec4(1.f, 0.f, 1.f, 1.f)};
+		Vec4 arrClearColor[1] = {Vec4(0.f, 0.f, 0.f, 1.f)};
 
 		if (m_arrMRT[(UINT)MRT_TYPE::AFTER_IMAGE] == nullptr)
 			m_arrMRT[(UINT)MRT_TYPE::AFTER_IMAGE] = new CMRT;

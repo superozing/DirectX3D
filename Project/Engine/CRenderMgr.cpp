@@ -65,6 +65,7 @@ void CRenderMgr::ClearMRT()
 	m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->ClearRT();
 	m_arrMRT[(UINT)MRT_TYPE::LIGHT]->ClearRT();
 	m_arrMRT[(UINT)MRT_TYPE::SHADOW_DEPTH]->Clear();
+	m_arrMRT[(UINT)MRT_TYPE::AFTER_IMAGE]->ClearRT();
 }
 
 void CRenderMgr::ResetMRT()
