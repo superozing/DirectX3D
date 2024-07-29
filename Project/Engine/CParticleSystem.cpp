@@ -132,11 +132,12 @@ CParticleSystem::~CParticleSystem()
 
 void CParticleSystem::finaltick()
 {
-	if (!m_IsPlay) return;
+	if (!m_IsPlay)
+		return;
 
 	m_Time += DT;
 
-	//if ((1.f / m_Module.SpawnRate) < m_Time)
+	// if ((1.f / m_Module.SpawnRate) < m_Time)
 	//{
 	//	// 누적 시간을 스폰 간격으로 나눈 값
 	//	float fSpawnCount = m_Time / (1.f / m_Module.SpawnRate);
@@ -147,13 +148,13 @@ void CParticleSystem::finaltick()
 	//	tSpawnCount count = tSpawnCount{(int)fSpawnCount, 0, 0, 0};
 	//	m_SpawnCountBuffer->SetData(&count);
 	//}
-	//else
+	// else
 	//{
 	//	tSpawnCount count = tSpawnCount{0, 0, 0, 0};
 	//	m_SpawnCountBuffer->SetData(&count);
 	//}
 
-    if (m_Module.SpawnType == 0) // Continuous 모드
+	if (m_Module.SpawnType == 0) // Continuous 모드
 	{
 		if ((1.f / m_Module.SpawnRate) < m_Time)
 		{
@@ -185,7 +186,7 @@ void CParticleSystem::finaltick()
 
 void CParticleSystem::render()
 {
-	if (!m_IsPlay) return;
+	// if (!m_IsPlay) return;
 
 	// View, Proj 행렬 전달
 	Transform()->UpdateData();
@@ -220,8 +221,21 @@ void CParticleSystem::Play()
 
 void CParticleSystem::Stop()
 {
+	DeActivateParticle();
 	m_IsPlay = false;
 	m_Time	 = 0.f;
+}
+
+void CParticleSystem::DeActivateParticle()
+{
+	vector<tParticle> particles(m_MaxParticleCount);
+	m_ParticleBuffer->GetData(particles.data(), particles.size());
+
+	for (auto& particle : particles)
+	{
+		particle.Active = 0;
+	}
+	m_ParticleBuffer->SetData(particles.data());
 }
 
 void CParticleSystem::UpdateData()

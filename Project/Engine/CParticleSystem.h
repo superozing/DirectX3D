@@ -38,6 +38,7 @@ public:
 	void Play();
 	void Stop();
 
+	void DeActivateParticle();
 
 public:
 	virtual void UpdateData() override;
