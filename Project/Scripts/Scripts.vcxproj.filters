@@ -153,6 +153,9 @@
     <ClInclude Include="CHUD.h">
       <Filter>Scripts\UI</Filter>
     </ClInclude>
+    <ClInclude Include="CMuzzleFlashScript.h">
+      <Filter>Scripts\Particle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -311,6 +314,9 @@
     <ClCompile Include="CHUD.cpp">
       <Filter>Scripts\UI</Filter>
     </ClCompile>
+    <ClCompile Include="CMuzzleFlashScript.cpp">
+      <Filter>Scripts\Particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -420,6 +426,9 @@
     </Filter>
     <Filter Include="Scripts\Level">
       <UniqueIdentifier>{1666e7d2-5bff-44b3-88d6-1f00319dfd14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Particle">
+      <UniqueIdentifier>{9d9687ac-349f-4c6b-ad84-3025114fc4f8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

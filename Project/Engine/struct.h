@@ -98,6 +98,8 @@ struct tParticleModule
 	Vec4 vSpawnMinScale; // 초기 최소 크기
 	Vec4 vSpawnMaxScale; // 초기 최대 크기
 
+	int	  SpawnType;		// 0 : Continuous, 1 : Burst
+	int	  BurstInterval;	// Burst 간격(초 단위)
 	float MinLife;		  // 최소 수명
 	float MaxLife;		  // 최대 수명
 	float MinMass;		  // 최소 질량

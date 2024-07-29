@@ -21,6 +21,7 @@ private:
 	Ptr<CTexture> m_ParticleTex;
 
 	float m_Time;
+	bool  m_IsPlay;
 
 public:
 	Ptr<CTexture> GetParticleTex() { return m_ParticleTex; }
@@ -31,6 +32,12 @@ public:
 
 	tParticleModule GetParticleModule() { return m_Module; }
 	void			SetModule(tParticleModule _Module) { m_Module = _Module; }
+
+public:
+	void SpawnParticle(int _Count);
+	void Play();
+	void Stop();
+
 
 public:
 	virtual void UpdateData() override;

@@ -51,7 +51,7 @@ void CS_ParticleUpdate(uint3 id : SV_DispatchThreadID)
                 Particle.NoiseForceTime = 0.f;
                 
                 // 랜덤
-                float2 vUV = float2((1.f / (MAX_COUNT - 1)) * id.x, 0.f);                                
+                float2 vUV = float2((1.f / (MAX_COUNT - 1)) * id.x, 0.f);
                 
                 vUV.x += g_time * 0.2f;
                 //                 ( 주파수 )    (진폭)  (V 축 offset)
@@ -64,18 +64,23 @@ void CS_ParticleUpdate(uint3 id : SV_DispatchThreadID)
                 // SpawnShape 가 Sphere 타입이라면
                 if (0 == Module.SpawnShape)
                 {
-                    float RandomRadius = vRand[0] * Module.Radius;
-                    float RandomAngle = vRand[1] * 2 * PI;
+                    //float RandomRadius = vRand[0] * Module.Radius;
+                    //float RandomAngle = vRand[1] * 2 * PI;
+                    float RandomRadius = sqrt(vRand[0]) * Module.Radius;
+                    float RandomTheta = vRand[1] * 2 * PI;
+                    float RandomPhi = acos(2 * vRand[2] - 1);
                    
                     // Particle 컴포넌트(본체) 의 중심위치(월드) 에서
                     // 랜덤 각도, 랜덤 반지름에 해당하는 위치를 계산해서 파티클의 초기 위치로 준다.
-                    Particle.vLocalPos.xyz = float3(cos(RandomAngle), sin(RandomAngle), cos(RandomAngle)) * RandomRadius;
+                    Particle.vLocalPos.xyz = float3(sin(RandomPhi) * cos(RandomTheta),
+                    sin(RandomPhi) * sin(RandomTheta),
+                    cos(RandomPhi)) * RandomRadius;
                 }
                 else
                 {
                     Particle.vLocalPos.x = vRand[0] * Module.vSpawnBoxScale.x - (Module.vSpawnBoxScale.x / 2.f);
                     Particle.vLocalPos.y = vRand[1] * Module.vSpawnBoxScale.y - (Module.vSpawnBoxScale.y / 2.f);
-                    Particle.vLocalPos.z = vRand[2] * Module.vSpawnBoxScale.y - (Module.vSpawnBoxScale.y / 2.f);
+                    Particle.vLocalPos.z = vRand[0] * Module.vSpawnBoxScale.z - (Module.vSpawnBoxScale.z / 2.f);
                 }               
                 
                 Particle.vWorldPos.xyz = Particle.vLocalPos.xyz + CenterPos;                
