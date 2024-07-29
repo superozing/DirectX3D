@@ -64,6 +64,17 @@ void CPhysX::applyBulletImpact(const PxVec3& bulletVelocity, float bulletMass, c
 	m_DActor->addTorque(torque, PxForceMode::eIMPULSE);
 }
 
+void CPhysX::releaseActor()
+{
+	if (nullptr == m_Actor)
+		return;
+
+	CPhysXMgr::GetInst()->ReleaseActor(m_Actor);
+
+	m_Actor	 = nullptr;
+	m_DActor = nullptr;
+}
+
 void CPhysX::updateFromPhysics()
 {
 	if (nullptr == m_Actor)

@@ -71,6 +71,7 @@ public:
 	void applyBulletImpact(const PxVec3& bulletVelocity, float bulletMass, const PxVec3& hitPoint);
 
 	PxRigidActor* getActor() const { return m_Actor; }
+	void		  releaseActor();
 
 public:
 	CLONE(CPhysX);

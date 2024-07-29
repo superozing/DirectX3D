@@ -111,6 +111,7 @@ public:
 
 private:
 	void ClearAllActors();
+	void ReleaseActor(PxRigidActor* _actor);
 
 	friend class ParamUI;
 	friend class CPhysXMgrScript;

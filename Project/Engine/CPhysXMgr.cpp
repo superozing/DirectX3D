@@ -467,6 +467,18 @@ void CPhysXMgr::ClearAllActors()
 	gScene->unlockWrite();
 }
 
+void CPhysXMgr::ReleaseActor(PxRigidActor* actor)
+{
+	// 씬 잠금
+	gScene->lockWrite();
+
+	gScene->removeActor(*actor);
+	actor->release();
+
+	// 씬 잠금 해제
+	gScene->unlockWrite();
+}
+
 void CPhysXMgr::exit()
 {
 	ClearAllActors();
