@@ -150,9 +150,6 @@
     <ClInclude Include="CAtlasImageUIScript.h">
       <Filter>Scripts\DefaultUI\Image</Filter>
     </ClInclude>
-    <ClInclude Include="CDamagedDirectionMgr.h">
-      <Filter>Scripts\UI\Image\DamagedDirection</Filter>
-    </ClInclude>
     <ClInclude Include="CHUD.h">
       <Filter>Scripts\UI</Filter>
     </ClInclude>
@@ -161,9 +158,6 @@
     </ClInclude>
     <ClInclude Include="CBulletShellSpawner.h">
       <Filter>Scripts\Player\BulletShell</Filter>
-    </ClInclude>
-    <ClInclude Include="CDamagedDirectionMgr.h">
-      <Filter>Scripts</Filter>
     </ClInclude>
     <ClInclude Include="CDamagedDirectionMgr.h">
       <Filter>Scripts\UI</Filter>
@@ -323,9 +317,6 @@
     <ClCompile Include="CAtlasImageUIScript.cpp">
       <Filter>Scripts\DefaultUI\Image</Filter>
     </ClCompile>
-    <ClCompile Include="CDamagedDirectionMgr.cpp">
-      <Filter>Scripts\UI\Image\DamagedDirection</Filter>
-    </ClCompile>
     <ClCompile Include="CHUD.cpp">
       <Filter>Scripts\UI</Filter>
     </ClCompile>
@@ -334,9 +325,6 @@
     </ClCompile>
     <ClCompile Include="CBulletShellSpawner.cpp">
       <Filter>Scripts\Player\BulletShell</Filter>
-    </ClCompile>
-    <ClCompile Include="CDamagedDirectionMgr.cpp">
-      <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CDamagedDirectionMgr.cpp">
       <Filter>Scripts\UI</Filter>
