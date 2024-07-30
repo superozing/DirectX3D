@@ -323,7 +323,7 @@ void CPhysXMgr::init()
 
 void CPhysXMgr::tick()
 {
-	// RETURN_IF_NOT_PLAYING
+	RETURN_IF_NOT_PLAYING
 
 	static const float ThresholdTime = 1.f / 60.f;
 	static float	   acctime		 = 0.f;
