@@ -118,6 +118,10 @@ void CRenderMgr::render_play()
 		GetMRT(MRT_TYPE::DECAL)->OMSet();
 		pMainCam->render_decal();
 
+		// After Image 렌더링
+		GetMRT(MRT_TYPE::AFTER_IMAGE)->OMSet();
+		pMainCam->render_afterimage();
+
 		// 그림자 판정
 
 		// 광원처리

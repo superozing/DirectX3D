@@ -4,6 +4,8 @@
 #include <Engine\CDevice.h>
 #include <Engine\CStructuredBuffer.h>
 #include <Engine\CTimeMgr.h>
+#include <Engine\CRenderMgr.h>
+#include <Engine\CCamera.h>
 
 CAfterImage::CAfterImage()
 	: CScript((UINT)SCRIPT_TYPE::AFTERIMAGE)
@@ -18,6 +20,11 @@ CAfterImage::CAfterImage()
 	AppendScriptParam("Node Count", SCRIPT_PARAM::INT, &m_info.NodeCount, 0, 19, false, "Afterimage Node count");
 	AppendScriptParam("Time Interval", SCRIPT_PARAM::FLOAT, &m_info.TimeStep);
 	AppendScriptParam("View Node", SCRIPT_PARAM::BOOL, &bDisplayNode);
+
+	if (GetOwner()->GetParent())
+	{
+		GetOwner()->Transform()->SetRelativePos(GetOwner()->GetParent()->Transform()->GetRelativePos());
+	}
 }
 
 CAfterImage::~CAfterImage()
@@ -26,15 +33,16 @@ CAfterImage::~CAfterImage()
 
 void CAfterImage::begin()
 {
-	Vec3 currentPos = GetOwner()->Transform()->GetRelativePos();
-	Vec3 currentRot = GetOwner()->Transform()->GetRelativeRotation();
-	for (int i = 0; i < m_info.NodeCount; ++i)
-	{
-		m_info.NodePosition[i] = currentPos;
-		m_info.NodeRotation[i] = currentRot;
-	}
+	// Vec3 currentPos = GetOwner()->Transform()->GetRelativePos();
+	// Vec3 currentRot = GetOwner()->Transform()->GetRelativeRotation();
+	// for (int i = 0; i < m_info.NodeCount; ++i)
+	//{
+	//	m_info.NodePosition[i] = currentPos;
+	//	m_info.NodeRotation[i] = currentRot;
+	// }
 }
 
+#include <Engine\CLogMgr.h>
 void CAfterImage::tick()
 {
 	fUpdateTimer -= DT;
@@ -52,12 +60,21 @@ void CAfterImage::tick()
 			}
 		}
 
-		Vec3 currentPos = GetOwner()->Transform()->GetRelativePos();
-		Vec3 currentRot = GetOwner()->Transform()->GetRelativeRotation();
+		Vec3 currentPos = GetOwner()->Transform()->GetWorldPos();
+		Vec3 currentRot = GetOwner()->Transform()->GetWorldRot();
 
 		m_info.NodePosition[0] = currentPos;
 		m_info.NodeRotation[0] = currentRot;
+
+		string s =
+			std::to_string(currentPos.x) + " " + std::to_string(currentPos.y) + " " + std::to_string(currentPos.z);
+
+		CLogMgr::GetInst()->AddLog(Log_Level::WARN, s);
 	}
+
+	CCamera* pMainCam = CRenderMgr::GetInst()->GetMainCam();
+
+	pMainCam->RegisterAfterImage(this->GetOwner()->GetParent(), m_info);
 }
 
 void CAfterImage::UpdateData()

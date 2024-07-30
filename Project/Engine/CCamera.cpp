@@ -685,6 +685,8 @@ void CCamera::render_shadowmap()
 
 void CCamera::render_afterimage()
 {
+	Ptr<CGraphicsShader> pShader = CAssetMgr::GetInst()->Load<CGraphicsShader>(GRPSHADERAfterImageRender);
+
 	for (size_t i = 0; i < m_vecAfterImage.size(); ++i)
 	{
 		vector<tMtrlSet> pMtrls = m_vecAfterImage[i].first->GetRenderComponent()->GetVecMtrls();
@@ -692,17 +694,27 @@ void CCamera::render_afterimage()
 		for (int j = 0; j < pMtrls.size(); ++j)
 		{
 
-			Ptr<CMaterial> pDynamicMtrl = m_vecAfterImage[j].first->GetRenderComponent()->GetDynamicMaterial(j);
-			// pDynamicMtrl->SetShader(AfterImageShader);
+			Ptr<CMaterial> pDynamicMtrl = m_vecAfterImage[i].first->GetRenderComponent()->GetDynamicMaterial(j);
+			pDynamicMtrl->SetShader(pShader);
 		}
 
-		m_vecAfterImage[i].first->render();
+		Vec3 vOriginPos = m_vecAfterImage[i].first->Transform()->GetRelativePos();
+
+		for (int m = 0; m < m_vecAfterImage[i].second.NodeCount; ++m)
+		{
+			Vec3 vAfterImagePos = m_vecAfterImage[i].second.NodePosition[m];
+			m_vecAfterImage[i].first->Transform()->SetRelativePos(vAfterImagePos);
+
+			m_vecAfterImage[i].first->render();
+		}
+
+		// m_vecAfterImage[i].first->Transform()->SetRelativePos(vOriginPos);
 
 		for (int k = 0; k < pMtrls.size(); ++k)
 		{
 
-			Ptr<CMaterial> pShareddMtrl = m_vecAfterImage[k].first->GetRenderComponent()->GetSharedMaterial(k);
-			m_vecAfterImage[k].first->GetRenderComponent()->SetMaterial(pShareddMtrl, k);
+			Ptr<CMaterial> pShareddMtrl = m_vecAfterImage[i].first->GetRenderComponent()->GetSharedMaterial(k);
+			m_vecAfterImage[i].first->GetRenderComponent()->SetMaterial(pShareddMtrl, k);
 		}
 	}
 
