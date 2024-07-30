@@ -10,9 +10,8 @@
 #include <Engine\CLevel.h>
 
 #include "CPlayerScript.h"
+#include "CShootingSystemScript.h"
 
-#include "CDamagedDirectionMgr.h"
-#include "CBulletMarkSpawner.h"
 
 CCrosshair::CCrosshair()
 	: CScript((UINT)SCRIPT_TYPE::CROSSHAIR)
@@ -20,7 +19,6 @@ CCrosshair::CCrosshair()
 	, m_fSpreadRatio(0.2)
 	, m_fBarThikness(1)
 	, m_fLength(5)
-	, m_bShootAvailable(true)
 {
 	AppendScriptParam("Spread Ratio", SCRIPT_PARAM::FLOAT, &m_fSpreadRatio, 0.f, 0.f);
 	AppendScriptParam("Color", SCRIPT_PARAM::VEC4, &m_CrosshairColor);
@@ -32,67 +30,11 @@ CCrosshair::~CCrosshair()
 {
 }
 
-void CCrosshair::SetShootAvailable(bool _avail)
-{
-	m_bShootAvailable = _avail;
-}
-
-void CCrosshair::CurAimLayer(LAYER _layer)
-{
-	// 처리 레이어 많아지면 switch문으로 변경 필요
-	if (_layer == LAYER::LAYER_WALL)
-	{
-		if (m_pPlayerScript->GetCoverType() != CoverType::Normal)
-		{
-			SetCrosshairColor(Vec4(255.f, 0.f, 0.f, 255.f));
-			SetShootAvailable(false);
-		}
-	}
-	else
-	{
-		SetCrosshairColor(Vec4(255.f, 255.f, 255.f, 255.f));
-		SetShootAvailable(true);
-	}
-}
-
-void CCrosshair::ShootBulletRay()
-{
-	float fSpreadRatio = m_pPlayerScript->GetSpreadRatio();
-
-	SetSpreadRatio(fSpreadRatio);
-
-	tRoRHitInfo hitInfo = {};
-	auto		pMainCam  = CRenderMgr::GetInst()->GetMainCam();
-	auto		FrontDir  = pMainCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-	float MaxSpread = 0.3f;
-
-	float RotX = fSpreadRatio * CRandomMgr::GetInst()->GetRandomFloat() * MaxSpread;
-	float RotY = fSpreadRatio * CRandomMgr::GetInst()->GetRandomFloat() * MaxSpread;
-
-	Vec3 ShootDir = Vec3(FrontDir.x + RotX, FrontDir.y + RotY, FrontDir.z);
-
-	bool isBulletHit = CPhysXMgr::GetInst()->PerfomRaycast(pMainCam->Transform()->GetWorldPos(), ShootDir, hitInfo,
-														   (UINT)LAYER::LAYER_RAYCAST, RayCastDebugFlag::AllVisible);
-
-	if (isBulletHit)
-	{
-		// 데미지 처리, 파티클 시스템 등등...
-
-		// 데칼 오브젝트 스폰
-		m_pBulletMarkDecalSpawner->SpawnBulletMarkDecal(hitInfo.vHitPos, FrontDir);
-	}
-}
-
 void CCrosshair::begin()
 {
 	m_pPlayer		= CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(PlayerName);
 	m_pPlayerScript = m_pPlayer->GetScript<CPlayerScript>();
 
-	m_pDamagedDirectionMgr = new CDamagedDirectionMgr;
-	GetOwner()->AddComponent(m_pDamagedDirectionMgr);
-
-	m_pBulletMarkDecalSpawner = new CBulletMarkSpawner;
-	GetOwner()->AddComponent(m_pBulletMarkDecalSpawner);
 }
 
 void CCrosshair::tick()
@@ -103,21 +45,21 @@ void CCrosshair::tick()
 	MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, m_CrosshairColor);
 	MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, nullptr);
 
-	// 일반 Raycast
-	// int mask = RayCastDebugFlag::EndPointVisible;
 
-	tRoRHitInfo hitInfo	 = {};
-	auto		pMainCam = CRenderMgr::GetInst()->GetMainCam();
-	auto		FrontDir = pMainCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-
-	bool isContact = CPhysXMgr::GetInst()->PerfomRaycast(pMainCam->Transform()->GetWorldPos(), FrontDir, hitInfo,
-														 (UINT)LAYER::LAYER_RAYCAST, RayCastDebugFlag::AllInvisible);
-
-	SetCrosshairColor(Vec4(255.f, 255.f, 255.f, 255.f));
-	SetShootAvailable(true);
-	if (isContact)
+	// switch 사용 고려할 필요 있어요.
+	LAYER _layer = m_pShootingSystem->GetMainCamAimLayer();
+	if (_layer == LAYER::LAYER_WALL)
 	{
-		CurAimLayer((LAYER)hitInfo.pOtherObj->GetLayerIdx());
+		if (m_pPlayerScript->GetCoverType() != CoverType::Normal)
+		{
+			SetCrosshairColor(Vec4(255.f, 0.f, 0.f, 255.f));
+			m_pShootingSystem->SetShootAvailable(false);
+		}
+	}
+	else
+	{
+		SetCrosshairColor(Vec4(255.f, 255.f, 255.f, 255.f));
+		m_pShootingSystem->SetShootAvailable(true);
 	}
 
 }

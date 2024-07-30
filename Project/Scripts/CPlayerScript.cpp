@@ -18,6 +18,8 @@
 #include "CPlayerController.h"
 #include "CSpringArm.h"
 
+#include "CShootingSystemScript.h"
+
 #include "CCrosshair.h"
 #include "CHUD.h"
 
@@ -82,7 +84,7 @@ void CPlayerScript::InitScriptParamUI()
 	AppendScriptParam("Critical Damage", SCRIPT_PARAM::FLOAT, &m_tStatus.CriticalDamage);
 	AppendScriptParam("MoveSpeed", SCRIPT_PARAM::FLOAT, &m_tStatus.MoveSpeed);
 	AppendScriptParam("AttackMoveSpeed", SCRIPT_PARAM::FLOAT, &m_tStatus.AttackMoveSpeed);
-	AppendScriptParam("SpreadRatio", SCRIPT_PARAM::FLOAT, &m_tStatus.SpreadRatio);
+	AppendScriptParam("SpreadRatio", SCRIPT_PARAM::FLOAT, &m_tStatus.SpreadRatioSpeed);
 }
 
 void CPlayerScript::InitStateMachine()
@@ -283,9 +285,21 @@ void CPlayerScript::begin()
 
 	m_FSM->Begin();
 
+	m_pShootingSystem = new CShootingSystemScript;
+	
+	GetOwner()->AddComponent(m_pShootingSystem);
+
+	m_pShootingSystem->SetSpreadRatioSpeed(m_tStatus.SpreadRatioSpeed);
+
 	auto pObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"HUD");
 	if (pObj)
-		m_pShootingSystem = pObj->GetScript<CHUD>()->GetHUD<CCrosshair>();
+	{
+		m_pCrosshair = pObj->GetScript<CHUD>()->GetHUD<CCrosshair>();
+		m_pCrosshair->SetShootingSystem(m_pShootingSystem);
+	}
+	else
+		CLogMgr::GetInst()->AddLog(Log_Level::ERR, L"Can't find \"HUD\"Object.");
+
 }
 
 void CPlayerScript::tick()

@@ -100,6 +100,7 @@ void CMemoryPoolMgrScript::PushObject(CGameObject* _Object)
 		if (ToString(_Object->GetName()).find(s))
 		{
 			vecObj[i]->AddChild(_Object);
+			CTaskMgr::GetInst()->SetMemoryPoolEvent(true);
 			return;
 		}
 	}

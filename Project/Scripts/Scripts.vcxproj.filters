@@ -132,9 +132,6 @@
       <Filter>Scripts\Boss\MegaFist</Filter>
     </ClInclude>
     <ClInclude Include="CProjectileScript.h" />
-    <ClInclude Include="CDamagedDirectionMgr.h">
-      <Filter>Scripts\Player\DamagedDirection</Filter>
-    </ClInclude>
     <ClInclude Include="CBulletMarkSpawner.h">
       <Filter>Scripts\Player\BulletMark</Filter>
     </ClInclude>
@@ -157,6 +154,18 @@
       <Filter>Scripts\UI\Image\DamagedDirection</Filter>
     </ClInclude>
     <ClInclude Include="CHUD.h">
+      <Filter>Scripts\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CShootingSystemScript.h">
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletShellSpawner.h">
+      <Filter>Scripts\Player\BulletShell</Filter>
+    </ClInclude>
+    <ClInclude Include="CDamagedDirectionMgr.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="CDamagedDirectionMgr.h">
       <Filter>Scripts\UI</Filter>
     </ClInclude>
   </ItemGroup>
@@ -298,9 +307,6 @@
       <Filter>Scripts\Boss\MegaFist</Filter>
     </ClCompile>
     <ClCompile Include="CProjectileScript.cpp" />
-    <ClCompile Include="CDamagedDirectionMgr.cpp">
-      <Filter>Scripts\Player\DamagedDirection</Filter>
-    </ClCompile>
     <ClCompile Include="CBulletMarkSpawner.cpp">
       <Filter>Scripts\Player\BulletMark</Filter>
     </ClCompile>
@@ -321,6 +327,18 @@
       <Filter>Scripts\UI\Image\DamagedDirection</Filter>
     </ClCompile>
     <ClCompile Include="CHUD.cpp">
+      <Filter>Scripts\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CShootingSystemScript.cpp">
+      <Filter>Scripts\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletShellSpawner.cpp">
+      <Filter>Scripts\Player\BulletShell</Filter>
+    </ClCompile>
+    <ClCompile Include="CDamagedDirectionMgr.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CDamagedDirectionMgr.cpp">
       <Filter>Scripts\UI</Filter>
     </ClCompile>
   </ItemGroup>
@@ -427,9 +445,6 @@
     <Filter Include="Scripts\Boss\MegaFist">
       <UniqueIdentifier>{9c149e25-d8c2-48b9-a482-f90aa4f51703}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Player\DamagedDirection">
-      <UniqueIdentifier>{202a3c60-718c-43cd-bbce-9b7e24ec6a82}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\Player\BulletMark">
       <UniqueIdentifier>{72c3003f-7ed8-4511-9c0e-b7bd7e9c2645}</UniqueIdentifier>
     </Filter>
@@ -438,6 +453,9 @@
     </Filter>
     <Filter Include="Scripts\Level">
       <UniqueIdentifier>{1666e7d2-5bff-44b3-88d6-1f00319dfd14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Player\BulletShell">
+      <UniqueIdentifier>{e455aa64-7e2e-4f37-b576-34f4b1366312}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
