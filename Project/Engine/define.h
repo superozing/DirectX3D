@@ -148,6 +148,7 @@ enum class SB_TYPE
 	LIGHT3D,
 	CROSS,
 	WEIGHTMAP,
+	BLOOM,
 	END,
 };
 
@@ -415,6 +416,21 @@ enum class UI_TYPE
 
 	END
 };
+
+enum class DecalShape
+{
+	Rect,
+	Circle,
+	End
+};
+
+enum class DecalType
+{
+	Texture,
+	Animation,
+	End
+};
+
 #define MAXBLURLEVEL 9
 
 #define DecalPriorityMax 20

@@ -239,6 +239,8 @@ public:
 	bool IsDead() { return m_tStatus.IsDead; }
 #pragma endregion
 
+	int GetCurState();
+
 	void	  SetCoverType(CoverType _type);
 	CoverType GetCoverType() { return m_iCorverType; }
 	bool	  IsRight() { return Transform()->GetRelativeScale().x > 0.f; }

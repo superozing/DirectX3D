@@ -64,7 +64,7 @@ void CTransform::tick()
 			vNRot		= RoRMath::Lerp(m_vTargetRot, m_vStartRot, alpha);
 			vNScale		= RoRMath::Lerp(m_vTargetScale, m_vStartScale, alpha);
 
-			m_fTargetTimer -= DT;
+			m_fTargetTimer -= DT_ENGINE;
 		}
 
 		SetRelativePos(vNPos);

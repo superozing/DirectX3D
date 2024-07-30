@@ -10,16 +10,32 @@ class CLight3D;
 class CStructuredBuffer;
 class CMRT;
 
-struct tBloomInfo
+struct tGlobalBloomInfo
 {
-	bool Activate = true;
-	// deferred.fx
-	float Threshold = 0.8f;
-	Vec4  vColor	= Vec4(1.f, 1.f, 1.f, 1.f);
+	bool BloomActivate = true;
+	bool GlobalBloom   = false;
 	// blur.fx
 	int BlurLevel = 3;
 	// bloom.fx
-	float Ratio = .14f;
+	float  Ratio = .14f;
+	tBloom GlbalBloomSetting{Vec4(1.f, 1.f, 1.f, 1.f), 0.8f};
+};
+
+struct tCromatic_AberrationInfo
+{
+	bool  Activate	 = false;
+	float Duration	 = 10.f;
+	float RemainTime = 0.f;
+	// Vec2  MaxRedOffSet	 = Vec2(0.f, 0.f);
+	// Vec2  MaxGreenOffset = Vec2(0.f, 0.f);
+	// Vec2  MaxBlueOffset	 = Vec2(0.f, 0.f);
+	Vec2 MaxRedOffSet	= Vec2(-10.f, -10.f);
+	Vec2 MaxGreenOffset = Vec2(10.f, 10.f);
+	Vec2 MaxBlueOffset	= Vec2(30.f, 30.f);
+	//  Vec2  CurRedOffSet	 = {};
+	//  Vec2  CurGreenOffset = {};
+	//  Vec2  CurBlueOffset	 = {};
+	Vec2 CropOffset = Vec2(0.8f, 0.8f);
 };
 
 class CRenderMgr : public CManager<CRenderMgr>
@@ -111,7 +127,8 @@ public:
 	CCamera* GetMainCam();
 	CCamera* GetEditorCam() { return m_EditorCam; }
 
-	tBloomInfo m_BloomInfo;
+	tGlobalBloomInfo		 m_GlobalBloomInfo;
+	tCromatic_AberrationInfo m_CAInfo;
 
 public:
 	virtual void init() override;
@@ -138,10 +155,16 @@ private:
 	// 리소스 클리어
 	void Clear();
 
+	// 블러관련
 	vector<Ptr<CTexture>> m_vecBlurOneTex;
 	vector<Ptr<CTexture>> m_vecBlurTwoTex;
 	void				  CreateBlurTex();
 	void				  DeleteBlurTex();
+	void				  PushCAEvent()
+	{
+		m_CAInfo.Activate	= true;
+		m_CAInfo.RemainTime = m_CAInfo.Duration;
+	}
 
 	friend class CRenderMgrScript;
 	friend class CDevice;

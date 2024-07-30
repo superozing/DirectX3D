@@ -29,6 +29,8 @@ void MeshRenderUI::render_update()
 	CGameObject* pTarget	 = GetTargetObject();
 	CMeshRender* pMeshRender = pTarget->MeshRender();
 
+	if (!pTarget || !pMeshRender)return;
+
 	vector<tMtrlSet> vMtrl = pMeshRender->GetVecMtrls();
 	Ptr<CMesh>		 pMesh = pMeshRender->GetMesh();
 
@@ -230,6 +232,12 @@ void MeshRenderUI::render_update()
 			ImGui::TreePop();
 		}
 	}
+
+	bool bShadow = GetTargetObject()->GetRenderComponent()->IsDrawShadow();
+	ImGui::Text("Draw Shadow");
+	ImGui::SameLine();
+	ImGui::Checkbox("##Shadow", &bShadow);
+	GetTargetObject()->GetRenderComponent()->DrawShadow(bShadow);
 
 	// ImGui::Text("Material");
 	// ImGui::SameLine();

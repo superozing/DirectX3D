@@ -169,9 +169,11 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CAmmoInfo.h" />
     <ClInclude Include="CAtlasImageUIScript.h" />
     <ClInclude Include="CBackgroundScript.h" />
+    <ClInclude Include="CBloomScript.h" />
     <ClInclude Include="CBossHP.h" />
     <ClInclude Include="CBossMissileScript.h" />
     <ClInclude Include="CBossScript.h" />
+    <ClInclude Include="CBossShieldScript.h" />
     <ClInclude Include="CBtnUIScript.h" />
     <ClInclude Include="CBulletMarkSpawner.h" />
     <ClInclude Include="CBulletShellSpawner.h" />
@@ -182,7 +184,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CCoverUI.h" />
     <ClInclude Include="CCrosshair.h" />
     <ClInclude Include="CDamagedDirectionMgr.h" />
-    <ClInclude Include="CDamageFont.h" />
+    <ClInclude Include="CDigitUI.h" />
     <ClInclude Include="CDialog.h" />
     <ClInclude Include="CEditorCameraMoveScript.h" />
     <ClInclude Include="CEventListener.h" />
@@ -195,6 +197,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CMissileScript.h" />
     <ClInclude Include="CMonsterHP.h" />
     <ClInclude Include="CMonsterScript.h" />
+    <ClInclude Include="CMuzzleFlashScript.h" />
     <ClInclude Include="CPanelUIScript.h" />
     <ClInclude Include="CPhysXMgrScript.h" />
     <ClInclude Include="CPauseBtn.h" />
@@ -213,25 +216,29 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CSkillIcon.h" />
     <ClInclude Include="CSpawnSpotScript.h" />
     <ClInclude Include="CSpringArm.h" />
+    <ClInclude Include="CStretchUIScript.h" />
     <ClInclude Include="CStudentScript.h" />
+    <ClInclude Include="CTextUI.h" />
     <ClInclude Include="CTimeMgrScript.h" />
     <ClInclude Include="CTutorialGameMode.h" />
     <ClInclude Include="CWallScript.h" />
-    <ClInclude Include="CWeaponInfo.h" />
     <ClInclude Include="CWrapImage.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="CHUD.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="CReloadUI.h" />
     <ClInclude Include="strings.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAmmoInfo.cpp" />
     <ClCompile Include="CAtlasImageUIScript.cpp" />
     <ClCompile Include="CBackgroundScript.cpp" />
+    <ClCompile Include="CBloomScript.cpp" />
     <ClCompile Include="CBossHP.cpp" />
     <ClCompile Include="CBossMissileScript.cpp" />
     <ClCompile Include="CBossScript.cpp" />
     <ClCompile Include="CBossScript_State.cpp" />
+    <ClCompile Include="CBossShieldScript.cpp" />
     <ClCompile Include="CBtnUIScript.cpp" />
     <ClCompile Include="CBulletMarkSpawner.cpp" />
     <ClCompile Include="CBulletShellSpawner.cpp" />
@@ -242,7 +249,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CCoverUI.cpp" />
     <ClCompile Include="CCrosshair.cpp" />
     <ClCompile Include="CDamagedDirectionMgr.cpp" />
-    <ClCompile Include="CDamageFont.cpp" />
+    <ClCompile Include="CDigitUI.cpp" />
     <ClCompile Include="CDialog.cpp" />
     <ClCompile Include="CEditorCameraMoveScript.cpp" />
     <ClCompile Include="CEventListener.cpp" />
@@ -254,6 +261,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CMissileScript.cpp" />
     <ClCompile Include="CMonsterHP.cpp" />
     <ClCompile Include="CMonsterScript.cpp" />
+    <ClCompile Include="CMuzzleFlashScript.cpp" />
     <ClCompile Include="CPanelUIScript.cpp" />
     <ClCompile Include="CPhysXMgrScript.cpp" />
     <ClCompile Include="CPauseBtn.cpp" />
@@ -273,11 +281,12 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CSkillIcon.cpp" />
     <ClCompile Include="CSpawnSpotScript.cpp" />
     <ClCompile Include="CSpringArm.cpp" />
+    <ClCompile Include="CStretchUIScript.cpp" />
     <ClCompile Include="CStudentScript.cpp" />
+    <ClCompile Include="CTextUI.cpp" />
     <ClCompile Include="CTimeMgrScript.cpp" />
     <ClCompile Include="CTutorialGameMode.cpp" />
     <ClCompile Include="CWallScript.cpp" />
-    <ClCompile Include="CWeaponInfo.cpp" />
     <ClCompile Include="CWrapImage.cpp" />
     <ClCompile Include="CHUD.cpp" />
     <ClCompile Include="pch.cpp">
@@ -286,6 +295,7 @@ call ScriptsCopy.bat</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="CReloadUI.cpp" />
     <ClCompile Include="Scripts.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

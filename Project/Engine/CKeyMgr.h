@@ -69,9 +69,14 @@ private:
 	FOCUS_STATE m_FocusState;
 
 	bool m_bHoldMouseCenter;
+	bool m_bShowCursor = true;
 
 public:
 	FOCUS_CALLBACK m_FocusCallback;
+
+public:
+	void RoRShowCursor(bool _show);
+	bool IsShowCursor() { return m_bShowCursor; }
 
 public:
 	KEY_STATE GetKeyState(KEY _Key) { return m_vecKeyData[_Key].eState; }

@@ -48,7 +48,6 @@ void CDamagedDirectionMgr::begin()
 
 		GetOwner()->AddChild(pObj);
 	}
-	GamePlayStatic::ResetOutliner();
 }
 
 void CDamagedDirectionMgr::tick()

@@ -132,9 +132,6 @@
       <Filter>Scripts\Boss\MegaFist</Filter>
     </ClInclude>
     <ClInclude Include="CProjectileScript.h" />
-    <ClInclude Include="CBulletMarkSpawner.h">
-      <Filter>Scripts\Player\BulletMark</Filter>
-    </ClInclude>
     <ClInclude Include="CEventListener.h" />
     <ClInclude Include="CGameMode.h" />
     <ClInclude Include="strings.h" />
@@ -150,17 +147,14 @@
     <ClInclude Include="CAtlasImageUIScript.h">
       <Filter>Scripts\DefaultUI\Image</Filter>
     </ClInclude>
+    <ClInclude Include="CDamagedDirectionMgr.h">
+      <Filter>Scripts\UI\Image\DamagedDirection</Filter>
+    </ClInclude>
     <ClInclude Include="CHUD.h">
       <Filter>Scripts\UI</Filter>
     </ClInclude>
-    <ClInclude Include="CShootingSystemScript.h">
-      <Filter>Scripts\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="CBulletShellSpawner.h">
-      <Filter>Scripts\Player\BulletShell</Filter>
-    </ClInclude>
-    <ClInclude Include="CDamagedDirectionMgr.h">
-      <Filter>Scripts\UI</Filter>
+    <ClInclude Include="CMuzzleFlashScript.h">
+      <Filter>Scripts\Particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -301,9 +295,6 @@
       <Filter>Scripts\Boss\MegaFist</Filter>
     </ClCompile>
     <ClCompile Include="CProjectileScript.cpp" />
-    <ClCompile Include="CBulletMarkSpawner.cpp">
-      <Filter>Scripts\Player\BulletMark</Filter>
-    </ClCompile>
     <ClCompile Include="CEventListener.cpp" />
     <ClCompile Include="CCoverArea.cpp">
       <Filter>Scripts\Event</Filter>
@@ -317,17 +308,14 @@
     <ClCompile Include="CAtlasImageUIScript.cpp">
       <Filter>Scripts\DefaultUI\Image</Filter>
     </ClCompile>
+    <ClCompile Include="CDamagedDirectionMgr.cpp">
+      <Filter>Scripts\UI\Image\DamagedDirection</Filter>
+    </ClCompile>
     <ClCompile Include="CHUD.cpp">
       <Filter>Scripts\UI</Filter>
     </ClCompile>
-    <ClCompile Include="CShootingSystemScript.cpp">
-      <Filter>Scripts\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="CBulletShellSpawner.cpp">
-      <Filter>Scripts\Player\BulletShell</Filter>
-    </ClCompile>
-    <ClCompile Include="CDamagedDirectionMgr.cpp">
-      <Filter>Scripts\UI</Filter>
+    <ClCompile Include="CMuzzleFlashScript.cpp">
+      <Filter>Scripts\Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -433,17 +421,14 @@
     <Filter Include="Scripts\Boss\MegaFist">
       <UniqueIdentifier>{9c149e25-d8c2-48b9-a482-f90aa4f51703}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Player\BulletMark">
-      <UniqueIdentifier>{72c3003f-7ed8-4511-9c0e-b7bd7e9c2645}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\Event">
       <UniqueIdentifier>{1ab1a3c0-46e2-4f9e-ad0a-58265382538b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Level">
       <UniqueIdentifier>{1666e7d2-5bff-44b3-88d6-1f00319dfd14}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Player\BulletShell">
-      <UniqueIdentifier>{e455aa64-7e2e-4f37-b576-34f4b1366312}</UniqueIdentifier>
+    <Filter Include="Scripts\Particle">
+      <UniqueIdentifier>{9d9687ac-349f-4c6b-ad84-3025114fc4f8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

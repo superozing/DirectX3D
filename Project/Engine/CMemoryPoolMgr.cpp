@@ -48,6 +48,7 @@ CGameObject* CMemoryPoolMgr::PopObject(string _strMapKey)
 	return pPool->PopObject();
 }
 
+#include "CPhysX.h"
 void CMemoryPoolMgr::PushObject(string _strMapKey, CGameObject* _Object)
 {
 	// Pool 역할을 하는 EX를 먼저 가져온다. 필터가 존재하면 넣는다.
@@ -59,6 +60,10 @@ void CMemoryPoolMgr::PushObject(string _strMapKey, CGameObject* _Object)
 
 		if (strFind.find(_strMapKey) != string::npos)
 		{
+			if (nullptr != _Object->PhysX())
+			{
+				_Object->PhysX()->releaseActor();
+			}
 			vecObj[i]->AddChild(_Object);
 			CTaskMgr::GetInst()->SetMemoryPoolEvent(true);
 			return;

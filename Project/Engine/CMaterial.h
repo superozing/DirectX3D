@@ -28,6 +28,7 @@ public:
 
 	void SetAnim3D(bool _bTrue) { m_Const.arrAnimData[0] = (int)_bTrue; }
 	void SetBoneCount(int _iBoneCount) { m_Const.arrAnimData[1] = _iBoneCount; }
+	void SetBloom(bool _bTrue) { m_Const.iBloomUse = (int)_bTrue; }
 
 	void*		  GetScalarParam(SCALAR_PARAM _ParamType);
 	Ptr<CTexture> GetTexParam(TEX_PARAM _ParamType) { return m_arrTex[(UINT)_ParamType]; }

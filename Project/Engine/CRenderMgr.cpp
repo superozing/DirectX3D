@@ -135,13 +135,6 @@ void CRenderMgr::render_play()
 		// Foward 렌더링
 		pMainCam->render_forward();
 
-		// Blur&Bloom처리
-		if (true == CRenderMgr::GetInst()->m_BloomInfo.Activate)
-		{
-			pMainCam->Blur();
-			pMainCam->Bloom();
-		}
-
 		// 후처리 작업
 		pMainCam->render_postprocess();
 	}
@@ -203,13 +196,6 @@ void CRenderMgr::render_editor()
 
 	// Foward 렌더링
 	m_EditorCam->render_forward();
-
-	// Blur&Bloom처리
-	if (true == CRenderMgr::GetInst()->m_BloomInfo.Activate)
-	{
-		m_EditorCam->Blur();
-		m_EditorCam->Bloom();
-	}
 
 	// 후처리 작업
 	m_EditorCam->render_postprocess();
@@ -417,9 +403,21 @@ void CRenderMgr::CheckEscape()
 			m_bEscape = !m_bEscape;
 
 			ActiveEditorMode(m_bEscape);
+			static bool bPrevCursor = true;
+			if (m_bEscape)
+			{
+				CKeyMgr::GetInst()->SetFocuseState(FOCUS_STATE::OTHER);
+				bPrevCursor = CKeyMgr::GetInst()->IsShowCursor();
+				CKeyMgr::GetInst()->RoRShowCursor(true);
+				ShowCursor(true);
+			}
+			else
+			{
+				CKeyMgr::GetInst()->SetFocuseState(FOCUS_STATE::MAIN);
+				CKeyMgr::GetInst()->RoRShowCursor(bPrevCursor);
+				ShowCursor(bPrevCursor);
+			}
 
-			m_bEscape ? CKeyMgr::GetInst()->SetFocuseState(FOCUS_STATE::OTHER)
-					  : CKeyMgr::GetInst()->SetFocuseState(FOCUS_STATE::MAIN);
 			RePositionDebugCam();
 		}
 	}

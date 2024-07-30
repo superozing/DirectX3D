@@ -1,13 +1,21 @@
 ﻿#include "pch.h"
 #include "CAmmoInfo.h"
-#include <Engine/CAssetMgr.h>
 
-#include "CImageUIScript.h"
-#include "CPanelUIScript.h"
+#include <Engine/CFontMgr.h>
+#include <Engine/CDevice.h>
 
 CAmmoInfo::CAmmoInfo()
-	: CProgressBar((UINT)SCRIPT_TYPE::AMMOINFO)
+	: CTextUI((UINT)SCRIPT_TYPE::AMMOINFO)
 {
+	AppendScriptParam("CurAmmo", SCRIPT_PARAM::INT, &m_iCurAmmo);
+	AppendScriptParam("MaxAmmo", SCRIPT_PARAM::INT, &m_iMaxAmmo);
+}
+
+CAmmoInfo::CAmmoInfo(const CAmmoInfo& _Origin)
+	: CTextUI((UINT)SCRIPT_TYPE::AMMOINFO)
+{
+	AppendScriptParam("CurAmmo", SCRIPT_PARAM::INT, &m_iCurAmmo);
+	AppendScriptParam("MaxAmmo", SCRIPT_PARAM::INT, &m_iMaxAmmo);
 }
 
 CAmmoInfo::~CAmmoInfo()
@@ -16,58 +24,20 @@ CAmmoInfo::~CAmmoInfo()
 
 void CAmmoInfo::begin()
 {
-	CProgressBar::begin();
+	const auto& childs = GetOwner()->GetChild();
+	for (const auto& child : childs)
+	{
+	}
+
+	// TODO : 사격 시스템 생기면 포인터 받아야함,
+	// curammo랑 maxammo랑 연결해주어야 함
 }
 
 void CAmmoInfo::tick()
 {
-	m_pAmmoLine->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, m_ratio);
-}
-
-void CAmmoInfo::MakeChildObjects()
-{
-	// transform 조정
-	Transform()->SetRelativeScale(Vec3(16.f, 54.f, 1.f));
-
-	// panel texture 설정
-	GetPanelUI()->SetPanelTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/ColorTex/White.png"));
-	GetPanelUI()->SetUIType(UI_TYPE::AMMO);
-	CGameObject* pObj = nullptr;
-
-	// HPLine
-	pObj		= new CGameObject;
-	m_pAmmoLine = new CImageUIScript;
-	pObj->SetName(L"Ammo Line");
-	pObj->AddComponent(new CTransform);
-	pObj->AddComponent(new CMeshRender);
-	pObj->AddComponent(m_pAmmoLine);
-
-	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect));
-	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"StaticUIMtrl"), 0);
-	pObj->MeshRender()->GetDynamicMaterial(0);
-
-	pObj->MeshRender()->GetMaterial(0)->SetShader(
-		CAssetMgr::GetInst()->Load<CGraphicsShader>(L"GraphicsShader/AmmoProgressBarShader.gs"));
-
-	// m_pAmmoLine->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/HPLine.png"));
-	m_pAmmoLine->AllowBindTexPerFrame();
-	m_pAmmoLine->SetUIType(UI_TYPE::AMMO);
-
-	pObj->Transform()->SetRelativePos(Vec3(0, 0, 0.f));
-	pObj->Transform()->SetRelativeScale(Vec3(12, 50.f, 1.f));
-
-	GetOwner()->AddChild(pObj);
-}
-
-void CAmmoInfo::SaveToFile(FILE* _File)
-{
 }
 
 void CAmmoInfo::SaveToFile(ofstream& fout)
-{
-}
-
-void CAmmoInfo::LoadFromFile(FILE* _File)
 {
 }
 

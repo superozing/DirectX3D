@@ -119,6 +119,16 @@ void ParticleSystemUI::render_update()
 
 	ImGui::Separator();
 
+	if (ImGui::Button("Play"))
+	{
+		GetTargetObject()->ParticleSystem()->Play();
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Stop"))
+	{
+		GetTargetObject()->ParticleSystem()->Stop();
+	}
+
 	// Spawn Module
 
 	StaticButton(string("Spawn Module"), STATIC_BTN_TYPE::SUBTITLE);
@@ -161,6 +171,26 @@ void ParticleSystemUI::render_update()
 			if (ImGui::Button("LocalSpace"))
 			{
 				NewModule.SpaceType = 1;
+			}
+		}
+		ImGui::Text("SpawnType");
+		ImGui::SameLine();
+		if (1 == NewModule.SpawnType)
+		{
+			if (ImGui::Button("Burst"))
+			{
+				NewModule.SpawnType = 0;
+			}
+
+			ImGui::Text("Burst Interval");
+			ImGui::SameLine();
+			ImGui::DragFloat("##BurstInterval", &NewModule.BurstInterval, 0.1f, 0.f, 1000.f, "%.1f");
+		}
+		else
+		{
+			if (ImGui::Button("Continuous"))
+			{
+				NewModule.SpawnType = 1;
 			}
 		}
 		ImGui::Text("Spawn Color");

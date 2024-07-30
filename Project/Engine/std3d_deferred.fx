@@ -134,24 +134,25 @@ PS_OUT PS_Std3D_Deferred(VS_OUT _in) : SV_Target
 
     }
     
-    //Bloom START
-    const static float3 vRLWeight = float3(0.2126f, 0.7152f, 0.0722f);
-    //float4 vBloomColor = BloomColor;
-    //float fThreshold = g_float_0;
-    const static float4 vBloomColor = float4(1.f, 1.f, 1.f, 1.f);
-    float fThreshold = 0.8f;
-
-    float brightness = dot(vOutColor.rgb, vRLWeight);
-    if (brightness > fThreshold)
+    if (g_iBloomUse)
     {
-        output.vRelativeLuminance = vBloomColor;
+        const static float3 vRLWeight = float3(0.2126f, 0.7152f, 0.0722f);
+        float4 vBloomColor = g_BloomInfo[0].vBloomColor;
+        float fThreshold = g_BloomInfo[0].fThreshold;
+        //const static float4 vBloomColor = float4(1.f, 1.f, 1.f, 1.f);
+        //float fThreshold = 0.8f;
 
+        float brightness = dot(vOutColor.rgb, vRLWeight);
+        if (brightness > fThreshold)
+        {
+            output.vRelativeLuminance = vBloomColor;
+
+        }
+        else
+        {
+            output.vRelativeLuminance = float4(0.f, 0.f, 0.f, 1.f);
+        }
     }
-    else
-    {
-        output.vRelativeLuminance = float4(0.f, 0.f, 0.f, 1.f);
-    }
-    //Bloom E N D
     
     output.vNormal = float4(vViewNormal, 1.f);
     

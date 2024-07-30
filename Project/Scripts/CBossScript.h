@@ -29,9 +29,9 @@ struct tBossStatus
 	float CurHP = MaxHP;
 
 	float ATTDamage = 10.f;
-	float ATTSpeed	= 2.f;
+	float ATTSpeed	= 2000.f;
 
-	float EXsCoolTime = 5.f;
+	float EXsCoolTime = 1.f;
 
 	bool IsGroggy = false;
 	bool IsDead	  = false;
@@ -53,6 +53,7 @@ private:
 	bool m_ActiveEXs;
 
 	bool m_ArrMissile[8]; // 미사일 발사여부
+	bool m_ArrShield[2]; // 쉴드 전개 여부
 
 	// @@디버그용
 	int m_EXsType; // 현재 선택된 EX 타입
@@ -122,8 +123,13 @@ public:
 
 	void FireMegaFist();
 	void FireBossMissile(int _idx);
+	void ActiveInnerShield();
+	void ActiveOutsideShield();
+	void ActiveHexShield();
+	void DeActiveHexShield();
 
 	CRoRStateMachine<CBossScript>* GetBossFSM() { return m_FSM; }
+
 
 	CGameObject* GetTarget() { return m_Target; }
 	void		 SetTarget(CGameObject* _Target) { m_Target = _Target; }

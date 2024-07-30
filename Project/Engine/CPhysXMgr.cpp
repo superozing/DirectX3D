@@ -111,6 +111,93 @@ bool CPhysXMgr::ViewPortRaycast(tRoRHitInfo& _HitInfo, UINT _LAYER, int _DebugFl
 	return hit;
 }
 
+PxShape* CPhysXMgr::createConeShape(PxRigidActor* actor, PxPhysics* gPhysics, PxMaterial* gMaterial, float radius,
+									float height, int numSides)
+{
+	Ptr<CMesh> pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MESHcubedebug);
+
+	PxConvexMeshDesc convexDesc;
+	convexDesc.points.count	 = pMesh->GetVtxCount();
+	convexDesc.points.stride = sizeof(Vtx);
+	convexDesc.points.data	 = pMesh->GetVtxSysMem();
+
+	// if (pMeshCol->m_bConvex)
+	convexDesc.flags |= PxConvexFlag::eCOMPUTE_CONVEX;
+
+	// PxConvexMesh 생성
+	PxTolerancesScale				scale;
+	PxCookingParams					params(scale);
+	PxDefaultMemoryOutputStream		buf;
+	PxConvexMeshCookingResult::Enum result;
+
+	// 유효한 메쉬인 경우에만 생성
+	if (PxCookConvexMesh(params, convexDesc, buf, &result))
+	{
+		PxDefaultMemoryInputData input(buf.getData(), buf.getSize());
+		PxConvexMesh*			 convexMesh = gPhysics->createConvexMesh(input);
+
+		PxShape* shape = PxRigidActorExt::createExclusiveShape(
+			*actor, PxConvexMeshGeometry(convexMesh, PxMeshScale(PxVec3(height, radius, radius))), *gMaterial);
+		return shape;
+	}
+
+	return nullptr;
+	// static PxTriangleMesh* triangleMesh = nullptr;
+
+	// if (nullptr == triangleMesh)
+	//{
+	//	// 원뿔의 꼭짓점과 바닥을 구성하는 정점 벡터
+	//	std::vector<PxVec3> vertices;
+	//	vertices.push_back(PxVec3(0.0f, height / 2, 0.0f)); // 원뿔의 꼭짓점
+
+	//	// 바닥 원형의 정점들
+	//	for (int i = 0; i < numSides; ++i)
+	//	{
+	//		float angle = i * PxPi * 2 / numSides;
+	//		float x		= radius * cos(angle);
+	//		float z		= radius * sin(angle);
+	//		vertices.push_back(PxVec3(x, -height / 2, z));
+	//	}
+
+	//	// 삼각형 인덱스 벡터
+	//	std::vector<PxU32> indices;
+	//	for (int i = 1; i <= numSides; ++i)
+	//	{
+	//		indices.push_back(0); // 꼭짓점
+	//		indices.push_back(i);
+	//		indices.push_back(i % numSides + 1);
+	//	}
+
+	//	// 바닥 삼각형들
+	//	for (int i = 1; i <= numSides; ++i)
+	//	{
+	//		indices.push_back(i);
+	//		indices.push_back(numSides + 1);
+	//		indices.push_back(i % numSides + 1);
+	//	}
+
+	//	// 삼각형 메시 생성
+	//	PxTriangleMeshDesc meshDesc;
+	//	meshDesc.points.count  = static_cast<PxU32>(vertices.size());
+	//	meshDesc.points.stride = sizeof(PxVec3);
+	//	meshDesc.points.data   = vertices.data();
+
+	//	meshDesc.triangles.count  = static_cast<PxU32>(indices.size() / 3);
+	//	meshDesc.triangles.stride = 3 * sizeof(PxU32);
+	//	meshDesc.triangles.data	  = indices.data();
+	//	PxDefaultMemoryOutputStream		  writeBuffer;
+	//	PxTriangleMeshCookingResult::Enum result;
+	//	if (!gPhysics->getCooking()->cookTriangleMesh(meshDesc, writeBuffer, &result))
+	//	{
+	//		return nullptr;
+	//	}
+	//	PxDefaultMemoryInputData readBuffer(writeBuffer.getData(), writeBuffer.getSize());
+	//	triangleMesh = gPhysics->createTriangleMesh(readBuffer);
+	//}
+
+	// return gPhysics->createShape(PxTriangleMeshGeometry(triangleMesh), *gMaterial);
+}
+
 PxFilterFlags CustomFilterShader(PxFilterObjectAttributes attributes0, PxFilterData filterData0,
 								 PxFilterObjectAttributes attributes1, PxFilterData filterData1, PxPairFlags& pairFlags,
 								 const void* constantBlock, PxU32 constantBlockSize)
@@ -220,7 +307,8 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 		PxRigidDynamic* dynamicActor = gPhysics->createRigidDynamic(transform);
 		PxRigidBodyExt::updateMassAndInertia(*dynamicActor, 10.0f);
 		// dynamicActor->setMass(1.0f);
-		actor = dynamicActor;
+		PhysX->m_DActor = dynamicActor;
+		actor			= dynamicActor;
 	}
 	else
 	{
@@ -230,7 +318,8 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 		// dynamicActor->setMass(1.0f);
 		dynamicActor->setRigidBodyFlag(PxRigidBodyFlag::eENABLE_CCD, true);
 		dynamicActor->setRigidBodyFlag(PxRigidBodyFlag::eENABLE_SPECULATIVE_CCD, true);
-		actor = dynamicActor;
+		PhysX->m_DActor = dynamicActor;
+		actor			= dynamicActor;
 	}
 
 	// 게임 오브젝트의 스케일 정보
@@ -247,9 +336,17 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 	{
 		shape = gPhysics->createShape(PxBoxGeometry(scale.x / 2, scale.y / 2, scale.z / 2), *gMaterial);
 	}
-	else
+	else if (PhysShape::SPHERE == PhysX->m_Shape)
 	{
 		shape = gPhysics->createShape(PxSphereGeometry(scale.x / 2), *gMaterial);
+	}
+	else
+	{
+		float radius   = scale.x / 2; // 원뿔의 반지름
+		float height   = scale.y;	  // 원뿔의 높이
+		int	  numSides = 20;		  // 원뿔 바닥의 변 개수
+
+		shape = createConeShape(actor, gPhysics, gMaterial, radius, height, numSides);
 	}
 
 	// 필터정보 세팅
@@ -264,7 +361,7 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 	if (PhysBodyType::TRIGGER != PhysX->m_bPhysBodyType)
 	{
 		shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
-		shape->setRestOffset(200.f);
+		shape->setRestOffset(m_fLestOffset);
 	}
 	if (PhysBodyType::TRIGGER == PhysX->m_bPhysBodyType)
 	{
@@ -296,8 +393,7 @@ void CPhysXMgr::init()
 	// PhysX 초기화
 	gPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *gFoundation, PxTolerancesScale(), true, gPvd);
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
-	const float gravityMul	= 10.f;
-	sceneDesc.gravity		= PxVec3(0.0f, -9.81f * gravityMul, 0.0f);
+	sceneDesc.gravity		= PxVec3(0.0f, -9.81f * m_fGravityMul, 0.0f);
 	gDispatcher				= PxDefaultCpuDispatcherCreate(2);
 	sceneDesc.cpuDispatcher = gDispatcher;
 
@@ -325,7 +421,7 @@ void CPhysXMgr::tick()
 {
 	RETURN_IF_NOT_PLAYING
 
-	static const float ThresholdTime = 1.f / 60.f;
+	static const float ThresholdTime = 1.f / 180.f;
 	static float	   acctime		 = 0.f;
 	acctime += DT;
 	if (acctime < ThresholdTime)
@@ -366,6 +462,18 @@ void CPhysXMgr::ClearAllActors()
 		gScene->removeActor(*actor);
 		actor->release();
 	}
+
+	// 씬 잠금 해제
+	gScene->unlockWrite();
+}
+
+void CPhysXMgr::ReleaseActor(PxRigidActor* actor)
+{
+	// 씬 잠금
+	gScene->lockWrite();
+
+	gScene->removeActor(*actor);
+	actor->release();
 
 	// 씬 잠금 해제
 	gScene->unlockWrite();
