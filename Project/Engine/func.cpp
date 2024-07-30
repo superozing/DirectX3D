@@ -217,6 +217,26 @@ void GamePlayStatic::DrawDebugCone(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWo
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
 
+void GamePlayStatic::DrawDebugCone(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec4 _qWorldRot, Vec3 _Color, bool _bDepthTest,
+								   float _Duration)
+{
+	tDebugShapeInfo info = {};
+	info.eShape			 = DEBUG_SHAPE::CONE;
+
+	info.vWorldPos			= _vWorldPos;
+	info.vWorldScale		= _vWorldScale;
+	XMMATRIX rotationMatrix = XMMatrixRotationQuaternion(_qWorldRot);
+
+	info.matWorld = XMMatrixScaling(info.vWorldScale.x, info.vWorldScale.y, info.vWorldScale.z) * rotationMatrix *
+					XMMatrixTranslation(info.vWorldPos.x, info.vWorldPos.y, info.vWorldPos.z);
+
+	info.vColor		= _Color;
+	info.bDepthTest = _bDepthTest;
+	info.fDuration	= _Duration;
+
+	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
+}
+
 #include "CLevel.h"
 void GamePlayStatic::ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextLevelStartState)
 {
