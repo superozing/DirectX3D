@@ -35,8 +35,9 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 									m_fSpreadRatio * CRandomMgr::GetInst()->GetRandomFloat() * MaxSpread,
 									m_fSpreadRatio * CRandomMgr::GetInst()->GetRandomFloat() * MaxSpread);
 
-	bool isBulletHit = CPhysXMgr::GetInst()->PerfomRaycast(pMainCam->Transform()->GetWorldPos(), ShootDir, hitInfo,
-														   (UINT)LAYER::LAYER_RAYCAST, RayCastDebugFlag::AllVisible);
+	bool isBulletHit =
+		CPhysXMgr::GetInst()->PerfomRaycast(pMainCam->Transform()->GetWorldPos(), ShootDir, hitInfo,
+											(UINT)LAYER::LAYER_PLAYER_SHOOTING_RAY, RayCastDebugFlag::AllVisible);
 
 	if (isBulletHit)
 	{
