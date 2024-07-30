@@ -222,6 +222,8 @@ void CBossScript::EXs2End()
 void CBossScript::EXs3Begin()
 {
 	Animator3D()->Play((int)BOSS_STATE::EXs3, 0);
+
+	ActiveHexShield();
 }
 
 int CBossScript::EXs3Update()
@@ -229,11 +231,31 @@ int CBossScript::EXs3Update()
 	if (!Animator3D()->IsPlayable())
 		return (int)BOSS_STATE::NormalIdle;
 
+	int idx = Animator3D()->GetCurFrameIdx();
+
+	if (idx == 36 && !m_ArrShield[0])
+	{
+		ActiveInnerShield();
+		m_ArrShield[0] = true;
+	}
+
+	if (idx == 46 && !m_ArrShield[1])
+	{
+		ActiveOutsideShield();
+		m_ArrShield[1] = true;
+	}
+
 	return m_FSM->GetCurState();
 }
 
 void CBossScript::EXs3End()
 {
+	for (size_t i = 0; i < 2; ++i)
+	{
+		m_ArrShield[i] = false;
+	}
+
+	DeActiveHexShield();
 }
 
 void CBossScript::EXs4Begin()

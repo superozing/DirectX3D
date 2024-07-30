@@ -135,13 +135,6 @@ void CRenderMgr::render_play()
 		// Foward 렌더링
 		pMainCam->render_forward();
 
-		// Blur&Bloom처리
-		if (true == CRenderMgr::GetInst()->m_BloomInfo.Activate)
-		{
-			pMainCam->Blur();
-			pMainCam->Bloom();
-		}
-
 		// 후처리 작업
 		pMainCam->render_postprocess();
 	}
@@ -203,13 +196,6 @@ void CRenderMgr::render_editor()
 
 	// Foward 렌더링
 	m_EditorCam->render_forward();
-
-	// Blur&Bloom처리
-	if (true == CRenderMgr::GetInst()->m_BloomInfo.Activate)
-	{
-		m_EditorCam->Blur();
-		m_EditorCam->Bloom();
-	}
 
 	// 후처리 작업
 	m_EditorCam->render_postprocess();

@@ -36,6 +36,7 @@ private:
 	vector<CStructuredBuffer*> m_vecBoneFrameData; // 전체 본 프레임 정보(크기, 이동, 회전) (프레임 개수만큼)
 
 public:
+	UINT GetVtxCount() { return m_VtxCount; }
 	Vtx* GetVtxSysMem() { return (Vtx*)m_VtxSysMem; }
 	UINT GetSubsetCount() { return (UINT)m_vecIdxInfo.size(); }
 

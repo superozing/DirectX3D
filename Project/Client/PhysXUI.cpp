@@ -31,6 +31,18 @@ void PhysXUI::render_update()
 		return;
 	}
 
+	// Set Vel Test
+	static Vec3 vVelSet = Vec3();
+	ImGui::DragFloat3("VelocityValue:", vVelSet);
+	if (ImGui::Button("SetLVel"))
+	{
+		phys->setLinearVelocity(vVelSet);
+	}
+	if (ImGui::Button("SetAVel"))
+	{
+		phys->setAngularVelocity(vVelSet);
+	}
+
 	auto Shape	  = phys->m_Shape;
 	auto strShape = ToString(magic_enum::enum_name<PhysShape>(Shape));
 

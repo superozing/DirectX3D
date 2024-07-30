@@ -169,9 +169,11 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CAmmoInfo.h" />
     <ClInclude Include="CAtlasImageUIScript.h" />
     <ClInclude Include="CBackgroundScript.h" />
+    <ClInclude Include="CBloomScript.h" />
     <ClInclude Include="CBossHP.h" />
     <ClInclude Include="CBossMissileScript.h" />
     <ClInclude Include="CBossScript.h" />
+    <ClInclude Include="CBossShieldScript.h" />
     <ClInclude Include="CBtnUIScript.h" />
     <ClInclude Include="CCameraEffect.h" />
     <ClInclude Include="CCameraMoveScript.h" />
@@ -193,6 +195,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CMissileScript.h" />
     <ClInclude Include="CMonsterHP.h" />
     <ClInclude Include="CMonsterScript.h" />
+    <ClInclude Include="CMuzzleFlashScript.h" />
     <ClInclude Include="CPanelUIScript.h" />
     <ClInclude Include="CPhysXMgrScript.h" />
     <ClInclude Include="CPauseBtn.h" />
@@ -227,10 +230,12 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CAmmoInfo.cpp" />
     <ClCompile Include="CAtlasImageUIScript.cpp" />
     <ClCompile Include="CBackgroundScript.cpp" />
+    <ClCompile Include="CBloomScript.cpp" />
     <ClCompile Include="CBossHP.cpp" />
     <ClCompile Include="CBossMissileScript.cpp" />
     <ClCompile Include="CBossScript.cpp" />
     <ClCompile Include="CBossScript_State.cpp" />
+    <ClCompile Include="CBossShieldScript.cpp" />
     <ClCompile Include="CBtnUIScript.cpp" />
     <ClCompile Include="CCameraEffect.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
@@ -251,6 +256,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CMissileScript.cpp" />
     <ClCompile Include="CMonsterHP.cpp" />
     <ClCompile Include="CMonsterScript.cpp" />
+    <ClCompile Include="CMuzzleFlashScript.cpp" />
     <ClCompile Include="CPanelUIScript.cpp" />
     <ClCompile Include="CPhysXMgrScript.cpp" />
     <ClCompile Include="CPauseBtn.cpp" />

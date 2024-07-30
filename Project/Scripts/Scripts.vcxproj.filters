@@ -49,14 +49,17 @@
     <ClInclude Include="CCrosshair.h">
       <Filter>Scripts\UI\Image\Crosshair</Filter>
     </ClInclude>
+    <ClInclude Include="CWeaponInfo.h">
+      <Filter>Scripts\UI\Image\WeaponInfo</Filter>
+    </ClInclude>
     <ClInclude Include="CPausePanel.h">
       <Filter>Scripts\UI\Image\PausePanel</Filter>
     </ClInclude>
     <ClInclude Include="CPauseBtn.h">
       <Filter>Scripts\UI\Image\PauseBtn</Filter>
     </ClInclude>
-    <ClInclude Include="CDigitUI.h">
-      <Filter>Scripts\UI\Digit</Filter>
+    <ClInclude Include="CDamageFont.h">
+      <Filter>Scripts\UI\Image\DamageFont</Filter>
     </ClInclude>
     <ClInclude Include="CProgressBar.h">
       <Filter>Scripts\UI\ProgressBar</Filter>
@@ -71,7 +74,7 @@
       <Filter>Scripts\UI\ProgressBar\PlayerHP</Filter>
     </ClInclude>
     <ClInclude Include="CAmmoInfo.h">
-      <Filter>Scripts\UI\Text\AmmoInfo</Filter>
+      <Filter>Scripts\UI\ProgressBar\AmmoInfo</Filter>
     </ClInclude>
     <ClInclude Include="CPhysXMgrScript.h">
       <Filter>Scripts\Manager\PhysXMgr</Filter>
@@ -150,14 +153,8 @@
     <ClInclude Include="CHUD.h">
       <Filter>Scripts\UI</Filter>
     </ClInclude>
-    <ClInclude Include="CStretchUIScript.h">
-      <Filter>Scripts\DefaultUI\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="CTextUI.h">
-      <Filter>Scripts\DefaultUI\TextUI</Filter>
-    </ClInclude>
-    <ClInclude Include="CReloadUI.h">
-      <Filter>Scripts\UI\Image\Reload</Filter>
+    <ClInclude Include="CMuzzleFlashScript.h">
+      <Filter>Scripts\Particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -209,14 +206,17 @@
     <ClCompile Include="CCrosshair.cpp">
       <Filter>Scripts\UI\Image\Crosshair</Filter>
     </ClCompile>
+    <ClCompile Include="CWeaponInfo.cpp">
+      <Filter>Scripts\UI\Image\WeaponInfo</Filter>
+    </ClCompile>
     <ClCompile Include="CPausePanel.cpp">
       <Filter>Scripts\UI\Image\PausePanel</Filter>
     </ClCompile>
     <ClCompile Include="CPauseBtn.cpp">
       <Filter>Scripts\UI\Image\PauseBtn</Filter>
     </ClCompile>
-    <ClCompile Include="CDigitUI.cpp">
-      <Filter>Scripts\UI\Digit</Filter>
+    <ClCompile Include="CDamageFont.cpp">
+      <Filter>Scripts\UI\Image\DamageFont</Filter>
     </ClCompile>
     <ClCompile Include="CProgressBar.cpp">
       <Filter>Scripts\UI\ProgressBar</Filter>
@@ -234,7 +234,7 @@
       <Filter>Scripts\UI\ProgressBar\PlayerHP</Filter>
     </ClCompile>
     <ClCompile Include="CAmmoInfo.cpp">
-      <Filter>Scripts\UI\Text\AmmoInfo</Filter>
+      <Filter>Scripts\UI\ProgressBar\AmmoInfo</Filter>
     </ClCompile>
     <ClCompile Include="CSkillIcon.cpp">
       <Filter>Scripts\UI\ProgressBar\SkillIcon</Filter>
@@ -314,14 +314,8 @@
     <ClCompile Include="CHUD.cpp">
       <Filter>Scripts\UI</Filter>
     </ClCompile>
-    <ClCompile Include="CStretchUIScript.cpp">
-      <Filter>Scripts\DefaultUI\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="CTextUI.cpp">
-      <Filter>Scripts\DefaultUI\TextUI</Filter>
-    </ClCompile>
-    <ClCompile Include="CReloadUI.cpp">
-      <Filter>Scripts\UI\Image\Reload</Filter>
+    <ClCompile Include="CMuzzleFlashScript.cpp">
+      <Filter>Scripts\Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -376,11 +370,17 @@
     <Filter Include="Scripts\UI\Image\Crosshair">
       <UniqueIdentifier>{34c9d88f-7a17-4733-81e3-09cf4048d6c9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\UI\Image\DamageFont">
+      <UniqueIdentifier>{0b661eb9-4e4a-43d3-9edf-5093ab788785}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Scripts\UI\Image\PauseBtn">
       <UniqueIdentifier>{5511a975-3f3a-4029-8368-2ae1a53ecf41}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\UI\Image\PausePanel">
       <UniqueIdentifier>{78fd96b1-f585-4066-88dc-0a7b73c075a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\Image\WeaponInfo">
+      <UniqueIdentifier>{ed447ae9-d1c6-45b7-92af-d3e4daf01425}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\UI\ProgressBar">
       <UniqueIdentifier>{e8beecff-8dff-41b8-8ccd-cd06f6600281}</UniqueIdentifier>
@@ -393,6 +393,9 @@
     </Filter>
     <Filter Include="Scripts\UI\ProgressBar\MonsterHP">
       <UniqueIdentifier>{41b13e7f-f4e2-41a0-9eb2-f1742d335840}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\ProgressBar\AmmoInfo">
+      <UniqueIdentifier>{428b9d57-cfd8-4bf1-b2ca-3905db9d780b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\UI\ProgressBar\SkillIcon">
       <UniqueIdentifier>{904a9997-8eee-4e3b-ab19-3f8341cb7464}</UniqueIdentifier>
@@ -424,20 +427,8 @@
     <Filter Include="Scripts\Level">
       <UniqueIdentifier>{1666e7d2-5bff-44b3-88d6-1f00319dfd14}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\UI\Text">
-      <UniqueIdentifier>{7ac96835-7c2b-4b8e-844f-e776fda9d4e0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\UI\Text\AmmoInfo">
-      <UniqueIdentifier>{428b9d57-cfd8-4bf1-b2ca-3905db9d780b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\UI\Digit">
-      <UniqueIdentifier>{0b661eb9-4e4a-43d3-9edf-5093ab788785}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\DefaultUI\TextUI">
-      <UniqueIdentifier>{1c435064-82c6-4d54-85d3-432043f5adff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\UI\Image\Reload">
-      <UniqueIdentifier>{158b20c1-cb18-445f-92ec-c746df4b9de8}</UniqueIdentifier>
+    <Filter Include="Scripts\Particle">
+      <UniqueIdentifier>{9d9687ac-349f-4c6b-ad84-3025114fc4f8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

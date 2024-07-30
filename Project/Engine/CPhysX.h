@@ -13,6 +13,7 @@ enum class PhysShape
 {
 	BOX,
 	SPHERE,
+	CONE,
 	END,
 };
 
@@ -33,12 +34,13 @@ struct tCollisionData
 class CPhysX : public CComponent
 {
 private:
-	PxRigidActor* m_Actor				   = nullptr;
-	int			  m_CollisionCount		   = 0;
-	bool		  m_bImguiDirtyFlag		   = false;
-	bool		  m_bThisFrameImguiFocused = false;
-	void		  updateFromPhysics();
-	void		  updateToPhysics();
+	PxRigidActor*	m_Actor					 = nullptr;
+	PxRigidDynamic* m_DActor				 = nullptr;
+	int				m_CollisionCount		 = 0;
+	bool			m_bImguiDirtyFlag		 = false;
+	bool			m_bThisFrameImguiFocused = false;
+	void			updateFromPhysics();
+	void			updateToPhysics();
 
 	bool m_bDrawing;
 
@@ -62,8 +64,14 @@ public:
 
 	void		setTransform(const PxTransform& transform);
 	PxTransform getTransform() const;
+	void		setLinearVelocity(const Vec3& _vLVel);
+	void		setAngularVelocity(const Vec3& _vAVel);
+	// void		applyBulletImpact(PxRigidDynamic* rigidActor, const PxVec3& bulletVelocity, float bulletMass,
+	//							  const PxVec3& hitPoint);
+	void applyBulletImpact(const PxVec3& bulletVelocity, float bulletMass, const PxVec3& hitPoint);
 
 	PxRigidActor* getActor() const { return m_Actor; }
+	void		  releaseActor();
 
 public:
 	CLONE(CPhysX);

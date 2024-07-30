@@ -233,6 +233,12 @@ void MeshRenderUI::render_update()
 		}
 	}
 
+	bool bShadow = GetTargetObject()->GetRenderComponent()->IsDrawShadow();
+	ImGui::Text("Draw Shadow");
+	ImGui::SameLine();
+	ImGui::Checkbox("##Shadow", &bShadow);
+	GetTargetObject()->GetRenderComponent()->DrawShadow(bShadow);
+
 	// ImGui::Text("Material");
 	// ImGui::SameLine();
 	// ImGui::InputText("##MtrlName", (char*)mtrlname.c_str(), mtrlname.length(), ImGuiInputTextFlags_ReadOnly);
