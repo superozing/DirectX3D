@@ -74,7 +74,7 @@ struct PlayerStatus
 	float CriticalPercent = 0.f;
 	float CriticalDamage  = 1.2f;
 
-	float SpreadRatio = 0.f;
+	float SpreadRatioSpeed = 0.f;
 
 	bool IsDead = false;
 
@@ -98,7 +98,8 @@ private:
 
 	map<PLAYER_STATE, SpringArmInfo> m_mSpringInfos;
 
-	class CCrosshair* m_pShootingSystem;
+	class CShootingSystemScript* m_pShootingSystem;
+	class CCrosshair* m_pCrosshair;
 
 public:
 #pragma region StatusFunc
@@ -199,6 +200,19 @@ public:
 		// 현재 스테미나보다 최대 스테미나가 깎였을 경우 현재 스테미나 조정
 		if (m_tStatus.curStamina > m_tStatus.MaxStamina)
 			m_tStatus.curStamina = m_tStatus.MaxStamina;
+	}
+
+	/// @brief 현재 데미지를 반환합니다. 현재는 크리티컬 확률을 계산하지 않습니다.
+	float GetSpreadRatio() const { return m_tStatus.SpreadRatioSpeed; }
+	/// @brief 데미지를 파라미터 만큼 올리거나 낮춥니다. 언더캡이 보장됩니다.
+	void AddSpreadRatio(float _relRatio)
+	{
+		m_tStatus.SpreadRatioSpeed = RoRMath::ClampFloat(m_tStatus.SpreadRatioSpeed + _relRatio, 0.f, 1.f);
+	}
+	/// @brief 데미지를 파라미터로 변경합니다. 언더캡이 보장됩니다.
+	void SetSpreadRatio(float _absRatio)
+	{ 
+		m_tStatus.SpreadRatioSpeed = RoRMath::ClampFloat(_absRatio, 0.f, 1.f);
 	}
 
 	/// @brief 현재 데미지를 반환합니다. 현재는 크리티컬 확률을 계산하지 않습니다.

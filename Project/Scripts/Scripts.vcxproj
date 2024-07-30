@@ -175,6 +175,8 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CBossScript.h" />
     <ClInclude Include="CBossShieldScript.h" />
     <ClInclude Include="CBtnUIScript.h" />
+    <ClInclude Include="CBulletMarkSpawner.h" />
+    <ClInclude Include="CBulletShellSpawner.h" />
     <ClInclude Include="CCameraEffect.h" />
     <ClInclude Include="CCameraMoveScript.h" />
     <ClInclude Include="CCoverLow.h" />
@@ -210,6 +212,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CRoRStateMachine.h" />
     <ClInclude Include="CScriptMgr.h" />
     <ClInclude Include="CDamagedDirection.h" />
+    <ClInclude Include="CShootingSystemScript.h" />
     <ClInclude Include="CSkillIcon.h" />
     <ClInclude Include="CSpawnSpotScript.h" />
     <ClInclude Include="CSpringArm.h" />
@@ -237,6 +240,8 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CBossScript_State.cpp" />
     <ClCompile Include="CBossShieldScript.cpp" />
     <ClCompile Include="CBtnUIScript.cpp" />
+    <ClCompile Include="CBulletMarkSpawner.cpp" />
+    <ClCompile Include="CBulletShellSpawner.cpp" />
     <ClCompile Include="CCameraEffect.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
     <ClCompile Include="CCoverLow.cpp" />
@@ -272,6 +277,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CRoRStateMachine.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
     <ClCompile Include="CDamagedDirection.cpp" />
+    <ClCompile Include="CShootingSystemScript.cpp" />
     <ClCompile Include="CSkillIcon.cpp" />
     <ClCompile Include="CSpawnSpotScript.cpp" />
     <ClCompile Include="CSpringArm.cpp" />

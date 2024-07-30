@@ -76,12 +76,13 @@ void CMemoryPoolMgr::PushObject(string _strMapKey, CGameObject* _Object)
 
 string CMemoryPoolMgr::GetBaseName(const string& strFullname)
 {
-	size_t underscorePos = strFullname.find('_');
-	if (underscorePos != string::npos)
-	{
-		return strFullname.substr(0, underscorePos);
-	}
-	return strFullname;
+	size_t lastSlash = strFullname.find_last_of("/\\");
+	size_t lastDot	 = strFullname.rfind('.');
+
+	size_t startPos = (lastSlash == string::npos) ? 0 : lastSlash + 1;
+	size_t length	= (lastDot == string::npos) ? string::npos : lastDot - startPos;
+
+	return strFullname.substr(startPos, length);
 }
 
 void CMemoryPoolMgr::PushObject(CGameObject* _Object)
