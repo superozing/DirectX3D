@@ -243,6 +243,11 @@ void CPlayerScript::InitSpringArmSetting()
 
 #include <Engine/CRenderMgr.h>
 
+int CPlayerScript::GetCurState()
+{
+	return m_FSM->GetCurState();
+}
+
 void CPlayerScript::SetCoverType(CoverType _type)
 {
 	m_iCorverType = _type;

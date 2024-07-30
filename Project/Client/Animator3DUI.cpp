@@ -17,7 +17,7 @@ void Animator3DUI::render_update()
 {
 	ComponentUI::render_update();
 
-	if (!TitleCollapse("Animator3D"))
+	if (!TitleCollapse("Animator3D") || !GetTargetObject()->Animator3D())
 		return;
 
 	auto AnimClip = GetTargetObject()->Animator3D()->GetAnimClip();

@@ -1,43 +1,26 @@
 ﻿#pragma once
-#include <Engine\CScript.h>
+#include "CImageUIScript.h"
 
-class CImageUIScript;
-class CPanelUIScript;
-class CBtnUIScript;
-
-class CPausePanel : public CScript
+class CPausePanel : public CImageUIScript
 {
 private:
-	// 부모 패널UI
-	CPanelUIScript* m_pPanelUI; // 일시 정지 상태 시 패널 이미지
-	tFontInfo		m_PanelFontInfo;
+	bool m_bIncreaseX;
+	bool m_bIncreaseY;
 
-	CImageUIScript* m_pModalBg; // 모달 시 바탕 이미지 (회색)
+	Vec2 m_vIncreaseSpeed;
 
-	CBtnUIScript* m_pContinueBtn; // 계속하기 버튼
-	CBtnUIScript* m_pExitBtn;	  // 나가기 버튼
+	vector<class CBtnUIScript*> m_vecBtns;
 
-	bool m_bActivate; // 활성화 여부
-
-	bool m_tempActiveUIType[(UINT)UI_TYPE::END];
+private:
+	void Continue();
+	void Exit();
 
 public:
 	virtual void begin() override;
 	virtual void tick() override;
 
-	virtual void SaveToFile(FILE* _File) override;
 	virtual void SaveToFile(ofstream& fout) override;
-	virtual void LoadFromFile(FILE* _File) override;
 	virtual void LoadFromFile(ifstream& fin) override;
-
-public:
-	void ActivePausePanel();
-	void InactivePausePanel();
-
-	void ExitBtnDelegateFunc() {}
-
-private:
-	void SetParentPanelUI();
 
 public:
 	CLONE(CPausePanel);

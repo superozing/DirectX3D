@@ -281,6 +281,7 @@ void CGameObject::AddChild(CGameObject* _Child, bool spawn)
 	// 부모 자식 연결
 	_Child->m_Parent = this;
 	m_vecChild.push_back(_Child);
+	GamePlayStatic::ResetOutliner();
 }
 
 void CGameObject::Destroy()

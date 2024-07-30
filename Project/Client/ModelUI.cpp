@@ -37,6 +37,9 @@ void ModelUI::SetModel(CGameObject* _obj)
 
 		vector<TreeNode*> vec(bones->size());
 
+		if (vec.size() <= 0)
+			return;
+
 		vec[0] = m_pBoneTree->AddTreeNode(nullptr, ToString(bones->at(0).strBoneName), 0);
 
 		for (int i = 1; i < bones->size(); i++)
@@ -53,9 +56,18 @@ void ModelUI::tick()
 	if (!m_pModel || !m_bDraw)
 		return;
 
-	m_pModel->Animator3D()->GetAnimClip()->at(m_pModel->Animator3D()->GetCurClip()).iFrameLength;
+	const auto& pModelVec = m_pModel->Animator3D()->GetAnimClip();
 
-	auto			 root = m_pBoneTree->GetRootNode();
+	if (pModelVec->size() <= 0)
+		return;
+
+	pModelVec->at(m_pModel->Animator3D()->GetCurClip()).iFrameLength;
+
+	auto root = m_pBoneTree->GetRootNode();
+
+	if (!root)
+		return;
+
 	queue<TreeNode*> q;
 	q.push(root);
 

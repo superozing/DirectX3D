@@ -20,7 +20,8 @@ class Inspector : public UI
 private:
 	CGameObject* m_TargetObject;
 	Ptr<CAsset>	 m_TargetAsset;
-	bool		 m_bPrefab;
+
+	bool m_bPrefab;
 
 	ComponentUI*	  m_arrComUI[(UINT)COMPONENT_TYPE::END];
 	vector<ScriptUI*> m_vecScriptUI;

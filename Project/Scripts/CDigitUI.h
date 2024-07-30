@@ -1,11 +1,10 @@
 ﻿#pragma once
-#include "CTextUI.h"
+#include "CImageUIScript.h"
 
-class CAmmoInfo : public CTextUI
+class CDigitUI : public CImageUIScript
 {
 private:
-	int m_iCurAmmo;
-	int m_iMaxAmmo;
+	int m_iDigit;
 
 public:
 	virtual void begin() override;
@@ -15,8 +14,8 @@ public:
 	virtual void LoadFromFile(ifstream& fin) override;
 
 public:
-	CLONE(CAmmoInfo);
-	CAmmoInfo();
-	CAmmoInfo(const CAmmoInfo& _Origin);
-	~CAmmoInfo();
+	CLONE(CDigitUI);
+	CDigitUI();
+	CDigitUI(const CDigitUI& _Origin);
+	~CDigitUI();
 };

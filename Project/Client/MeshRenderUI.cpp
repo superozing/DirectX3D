@@ -29,6 +29,8 @@ void MeshRenderUI::render_update()
 	CGameObject* pTarget	 = GetTargetObject();
 	CMeshRender* pMeshRender = pTarget->MeshRender();
 
+	if (!pTarget || !pMeshRender)return;
+
 	vector<tMtrlSet> vMtrl = pMeshRender->GetVecMtrls();
 	Ptr<CMesh>		 pMesh = pMeshRender->GetMesh();
 

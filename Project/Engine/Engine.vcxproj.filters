@@ -952,6 +952,9 @@
     <FxCompile Include="atlasStaticUI.fx">
       <Filter>ShaderCode\02. Render\UIShader</Filter>
     </FxCompile>
+    <FxCompile Include="stretchBox.fx">
+      <Filter>ShaderCode\02. Render\UIShader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine.rc" />

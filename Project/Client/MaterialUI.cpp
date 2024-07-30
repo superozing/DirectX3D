@@ -49,7 +49,7 @@ void MaterialUI::render_update()
 		? ImGui::InputText("##MtrlName", MtrlKey, 255)
 		: ImGui::InputText("##MtrlName", (char*)strKey.c_str(), strKey.length(), ImGuiInputTextFlags_ReadOnly);
 
-	string NewName = "material\\" + string(MtrlKey) + ".mtrl";
+	string NewName = path(strKey).parent_path().string() + "\\" + string(MtrlKey) + ".mtrl";
 	if (prevKey != NewName)
 	{
 		if (KEY_TAP_EDITOR(ENTER))

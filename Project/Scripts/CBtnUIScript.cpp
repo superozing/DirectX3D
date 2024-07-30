@@ -42,9 +42,7 @@ void CBtnUIScript::tick()
 {
 	CUIScript::tick();
 
-	// CLogMgr::GetInst()->AddLog(Log_Level::INFO, to_wstring(Transform()->GetWorldPos().x) +
-	// to_wstring(Transform()->GetWorldPos().y));
-	if (m_AllowTexSet && m_CurImg.Get())
+	if (m_bDraw)
 		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_CurImg);
 	else
 		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, nullptr);
@@ -77,7 +75,7 @@ void CBtnUIScript::LBtnUp()
 void CBtnUIScript::LBtnClicked()
 {
 	m_CurImg = m_NormalImg;
-	
+
 	if (m_AllowCallFunc)
 	{
 		// CallBack

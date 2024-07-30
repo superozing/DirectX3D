@@ -2,6 +2,8 @@
 #include "GraphicsShaderUI.h"
 #include "CImGuiMgr.h"
 
+#include <Engine/CKeyMgr.h>
+
 GraphicsShader::GraphicsShader()
 	: AssetUI("GraphicsShader", "##GraphicsShader", ASSET_TYPE::GRAPHICS_SHADER)
 {
@@ -28,18 +30,38 @@ void GraphicsShader::render_update()
 
 	ImGui::Separator();
 
+	char   ShaderKey[255];
+	string strKey  = ToString(pShader->GetKey());
+	string prevKey = strKey;
+
+	string FullPath = ToString(CPathMgr::GetContentPath()) + strKey;
+	if (exists(FullPath))
+	{
+		filesystem::path pathObj(FullPath);
+
+		strcpy_s(ShaderKey, pathObj.stem().string().c_str());
+	}
+
 	ImGui::Text("Graphics Shader ");
 	ImGui::SameLine();
 
 	using namespace std::filesystem;
 
-	path filePath = strShaderName;
+	ImGui::InputText("##GraphicsShaderName", ShaderKey, 255, ImGuiInputTextFlags_EnterReturnsTrue);
 
-	// 확장자 제거 - stem() 함수를 사용하면 파일 명만 가져올 수 있어요.
-	string strFileName = filePath.stem().string();
-
-	ImGui::InputText("##GraphicsShaderName", (char*)strFileName.c_str(), strFileName.length(),
-					 ImGuiInputTextFlags_ReadOnly);
+	string NewName = path(strKey).parent_path().string() + "\\" + string(ShaderKey) + ".gs";
+	if (prevKey != NewName)
+	{
+		if (KEY_TAP_EDITOR(ENTER))
+		{
+			ChangeAssetName(strKey, NewName);
+			AssetUI::SetAssetKey((CAsset*)pShader.Get(), ToWString(NewName));
+			prevKey = NewName;
+		}
+		else if (KEY_TAP_EDITOR(ESC))
+		{
+		}
+	}
 
 	ImGui::SeparatorText("Shader Info");
 
@@ -75,7 +97,7 @@ void GraphicsShader::render_update()
 	{
 		pShader->SetVSFuncName(VSFuncName);
 	}
-	
+
 	// HullShader
 	pShader->GetHSInfo(strPath, strFuncName);
 
@@ -95,7 +117,7 @@ void GraphicsShader::render_update()
 	{
 		pShader->SetHSFuncName(HSFuncName);
 	}
-		
+
 	// DomainShader
 	pShader->GetDSInfo(strPath, strFuncName);
 
@@ -115,8 +137,7 @@ void GraphicsShader::render_update()
 	{
 		pShader->SetDSFuncName(DSFuncName);
 	}
-	
-			
+
 	// GeomatryShader
 	pShader->GetGSInfo(strPath, strFuncName);
 
@@ -136,8 +157,7 @@ void GraphicsShader::render_update()
 	{
 		pShader->SetGSFuncName(GSFuncName);
 	}
-	
-				
+
 	// PixelShader
 	pShader->GetPSInfo(strPath, strFuncName);
 
@@ -157,12 +177,8 @@ void GraphicsShader::render_update()
 	{
 		pShader->SetPSFuncName(PSFuncName);
 	}
-	
-
 
 	///////////////////////////////////////
-
-
 
 	ImGui::SeparatorText("Shader State ");
 

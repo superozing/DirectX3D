@@ -13,10 +13,9 @@
 #include "CImageUIScript.h"
 #include "CPanelUIScript.h"
 #include "CCrosshair.h"
-#include "CWeaponInfo.h"
 #include "CPausePanel.h"
 #include "CPauseBtn.h"
-#include "CDamageFont.h"
+#include "CDigitUI.h"
 #include "CProgressBar.h"
 #include "CBossHP.h"
 #include "CMonsterHP.h"
@@ -46,6 +45,9 @@
 #include "CAtlasImageUIScript.h"
 #include "CDamagedDirectionMgr.h"
 #include "CHUD.h"
+#include "CStretchUIScript.h"
+#include "CTextUI.h"
+#include "CReloadUI.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -61,10 +63,9 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CImageUIScript");
 	_vec.push_back(L"CPanelUIScript");
 	_vec.push_back(L"CCrosshair");
-	_vec.push_back(L"CWeaponInfo");
 	_vec.push_back(L"CPausePanel");
 	_vec.push_back(L"CPauseBtn");
-	_vec.push_back(L"CDamageFont");
+	_vec.push_back(L"CDigitUI");
 	_vec.push_back(L"CProgressBar");
 	_vec.push_back(L"CBossHP");
 	_vec.push_back(L"CMonsterHP");
@@ -94,6 +95,9 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CAtlasImageUIScript");
 	_vec.push_back(L"CDamagedDirectionMgr");
 	_vec.push_back(L"CHUD");
+	_vec.push_back(L"CStretchUIScript");
+	_vec.push_back(L"CTextUI");
+	_vec.push_back(L"CReloadUI");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -122,14 +126,12 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPanelUIScript;
 	if (L"CCrosshair" == _strScriptName)
 		return new CCrosshair;
-	if (L"CWeaponInfo" == _strScriptName)
-		return new CWeaponInfo;
 	if (L"CPausePanel" == _strScriptName)
 		return new CPausePanel;
 	if (L"CPauseBtn" == _strScriptName)
 		return new CPauseBtn;
-	if (L"CDamageFont" == _strScriptName)
-		return new CDamageFont;
+	if (L"CDigitUI" == _strScriptName)
+		return new CDigitUI;
 	if (L"CProgressBar" == _strScriptName)
 		return new CProgressBar;
 	if (L"CBossHP" == _strScriptName)
@@ -188,6 +190,12 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CDamagedDirectionMgr;
 	if (L"CHUD" == _strScriptName)
 		return new CHUD;
+	if (L"CStretchUIScript" == _strScriptName)
+		return new CStretchUIScript;
+	if (L"CTextUI" == _strScriptName)
+		return new CTextUI;
+	if (L"CReloadUI" == _strScriptName)
+		return new CReloadUI;
 	return nullptr;
 }
 
@@ -231,17 +239,14 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::CROSSHAIR:
 		return new CCrosshair;
 		break;
-	case (UINT)SCRIPT_TYPE::WEAPONINFO:
-		return new CWeaponInfo;
-		break;
 	case (UINT)SCRIPT_TYPE::PAUSEPANEL:
 		return new CPausePanel;
 		break;
 	case (UINT)SCRIPT_TYPE::PAUSEBTN:
 		return new CPauseBtn;
 		break;
-	case (UINT)SCRIPT_TYPE::DAMAGEFONT:
-		return new CDamageFont;
+	case (UINT)SCRIPT_TYPE::DIGITUI:
+		return new CDigitUI;
 		break;
 	case (UINT)SCRIPT_TYPE::PROGRESSBAR:
 		return new CProgressBar;
@@ -330,6 +335,15 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::HUD:
 		return new CHUD;
 		break;
+	case (UINT)SCRIPT_TYPE::STRETCHUISCRIPT:
+		return new CStretchUIScript;
+		break;
+	case (UINT)SCRIPT_TYPE::TEXTUI:
+		return new CTextUI;
+		break;
+	case (UINT)SCRIPT_TYPE::RELOADUI:
+		return new CReloadUI;
+		break;
 	}
 	return nullptr;
 }
@@ -386,10 +400,6 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CCrosshair";
 		break;
 
-	case SCRIPT_TYPE::WEAPONINFO:
-		return L"CWeaponInfo";
-		break;
-
 	case SCRIPT_TYPE::PAUSEPANEL:
 		return L"CPausePanel";
 		break;
@@ -398,8 +408,8 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CPauseBtn";
 		break;
 
-	case SCRIPT_TYPE::DAMAGEFONT:
-		return L"CDamageFont";
+	case SCRIPT_TYPE::DIGITUI:
+		return L"CDigitUI";
 		break;
 
 	case SCRIPT_TYPE::PROGRESSBAR:
@@ -516,6 +526,18 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::HUD:
 		return L"CHUD";
+		break;
+
+	case SCRIPT_TYPE::STRETCHUISCRIPT:
+		return L"CStretchUIScript";
+		break;
+
+	case SCRIPT_TYPE::TEXTUI:
+		return L"CTextUI";
+		break;
+
+	case SCRIPT_TYPE::RELOADUI:
+		return L"CReloadUI";
 		break;
 
 	}
