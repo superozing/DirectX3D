@@ -403,7 +403,9 @@ void CPhysXMgr::init()
 	// LayerCheck((UINT)LAYER::LAYER_PLAYER, (UINT)LAYER::LAYER_RAYCAST);
 	LayerCheck((UINT)LAYER::LAYER_WALL, (UINT)LAYER::LAYER_RAYCAST);
 	LayerCheck((UINT)LAYER::LAYER_DEFAULT, (UINT)LAYER::LAYER_DEFAULT);
+	LayerCheck((UINT)LAYER::LAYER_DEFAULT, (UINT)LAYER::LAYER_RAYCAST);
 	LayerCheck((UINT)LAYER::LAYER_DEFAULT, (UINT)LAYER::LAYER_PLAYER);
+	LayerCheck((UINT)LAYER::LAYER_DEFAULT, (UINT)LAYER::LAYER_MONSTER);
 
 	sceneDesc.filterShader			  = CustomFilterShader;
 	sceneDesc.kineKineFilteringMode	  = PxPairFilteringMode::eKEEP;
@@ -411,7 +413,7 @@ void CPhysXMgr::init()
 	// sceneDesc.flags |= PxSceneFlag::eENABLE_CCD;
 
 	gScene = gPhysics->createScene(sceneDesc);
-	gMaterial = gPhysics->createMaterial(0.5f, 0.5f, 0.f); // (정지 마찰 계수, 동적 마찰 계수, 반발 계수)
+	gMaterial = gPhysics->createMaterial(200.0f, 200.0f, 0.f); // (정지 마찰 계수, 동적 마찰 계수, 반발 계수)
 
 	gCollisionCalback = new RoRCollisionCallback;
 	gScene->setSimulationEventCallback(gCollisionCalback);
@@ -460,7 +462,13 @@ void CPhysXMgr::ClearAllActors()
 	for (physx::PxActor* actor : actors)
 	{
 		gScene->removeActor(*actor);
+		actor->userData = nullptr;
 		actor->release();
+		// auto e = static_cast<CGameObject*>(actor->userData);
+		//  if (e && e->PhysX())
+		//{
+		//	e->PhysX()->m_Actor = nullptr;
+		//  }
 	}
 
 	// 씬 잠금 해제
