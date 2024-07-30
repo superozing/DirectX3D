@@ -38,7 +38,9 @@ void TransformUI::CopyPaste(const string& _id, Vec3& _vec)
 	id = "R##Transform" + _id;
 	if (ImGui::Button(id.c_str()))
 	{
-		_vec = vReturn;
+		Vec3 temp = _vec;
+		_vec	  = vReturn;
+		vReturn	  = temp;
 	}
 }
 

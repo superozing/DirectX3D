@@ -132,15 +132,15 @@ void CRenderMgr::render_play()
 		// Deferred + 광원 => SwapChain 으로 병합
 		pMainCam->Merge();
 
+		// Foward 렌더링
+		pMainCam->render_forward();
+
 		// Blur&Bloom처리
 		if (true == CRenderMgr::GetInst()->m_BloomInfo.Activate)
 		{
 			pMainCam->Blur();
 			pMainCam->Bloom();
 		}
-
-		// Foward 렌더링
-		pMainCam->render_forward();
 
 		// 후처리 작업
 		pMainCam->render_postprocess();

@@ -115,12 +115,9 @@ void Content::render_update()
 		TreeNode* pNode = m_ContentTree->GetSelectedNode();
 		if (nullptr != pNode)
 		{
+			wstring msg = ToWString(pNode->GetName()) + L"을 삭제하시겠습니까?";
 
-			int result = MessageBox(NULL,						 // 부모 윈도우 핸들 (없으면 NULL)
-									L"파일을 삭제하시겠습니까?", // 메시지 내용
-									L"확인/취소 대화상자",		 // 대화상자 제목
-									MB_OKCANCEL					 // 버튼 옵션 (확인/취소)
-			);
+			int result = MessageBox(NULL, msg.c_str(), L"애셋 제거", MB_OKCANCEL);
 
 			if (result == IDOK)
 			{
@@ -455,7 +452,7 @@ void Content::DirectoryUI()
 					ImGui::EndPopup();
 					return;
 				}
-				CLevel* pLevel = new CLevel;
+				CLevel* pLevel = CLevelSaveLoad::LoadLevel(LEVELTemplate);
 				pLevel->SetName(path(ToString(contentPath)).stem());
 				CLevelSaveLoad::SaveLevel(pLevel, CPathMgr::GetRelativePath(szSelect));
 				GamePlayStatic::ChangeLevel(pLevel, LEVEL_STATE::STOP);

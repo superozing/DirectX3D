@@ -946,6 +946,12 @@
     </FxCompile>
     <FxCompile Include="damageddirection.fx" />
     <FxCompile Include="event_detect.fx" />
+    <FxCompile Include="atlasDynamicUI.fx">
+      <Filter>ShaderCode\02. Render\UIShader</Filter>
+    </FxCompile>
+    <FxCompile Include="atlasStaticUI.fx">
+      <Filter>ShaderCode\02. Render\UIShader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine.rc" />

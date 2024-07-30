@@ -4,7 +4,7 @@
 #include <Engine\CLevelMgr.h>
 #include <Engine\CLevel.h>
 #include "CPlayerScript.h"
-#include "CImageUIScript.h"
+#include "CCoverArea.h"
 
 CCoverUI::CCoverUI()
 	: CEventListener((UINT)SCRIPT_TYPE::COVERUI)
@@ -15,49 +15,53 @@ CCoverUI::~CCoverUI()
 {
 }
 
+void CCoverUI::DrawUI(bool _draw)
+{
+	// UI 띄우기
+	for (auto& ui : m_vecUI)
+		ui->PrintUI(_draw);
+}
+
 void CCoverUI::begin()
 {
+	CEventListener::begin();
+
 	AddTarget(SCRIPT_TYPE::PLAYERSCRIPT);
 	m_pPlayerScript = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(PlayerName)->GetScript<CPlayerScript>();
 
 	auto child = GetOwner()->GetParent()->GetChild();
 	for (auto& obj : child)
 	{
-		if (obj->GetScript<CImageUIScript>())
-		{
-			m_pUI = obj;
-			break;
-		}
+		auto script = obj->GetScript<CCoverArea>();
+		if (script)
+			m_vecUI.push_back(script);
 	}
+
+	Vec3 vOwnScale = Transform()->GetRelativeScale();
+	Vec3 vScale	   = GetOwner()->GetParent()->Transform()->GetWorldScale();
+
+	// Parent에 상대적이면서 절대적인 오프셋 조정이 필요
+	vOwnScale.x = vScale.x + 100.f;
+	vOwnScale.y = vScale.y;
+	vOwnScale.z = vScale.z + 700.f;
+	Transform()->SetRelativeScale(vOwnScale);
 }
 
 void CCoverUI::tick()
 {
 	CEventListener::tick();
+}
 
-	Vec3 vPos	= GetOwner()->GetParent()->Transform()->GetWorldPos();
-	Vec3 vScale = GetOwner()->GetParent()->Transform()->GetWorldScale();
-	Vec3 vRot	= GetOwner()->GetParent()->Transform()->GetRelativeRotation();
+void CCoverUI::BeginOverlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider)
+{
+	CEventListener::BeginOverlap(_Collider, _OtherObj, _OtherCollider);
 
-	Vec3 Pos;
+	DrawUI(HasTargets());
+}
 
-	if (m_pPlayerScript->GetCoverType() == CoverType::Normal)
-	{
-		Pos = vPos;
-		Pos.x += vScale.x / 2.f;
-		Pos.y += vScale.y / 2.f;
-		Pos.z -= vScale.z / 2.f;
-		Pos.x -= 50.f;
-		Pos.y -= 50.f;
-		m_pUI->Transform()->SetRelativePos(Vec3(vScale.x / 2.f - 50.f, vScale.y / 2.f, -vScale.z / 2.f));
-		// m_pUI->Transform()->SetRelativeRotation(vRot);
-		GamePlayStatic::DrawDebugCube(Pos, Vec3(10.f, 10.f, 10.f), vRot, Vec3(0.f, 1.f, 1.f), false);
-		Pos = vPos;
-		Pos.x -= vScale.x / 2.f;
-		Pos.y += vScale.y / 2.f;
-		Pos.z -= vScale.z / 2.f;
-		Pos.x += 50.f;
-		Pos.y -= 50.f;
-		GamePlayStatic::DrawDebugCube(Pos, Vec3(10.f, 10.f, 10.f), vRot, Vec3(0.f, 1.f, 1.f), false);
-	}
+void CCoverUI::EndOverlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider)
+{
+	CEventListener::EndOverlap(_Collider, _OtherObj, _OtherCollider);
+
+	DrawUI(HasTargets());
 }

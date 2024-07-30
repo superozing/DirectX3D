@@ -9,7 +9,6 @@
 #include <Engine/CRenderComponent.h>
 
 #include <Engine/CKeyMgr.h>
-#include <Engine/CPhysXMgr.h>
 #include <Engine/CLogMgr.h>
 #include <Engine/CLevelMgr.h>
 #include <Engine/CLevel.h>
@@ -20,7 +19,7 @@
 #include "CSpringArm.h"
 
 #include "CCrosshair.h"
-#include "CDamagedDirectionMgr.h"
+#include "CHUD.h"
 
 static string state = "";
 static string cover = "";
@@ -284,17 +283,9 @@ void CPlayerScript::begin()
 
 	m_FSM->Begin();
 
-	auto pObj	 = new CGameObject;
-	m_pCrosshair = new CCrosshair;
-	pObj->AddComponent(new CTransform);
-	pObj->AddComponent(new CMeshRender);
-	pObj->AddComponent(m_pCrosshair);
-	pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
-	pObj->SetName(L"Crosshair");
-	GamePlayStatic::SpawnGameObject(pObj, (UINT)LAYER::LAYER_UI);
-
-	m_pDamagedDirectionMgr = new CDamagedDirectionMgr;
-	GetOwner()->AddComponent(m_pDamagedDirectionMgr);
+	auto pObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"HUD");
+	if (pObj)
+		m_pShootingSystem = pObj->GetScript<CHUD>()->GetHUD<CCrosshair>();
 }
 
 void CPlayerScript::tick()
@@ -314,7 +305,7 @@ void CPlayerScript::tick()
 
 	// 조건에 따라 상태 변경해주는 함수
 	ChangeToMove();
-	ChangeToNormal();
+	// ChangeToNormal();
 	ChangeToVictory();
 	ChangeToDash();
 
@@ -326,59 +317,18 @@ void CPlayerScript::tick()
 		m_FSM->SetCurState((int)PLAYER_STATE::SkillThrow);
 	}
 
-	// 일반 Raycast
-	// int mask = RayCastDebugFlag::EndPointVisible;
-
-	tRoRHitInfo hitInfo	 = {};
-	auto		pMainCam = CRenderMgr::GetInst()->GetMainCam();
-	auto		FrontDir = pMainCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-
-	bool isContact = CPhysXMgr::GetInst()->PerfomRaycast(pMainCam->Transform()->GetWorldPos(), FrontDir, hitInfo,
-														 (UINT)LAYER::LAYER_RAYCAST, RayCastDebugFlag::AllVisible);
-
-	if (isContact)
+	// TODO : 디버깅용 스피드 상승
+	static float originSpeed = m_tStatus.MoveSpeed;
+	m_tStatus.MoveSpeed		 = originSpeed;
+	if (KEY_PRESSED(LSHIFT))
 	{
-		// m_tStatus.SpreadRatio = RoRMath::ClampFloat(m_tStatus.SpreadRatio + 0.7f * DT, 0.f, 1.f);
-		m_pCrosshair->SetCrosshairColor(Vec4(255.f, 0.f, 0.f, 255.f));
-	}
-	else
-	{
-		// m_tStatus.SpreadRatio = RoRMath::ClampFloat(m_tStatus.SpreadRatio - 0.7f * DT, 0.f, 1.f);
-		m_pCrosshair->SetCrosshairColor(Vec4(255.f, 255.f, 255.f, 255.f));
+		m_tStatus.MoveSpeed = 5 * originSpeed;
 	}
 
-	m_pCrosshair->SetSpreadRatio(m_tStatus.SpreadRatio);
-
-	hitInfo			= {};
-	float MaxSpread = 0.3f;
-
-	float RotX = m_tStatus.SpreadRatio * CRandomMgr::GetInst()->GetRandomFloat() * MaxSpread;
-	float RotY = m_tStatus.SpreadRatio * CRandomMgr::GetInst()->GetRandomFloat() * MaxSpread;
-
-	FrontDir.x += RotX;
-	FrontDir.y += RotY;
-
-	bool isBulletHit = CPhysXMgr::GetInst()->PerfomRaycast(pMainCam->Transform()->GetWorldPos(), FrontDir, hitInfo,
-														   (UINT)LAYER::LAYER_RAYCAST, RayCastDebugFlag::AllVisible);
-
-	if (isBulletHit)
+	if (KEY_TAP(TAB))
 	{
-		// 데미지 처리, 데칼 오브젝트 추가 등등...
+		SetRight(!IsRight());
 	}
-
-	m_pCrosshair->SetSpreadRatio(m_tStatus.SpreadRatio);
-
-	// 임시로 키 입력 시 피격 효과 추가
-	if (KEY_TAP(KEY::B))
-	{
-		auto pMon = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Temp Monster Cube");
-		m_pDamagedDirectionMgr->AddDamagedDirection(pMon->Transform()->GetWorldPos(), 0.1f);
-	}
-
-	// if (KEY_TAP(H))
-	//{
-	//	SetRight(!IsRight());
-	// }
 }
 
 void CPlayerScript::CameraMove()
@@ -511,14 +461,28 @@ void CPlayerScript::NormalMove()
 		float fMoveSpeed = state == (int)PLAYER_STATE::MoveIng ? m_tStatus.MoveSpeed : m_tStatus.AttackMoveSpeed;
 
 		// 움직임 조건
-		if (KEY_TAP(CPlayerController::Front) || KEY_PRESSED(CPlayerController::Front))
-			vPos += vFront * fMoveSpeed * DT;
-		if (KEY_TAP(CPlayerController::Back) || KEY_PRESSED(CPlayerController::Back))
-			vPos -= vFront * fMoveSpeed * DT;
-		if (KEY_TAP(CPlayerController::Right) || KEY_PRESSED(CPlayerController::Right))
-			vPos += vRight * fMoveSpeed * DT;
-		if (KEY_TAP(CPlayerController::Left) || KEY_PRESSED(CPlayerController::Left))
-			vPos -= vRight * fMoveSpeed * DT;
+		if (IsRight())
+		{
+			if (KEY_TAP(CPlayerController::Front) || KEY_PRESSED(CPlayerController::Front))
+				vPos += vFront * fMoveSpeed * DT;
+			if (KEY_TAP(CPlayerController::Back) || KEY_PRESSED(CPlayerController::Back))
+				vPos -= vFront * fMoveSpeed * DT;
+			if (KEY_TAP(CPlayerController::Right) || KEY_PRESSED(CPlayerController::Right))
+				vPos += vRight * fMoveSpeed * DT;
+			if (KEY_TAP(CPlayerController::Left) || KEY_PRESSED(CPlayerController::Left))
+				vPos -= vRight * fMoveSpeed * DT;
+		}
+		else
+		{
+			if (KEY_TAP(CPlayerController::Front) || KEY_PRESSED(CPlayerController::Front))
+				vPos += vFront * fMoveSpeed * DT;
+			if (KEY_TAP(CPlayerController::Back) || KEY_PRESSED(CPlayerController::Back))
+				vPos -= vFront * fMoveSpeed * DT;
+			if (KEY_TAP(CPlayerController::Right) || KEY_PRESSED(CPlayerController::Right))
+				vPos -= vRight * fMoveSpeed * DT;
+			if (KEY_TAP(CPlayerController::Left) || KEY_PRESSED(CPlayerController::Left))
+				vPos += vRight * fMoveSpeed * DT;
+		}
 
 		Transform()->SetRelativePos(vPos);
 	}

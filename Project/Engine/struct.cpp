@@ -91,6 +91,8 @@ ifstream& operator>>(ifstream& fin, tLightInfo& info)
 }
 
 #define TagModuleName(moduleNum) "[" + ToString(magic_enum::enum_name(PARTICLE_MODULE::moduleNum)) + "]"
+#define TagSpawnType "[SpawnType]"
+#define TagBurstInterval "[BurstInterval]"
 #define TagSpawnColor "[SpawnColor]"
 #define TagSpawnMinScale "[SpawnMinScale]"
 #define TagSpawnMaxScale "[SpawnMaxScale]"
@@ -126,6 +128,12 @@ ofstream& operator<<(ofstream& fout, const tParticleModule& module)
 	// Sapwn 모듈
 	fout << TagModuleName(SPAWN) << endl;
 	fout << module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPAWN] << endl;
+
+	fout << TagSpawnType << endl;
+	fout << module.SpawnType << endl;
+
+	fout << TagBurstInterval << endl;
+	fout << module.BurstInterval << endl;
 
 	fout << TagSpawnColor << endl;
 	fout << module.vSpawnColor << endl;
@@ -221,6 +229,12 @@ ifstream& operator>>(ifstream& fin, tParticleModule& module)
 	// 스폰 모듈
 	Utils::GetLineUntilString(fin, TagModuleName(SPAWN));
 	fin >> module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPAWN];
+
+	Utils::GetLineUntilString(fin, TagSpawnType);
+	fin >> module.SpawnType;
+
+	Utils::GetLineUntilString(fin, TagBurstInterval);
+	fin >> module.BurstInterval;
 
 	Utils::GetLineUntilString(fin, TagSpawnColor);
 	fin >> module.vSpawnColor;

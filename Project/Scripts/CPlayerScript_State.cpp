@@ -6,6 +6,7 @@
 #include <Engine/CKeyMgr.h>
 
 #include "CPlayerController.h"
+#include "CCrosshair.h"
 
 #define MoveStartCondition                                                              \
 	(KEY_TAP(CPlayerController::Front) || KEY_PRESSED(CPlayerController::Front)) &&     \
@@ -165,7 +166,8 @@ int CPlayerScript::StandIdleUpdate()
 		return (int)PLAYER_STATE::StandAttackStart;
 
 	// 사격
-	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
+	if ((KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack)) &&
+		m_pShootingSystem->IsShootingAvailable())
 		return (int)PLAYER_STATE::StandAttackIng;
 
 	return m_FSM->GetCurState();
@@ -205,7 +207,8 @@ int CPlayerScript::StandAttackStartUpdate()
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::StandAttackDelay;
 
-	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
+	if ((KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack)) &&
+		m_pShootingSystem->IsShootingAvailable())
 		return (int)PLAYER_STATE::StandAttackIng;
 
 	return m_FSM->GetCurState();
@@ -242,7 +245,8 @@ void CPlayerScript::StandAttackDelayBegin()
 int CPlayerScript::StandAttackDelayUpdate()
 {
 	// 사격
-	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
+	if ((KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack)) &&
+		m_pShootingSystem->IsShootingAvailable())
 		return (int)PLAYER_STATE::StandAttackIng;
 
 	// 재장전
@@ -277,7 +281,8 @@ int CPlayerScript::StandAttackEndUpdate()
 		return (int)PLAYER_STATE::StandAttackStart;
 
 	// 사격
-	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
+	if ((KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack)) &&
+		m_pShootingSystem->IsShootingAvailable())
 		return (int)PLAYER_STATE::StandAttackIng;
 
 	return m_FSM->GetCurState();
@@ -313,7 +318,8 @@ int CPlayerScript::KneelIdleUpdate()
 		return (int)PLAYER_STATE::MoveJump;
 
 	// 사격
-	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
+	if ((KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack)) &&
+		m_pShootingSystem->IsShootingAvailable())
 		return (int)PLAYER_STATE::KneelAttackIng;
 
 	return m_FSM->GetCurState();
@@ -354,7 +360,8 @@ int CPlayerScript::KneelAttackStartUpdate()
 		return (int)PLAYER_STATE::KneelAttackDelay;
 
 	// 사격
-	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
+	if ((KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack)) &&
+		m_pShootingSystem->IsShootingAvailable())
 		return (int)PLAYER_STATE::KneelAttackIng;
 
 	return m_FSM->GetCurState();
@@ -391,7 +398,8 @@ void CPlayerScript::KneelAttackDelayBegin()
 int CPlayerScript::KneelAttackDelayUpdate()
 {
 	// 사격
-	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
+	if ((KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack)) &&
+		m_pShootingSystem->IsShootingAvailable())
 		return (int)PLAYER_STATE::KneelAttackIng;
 
 	// 재장전
@@ -426,7 +434,8 @@ int CPlayerScript::KneelAttackEndUpdate()
 		return (int)PLAYER_STATE::KneelAttackStart;
 
 	// 사격
-	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
+	if ((KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack)) &&
+		m_pShootingSystem->IsShootingAvailable())
 		return (int)PLAYER_STATE::KneelAttackIng;
 
 	return m_FSM->GetCurState();
@@ -564,7 +573,8 @@ int CPlayerScript::MoveEndStandUpdate()
 		return (int)PLAYER_STATE::StandAttackStart;
 
 	// 사격
-	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
+	if ((KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack)) &&
+		m_pShootingSystem->IsShootingAvailable())
 		return (int)PLAYER_STATE::StandAttackIng;
 
 	return m_FSM->GetCurState();
@@ -591,7 +601,8 @@ int CPlayerScript::MoveEndKneelUpdate()
 		return (int)PLAYER_STATE::KneelAttackStart;
 
 	// 사격
-	if (KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack))
+	if ((KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack)) &&
+		m_pShootingSystem->IsShootingAvailable())
 		return (int)PLAYER_STATE::KneelAttackIng;
 
 	return m_FSM->GetCurState();

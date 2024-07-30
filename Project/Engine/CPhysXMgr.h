@@ -110,4 +110,5 @@ private:
 	friend class ParamUI;
 	friend class CPhysXMgrScript;
 	friend class RoRCollisionCallback;
+	friend class CPhysX;
 };

@@ -236,7 +236,8 @@ CLevel* CLevelSaveLoad::LoadLevel(const wstring& _strLevelPath)
 
 	if (!fin.is_open())
 	{
-		MessageBox(nullptr, L"레벨 경로가 올바르지 않거나, 레벨이 없음", L"레벨 로드 실패", MB_OK);
+		wstring msg = _strLevelPath + L"레벨 경로가 올바르지 않거나, 레벨이 없음";
+		MessageBox(nullptr, msg.c_str(), L"레벨 로드 실패", MB_OK);
 		return nullptr;
 	}
 

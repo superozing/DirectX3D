@@ -1586,13 +1586,13 @@ void CAssetMgr::CreateDefaultMaterial()
 
 	// StaticUIMtrl
 	pMtrl		  = new CMaterial(true);
-	strShaderPath = "GraphicsShader\\StaticUIShader.gs";
+	strShaderPath = "GraphicsShader\\UI\\StaticUIShader.gs";
 	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset(L"StaticUIMtrl", pMtrl);
 
 	// DynamicUIMtrl
 	pMtrl		  = new CMaterial(true);
-	strShaderPath = "GraphicsShader\\DynamicUIShader.gs";
+	strShaderPath = "GraphicsShader\\UI\\DynamicUIShader.gs";
 	pMtrl->SetShader(Load<CGraphicsShader>(strShaderPath));
 	AddAsset(L"DynamicUIMtrl", pMtrl);
 
