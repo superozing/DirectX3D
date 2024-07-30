@@ -49,17 +49,11 @@
     <ClInclude Include="CCrosshair.h">
       <Filter>Scripts\UI\Image\Crosshair</Filter>
     </ClInclude>
-    <ClInclude Include="CWeaponInfo.h">
-      <Filter>Scripts\UI\Image\WeaponInfo</Filter>
-    </ClInclude>
     <ClInclude Include="CPausePanel.h">
       <Filter>Scripts\UI\Image\PausePanel</Filter>
     </ClInclude>
     <ClInclude Include="CPauseBtn.h">
       <Filter>Scripts\UI\Image\PauseBtn</Filter>
-    </ClInclude>
-    <ClInclude Include="CDamageFont.h">
-      <Filter>Scripts\UI\Image\DamageFont</Filter>
     </ClInclude>
     <ClInclude Include="CProgressBar.h">
       <Filter>Scripts\UI\ProgressBar</Filter>
@@ -132,9 +126,7 @@
       <Filter>Scripts\Boss\MegaFist</Filter>
     </ClInclude>
     <ClInclude Include="CProjectileScript.h" />
-    <ClInclude Include="CEventListener.h" />
     <ClInclude Include="CGameMode.h" />
-    <ClInclude Include="strings.h" />
     <ClInclude Include="CCoverArea.h">
       <Filter>Scripts\Event</Filter>
     </ClInclude>
@@ -156,6 +148,37 @@
     <ClInclude Include="CMuzzleFlashScript.h">
       <Filter>Scripts\Particle</Filter>
     </ClInclude>
+    <ClInclude Include="CBloomScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="CBossShieldScript.h">
+      <Filter>Scripts\Boss\Shield</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletMarkSpawner.h">
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletShellSpawner.h">
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CDigitUI.h">
+      <Filter>Scripts\DefaultUI\Digit</Filter>
+    </ClInclude>
+    <ClInclude Include="CReloadUI.h">
+      <Filter>Scripts\UI\Image\WeaponInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="CShootingSystemScript.h">
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CStretchUIScript.h">
+      <Filter>Scripts\DefaultUI\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="CTextUI.h">
+      <Filter>Scripts\DefaultUI\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="strings.h">
+      <Filter>Default</Filter>
+    </ClInclude>
+    <ClInclude Include="CEventListener.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -206,17 +229,11 @@
     <ClCompile Include="CCrosshair.cpp">
       <Filter>Scripts\UI\Image\Crosshair</Filter>
     </ClCompile>
-    <ClCompile Include="CWeaponInfo.cpp">
-      <Filter>Scripts\UI\Image\WeaponInfo</Filter>
-    </ClCompile>
     <ClCompile Include="CPausePanel.cpp">
       <Filter>Scripts\UI\Image\PausePanel</Filter>
     </ClCompile>
     <ClCompile Include="CPauseBtn.cpp">
       <Filter>Scripts\UI\Image\PauseBtn</Filter>
-    </ClCompile>
-    <ClCompile Include="CDamageFont.cpp">
-      <Filter>Scripts\UI\Image\DamageFont</Filter>
     </ClCompile>
     <ClCompile Include="CProgressBar.cpp">
       <Filter>Scripts\UI\ProgressBar</Filter>
@@ -295,7 +312,6 @@
       <Filter>Scripts\Boss\MegaFist</Filter>
     </ClCompile>
     <ClCompile Include="CProjectileScript.cpp" />
-    <ClCompile Include="CEventListener.cpp" />
     <ClCompile Include="CCoverArea.cpp">
       <Filter>Scripts\Event</Filter>
     </ClCompile>
@@ -317,6 +333,34 @@
     <ClCompile Include="CMuzzleFlashScript.cpp">
       <Filter>Scripts\Particle</Filter>
     </ClCompile>
+    <ClCompile Include="CBloomScript.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CBossShieldScript.cpp">
+      <Filter>Scripts\Boss\Shield</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletMarkSpawner.cpp">
+      <Filter>Scripts\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletShellSpawner.cpp">
+      <Filter>Scripts\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CDigitUI.cpp">
+      <Filter>Scripts\DefaultUI\Digit</Filter>
+    </ClCompile>
+    <ClCompile Include="CReloadUI.cpp">
+      <Filter>Scripts\UI\Image\WeaponInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="CShootingSystemScript.cpp">
+      <Filter>Scripts\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CStretchUIScript.cpp">
+      <Filter>Scripts\DefaultUI\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="CTextUI.cpp">
+      <Filter>Scripts\DefaultUI\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="CEventListener.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -429,6 +473,15 @@
     </Filter>
     <Filter Include="Scripts\Particle">
       <UniqueIdentifier>{9d9687ac-349f-4c6b-ad84-3025114fc4f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Boss\Shield">
+      <UniqueIdentifier>{a0052aaa-9034-432e-8844-71c27e389912}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\DefaultUI\Digit">
+      <UniqueIdentifier>{a54a44e5-4b4d-449e-a95d-efb9b31d2933}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\DefaultUI\Text">
+      <UniqueIdentifier>{d164c685-bd4d-4505-9170-4423d05d4dfa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -15,7 +15,6 @@
 #include "CCrosshair.h"
 #include "CPausePanel.h"
 #include "CPauseBtn.h"
-#include "CDigitUI.h"
 #include "CProgressBar.h"
 #include "CBossHP.h"
 #include "CMonsterHP.h"
@@ -45,9 +44,16 @@
 #include "CAtlasImageUIScript.h"
 #include "CDamagedDirectionMgr.h"
 #include "CHUD.h"
+#include "CMuzzleFlashScript.h"
+#include "CBloomScript.h"
+#include "CBossShieldScript.h"
+#include "CBulletMarkSpawner.h"
+#include "CBulletShellSpawner.h"
+#include "CDigitUI.h"
+#include "CReloadUI.h"
+#include "CShootingSystemScript.h"
 #include "CStretchUIScript.h"
 #include "CTextUI.h"
-#include "CReloadUI.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -65,7 +71,6 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CCrosshair");
 	_vec.push_back(L"CPausePanel");
 	_vec.push_back(L"CPauseBtn");
-	_vec.push_back(L"CDigitUI");
 	_vec.push_back(L"CProgressBar");
 	_vec.push_back(L"CBossHP");
 	_vec.push_back(L"CMonsterHP");
@@ -95,9 +100,16 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CAtlasImageUIScript");
 	_vec.push_back(L"CDamagedDirectionMgr");
 	_vec.push_back(L"CHUD");
+	_vec.push_back(L"CMuzzleFlashScript");
+	_vec.push_back(L"CBloomScript");
+	_vec.push_back(L"CBossShieldScript");
+	_vec.push_back(L"CBulletMarkSpawner");
+	_vec.push_back(L"CBulletShellSpawner");
+	_vec.push_back(L"CDigitUI");
+	_vec.push_back(L"CReloadUI");
+	_vec.push_back(L"CShootingSystemScript");
 	_vec.push_back(L"CStretchUIScript");
 	_vec.push_back(L"CTextUI");
-	_vec.push_back(L"CReloadUI");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -130,8 +142,6 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPausePanel;
 	if (L"CPauseBtn" == _strScriptName)
 		return new CPauseBtn;
-	if (L"CDigitUI" == _strScriptName)
-		return new CDigitUI;
 	if (L"CProgressBar" == _strScriptName)
 		return new CProgressBar;
 	if (L"CBossHP" == _strScriptName)
@@ -190,12 +200,26 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CDamagedDirectionMgr;
 	if (L"CHUD" == _strScriptName)
 		return new CHUD;
+	if (L"CMuzzleFlashScript" == _strScriptName)
+		return new CMuzzleFlashScript;
+	if (L"CBloomScript" == _strScriptName)
+		return new CBloomScript;
+	if (L"CBossShieldScript" == _strScriptName)
+		return new CBossShieldScript;
+	if (L"CBulletMarkSpawner" == _strScriptName)
+		return new CBulletMarkSpawner;
+	if (L"CBulletShellSpawner" == _strScriptName)
+		return new CBulletShellSpawner;
+	if (L"CDigitUI" == _strScriptName)
+		return new CDigitUI;
+	if (L"CReloadUI" == _strScriptName)
+		return new CReloadUI;
+	if (L"CShootingSystemScript" == _strScriptName)
+		return new CShootingSystemScript;
 	if (L"CStretchUIScript" == _strScriptName)
 		return new CStretchUIScript;
 	if (L"CTextUI" == _strScriptName)
 		return new CTextUI;
-	if (L"CReloadUI" == _strScriptName)
-		return new CReloadUI;
 	return nullptr;
 }
 
@@ -244,9 +268,6 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::PAUSEBTN:
 		return new CPauseBtn;
-		break;
-	case (UINT)SCRIPT_TYPE::DIGITUI:
-		return new CDigitUI;
 		break;
 	case (UINT)SCRIPT_TYPE::PROGRESSBAR:
 		return new CProgressBar;
@@ -335,14 +356,35 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::HUD:
 		return new CHUD;
 		break;
+	case (UINT)SCRIPT_TYPE::MUZZLEFLASHSCRIPT:
+		return new CMuzzleFlashScript;
+		break;
+	case (UINT)SCRIPT_TYPE::BLOOMSCRIPT:
+		return new CBloomScript;
+		break;
+	case (UINT)SCRIPT_TYPE::BOSSSHIELDSCRIPT:
+		return new CBossShieldScript;
+		break;
+	case (UINT)SCRIPT_TYPE::BULLETMARKSPAWNER:
+		return new CBulletMarkSpawner;
+		break;
+	case (UINT)SCRIPT_TYPE::BULLETSHELLSPAWNER:
+		return new CBulletShellSpawner;
+		break;
+	case (UINT)SCRIPT_TYPE::DIGITUI:
+		return new CDigitUI;
+		break;
+	case (UINT)SCRIPT_TYPE::RELOADUI:
+		return new CReloadUI;
+		break;
+	case (UINT)SCRIPT_TYPE::SHOOTINGSYSTEMSCRIPT:
+		return new CShootingSystemScript;
+		break;
 	case (UINT)SCRIPT_TYPE::STRETCHUISCRIPT:
 		return new CStretchUIScript;
 		break;
 	case (UINT)SCRIPT_TYPE::TEXTUI:
 		return new CTextUI;
-		break;
-	case (UINT)SCRIPT_TYPE::RELOADUI:
-		return new CReloadUI;
 		break;
 	}
 	return nullptr;
@@ -406,10 +448,6 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::PAUSEBTN:
 		return L"CPauseBtn";
-		break;
-
-	case SCRIPT_TYPE::DIGITUI:
-		return L"CDigitUI";
 		break;
 
 	case SCRIPT_TYPE::PROGRESSBAR:
@@ -528,16 +566,44 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CHUD";
 		break;
 
+	case SCRIPT_TYPE::MUZZLEFLASHSCRIPT:
+		return L"CMuzzleFlashScript";
+		break;
+
+	case SCRIPT_TYPE::BLOOMSCRIPT:
+		return L"CBloomScript";
+		break;
+
+	case SCRIPT_TYPE::BOSSSHIELDSCRIPT:
+		return L"CBossShieldScript";
+		break;
+
+	case SCRIPT_TYPE::BULLETMARKSPAWNER:
+		return L"CBulletMarkSpawner";
+		break;
+
+	case SCRIPT_TYPE::BULLETSHELLSPAWNER:
+		return L"CBulletShellSpawner";
+		break;
+
+	case SCRIPT_TYPE::DIGITUI:
+		return L"CDigitUI";
+		break;
+
+	case SCRIPT_TYPE::RELOADUI:
+		return L"CReloadUI";
+		break;
+
+	case SCRIPT_TYPE::SHOOTINGSYSTEMSCRIPT:
+		return L"CShootingSystemScript";
+		break;
+
 	case SCRIPT_TYPE::STRETCHUISCRIPT:
 		return L"CStretchUIScript";
 		break;
 
 	case SCRIPT_TYPE::TEXTUI:
 		return L"CTextUI";
-		break;
-
-	case SCRIPT_TYPE::RELOADUI:
-		return L"CReloadUI";
 		break;
 
 	}

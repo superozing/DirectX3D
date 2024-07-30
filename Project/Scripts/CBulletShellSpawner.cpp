@@ -33,8 +33,8 @@ void CBulletShellSpawner::tick()
 		if (it->second < 0.f)
 		{
 			// 풀 매니저에게 반환
-			m_PoolMgr->PushObject(it->first);
-			
+			m_PoolMgr->PushObject(Bullet_ShellPath, it->first);
+
 			// 리스트에서 제거
 			it = m_BulletShellList.erase(it);
 		}
@@ -48,17 +48,15 @@ void CBulletShellSpawner::SpawnBulletShell(CGameObject* _pPlayer, float _ActiveT
 
 	Matrix _ParentWorldMat = _pPlayer->Transform()->GetWorldMat();
 
-	//Matrix _WeaponBoneMat = _pObj->Transform()->
-	//m_pPlayer->Animator3D()->FindBoneMat(L"Bip001_Weapon"), 
-
+	// Matrix _WeaponBoneMat = _pObj->Transform()->
+	// m_pPlayer->Animator3D()->FindBoneMat(L"Bip001_Weapon"),
 
 	Vec3 _RightDir = _pPlayer->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
-	Vec3 _UpDir = _pPlayer->Transform()->GetWorldDir(DIR_TYPE::UP);
-	
+	Vec3 _UpDir	   = _pPlayer->Transform()->GetWorldDir(DIR_TYPE::UP);
+
 	// 필요한 정보
 	//	1. _WeaponBoneMat
 	//		총 위치의 본 매트릭스에 탄피를 생성시키기 위해서.
-
 
 	// + 90도 회전이 추가되어야 탄피가 앞쪽을 바라본다.
 

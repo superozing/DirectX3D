@@ -99,6 +99,10 @@ void CMemoryPoolMgr::PushObject(CGameObject* _Object)
 
 		if (strFind.find(strObjName) != string::npos)
 		{
+			if (nullptr != _Object->PhysX())
+			{
+				_Object->PhysX()->releaseActor();
+			}
 			vecObj[i]->AddChild(_Object);
 			CTaskMgr::GetInst()->SetMemoryPoolEvent(true);
 			return;

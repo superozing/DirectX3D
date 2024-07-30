@@ -7,6 +7,8 @@
 #include <Engine\CTaskMgr.h>
 #include <Engine\components.h>
 
+#include <Engine/CGameObject.h>
+
 CMemoryPoolMgrScript::CMemoryPoolMgrScript()
 	: CScript((UINT)SCRIPT_TYPE::MEMORYPOOLMGRSCRIPT)
 {
@@ -99,11 +101,33 @@ void CMemoryPoolMgrScript::PushObject(CGameObject* _Object)
 
 		if (ToString(_Object->GetName()).find(s))
 		{
+			if (nullptr != _Object->PhysX())
+			{
+				_Object->PhysX()->releaseActor();
+			}
 			vecObj[i]->AddChild(_Object);
 			CTaskMgr::GetInst()->SetMemoryPoolEvent(true);
 			return;
 		}
 	}
+}
 
-	CTaskMgr::GetInst()->SetMemoryPoolEvent(true);
+void CMemoryPoolMgrScript::PushObject(string _strMapKey, CGameObject* _Object)
+{
+	// EX OBJ의 Filter를 받아온다.
+	vector<CGameObject*> vecObj = GetOwner()->GetChild();
+
+	for (int i = 0; i < vecObj.size(); ++i)
+	{
+		if (_strMapKey == ToString(vecObj[i]->GetName()))
+		{
+			if (nullptr != _Object->PhysX())
+			{
+				_Object->PhysX()->releaseActor();
+			}
+			vecObj[i]->AddChild(_Object);
+			CTaskMgr::GetInst()->SetMemoryPoolEvent(true);
+			return;
+		}
+	}
 }

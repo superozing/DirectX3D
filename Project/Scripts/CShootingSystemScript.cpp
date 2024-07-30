@@ -21,7 +21,6 @@ CShootingSystemScript::~CShootingSystemScript()
 {
 }
 
-
 void CShootingSystemScript::ShootPlayerBulletRay()
 {
 	// 탄퍼짐
@@ -33,8 +32,8 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 	float		MaxSpread = 0.3f;
 
 	Vec3 ShootDir = FrontDir + Vec3(m_fSpreadRatio * CRandomMgr::GetInst()->GetRandomFloat() * MaxSpread,
-						 m_fSpreadRatio * CRandomMgr::GetInst()->GetRandomFloat() * MaxSpread,
-						 m_fSpreadRatio * CRandomMgr::GetInst()->GetRandomFloat() * MaxSpread);
+									m_fSpreadRatio * CRandomMgr::GetInst()->GetRandomFloat() * MaxSpread,
+									m_fSpreadRatio * CRandomMgr::GetInst()->GetRandomFloat() * MaxSpread);
 
 	bool isBulletHit = CPhysXMgr::GetInst()->PerfomRaycast(pMainCam->Transform()->GetWorldPos(), ShootDir, hitInfo,
 														   (UINT)LAYER::LAYER_RAYCAST, RayCastDebugFlag::AllVisible);
@@ -90,8 +89,8 @@ void CShootingSystemScript::begin()
 	m_pPlayer		= CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(PlayerName);
 	m_pPlayerScript = m_pPlayer->GetScript<CPlayerScript>();
 
-	m_pDamagedDirectionMgr = new CDamagedDirectionMgr;
-	GetOwner()->AddComponent(m_pDamagedDirectionMgr);
+	// m_pDamagedDirectionMgr = new CDamagedDirectionMgr;
+	// GetOwner()->AddComponent(m_pDamagedDirectionMgr);
 
 	m_pBulletMarkDecalSpawner = new CBulletMarkSpawner;
 	GetOwner()->AddComponent(m_pBulletMarkDecalSpawner);
