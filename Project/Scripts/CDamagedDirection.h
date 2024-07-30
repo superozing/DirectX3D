@@ -7,9 +7,6 @@ class CPanelUIScript;
 class CDamagedDirection : public CScript
 {
 private:
-	// 기반 패널UI
-	CPanelUIScript* m_pPanelUI;
-
 	// 방향 이미지
 	CImageUIScript* m_pImageUI;
 
@@ -41,11 +38,9 @@ public:
 
 	float GetAlpha() const { return m_Alpha; }
 
-private:
-	void SetParentPanelUI();
-
 public:
 	CLONE(CDamagedDirection);
 	CDamagedDirection();
+	CDamagedDirection(const CDamagedDirection& _Origin);
 	~CDamagedDirection();
 };

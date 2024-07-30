@@ -87,7 +87,7 @@ void PhysXUI::render_update()
 	Vec3 Scale = phys->m_vScale;
 	if (Vec3() == Scale && nullptr != phys->Transform())
 	{
-		Scale = phys->Transform()->GetRelativeScale();
+		/*Scale = phys->Transform()->GetRelativeScale();*/
 	}
 	ImGui::DragFloat3("Scale", (float*)Scale);
 	phys->m_vScale = Scale;

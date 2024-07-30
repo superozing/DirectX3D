@@ -22,6 +22,11 @@ void GamePlayStatic::DestroyGameObject(CGameObject* _Target)
 	CTaskMgr::GetInst()->AddTask(task);
 }
 
+void GamePlayStatic::ResetOutliner()
+{
+	CTaskMgr::GetInst()->EventOccure();
+}
+
 void GamePlayStatic::AddAsset(CAsset* _Asset)
 {
 	tTask task	 = {};

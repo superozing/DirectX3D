@@ -14,6 +14,8 @@ CParticleSystem::CParticleSystem()
 	: CRenderComponent(COMPONENT_TYPE::PARTICLESYSTEM)
 	, m_ParticleBuffer(nullptr)
 	, m_MaxParticleCount(1000)
+	, m_Time(0.f)
+	, m_IsPlay(false)
 {
 	// 전용 메쉬와 전용 재질 사용
 	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(MESHpoint));
@@ -47,6 +49,8 @@ CParticleSystem::CParticleSystem()
 	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPAWN] = 1;
 
 	m_Module.SpaceType		= 1;
+	m_Module.SpawnType		= 0; // 0 : Continuous, 1 : Burst
+	m_Module.BurstInterval	= 1.f;
 	m_Module.vSpawnColor	= Vec4(0.2f, 0.4f, 0.9f, 1.f);
 	m_Module.vSpawnMinScale = Vec4(50.f, 25.f, 1.f, 1.f);
 	m_Module.vSpawnMaxScale = Vec4(50.f, 25.f, 1.f, 1.f);
@@ -102,6 +106,7 @@ CParticleSystem::CParticleSystem(const CParticleSystem& _OriginParticle)
 	, m_CSParticleUpdate(_OriginParticle.m_CSParticleUpdate)
 	, m_ParticleTex(_OriginParticle.m_ParticleTex)
 	, m_Time(0.f)
+	, m_IsPlay(false)
 {
 	if (nullptr != _OriginParticle.m_ParticleBuffer)
 		m_ParticleBuffer = _OriginParticle.m_ParticleBuffer->Clone();
@@ -127,23 +132,44 @@ CParticleSystem::~CParticleSystem()
 
 void CParticleSystem::finaltick()
 {
+	if (!m_IsPlay)
+		return;
+
 	m_Time += DT;
 
-	if ((1.f / m_Module.SpawnRate) < m_Time)
+	// if ((1.f / m_Module.SpawnRate) < m_Time)
+	//{
+	//	// 누적 시간을 스폰 간격으로 나눈 값
+	//	float fSpawnCount = m_Time / (1.f / m_Module.SpawnRate);
+
+	//	// 스폰 간격을 제외한 잔량을 남은 누적시간으로 설정
+	//	m_Time -= (1.f / m_Module.SpawnRate) * floorf(fSpawnCount);
+
+	//	tSpawnCount count = tSpawnCount{(int)fSpawnCount, 0, 0, 0};
+	//	m_SpawnCountBuffer->SetData(&count);
+	//}
+	// else
+	//{
+	//	tSpawnCount count = tSpawnCount{0, 0, 0, 0};
+	//	m_SpawnCountBuffer->SetData(&count);
+	//}
+
+	if (m_Module.SpawnType == 0) // Continuous 모드
 	{
-		// 누적 시간을 스폰 간격으로 나눈 값
-		float fSpawnCount = m_Time / (1.f / m_Module.SpawnRate);
-
-		// 스폰 간격을 제외한 잔량을 남은 누적시간으로 설정
-		m_Time -= (1.f / m_Module.SpawnRate) * floorf(fSpawnCount);
-
-		tSpawnCount count = tSpawnCount{(int)fSpawnCount, 0, 0, 0};
-		m_SpawnCountBuffer->SetData(&count);
+		if ((1.f / m_Module.SpawnRate) < m_Time)
+		{
+			float fSpawnCount = m_Time / (1.f / m_Module.SpawnRate);
+			m_Time -= (1.f / m_Module.SpawnRate) * floorf(fSpawnCount);
+			SpawnParticle((int)fSpawnCount);
+		}
 	}
-	else
+	else if (m_Module.SpawnType == 1) // Burst 모드
 	{
-		tSpawnCount count = tSpawnCount{0, 0, 0, 0};
-		m_SpawnCountBuffer->SetData(&count);
+		if (m_Time >= m_Module.BurstInterval)
+		{
+			m_Time = 0.f;
+			SpawnParticle(m_Module.SpawnRate);
+		}
 	}
 
 	// 파티클 모듈정보 업데이트
@@ -160,6 +186,8 @@ void CParticleSystem::finaltick()
 
 void CParticleSystem::render()
 {
+	// if (!m_IsPlay) return;
+
 	// View, Proj 행렬 전달
 	Transform()->UpdateData();
 
@@ -178,6 +206,36 @@ void CParticleSystem::render()
 	// 렌더링때 사용한 리소스 바인딩 Clear
 	m_ParticleBuffer->Clear(20);
 	m_ParticleModuleBuffer->Clear(21);
+}
+
+void CParticleSystem::SpawnParticle(int _Count)
+{
+	tSpawnCount spawnCount = {_Count, 0, 0, 0};
+	m_SpawnCountBuffer->SetData(&spawnCount);
+}
+
+void CParticleSystem::Play()
+{
+	m_IsPlay = true;
+}
+
+void CParticleSystem::Stop()
+{
+	DeActivateParticle();
+	m_IsPlay = false;
+	m_Time	 = 0.f;
+}
+
+void CParticleSystem::DeActivateParticle()
+{
+	vector<tParticle> particles(m_MaxParticleCount);
+	m_ParticleBuffer->GetData(particles.data(), particles.size());
+
+	for (auto& particle : particles)
+	{
+		particle.Active = 0;
+	}
+	m_ParticleBuffer->SetData(particles.data());
 }
 
 void CParticleSystem::UpdateData()

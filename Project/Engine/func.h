@@ -33,6 +33,7 @@ namespace GamePlayStatic
 {
 void SpawnGameObject(CGameObject* _Target, int _LayerIdx, bool _IsPrefab = true);
 void DestroyGameObject(CGameObject* _Target);
+void ResetOutliner();
 
 void AddAsset(CAsset* _Asset);
 void DeleteAsset(ASSET_TYPE _Type, CAsset* _Asset);

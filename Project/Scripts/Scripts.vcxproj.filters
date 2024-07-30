@@ -119,9 +119,6 @@
     <ClInclude Include="CCoverLow.h">
       <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="CCoverHigh.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="CBossMissileScript.h">
       <Filter>Scripts\Boss\BossMissile</Filter>
     </ClInclude>
@@ -131,15 +128,33 @@
     <ClInclude Include="CDamagedDirection.h">
       <Filter>Scripts\UI\Image\DamagedDirection</Filter>
     </ClInclude>
-    <ClInclude Include="CDamagedDirectionMgr.h">
-      <Filter>Scripts\Player</Filter>
-    </ClInclude>
     <ClInclude Include="CMegaFistScript.h">
       <Filter>Scripts\Boss\MegaFist</Filter>
     </ClInclude>
     <ClInclude Include="CProjectileScript.h" />
-    <ClInclude Include="CBossShieldScript.h">
-      <Filter>Scripts\Boss\BossShield</Filter>
+    <ClInclude Include="CEventListener.h" />
+    <ClInclude Include="CGameMode.h" />
+    <ClInclude Include="strings.h" />
+    <ClInclude Include="CCoverArea.h">
+      <Filter>Scripts\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="CCoverUI.h">
+      <Filter>Scripts\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="CTutorialGameMode.h">
+      <Filter>Scripts\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="CAtlasImageUIScript.h">
+      <Filter>Scripts\DefaultUI\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="CDamagedDirectionMgr.h">
+      <Filter>Scripts\UI\Image\DamagedDirection</Filter>
+    </ClInclude>
+    <ClInclude Include="CHUD.h">
+      <Filter>Scripts\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CMuzzleFlashScript.h">
+      <Filter>Scripts\Particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -264,9 +279,6 @@
     <ClCompile Include="CCoverLow.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="CCoverHigh.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
     <ClCompile Include="CBossMissileScript.cpp">
       <Filter>Scripts\Boss\BossMissile</Filter>
     </ClCompile>
@@ -279,15 +291,31 @@
     <ClCompile Include="CDamagedDirection.cpp">
       <Filter>Scripts\UI\Image\DamagedDirection</Filter>
     </ClCompile>
-    <ClCompile Include="CDamagedDirectionMgr.cpp">
-      <Filter>Scripts\Player</Filter>
-    </ClCompile>
     <ClCompile Include="CMegaFistScript.cpp">
       <Filter>Scripts\Boss\MegaFist</Filter>
     </ClCompile>
     <ClCompile Include="CProjectileScript.cpp" />
-    <ClCompile Include="CBossShieldScript.cpp">
-      <Filter>Scripts\Boss\BossShield</Filter>
+    <ClCompile Include="CEventListener.cpp" />
+    <ClCompile Include="CCoverArea.cpp">
+      <Filter>Scripts\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="CCoverUI.cpp">
+      <Filter>Scripts\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="CTutorialGameMode.cpp">
+      <Filter>Scripts\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="CAtlasImageUIScript.cpp">
+      <Filter>Scripts\DefaultUI\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="CDamagedDirectionMgr.cpp">
+      <Filter>Scripts\UI\Image\DamagedDirection</Filter>
+    </ClCompile>
+    <ClCompile Include="CHUD.cpp">
+      <Filter>Scripts\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CMuzzleFlashScript.cpp">
+      <Filter>Scripts\Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -393,8 +421,14 @@
     <Filter Include="Scripts\Boss\MegaFist">
       <UniqueIdentifier>{9c149e25-d8c2-48b9-a482-f90aa4f51703}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Boss\BossShield">
-      <UniqueIdentifier>{c815b89f-c5f7-4054-bff8-7d2e77c50425}</UniqueIdentifier>
+    <Filter Include="Scripts\Event">
+      <UniqueIdentifier>{1ab1a3c0-46e2-4f9e-ad0a-58265382538b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Level">
+      <UniqueIdentifier>{1666e7d2-5bff-44b3-88d6-1f00319dfd14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Particle">
+      <UniqueIdentifier>{9d9687ac-349f-4c6b-ad84-3025114fc4f8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

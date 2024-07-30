@@ -63,6 +63,8 @@ public:
 	bool GetObjectEvent() { return m_bCreateObject || m_bDeleteObject || m_bMoveObject; }
 	bool GetAssetEvent() { return m_bAssetChange; }
 
+	void EventOccure() { m_bCreateObject = true; }
+
 	void SetMemoryPoolEvent(bool bEvent) { m_bMoveObject = bEvent; }
 
 private:

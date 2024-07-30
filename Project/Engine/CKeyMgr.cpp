@@ -172,7 +172,7 @@ void CKeyMgr::tick()
 		m_vMouseDrag = m_vMousePos - m_vMousePrevPos;
 
 		// Temp Escape Key
-		if (KEY_TAP(KEY::TAB))
+		if (KEY_TAP(KEY::ESC))
 		{
 			m_bHoldMouseCenter = !m_bHoldMouseCenter;
 
