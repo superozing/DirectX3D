@@ -5,7 +5,7 @@
 
 #include "CMemoryPoolMgrScript.h"
 
-#define BulletMarkPath "prefab/BulletMarkDecal.pref"
+#define BulletMarkPath "prefab/ShootingSystem/BulletMarkDecal.pref"
 
 CBulletMarkSpawner::CBulletMarkSpawner()
 	: CScript((UINT)SCRIPT_TYPE::BULLETMARKSPAWNER)

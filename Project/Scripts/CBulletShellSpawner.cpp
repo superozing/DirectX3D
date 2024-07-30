@@ -5,7 +5,7 @@
 
 #include "CMemoryPoolMgrScript.h"
 
-#define Bullet_ShellPath "prefab/Bullet_Shell.pref"
+#define Bullet_ShellPath "prefab/ShootingSystem/Bullet_Shell.pref"
 
 CBulletShellSpawner::CBulletShellSpawner()
 	: CScript((UINT)SCRIPT_TYPE::BULLETSHELLSPAWNER)
