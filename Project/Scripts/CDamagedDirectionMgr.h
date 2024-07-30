@@ -7,8 +7,10 @@ class CDamagedDirection;
 class CDamagedDirectionMgr : public CScript
 {
 private:
+	UINT m_iDirectionCnt;
+
 	// 피격 방향 UI 배열
-	CDamagedDirection* m_arrDamagedDirectionUI[3];
+	vector<CDamagedDirection*> m_arrDamagedDirectionUI;
 
 	// 현재 조종할 피격 방향 UI의 인덱스 (0 ~ 2)
 	UINT m_Idx;
@@ -24,7 +26,7 @@ public:
 
 private:
 	void SetParentPanelUI();
-	void AddIdx() { m_Idx = m_Idx == 2 ? 0 : m_Idx + 1; }
+	void AddIdx() { m_Idx = m_Idx == m_iDirectionCnt - 1 ? 0 : m_Idx + 1; }
 
 public:
 	void AddDamagedDirection(Vec3 _EnemyPos, float _RadiusRatio);
@@ -32,5 +34,6 @@ public:
 public:
 	CLONE(CDamagedDirectionMgr);
 	CDamagedDirectionMgr();
+	CDamagedDirectionMgr(const CDamagedDirectionMgr& _Origin);
 	~CDamagedDirectionMgr();
 };

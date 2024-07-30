@@ -83,7 +83,7 @@ void Outliner::ResetCurrentLevel()
 {
 	unordered_map<string, bool> stateMap;
 	SaveNodeState(m_Tree->GetRootNode(), stateMap);
-
+	m_CopyTarget = nullptr;
 	// 트리 내용을 삭제
 	m_Tree->ClearNode();
 

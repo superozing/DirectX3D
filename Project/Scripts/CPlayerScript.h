@@ -98,8 +98,7 @@ private:
 
 	map<PLAYER_STATE, SpringArmInfo> m_mSpringInfos;
 
-	class CCrosshair*			m_pCrosshair;
-	class CDamagedDirectionMgr* m_pDamagedDirectionMgr;
+	class CCrosshair* m_pShootingSystem;
 
 public:
 #pragma region StatusFunc

@@ -15,6 +15,66 @@ CPhysX::~CPhysX()
 {
 }
 
+void CPhysX::setLinearVelocity(const Vec3& _vLVel)
+{
+	if (nullptr == m_DActor)
+		return;
+	m_DActor->setLinearVelocity(PxVec3(_vLVel.x, _vLVel.y, _vLVel.z));
+}
+
+void CPhysX::setAngularVelocity(const Vec3& _vAVel)
+{
+	if (nullptr == m_DActor)
+		return;
+	m_DActor->setLinearVelocity(PxVec3(_vAVel.x, _vAVel.y, _vAVel.z));
+}
+
+void CPhysX::applyBulletImpact(const PxVec3& bulletVelocity, float bulletMass, const PxVec3& hitPoint)
+{
+	if (nullptr == m_DActor)
+		return;
+
+	// 충격량 계산
+	PxVec3 impulse = bulletMass * bulletVelocity;
+
+	// 물체의 중심
+	PxVec3 actorCenter = m_DActor->getGlobalPose().p;
+
+	// 충돌 지점과 중심 사이의 벡터
+	PxVec3 r = hitPoint - actorCenter;
+
+	// 충돌 지점이 중심에서 멀어질수록 충격량 감소 비율 계산
+	float distance			= r.magnitude();
+	float attenuationFactor = 1.0f / (1.0f + distance); // 거리 증가에 따른 충격량 감소 비율
+
+	// 충격량 감소 적용
+	PxVec3 adjustedImpulse = impulse * attenuationFactor;
+
+	// 충격량의 방향 변화 고려
+	PxVec3 impulseDirection = adjustedImpulse.getNormalized();
+	adjustedImpulse			= impulseDirection * adjustedImpulse.magnitude();
+
+	// 토크 계산 (외적)
+	PxVec3 torque = r.cross(adjustedImpulse);
+
+	// 물체에 충격량 적용
+	m_DActor->addForce(adjustedImpulse, PxForceMode::eIMPULSE);
+
+	// 물체에 토크 적용
+	m_DActor->addTorque(torque, PxForceMode::eIMPULSE);
+}
+
+void CPhysX::releaseActor()
+{
+	if (nullptr == m_Actor)
+		return;
+
+	CPhysXMgr::GetInst()->ReleaseActor(m_Actor);
+
+	m_Actor	 = nullptr;
+	m_DActor = nullptr;
+}
+
 void CPhysX::updateFromPhysics()
 {
 	if (nullptr == m_Actor)
@@ -91,10 +151,10 @@ void CPhysX::begin()
 void CPhysX::finaltick()
 {
 	// 콘텍트벡터를 초기화
-	if (0 != m_vThisFrameContact.size())
-	{
-		m_vThisFrameContact.resize(0);
-	}
+	// if (0 != m_vThisFrameContact.size())
+	//{
+	//	m_vThisFrameContact.resize(0);
+	//}
 
 	// imgui가 포커스되어있으면 ,현재프레임에 충돌한 오브젝트정보를 수집
 	if (true == m_bImguiDirtyFlag)
@@ -130,9 +190,14 @@ void CPhysX::finaltick()
 			GamePlayStatic::DrawDebugCube(DebugFinalPos, m_vScale, Vec4(Rot.x, Rot.y, Rot.z, Rot.w),
 										  Vec3(0.3f, .3f, 0.3f), false);
 		}
-		else
+		else if (PhysShape::SPHERE == m_Shape)
 		{
 			GamePlayStatic::DrawDebugSphere(DebugFinalPos, m_vScale.x / 2.f, Vec3(0.3f, .3f, 0.3f), false);
+		}
+		else if (PhysShape::SPHERE == m_Shape)
+		{
+			GamePlayStatic::DrawDebugCone(DebugFinalPos, m_vScale, Vec4(Rot.x, Rot.y, Rot.z, Rot.w),
+										  Vec3(0.3f, .3f, 0.3f), false);
 		}
 	}
 }
@@ -195,8 +260,9 @@ PxTransform CPhysX::getTransform() const
 
 void CPhysX::BeginOverlap(CGameObject* other)
 {
-	m_vThisFrameContact.push_back(tCollisionData{other, eColType::COL_BEGINE});
 	++m_CollisionCount;
+
+	m_vThisFrameContact.push_back(tCollisionData{other, eColType::COL_ON});
 
 	const vector<CScript*>& vecScript = GetOwner()->GetScripts();
 	for (size_t i = 0; i < vecScript.size(); ++i)
@@ -207,7 +273,6 @@ void CPhysX::BeginOverlap(CGameObject* other)
 
 void CPhysX::Overlap(CGameObject* other)
 {
-	m_vThisFrameContact.push_back(tCollisionData{other, eColType::COL_ON});
 	const vector<CScript*>& vecScript = GetOwner()->GetScripts();
 	for (size_t i = 0; i < vecScript.size(); ++i)
 	{
@@ -217,8 +282,20 @@ void CPhysX::Overlap(CGameObject* other)
 
 void CPhysX::EndOverlap(CGameObject* other)
 {
+	for (auto iter = m_vThisFrameContact.begin(); iter != m_vThisFrameContact.end();)
+	{
+		if (iter->Other == other)
+		{
+			iter = m_vThisFrameContact.erase(iter);
+			break;
+		}
+		else
+		{
+			++iter;
+		}
+	}
+
 	--m_CollisionCount;
-	m_vThisFrameContact.push_back(tCollisionData{other, eColType::COL_END});
 	const vector<CScript*>& vecScript = GetOwner()->GetScripts();
 	for (size_t i = 0; i < vecScript.size(); ++i)
 	{

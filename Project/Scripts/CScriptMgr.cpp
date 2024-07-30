@@ -36,13 +36,16 @@
 #include "CPlayerDamagedScript.h"
 #include "CWallScript.h"
 #include "CCoverLow.h"
-#include "CCoverHigh.h"
 #include "CBossMissileScript.h"
 #include "CBossScript.h"
 #include "CDamagedDirection.h"
-#include "CDamagedDirectionMgr.h"
 #include "CMegaFistScript.h"
-#include "CBloomScript.h"
+#include "CCoverArea.h"
+#include "CCoverUI.h"
+#include "CTutorialGameMode.h"
+#include "CAtlasImageUIScript.h"
+#include "CDamagedDirectionMgr.h"
+#include "CHUD.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -81,13 +84,16 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPlayerDamagedScript");
 	_vec.push_back(L"CWallScript");
 	_vec.push_back(L"CCoverLow");
-	_vec.push_back(L"CCoverHigh");
 	_vec.push_back(L"CBossMissileScript");
 	_vec.push_back(L"CBossScript");
 	_vec.push_back(L"CDamagedDirection");
-	_vec.push_back(L"CDamagedDirectionMgr");
 	_vec.push_back(L"CMegaFistScript");
-	_vec.push_back(L"CBloomScript");
+	_vec.push_back(L"CCoverArea");
+	_vec.push_back(L"CCoverUI");
+	_vec.push_back(L"CTutorialGameMode");
+	_vec.push_back(L"CAtlasImageUIScript");
+	_vec.push_back(L"CDamagedDirectionMgr");
+	_vec.push_back(L"CHUD");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -162,20 +168,26 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CWallScript;
 	if (L"CCoverLow" == _strScriptName)
 		return new CCoverLow;
-	if (L"CCoverHigh" == _strScriptName)
-		return new CCoverHigh;
 	if (L"CBossMissileScript" == _strScriptName)
 		return new CBossMissileScript;
 	if (L"CBossScript" == _strScriptName)
 		return new CBossScript;
 	if (L"CDamagedDirection" == _strScriptName)
 		return new CDamagedDirection;
-	if (L"CDamagedDirectionMgr" == _strScriptName)
-		return new CDamagedDirectionMgr;
 	if (L"CMegaFistScript" == _strScriptName)
 		return new CMegaFistScript;
-	if (L"CBloomScript" == _strScriptName)
-		return new CBloomScript;
+	if (L"CCoverArea" == _strScriptName)
+		return new CCoverArea;
+	if (L"CCoverUI" == _strScriptName)
+		return new CCoverUI;
+	if (L"CTutorialGameMode" == _strScriptName)
+		return new CTutorialGameMode;
+	if (L"CAtlasImageUIScript" == _strScriptName)
+		return new CAtlasImageUIScript;
+	if (L"CDamagedDirectionMgr" == _strScriptName)
+		return new CDamagedDirectionMgr;
+	if (L"CHUD" == _strScriptName)
+		return new CHUD;
 	return nullptr;
 }
 
@@ -288,9 +300,6 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::COVERLOW:
 		return new CCoverLow;
 		break;
-	case (UINT)SCRIPT_TYPE::COVERHIGH:
-		return new CCoverHigh;
-		break;
 	case (UINT)SCRIPT_TYPE::BOSSMISSILESCRIPT:
 		return new CBossMissileScript;
 		break;
@@ -300,14 +309,26 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::DAMAGEDDIRECTION:
 		return new CDamagedDirection;
 		break;
-	case (UINT)SCRIPT_TYPE::DAMAGEDDIRECTIONMGR:
-		return new CDamagedDirectionMgr;
-		break;
 	case (UINT)SCRIPT_TYPE::MEGAFISTSCRIPT:
 		return new CMegaFistScript;
 		break;
-	case (UINT)SCRIPT_TYPE::BLOOMSCRIPT:
-		return new CBloomScript;
+	case (UINT)SCRIPT_TYPE::COVERAREA:
+		return new CCoverArea;
+		break;
+	case (UINT)SCRIPT_TYPE::COVERUI:
+		return new CCoverUI;
+		break;
+	case (UINT)SCRIPT_TYPE::TUTORIALGAMEMODE:
+		return new CTutorialGameMode;
+		break;
+	case (UINT)SCRIPT_TYPE::ATLASIMAGEUISCRIPT:
+		return new CAtlasImageUIScript;
+		break;
+	case (UINT)SCRIPT_TYPE::DAMAGEDDIRECTIONMGR:
+		return new CDamagedDirectionMgr;
+		break;
+	case (UINT)SCRIPT_TYPE::HUD:
+		return new CHUD;
 		break;
 	}
 	return nullptr;
@@ -457,10 +478,6 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CCoverLow";
 		break;
 
-	case SCRIPT_TYPE::COVERHIGH:
-		return L"CCoverHigh";
-		break;
-
 	case SCRIPT_TYPE::BOSSMISSILESCRIPT:
 		return L"CBossMissileScript";
 		break;
@@ -473,16 +490,32 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CDamagedDirection";
 		break;
 
-	case SCRIPT_TYPE::DAMAGEDDIRECTIONMGR:
-		return L"CDamagedDirectionMgr";
-		break;
-
 	case SCRIPT_TYPE::MEGAFISTSCRIPT:
 		return L"CMegaFistScript";
 		break;
 
-	case SCRIPT_TYPE::BLOOMSCRIPT:
-		return L"CBloomScript";
+	case SCRIPT_TYPE::COVERAREA:
+		return L"CCoverArea";
+		break;
+
+	case SCRIPT_TYPE::COVERUI:
+		return L"CCoverUI";
+		break;
+
+	case SCRIPT_TYPE::TUTORIALGAMEMODE:
+		return L"CTutorialGameMode";
+		break;
+
+	case SCRIPT_TYPE::ATLASIMAGEUISCRIPT:
+		return L"CAtlasImageUIScript";
+		break;
+
+	case SCRIPT_TYPE::DAMAGEDDIRECTIONMGR:
+		return L"CDamagedDirectionMgr";
+		break;
+
+	case SCRIPT_TYPE::HUD:
+		return L"CHUD";
 		break;
 
 	}

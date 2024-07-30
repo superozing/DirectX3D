@@ -67,6 +67,8 @@ void CGameObject::begin()
 	{
 		if (nullptr != m_arrCom[i])
 		{
+			if (i == (UINT)COMPONENT_TYPE::PHYSX)
+				continue;
 			m_arrCom[i]->begin();
 		}
 	}
@@ -80,6 +82,9 @@ void CGameObject::begin()
 	{
 		m_vecChild[i]->begin();
 	}
+
+	if (m_arrCom[(UINT)COMPONENT_TYPE::PHYSX])
+		m_arrCom[(UINT)COMPONENT_TYPE::PHYSX]->begin();
 }
 
 void CGameObject::tick()

@@ -555,118 +555,12 @@ bool ParamUI::Param_MGR_PHYSX(void* _pPhysXMgr)
 		return false;
 	}
 
+	// ImGui::DragFloat("GravityMul:", &(pPhysXMgr->m_fGravityMul));
+	// ImGui::DragFloat("LestOffset:", &(pPhysXMgr->m_fLestOffset));
+
 	// 레이어 수를 정의합니다.
 	const int		  LayerCount = static_cast<int>(LAYER::LAYER_MAX);
 	static const auto LayerMap	 = GamePlayStatic::GetLayerMap();
-
-	//// 라벨의 최대 길이를 계산합니다.
-	// size_t maxLabelLength = 0;
-	// for (int i = 0; i < layerCount; ++i)
-	//{
-	//	auto layerNameI = magic_enum::enum_name(static_cast<LAYER>(i));
-	//	if (!layerNameI.empty() && static_cast<LAYER>(i) != LAYER::LAYER_MAX)
-	//	{
-	//		maxLabelLength = max(maxLabelLength, layerNameI.size());
-	//	}
-	// }
-
-	//// 최대 라벨 길이에 맞게 왼쪽 여백을 설정합니다.
-	// float labelWidth = ImGui::CalcTextSize(std::string(maxLabelLength, ' ').c_str()).x;
-
-	//// 윗쪽에 인덱스를 세로로 표시합니다.
-	// ImGui::Text(" "); // 첫 번째 빈 셀
-	// ImGui::SameLine(0, labelWidth); // 왼쪽 여백을 설정합니다.
-
-	// for (int j = 0; j < layerCount; ++j)
-	//{
-	//	auto layerNameJ = magic_enum::enum_name(static_cast<LAYER>(j));
-
-	//	// 이름이 없거나 LAYER_MAX인 경우 제외
-	//	if (layerNameJ.empty() || static_cast<LAYER>(j) == LAYER::LAYER_MAX)
-	//		continue;
-
-	//	// 각 레이어 이름을 세로로 배치
-	//	ImGui::SameLine();
-
-	//	// 현재 위치를 가져옵니다.
-	//	float currentPosX = ImGui::GetCursorPosX();
-
-	//	// 숫자 라벨을 오른쪽으로 이동시킵니다.
-	//	float labelOffset;
-	//	if (0 == j)
-	//	{
-	//		labelOffset = 120.0f; // 원하는 만큼의 오프셋을 설정합니다.
-	//	}
-	//	else
-	//	{
-	//		labelOffset = 12.0f; // 원하는 만큼의 오프셋을 설정합니다.
-	//	}
-	//	ImGui::SetCursorPosX(currentPosX + labelOffset);
-	//	ImGui::Text("%s", std::to_string(j).c_str());
-	//}
-	// ImGui::NewLine();
-
-	//// 충돌 행렬을 N x N 체크박스로 표시합니다.
-	// for (int i = 0; i < layerCount; ++i)
-	//{
-	//	auto layerNameI = magic_enum::enum_name(static_cast<LAYER>(i));
-
-	//	// 이름이 없거나 LAYER_MAX인 경우 제외
-	//	if (layerNameI.empty() || static_cast<LAYER>(i) == LAYER::LAYER_MAX)
-	//		continue;
-
-	//	// 왼쪽에 라벨을 일정한 길이로 맞추어 표시합니다.
-	//	std::string paddedLabel = layerNameI.data();
-	//	paddedLabel.append(maxLabelLength - paddedLabel.size(), ' ');
-	//	ImGui::Text("%s", paddedLabel.c_str());
-	//	ImGui::SameLine();
-
-	//	for (int j = 0; j < layerCount; ++j)
-	//	{
-	//		auto layerNameJ = magic_enum::enum_name(static_cast<LAYER>(j));
-
-	//		// 이름이 없거나 LAYER_MAX인 경우 제외
-	//		if (layerNameJ.empty() || static_cast<LAYER>(j) == LAYER::LAYER_MAX)
-	//			continue;
-
-	//		// 체크박스의 고유 ID를 설정합니다.
-	//		char buf[64];
-	//		_snprintf_s(buf, sizeof(buf), "##%d_%d", i, j);
-
-	//		// 현재 상태를 가져옵니다.
-	//		bool isColliding = (CPhysXMgr::m_layerMasks[i] & (1 << j)) != 0;
-
-	//		if (i <= j)
-	//		{
-	//			// 체크박스를 그립니다.
-	//			if (ImGui::Checkbox(buf, &isColliding))
-	//			{
-	//				// 체크 상태가 변경되면 충돌 정보를 업데이트합니다.
-	//				pPhysXMgr->LayerCheckToggle((UINT)i, (UINT)j);
-	//			}
-	//		}
-	//		else
-	//		{
-	//			// i == j 인 경우 체크박스를 비활성화하고 상태만 표시합니다.
-	//			ImGui::BeginDisabled();
-	//			ImGui::Checkbox(buf, &isColliding);
-	//			ImGui::EndDisabled();
-	//		}
-
-	//		// 적절한 간격을 추가합니다.
-	//		if (j < layerCount - 1)
-	//			ImGui::SameLine();
-	//	}
-	//	// 다음 행으로 이동합니다.
-	//	ImGui::NewLine();
-	//}
-
-	// ImGui::Separator();
-	// UI::StaticButton(string("RayCast Info"), STATIC_BTN_TYPE::SUBTITLE);
-
-	// const char* column_names[] = { "Track", "cabasa", "ride", "smash", "tom-hi", "tom-mid", "tom-low", "hihat-o",
-	// "hihat-c", "snare-s", "snare-c", "clap", "rim", "kick" }; const int columns_count =
-	// IM_ARRAYSIZE(column_names); const int rows_count = 12;
 
 	static ImGuiTableFlags table_flags = ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersInnerH |
 										 ImGuiTableFlags_Hideable | ImGuiTableFlags_Resizable |
@@ -674,10 +568,7 @@ bool ParamUI::Param_MGR_PHYSX(void* _pPhysXMgr)
 	static bool bools[LayerCount * LayerCount] = {}; // Dummy storage selection storage
 	static int	frozen_cols					   = 1;
 	static int	frozen_rows					   = 2;
-	// ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
-	// ImGui::SliderInt("Frozen columns", &frozen_cols, 0, 2);
-	// ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
-	// ImGui::SliderInt("Frozen rows", &frozen_rows, 0, 2);
+
 	if (ImGui::CollapsingHeader("Layer Table"))
 	{
 		if (ImGui::BeginTable("table_angled_headers", LayerMap.size() + 1, table_flags,
