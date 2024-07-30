@@ -95,7 +95,7 @@ void CMemoryPoolMgrScript::PushObject(CGameObject* _Object)
 
 	for (int i = 0; i < vecObj.size(); ++i)
 	{
-		string s = ToString(vecObj[i]->GetName());
+		string s = CMemoryPoolMgr::GetInst()->GetBaseName(ToString(_Object->GetName()));
 
 		if (ToString(_Object->GetName()).find(s))
 		{
