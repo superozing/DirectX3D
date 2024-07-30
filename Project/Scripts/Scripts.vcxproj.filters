@@ -127,12 +127,6 @@
     </ClInclude>
     <ClInclude Include="CProjectileScript.h" />
     <ClInclude Include="CGameMode.h" />
-    <ClInclude Include="CCoverArea.h">
-      <Filter>Scripts\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="CCoverUI.h">
-      <Filter>Scripts\Event</Filter>
-    </ClInclude>
     <ClInclude Include="CTutorialGameMode.h">
       <Filter>Scripts\Level</Filter>
     </ClInclude>
@@ -179,6 +173,21 @@
       <Filter>Default</Filter>
     </ClInclude>
     <ClInclude Include="CEventListener.h" />
+    <ClInclude Include="CWelcomeTutorialEvent.h">
+      <Filter>Scripts\Event\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="CCoverArea.h">
+      <Filter>Scripts\Event\Cover</Filter>
+    </ClInclude>
+    <ClInclude Include="CCoverUI.h">
+      <Filter>Scripts\Event\Cover</Filter>
+    </ClInclude>
+    <ClInclude Include="CDashEventListener.h">
+      <Filter>Scripts\Event\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="CShootingTutorialEvent.h">
+      <Filter>Scripts\Event\Tutorial</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -312,12 +321,6 @@
       <Filter>Scripts\Boss\MegaFist</Filter>
     </ClCompile>
     <ClCompile Include="CProjectileScript.cpp" />
-    <ClCompile Include="CCoverArea.cpp">
-      <Filter>Scripts\Event</Filter>
-    </ClCompile>
-    <ClCompile Include="CCoverUI.cpp">
-      <Filter>Scripts\Event</Filter>
-    </ClCompile>
     <ClCompile Include="CTutorialGameMode.cpp">
       <Filter>Scripts\Level</Filter>
     </ClCompile>
@@ -361,6 +364,21 @@
       <Filter>Scripts\DefaultUI\Text</Filter>
     </ClCompile>
     <ClCompile Include="CEventListener.cpp" />
+    <ClCompile Include="CWelcomeTutorialEvent.cpp">
+      <Filter>Scripts\Event\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="CCoverArea.cpp">
+      <Filter>Scripts\Event\Cover</Filter>
+    </ClCompile>
+    <ClCompile Include="CCoverUI.cpp">
+      <Filter>Scripts\Event\Cover</Filter>
+    </ClCompile>
+    <ClCompile Include="CDashEventListener.cpp">
+      <Filter>Scripts\Event\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="CShootingTutorialEvent.cpp">
+      <Filter>Scripts\Event\Tutorial</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -482,6 +500,12 @@
     </Filter>
     <Filter Include="Scripts\DefaultUI\Text">
       <UniqueIdentifier>{d164c685-bd4d-4505-9170-4423d05d4dfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Event\Tutorial">
+      <UniqueIdentifier>{4ce8883f-5102-4f0f-b612-f2e0a48f6cae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Event\Cover">
+      <UniqueIdentifier>{b90d22b9-9236-4dc4-88d5-171a281eac75}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

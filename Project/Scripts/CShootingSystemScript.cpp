@@ -41,12 +41,24 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 	if (isBulletHit)
 	{
 		// 데미지 처리, 파티클 시스템 등등...
+		if (hitInfo.pOtherObj->GetLayerIdx() == (UINT)LAYER::LAYER_PLAYER)
+		{
+			int a = 0;
+		}
 
 		if (hitInfo.pOtherObj->GetLayerIdx() == (UINT)LAYER::LAYER_WALL)
 		{
 			// 데칼 오브젝트 스폰
 			m_pBulletMarkDecalSpawner->SpawnBulletMarkDecal(
 				hitInfo.pOtherObj->Transform()->GetWorldDir(DIR_TYPE::FRONT), hitInfo.vHitPos);
+		}
+
+		if (hitInfo.pOtherObj->GetLayerIdx() == (UINT)LAYER::LAYER_MONSTER &&
+			(hitInfo.pOtherObj->PhysX()->m_bPhysBodyType == PhysBodyType::DYNAMIC))
+		{
+			hitInfo.pOtherObj->PhysX()->applyBulletImpact(
+				PxVec3(ShootDir.x, ShootDir.y, ShootDir.z), 1000.f,
+				PxVec3(hitInfo.vHitPos.x, hitInfo.vHitPos.y, hitInfo.vHitPos.z));
 		}
 	}
 

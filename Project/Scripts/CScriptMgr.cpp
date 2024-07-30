@@ -38,8 +38,6 @@
 #include "CBossScript.h"
 #include "CDamagedDirection.h"
 #include "CMegaFistScript.h"
-#include "CCoverArea.h"
-#include "CCoverUI.h"
 #include "CTutorialGameMode.h"
 #include "CAtlasImageUIScript.h"
 #include "CDamagedDirectionMgr.h"
@@ -54,6 +52,11 @@
 #include "CShootingSystemScript.h"
 #include "CStretchUIScript.h"
 #include "CTextUI.h"
+#include "CWelcomeTutorialEvent.h"
+#include "CCoverArea.h"
+#include "CCoverUI.h"
+#include "CDashEventListener.h"
+#include "CShootingTutorialEvent.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -94,8 +97,6 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CBossScript");
 	_vec.push_back(L"CDamagedDirection");
 	_vec.push_back(L"CMegaFistScript");
-	_vec.push_back(L"CCoverArea");
-	_vec.push_back(L"CCoverUI");
 	_vec.push_back(L"CTutorialGameMode");
 	_vec.push_back(L"CAtlasImageUIScript");
 	_vec.push_back(L"CDamagedDirectionMgr");
@@ -110,6 +111,11 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CShootingSystemScript");
 	_vec.push_back(L"CStretchUIScript");
 	_vec.push_back(L"CTextUI");
+	_vec.push_back(L"CWelcomeTutorialEvent");
+	_vec.push_back(L"CCoverArea");
+	_vec.push_back(L"CCoverUI");
+	_vec.push_back(L"CDashEventListener");
+	_vec.push_back(L"CShootingTutorialEvent");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -188,10 +194,6 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CDamagedDirection;
 	if (L"CMegaFistScript" == _strScriptName)
 		return new CMegaFistScript;
-	if (L"CCoverArea" == _strScriptName)
-		return new CCoverArea;
-	if (L"CCoverUI" == _strScriptName)
-		return new CCoverUI;
 	if (L"CTutorialGameMode" == _strScriptName)
 		return new CTutorialGameMode;
 	if (L"CAtlasImageUIScript" == _strScriptName)
@@ -220,6 +222,16 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CStretchUIScript;
 	if (L"CTextUI" == _strScriptName)
 		return new CTextUI;
+	if (L"CWelcomeTutorialEvent" == _strScriptName)
+		return new CWelcomeTutorialEvent;
+	if (L"CCoverArea" == _strScriptName)
+		return new CCoverArea;
+	if (L"CCoverUI" == _strScriptName)
+		return new CCoverUI;
+	if (L"CDashEventListener" == _strScriptName)
+		return new CDashEventListener;
+	if (L"CShootingTutorialEvent" == _strScriptName)
+		return new CShootingTutorialEvent;
 	return nullptr;
 }
 
@@ -338,12 +350,6 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::MEGAFISTSCRIPT:
 		return new CMegaFistScript;
 		break;
-	case (UINT)SCRIPT_TYPE::COVERAREA:
-		return new CCoverArea;
-		break;
-	case (UINT)SCRIPT_TYPE::COVERUI:
-		return new CCoverUI;
-		break;
 	case (UINT)SCRIPT_TYPE::TUTORIALGAMEMODE:
 		return new CTutorialGameMode;
 		break;
@@ -385,6 +391,21 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::TEXTUI:
 		return new CTextUI;
+		break;
+	case (UINT)SCRIPT_TYPE::WELCOMETUTORIALEVENT:
+		return new CWelcomeTutorialEvent;
+		break;
+	case (UINT)SCRIPT_TYPE::COVERAREA:
+		return new CCoverArea;
+		break;
+	case (UINT)SCRIPT_TYPE::COVERUI:
+		return new CCoverUI;
+		break;
+	case (UINT)SCRIPT_TYPE::DASHEVENTLISTENER:
+		return new CDashEventListener;
+		break;
+	case (UINT)SCRIPT_TYPE::SHOOTINGTUTORIALEVENT:
+		return new CShootingTutorialEvent;
 		break;
 	}
 	return nullptr;
@@ -542,14 +563,6 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CMegaFistScript";
 		break;
 
-	case SCRIPT_TYPE::COVERAREA:
-		return L"CCoverArea";
-		break;
-
-	case SCRIPT_TYPE::COVERUI:
-		return L"CCoverUI";
-		break;
-
 	case SCRIPT_TYPE::TUTORIALGAMEMODE:
 		return L"CTutorialGameMode";
 		break;
@@ -604,6 +617,26 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::TEXTUI:
 		return L"CTextUI";
+		break;
+
+	case SCRIPT_TYPE::WELCOMETUTORIALEVENT:
+		return L"CWelcomeTutorialEvent";
+		break;
+
+	case SCRIPT_TYPE::COVERAREA:
+		return L"CCoverArea";
+		break;
+
+	case SCRIPT_TYPE::COVERUI:
+		return L"CCoverUI";
+		break;
+
+	case SCRIPT_TYPE::DASHEVENTLISTENER:
+		return L"CDashEventListener";
+		break;
+
+	case SCRIPT_TYPE::SHOOTINGTUTORIALEVENT:
+		return L"CShootingTutorialEvent";
 		break;
 
 	}

@@ -50,6 +50,8 @@ void CCoverUI::begin()
 void CCoverUI::tick()
 {
 	CEventListener::tick();
+
+	DrawUI(HasTargets());
 }
 
 void CCoverUI::BeginOverlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider)
