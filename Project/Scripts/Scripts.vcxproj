@@ -169,6 +169,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CAmmoInfo.h" />
     <ClInclude Include="CAtlasImageUIScript.h" />
     <ClInclude Include="CBackgroundScript.h" />
+    <ClInclude Include="CBloomScript.h" />
     <ClInclude Include="CBossHP.h" />
     <ClInclude Include="CBossMissileScript.h" />
     <ClInclude Include="CBossScript.h" />
@@ -227,6 +228,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CAmmoInfo.cpp" />
     <ClCompile Include="CAtlasImageUIScript.cpp" />
     <ClCompile Include="CBackgroundScript.cpp" />
+    <ClCompile Include="CBloomScript.cpp" />
     <ClCompile Include="CBossHP.cpp" />
     <ClCompile Include="CBossMissileScript.cpp" />
     <ClCompile Include="CBossScript.cpp" />

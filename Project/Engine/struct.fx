@@ -121,4 +121,11 @@ struct tSkinningInfo
     float3 vNormal;
 };
 
+struct tBloomInfo
+{
+    float4 vBloomColor;
+    float fThreshold;
+    int3 iBloomPadding;
+};
+
 #endif

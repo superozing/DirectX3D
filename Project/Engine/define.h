@@ -148,6 +148,7 @@ enum class SB_TYPE
 	LIGHT3D,
 	CROSS,
 	WEIGHTMAP,
+	BLOOM,
 	END,
 };
 

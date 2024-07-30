@@ -57,6 +57,14 @@ struct tPixel
 };
 
 // 광선 구조체
+struct tBloom
+{
+	Vec4  vBloomColor;
+	float fThreshold;
+	int	  iPadding[3];
+};
+
+// 광선 구조체
 struct tRay
 {
 	Vec3 vStart;
@@ -261,6 +269,10 @@ struct tMtrlConst
 
 	// 3D Animation 정보
 	int arrAnimData[2];
+
+	// 블룸 정보
+	int iBloomUse;
+	int iPadding[3];
 
 	friend ofstream& operator<<(ofstream& fout, const tMtrlConst& _mtrlConst);
 	friend ifstream& operator>>(ifstream& fin, tMtrlConst& _mtrlConst);
