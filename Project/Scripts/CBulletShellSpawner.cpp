@@ -47,33 +47,26 @@ void CBulletShellSpawner::SpawnBulletShell(CGameObject* _pPlayer, float _ActiveT
 {
 
 	Matrix _ParentWorldMat = _pPlayer->Transform()->GetWorldMat();
+	Matrix _WeaponBoneMat = _pPlayer->Animator3D()->FindBoneMat(L"Bip001_Weapon");
 
-	// Matrix _WeaponBoneMat = _pObj->Transform()->
-	// m_pPlayer->Animator3D()->FindBoneMat(L"Bip001_Weapon"),
-
-	Vec3 _RightDir = _pPlayer->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
-	Vec3 _UpDir	   = _pPlayer->Transform()->GetWorldDir(DIR_TYPE::UP);
-
-	// 필요한 정보
-	//	1. _WeaponBoneMat
-	//		총 위치의 본 매트릭스에 탄피를 생성시키기 위해서.
 
 	// + 90도 회전이 추가되어야 탄피가 앞쪽을 바라본다.
 
 	// 풀에서 오브젝트 가져오기
 	auto pBulletShell = m_PoolMgr->PopObject(Bullet_ShellPath);
 
-	// 기본 크기 설정해주기
-	pBulletShell->Transform()->SetWorldMat(_ParentWorldMat);
-	Vec3 vPos = pBulletShell->Transform()->GetRelativePos();
-
-	vPos += (_RightDir * 50.f);
-	vPos += (_UpDir * 50.f);
-
+	// 오브젝트에게 무기 본 위치에 스폰되도록 pos 설정
+	Vec3 vPos = (_WeaponBoneMat * _pPlayer->Transform()->GetWorldMat()).Translation(); // Player World Mat 곱해서 본 위치 정보 가져오기
 	pBulletShell->Transform()->SetRelativePos(vPos);
 
+
+	// 기본 크기 설정해주기
+	/*Vec3 vPos = pBulletShell->Transform()->GetRelativePos();
+	vPos += (_RightDir * 50.f);
+	vPos += (_UpDir * 50.f);*/
+
 	// 게임 오브젝트 스폰
-	GamePlayStatic::SpawnGameObject(pBulletShell, 0);
+	GamePlayStatic::SpawnGameObject(pBulletShell, (UINT)LAYER::LAYER_ETC_OBJECT);
 
 	// 관리를 위해 리스트에 추가
 	m_BulletShellList.push_back({pBulletShell, _ActiveTime});
