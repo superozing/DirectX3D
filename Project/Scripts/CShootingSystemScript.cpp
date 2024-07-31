@@ -50,8 +50,7 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 		if (hitInfo.pOtherObj->GetLayerIdx() == (UINT)LAYER::LAYER_WALL)
 		{
 			// 데칼 오브젝트 스폰
-			m_pBulletMarkDecalSpawner->SpawnBulletMarkDecal(
-				hitInfo.pOtherObj->Transform()->GetWorldDir(DIR_TYPE::FRONT), hitInfo.vHitPos);
+			m_pBulletMarkDecalSpawner->SpawnBulletMarkDecal(hitInfo, m_pPlayer);
 		}
 
 		if (hitInfo.pOtherObj->GetLayerIdx() == (UINT)LAYER::LAYER_MONSTER &&
