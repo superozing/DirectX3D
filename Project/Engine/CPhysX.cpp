@@ -57,6 +57,10 @@ void CPhysX::applyBulletImpact(const PxVec3& bulletVelocity, float bulletMass, c
 	// 토크 계산 (외적)
 	PxVec3 torque = r.cross(adjustedImpulse);
 
+	// 토크 감소 비율 적용
+	float torqueAttenuationFactor = 1.0f / (1.0f + distance * distance);
+	torque *= torqueAttenuationFactor;
+
 	// 물체에 충격량 적용
 	m_DActor->addForce(adjustedImpulse, PxForceMode::eIMPULSE);
 
