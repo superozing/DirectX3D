@@ -30,6 +30,7 @@ CPlayerScript::CPlayerScript()
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
 	, m_tStatus{}
 	, m_pSpringArm(nullptr)
+	, m_pMuzzleFlash(nullptr)
 {
 	// 디버깅용
 	AppendScriptParam("CurState", SCRIPT_PARAM::STRING, (void*)&state);
@@ -284,6 +285,13 @@ void CPlayerScript::begin()
 			break;
 	}
 
+	for (size_t i = 0; i < vecChild.size(); i++)
+	{
+		m_pMuzzleFlash = vecChild[i]->GetScript<CMuzzleFlashScript>();
+		if (m_pMuzzleFlash)
+			break;
+	}
+
 	// 저장 재시작하면 터져서 임시로 막아둠
 	if (m_pSpringArm)
 		m_pSpringArm->SetTargetObject(CRenderMgr::GetInst()->GetMainCam()->GetOwner());
@@ -291,7 +299,7 @@ void CPlayerScript::begin()
 	m_FSM->Begin();
 
 	m_pShootingSystem = new CShootingSystemScript;
-	
+
 	GetOwner()->AddComponent(m_pShootingSystem);
 
 	m_pShootingSystem->SetSpreadRatioSpeed(m_tStatus.SpreadRatioSpeed);
@@ -304,7 +312,6 @@ void CPlayerScript::begin()
 	}
 	else
 		CLogMgr::GetInst()->AddLog(Log_Level::ERR, L"Can't find \"HUD\"Object.");
-
 }
 
 void CPlayerScript::tick()

@@ -4,7 +4,10 @@
 class CMuzzleFlashScript : public CScript
 {
 private:
-	class CGameObject* m_Parent;
+	class CGameObject* m_pTarget;
+
+public:
+	void InitMuzzleFlash();
 
 public:
 	virtual void begin() override;

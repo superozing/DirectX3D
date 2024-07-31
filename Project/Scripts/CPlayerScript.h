@@ -83,6 +83,7 @@ struct PlayerStatus
 
 template <typename T> class CRoRStateMachine;
 #include "CSpringArm.h"
+#include "CMuzzleFlashScript.h"
 
 class CPlayerScript : public CScript
 {
@@ -99,7 +100,8 @@ private:
 	map<PLAYER_STATE, SpringArmInfo> m_mSpringInfos;
 
 	class CShootingSystemScript* m_pShootingSystem;
-	class CCrosshair* m_pCrosshair;
+	class CCrosshair*			 m_pCrosshair;
+	class CMuzzleFlashScript*	 m_pMuzzleFlash;
 
 public:
 #pragma region StatusFunc
@@ -210,10 +212,7 @@ public:
 		m_tStatus.SpreadRatioSpeed = RoRMath::ClampFloat(m_tStatus.SpreadRatioSpeed + _relRatio, 0.f, 1.f);
 	}
 	/// @brief 데미지를 파라미터로 변경합니다. 언더캡이 보장됩니다.
-	void SetSpreadRatio(float _absRatio)
-	{ 
-		m_tStatus.SpreadRatioSpeed = RoRMath::ClampFloat(_absRatio, 0.f, 1.f);
-	}
+	void SetSpreadRatio(float _absRatio) { m_tStatus.SpreadRatioSpeed = RoRMath::ClampFloat(_absRatio, 0.f, 1.f); }
 
 	/// @brief 현재 데미지를 반환합니다. 현재는 크리티컬 확률을 계산하지 않습니다.
 	float GetDamage() { return m_tStatus.Damage; }
