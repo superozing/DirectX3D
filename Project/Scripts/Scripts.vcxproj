@@ -187,6 +187,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CDashEventListener.h" />
     <ClInclude Include="CDigitUI.h" />
     <ClInclude Include="CDialog.h" />
+    <ClInclude Include="CDirectionalLight.h" />
     <ClInclude Include="CEditorCameraMoveScript.h" />
     <ClInclude Include="CEventListener.h" />
     <ClInclude Include="CGameMode.h" />
@@ -255,6 +256,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CDashEventListener.cpp" />
     <ClCompile Include="CDigitUI.cpp" />
     <ClCompile Include="CDialog.cpp" />
+    <ClCompile Include="CDirectionalLight.cpp" />
     <ClCompile Include="CEditorCameraMoveScript.cpp" />
     <ClCompile Include="CEventListener.cpp" />
     <ClCompile Include="CHaloScript.cpp" />

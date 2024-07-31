@@ -188,6 +188,9 @@
     <ClInclude Include="CShootingTutorialEvent.h">
       <Filter>Scripts\Event\Tutorial</Filter>
     </ClInclude>
+    <ClInclude Include="CDirectionalLight.h">
+      <Filter>Scripts\Light</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -379,6 +382,9 @@
     <ClCompile Include="CShootingTutorialEvent.cpp">
       <Filter>Scripts\Event\Tutorial</Filter>
     </ClCompile>
+    <ClCompile Include="CDirectionalLight.cpp">
+      <Filter>Scripts\Light</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -506,6 +512,9 @@
     </Filter>
     <Filter Include="Scripts\Event\Cover">
       <UniqueIdentifier>{b90d22b9-9236-4dc4-88d5-171a281eac75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Light">
+      <UniqueIdentifier>{f82d1456-e238-4557-8f56-b1c683664775}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
