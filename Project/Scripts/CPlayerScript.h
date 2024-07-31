@@ -99,7 +99,7 @@ private:
 	map<PLAYER_STATE, SpringArmInfo> m_mSpringInfos;
 
 	class CShootingSystemScript* m_pShootingSystem;
-	class CCrosshair* m_pCrosshair;
+	class CCrosshair*			 m_pCrosshair;
 
 public:
 #pragma region StatusFunc
@@ -210,10 +210,7 @@ public:
 		m_tStatus.SpreadRatioSpeed = RoRMath::ClampFloat(m_tStatus.SpreadRatioSpeed + _relRatio, 0.f, 1.f);
 	}
 	/// @brief 데미지를 파라미터로 변경합니다. 언더캡이 보장됩니다.
-	void SetSpreadRatio(float _absRatio)
-	{ 
-		m_tStatus.SpreadRatioSpeed = RoRMath::ClampFloat(_absRatio, 0.f, 1.f);
-	}
+	void SetSpreadRatio(float _absRatio) { m_tStatus.SpreadRatioSpeed = RoRMath::ClampFloat(_absRatio, 0.f, 1.f); }
 
 	/// @brief 현재 데미지를 반환합니다. 현재는 크리티컬 확률을 계산하지 않습니다.
 	float GetDamage() { return m_tStatus.Damage; }
@@ -416,9 +413,4 @@ private:
 	void ChangeToDash();
 	/// @brief 조건에 따라 일반 공격으로 변경해주는 함수입니다.
 	void NormalAttack();
-
-	// Test 함수
-private:
-	/// @brief 커버 타입 판정 하기 전까지 필요한 함수
-	void SwitchCoverType();
 };

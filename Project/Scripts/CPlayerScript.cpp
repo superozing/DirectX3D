@@ -291,7 +291,7 @@ void CPlayerScript::begin()
 	m_FSM->Begin();
 
 	m_pShootingSystem = new CShootingSystemScript;
-	
+
 	GetOwner()->AddComponent(m_pShootingSystem);
 
 	m_pShootingSystem->SetSpreadRatioSpeed(m_tStatus.SpreadRatioSpeed);
@@ -304,7 +304,6 @@ void CPlayerScript::begin()
 	}
 	else
 		CLogMgr::GetInst()->AddLog(Log_Level::ERR, L"Can't find \"HUD\"Object.");
-
 }
 
 void CPlayerScript::tick()
@@ -327,9 +326,6 @@ void CPlayerScript::tick()
 	// ChangeToNormal();
 	ChangeToVictory();
 	ChangeToDash();
-
-	// 엄폐 판정 할 수 있게되면 지울 함수
-	SwitchCoverType();
 
 	if (KEY_TAP(CPlayerController::Skill))
 	{
@@ -630,16 +626,6 @@ void CPlayerScript::NormalAttack()
 
 			m_FSM->SetCurState((int)PLAYER_STATE::NormalAttackIng);
 	}
-}
-
-void CPlayerScript::SwitchCoverType()
-{
-	if (KEY_TAP(KEY::_1))
-		SetCoverType(CoverType::Normal);
-	if (KEY_TAP(KEY::_2))
-		SetCoverType(CoverType::Stand);
-	if (KEY_TAP(KEY::_3))
-		SetCoverType(CoverType::Kneel);
 }
 
 void CPlayerScript::BeginOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)

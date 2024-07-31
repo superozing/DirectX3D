@@ -12,6 +12,7 @@ private:
 public:
 	bool IsDraw() { return m_bDraw; }
 	void Draw(bool _draw) { m_bDraw = _draw; }
+	void SetText(const string& _str) { m_strText = _str; }
 
 public:
 	void init();

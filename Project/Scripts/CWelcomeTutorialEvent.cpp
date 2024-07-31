@@ -1,17 +1,24 @@
 ﻿#include "pch.h"
 #include "CWelcomeTutorialEvent.h"
 
-#include "CAtlasImageUIScript.h"
 #include <Engine/CLevelMgr.h>
 #include <Engine/CLevel.h>
 
 #include "CPlayerController.h"
+#include "CArona.h"
 
 CWelcomeTutorialEvent::CWelcomeTutorialEvent()
 	: CEventListener((UINT)SCRIPT_TYPE::WELCOMETUTORIALEVENT)
 	, m_fStopTimeLength(3.f)
+	, m_fTargetDistance(3000.f)
 {
 	AppendScriptParam("StopTimer", SCRIPT_PARAM::FLOAT, &m_fStopTimeLength);
+
+	AppendScriptParam("Front", SCRIPT_PARAM::BOOL, &m_bMoveFront);
+	AppendScriptParam("Back", SCRIPT_PARAM::BOOL, &m_bMoveBack);
+	AppendScriptParam("Left", SCRIPT_PARAM::BOOL, &m_bMoveLeft);
+	AppendScriptParam("Right", SCRIPT_PARAM::BOOL, &m_bMoveRight);
+	AppendScriptParam("LeftDistance", SCRIPT_PARAM::FLOAT, &m_fTargetDistance);
 }
 
 CWelcomeTutorialEvent::~CWelcomeTutorialEvent()
@@ -20,6 +27,7 @@ CWelcomeTutorialEvent::~CWelcomeTutorialEvent()
 
 void CWelcomeTutorialEvent::begin()
 {
+
 	auto arona = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(AronaName);
 	if (!arona)
 	{
@@ -27,19 +35,21 @@ void CWelcomeTutorialEvent::begin()
 	}
 	else
 	{
-		m_pArona = arona->GetScript<CAtlasImageUIScript>();
+		m_pArona = arona->GetScript<CArona>();
 		if (!m_pArona)
 		{
 			MessageBox(nullptr, L"아로나가 없습니다.", L"WelcomeTutorialEvent Error", 0);
 		}
 	}
 
+	m_pPlayer = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(PlayerName);
+
 	m_fStopTimer  = 0.f;
 	m_bWalkAllow  = false;
-	m_bTabW		  = false;
-	m_bTabA		  = false;
-	m_bTabS		  = false;
-	m_bTabD		  = false;
+	m_bMoveFront  = false;
+	m_bMoveLeft	  = false;
+	m_bMoveBack	  = false;
+	m_bMoveRight  = false;
 	m_bWalkEnough = false;
 
 	m_tPlayerKeyInfo   = CPlayerController::GetInfo();
@@ -62,6 +72,13 @@ void CWelcomeTutorialEvent::begin()
 
 void CWelcomeTutorialEvent::tick()
 {
+	// 첫 프레임에 바로
+	if (!m_bStart)
+	{
+		m_bStart = true;
+		m_pArona->Message("Press W, A, S, D to Move", 440, -1.f);
+	}
+
 	// 일정 시간 후 움직이기 시작
 	if (!m_bWalkAllow)
 	{
@@ -75,21 +92,52 @@ void CWelcomeTutorialEvent::tick()
 		return;
 	}
 
-	if (KEY_TAP(_1))
+	if (KEY_TAP(CPlayerController::Front))
+		m_bMoveFront = true;
+	if (KEY_TAP(CPlayerController::Left))
+		m_bMoveLeft = true;
+	if (KEY_TAP(CPlayerController::Back))
+		m_bMoveBack = true;
+	if (KEY_TAP(CPlayerController::Right))
+		m_bMoveRight = true;
+
+	if (!m_bFinished)
 	{
+		static Vec3 PrevPos = m_pPlayer->Transform()->GetRelativePos();
+
+		Vec3 CurPos = m_pPlayer->Transform()->GetRelativePos();
+		m_fTargetDistance -= Vec3::Distance(CurPos, PrevPos);
+		if (m_fTargetDistance <= 0.f)
+		{
+			m_pArona->Message("Congratulations!", 340, -1.f);
+			m_bFinished		  = true;
+			m_fTargetDistance = 0.f;
+
+			// TODO : 마지막엔 주석 푸는게 좋을듯
+			// GamePlayStatic::DestroyGameObject(GetOwner());
+		}
+
+		PrevPos = CurPos;
 	}
 }
 
 #define TagStopTimer "[StopTimer]"
+#define TagTargetDistance "[TargetDistance]"
 
 void CWelcomeTutorialEvent::SaveToFile(ofstream& fout)
 {
 	fout << TagStopTimer << endl;
 	fout << m_fStopTimeLength << endl;
+
+	fout << TagTargetDistance << endl;
+	fout << m_fTargetDistance << endl;
 }
 
 void CWelcomeTutorialEvent::LoadFromFile(ifstream& fin)
 {
 	Utils::GetLineUntilString(fin, TagStopTimer);
 	fin >> m_fStopTimeLength;
+
+	Utils::GetLineUntilString(fin, TagTargetDistance);
+	fin >> m_fTargetDistance;
 }

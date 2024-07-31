@@ -5,20 +5,26 @@
 class CWelcomeTutorialEvent : public CEventListener
 {
 private:
+	bool m_bStart;
+
 	float m_fStopTimer;
 	float m_fStopTimeLength;
 	bool  m_bWalkAllow;
 
-	bool m_bTabW;
-	bool m_bTabA;
-	bool m_bTabS;
-	bool m_bTabD;
+	bool m_bMoveFront;
+	bool m_bMoveLeft;
+	bool m_bMoveBack;
+	bool m_bMoveRight;
 
-	bool m_bWalkEnough;
+	bool  m_bWalkEnough;
+	float m_fTargetDistance;
+
+	bool m_bFinished;
 
 	PlayerKeyInfo m_tPlayerKeyInfo;
 
-	class CAtlasImageUIScript* m_pArona;
+	class CArona*	   m_pArona;
+	class CGameObject* m_pPlayer;
 
 public:
 	virtual void begin() override;

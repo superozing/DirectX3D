@@ -191,6 +191,9 @@
     <ClInclude Include="CDirectionalLight.h">
       <Filter>Scripts\Light</Filter>
     </ClInclude>
+    <ClInclude Include="CArona.h">
+      <Filter>Scripts\UI\Image\Arona</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -385,6 +388,9 @@
     <ClCompile Include="CDirectionalLight.cpp">
       <Filter>Scripts\Light</Filter>
     </ClCompile>
+    <ClCompile Include="CArona.cpp">
+      <Filter>Scripts\UI\Image\Arona</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -515,6 +521,9 @@
     </Filter>
     <Filter Include="Scripts\Light">
       <UniqueIdentifier>{f82d1456-e238-4557-8f56-b1c683664775}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\Image\Arona">
+      <UniqueIdentifier>{eaadf26c-dea4-4092-ac9c-027e9c38c976}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
