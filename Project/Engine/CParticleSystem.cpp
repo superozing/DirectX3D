@@ -93,6 +93,11 @@ CParticleSystem::CParticleSystem()
 	m_Module.AlphaBasedLife								   = 1; // 0 : off, 1 : NomrlizedAge, 2: Age
 	m_Module.AlphaMaxAge								   = 2.f;
 
+	// Animation
+	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ANIMATION] = 0;
+	m_Module.TileX											  = 0;
+	m_Module.TileY											  = 0;
+
 	m_ParticleTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\particle\\ray.png", L"texture\\particle\\ray.png");
 }
 

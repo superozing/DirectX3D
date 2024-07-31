@@ -12,14 +12,14 @@ StructuredBuffer<tParticleModule> g_ParticleModule : register(t21);
 struct VS_IN
 {
     float3 vPos : POSITION;
-    float2 vUV : TEXCOORD;    
+    float2 vUV : TEXCOORD;
     uint iInstID : SV_InstanceID;
 };
 
 struct VS_OUT
 {
     float3 vPos : POSITION;
-    float2 vUV : TEXCOORD;    
+    float2 vUV : TEXCOORD;
     uint InstID : FOG;
 };
 
@@ -56,7 +56,7 @@ void GS_Particle(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStream)
     if (0 == particle.Active)
     {
         return;
-    }    
+    }
     
     // 파티클의 중심점을 월드로 이동    
     float3 vWorldPos = particle.vWorldPos.xyz;
@@ -72,9 +72,9 @@ void GS_Particle(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStream)
     output[2].vPosition = float4((particle.vWorldScale.x * 0.5f), (particle.vWorldScale.y * -0.5f), 0.f, 1.f);
     output[3].vPosition = float4((particle.vWorldScale.x * -0.5f), (particle.vWorldScale.y * -0.5f), 0.f, 1.f);
           
-    output_cross[0].vPosition = float4((particle.vWorldScale.x * -0.5f), 0.f, (particle.vWorldScale.y * 0.5f) , 1.f);
-    output_cross[1].vPosition = float4((particle.vWorldScale.x * 0.5f),  0.f, (particle.vWorldScale.y * 0.5f) , 1.f);
-    output_cross[2].vPosition = float4((particle.vWorldScale.x * 0.5f),  0.f, (particle.vWorldScale.y * -0.5f), 1.f);
+    output_cross[0].vPosition = float4((particle.vWorldScale.x * -0.5f), 0.f, (particle.vWorldScale.y * 0.5f), 1.f);
+    output_cross[1].vPosition = float4((particle.vWorldScale.x * 0.5f), 0.f, (particle.vWorldScale.y * 0.5f), 1.f);
+    output_cross[2].vPosition = float4((particle.vWorldScale.x * 0.5f), 0.f, (particle.vWorldScale.y * -0.5f), 1.f);
     output_cross[3].vPosition = float4((particle.vWorldScale.x * -0.5f), 0.f, (particle.vWorldScale.y * -0.5f), 1.f);
     
     output_cross[0].vUV = output[0].vUV = float2(0.f, 0.f);
@@ -88,7 +88,7 @@ void GS_Particle(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStream)
     {
         // 속도에 따른 정렬 기능
         if (g_ParticleModule[0].VelocityAlignment)
-        {           
+        {
             float3 vR = normalize(mul(float4(particle.vVelocity.xyz, 0.f), g_matView).xyz);
             float3 vF = normalize(cross(vR, float3(0.f, 1.f, 0.f)));
             float3 vU = normalize(cross(vF, vR));
@@ -104,9 +104,9 @@ void GS_Particle(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStream)
             {
                 output[i].vPosition.xyz = mul(output[i].vPosition.xyz, vRot);
                 output_cross[i].vPosition.xyz = mul(output_cross[i].vPosition.xyz, vRot);
-            }                    
+            }
         }
-    }        
+    }
     
     // View 좌표로 이동, 투영행렬 적용
     for (int i = 0; i < 4; ++i)
@@ -158,7 +158,27 @@ float4 PS_Particle(GS_OUT _in) : SV_Target
     float4 vOutColor = particle.vColor;
     vOutColor.a = 1.f;
     
-    if (g_btex_0)
+    if (module.arrModuleCheck[7])
+    {
+        float2 uv = _in.vUV;
+      
+        // 스프라이트의 타일 크기 계산
+        float2 tileSize = float2(1.f / module.TileX, 1.f / module.TileY);
+        
+        int frameX = particle.CurFrame % module.TileX;
+        int frameY = particle.CurFrame / module.TileY;
+        
+        uv = uv * tileSize + float2(frameX * tileSize.x, frameY * tileSize.y);
+        
+        // 텍스처 샘플링
+        if (g_btex_0)
+        {
+            float4 vSampleColor = g_tex_0.Sample(g_sam_0, uv);
+            vOutColor.rgb *= vSampleColor.rgb;
+            vOutColor.a = vSampleColor.a;
+        }
+    }
+    else if (g_btex_0)
     {
         float4 vSampleColor = g_tex_0.Sample(g_sam_0, _in.vUV);
         vOutColor.rgb *= vSampleColor.rgb;

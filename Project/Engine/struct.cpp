@@ -123,6 +123,9 @@ ifstream& operator>>(ifstream& fin, tLightInfo& info)
 #define TagAlphaBasedLife "[[AlphaBasedLife] (0 : off, 1 : NomrlizedAge, 2: Age)]"
 #define TagAlphaMaxAge "[AlphaMaxAge]"
 
+#define TagTileX "[TileX]"
+#define TagTileY "[TileY]"
+
 ofstream& operator<<(ofstream& fout, const tParticleModule& module)
 {
 	// Sapwn 모듈
@@ -220,6 +223,15 @@ ofstream& operator<<(ofstream& fout, const tParticleModule& module)
 	fout << module.AlphaBasedLife << endl;
 	fout << TagAlphaMaxAge << endl;
 	fout << module.AlphaMaxAge << endl;
+
+	// Animation
+	fout << TagModuleName(ANIMATION) << endl;
+	fout << module.arrModuleCheck[(UINT)PARTICLE_MODULE::ANIMATION] << endl;
+
+	fout << TagTileX << endl;
+	fout << module.TileX << endl;
+	fout << TagTileY << endl;
+	fout << module.TileY << endl;
 
 	return fout;
 }
@@ -327,6 +339,16 @@ ifstream& operator>>(ifstream& fin, tParticleModule& module)
 
 	Utils::GetLineUntilString(fin, TagAlphaMaxAge);
 	fin >> module.AlphaMaxAge;
+
+	// Animation
+	Utils::GetLineUntilString(fin, TagModuleName(ANIMATION));
+	fin >> module.arrModuleCheck[(UINT)PARTICLE_MODULE::ANIMATION];
+
+	Utils::GetLineUntilString(fin, TagTileX);
+	fin >> module.TileX;
+
+	Utils::GetLineUntilString(fin, TagTileY);
+	fin >> module.TileY;
 
 	return fin;
 }
