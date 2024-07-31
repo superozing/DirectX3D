@@ -165,8 +165,8 @@ float4 PS_Particle(GS_OUT _in) : SV_Target
         // 스프라이트의 타일 크기 계산
         float2 tileSize = float2(1.f / module.TileX, 1.f / module.TileY);
         
-        int frameX = particle.CurFrame % module.TileX;
-        int frameY = particle.CurFrame / module.TileY;
+        float frameX = particle.CurFrame % module.TileX;
+        float frameY = particle.CurFrame / module.TileX;
         
         uv = uv * tileSize + float2(frameX * tileSize.x, frameY * tileSize.y);
         
