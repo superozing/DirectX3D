@@ -27,6 +27,16 @@ void GamePlayStatic::ResetOutliner()
 	CTaskMgr::GetInst()->EventOccure();
 }
 
+void GamePlayStatic::AddChild(CGameObject* _Parent, CGameObject* _Child, bool spawn)
+{
+	tTask task	 = {};
+	task.Type	 = TASK_TYPE::ADD_CHILD;
+	task.Param_1 = (UINT_PTR)_Parent;
+	task.Param_2 = (UINT_PTR)_Child;
+	task.Param_3 = (UINT_PTR)spawn;
+	CTaskMgr::GetInst()->AddTask(task);
+}
+
 void GamePlayStatic::AddAsset(CAsset* _Asset)
 {
 	tTask task	 = {};

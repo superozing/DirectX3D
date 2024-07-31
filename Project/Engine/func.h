@@ -35,6 +35,8 @@ void SpawnGameObject(CGameObject* _Target, int _LayerIdx, bool _IsPrefab = true)
 void DestroyGameObject(CGameObject* _Target);
 void ResetOutliner();
 
+void AddChild(CGameObject* _Parent, CGameObject* _Child, bool spawn = false);
+
 void AddAsset(CAsset* _Asset);
 void DeleteAsset(ASSET_TYPE _Type, CAsset* _Asset);
 
