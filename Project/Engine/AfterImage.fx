@@ -40,17 +40,25 @@ VS_OUT VS_AfterImage(VS_IN _in)
 void GS_AfterImage(point VS_OUT _in[1], inout LineStream<GS_OUT> _OutStream)
 {
     GS_OUT output = (GS_OUT) 0;
-    float3 parentPosition = g_AfterImage[0].NodePosition[0];
-    float3 currentCenter = parentPosition;
-    float3 worldRotation = -g_AfterImage[0].NodeRotation[0];
-    float3x3 worldRotationMatrix = CreateRotationMatrix(worldRotation);
-
+             
     for (int j = 0; j < g_AfterImage[0].NodeCount; ++j)
     {
+        float4x4 wvpMatrix = mul(mul(g_AfterImage[0].AfterImageWorldMat[j], g_matView), g_matProj);
+        float4 centerPos = mul(float4(0, 0, 0, 1), wvpMatrix);
+        float3 worldPosition = float3(g_AfterImage[0].AfterImageWorldMat[j]._41, g_AfterImage[0].
+        AfterImageWorldMat[j]._42, g_AfterImage[0].AfterImageWorldMat[j]._43);
+        centerPos.xyz /= centerPos.w; // 원근 나눗셈
+
         // 중심점 출력
-        output.vPosition = mul(mul(float4(currentCenter, 1), g_matView), g_matProj);
+        output.vPosition = centerPos;
         _OutStream.Append(output);
         _OutStream.RestartStrip();
+
+        // 회전 행렬 추출 (정규화 포함)
+        float3x3 rotationMatrix = (float3x3) g_AfterImage[0].AfterImageWorldMat[j];
+        rotationMatrix[0] = normalize(rotationMatrix[0]);
+        rotationMatrix[1] = normalize(rotationMatrix[1]);
+        rotationMatrix[2] = normalize(rotationMatrix[2]);
 
         float3 baseOffsets[4] =
         {
@@ -62,40 +70,32 @@ void GS_AfterImage(point VS_OUT _in[1], inout LineStream<GS_OUT> _OutStream)
 
         for (int i = 0; i < 4; i++)
         {
-            // 중심점
-            output.vPosition = mul(mul(float4(currentCenter, 1), g_matView), g_matProj);
+            output.vPosition = centerPos;
             _OutStream.Append(output);
 
-            // 회전된 모서리 점
-            float3 rotatedOffset = mul(baseOffsets[i], worldRotationMatrix);
-            float3 edgePos = currentCenter + rotatedOffset;
-            output.vPosition = mul(mul(float4(edgePos, 1), g_matView), g_matProj);
+            float3 rotatedOffset = mul(baseOffsets[i], rotationMatrix);
+            float4 edgePos = mul(float4(rotatedOffset, 0.f), wvpMatrix) + centerPos;
+            edgePos.xyz /= edgePos.w; // 원근 나눗셈
+            output.vPosition = edgePos;
             _OutStream.Append(output);
             _OutStream.RestartStrip();
         }
 
         if (j < g_AfterImage[0].NodeCount - 1)
         {
-            // 추가 선 그리기
-            output.vPosition = mul(mul(float4(currentCenter, 1), g_matView), g_matProj);
+            output.vPosition = centerPos;
             _OutStream.Append(output);
             
-            // 다음 노드의 위치 계산 (트레일 방향을 따라)
-            float3 nextCenter = g_AfterImage[0].NodePosition[j + 1];
-            output.vPosition = mul(mul(float4(nextCenter, 1), g_matView), g_matProj);
+            float4x4 nextWVPMatrix = mul(mul(g_AfterImage[0].AfterImageWorldMat[j + 1], g_matView), g_matProj);
+            float4 nextCenterPos = mul(float4(0.f, 0.f, 0.f, 1.f), nextWVPMatrix);
+            nextCenterPos.xyz /= nextCenterPos.w; // 원근 나눗셈
+   
+            output.vPosition = nextCenterPos;
             _OutStream.Append(output);
             _OutStream.RestartStrip();
-
-            // 다음 반복을 위해 현재 위치 업데이트
-            currentCenter = nextCenter;
-            worldRotation = -g_AfterImage[0].NodeRotation[j + 1];
-            worldRotationMatrix = CreateRotationMatrix(worldRotation);
         }
-        
-    
     }
     
-   
 }
 
 
