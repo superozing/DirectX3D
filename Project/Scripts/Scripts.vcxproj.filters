@@ -194,6 +194,9 @@
     <ClInclude Include="CArona.h">
       <Filter>Scripts\UI\Image\Arona</Filter>
     </ClInclude>
+    <ClInclude Include="CTutorialTarget.h">
+      <Filter>Scripts\Level</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -390,6 +393,9 @@
     </ClCompile>
     <ClCompile Include="CArona.cpp">
       <Filter>Scripts\UI\Image\Arona</Filter>
+    </ClCompile>
+    <ClCompile Include="CTutorialTarget.cpp">
+      <Filter>Scripts\Level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

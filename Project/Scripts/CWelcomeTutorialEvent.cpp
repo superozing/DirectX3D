@@ -8,6 +8,7 @@
 #include "CTutorialGameMode.h"
 #include "CArona.h"
 
+static Vec3 PrevPos;
 CWelcomeTutorialEvent::CWelcomeTutorialEvent()
 	: CEventListener((UINT)SCRIPT_TYPE::WELCOMETUTORIALEVENT)
 	, m_fStopTimeLength(3.f)
@@ -68,6 +69,8 @@ void CWelcomeTutorialEvent::begin()
 	info.Jump		   = KEY::KEY_END;
 	info.Sensitivity   = 0;
 
+	PrevPos = m_pPlayer->Transform()->GetRelativePos();
+
 	CPlayerController::SetInfo(info);
 }
 
@@ -102,11 +105,11 @@ void CWelcomeTutorialEvent::tick()
 	if (KEY_TAP(CPlayerController::Right))
 		m_bMoveRight = true;
 
-	static Vec3 PrevPos = m_pPlayer->Transform()->GetRelativePos();
+	bool AllMove = m_bMoveFront && m_bMoveLeft && m_bMoveBack && m_bMoveRight;
 
 	Vec3 CurPos = m_pPlayer->Transform()->GetRelativePos();
 	m_fTargetDistance -= Vec3::Distance(CurPos, PrevPos);
-	if (m_fTargetDistance <= 0.f)
+	if (AllMove && m_fTargetDistance <= 0.f)
 	{
 		m_pArona->Message("Congratulations!", 340, 3.f);
 		m_fTargetDistance = 0.f;

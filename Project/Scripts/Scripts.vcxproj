@@ -225,6 +225,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CTextUI.h" />
     <ClInclude Include="CTimeMgrScript.h" />
     <ClInclude Include="CTutorialGameMode.h" />
+    <ClInclude Include="CTutorialTarget.h" />
     <ClInclude Include="CWallScript.h" />
     <ClInclude Include="CWelcomeTutorialEvent.h" />
     <ClInclude Include="CWrapImage.h" />
@@ -295,6 +296,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CTextUI.cpp" />
     <ClCompile Include="CTimeMgrScript.cpp" />
     <ClCompile Include="CTutorialGameMode.cpp" />
+    <ClCompile Include="CTutorialTarget.cpp" />
     <ClCompile Include="CWallScript.cpp" />
     <ClCompile Include="CWelcomeTutorialEvent.cpp" />
     <ClCompile Include="CWrapImage.cpp" />

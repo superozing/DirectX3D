@@ -216,12 +216,12 @@ void CSpawnSpotScript::DeAllocateAllObject()
 	m_CurrentSpawnObject.clear();
 }
 
-void CSpawnSpotScript::SpawnObject()
+CGameObject* CSpawnSpotScript::SpawnObject()
 {
 	if (m_listSpawnObject.size() == 0)
 	{
 		MessageBox(nullptr, L"등록된 obj가 없음", L"스폰 불가능", MB_OK);
-		return;
+		return nullptr;
 	}
 
 	// 등록된 순서대로 나갈 수 있도록 한다.
@@ -236,7 +236,7 @@ void CSpawnSpotScript::SpawnObject()
 	pObj->Transform()->SetRelativePos(pos);
 
 	pObj->Transform()->SetRelativeRotation(GetOwner()->Transform()->GetRelativeRotation());
-	pObj->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 50.f));
+	// pObj->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 50.f));
 
 	string pObjName	 = ToString(pObj->GetName());
 	int	   Prefabidx = -1;
@@ -244,6 +244,8 @@ void CSpawnSpotScript::SpawnObject()
 	Prefabidx = CMemoryPoolMgr::GetInst()->GetPrefabLayer(pObj);
 
 	GamePlayStatic::SpawnGameObject(pObj, Prefabidx);
+
+	return pObj;
 }
 
 void CSpawnSpotScript::RegisterPrefab()

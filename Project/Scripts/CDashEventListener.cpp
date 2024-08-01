@@ -18,18 +18,19 @@ void CDashEventListener::begin()
 	m_pArona		= pLevel->FindObjectByName(AronaName)->GetScript<CArona>();
 	m_pGM			= pLevel->FindObjectByName(TutGMName)->GetScript<CTutorialGameMode>();
 	Activate(false);
+	m_bFirstFrm = false;
 }
 
 void CDashEventListener::tick()
 {
 	CEventListener::tick();
 
-	if (HasTargets())
+	if (HasTargets() && m_pGM->IsClear(TutorialState::BasicMove))
 	{
 		Activate(true);
 	}
 
-	if (!IsActivate() && !m_pGM->IsClear(TutorialState::BasicMove))
+	if (!IsActivate())
 		return;
 
 	if (!m_bFirstFrm)
