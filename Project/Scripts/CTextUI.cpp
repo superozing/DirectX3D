@@ -62,7 +62,7 @@ void CTextUI::tick()
 
 		m_tInfo.vPos = Vec2(vWorldPos.x + (vResol.x / 2), -vWorldPos.y + (vResol.y / 2));
 
-		m_tInfo.WStr = ToWString(m_strText);
+		m_tInfo.WStr = m_bWstring ? m_wstrText : ToWString(m_strText);
 
 		CFontMgr::GetInst()->RegisterFont(m_tInfo);
 	}
