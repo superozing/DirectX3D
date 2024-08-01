@@ -316,6 +316,21 @@ void CMesh::render_instancing(UINT _iSubset)
 								  0, 0);
 }
 
+void CMesh::render_structuredbuffer_Instance(UINT _iSubset, int InstanceCount)
+{
+	if (_iSubset >= m_vecIdxInfo.size())
+		return;
+
+	// 해당 서브셋의 버텍스/인덱스 버퍼 설정
+	UpdateData(_iSubset);
+
+	// 인덱스 정보 가져오기
+	const tIndexInfo& idxInfo = m_vecIdxInfo[_iSubset];
+
+	// DrawIndexedInstanced 호출
+	CONTEXT->DrawIndexedInstanced(idxInfo.iIdxCount, InstanceCount, 0, 0, 0);
+}
+
 int CMesh::Save(const wstring& _strRelativePath)
 {
 	// 상대경로 저장

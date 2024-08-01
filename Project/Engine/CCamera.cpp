@@ -689,6 +689,10 @@ void CCamera::render_afterimage()
 
 	for (size_t i = 0; i < m_vecAfterImage.size(); ++i)
 	{
+		CStructuredBuffer* AfterImageBuffer = CDevice::GetInst()->GetStructuredBuffer(SB_TYPE::AFTERIMAGE);
+		AfterImageBuffer->SetData(&m_vecAfterImage[i].second, 1);
+		AfterImageBuffer->UpdateData(29);
+
 		vector<tMtrlSet> pMtrls = m_vecAfterImage[i].first->GetRenderComponent()->GetVecMtrls();
 
 		for (int j = 0; j < pMtrls.size(); ++j)
@@ -698,17 +702,10 @@ void CCamera::render_afterimage()
 			pDynamicMtrl->SetShader(pShader);
 		}
 
-		Vec3 vOriginPos = m_vecAfterImage[i].first->Transform()->GetRelativePos();
+		// 인스턴스 드로잉 사용
+		m_vecAfterImage[i].first->MeshRender()->render_AfterImage(m_vecAfterImage[i].second.NodeCount);
 
-		for (int m = 0; m < m_vecAfterImage[i].second.NodeCount; ++m)
-		{
-			Vec3 vAfterImagePos = m_vecAfterImage[i].second.NodePosition[m];
-			m_vecAfterImage[i].first->Transform()->SetRelativePos(vAfterImagePos);
-
-			m_vecAfterImage[i].first->render();
-		}
-
-		// m_vecAfterImage[i].first->Transform()->SetRelativePos(vOriginPos);
+		m_vecAfterImage[i].first->render();
 
 		for (int k = 0; k < pMtrls.size(); ++k)
 		{
@@ -716,6 +713,9 @@ void CCamera::render_afterimage()
 			Ptr<CMaterial> pShareddMtrl = m_vecAfterImage[i].first->GetRenderComponent()->GetSharedMaterial(k);
 			m_vecAfterImage[i].first->GetRenderComponent()->SetMaterial(pShareddMtrl, k);
 		}
+
+		// 구조화 버퍼 바인딩 해제 (각 객체 렌더링 후)
+		AfterImageBuffer->Clear(29);
 	}
 
 	m_vecAfterImage.clear();

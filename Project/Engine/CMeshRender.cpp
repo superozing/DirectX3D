@@ -131,3 +131,19 @@ void CMeshRender::render(UINT _Subset)
 		pvecScript[i]->Clear();
 	}
 }
+
+void CMeshRender::render_AfterImage(int instanceCount)
+{
+	if (nullptr == GetMesh())
+		return;
+
+	for (int i = 0; i < GetMesh()->GetSubsetCount(); ++i)
+	{
+		if (GetMaterial(i) == nullptr)
+			continue;
+
+		GetMaterial(i)->UpdateData();
+
+		GetMesh()->render_structuredbuffer_Instance(i, instanceCount);
+	}
+}

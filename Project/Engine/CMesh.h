@@ -36,8 +36,9 @@ private:
 	vector<CStructuredBuffer*> m_vecBoneFrameData; // 전체 본 프레임 정보(크기, 이동, 회전) (프레임 개수만큼)
 
 public:
-	Vtx* GetVtxSysMem() { return (Vtx*)m_VtxSysMem; }
-	UINT GetSubsetCount() { return (UINT)m_vecIdxInfo.size(); }
+	Vtx*			   GetVtxSysMem() { return (Vtx*)m_VtxSysMem; }
+	UINT			   GetSubsetCount() { return (UINT)m_vecIdxInfo.size(); }
+	vector<tIndexInfo> GetvecIndexInfo() { return m_vecIdxInfo; }
 
 	const vector<tMTBone>*	   GetBones() { return &m_vecBones; }
 	UINT					   GetBoneCount() { return (UINT)m_vecBones.size(); }
@@ -57,6 +58,7 @@ public:
 	void		  render(UINT _iSubset);
 	void		  render_asparticle(UINT _ParticleCount);
 	void		  render_instancing(UINT _iSubset);
+	void		  render_structuredbuffer_Instance(UINT _iSubset, int InstanceCount);
 
 private:
 	virtual int Load(const wstring& _strFilePath) override;
