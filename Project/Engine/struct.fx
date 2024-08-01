@@ -49,6 +49,11 @@ struct tParticle
     float Age; // 현재 나이
     float Life; // 수명
     int Active; // 활성화, 비활성화 여부
+    
+    int CurFrame; // 현재 애니메이션 프레임
+    float FrameTime; // 현재 프레임 시간
+    
+    int2 ParticlePadding;
 };
 
 struct tParticleModule
@@ -93,10 +98,14 @@ struct tParticleModule
     int AlphaBasedLife; // 0 : off, 1 : NomrlizedAge, 2: Age
     float AlphaMaxAge; // 알파가 0 가 되기까지의 수명
     
-    // Module Active Check
-    int arrModuleCheck[7];
+    // Animation
+    int TileX;
+    int TileY;
     
-    int modulepadding;
+    // Module Active Check
+    int arrModuleCheck[8];
+    
+    int3 modulepadding;
 };
 
 

@@ -97,6 +97,11 @@ struct tParticle
 	float Age;			// 현재 나이
 	float Life;			// 수명
 	int	  Active;		// 활성화, 비활성화 여부
+
+	int	  CurFrame;	 // 현재 애니메이션 프레임
+	float FrameTime; // 현재 프레임 시간
+
+	int ParticlePadding[2];
 };
 
 struct tParticleModule
@@ -139,6 +144,10 @@ struct tParticleModule
 	int	  VelocityAlignment; // 1 : On, 0 : Off
 	int	  AlphaBasedLife;	 // 0 : off, 1 : NomrlizedAge, 2: Age
 	float AlphaMaxAge;
+
+	// Animation
+	int TileX;
+	int TileY;
 
 	// Module On / Off
 	int arrModuleCheck[(UINT)PARTICLE_MODULE::END];
