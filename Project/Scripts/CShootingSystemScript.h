@@ -34,6 +34,7 @@ private:
 	class CDamagedDirectionMgr* m_pDamagedDirectionMgr;
 	class CBulletMarkSpawner*	m_pBulletMarkDecalSpawner;
 	class CBulletShellSpawner*	m_pBulletShellSpawner;
+	class CBulletHitParticleSpawner* m_pBulletHitParticleSpawner;
 
 public:
 	void SetSpreadRatioSpeed(float _fSpreadRatioSpeed) { m_fSpreadRatioSpeed = _fSpreadRatioSpeed; }

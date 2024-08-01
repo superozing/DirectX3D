@@ -9,6 +9,7 @@
 #include "CDamagedDirectionMgr.h"
 #include "CBulletMarkSpawner.h"
 #include "CBulletShellSpawner.h"
+#include "CBulletHitParticleSpawner.h"
 #include "CPlayerScript.h"
 
 CShootingSystemScript::CShootingSystemScript()
@@ -51,6 +52,9 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 		{
 			// 데칼 오브젝트 스폰
 			m_pBulletMarkDecalSpawner->SpawnBulletMarkDecal(hitInfo, m_pPlayer);
+			
+			// 파티클 오브젝트 스폰
+			m_pBulletHitParticleSpawner->SpawnBulletHitParticle(hitInfo);
 		}
 
 		if (hitInfo.pOtherObj->GetLayerIdx() == (UINT)LAYER::LAYER_MONSTER &&
@@ -109,6 +113,9 @@ void CShootingSystemScript::begin()
 
 	m_pBulletShellSpawner = new CBulletShellSpawner;
 	GetOwner()->AddComponent(m_pBulletShellSpawner);
+
+	m_pBulletHitParticleSpawner = new CBulletHitParticleSpawner;
+	GetOwner()->AddComponent(m_pBulletHitParticleSpawner);
 }
 
 void CShootingSystemScript::tick()
