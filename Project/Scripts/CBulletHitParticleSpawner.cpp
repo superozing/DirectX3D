@@ -33,6 +33,9 @@ void CBulletHitParticleSpawner::tick()
 
 		if (it->second < 0.f)
 		{
+			// 파티클 정지
+			//it->first->ParticleSystem()->Stop();
+
 			// 풀 매니저에게 반환
 			m_PoolMgr->PushObject(BulletHitParticlePath, it->first);
 
@@ -49,14 +52,19 @@ void CBulletHitParticleSpawner::SpawnBulletHitParticle(const tRoRHitInfo& _HitIn
 	Vec3 HitPos = _HitInfo.vHitPos;
 
 	// 풀에서 BulletHitParticle 오브젝트 가져오기
+	auto pBulletHitParticle = m_PoolMgr->PopObject(BulletHitParticlePath);
+	
+	// pos 정보 세팅
+	pBulletHitParticle->Transform()->SetRelativePos(_HitInfo.vHitPos);
 
-
+	// 파티클 Play
+	pBulletHitParticle->ParticleSystem()->Play();
 
 	// 게임 오브젝트 스폰
-	//GamePlayStatic::SpawnGameObject(pBulletShell, (UINT)LAYER::LAYER_ETC_OBJECT);
+	GamePlayStatic::SpawnGameObject(pBulletHitParticle, (UINT)LAYER::LAYER_ETC_OBJECT);
 
 	// 관리를 위해 리스트에 추가
-	//m_BulletShellList.push_back({pBulletShell, _ActiveTime});
+	m_BulletShellList.push_back({pBulletHitParticle, 0.5f});
 }
 
 
