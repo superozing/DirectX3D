@@ -148,20 +148,11 @@
     <ClInclude Include="CBossShieldScript.h">
       <Filter>Scripts\Boss\Shield</Filter>
     </ClInclude>
-    <ClInclude Include="CBulletMarkSpawner.h">
-      <Filter>Scripts\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="CBulletShellSpawner.h">
-      <Filter>Scripts\Player</Filter>
-    </ClInclude>
     <ClInclude Include="CDigitUI.h">
       <Filter>Scripts\DefaultUI\Digit</Filter>
     </ClInclude>
     <ClInclude Include="CReloadUI.h">
       <Filter>Scripts\UI\Image\WeaponInfo</Filter>
-    </ClInclude>
-    <ClInclude Include="CShootingSystemScript.h">
-      <Filter>Scripts\Player</Filter>
     </ClInclude>
     <ClInclude Include="CStretchUIScript.h">
       <Filter>Scripts\DefaultUI\Image</Filter>
@@ -187,6 +178,21 @@
     </ClInclude>
     <ClInclude Include="CShootingTutorialEvent.h">
       <Filter>Scripts\Event\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletMarkSpawner.h">
+      <Filter>Scripts\ShootingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletShellSpawner.h">
+      <Filter>Scripts\ShootingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CShootingSystemScript.h">
+      <Filter>Scripts\ShootingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletHitParticleSpawner.h">
+      <Filter>Scripts\ShootingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletScript.h">
+      <Filter>Scripts\ShootingSystem\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -342,20 +348,11 @@
     <ClCompile Include="CBossShieldScript.cpp">
       <Filter>Scripts\Boss\Shield</Filter>
     </ClCompile>
-    <ClCompile Include="CBulletMarkSpawner.cpp">
-      <Filter>Scripts\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="CBulletShellSpawner.cpp">
-      <Filter>Scripts\Player</Filter>
-    </ClCompile>
     <ClCompile Include="CDigitUI.cpp">
       <Filter>Scripts\DefaultUI\Digit</Filter>
     </ClCompile>
     <ClCompile Include="CReloadUI.cpp">
       <Filter>Scripts\UI\Image\WeaponInfo</Filter>
-    </ClCompile>
-    <ClCompile Include="CShootingSystemScript.cpp">
-      <Filter>Scripts\Player</Filter>
     </ClCompile>
     <ClCompile Include="CStretchUIScript.cpp">
       <Filter>Scripts\DefaultUI\Image</Filter>
@@ -378,6 +375,21 @@
     </ClCompile>
     <ClCompile Include="CShootingTutorialEvent.cpp">
       <Filter>Scripts\Event\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletMarkSpawner.cpp">
+      <Filter>Scripts\ShootingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletShellSpawner.cpp">
+      <Filter>Scripts\ShootingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CShootingSystemScript.cpp">
+      <Filter>Scripts\ShootingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletHitParticleSpawner.cpp">
+      <Filter>Scripts\ShootingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletScript.cpp">
+      <Filter>Scripts\ShootingSystem\Bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -506,6 +518,12 @@
     </Filter>
     <Filter Include="Scripts\Event\Cover">
       <UniqueIdentifier>{b90d22b9-9236-4dc4-88d5-171a281eac75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\ShootingSystem">
+      <UniqueIdentifier>{a74ea5cf-e66b-4b04-9d47-33bd0ad0b80f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\ShootingSystem\Bullet">
+      <UniqueIdentifier>{2bb53fe6-f5ab-4661-a440-48d403a57039}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
