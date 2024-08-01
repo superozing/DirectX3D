@@ -95,11 +95,13 @@ void CMemoryPoolMgrScript::PushObject(CGameObject* _Object)
 	// EX OBJ의 Filter를 받아온다.
 	vector<CGameObject*> vecObj = GetOwner()->GetChild();
 
+	string s = CMemoryPoolMgr::GetInst()->GetBaseName(ToString(_Object->GetName()));
+
 	for (int i = 0; i < vecObj.size(); ++i)
 	{
-		string s = CMemoryPoolMgr::GetInst()->GetBaseName(ToString(_Object->GetName()));
+		string p = ToString(vecObj[i]->GetName());
 
-		if (ToString(_Object->GetName()).find(s))
+		if (p.find(s) != string::npos)
 		{
 			if (nullptr != _Object->PhysX())
 			{
