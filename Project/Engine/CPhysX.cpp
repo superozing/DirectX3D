@@ -265,6 +265,19 @@ PxTransform CPhysX::getTransform() const
 
 void CPhysX::BeginOverlap(CGameObject* other)
 {
+	auto iter = m_vThisFrameContact.begin();
+	while (m_vThisFrameContact.end() != iter)
+	{
+		if (other == (*iter).Other)
+		{
+			return;
+		}
+		else
+		{
+			++iter;
+		}
+	}
+
 	++m_CollisionCount;
 
 	m_vThisFrameContact.push_back(tCollisionData{other, eColType::COL_ON});
@@ -292,6 +305,7 @@ void CPhysX::EndOverlap(CGameObject* other)
 		if (iter->Other == other)
 		{
 			iter = m_vThisFrameContact.erase(iter);
+			--m_CollisionCount;
 			break;
 		}
 		else
@@ -300,7 +314,6 @@ void CPhysX::EndOverlap(CGameObject* other)
 		}
 	}
 
-	--m_CollisionCount;
 	const vector<CScript*>& vecScript = GetOwner()->GetScripts();
 	for (size_t i = 0; i < vecScript.size(); ++i)
 	{
