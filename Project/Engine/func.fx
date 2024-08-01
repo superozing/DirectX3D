@@ -350,5 +350,17 @@ float3x3 CreateRotationMatrix(float3 rotation)
     return mul(mul(rotX, rotY), rotZ);
 }
 
+float4x4 CreateRotationMatrix4x4(float3 WorldRotation)
+{
+    float3x3 rotation3x3 = CreateRotationMatrix(WorldRotation);
+    return float4x4(
+        float4(rotation3x3[0], 0.0f),
+        float4(rotation3x3[1], 0.0f),
+        float4(rotation3x3[2], 0.0f),
+        float4(0.0f, 0.0f, 0.0f, 1.0f)
+    );
+
+}
+
 #endif
 
