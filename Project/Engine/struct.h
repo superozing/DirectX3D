@@ -329,8 +329,8 @@ struct tFontInfo
 
 struct AfterImageInfo
 {
-	int	  NodeCount; // max는 19개
-	Vec3  NodePosition[19];
-	Vec3  NodeRotation[19];
-	float TimeStep;
+	int	   NodeCount; // max는 10개
+	Matrix WorldTransform[10];
+	float  TimeStep;
+	Vec2   Padding;
 };

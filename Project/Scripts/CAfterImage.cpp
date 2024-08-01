@@ -17,14 +17,9 @@ CAfterImage::CAfterImage()
 	fUpdateTimer	 = 0.1f;
 	bDisplayNode	 = true;
 
-	AppendScriptParam("Node Count", SCRIPT_PARAM::INT, &m_info.NodeCount, 0, 19, false, "Afterimage Node count");
+	AppendScriptParam("Node Count", SCRIPT_PARAM::INT, &m_info.NodeCount, 0, 10, false, "Afterimage Node count");
 	AppendScriptParam("Time Interval", SCRIPT_PARAM::FLOAT, &m_info.TimeStep);
 	AppendScriptParam("View Node", SCRIPT_PARAM::BOOL, &bDisplayNode);
-
-	if (GetOwner()->GetParent())
-	{
-		GetOwner()->Transform()->SetRelativePos(GetOwner()->GetParent()->Transform()->GetRelativePos());
-	}
 }
 
 CAfterImage::~CAfterImage()
@@ -33,13 +28,6 @@ CAfterImage::~CAfterImage()
 
 void CAfterImage::begin()
 {
-	// Vec3 currentPos = GetOwner()->Transform()->GetRelativePos();
-	// Vec3 currentRot = GetOwner()->Transform()->GetRelativeRotation();
-	// for (int i = 0; i < m_info.NodeCount; ++i)
-	//{
-	//	m_info.NodePosition[i] = currentPos;
-	//	m_info.NodeRotation[i] = currentRot;
-	// }
 }
 
 #include <Engine\CLogMgr.h>
@@ -55,21 +43,14 @@ void CAfterImage::tick()
 		{
 			for (int i = m_info.NodeCount; i > 1; --i)
 			{
-				m_info.NodePosition[i - 1] = m_info.NodePosition[i - 2];
-				m_info.NodeRotation[i - 1] = m_info.NodeRotation[i - 2];
+				m_info.WorldTransform[i - 1] = m_info.WorldTransform[i - 2];
+				m_info.WorldTransform[i - 1] = m_info.WorldTransform[i - 2];
 			}
 		}
 
-		Vec3 currentPos = GetOwner()->Transform()->GetWorldPos();
-		Vec3 currentRot = GetOwner()->Transform()->GetWorldRot();
+		Matrix CurrentWolrdMat = GetOwner()->Transform()->GetWorldMat();
 
-		m_info.NodePosition[0] = currentPos;
-		m_info.NodeRotation[0] = currentRot;
-
-		string s =
-			std::to_string(currentPos.x) + " " + std::to_string(currentPos.y) + " " + std::to_string(currentPos.z);
-
-		CLogMgr::GetInst()->AddLog(Log_Level::WARN, s);
+		m_info.WorldTransform[0] = CurrentWolrdMat;
 	}
 
 	CCamera* pMainCam = CRenderMgr::GetInst()->GetMainCam();
@@ -79,9 +60,6 @@ void CAfterImage::tick()
 
 void CAfterImage::UpdateData()
 {
-	CStructuredBuffer* AfterImageBuffer = CDevice::GetInst()->GetStructuredBuffer(SB_TYPE::AFTERIMAGE);
-	AfterImageBuffer->SetData(&m_info, 1);
-	AfterImageBuffer->UpdateData(29);
 
 	GetOwner()->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::BOOL_0, bDisplayNode);
 }

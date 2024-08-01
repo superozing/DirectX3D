@@ -122,9 +122,9 @@ struct tSkinningInfo
 struct AfterImageInfo
 {
     int NodeCount;
-    float3 NodePosition[19];
-    float3 NodeRotation[19];
+    row_major Matrix AfterImageWorldMat[10];
     float TimeStep;
+    float2 Padding;
 };
 
 #endif
