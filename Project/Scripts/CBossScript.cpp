@@ -112,7 +112,7 @@ void CBossScript::CheckDuration()
 	if (m_ActiveEXs)
 	{
 		// m_EXsType = CRandomMgr::GetInst()->GetRandomInt(4);
-		m_EXsType = 2;
+		m_EXsType = 1;
 		switch (m_EXsType)
 		{
 		case 0:

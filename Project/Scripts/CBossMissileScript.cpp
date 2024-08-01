@@ -25,7 +25,7 @@ void CBossMissileScript::begin()
 	CProjectileScript::begin();
 
 	Transform()->SetRelativePos(m_Pos);
-
+	
 	Vec3  VelDir = m_TargetPos - m_Pos;
 	float Offset = VelDir.Length();
 	VelDir.y	 = 0.f;
@@ -77,11 +77,12 @@ void CBossMissileScript::tick()
 	}
 
 	Transform()->SetDir(m_CurVelocity);
-
+	//m_CurVelocity = Vec3(0.f, 0.f, 100.f);
 	m_Pos = Transform()->GetRelativePos();
 	m_Pos += m_CurVelocity * DT;
 
 	Transform()->SetRelativePos(m_Pos);
+	//Transform()->SetRelativePos(Vec3(-750.f, 200.f, 7540.f));
 }
 
 void CBossMissileScript::OnHit()

@@ -79,6 +79,9 @@ void CMuzzleFlashScript::InitMuzzleFlash()
 	module.VelocityAlignment							 = 1; // 속도에 따른 방향 정렬
 	module.AlphaBasedLife								 = 1; // 0 : off, 1 : NomrlizedAge, 2: Age
 	module.AlphaMaxAge									 = 2.f;
+	
+	// Animation
+	module.arrModuleCheck[(UINT)PARTICLE_MODULE::ANIMATION] = 0;
 
 	Ptr<CTexture> pTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\particle\\MuzzleFlash02.png");
 	ParticleSystem()->SetModule(module);
