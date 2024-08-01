@@ -48,7 +48,7 @@ void CAfterImage::tick()
 			}
 		}
 
-		Matrix CurrentWolrdMat = GetOwner()->Transform()->GetWorldMat();
+		Matrix CurrentWolrdMat = GetOwner()->GetParent()->Transform()->GetWorldMat();
 
 		m_info.WorldTransform[0] = CurrentWolrdMat;
 	}
