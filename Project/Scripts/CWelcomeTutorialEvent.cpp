@@ -111,8 +111,7 @@ void CWelcomeTutorialEvent::tick()
 		m_pArona->Message("Congratulations!", 340, 3.f);
 		m_fTargetDistance = 0.f;
 
-		auto gm =
-			CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"GameMode")->GetScript<CTutorialGameMode>();
+		auto gm = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(TutGMName)->GetScript<CTutorialGameMode>();
 		gm->Clear(TutorialState::BasicMove);
 
 		GamePlayStatic::DestroyGameObject(GetOwner());

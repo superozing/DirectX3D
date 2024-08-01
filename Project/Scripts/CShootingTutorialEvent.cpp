@@ -16,7 +16,7 @@ void CShootingTutorialEvent::begin()
 	auto pLevel		= CLevelMgr::GetInst()->GetCurrentLevel();
 	m_pArona		= pLevel->FindObjectByName(AronaName)->GetScript<CArona>();
 	m_pPlayerScript = pLevel->FindObjectByName(PlayerName)->GetScript<CPlayerScript>();
-	m_pGM			= pLevel->FindObjectByName(L"GameMode")->GetScript<CTutorialGameMode>();
+	m_pGM			= pLevel->FindObjectByName(TutGMName)->GetScript<CTutorialGameMode>();
 	m_pWall			= pLevel->FindObjectByName(L"WALL_SHOOT");
 
 	Activate(false);

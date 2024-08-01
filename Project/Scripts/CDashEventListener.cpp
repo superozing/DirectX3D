@@ -13,9 +13,11 @@ void CDashEventListener::begin()
 {
 	CEventListener::begin();
 
-	m_pPlayerScript = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(PlayerName)->GetScript<CPlayerScript>();
+	auto pLevel		= CLevelMgr::GetInst()->GetCurrentLevel();
+	m_pPlayerScript = pLevel->FindObjectByName(PlayerName)->GetScript<CPlayerScript>();
+	m_pArona		= pLevel->FindObjectByName(AronaName)->GetScript<CArona>();
+	m_pGM			= pLevel->FindObjectByName(TutGMName)->GetScript<CTutorialGameMode>();
 	Activate(false);
-	m_pArona = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(AronaName)->GetScript<CArona>();
 }
 
 void CDashEventListener::tick()
@@ -27,7 +29,7 @@ void CDashEventListener::tick()
 		Activate(true);
 	}
 
-	if (!IsActivate())
+	if (!IsActivate() && !m_pGM->IsClear(TutorialState::BasicMove))
 		return;
 
 	if (!m_bFirstFrm)
@@ -48,11 +50,8 @@ void CDashEventListener::tick()
 	{
 		m_pArona->Message("Congratulations!", 340, 3.f);
 
-		CLevelMgr::GetInst()
-			->GetCurrentLevel()
-			->FindObjectByName(L"GameMode")
-			->GetScript<CTutorialGameMode>()
-			->Clear(TutorialState::Dash);
+		CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(TutGMName)->GetScript<CTutorialGameMode>()->Clear(
+			TutorialState::Dash);
 
 		GamePlayStatic::DestroyGameObject(GetOwner());
 	}
