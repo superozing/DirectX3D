@@ -34,7 +34,7 @@ void CBulletHitParticleSpawner::tick()
 		if (it->second < 0.f)
 		{
 			// 파티클 정지
-			//it->first->ParticleSystem()->Stop();
+			it->first->ParticleSystem()->Stop();
 
 			// 풀 매니저에게 반환
 			m_PoolMgr->PushObject(BulletHitParticlePath, it->first);
@@ -64,7 +64,7 @@ void CBulletHitParticleSpawner::SpawnBulletHitParticle(const tRoRHitInfo& _HitIn
 	GamePlayStatic::SpawnGameObject(pBulletHitParticle, (UINT)LAYER::LAYER_ETC_OBJECT);
 
 	// 관리를 위해 리스트에 추가
-	m_BulletShellList.push_back({pBulletHitParticle, 0.5f});
+	m_BulletShellList.push_back({pBulletHitParticle, 0.2f});
 }
 
 

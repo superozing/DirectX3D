@@ -240,7 +240,7 @@ void CParticleSystem::DeActivateParticle()
 	{
 		particle.Active = 0;
 	}
-	m_ParticleBuffer->SetData(particles.data());
+	m_ParticleBuffer->SetData(particles.data(), particles.size());
 }
 
 void CParticleSystem::UpdateData()
