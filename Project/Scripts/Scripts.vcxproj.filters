@@ -197,6 +197,9 @@
     <ClInclude Include="CTutorialTarget.h">
       <Filter>Scripts\Level</Filter>
     </ClInclude>
+    <ClInclude Include="CCoverHIghTutorialEvent.h">
+      <Filter>Scripts\Event\Tutorial</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -396,6 +399,9 @@
     </ClCompile>
     <ClCompile Include="CTutorialTarget.cpp">
       <Filter>Scripts\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="CCoverHighTutorialEvent.cpp">
+      <Filter>Scripts\Event\Tutorial</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -60,6 +60,7 @@
 #include "CDirectionalLight.h"
 #include "CArona.h"
 #include "CTutorialTarget.h"
+#include "CCoverHIghTutorialEvent.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -122,6 +123,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CDirectionalLight");
 	_vec.push_back(L"CArona");
 	_vec.push_back(L"CTutorialTarget");
+	_vec.push_back(L"CCoverHIghTutorialEvent");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -244,6 +246,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CArona;
 	if (L"CTutorialTarget" == _strScriptName)
 		return new CTutorialTarget;
+	if (L"CCoverHIghTutorialEvent" == _strScriptName)
+		return new CCoverHIghTutorialEvent;
 	return nullptr;
 }
 
@@ -427,6 +431,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::TUTORIALTARGET:
 		return new CTutorialTarget;
+		break;
+	case (UINT)SCRIPT_TYPE::COVERHIGHTUTORIALEVENT:
+		return new CCoverHIghTutorialEvent;
 		break;
 	}
 	return nullptr;
@@ -670,6 +677,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::TUTORIALTARGET:
 		return L"CTutorialTarget";
+		break;
+
+	case SCRIPT_TYPE::COVERHIGHTUTORIALEVENT:
+		return L"CCoverHIghTutorialEvent";
 		break;
 
 	}

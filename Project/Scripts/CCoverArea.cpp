@@ -23,11 +23,24 @@ CCoverArea::~CCoverArea()
 
 void CCoverArea::SetPlayerCover()
 {
-	Vec3 vPos		  = Transform()->GetWorldPos();
-	Vec3 vRot		  = Transform()->GetWorldRot();
+	Vec3 vPos	= Transform()->GetWorldPos();
+	Vec3 vRot	= Transform()->GetWorldRot();
+	Vec3 vScale = Transform()->GetWorldScale();
+
 	Vec3 vPlayerScale = m_pPlayer->Transform()->GetRelativeScale();
 
 	vPos.y -= m_pPlayer->Transform()->GetRelativeScale().y / 2.f;
+
+	bool bPlayerRight = m_pScript->IsRight();
+
+	if (bPlayerRight)
+	{
+		vPos.x += vScale.x / 2.f - vPlayerScale.x / 2.f;
+	}
+	else
+	{
+		vPos.x -= vScale.x / 2.f + vPlayerScale.x / 2.f;
+	}
 
 	m_bStand ? m_pScript->SetCoverType(CoverType::Stand) : m_pScript->SetCoverType(CoverType::Kneel);
 

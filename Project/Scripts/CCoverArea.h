@@ -6,6 +6,7 @@ class CCoverArea : public CEventListener
 private:
 	bool				  m_bPlayerCover;
 	bool				  m_bStand;
+	bool				  m_bRight;
 	CGameObject*		  m_pPlayer;
 	class CPlayerScript*  m_pScript;
 	class CImageUIScript* m_pUI;
