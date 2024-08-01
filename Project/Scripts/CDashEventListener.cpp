@@ -60,7 +60,7 @@ void CDashEventListener::tick()
 
 CDashEventListener::CDashEventListener()
 	: CEventListener((UINT)SCRIPT_TYPE::DASHEVENTLISTENER)
-	, m_iDashCnt(3)
+	, m_iDashCnt(1)
 {
 	AppendScriptParam("DashCnt", SCRIPT_PARAM::INT, &m_iDashCnt);
 }
