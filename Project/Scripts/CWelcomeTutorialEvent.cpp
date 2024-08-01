@@ -5,6 +5,7 @@
 #include <Engine/CLevel.h>
 
 #include "CPlayerController.h"
+#include "CTutorialGameMode.h"
 #include "CArona.h"
 
 CWelcomeTutorialEvent::CWelcomeTutorialEvent()
@@ -101,24 +102,23 @@ void CWelcomeTutorialEvent::tick()
 	if (KEY_TAP(CPlayerController::Right))
 		m_bMoveRight = true;
 
-	if (!m_bFinished)
+	static Vec3 PrevPos = m_pPlayer->Transform()->GetRelativePos();
+
+	Vec3 CurPos = m_pPlayer->Transform()->GetRelativePos();
+	m_fTargetDistance -= Vec3::Distance(CurPos, PrevPos);
+	if (m_fTargetDistance <= 0.f)
 	{
-		static Vec3 PrevPos = m_pPlayer->Transform()->GetRelativePos();
+		m_pArona->Message("Congratulations!", 340, 3.f);
+		m_fTargetDistance = 0.f;
 
-		Vec3 CurPos = m_pPlayer->Transform()->GetRelativePos();
-		m_fTargetDistance -= Vec3::Distance(CurPos, PrevPos);
-		if (m_fTargetDistance <= 0.f)
-		{
-			m_pArona->Message("Congratulations!", 340, -1.f);
-			m_bFinished		  = true;
-			m_fTargetDistance = 0.f;
+		auto gm =
+			CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"GameMode")->GetScript<CTutorialGameMode>();
+		gm->Clear(TutorialState::BasicMove);
 
-			// TODO : 마지막엔 주석 푸는게 좋을듯
-			// GamePlayStatic::DestroyGameObject(GetOwner());
-		}
-
-		PrevPos = CurPos;
+		GamePlayStatic::DestroyGameObject(GetOwner());
 	}
+
+	PrevPos = CurPos;
 }
 
 #define TagStopTimer "[StopTimer]"

@@ -16,15 +16,8 @@ private:
 	bool m_arrIsClear[(UINT)TutorialState::END];
 
 public:
-	bool ClearBasicMove();
-	void ChangeToDash();
-	bool ClearDash();
-	void ChangeToShooting();
-	bool ClearShooting();
-	void ChangeToCombatFirst();
-	bool ClearCombatFirst();
-	void ChangeToCombatSecond();
-	bool ClearCombatSecond();
+	void Clear(TutorialState _state);
+	bool IsClear(TutorialState _state);
 
 public:
 	virtual void begin() override;

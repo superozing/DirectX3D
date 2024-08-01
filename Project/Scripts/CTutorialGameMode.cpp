@@ -20,6 +20,11 @@ CTutorialGameMode::CTutorialGameMode()
 	FSMInit(TutorialState, CTutorialGameMode, CombatSecond);
 
 	AppendScriptParam("State", SCRIPT_PARAM::STRING, &state, 0.f, 0.f, true);
+
+	for (size_t i = 0; i < (size_t)TutorialState::END; i++)
+	{
+		AppendScriptParam(ToString(magic_enum::enum_name((TutorialState)i)), SCRIPT_PARAM::BOOL, &m_arrIsClear[i]);
+	}
 }
 
 CTutorialGameMode::~CTutorialGameMode()
@@ -46,7 +51,7 @@ void CTutorialGameMode::BasicMoveBegin()
 int CTutorialGameMode::BasicMoveUpdate()
 {
 	// TODO : 충분한 기본적인 움직임(WASD), 마우스 움직임 검사하고 dasheventlistner 활성화 시켜줘야 함
-	if (ClearBasicMove())
+	if (IsClear(TutorialState::BasicMove))
 	{
 		return m_FSM->GetCurState() + 1;
 	}
@@ -65,7 +70,7 @@ void CTutorialGameMode::DashBegin()
 int CTutorialGameMode::DashUpdate()
 {
 	// TODO : 끝에 도달하면 수고했다는 메시지랑 다음 길 안내정도 스크립트 띄워주면 좋을듯
-	if (ClearDash())
+	if (IsClear(TutorialState::Dash))
 	{
 		return m_FSM->GetCurState() + 1;
 	}
@@ -87,7 +92,7 @@ int CTutorialGameMode::ShootingUpdate()
 	// 2. 공중 2개 생성
 	// 3. 바닥, 공중 2개 생성
 
-	if (ClearShooting())
+	if (IsClear(TutorialState::Shooting))
 	{
 		return m_FSM->GetCurState() + 1;
 	}
@@ -113,7 +118,7 @@ int CTutorialGameMode::CombatFirstUpdate()
 	// 5. 사격하면 다음단계
 	// 6. 모두 잡으면 다음단계
 
-	if (ClearCombatFirst())
+	if (IsClear(TutorialState::CombatFirst))
 	{
 		return m_FSM->GetCurState() + 1;
 	}
@@ -140,7 +145,7 @@ int CTutorialGameMode::CombatSecondUpdate()
 	// 6. 수류탄 던지면 다음단계
 	// 6. 모두 잡으면 다음단계
 
-	if (ClearCombatSecond())
+	if (IsClear(TutorialState::CombatSecond))
 	{
 		return m_FSM->GetCurState() + 1;
 	}
@@ -152,55 +157,12 @@ void CTutorialGameMode::CombatSecondEnd()
 {
 }
 
-bool CTutorialGameMode::ClearBasicMove()
+void CTutorialGameMode::Clear(TutorialState _state)
 {
-	m_arrIsClear[(UINT)TutorialState::BasicMove] = true;
-	return false;
+	m_arrIsClear[(UINT)_state] = true;
 }
 
-void CTutorialGameMode::ChangeToDash()
+bool CTutorialGameMode::IsClear(TutorialState _state)
 {
-	if (m_arrIsClear[m_FSM->GetCurState()])
-		m_FSM->SetCurState((int)TutorialState::Dash);
-}
-
-bool CTutorialGameMode::ClearDash()
-{
-	return false;
-}
-
-void CTutorialGameMode::ChangeToShooting()
-{
-	if (m_arrIsClear[m_FSM->GetCurState()])
-		m_FSM->SetCurState((int)TutorialState::Shooting);
-}
-
-bool CTutorialGameMode::ClearShooting()
-{
-	m_arrIsClear[(UINT)TutorialState::Shooting] = true;
-	return false;
-}
-
-void CTutorialGameMode::ChangeToCombatFirst()
-{
-	if (m_arrIsClear[m_FSM->GetCurState()])
-		m_FSM->SetCurState((int)TutorialState::CombatFirst);
-}
-
-bool CTutorialGameMode::ClearCombatFirst()
-{
-	m_arrIsClear[(UINT)TutorialState::CombatFirst] = true;
-	return false;
-}
-
-void CTutorialGameMode::ChangeToCombatSecond()
-{
-	if (m_arrIsClear[m_FSM->GetCurState()])
-		m_FSM->SetCurState((int)TutorialState::CombatSecond);
-}
-
-bool CTutorialGameMode::ClearCombatSecond()
-{
-	m_arrIsClear[(UINT)TutorialState::CombatSecond] = true;
-	return false;
+	return m_arrIsClear[(UINT)_state];
 }

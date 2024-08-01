@@ -19,8 +19,6 @@ private:
 	bool  m_bWalkEnough;
 	float m_fTargetDistance;
 
-	bool m_bFinished;
-
 	PlayerKeyInfo m_tPlayerKeyInfo;
 
 	class CArona*	   m_pArona;

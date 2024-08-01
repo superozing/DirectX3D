@@ -248,6 +248,8 @@ public:
 		Transform()->SetRelativeScale(vScale);
 	}
 
+	CRoRStateMachine<CPlayerScript>* GetStateMachine() { return m_FSM; }
+
 public:
 	virtual void begin() override;
 	virtual void tick() override;
