@@ -90,7 +90,6 @@ void CPlayerScript::NormalAttackIngBegin()
 	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalAttackStart]);
 	m_pShootingSystem->ShootPlayerBulletRay();
 	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
-	CKeyMgr::GetInst()->AddMouseOffset(Vec2(0.f, -1.f));
 	//m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
 }
 
@@ -231,7 +230,6 @@ void CPlayerScript::StandAttackIngBegin()
 	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::StandAttackStart]);
 	m_pShootingSystem->ShootPlayerBulletRay();
 	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
-	CKeyMgr::GetInst()->AddMouseOffset(Vec2(0.f, -1.f));
 	// m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
 }
 
@@ -390,7 +388,6 @@ void CPlayerScript::KneelAttackIngBegin()
 	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::KneelAttackStart], 0.1f);
 	m_pShootingSystem->ShootPlayerBulletRay();
 	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
-	CKeyMgr::GetInst()->AddMouseOffset(Vec2(0.f, -1.f));
 	// m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
 }
 

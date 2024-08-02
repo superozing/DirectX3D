@@ -10,6 +10,7 @@
 #include "CBulletMarkSpawner.h"
 #include "CBulletShellSpawner.h"
 #include "CBulletHitParticleSpawner.h"
+#include "CShootingRecoil.h"
 #include "CPlayerScript.h"
 
 CShootingSystemScript::CShootingSystemScript()
@@ -66,8 +67,11 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 		}
 	}
 
-	// 무기 본 매트릭스에 탄피 세팅
+	// 무기 본 위치에 탄피 오브젝트 생성, Velocity 추가
 	m_pBulletShellSpawner->SpawnBulletShell(m_pPlayer);
+
+	// 반동 적용
+	m_pShootingRecoil->ApplyShootingRecoil();
 
 	// SpreadRatio 늘리기
 	m_fSpreadRatio += m_fSpreadRatioSpeed * DT;
@@ -116,6 +120,13 @@ void CShootingSystemScript::begin()
 
 	m_pBulletHitParticleSpawner = new CBulletHitParticleSpawner;
 	GetOwner()->AddComponent(m_pBulletHitParticleSpawner);
+
+	m_pShootingRecoil = new CShootingRecoil;
+	GetOwner()->AddComponent(m_pShootingRecoil);
+	
+	// 윈도우 좌표 기준이기 떄문에 반동을 주기 위해 y를 -방향으로 세팅
+	m_pShootingRecoil->SetShootingRecoilValue(Vec2(0.f, -1.f)); // 나중에 수치를 조정할 필요가 있음.
+	// 예를 들어 자세에 따라서 다른 반동을 준다던가... 그런 것 들 말이죠.
 }
 
 void CShootingSystemScript::tick()
