@@ -21,31 +21,31 @@ CCoverArea::~CCoverArea()
 {
 }
 
-void CCoverArea::SetPlayerCover()
+void CCoverArea::SetPlayerCover(bool _bRight)
 {
 	Vec3 vPos	= Transform()->GetWorldPos();
-	Vec3 vRot	= Transform()->GetWorldRot();
+	Vec3 vDir	= Transform()->GetWorldDir(DIR_TYPE::RIGHT);
 	Vec3 vScale = Transform()->GetWorldScale();
 
 	Vec3 vPlayerScale = m_pPlayer->Transform()->GetRelativeScale();
 
 	vPos.y -= m_pPlayer->Transform()->GetRelativeScale().y / 2.f;
 
-	bool bPlayerRight = m_pScript->IsRight();
+	bool bPlayerRight = m_bRight = _bRight;
 
 	if (bPlayerRight)
 	{
-		vPos.x += vScale.x / 2.f - vPlayerScale.x / 2.f;
+		vPos += vDir * (vScale.x / 2.f - abs(vPlayerScale.x) / 2.f);
 	}
 	else
 	{
-		vPos.x -= vScale.x / 2.f + vPlayerScale.x / 2.f;
+		vPos -= vDir * (vScale.x / 2.f - abs(vPlayerScale.x) / 2.f);
 	}
 
 	m_bStand ? m_pScript->SetCoverType(CoverType::Stand) : m_pScript->SetCoverType(CoverType::Kneel);
 
 	m_pPlayer->Transform()->SetRelativePos(vPos);
-	m_pPlayer->Transform()->SetRelativeRotation(vRot);
+	m_pPlayer->Transform()->SetDir(Transform()->GetWorldDir(DIR_TYPE::FRONT));
 	m_pPlayer->Transform()->SetRelativeScale(vPlayerScale);
 
 	m_bPlayerCover = true;
@@ -96,6 +96,11 @@ void CCoverArea::tick()
 {
 	CEventListener::tick();
 
+	if (KEY_TAP(CPlayerController::Flip) && m_bPlayerCover)
+	{
+		SetPlayerCover(!m_bRight);
+	}
+
 	if (KEY_TAP(CPlayerController::Cover) && m_bPlayerCover)
 	{
 		m_pScript->SetCoverType(CoverType::Normal);
@@ -106,7 +111,7 @@ void CCoverArea::tick()
 	}
 	else if (HasTargets() && KEY_TAP(CPlayerController::Cover) && !m_bPlayerCover)
 	{
-		SetPlayerCover();
+		SetPlayerCover(m_pScript->IsRight());
 	}
 }
 

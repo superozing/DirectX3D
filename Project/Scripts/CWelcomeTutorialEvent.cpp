@@ -67,6 +67,7 @@ void CWelcomeTutorialEvent::begin()
 	info.Cover		   = KEY::KEY_END;
 	info.Skill		   = KEY::KEY_END;
 	info.Jump		   = KEY::KEY_END;
+	info.Flip		   = KEY::KEY_END;
 	info.Sensitivity   = 0;
 
 	PrevPos = m_pPlayer->Transform()->GetRelativePos();

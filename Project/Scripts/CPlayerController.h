@@ -16,6 +16,7 @@ struct PlayerKeyInfo
 	KEY	  Cover;
 	KEY	  Skill;
 	KEY	  Jump;
+	KEY	  Flip;
 	float Sensitivity;
 };
 
@@ -38,6 +39,7 @@ public:
 	static KEY Cover;
 	static KEY Skill;
 	static KEY Jump;
+	static KEY Flip;
 
 	static float Sensitivity;
 

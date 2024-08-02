@@ -340,7 +340,7 @@ void CPlayerScript::tick()
 		m_tStatus.MoveSpeed = 5 * originSpeed;
 	}
 
-	if (KEY_TAP(TAB))
+	if (KEY_TAP(CPlayerController::Flip))
 	{
 		SetRight(!IsRight());
 	}

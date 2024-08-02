@@ -13,7 +13,7 @@ private:
 	class CCoverUI*		  m_UIMgr;
 
 private:
-	void SetPlayerCover();
+	void SetPlayerCover(bool _bRight);
 
 public:
 	void PrintUI(bool _print);

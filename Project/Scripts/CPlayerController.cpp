@@ -14,6 +14,7 @@ KEY CPlayerController::Reload = KEY::R;
 KEY CPlayerController::Cover = KEY::LSHIFT;
 KEY CPlayerController::Skill = KEY::F;
 KEY CPlayerController::Jump	 = KEY::SPACE;
+KEY CPlayerController::Flip	 = KEY::TAB;
 
 float CPlayerController::Sensitivity = 6.f;
 
@@ -41,6 +42,8 @@ PlayerKeyInfo CPlayerController::GetInfo()
 	info.Skill		 = Skill;
 	info.Jump		 = Jump;
 	info.Sensitivity = Sensitivity;
+	info.Flip		 = Flip;
+
 	return info;
 }
 
@@ -57,5 +60,6 @@ void CPlayerController::SetInfo(PlayerKeyInfo _info)
 	Cover		= _info.Cover;
 	Skill		= _info.Skill;
 	Jump		= _info.Jump;
+	Flip		= _info.Flip;
 	Sensitivity = _info.Sensitivity;
 }
