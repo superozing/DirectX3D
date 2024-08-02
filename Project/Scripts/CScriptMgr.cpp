@@ -62,6 +62,7 @@
 #include "CTutorialGameMode.h"
 #include "CTutorialTarget.h"
 #include "CTitle.h"
+#include "CTitleTex.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -126,6 +127,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CTutorialGameMode");
 	_vec.push_back(L"CTutorialTarget");
 	_vec.push_back(L"CTitle");
+	_vec.push_back(L"CTitleTex");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -252,6 +254,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CTutorialTarget;
 	if (L"CTitle" == _strScriptName)
 		return new CTitle;
+	if (L"CTitleTex" == _strScriptName)
+		return new CTitleTex;
 	return nullptr;
 }
 
@@ -441,6 +445,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::TITLE:
 		return new CTitle;
+		break;
+	case (UINT)SCRIPT_TYPE::TITLETEX:
+		return new CTitleTex;
 		break;
 	}
 	return nullptr;
@@ -692,6 +699,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::TITLE:
 		return L"CTitle";
+		break;
+
+	case SCRIPT_TYPE::TITLETEX:
+		return L"CTitleTex";
 		break;
 
 	}
