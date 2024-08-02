@@ -8,12 +8,20 @@ private:
 	float		   fUpdateTimer;
 	bool		   bDisplayNode;
 
+	vector<Matrix> vec_ParentsBones;
+
+private:
+	void UpdateBoneMatrix();
+
+public:
+	vector<Matrix> GetAfterImageBoneMatrix() { return vec_ParentsBones; }
+
 public:
 	virtual void begin() override;
 	virtual void tick() override;
 
-	virtual void UpdateData() override;
-	virtual void Clear() override;
+	virtual void ParticularUpdateData(string _Key) override;
+	virtual void ParticularClear(string _Key) override;
 
 	virtual void SaveToFile(ofstream& fout) override;
 	virtual void LoadFromFile(ifstream& fin) override;

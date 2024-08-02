@@ -58,7 +58,8 @@ private:
 	vector<CGameObject*> m_vecTransparent;
 	vector<CGameObject*> m_vecPostProcess;
 
-	vector<CGameObject*>							m_vecShadow;
+	vector<CGameObject*> m_vecShadow;
+
 	vector<std::pair<CGameObject*, AfterImageInfo>> m_vecAfterImage;
 
 public:

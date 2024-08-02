@@ -333,4 +333,8 @@ struct AfterImageInfo
 	Matrix WorldTransform[10];
 	float  TimeStep;
 	Vec2   Padding;
+
+	// 에니메이션 정보
+	int	  AnimationClipIdx[10];
+	float AnimationRatio[10];
 };

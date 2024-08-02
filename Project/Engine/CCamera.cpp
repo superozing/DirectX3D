@@ -697,25 +697,41 @@ void CCamera::render_afterimage()
 
 		for (int j = 0; j < pMtrls.size(); ++j)
 		{
-
 			Ptr<CMaterial> pDynamicMtrl = m_vecAfterImage[i].first->GetRenderComponent()->GetDynamicMaterial(j);
 			pDynamicMtrl->SetShader(pShader);
+		}
+
+		vector<CGameObject*> vecChildObj = m_vecAfterImage[i].first->GetChild();
+
+		for (int o = 0; o < vecChildObj.size(); ++o)
+		{
+			vector<CScript*> vecScript = vecChildObj[o]->GetScripts();
+
+			for (int p = 0; p < vecScript.size(); ++p)
+			{
+				vecScript[p]->ParticularUpdateData(AfterImageUpdateKey);
+			}
 		}
 
 		// 인스턴스 드로잉 사용
 		m_vecAfterImage[i].first->MeshRender()->render_AfterImage(m_vecAfterImage[i].second.NodeCount);
 
-		m_vecAfterImage[i].first->render();
-
 		for (int k = 0; k < pMtrls.size(); ++k)
 		{
-
 			Ptr<CMaterial> pShareddMtrl = m_vecAfterImage[i].first->GetRenderComponent()->GetSharedMaterial(k);
 			m_vecAfterImage[i].first->GetRenderComponent()->SetMaterial(pShareddMtrl, k);
 		}
 
 		// 구조화 버퍼 바인딩 해제 (각 객체 렌더링 후)
-		AfterImageBuffer->Clear(29);
+		for (int z = 0; z < vecChildObj.size(); ++z)
+		{
+			vector<CScript*> vecScript = vecChildObj[z]->GetScripts();
+
+			for (int x = 0; x < vecScript.size(); ++x)
+			{
+				vecScript[x]->ParticularClear(AfterImageUpdateKey);
+			}
+		}
 	}
 
 	m_vecAfterImage.clear();

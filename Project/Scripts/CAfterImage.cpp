@@ -7,9 +7,16 @@
 #include <Engine\CRenderMgr.h>
 #include <Engine\CCamera.h>
 
+#include <Engine\CAnimator3D.h>
+
+#include <Engine\CStructuredBuffer.h>
+
+#define MaxNodeCount 10
+
 CAfterImage::CAfterImage()
 	: CScript((UINT)SCRIPT_TYPE::AFTERIMAGE)
 {
+
 	// 디폴트 세팅
 
 	m_info.NodeCount = 10;
@@ -28,6 +35,10 @@ CAfterImage::~CAfterImage()
 
 void CAfterImage::begin()
 {
+	CAnimator3D* pAnimator = GetOwner()->GetParent()->Animator3D();
+	int			 BoneCount = (int)pAnimator->GetBoneCount();
+
+	vec_ParentsBones.resize(BoneCount * MaxNodeCount);
 }
 
 #include <Engine\CLogMgr.h>
@@ -37,6 +48,9 @@ void CAfterImage::tick()
 
 	if (fUpdateTimer <= 0.f)
 	{
+		CAnimator3D* pAnimator = nullptr;
+		pAnimator			   = GetOwner()->GetParent()->Animator3D();
+
 		fUpdateTimer = m_info.TimeStep;
 
 		if (m_info.NodeCount > 1)
@@ -44,13 +58,35 @@ void CAfterImage::tick()
 			for (int i = m_info.NodeCount; i > 1; --i)
 			{
 				m_info.WorldTransform[i - 1] = m_info.WorldTransform[i - 2];
-				m_info.WorldTransform[i - 1] = m_info.WorldTransform[i - 2];
+
+				if (pAnimator != nullptr)
+				{
+					m_info.AnimationClipIdx[i - 1] = m_info.AnimationClipIdx[i - 2];
+					m_info.AnimationRatio[i - 1]   = m_info.AnimationRatio[i - 2];
+				}
 			}
 		}
 
 		Matrix CurrentWolrdMat = GetOwner()->GetParent()->Transform()->GetWorldMat();
 
 		m_info.WorldTransform[0] = CurrentWolrdMat;
+
+		if (pAnimator != nullptr)
+		{
+			m_info.AnimationClipIdx[0] = pAnimator->GetCurClip();
+			m_info.AnimationRatio[0]   = pAnimator->GetCurClipLength();
+
+			UpdateBoneMatrix();
+
+			CStructuredBuffer* pCurrentBoneBuffer = pAnimator->GetFinalBoneMat();
+			vector<Matrix>	   CurrentBoneInfo((int)pAnimator->GetFinalBoneMat()->GetElementCount());
+			pCurrentBoneBuffer->GetData(CurrentBoneInfo.data(), (int)pAnimator->GetFinalBoneMat()->GetElementCount());
+
+			for (int i = 0; i < pAnimator->GetBoneCount(); ++i)
+			{
+				vec_ParentsBones[i] = CurrentBoneInfo[i];
+			}
+		}
 	}
 
 	CCamera* pMainCam = CRenderMgr::GetInst()->GetMainCam();
@@ -58,14 +94,31 @@ void CAfterImage::tick()
 	pMainCam->RegisterAfterImage(this->GetOwner()->GetParent(), m_info);
 }
 
-void CAfterImage::UpdateData()
+void CAfterImage::UpdateBoneMatrix()
 {
+	int iBoneCount = GetOwner()->GetParent()->Animator3D()->GetBoneCount();
 
-	GetOwner()->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::BOOL_0, bDisplayNode);
+	for (int i = (MaxNodeCount * iBoneCount) - 1; i > iBoneCount - 1; --i)
+	{
+		vec_ParentsBones[i] = vec_ParentsBones[i - iBoneCount];
+	}
 }
 
-void CAfterImage::Clear()
+void CAfterImage::ParticularUpdateData(string _Key)
 {
+	if (_Key != AfterImageUpdateKey)
+		return;
+
+	CStructuredBuffer* AfterImageBuffer = CDevice::GetInst()->GetStructuredBuffer(SB_TYPE::AFTERIMAGE);
+	AfterImageBuffer->SetData(&m_info, 1);
+	AfterImageBuffer->UpdateData(29);
+}
+
+void CAfterImage::ParticularClear(string _Key)
+{
+	if (_Key != AfterImageUpdateKey)
+		return;
+
 	CStructuredBuffer* AfterImageBuffer = CDevice::GetInst()->GetStructuredBuffer(SB_TYPE::AFTERIMAGE);
 	AfterImageBuffer->Clear(29);
 }

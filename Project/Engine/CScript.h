@@ -104,7 +104,9 @@ protected:
 public:
 	virtual void finaltick() final {}
 	virtual void UpdateData(){};
+	virtual void ParticularUpdateData(string _Key){};
 	virtual void Clear(){};
+	virtual void ParticularClear(string _Key){};
 	virtual void BeginOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider) {}
 	virtual void Overlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider) {}
 	virtual void EndOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider) {}

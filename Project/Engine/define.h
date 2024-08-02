@@ -420,3 +420,4 @@ enum class UI_TYPE
 #define MAXBLURLEVEL 9
 
 #define DecalPriorityMax 20
+#define AfterImageUpdateKey "AfterImage"

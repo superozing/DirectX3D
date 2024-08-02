@@ -952,9 +952,6 @@
     <FxCompile Include="atlasStaticUI.fx">
       <Filter>ShaderCode\02. Render\UIShader</Filter>
     </FxCompile>
-    <FxCompile Include="AfterImage.fx">
-      <Filter>ShaderCode\02. Render\3DShader</Filter>
-    </FxCompile>
     <FxCompile Include="AfterImageRender.fx">
       <Filter>ShaderCode\02. Render\3DShader</Filter>
     </FxCompile>
