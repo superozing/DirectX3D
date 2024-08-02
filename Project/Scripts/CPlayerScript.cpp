@@ -30,6 +30,7 @@ CPlayerScript::CPlayerScript()
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
 	, m_tStatus{}
 	, m_pSpringArm(nullptr)
+	, m_pMuzzleFlash(nullptr)
 {
 	// 디버깅용
 	AppendScriptParam("CurState", SCRIPT_PARAM::STRING, (void*)&state);
@@ -281,6 +282,13 @@ void CPlayerScript::begin()
 	{
 		m_pSpringArm = vecChild[i]->GetScript<CSpringArm>();
 		if (m_pSpringArm)
+			break;
+	}
+
+	for (size_t i = 0; i < vecChild.size(); i++)
+	{
+		m_pMuzzleFlash = vecChild[i]->GetScript<CMuzzleFlashScript>();
+		if (m_pMuzzleFlash)
 			break;
 	}
 

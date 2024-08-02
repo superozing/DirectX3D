@@ -83,6 +83,7 @@ struct PlayerStatus
 
 template <typename T> class CRoRStateMachine;
 #include "CSpringArm.h"
+#include "CMuzzleFlashScript.h"
 
 class CPlayerScript : public CScript
 {
@@ -100,6 +101,7 @@ private:
 
 	class CShootingSystemScript* m_pShootingSystem;
 	class CCrosshair*			 m_pCrosshair;
+	class CMuzzleFlashScript*	 m_pMuzzleFlash;
 
 public:
 #pragma region StatusFunc

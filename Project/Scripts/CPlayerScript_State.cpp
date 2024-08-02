@@ -69,7 +69,6 @@ void CPlayerScript::NormalAttackStartBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::NormalAttackStart, 0);
 	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalAttackStart]);
-
 }
 
 int CPlayerScript::NormalAttackStartUpdate()
@@ -90,6 +89,7 @@ void CPlayerScript::NormalAttackIngBegin()
 	Animator3D()->Play((int)PLAYER_STATE::NormalAttackIng, 0, 5.f);
 	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalAttackStart]);
 	m_pShootingSystem->ShootPlayerBulletRay();
+	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
 }
 
 int CPlayerScript::NormalAttackIngUpdate()
@@ -103,6 +103,7 @@ int CPlayerScript::NormalAttackIngUpdate()
 
 void CPlayerScript::NormalAttackIngEnd()
 {
+	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Stop();
 }
 
 void CPlayerScript::NormalAttackDelayBegin()
@@ -226,6 +227,7 @@ void CPlayerScript::StandAttackIngBegin()
 	Animator3D()->Play((int)PLAYER_STATE::StandAttackIng, 0, 5.f);
 	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::StandAttackStart]);
 	m_pShootingSystem->ShootPlayerBulletRay();
+	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
 }
 
 int CPlayerScript::StandAttackIngUpdate()
@@ -239,6 +241,7 @@ int CPlayerScript::StandAttackIngUpdate()
 
 void CPlayerScript::StandAttackIngEnd()
 {
+	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Stop();
 }
 
 void CPlayerScript::StandAttackDelayBegin()
@@ -380,6 +383,7 @@ void CPlayerScript::KneelAttackIngBegin()
 	Animator3D()->Play((int)PLAYER_STATE::KneelAttackIng, 0, 5.f);
 	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::KneelAttackStart], 0.1f);
 	m_pShootingSystem->ShootPlayerBulletRay();
+	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
 }
 
 int CPlayerScript::KneelAttackIngUpdate()
@@ -393,6 +397,7 @@ int CPlayerScript::KneelAttackIngUpdate()
 
 void CPlayerScript::KneelAttackIngEnd()
 {
+	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Stop();
 }
 
 void CPlayerScript::KneelAttackDelayBegin()
