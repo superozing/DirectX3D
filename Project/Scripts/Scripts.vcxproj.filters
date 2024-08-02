@@ -127,9 +127,6 @@
     </ClInclude>
     <ClInclude Include="CProjectileScript.h" />
     <ClInclude Include="CGameMode.h" />
-    <ClInclude Include="CTutorialGameMode.h">
-      <Filter>Scripts\Level</Filter>
-    </ClInclude>
     <ClInclude Include="CAtlasImageUIScript.h">
       <Filter>Scripts\DefaultUI\Image</Filter>
     </ClInclude>
@@ -194,11 +191,17 @@
     <ClInclude Include="CArona.h">
       <Filter>Scripts\UI\Image\Arona</Filter>
     </ClInclude>
-    <ClInclude Include="CTutorialTarget.h">
-      <Filter>Scripts\Level</Filter>
-    </ClInclude>
     <ClInclude Include="CCoverHIghTutorialEvent.h">
       <Filter>Scripts\Event\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="CTutorialGameMode.h">
+      <Filter>Scripts\Level\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="CTutorialTarget.h">
+      <Filter>Scripts\Level\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="CTitle.h">
+      <Filter>Scripts\Level\Title</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -333,9 +336,6 @@
       <Filter>Scripts\Boss\MegaFist</Filter>
     </ClCompile>
     <ClCompile Include="CProjectileScript.cpp" />
-    <ClCompile Include="CTutorialGameMode.cpp">
-      <Filter>Scripts\Level</Filter>
-    </ClCompile>
     <ClCompile Include="CAtlasImageUIScript.cpp">
       <Filter>Scripts\DefaultUI\Image</Filter>
     </ClCompile>
@@ -397,11 +397,17 @@
     <ClCompile Include="CArona.cpp">
       <Filter>Scripts\UI\Image\Arona</Filter>
     </ClCompile>
-    <ClCompile Include="CTutorialTarget.cpp">
-      <Filter>Scripts\Level</Filter>
-    </ClCompile>
     <ClCompile Include="CCoverHighTutorialEvent.cpp">
       <Filter>Scripts\Event\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="CTutorialGameMode.cpp">
+      <Filter>Scripts\Level\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="CTutorialTarget.cpp">
+      <Filter>Scripts\Level\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="CTitle.cpp">
+      <Filter>Scripts\Level\Title</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -536,6 +542,12 @@
     </Filter>
     <Filter Include="Scripts\UI\Image\Arona">
       <UniqueIdentifier>{eaadf26c-dea4-4092-ac9c-027e9c38c976}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Level\Title">
+      <UniqueIdentifier>{06f932a7-08d9-45fa-aaa3-5011b12c1891}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Level\Tutorial">
+      <UniqueIdentifier>{1123202b-1971-4e08-97b6-99adf051706f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -38,7 +38,6 @@
 #include "CBossScript.h"
 #include "CDamagedDirection.h"
 #include "CMegaFistScript.h"
-#include "CTutorialGameMode.h"
 #include "CAtlasImageUIScript.h"
 #include "CDamagedDirectionMgr.h"
 #include "CHUD.h"
@@ -59,8 +58,10 @@
 #include "CShootingTutorialEvent.h"
 #include "CDirectionalLight.h"
 #include "CArona.h"
-#include "CTutorialTarget.h"
 #include "CCoverHIghTutorialEvent.h"
+#include "CTutorialGameMode.h"
+#include "CTutorialTarget.h"
+#include "CTitle.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -101,7 +102,6 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CBossScript");
 	_vec.push_back(L"CDamagedDirection");
 	_vec.push_back(L"CMegaFistScript");
-	_vec.push_back(L"CTutorialGameMode");
 	_vec.push_back(L"CAtlasImageUIScript");
 	_vec.push_back(L"CDamagedDirectionMgr");
 	_vec.push_back(L"CHUD");
@@ -122,8 +122,10 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CShootingTutorialEvent");
 	_vec.push_back(L"CDirectionalLight");
 	_vec.push_back(L"CArona");
-	_vec.push_back(L"CTutorialTarget");
 	_vec.push_back(L"CCoverHIghTutorialEvent");
+	_vec.push_back(L"CTutorialGameMode");
+	_vec.push_back(L"CTutorialTarget");
+	_vec.push_back(L"CTitle");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -202,8 +204,6 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CDamagedDirection;
 	if (L"CMegaFistScript" == _strScriptName)
 		return new CMegaFistScript;
-	if (L"CTutorialGameMode" == _strScriptName)
-		return new CTutorialGameMode;
 	if (L"CAtlasImageUIScript" == _strScriptName)
 		return new CAtlasImageUIScript;
 	if (L"CDamagedDirectionMgr" == _strScriptName)
@@ -244,10 +244,14 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CDirectionalLight;
 	if (L"CArona" == _strScriptName)
 		return new CArona;
-	if (L"CTutorialTarget" == _strScriptName)
-		return new CTutorialTarget;
 	if (L"CCoverHIghTutorialEvent" == _strScriptName)
 		return new CCoverHIghTutorialEvent;
+	if (L"CTutorialGameMode" == _strScriptName)
+		return new CTutorialGameMode;
+	if (L"CTutorialTarget" == _strScriptName)
+		return new CTutorialTarget;
+	if (L"CTitle" == _strScriptName)
+		return new CTitle;
 	return nullptr;
 }
 
@@ -366,9 +370,6 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::MEGAFISTSCRIPT:
 		return new CMegaFistScript;
 		break;
-	case (UINT)SCRIPT_TYPE::TUTORIALGAMEMODE:
-		return new CTutorialGameMode;
-		break;
 	case (UINT)SCRIPT_TYPE::ATLASIMAGEUISCRIPT:
 		return new CAtlasImageUIScript;
 		break;
@@ -429,11 +430,17 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::ARONA:
 		return new CArona;
 		break;
+	case (UINT)SCRIPT_TYPE::COVERHIGHTUTORIALEVENT:
+		return new CCoverHIghTutorialEvent;
+		break;
+	case (UINT)SCRIPT_TYPE::TUTORIALGAMEMODE:
+		return new CTutorialGameMode;
+		break;
 	case (UINT)SCRIPT_TYPE::TUTORIALTARGET:
 		return new CTutorialTarget;
 		break;
-	case (UINT)SCRIPT_TYPE::COVERHIGHTUTORIALEVENT:
-		return new CCoverHIghTutorialEvent;
+	case (UINT)SCRIPT_TYPE::TITLE:
+		return new CTitle;
 		break;
 	}
 	return nullptr;
@@ -591,10 +598,6 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CMegaFistScript";
 		break;
 
-	case SCRIPT_TYPE::TUTORIALGAMEMODE:
-		return L"CTutorialGameMode";
-		break;
-
 	case SCRIPT_TYPE::ATLASIMAGEUISCRIPT:
 		return L"CAtlasImageUIScript";
 		break;
@@ -675,12 +678,20 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CArona";
 		break;
 
+	case SCRIPT_TYPE::COVERHIGHTUTORIALEVENT:
+		return L"CCoverHIghTutorialEvent";
+		break;
+
+	case SCRIPT_TYPE::TUTORIALGAMEMODE:
+		return L"CTutorialGameMode";
+		break;
+
 	case SCRIPT_TYPE::TUTORIALTARGET:
 		return L"CTutorialTarget";
 		break;
 
-	case SCRIPT_TYPE::COVERHIGHTUTORIALEVENT:
-		return L"CCoverHIghTutorialEvent";
+	case SCRIPT_TYPE::TITLE:
+		return L"CTitle";
 		break;
 
 	}
