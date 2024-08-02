@@ -5,6 +5,7 @@
 #include <Engine\CLevel.h>
 
 #include "CEventListener.h"
+#include "CArona.h"
 
 static string state = "";
 
@@ -36,6 +37,9 @@ CTutorialGameMode::~CTutorialGameMode()
 void CTutorialGameMode::begin()
 {
 	m_FSM->Begin();
+
+	m_pArona = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(AronaName)->GetScript<CArona>();
+	m_pWall	 = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"WALL_SHOOT");
 }
 
 void CTutorialGameMode::tick()
@@ -102,6 +106,12 @@ int CTutorialGameMode::ShootingUpdate()
 
 void CTutorialGameMode::ShootingEnd()
 {
+	Vec3 vPos	= m_pWall->Transform()->GetRelativePos();
+	Vec3 vScale = m_pWall->Transform()->GetRelativeScale();
+	vPos.x += vScale.z;
+	m_pWall->Transform()->Lerp(vPos, false, Vec3(), false, Vec3(), 2.f);
+
+	m_pArona->Message("Congratulations!", 340, 3.f);
 }
 
 void CTutorialGameMode::CombatFirstBegin()

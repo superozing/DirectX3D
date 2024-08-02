@@ -80,13 +80,6 @@ void CShootingTutorialEvent::tick()
 			{
 				m_vecTargetScripts.push_back(m_vecTargets[i]->SpawnObject()->GetScript<CTutorialTarget>());
 			}
-
-			// 타겟 오브젝트가 몬스터 스크립트를 상속해서 제대로 된 적중을 판단할 수 있다면 축하메시지 출력 타이밍으로
-			// 옮겨주어야 함
-			Vec3 vPos	= m_pWall->Transform()->GetRelativePos();
-			Vec3 vScale = m_pWall->Transform()->GetRelativeScale();
-			vPos.x += vScale.z;
-			m_pWall->Transform()->Lerp(vPos, false, Vec3(), false, Vec3(), 2.f);
 		}
 		return;
 	}
@@ -99,7 +92,6 @@ void CShootingTutorialEvent::tick()
 
 	if (bClear)
 	{
-		m_pArona->Message("Congratulations!", 340, 3.f);
 		m_pGM->Clear(TutorialState::Shooting);
 		GamePlayStatic::DestroyGameObject(GetOwner());
 	}

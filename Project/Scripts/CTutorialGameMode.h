@@ -13,6 +13,10 @@ enum class TutorialState
 class CTutorialGameMode : public CGameMode<CTutorialGameMode>
 {
 private:
+	class CArona*	   m_pArona;
+	class CGameObject* m_pWall;
+
+private:
 	bool m_arrIsClear[(UINT)TutorialState::END];
 
 public:

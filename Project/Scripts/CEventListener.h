@@ -34,6 +34,8 @@ public:
 	bool IsActivate() { return m_bActivate; }
 	void Activate(bool _activate) { m_bActivate = _activate; }
 
+	static bool m_bAllDraw;
+
 public:
 	void AddTargetEditor();
 	void SubTargetEditor();
