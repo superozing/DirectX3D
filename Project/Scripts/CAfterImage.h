@@ -10,6 +10,8 @@ private:
 
 	vector<Matrix> vec_ParentsBones;
 
+	CStructuredBuffer* m_arr[AfterImageMaxCount];
+
 private:
 	void UpdateBoneMatrix();
 

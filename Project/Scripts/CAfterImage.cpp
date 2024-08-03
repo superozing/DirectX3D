@@ -11,8 +11,6 @@
 
 #include <Engine\CStructuredBuffer.h>
 
-#define MaxNodeCount 10
-
 CAfterImage::CAfterImage()
 	: CScript((UINT)SCRIPT_TYPE::AFTERIMAGE)
 {
@@ -38,7 +36,11 @@ void CAfterImage::begin()
 	CAnimator3D* pAnimator = GetOwner()->GetParent()->Animator3D();
 	int			 BoneCount = (int)pAnimator->GetBoneCount();
 
-	vec_ParentsBones.resize(BoneCount * MaxNodeCount);
+	vec_ParentsBones.resize(BoneCount * AfterImageMaxCount);
+
+	for (int i = 0; i < AfterImageMaxCount; ++i)
+	{
+	}
 }
 
 #include <Engine\CLogMgr.h>
@@ -98,7 +100,7 @@ void CAfterImage::UpdateBoneMatrix()
 {
 	int iBoneCount = GetOwner()->GetParent()->Animator3D()->GetBoneCount();
 
-	for (int i = (MaxNodeCount * iBoneCount) - 1; i > iBoneCount - 1; --i)
+	for (int i = (AfterImageMaxCount * iBoneCount) - 1; i > iBoneCount - 1; --i)
 	{
 		vec_ParentsBones[i] = vec_ParentsBones[i - iBoneCount];
 	}
