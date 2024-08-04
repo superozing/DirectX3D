@@ -6,6 +6,8 @@ class CBulletMarkSpawner : public CScript
 private:
 	list<pair<CGameObject*, float>> m_BulletDecalList;
 
+	Ptr<CTexture> m_NormalTargetTex;
+
 	class CMemoryPoolMgrScript* m_PoolMgr;
 
 public:
@@ -20,6 +22,9 @@ public:
 
 public:
 	void SpawnBulletMarkDecal(const struct tRoRHitInfo& _HitInfo, CGameObject* _pPlayer, float _ActiveTime = 3.f);
+
+private:
+	Vec3 GetCenterNormal();
 
 public:
 	CLONE(CBulletMarkSpawner);

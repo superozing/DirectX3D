@@ -18,24 +18,16 @@ CBulletMarkSpawner::~CBulletMarkSpawner()
 {
 }
 
-static bool debugSpawnCheck = false;
-
 void CBulletMarkSpawner::begin()
 {
-	AppendScriptParam("Spawn Bullet Marker Decal", SCRIPT_PARAM::BOOL, &debugSpawnCheck);
 	auto pObj = CMemoryPoolMgr::GetInst()->GetEX();
 	m_PoolMgr = pObj->GetScript<CMemoryPoolMgrScript>();
-	// begin에서 임시로 생성
-	//m_PoolMgr->PushObject(m_PoolMgr->PopObject(ObjPath));
+
+	m_NormalTargetTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex");
 }
 
 void CBulletMarkSpawner::tick()
 {
-	// 디버그 용 bool값 체크 후 스폰
-	if (debugSpawnCheck)
-	{
-	}
-
 	for (list<pair<CGameObject*, float>>::iterator it = m_BulletDecalList.begin(); it != m_BulletDecalList.end();)
 	{
 		// 모든 List를 순회하면서 AccTime 누적
@@ -53,52 +45,56 @@ void CBulletMarkSpawner::tick()
 
 void CBulletMarkSpawner::SpawnBulletMarkDecal(const tRoRHitInfo& _HitInfo, CGameObject* _pPlayer, float _ActiveTime)
 {
-	// 필요한 정보
-	//	1. 플레이어 front dir vector
-	//		반전시켜서 데칼 방향 고정하기
-	//	2. hit pos
-	//		데칼 오브젝트를 스폰할 위치
-
-	// 피격 오브젝트
-	CGameObject* pHitObj = _HitInfo.pOtherObj;
-
 	// 풀에서 오브젝트 가져오기
 	auto pDecalObj = m_PoolMgr->PopObject(BulletMarkPath);
 
 	// 총이 맞은 위치로 총알 자국 데칼 스폰
 	pDecalObj->Transform()->SetRelativePos(_HitInfo.vHitPos);
 
-
-	// dir 구하기
-
-	// 카메라 위치 (예: 원점)
-	Vector3 cameraPosition(0.0f, 0.0f, 0.0f);
-
-	// 오브젝트 위치 (hit position) 정의
-	Vector3 hitPosition(5.0f, 0.0f, 5.0f);
-
-	// 오브젝트가 카메라를 바라보도록 설정
-	Vector3 objectToCamera = cameraPosition - hitPosition;
-	objectToCamera.Normalize();
-
-	// 오브젝트 방향 벡터를 각도로 변환
-	float objectAngle = std::atan2(objectToCamera.z, objectToCamera.x);
-
-	// 각도를 가장 가까운 직각 각도로 스냅
-	float snappedAngle = (int)std::round(objectAngle / XM_PIDIV2) * XM_PIDIV2;
-
-	// 스냅된 각도로 새로운 오브젝트 방향 계산
-	Vec3 snappedDirection = Vec3(std::cos(snappedAngle), 0.0f, std::sin(snappedAngle));
-
-		
-	// 플레이어 전방 방향 벡터 반전시켜 설정
-	pDecalObj->Transform()->SetDir(snappedDirection);
+	// NormalTargetTex 중앙에서 normal 값 가져오기
+	//Vec3 vNormal = GetCenterNormal();
 	
+	// 노말 벡터를 z축으로 회전
+	//Vec3 vRotNormal = Vec3(-vNormal.y, vNormal.x, vNormal.z);
+	//pDecalObj->Transform()->SetRelativeRotation(GetCenterNormal().Normalize());
+	pDecalObj->Transform()->SetDir(GetCenterNormal().Normalize());
+	
+	pDecalObj->Decal()->GetDynamicMaterial(0);
+	pDecalObj->Decal()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture/particle/AlphaCircle.png"));
+	// 오브젝트를 레벨에 스폰
 	GamePlayStatic::SpawnGameObject(pDecalObj, 0);
 
 	// 리스트에 추가
-	//_ActiveTime
-	m_BulletDecalList.push_back({pDecalObj, 90});
+	m_BulletDecalList.push_back({pDecalObj, 90}); //_ActiveTime});
+}
+
+Vec3 CBulletMarkSpawner::GetCenterNormal()
+{
+	Vec2 vTexResol  = Vec2(m_NormalTargetTex->GetWidth(), m_NormalTargetTex->GetHeight());
+
+	// 픽셀 배열 가져오기
+	tPixel* pixels = m_NormalTargetTex->GetPixels();
+	if (!pixels)
+	{
+		int i = 0;
+	}
+
+	// 화면 중앙 좌표
+	int centerX = vTexResol.x / 2;
+	int centerY = vTexResol.y / 2;
+
+	// 1차원 배열에서 인덱스 계산
+	int idx = centerY * vTexResol.x + centerX;
+
+	// 중앙 픽셀 값을 Vec3로 반환
+	tPixel& pixel  = pixels[idx];
+	//Vec3 normal = {static_cast<float>(pixel.r), static_cast<float>(pixel.g), static_cast<float>(pixel.b)};
+	//// 중앙 픽셀 값을 Vec3로 반환 (노말 데이터가 tPixel에 저장된 방식에 따라 변환 필요)
+	Vec3 normal = {static_cast<float>(pixel.r) / 255.0f * 2.0f - 1.0f,
+					  static_cast<float>(pixel.g) / 255.0f * 2.0f - 1.0f,
+					  static_cast<float>(pixel.b) / 255.0f * 2.0f - 1.0f};
+
+	return normal;
 }
 
 void CBulletMarkSpawner::SaveToFile(FILE* _File)
