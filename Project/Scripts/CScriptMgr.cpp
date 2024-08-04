@@ -63,6 +63,7 @@
 #include "CTutorialTarget.h"
 #include "CTitle.h"
 #include "CTitleTex.h"
+#include "CButtons.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -128,6 +129,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CTutorialTarget");
 	_vec.push_back(L"CTitle");
 	_vec.push_back(L"CTitleTex");
+	_vec.push_back(L"CButtons");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -256,6 +258,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CTitle;
 	if (L"CTitleTex" == _strScriptName)
 		return new CTitleTex;
+	if (L"CButtons" == _strScriptName)
+		return new CButtons;
 	return nullptr;
 }
 
@@ -448,6 +452,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::TITLETEX:
 		return new CTitleTex;
+		break;
+	case (UINT)SCRIPT_TYPE::BUTTONS:
+		return new CButtons;
 		break;
 	}
 	return nullptr;
@@ -703,6 +710,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::TITLETEX:
 		return L"CTitleTex";
+		break;
+
+	case SCRIPT_TYPE::BUTTONS:
+		return L"CButtons";
 		break;
 
 	}

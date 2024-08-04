@@ -34,6 +34,11 @@ CTextUI::~CTextUI()
 {
 }
 
+void CTextUI::SetColor(Vec4 _Color)
+{
+	m_vColor = _Color * 255.f;
+}
+
 void CTextUI::init()
 {
 	AppendScriptParam("Draw", SCRIPT_PARAM::BOOL, &m_bDraw);

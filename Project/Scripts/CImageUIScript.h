@@ -15,6 +15,9 @@ public:
 	virtual void tick() override;
 
 public:
+	void SetColor(Vec4 _color) { m_vBlendColor = _color; }
+	Vec4 GetColor() { return m_vBlendColor; }
+
 	void SetUIImg(Ptr<CTexture> _UIImg) { m_UIImg = _UIImg; }
 	void BindUIImgOnTexParam();
 	void Draw(bool _draw) { m_bDraw = _draw; }

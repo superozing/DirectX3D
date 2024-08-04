@@ -8,6 +8,7 @@
 		return;
 
 typedef CLevel* (*Restart_Level)(const string& _strLevelPath);
+typedef CLevel* (*LevelLoad)(const wstring& _strLevelPath);
 typedef void	(*Save_CheckPoint)(CLevel* _Level);
 
 enum class Client_Function_Type
@@ -27,6 +28,7 @@ private:
 
 public:
 	static Restart_Level   LevelChangeFunc;
+	static LevelLoad	   LevelLoadFunc;
 	static Save_CheckPoint CheckPointFunc;
 
 public:

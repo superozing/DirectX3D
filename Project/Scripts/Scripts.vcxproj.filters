@@ -206,6 +206,9 @@
     <ClInclude Include="CTitleTex.h">
       <Filter>Scripts\Level\Title</Filter>
     </ClInclude>
+    <ClInclude Include="CButtons.h">
+      <Filter>Scripts\Level\Title</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -413,6 +416,9 @@
       <Filter>Scripts\Level\Title</Filter>
     </ClCompile>
     <ClCompile Include="CTitleTex.cpp">
+      <Filter>Scripts\Level\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="CButtons.cpp">
       <Filter>Scripts\Level\Title</Filter>
     </ClCompile>
   </ItemGroup>

@@ -13,6 +13,9 @@ private:
 	Vec4	  m_vColor;
 
 public:
+	void SetColor(Vec4 _Color);
+	Vec4 GetColor() { return m_vColor; }
+
 	bool IsDraw() { return m_bDraw; }
 	void Draw(bool _draw) { m_bDraw = _draw; }
 	void SetText(const string& _str)

@@ -3,6 +3,10 @@
 class CTitleTex : public CImageUIScript
 {
 public:
+	void SetColor(Vec4 _color);
+	void Draw(bool _draw);
+
+public:
 	virtual void begin() override;
 	virtual void tick() override;
 
