@@ -51,6 +51,8 @@ CRenderMgrScript::CRenderMgrScript()
 	AppendScriptParam("CA::GreenOffset", SCRIPT_PARAM::VEC2, &(RENDERMGR->m_CAInfo.MaxGreenOffset));
 	AppendScriptParam("CA::BlueOffset", SCRIPT_PARAM::VEC2, &(RENDERMGR->m_CAInfo.MaxBlueOffset));
 	AppendScriptParam("CA::CropOffset", SCRIPT_PARAM::VEC2, &(RENDERMGR->m_CAInfo.CropOffset));
+
+	AppendScriptParam("GRAY::bGrayWeight", SCRIPT_PARAM::BOOL, &(RENDERMGR->m_bGrayWeight));
 }
 
 CRenderMgrScript::~CRenderMgrScript()

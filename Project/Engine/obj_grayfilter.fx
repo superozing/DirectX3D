@@ -31,10 +31,11 @@ VS_OUT VS_ObjGrayFilter(VS_IN _in)
 float4 PS_ObjGrayFilter(VS_OUT _in) : SV_Target
 {
     float4 vOutColor = texPreProcess.Sample(g_sam_0, _in.vUV);
-    
+    const static float3 grayweight = float3(0.299, 0.587, 0.114);
     if (true == bWeight)
     {
-        
+        float resdot = dot(vOutColor.rgb, grayweight);
+        return float4(resdot, resdot, resdot, 1.f);
     }
     else
     {

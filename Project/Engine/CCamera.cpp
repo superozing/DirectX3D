@@ -667,12 +667,11 @@ void CCamera::GrayFilter_by_Object()
 	pGrayMtrl = CAssetMgr::GetInst()->Load<CMaterial>(MTRLObjGrayFilter);
 
 	// 흑백방법
-	// auto  BlurInfo	 = CRenderMgr::GetInst()->m_GlobalBloomInfo;
-	// float Bloomratio = BlurInfo.Ratio;
+	auto bGrayWieght = CRenderMgr::GetInst()->m_bGrayWeight;
 
 	// 텍스쳐, 블랜드비율 바인딩
 	pGrayMtrl->SetTexParam(TEX_PARAM::TEX_0, PPTEX1);
-	// pGrayMtrl->SetScalarParam(SCALAR_PARAM::FLOAT_0, Bloomratio);
+	pGrayMtrl->SetScalarParam(SCALAR_PARAM::BOOL_0, bGrayWieght);
 	pGrayMtrl->UpdateData();
 	CONTEXT->OMSetDepthStencilState(CDevice::GetInst()->GetDSState(DS_TYPE::STENCIL_GRAY_TEST).Get(), 1);
 
