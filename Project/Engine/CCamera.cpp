@@ -428,6 +428,10 @@ void CCamera::render_Instance(const map<ULONG64, vector<tInstObj>>& m_mapInstGro
 
 		pMtrl->UpdateData_Inst();
 		// auto vecScript = pObj->GetScripts();
+		// for (int i = 0; i < vecScript.size(); ++i)
+		//{
+		//	vecScript[i]->UpdateData();
+		// }
 		pMesh->render_instancing(pair.second[0].iMtrlIdx);
 
 		// 정리
