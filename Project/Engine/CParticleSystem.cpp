@@ -223,6 +223,13 @@ void CParticleSystem::Play()
 {
 	m_IsPlay = true;
 
+	// 즉시 파티클을 생성
+	if (m_Module.SpawnType == 1) // Burst 모드일 때만 적용
+	{
+		SpawnParticle(m_Module.SpawnRate);
+		m_Time = 0.f; // 시간을 초기화하여 다음 스폰 간격을 제대로 유지
+	}
+
 	vector<CGameObject*> Child = GetOwner()->GetChild();
 
 	if (!Child.empty())
