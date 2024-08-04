@@ -490,6 +490,8 @@ void CCamera::render_postprocess()
 
 	Cromatic_Aberration();
 
+	GrayFilter_by_Object();
+
 	// for (size_t i = 0; i < m_vecPostProcess.size(); ++i)
 	//{
 	//	// 최종 렌더링 이미지를 후처리 타겟에 복사
@@ -642,6 +644,33 @@ void CCamera::Cromatic_Aberration()
 	pCAMat->SetScalarParam(SCALAR_PARAM::VEC2_2, RefInfo.MaxBlueOffset * LifeRatio);
 	pCAMat->SetScalarParam(SCALAR_PARAM::VEC2_3, RoRMath::Lerp(Vec2(1.f, 1.f), RefInfo.CropOffset, LifeRatio));
 	pCAMat->UpdateData();
+
+	// 타겟->리소스 복사
+	CRenderMgr::GetInst()->CopyFromTextureToTexture(ColorCopy, RenderTarget);
+	pRectMesh->render(0);
+}
+
+void CCamera::GrayFilter_by_Object()
+{
+	// 리소스,타겟 얻어오기
+	auto ColorCopy	  = CAssetMgr::GetInst()->FindAsset<CTexture>(L"PostProcessTex");
+	auto DSTEX		  = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
+	auto RenderTarget = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
+
+	// 매쉬,머터리얼 받아오기
+	static Ptr<CMesh>	  pRectMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect);
+	static Ptr<CMaterial> pBloomMtrl;
+	pBloomMtrl = CAssetMgr::GetInst()->Load<CMaterial>(MTRLObjGrayFilter);
+
+	// 흑백방법
+	// auto  BlurInfo	 = CRenderMgr::GetInst()->m_GlobalBloomInfo;
+	// float Bloomratio = BlurInfo.Ratio;
+
+	// 텍스쳐, 블랜드비율 바인딩
+	pBloomMtrl->SetTexParam(TEX_PARAM::TEX_0, ColorCopy);
+	pBloomMtrl->SetTexParam(TEX_PARAM::TEX_1, DSTEX);
+	// pBloomMtrl->SetScalarParam(SCALAR_PARAM::FLOAT_0, Bloomratio);
+	pBloomMtrl->UpdateData();
 
 	// 타겟->리소스 복사
 	CRenderMgr::GetInst()->CopyFromTextureToTexture(ColorCopy, RenderTarget);
