@@ -43,28 +43,72 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 
 	if (isBulletHit)
 	{
-		// 데미지 처리, 파티클 시스템 등등...
-		if (hitInfo.pOtherObj->GetLayerIdx() == (UINT)LAYER::LAYER_PLAYER)
+		// 맞은 오브젝트의 인덱스에 따라서 효과를 주어요.
+		switch ((LAYER)hitInfo.pOtherObj->GetLayerIdx())
 		{
-			int a = 0;
-		}
+		case LAYER::LAYER_DEFAULT:
+			break;
 
-		if (hitInfo.pOtherObj->GetLayerIdx() == (UINT)LAYER::LAYER_WALL)
+		case LAYER::LAYER_PLANE:
+		case LAYER::LAYER_CEIL:
+		case LAYER::LAYER_WALL:
 		{
-			// 데칼 오브젝트 스폰
 			m_pBulletMarkDecalSpawner->SpawnBulletMarkDecal(hitInfo, m_pPlayer);
-			
-			// 파티클 오브젝트 스폰
 			m_pBulletHitParticleSpawner->SpawnBulletHitParticle(hitInfo);
 		}
+			break;
 
-		if (hitInfo.pOtherObj->GetLayerIdx() == (UINT)LAYER::LAYER_MONSTER &&
-			(hitInfo.pOtherObj->PhysX()->m_bPhysBodyType == PhysBodyType::DYNAMIC))
+		case LAYER::LAYER_PLAYER:
+			break;
+
+		case LAYER::LAYER_PLAYER_SKILL:
+			break;
+
+		case LAYER::LAYER_MONSTER:
 		{
-			hitInfo.pOtherObj->PhysX()->applyBulletImpact(
-				PxVec3(ShootDir.x, ShootDir.y, ShootDir.z), 1000.f,
-				PxVec3(hitInfo.vHitPos.x, hitInfo.vHitPos.y, hitInfo.vHitPos.z));
+			if (hitInfo.pOtherObj->PhysX()->m_bPhysBodyType == PhysBodyType::DYNAMIC)
+			{
+				hitInfo.pOtherObj->PhysX()->applyBulletImpact(
+					PxVec3(ShootDir.x, ShootDir.y, ShootDir.z), 1000.f,
+					PxVec3(hitInfo.vHitPos.x, hitInfo.vHitPos.y, hitInfo.vHitPos.z));
+			}
 		}
+			break;
+
+		case LAYER::LAYER_MONSTER_SKILL:
+			break;
+
+		case LAYER::LAYER_BOSS:
+			break;
+
+		case LAYER::LAYER_BOSS_SKILL:
+			break;
+
+		case LAYER::LAYER_LIGHT:
+			break;
+
+		case LAYER::LAYER_EVENT:
+			break;
+
+		case LAYER::LAYER_RAYCAST:
+			break;
+
+		case LAYER::LAYER_PLAYER_CAMERA_RAY:
+			break;
+
+		case LAYER::LAYER_PLAYER_SHOOTING_RAY:
+			break;
+
+		case LAYER::LAYER_ETC_OBJECT:
+			break;
+
+		case LAYER::LAYER_UI:
+			break;
+
+		default:
+			break;
+		}
+
 	}
 
 	// 무기 본 위치에 탄피 오브젝트 생성, Velocity 추가

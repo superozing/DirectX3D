@@ -194,6 +194,9 @@
     <ClInclude Include="CBulletScript.h">
       <Filter>Scripts\ShootingSystem\Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="CShootingRecoil.h">
+      <Filter>Scripts\ShootingSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -390,6 +393,9 @@
     </ClCompile>
     <ClCompile Include="CBulletScript.cpp">
       <Filter>Scripts\ShootingSystem\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CShootingRecoil.cpp">
+      <Filter>Scripts\ShootingSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
