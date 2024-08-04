@@ -27,11 +27,15 @@ void CObjectGrayMaskScript::UpdateData()
 	auto Mask = MR->GetStencilMask();
 	Mask	  = Mask | (1 << (UINT)STENCIL_TYPE::GRAY);
 	MR->SetStencilMask(Mask);
-	CONTEXT->OMSetDepthStencilState(CDevice::GetInst()->GetDSState(DS_TYPE::STENCIL_WRITE).Get(), 2);
+	CONTEXT->OMSetDepthStencilState(CDevice::GetInst()->GetDSState(DS_TYPE::STENCIL_WRITE).Get(), Mask);
 }
 
 void CObjectGrayMaskScript::Clear()
 {
+	auto MR = MeshRender();
+	if (nullptr == MR)
+		return;
+	MR->SetStencilMask(0);
 }
 
 void CObjectGrayMaskScript::SaveToFile(ofstream& fout)

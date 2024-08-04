@@ -5,7 +5,6 @@
 
 #define bWeight g_bool_0
 #define texPreProcess g_tex_0
-#define texDepthStencil g_tex_1
 
 struct VS_IN
 {
@@ -29,18 +28,20 @@ VS_OUT VS_ObjGrayFilter(VS_IN _in)
     return output;
 }
 
-#define GrayMask (1<<1)
 float4 PS_ObjGrayFilter(VS_OUT _in) : SV_Target
 {
     float4 vOutColor = texPreProcess.Sample(g_sam_0, _in.vUV);
-    uint stancil = texDepthStencil.Sample(g_sam_0, _in.vUV).r;
-    bool bCheck = 0 != (GrayMask & stancil);
     
-    if (true == bCheck)
+    if (true == bWeight)
     {
-        vOutColor = float4(0.f, 0.f, 0.f, 1.f);
-    }
         
+    }
+    else
+    {
+        float avg = (vOutColor.r + vOutColor.g + vOutColor.b) / 3.f;
+        return float4(avg, avg, avg, 1.f);
+    }
+
     return vOutColor;
 }
 
