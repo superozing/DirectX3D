@@ -222,6 +222,16 @@ void CParticleSystem::SpawnParticle(int _Count)
 void CParticleSystem::Play()
 {
 	m_IsPlay = true;
+
+	vector<CGameObject*> Child = GetOwner()->GetChild();
+
+	if (!Child.empty())
+	{
+		for (size_t i = 0; i < Child.size(); ++i)
+		{
+			Child[i]->ParticleSystem()->Play();
+		}
+	}
 }
 
 void CParticleSystem::Stop()
@@ -229,6 +239,16 @@ void CParticleSystem::Stop()
 	DeActivateParticle();
 	m_IsPlay = false;
 	m_Time	 = 0.f;
+
+	vector<CGameObject*> Child = GetOwner()->GetChild();
+
+	if (!Child.empty())
+	{
+		for (size_t i = 0; i < Child.size(); ++i)
+		{
+			Child[i]->ParticleSystem()->Stop();
+		}
+	}
 }
 
 void CParticleSystem::DeActivateParticle()
