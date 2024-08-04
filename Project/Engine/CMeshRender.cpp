@@ -108,6 +108,8 @@ void CMeshRender::render(UINT _Subset)
 
 	vector<CScript*> vecScript = GetOwner()->GetScripts();
 
+	// 스텐실 마스크 초기화
+	m_StencilMask = 0;
 	for (int i = 0; i < vecScript.size(); ++i)
 	{
 		vecScript[i]->UpdateData();
@@ -130,4 +132,6 @@ void CMeshRender::render(UINT _Subset)
 	{
 		vecScript[i]->Clear();
 	}
+	// 스텐실 마스크 초기화
+	m_StencilMask = 0;
 }
