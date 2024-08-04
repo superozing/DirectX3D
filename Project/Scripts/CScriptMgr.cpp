@@ -57,6 +57,7 @@
 #include "CCoverUI.h"
 #include "CDashEventListener.h"
 #include "CShootingTutorialEvent.h"
+#include "CObjectGrayMaskScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -116,6 +117,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CCoverUI");
 	_vec.push_back(L"CDashEventListener");
 	_vec.push_back(L"CShootingTutorialEvent");
+	_vec.push_back(L"CObjectGrayMaskScript");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -232,6 +234,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CDashEventListener;
 	if (L"CShootingTutorialEvent" == _strScriptName)
 		return new CShootingTutorialEvent;
+	if (L"CObjectGrayMaskScript" == _strScriptName)
+		return new CObjectGrayMaskScript;
 	return nullptr;
 }
 
@@ -406,6 +410,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::SHOOTINGTUTORIALEVENT:
 		return new CShootingTutorialEvent;
+		break;
+	case (UINT)SCRIPT_TYPE::OBJECTGRAYMASKSCRIPT:
+		return new CObjectGrayMaskScript;
 		break;
 	}
 	return nullptr;
@@ -637,6 +644,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::SHOOTINGTUTORIALEVENT:
 		return L"CShootingTutorialEvent";
+		break;
+
+	case SCRIPT_TYPE::OBJECTGRAYMASKSCRIPT:
+		return L"CObjectGrayMaskScript";
 		break;
 
 	}
