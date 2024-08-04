@@ -303,36 +303,23 @@ int CDevice::CreateDepthStencilState()
 		return E_FAIL;
 
 	// 오브젝트 그리기
-	// Stencil Mask
-	tDesc						  = {};
-	tDesc.DepthEnable			  = true; // 이미 그려진 물체 유지
-	tDesc.DepthWriteMask		  = D3D11_DEPTH_WRITE_MASK_ZERO;
-	tDesc.DepthFunc				  = D3D11_COMPARISON_LESS;
-	tDesc.StencilEnable			  = true; // Stencil 필수
-	tDesc.StencilReadMask		  = 0xFF; // 모든 비트 다 사용
-	tDesc.StencilWriteMask		  = 0xFF; // 모든 비트 다 사용
-	tDesc.FrontFace.StencilFailOp = tDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-	tDesc.FrontFace.StencilDepthFailOp = tDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-	tDesc.FrontFace.StencilPassOp = tDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
-	tDesc.FrontFace.StencilFunc = tDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+	tDesc				   = {};
+	tDesc.DepthEnable	   = true;
+	tDesc.DepthFunc		   = D3D11_COMPARISON_LESS_EQUAL;
+	tDesc.DepthWriteMask   = D3D11_DEPTH_WRITE_MASK_ALL;
+	tDesc.StencilEnable	   = true;
+	tDesc.StencilReadMask  = 0xFF;
+	tDesc.StencilWriteMask = 0xFF;
 
-	// tDesc				   = {};
-	// tDesc.DepthEnable	   = true;
-	// tDesc.DepthFunc		   = D3D11_COMPARISON_LESS_EQUAL;
-	// tDesc.DepthWriteMask   = D3D11_DEPTH_WRITE_MASK_ALL;
-	// tDesc.StencilEnable	   = true;
-	// tDesc.StencilReadMask  = 0xFF;
-	// tDesc.StencilWriteMask = 0xFF;
+	tDesc.FrontFace.StencilFunc		   = D3D11_COMPARISON_ALWAYS;
+	tDesc.FrontFace.StencilPassOp	   = D3D11_STENCIL_OP_REPLACE;
+	tDesc.FrontFace.StencilFailOp	   = D3D11_STENCIL_OP_KEEP;
+	tDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
 
-	// tDesc.FrontFace.StencilFunc		   = D3D11_COMPARISON_ALWAYS;
-	// tDesc.FrontFace.StencilPassOp	   = D3D11_STENCIL_OP_REPLACE;
-	// tDesc.FrontFace.StencilFailOp	   = D3D11_STENCIL_OP_KEEP;
-	// tDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-
-	// tDesc.BackFace.StencilFunc		  = D3D11_COMPARISON_ALWAYS;
-	// tDesc.BackFace.StencilPassOp	  = D3D11_STENCIL_OP_REPLACE;
-	// tDesc.BackFace.StencilFailOp	  = D3D11_STENCIL_OP_KEEP;
-	// tDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+	tDesc.BackFace.StencilFunc		  = D3D11_COMPARISON_ALWAYS;
+	tDesc.BackFace.StencilPassOp	  = D3D11_STENCIL_OP_REPLACE;
+	tDesc.BackFace.StencilFailOp	  = D3D11_STENCIL_OP_KEEP;
+	tDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
 
 	hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::STENCIL_WRITE].GetAddressOf());
 	if (FAILED(hr))
@@ -344,15 +331,17 @@ int CDevice::CreateDepthStencilState()
 	tDescTestMask.DepthFunc				   = D3D11_COMPARISON_LESS_EQUAL;
 	tDescTestMask.DepthWriteMask		   = D3D11_DEPTH_WRITE_MASK_ALL;
 	tDescTestMask.StencilEnable			   = true;
-	tDescTestMask.StencilReadMask		   = (UINT)STENCIL_TYPE::GRAY; // 테스트할 비트 마스크 (1)
+	tDescTestMask.StencilReadMask		   = 1 << (UINT)STENCIL_TYPE::GRAY; // 테스트할 비트 마스크 (2)
 	tDescTestMask.StencilWriteMask		   = 0xFF;
 
-	tDescTestMask.FrontFace.StencilFunc		   = D3D11_COMPARISON_EQUAL; // GRAY 비트가 설정된 경우 통과
+	tDescTestMask.FrontFace.StencilFunc =
+		D3D11_COMPARISON_NOT_EQUAL; // GRAY 비트가 미설정된 경우만 그냥통과(discard),설정된경우는 쉐이더로들어감
 	tDescTestMask.FrontFace.StencilPassOp	   = D3D11_STENCIL_OP_KEEP;
 	tDescTestMask.FrontFace.StencilFailOp	   = D3D11_STENCIL_OP_KEEP;
 	tDescTestMask.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
 
-	tDescTestMask.BackFace.StencilFunc		  = D3D11_COMPARISON_EQUAL; // GRAY 비트가 설정된 경우 통과
+	tDescTestMask.BackFace.StencilFunc =
+		D3D11_COMPARISON_NOT_EQUAL; // GRAY 비트가 미설정된 경우만 그냥통과(discard),설정된경우는 쉐이더로들어감
 	tDescTestMask.BackFace.StencilPassOp	  = D3D11_STENCIL_OP_KEEP;
 	tDescTestMask.BackFace.StencilFailOp	  = D3D11_STENCIL_OP_KEEP;
 	tDescTestMask.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
