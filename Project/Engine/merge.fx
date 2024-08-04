@@ -176,8 +176,12 @@ float4 PS_Merge(VS_OUT _in) : SV_Target
     float4 vDiffuse = g_tex_1.Sample(g_sam_0, _in.vUV);
     float4 Specular = g_tex_2.Sample(g_sam_0, _in.vUV);
     float4 Emissive = g_tex_3.Sample(g_sam_0, _in.vUV);
-        
-    vOutColor = (vColor * (vDiffuse + Emissive)) + Specular;
+    
+    ;
+    if (0.f == (Emissive.r + Emissive.g + Emissive.b))
+        vOutColor = (vColor * (vDiffuse + Emissive)) + Specular;
+    else
+        vOutColor = Emissive;
     //vOutColor = g_tex_4.Sample(g_sam_0, _in.vUV);
     vOutColor.a = 1.f;
     

@@ -163,7 +163,6 @@ PS_OUT PS_Std3D_Deferred(VS_OUT _in) : SV_Target
     if (EmissiveTextureCheck)
     {
         output.vEmissive = EmissiveMap.Sample(g_sam_0, _in.vUV);
-
     }
     else
     {
