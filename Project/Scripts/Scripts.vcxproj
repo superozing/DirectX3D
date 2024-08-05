@@ -209,6 +209,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CMuzzleFlashScript.h" />
     <ClInclude Include="CObjectGrayMaskScript.h" />
     <ClInclude Include="CPanelUIScript.h" />
+    <ClInclude Include="CParticleSpawnScript.h" />
     <ClInclude Include="CPhysXMgrScript.h" />
     <ClInclude Include="CPauseBtn.h" />
     <ClInclude Include="CPausePanel.h" />
@@ -289,6 +290,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CMuzzleFlashScript.cpp" />
     <ClCompile Include="CObjectGrayMaskScript.cpp" />
     <ClCompile Include="CPanelUIScript.cpp" />
+    <ClCompile Include="CParticleSpawnScript.cpp" />
     <ClCompile Include="CPhysXMgrScript.cpp" />
     <ClCompile Include="CPauseBtn.cpp" />
     <ClCompile Include="CPausePanel.cpp" />
