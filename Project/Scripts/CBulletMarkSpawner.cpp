@@ -57,8 +57,22 @@ void CBulletMarkSpawner::SpawnBulletMarkDecal(const tRoRHitInfo& _HitInfo, CGame
 	// 노말 벡터를 z축으로 회전
 	//Vec3 vRotNormal = Vec3(-vNormal.y, vNormal.x, vNormal.z);
 	//pDecalObj->Transform()->SetRelativeRotation(GetCenterNormal().Normalize());
-	pDecalObj->Transform()->SetDir(GetCenterNormal().Normalize());
 	
+	Vec3 normal = GetCenterNormal().Normalize();
+
+	// 노말 벡터를 XMVECTOR로 변환
+	XMVECTOR normalVec = XMVectorSet(normal.x, normal.y, normal.z, 0.0f);
+
+	// 노말 벡터를 월드 공간으로 변환
+	normalVec = XMVector3TransformNormal(normalVec, g_Transform.matViewInv);
+
+	// 변환된 벡터를 Vec3로 다시 변환
+	Vec3 worldNormal;
+	XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&worldNormal), normalVec);
+	
+	// 월드 노말 기준으로 값 세팅
+	pDecalObj->Transform()->SetRelativeRotation(worldNormal);
+
 	pDecalObj->Decal()->GetDynamicMaterial(0);
 	pDecalObj->Decal()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture/particle/AlphaCircle.png"));
 	// 오브젝트를 레벨에 스폰
