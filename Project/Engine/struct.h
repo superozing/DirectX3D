@@ -151,6 +151,7 @@ struct tParticleModule
 
 	// Module On / Off
 	int arrModuleCheck[(UINT)PARTICLE_MODULE::END];
+	int				 modulepadding[2];
 
 	friend ofstream& operator<<(ofstream& fout, const tParticleModule& module);
 	friend ifstream& operator>>(ifstream& fin, tParticleModule& module);

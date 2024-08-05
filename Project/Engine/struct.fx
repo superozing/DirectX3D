@@ -105,7 +105,7 @@ struct tParticleModule
     // Module Active Check
     int arrModuleCheck[8];
     
-    int3 modulepadding;
+    int2 modulepadding;
 };
 
 
