@@ -82,7 +82,12 @@ public:
 
 	void RePositionDebugCam();
 
-	void SetDebugPosition(bool _OnOff) { m_DebugPosition = _OnOff; }
+	void SetDebugPosition(bool _OnOff)
+	{
+		if (_OnOff)
+			m_DbgShapeInfo.clear();
+		m_DebugPosition = _OnOff;
+	}
 	bool IsDebugPosition() { return m_DebugPosition; }
 
 	void RegisterLight2D(CLight2D* _Light2D) { m_vecLight2D.push_back(_Light2D); }

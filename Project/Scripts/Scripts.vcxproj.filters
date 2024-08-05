@@ -232,6 +232,9 @@
     <ClInclude Include="CShootingSystemScript.h">
       <Filter>Scripts\ShootingSystem</Filter>
     </ClInclude>
+    <ClInclude Include="CAfterImage.h">
+      <Filter>Scripts\Render\AfterImage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -465,6 +468,9 @@
     <ClCompile Include="CShootingSystemScript.cpp">
       <Filter>Scripts\ShootingSystem</Filter>
     </ClCompile>
+    <ClCompile Include="CAfterImage.cpp">
+      <Filter>Scripts\Render\AfterImage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -634,6 +640,9 @@
     </Filter>
     <Filter Include="Scripts\Level\Object">
       <UniqueIdentifier>{caa1c5dd-0086-4dfb-a00e-f60c6df53e65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Render\AfterImage">
+      <UniqueIdentifier>{99f4cea7-18fd-4509-956c-5c2ef7a671e7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -50,6 +50,8 @@ void CRenderMgr::tick()
 
 	if (m_DebugPosition)
 		render_debug();
+	else
+		m_DbgShapeInfo.clear();
 
 	Clear();
 }

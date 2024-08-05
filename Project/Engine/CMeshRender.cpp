@@ -2,16 +2,12 @@
 #include "CMeshRender.h"
 
 #include "CMesh.h"
-#include "CGraphicsShader.h"
 
 #include "CGameObject.h"
 #include "CAnimator2D.h"
 #include "CAnimator3D.h"
 #include "CTransform.h"
 #include "CMaterial.h"
-#include "CScript.h"
-
-#include "CRenderMgr.h"
 #include "CScript.h"
 
 CMeshRender::CMeshRender()

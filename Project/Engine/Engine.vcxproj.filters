@@ -286,7 +286,6 @@
     <ClInclude Include="CPhysX.h">
       <Filter>08. Component\10. PhysX</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h" />
     <ClInclude Include="RoRCollisionCallback.h">
       <Filter>04. Manager\PhysXMgr</Filter>
     </ClInclude>
@@ -305,8 +304,15 @@
     <ClInclude Include="CBlurY.h">
       <Filter>ShaderCode\03. Compute\Blur</Filter>
     </ClInclude>
-    <ClInclude Include="CUpScale.h" />
-    <ClInclude Include="CDownScale.h" />
+    <ClInclude Include="CUpScale.h">
+      <Filter>ShaderCode\03. Compute\Blur</Filter>
+    </ClInclude>
+    <ClInclude Include="CDownScale.h">
+      <Filter>ShaderCode\03. Compute\Blur</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Default</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -558,8 +564,12 @@
     <ClCompile Include="CBlurY.cpp">
       <Filter>ShaderCode\03. Compute\Blur</Filter>
     </ClCompile>
-    <ClCompile Include="CUpScale.cpp" />
-    <ClCompile Include="CDownScale.cpp" />
+    <ClCompile Include="CDownScale.cpp">
+      <Filter>ShaderCode\03. Compute\Blur</Filter>
+    </ClCompile>
+    <ClCompile Include="CUpScale.cpp">
+      <Filter>ShaderCode\03. Compute\Blur</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -950,8 +960,6 @@
     <FxCompile Include="cromatic_aberration.fx">
       <Filter>ShaderCode\02. Render\3DShader</Filter>
     </FxCompile>
-    <FxCompile Include="damageddirection.fx" />
-    <FxCompile Include="event_detect.fx" />
     <FxCompile Include="atlasDynamicUI.fx">
       <Filter>ShaderCode\02. Render\UIShader</Filter>
     </FxCompile>
@@ -973,8 +981,19 @@
     <FxCompile Include="obj_grayfilter.fx">
       <Filter>ShaderCode\02. Render\3DShader</Filter>
     </FxCompile>
+    <FxCompile Include="AfterImageRender.fx">
+      <Filter>ShaderCode\02. Render\3DShader</Filter>
+    </FxCompile>
+    <FxCompile Include="damageddirection.fx">
+      <Filter>ShaderCode\02. Render\3DShader</Filter>
+    </FxCompile>
+    <FxCompile Include="event_detect.fx">
+      <Filter>ShaderCode\02. Render\3DShader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Engine.rc" />
+    <ResourceCompile Include="Engine.rc">
+      <Filter>Default</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

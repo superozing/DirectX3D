@@ -69,6 +69,7 @@
 #include "CBulletShellSpawner.h"
 #include "CBulletMarkSpawner.h"
 #include "CShootingSystemScript.h"
+#include "CAfterImage.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -140,6 +141,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CBulletShellSpawner");
 	_vec.push_back(L"CBulletMarkSpawner");
 	_vec.push_back(L"CShootingSystemScript");
+	_vec.push_back(L"CAfterImage");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -280,6 +282,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CBulletMarkSpawner;
 	if (L"CShootingSystemScript" == _strScriptName)
 		return new CShootingSystemScript;
+	if (L"CAfterImage" == _strScriptName)
+		return new CAfterImage;
 	return nullptr;
 }
 
@@ -490,6 +494,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::SHOOTINGSYSTEMSCRIPT:
 		return new CShootingSystemScript;
+		break;
+	case (UINT)SCRIPT_TYPE::AFTERIMAGE:
+		return new CAfterImage;
 		break;
 	}
 	return nullptr;
@@ -769,6 +776,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::SHOOTINGSYSTEMSCRIPT:
 		return L"CShootingSystemScript";
+		break;
+
+	case SCRIPT_TYPE::AFTERIMAGE:
+		return L"CAfterImage";
 		break;
 
 	}
