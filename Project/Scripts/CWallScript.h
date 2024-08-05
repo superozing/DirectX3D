@@ -5,13 +5,6 @@
 class CWallScript : public CScript
 {
 private:
-	WrapMode m_Mode;
-	Vec2	 PlaneScale;
-
-	Vec2 OriginTexSize;
-	Vec2 WrapSize;
-	void ChangeWrapMode();
-
 public:
 	virtual void begin() override;
 	virtual void tick() override;

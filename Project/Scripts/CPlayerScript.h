@@ -250,6 +250,8 @@ public:
 		Transform()->SetRelativeScale(vScale);
 	}
 
+	CRoRStateMachine<CPlayerScript>* GetStateMachine() { return m_FSM; }
+
 public:
 	virtual void begin() override;
 	virtual void tick() override;
@@ -415,9 +417,4 @@ private:
 	void ChangeToDash();
 	/// @brief 조건에 따라 일반 공격으로 변경해주는 함수입니다.
 	void NormalAttack();
-
-	// Test 함수
-private:
-	/// @brief 커버 타입 판정 하기 전까지 필요한 함수
-	void SwitchCoverType();
 };

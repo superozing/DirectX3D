@@ -21,6 +21,7 @@
 #include "CMemoryPoolMgr.h"
 
 Restart_Level	CLevelMgr::LevelChangeFunc = nullptr;
+LevelLoad		CLevelMgr::LevelLoadFunc   = nullptr;
 Save_CheckPoint CLevelMgr::CheckPointFunc  = nullptr;
 
 CLevelMgr::CLevelMgr()

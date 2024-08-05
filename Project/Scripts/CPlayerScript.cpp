@@ -335,9 +335,6 @@ void CPlayerScript::tick()
 	ChangeToVictory();
 	ChangeToDash();
 
-	// 엄폐 판정 할 수 있게되면 지울 함수
-	SwitchCoverType();
-
 	if (KEY_TAP(CPlayerController::Skill))
 	{
 		m_FSM->SetCurState((int)PLAYER_STATE::SkillThrow);
@@ -351,7 +348,7 @@ void CPlayerScript::tick()
 		m_tStatus.MoveSpeed = 5 * originSpeed;
 	}
 
-	if (KEY_TAP(TAB))
+	if (KEY_TAP(CPlayerController::Flip))
 	{
 		SetRight(!IsRight());
 	}
@@ -637,16 +634,6 @@ void CPlayerScript::NormalAttack()
 
 			m_FSM->SetCurState((int)PLAYER_STATE::NormalAttackIng);
 	}
-}
-
-void CPlayerScript::SwitchCoverType()
-{
-	if (KEY_TAP(KEY::_1))
-		SetCoverType(CoverType::Normal);
-	if (KEY_TAP(KEY::_2))
-		SetCoverType(CoverType::Stand);
-	if (KEY_TAP(KEY::_3))
-		SetCoverType(CoverType::Kneel);
 }
 
 void CPlayerScript::BeginOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)
