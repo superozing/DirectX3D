@@ -1,12 +1,9 @@
 ﻿#pragma once
 #include <Engine/CScript.h>
-
-class CBulletMarkSpawner : public CScript
+class CBulletHitParticleSpawner : public CScript
 {
 private:
-	list<pair<CGameObject*, float>> m_BulletDecalList;
-
-	Ptr<CTexture> m_NormalTargetTex;
+	list<pair<CGameObject*, float>> m_BulletShellList;
 
 	class CMemoryPoolMgrScript* m_PoolMgr;
 
@@ -14,20 +11,16 @@ public:
 	virtual void begin() override;
 	virtual void tick() override;
 
-
 	virtual void SaveToFile(FILE* _File) override;
 	virtual void SaveToFile(ofstream& fout) override;
 	virtual void LoadFromFile(FILE* _File) override;
 	virtual void LoadFromFile(ifstream& fin) override;
 
 public:
-	void SpawnBulletMarkDecal(const struct tRoRHitInfo& _HitInfo, CGameObject* _pPlayer, float _ActiveTime = 3.f);
-
-private:
-	Vec3 GetCenterNormal();
+	void SpawnBulletHitParticle(const struct tRoRHitInfo& _HitInfo);
 
 public:
-	CLONE(CBulletMarkSpawner);
-	CBulletMarkSpawner();
-	~CBulletMarkSpawner();
+	CLONE(CBulletHitParticleSpawner);
+	CBulletHitParticleSpawner();
+	~CBulletHitParticleSpawner();
 };

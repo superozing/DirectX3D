@@ -4,6 +4,7 @@
 #include <Engine/CMemoryPoolMgr.h>
 
 #include "CMemoryPoolMgrScript.h"
+#include "CBulletScript.h"
 
 #define Bullet_ShellPath "prefab/ShootingSystem/Bullet_Shell.pref"
 
@@ -15,7 +16,7 @@ CBulletShellSpawner::CBulletShellSpawner()
 CBulletShellSpawner::~CBulletShellSpawner()
 {
 }
-
+	
 void CBulletShellSpawner::begin()
 {
 	// 메모리 풀 관리자 가져오기
@@ -47,33 +48,28 @@ void CBulletShellSpawner::SpawnBulletShell(CGameObject* _pPlayer, float _ActiveT
 {
 
 	Matrix _ParentWorldMat = _pPlayer->Transform()->GetWorldMat();
+	Matrix _WeaponBoneMat = _pPlayer->Animator3D()->FindBoneMat(L"Bip001_Weapon");
 
-	// Matrix _WeaponBoneMat = _pObj->Transform()->
-	// m_pPlayer->Animator3D()->FindBoneMat(L"Bip001_Weapon"),
-
-	Vec3 _RightDir = _pPlayer->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
-	Vec3 _UpDir	   = _pPlayer->Transform()->GetWorldDir(DIR_TYPE::UP);
-
-	// 필요한 정보
-	//	1. _WeaponBoneMat
-	//		총 위치의 본 매트릭스에 탄피를 생성시키기 위해서.
-
-	// + 90도 회전이 추가되어야 탄피가 앞쪽을 바라본다.
 
 	// 풀에서 오브젝트 가져오기
 	auto pBulletShell = m_PoolMgr->PopObject(Bullet_ShellPath);
 
-	// 기본 크기 설정해주기
-	pBulletShell->Transform()->SetWorldMat(_ParentWorldMat);
-	Vec3 vPos = pBulletShell->Transform()->GetRelativePos();
+	// 플레이어 무기의 매트릭스 구하기
+	Matrix WeaponMat = _WeaponBoneMat * _pPlayer->Transform()->GetWorldMat();
 
-	vPos += (_RightDir * 50.f);
-	vPos += (_UpDir * 50.f);
+	// 탄피 위치와 회전 설정
+	pBulletShell->Transform()->SetRelativePos(WeaponMat.Translation());
 
-	pBulletShell->Transform()->SetRelativePos(vPos);
+	// + 90도 회전이 추가되어야 탄피가 앞쪽을 바라본다.
+	pBulletShell->Transform()->SetRelativeRotation(WeaponMat.Up());
+
+	// 힘 주기
+	auto pBulletScript = pBulletShell->GetScript<CBulletScript>(); // WeaponMat.Front()
+	auto rDir		   = _ParentWorldMat.Right().Normalize();	   // WeaponMat.Right().Normalize();
+	pBulletScript->SetLinearVelocity((rDir * 300.f) + (Vec3(0, 1, 0) * 0));
 
 	// 게임 오브젝트 스폰
-	GamePlayStatic::SpawnGameObject(pBulletShell, 0);
+	GamePlayStatic::SpawnGameObject(pBulletShell, (UINT)LAYER::LAYER_ETC_OBJECT);
 
 	// 관리를 위해 리스트에 추가
 	m_BulletShellList.push_back({pBulletShell, _ActiveTime});

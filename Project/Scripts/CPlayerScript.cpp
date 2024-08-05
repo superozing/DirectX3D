@@ -352,6 +352,17 @@ void CPlayerScript::tick()
 	{
 		SetRight(!IsRight());
 	}
+
+	// 탄피 힘 방향을 확인하기 위한 자동 사격
+	//static float autoShoot = 0.f;
+	//autoShoot += DT;
+
+	//if (autoShoot > 0.5f)
+	//{
+	//	m_pShootingSystem->ShootPlayerBulletRay();
+	//	autoShoot = 0.f;
+	//}
+
 }
 
 void CPlayerScript::CameraMove()

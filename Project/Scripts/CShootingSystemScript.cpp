@@ -9,6 +9,8 @@
 #include "CDamagedDirectionMgr.h"
 #include "CBulletMarkSpawner.h"
 #include "CBulletShellSpawner.h"
+#include "CBulletHitParticleSpawner.h"
+#include "CShootingRecoil.h"
 #include "CPlayerScript.h"
 
 CShootingSystemScript::CShootingSystemScript()
@@ -41,30 +43,79 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 
 	if (isBulletHit)
 	{
-		// 데미지 처리, 파티클 시스템 등등...
-		if (hitInfo.pOtherObj->GetLayerIdx() == (UINT)LAYER::LAYER_PLAYER)
+		// 맞은 오브젝트의 인덱스에 따라서 효과를 주어요.
+		switch ((LAYER)hitInfo.pOtherObj->GetLayerIdx())
 		{
-			int a = 0;
+		case LAYER::LAYER_DEFAULT:
+			break;
+
+		case LAYER::LAYER_PLANE:
+		case LAYER::LAYER_CEIL:
+		case LAYER::LAYER_WALL:
+		{
+			m_pBulletMarkDecalSpawner->SpawnBulletMarkDecal(hitInfo, m_pPlayer);
+			m_pBulletHitParticleSpawner->SpawnBulletHitParticle(hitInfo);
+		}
+			break;
+
+		case LAYER::LAYER_PLAYER:
+			break;
+
+		case LAYER::LAYER_PLAYER_SKILL:
+			break;
+
+		case LAYER::LAYER_MONSTER:
+		{
+			if (hitInfo.pOtherObj->PhysX()->m_bPhysBodyType == PhysBodyType::DYNAMIC)
+			{
+				hitInfo.pOtherObj->PhysX()->applyBulletImpact(
+					PxVec3(ShootDir.x, ShootDir.y, ShootDir.z), 1000.f,
+					PxVec3(hitInfo.vHitPos.x, hitInfo.vHitPos.y, hitInfo.vHitPos.z));
+			}
+		}
+			break;
+
+		case LAYER::LAYER_MONSTER_SKILL:
+			break;
+
+		case LAYER::LAYER_BOSS:
+			break;
+
+		case LAYER::LAYER_BOSS_SKILL:
+			break;
+
+		case LAYER::LAYER_LIGHT:
+			break;
+
+		case LAYER::LAYER_EVENT:
+			break;
+
+		case LAYER::LAYER_RAYCAST:
+			break;
+
+		case LAYER::LAYER_PLAYER_CAMERA_RAY:
+			break;
+
+		case LAYER::LAYER_PLAYER_SHOOTING_RAY:
+			break;
+
+		case LAYER::LAYER_ETC_OBJECT:
+			break;
+
+		case LAYER::LAYER_UI:
+			break;
+
+		default:
+			break;
 		}
 
-		if (hitInfo.pOtherObj->GetLayerIdx() == (UINT)LAYER::LAYER_WALL)
-		{
-			// 데칼 오브젝트 스폰
-			m_pBulletMarkDecalSpawner->SpawnBulletMarkDecal(
-				hitInfo.pOtherObj->Transform()->GetWorldDir(DIR_TYPE::FRONT), hitInfo.vHitPos);
-		}
-
-		if (hitInfo.pOtherObj->GetLayerIdx() == (UINT)LAYER::LAYER_MONSTER &&
-			(hitInfo.pOtherObj->PhysX()->m_bPhysBodyType == PhysBodyType::DYNAMIC))
-		{
-			hitInfo.pOtherObj->PhysX()->applyBulletImpact(
-				PxVec3(ShootDir.x, ShootDir.y, ShootDir.z), 1000.f,
-				PxVec3(hitInfo.vHitPos.x, hitInfo.vHitPos.y, hitInfo.vHitPos.z));
-		}
 	}
 
-	// 무기 본 매트릭스에 탄피 세팅
+	// 무기 본 위치에 탄피 오브젝트 생성, Velocity 추가
 	m_pBulletShellSpawner->SpawnBulletShell(m_pPlayer);
+
+	// 반동 적용
+	m_pShootingRecoil->ApplyShootingRecoil();
 
 	// SpreadRatio 늘리기
 	m_fSpreadRatio += m_fSpreadRatioSpeed * DT;
@@ -110,6 +161,16 @@ void CShootingSystemScript::begin()
 
 	m_pBulletShellSpawner = new CBulletShellSpawner;
 	GetOwner()->AddComponent(m_pBulletShellSpawner);
+
+	m_pBulletHitParticleSpawner = new CBulletHitParticleSpawner;
+	GetOwner()->AddComponent(m_pBulletHitParticleSpawner);
+
+	m_pShootingRecoil = new CShootingRecoil;
+	GetOwner()->AddComponent(m_pShootingRecoil);
+	
+	// 윈도우 좌표 기준이기 떄문에 반동을 주기 위해 y를 -방향으로 세팅
+	m_pShootingRecoil->SetShootingRecoilValue(Vec2(0.f, -1.f)); // 나중에 수치를 조정할 필요가 있음.
+	// 예를 들어 자세에 따라서 다른 반동을 준다던가... 그런 것 들 말이죠.
 }
 
 void CShootingSystemScript::tick()

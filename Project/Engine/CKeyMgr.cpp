@@ -136,6 +136,7 @@ void CKeyMgr::tick()
 			GetCursorPos(&pt);
 			ScreenToClient(CEngine::GetInst()->GetMainWind(), &pt);
 			m_vMousePos = Vec2((float)pt.x, (float)pt.y) + m_vMouseOffset;
+			m_vMouseOffset = Vec2();
 
 			// 현재 메인 윈도우 가져오기
 			HWND MainWind = CEngine::GetInst()->GetMainWind();
@@ -166,6 +167,7 @@ void CKeyMgr::tick()
 			GetCursorPos(&pt);
 			ScreenToClient(CEngine::GetInst()->GetMainWind(), &pt);
 			m_vMousePos = Vec2((float)pt.x, (float)pt.y) + m_vMouseOffset;
+			m_vMouseOffset = Vec2();
 		}
 
 		// 마우스 이동 방향 계산
