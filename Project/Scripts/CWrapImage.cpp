@@ -1,8 +1,6 @@
 ﻿#include "pch.h"
 #include "CWrapImage.h"
 
-static string staticstrWrapMode = "";
-
 CWrapImage::CWrapImage()
 	: CScript((UINT)SCRIPT_TYPE::WRAPIMAGE)
 	, m_Mode(WrapMode::BasedOnTexture)
@@ -10,8 +8,8 @@ CWrapImage::CWrapImage()
 	, OriginTexSize(0.f, 0.f)
 	, ToSaveWrapSize(0.f, 0.f)
 {
-	staticstrWrapMode = ToString(magic_enum::enum_name(m_Mode));
-	AppendScriptParam("Wrap Mode", SCRIPT_PARAM::STRING, (void*)&staticstrWrapMode);
+	m_strMode = ToString(magic_enum::enum_name(m_Mode));
+	AppendScriptParam("Wrap Mode", SCRIPT_PARAM::STRING, (void*)&m_strMode);
 	AppendMemberFunction("ChangeMode", SCRIPT_PARAM::FUNC_MEMBER, "Wrap", std::bind(&CWrapImage::ChangeWrapMode, this));
 	AppendScriptParam("Custom Wrap Size", SCRIPT_PARAM::VEC2, (void*)&WrapSize);
 }
@@ -23,14 +21,14 @@ CWrapImage::~CWrapImage()
 void CWrapImage::begin()
 {
 	PlaneScale = Vec2(GetOwner()->Transform()->GetRelativeScale().x, GetOwner()->Transform()->GetRelativeScale().y);
-
+	GetOwner()->MeshRender()->GetDynamicMaterial(0);
 	OriginTexSize = Vec2(GetOwner()->MeshRender()->GetMaterial(0)->GetTexParam(TEX_PARAM::TEX_0).Get()->GetWidth(),
 						 GetOwner()->MeshRender()->GetMaterial(0)->GetTexParam(TEX_PARAM::TEX_0).Get()->GetHeight());
 }
 
 void CWrapImage::tick()
 {
-	staticstrWrapMode = ToString(magic_enum::enum_name(m_Mode));
+	m_strMode = ToString(magic_enum::enum_name(m_Mode));
 
 	Vec2 ObjPlaneScale =
 		Vec2(GetOwner()->Transform()->GetRelativeScale().x, GetOwner()->Transform()->GetRelativeScale().y);
@@ -60,7 +58,7 @@ void CWrapImage::ChangeWrapMode()
 		m_Mode = WrapMode::BasedOnTexture;
 	}
 
-	staticstrWrapMode = ToString(magic_enum::enum_name(m_Mode));
+	m_strMode = ToString(magic_enum::enum_name(m_Mode));
 }
 
 #define TagWrapType "[WrapType]"
@@ -85,7 +83,7 @@ void CWrapImage::LoadFromFile(ifstream& fin)
 	auto Type = magic_enum::enum_cast<WrapMode>(strWrapType);
 	m_Mode	  = Type.value();
 
-	staticstrWrapMode = ToString(magic_enum::enum_name(m_Mode));
+	m_strMode = ToString(magic_enum::enum_name(m_Mode));
 
 	Vec2 TempWrapSize;
 	Utils::GetLineUntilString(fin, TagWrapSize);

@@ -73,7 +73,21 @@ void CMeshRender::render()
 			continue;
 
 		GetMaterial(i)->UpdateData();
+
+		// 스크립트 UD
+		vector<CScript*> vecScript = GetOwner()->GetScripts();
+		for (int i = 0; i < vecScript.size(); ++i)
+		{
+			vecScript[i]->UpdateData();
+		}
+
 		GetMesh()->render(i);
+
+		// 스크립트 CD
+		for (int i = 0; i < vecScript.size(); ++i)
+		{
+			vecScript[i]->Clear();
+		}
 	}
 
 	// Animation 관련 정보 제거
@@ -106,18 +120,24 @@ void CMeshRender::render(UINT _Subset)
 		GetMaterial(_Subset)->SetBoneCount(Animator3D()->GetBoneCount());
 	}
 
-	vector<CScript*> vecScript = GetOwner()->GetScripts();
+	// 사용할 재질 업데이트
+	GetMaterial(_Subset)->UpdateData();
 
+	// 스크립트 UD
+	vector<CScript*> vecScript = GetOwner()->GetScripts();
 	for (int i = 0; i < vecScript.size(); ++i)
 	{
 		vecScript[i]->UpdateData();
 	}
 
-	// 사용할 재질 업데이트
-	GetMaterial(_Subset)->UpdateData();
-
 	// 사용할 메쉬 업데이트 및 렌더링
 	GetMesh()->render(_Subset);
+
+	// 스크립트 CD
+	for (int i = 0; i < vecScript.size(); ++i)
+	{
+		vecScript[i]->Clear();
+	}
 
 	// Animation 관련 정보 제거
 	if (Animator2D())
@@ -125,9 +145,4 @@ void CMeshRender::render(UINT _Subset)
 
 	if (Animator3D())
 		Animator3D()->ClearData();
-
-	for (int i = 0; i < vecScript.size(); ++i)
-	{
-		vecScript[i]->Clear();
-	}
 }

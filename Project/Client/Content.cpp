@@ -454,6 +454,7 @@ void Content::DirectoryUI()
 				}
 				CLevel* pLevel = CLevelSaveLoad::LoadLevel(LEVELTemplate);
 				pLevel->SetName(path(ToString(contentPath)).stem());
+				pLevel->SetRelativePath(ToString(CPathMgr::GetRelativePath(szSelect)));
 				CLevelSaveLoad::SaveLevel(pLevel, CPathMgr::GetRelativePath(szSelect));
 				GamePlayStatic::ChangeLevel(pLevel, LEVEL_STATE::STOP);
 			}

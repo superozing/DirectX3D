@@ -427,6 +427,11 @@ void CCamera::render_Instance(const map<ULONG64, vector<tInstObj>>& m_mapInstGro
 		}
 
 		pMtrl->UpdateData_Inst();
+		// auto vecScript = pObj->GetScripts();
+		// for (int i = 0; i < vecScript.size(); ++i)
+		//{
+		//	vecScript[i]->UpdateData();
+		// }
 		pMesh->render_instancing(pair.second[0].iMtrlIdx);
 
 		// 정리
@@ -489,6 +494,8 @@ void CCamera::render_postprocess()
 	}
 
 	Cromatic_Aberration();
+
+	GrayFilter_by_Object();
 
 	// for (size_t i = 0; i < m_vecPostProcess.size(); ++i)
 	//{
@@ -645,6 +652,31 @@ void CCamera::Cromatic_Aberration()
 
 	// 타겟->리소스 복사
 	CRenderMgr::GetInst()->CopyFromTextureToTexture(ColorCopy, RenderTarget);
+	pRectMesh->render(0);
+}
+
+void CCamera::GrayFilter_by_Object()
+{
+	// 리소스,타겟 얻어오기
+	auto PPTEX1 = CAssetMgr::GetInst()->FindAsset<CTexture>(L"PostProcessTex");
+	auto RTTEX	= CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
+
+	// 매쉬,머터리얼 받아오기
+	static Ptr<CMesh>	  pRectMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect);
+	static Ptr<CMaterial> pGrayMtrl;
+	pGrayMtrl = CAssetMgr::GetInst()->Load<CMaterial>(MTRLObjGrayFilter);
+
+	// 흑백방법
+	auto bGrayWieght = CRenderMgr::GetInst()->m_bGrayWeight;
+
+	// 텍스쳐, 블랜드비율 바인딩
+	pGrayMtrl->SetTexParam(TEX_PARAM::TEX_0, PPTEX1);
+	pGrayMtrl->SetScalarParam(SCALAR_PARAM::BOOL_0, bGrayWieght);
+	pGrayMtrl->UpdateData();
+	CONTEXT->OMSetDepthStencilState(CDevice::GetInst()->GetDSState(DS_TYPE::STENCIL_GRAY_TEST).Get(), 1);
+
+	// 타겟->리소스 복사
+	CRenderMgr::GetInst()->CopyFromTextureToTexture(PPTEX1, RTTEX);
 	pRectMesh->render(0);
 }
 

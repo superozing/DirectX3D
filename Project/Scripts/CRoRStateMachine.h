@@ -115,6 +115,14 @@ public:
 	void SetCurState(int _ToState) { m_StateMgr.SetCurState(_ToState); }
 	int	 GetCurState() { return m_StateMgr.GetCurStateInt(); }
 	int	 GetPrevState() { return m_StateMgr.GetPrevStateInt(); }
+	bool StateBegin(int _state)
+	{
+		if (m_bChangedStates && GetCurState() == _state)
+		{
+			return true;
+		}
+		return false;
+	}
 
 	// 로깅용
 	void ReflectState(CGameObject* from, int index, string name);

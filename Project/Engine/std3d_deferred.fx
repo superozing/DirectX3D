@@ -153,13 +153,16 @@ PS_OUT PS_Std3D_Deferred(VS_OUT _in) : SV_Target
             output.vRelativeLuminance = float4(0.f, 0.f, 0.f, 1.f);
         }
     }
+    else
+    {
+        output.vRelativeLuminance = float4(0.f, 0.f, 0.f, 1.f);
+    }
     
     output.vNormal = float4(vViewNormal, 1.f);
     
     if (EmissiveTextureCheck)
     {
         output.vEmissive = EmissiveMap.Sample(g_sam_0, _in.vUV);
-
     }
     else
     {

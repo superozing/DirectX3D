@@ -18,6 +18,8 @@ private:
 
 	Vec2 ToSaveWrapSize;
 
+	string m_strMode;
+
 private:
 	void ChangeWrapMode();
 
