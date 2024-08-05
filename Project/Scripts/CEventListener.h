@@ -20,6 +20,8 @@ private:
 	/// @brief 디버깅을 위한 변수입니다.
 	bool m_bDrawing = true;
 
+	bool m_bActivate = true;
+
 public:
 	/// @brief 판정하고 싶은 스크립트를 추가합니다.
 	void AddTarget(SCRIPT_TYPE _type);
@@ -29,6 +31,10 @@ public:
 	const vector<SCRIPT_TYPE>& GetTargets() { return m_vecTargets; }
 
 	bool HasTargets() { return m_iInternalTargetCnt > 0; }
+	bool IsActivate() { return m_bActivate; }
+	void Activate(bool _activate) { m_bActivate = _activate; }
+
+	static bool m_bAllDraw;
 
 public:
 	void AddTargetEditor();

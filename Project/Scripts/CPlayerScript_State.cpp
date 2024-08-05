@@ -7,6 +7,7 @@
 
 #include "CPlayerController.h"
 #include "CCrosshair.h"
+#include "CShootingSystemScript.h"
 
 #define MoveStartCondition                                                              \
 	(KEY_TAP(CPlayerController::Front) || KEY_PRESSED(CPlayerController::Front)) &&     \
@@ -87,6 +88,8 @@ void CPlayerScript::NormalAttackIngBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::NormalAttackIng, 0, 5.f);
 	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalAttackStart]);
+	m_pShootingSystem->ShootPlayerBulletRay();
+	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
 }
 
 int CPlayerScript::NormalAttackIngUpdate()
@@ -100,6 +103,7 @@ int CPlayerScript::NormalAttackIngUpdate()
 
 void CPlayerScript::NormalAttackIngEnd()
 {
+	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Stop();
 }
 
 void CPlayerScript::NormalAttackDelayBegin()
@@ -167,7 +171,7 @@ int CPlayerScript::StandIdleUpdate()
 
 	// 사격
 	if ((KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack)) &&
-		m_pShootingSystem->IsShootingAvailable())
+		m_pShootingSystem->IsShootAvailable())
 		return (int)PLAYER_STATE::StandAttackIng;
 
 	return m_FSM->GetCurState();
@@ -208,7 +212,7 @@ int CPlayerScript::StandAttackStartUpdate()
 		return (int)PLAYER_STATE::StandAttackDelay;
 
 	if ((KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack)) &&
-		m_pShootingSystem->IsShootingAvailable())
+		m_pShootingSystem->IsShootAvailable())
 		return (int)PLAYER_STATE::StandAttackIng;
 
 	return m_FSM->GetCurState();
@@ -222,6 +226,8 @@ void CPlayerScript::StandAttackIngBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::StandAttackIng, 0, 5.f);
 	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::StandAttackStart]);
+	m_pShootingSystem->ShootPlayerBulletRay();
+	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
 }
 
 int CPlayerScript::StandAttackIngUpdate()
@@ -235,6 +241,7 @@ int CPlayerScript::StandAttackIngUpdate()
 
 void CPlayerScript::StandAttackIngEnd()
 {
+	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Stop();
 }
 
 void CPlayerScript::StandAttackDelayBegin()
@@ -246,7 +253,7 @@ int CPlayerScript::StandAttackDelayUpdate()
 {
 	// 사격
 	if ((KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack)) &&
-		m_pShootingSystem->IsShootingAvailable())
+		m_pShootingSystem->IsShootAvailable())
 		return (int)PLAYER_STATE::StandAttackIng;
 
 	// 재장전
@@ -282,7 +289,7 @@ int CPlayerScript::StandAttackEndUpdate()
 
 	// 사격
 	if ((KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack)) &&
-		m_pShootingSystem->IsShootingAvailable())
+		m_pShootingSystem->IsShootAvailable())
 		return (int)PLAYER_STATE::StandAttackIng;
 
 	return m_FSM->GetCurState();
@@ -319,7 +326,7 @@ int CPlayerScript::KneelIdleUpdate()
 
 	// 사격
 	if ((KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack)) &&
-		m_pShootingSystem->IsShootingAvailable())
+		m_pShootingSystem->IsShootAvailable())
 		return (int)PLAYER_STATE::KneelAttackIng;
 
 	return m_FSM->GetCurState();
@@ -361,7 +368,7 @@ int CPlayerScript::KneelAttackStartUpdate()
 
 	// 사격
 	if ((KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack)) &&
-		m_pShootingSystem->IsShootingAvailable())
+		m_pShootingSystem->IsShootAvailable())
 		return (int)PLAYER_STATE::KneelAttackIng;
 
 	return m_FSM->GetCurState();
@@ -375,6 +382,8 @@ void CPlayerScript::KneelAttackIngBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::KneelAttackIng, 0, 5.f);
 	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::KneelAttackStart], 0.1f);
+	m_pShootingSystem->ShootPlayerBulletRay();
+	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
 }
 
 int CPlayerScript::KneelAttackIngUpdate()
@@ -388,6 +397,7 @@ int CPlayerScript::KneelAttackIngUpdate()
 
 void CPlayerScript::KneelAttackIngEnd()
 {
+	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Stop();
 }
 
 void CPlayerScript::KneelAttackDelayBegin()
@@ -399,7 +409,7 @@ int CPlayerScript::KneelAttackDelayUpdate()
 {
 	// 사격
 	if ((KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack)) &&
-		m_pShootingSystem->IsShootingAvailable())
+		m_pShootingSystem->IsShootAvailable())
 		return (int)PLAYER_STATE::KneelAttackIng;
 
 	// 재장전
@@ -435,7 +445,7 @@ int CPlayerScript::KneelAttackEndUpdate()
 
 	// 사격
 	if ((KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack)) &&
-		m_pShootingSystem->IsShootingAvailable())
+		m_pShootingSystem->IsShootAvailable())
 		return (int)PLAYER_STATE::KneelAttackIng;
 
 	return m_FSM->GetCurState();
@@ -574,7 +584,7 @@ int CPlayerScript::MoveEndStandUpdate()
 
 	// 사격
 	if ((KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack)) &&
-		m_pShootingSystem->IsShootingAvailable())
+		m_pShootingSystem->IsShootAvailable())
 		return (int)PLAYER_STATE::StandAttackIng;
 
 	return m_FSM->GetCurState();
@@ -602,7 +612,7 @@ int CPlayerScript::MoveEndKneelUpdate()
 
 	// 사격
 	if ((KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack)) &&
-		m_pShootingSystem->IsShootingAvailable())
+		m_pShootingSystem->IsShootAvailable())
 		return (int)PLAYER_STATE::KneelAttackIng;
 
 	return m_FSM->GetCurState();

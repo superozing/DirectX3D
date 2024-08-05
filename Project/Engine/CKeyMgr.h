@@ -69,14 +69,24 @@ private:
 	FOCUS_STATE m_FocusState;
 
 	bool m_bHoldMouseCenter;
+	bool m_bShowCursor = true;
 
 public:
 	FOCUS_CALLBACK m_FocusCallback;
 
 public:
-	KEY_STATE GetKeyState(KEY _Key) { return m_vecKeyData[_Key].eState; }
-	Vec2	  GetMousePos() const { return m_vMousePos; }
-	Vec2	  GetMouseDrag() const
+	void RoRShowCursor(bool _show);
+	bool IsShowCursor() { return m_bShowCursor; }
+
+public:
+	KEY_STATE GetKeyState(KEY _Key)
+	{
+		if (_Key == KEY::KEY_END)
+			return NONE;
+		return m_vecKeyData[_Key].eState;
+	}
+	Vec2 GetMousePos() const { return m_vMousePos; }
+	Vec2 GetMouseDrag() const
 	{
 		if (m_FocusState == FOCUS_STATE::MAIN)
 			return m_vMouseDrag;

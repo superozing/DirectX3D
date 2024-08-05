@@ -47,8 +47,8 @@ void CDamagedDirectionMgr::begin()
 		pMR->SetMaterial(CAssetMgr::GetInst()->Load<CMaterial>(MTRLDmgDirection), 0);
 
 		GetOwner()->AddChild(pObj);
+		pObj->begin();
 	}
-	GamePlayStatic::ResetOutliner();
 }
 
 void CDamagedDirectionMgr::tick()

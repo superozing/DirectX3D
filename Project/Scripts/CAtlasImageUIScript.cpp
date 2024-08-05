@@ -6,19 +6,22 @@ CAtlasImageUIScript::CAtlasImageUIScript()
 	, m_vLeftTop()
 	, m_vSize(Vec2(1.f, 1.f))
 {
-	AppendScriptParam("LeftTop", SCRIPT_PARAM::VEC2, &m_vLeftTop);
-	AppendScriptParam("Size", SCRIPT_PARAM::VEC2, &m_vSize);
-	// AppendMemberFunction("Apply", SCRIPT_PARAM::FUNC_MEMBER, "", std::bind(&CAtlasImageUIScript::Apply, this));
+	init();
 }
 
 CAtlasImageUIScript::CAtlasImageUIScript(const CAtlasImageUIScript& _Origin)
-	: CImageUIScript((UINT)SCRIPT_TYPE::ATLASIMAGEUISCRIPT)
+	: CImageUIScript(_Origin)
 	, m_vLeftTop(_Origin.m_vLeftTop)
 	, m_vSize(_Origin.m_vSize)
 {
-	AppendScriptParam("LeftTop", SCRIPT_PARAM::VEC2, &m_vLeftTop);
-	AppendScriptParam("Size", SCRIPT_PARAM::VEC2, &m_vSize);
-	// AppendMemberFunction("Apply", SCRIPT_PARAM::FUNC_MEMBER, "", std::bind(&CAtlasImageUIScript::Apply, this));
+}
+
+CAtlasImageUIScript::CAtlasImageUIScript(UINT _type)
+	: CImageUIScript(_type)
+	, m_vLeftTop()
+	, m_vSize(Vec2(1.f, 1.f))
+{
+	init();
 }
 
 CAtlasImageUIScript::~CAtlasImageUIScript()
@@ -27,10 +30,20 @@ CAtlasImageUIScript::~CAtlasImageUIScript()
 
 void CAtlasImageUIScript::Apply()
 {
+	if (!m_UIImg.Get())
+		return;
+
 	Vec2 vAtlasSize = Vec2(m_UIImg->GetWidth(), m_UIImg->GetHeight());
 
 	MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC2_0, m_vLeftTop / vAtlasSize);
 	MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC2_1, m_vSize / vAtlasSize);
+}
+
+void CAtlasImageUIScript::init()
+{
+	AppendScriptParam("LeftTop", SCRIPT_PARAM::VEC2, &m_vLeftTop);
+	AppendScriptParam("Size", SCRIPT_PARAM::VEC2, &m_vSize);
+	// AppendMemberFunction("Apply", SCRIPT_PARAM::FUNC_MEMBER, "", std::bind(&CAtlasImageUIScript::Apply, this));
 }
 
 void CAtlasImageUIScript::begin()

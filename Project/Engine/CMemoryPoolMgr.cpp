@@ -35,6 +35,27 @@ void CMemoryPoolMgr::Poolbegin(string strPrefabRelativePath)
 		return;
 }
 
+void CMemoryPoolMgr::enter()
+{
+	CGameObject* pObj = GetEX();
+
+	vector<CGameObject*> vecChildObj = pObj->GetChild();
+
+	for (int i = 0; i < vecChildObj.size(); ++i)
+	{
+		CGameObject* pObj = vecChildObj[i];
+		pObj->DisconnectWithParent();
+		delete pObj;
+
+		vecChildObj[i] = nullptr;
+	}
+}
+
+void CMemoryPoolMgr::exit()
+{
+	Delete_Map<string, CMemoryPool*>(m_mapMemoryPool);
+}
+
 CGameObject* CMemoryPoolMgr::PopObject(string _strMapKey)
 {
 	CMemoryPool* pPool = FindPool(_strMapKey);
@@ -48,6 +69,7 @@ CGameObject* CMemoryPoolMgr::PopObject(string _strMapKey)
 	return pPool->PopObject();
 }
 
+#include "CPhysX.h"
 void CMemoryPoolMgr::PushObject(string _strMapKey, CGameObject* _Object)
 {
 	// Pool 역할을 하는 EX를 먼저 가져온다. 필터가 존재하면 넣는다.
@@ -59,6 +81,10 @@ void CMemoryPoolMgr::PushObject(string _strMapKey, CGameObject* _Object)
 
 		if (strFind.find(_strMapKey) != string::npos)
 		{
+			if (nullptr != _Object->PhysX())
+			{
+				_Object->PhysX()->releaseActor();
+			}
 			vecObj[i]->AddChild(_Object);
 			CTaskMgr::GetInst()->SetMemoryPoolEvent(true);
 			return;
@@ -71,13 +97,14 @@ void CMemoryPoolMgr::PushObject(string _strMapKey, CGameObject* _Object)
 
 string CMemoryPoolMgr::GetBaseName(const string& strFullname)
 {
-	size_t lastSlash = strFullname.find_last_of("/\\");
-	size_t lastDot	 = strFullname.rfind('.');
+	size_t startOfCopy = strFullname.find("_copy");
 
-	size_t startPos = (lastSlash == string::npos) ? 0 : lastSlash + 1;
-	size_t length	= (lastDot == string::npos) ? string::npos : lastDot - startPos;
-
-	return strFullname.substr(startPos, length);
+	if (startOfCopy == string::npos)
+		return strFullname;
+	else
+	{
+		return strFullname.substr(0, startOfCopy);
+	}
 }
 
 void CMemoryPoolMgr::PushObject(CGameObject* _Object)
@@ -94,6 +121,10 @@ void CMemoryPoolMgr::PushObject(CGameObject* _Object)
 
 		if (strFind.find(strObjName) != string::npos)
 		{
+			if (nullptr != _Object->PhysX())
+			{
+				_Object->PhysX()->releaseActor();
+			}
 			vecObj[i]->AddChild(_Object);
 			CTaskMgr::GetInst()->SetMemoryPoolEvent(true);
 			return;

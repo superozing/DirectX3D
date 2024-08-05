@@ -120,6 +120,9 @@ public:
 	virtual void LoadFromFile(FILE* _File){};
 	virtual void LoadFromFile(ifstream& fin){};
 
+	virtual void UpdateData(){};
+	virtual void Clear(){};
+
 	CScript* Clone() = 0;
 
 public:

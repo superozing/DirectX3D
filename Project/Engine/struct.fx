@@ -49,6 +49,11 @@ struct tParticle
     float Age; // 현재 나이
     float Life; // 수명
     int Active; // 활성화, 비활성화 여부
+    
+    int CurFrame; // 현재 애니메이션 프레임
+    float FrameTime; // 현재 프레임 시간
+    
+    int2 ParticlePadding;
 };
 
 struct tParticleModule
@@ -57,7 +62,9 @@ struct tParticleModule
     float4 vSpawnColor; // 초기 컬러
     float4 vSpawnMinScale; // 초기 최소 크기
     float4 vSpawnMaxScale; // 초기 최대 크기
-
+    
+    int SpawnType; // 0 : Continuous, 1 : Burst
+    float BurstInterval; // Burst 간격(초 단위)
     float MinLife; // 최소 수명
     float MaxLife; // 최대 수명
     float MinMass; // 최소 질량
@@ -91,8 +98,12 @@ struct tParticleModule
     int AlphaBasedLife; // 0 : off, 1 : NomrlizedAge, 2: Age
     float AlphaMaxAge; // 알파가 0 가 되기까지의 수명
     
+    // Animation
+    int TileX;
+    int TileY;
+    
     // Module Active Check
-    int arrModuleCheck[7];
+    int arrModuleCheck[8];
     
     int3 modulepadding;
 };
@@ -117,6 +128,13 @@ struct tSkinningInfo
     float3 vTangent;
     float3 vBinormal;
     float3 vNormal;
+};
+
+struct tBloomInfo
+{
+    float4 vBloomColor;
+    float fThreshold;
+    int3 iBloomPadding;
 };
 
 struct AfterImageInfo

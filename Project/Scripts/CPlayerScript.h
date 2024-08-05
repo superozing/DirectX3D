@@ -74,7 +74,7 @@ struct PlayerStatus
 	float CriticalPercent = 0.f;
 	float CriticalDamage  = 1.2f;
 
-	float SpreadRatio = 0.f;
+	float SpreadRatioSpeed = 0.f;
 
 	bool IsDead = false;
 
@@ -83,6 +83,7 @@ struct PlayerStatus
 
 template <typename T> class CRoRStateMachine;
 #include "CSpringArm.h"
+#include "CMuzzleFlashScript.h"
 
 class CPlayerScript : public CScript
 {
@@ -98,7 +99,9 @@ private:
 
 	map<PLAYER_STATE, SpringArmInfo> m_mSpringInfos;
 
-	class CCrosshair* m_pShootingSystem;
+	class CShootingSystemScript* m_pShootingSystem;
+	class CCrosshair*			 m_pCrosshair;
+	class CMuzzleFlashScript*	 m_pMuzzleFlash;
 
 public:
 #pragma region StatusFunc
@@ -202,6 +205,16 @@ public:
 	}
 
 	/// @brief 현재 데미지를 반환합니다. 현재는 크리티컬 확률을 계산하지 않습니다.
+	float GetSpreadRatio() const { return m_tStatus.SpreadRatioSpeed; }
+	/// @brief 데미지를 파라미터 만큼 올리거나 낮춥니다. 언더캡이 보장됩니다.
+	void AddSpreadRatio(float _relRatio)
+	{
+		m_tStatus.SpreadRatioSpeed = RoRMath::ClampFloat(m_tStatus.SpreadRatioSpeed + _relRatio, 0.f, 1.f);
+	}
+	/// @brief 데미지를 파라미터로 변경합니다. 언더캡이 보장됩니다.
+	void SetSpreadRatio(float _absRatio) { m_tStatus.SpreadRatioSpeed = RoRMath::ClampFloat(_absRatio, 0.f, 1.f); }
+
+	/// @brief 현재 데미지를 반환합니다. 현재는 크리티컬 확률을 계산하지 않습니다.
 	float GetDamage() { return m_tStatus.Damage; }
 	/// @brief 데미지를 파라미터 만큼 올리거나 낮춥니다. 언더캡이 보장됩니다.
 	void AddDamage(float _relValue)
@@ -225,6 +238,8 @@ public:
 	bool IsDead() { return m_tStatus.IsDead; }
 #pragma endregion
 
+	int GetCurState();
+
 	void	  SetCoverType(CoverType _type);
 	CoverType GetCoverType() { return m_iCorverType; }
 	bool	  IsRight() { return Transform()->GetRelativeScale().x > 0.f; }
@@ -234,6 +249,8 @@ public:
 		vScale.x	= _right ? abs(vScale.x) : -abs(vScale.x);
 		Transform()->SetRelativeScale(vScale);
 	}
+
+	CRoRStateMachine<CPlayerScript>* GetStateMachine() { return m_FSM; }
 
 public:
 	virtual void begin() override;
@@ -400,9 +417,4 @@ private:
 	void ChangeToDash();
 	/// @brief 조건에 따라 일반 공격으로 변경해주는 함수입니다.
 	void NormalAttack();
-
-	// Test 함수
-private:
-	/// @brief 커버 타입 판정 하기 전까지 필요한 함수
-	void SwitchCoverType();
 };

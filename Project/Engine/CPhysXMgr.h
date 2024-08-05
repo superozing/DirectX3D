@@ -45,6 +45,9 @@ private:
 	PxMaterial*					gMaterial		  = nullptr;
 	class RoRCollisionCallback* gCollisionCalback = nullptr;
 	vector<FlagActorColInfo>	m_vecColInfo;
+	float						m_fGravityMul	 = 250.f;
+	float						m_fContactOffset = 800.f;
+	float						m_fLestOffset	 = 2000.f;
 
 	void LayerCheck(UINT _left, UINT _right);
 	void LayerCheckToggle(UINT _left, UINT _right);
@@ -104,8 +107,12 @@ public:
 	bool ViewPortRaycast(tRoRHitInfo& _HitInfo, UINT _LAYER = (UINT)LAYER::LAYER_RAYCAST,
 						 int _DebugFlagMask = RayCastDebugFlag::StartEndVisible);
 
+	PxShape* createConeShape(PxRigidActor* actor, PxPhysics* gPhysics, PxMaterial* gMaterial, float radius,
+							 float height, int numSides);
+
 private:
 	void ClearAllActors();
+	void ReleaseActor(PxRigidActor* _actor);
 
 	friend class ParamUI;
 	friend class CPhysXMgrScript;

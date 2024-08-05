@@ -35,6 +35,8 @@ void SpawnGameObject(CGameObject* _Target, int _LayerIdx, bool _IsPrefab = true)
 void DestroyGameObject(CGameObject* _Target);
 void ResetOutliner();
 
+void AddChild(CGameObject* _Parent, CGameObject* _Child, bool spawn = false);
+
 void AddAsset(CAsset* _Asset);
 void DeleteAsset(ASSET_TYPE _Type, CAsset* _Asset);
 
@@ -63,6 +65,9 @@ void DrawDebugCylinder(Vec3 _FromPos, Vec3 _ToPos, float _LineWidth, Vec3 _Color
 
 // 회전에 문제가 있을 수 있음
 void DrawDebugCone(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, bool _bDepthTest,
+				   float _Duration = 0.f);
+
+void DrawDebugCone(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec4 _qWorldRot, Vec3 _Color, bool _bDepthTest,
 				   float _Duration = 0.f);
 
 class COLOR
@@ -248,7 +253,10 @@ template <typename T> void Delete_Vec(vector<T*>& _vec)
 	for (size_t i = 0; i < _vec.size(); ++i)
 	{
 		if (nullptr != _vec[i])
+		{
 			delete _vec[i];
+			_vec[i] = nullptr;
+		}
 	}
 
 	_vec.clear();
@@ -261,6 +269,7 @@ template <typename T> void Delete_List(list<T*>& _list)
 		if (nullptr != *iter)
 		{
 			delete *iter;
+			*iter = nullptr;
 		}
 	}
 

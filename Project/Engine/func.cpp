@@ -27,6 +27,16 @@ void GamePlayStatic::ResetOutliner()
 	CTaskMgr::GetInst()->EventOccure();
 }
 
+void GamePlayStatic::AddChild(CGameObject* _Parent, CGameObject* _Child, bool spawn)
+{
+	tTask task	 = {};
+	task.Type	 = TASK_TYPE::ADD_CHILD;
+	task.Param_1 = (UINT_PTR)_Parent;
+	task.Param_2 = (UINT_PTR)_Child;
+	task.Param_3 = (UINT_PTR)spawn;
+	CTaskMgr::GetInst()->AddTask(task);
+}
+
 void GamePlayStatic::AddAsset(CAsset* _Asset)
 {
 	tTask task	 = {};
@@ -208,6 +218,26 @@ void GamePlayStatic::DrawDebugCone(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWo
 	info.matWorld = XMMatrixScaling(info.vWorldScale.x, info.vWorldScale.y, info.vWorldScale.z) *
 					XMMatrixRotationX(info.vWorldRot.x) * XMMatrixRotationY(info.vWorldRot.y) *
 					XMMatrixRotationZ(info.vWorldRot.z) *
+					XMMatrixTranslation(info.vWorldPos.x, info.vWorldPos.y, info.vWorldPos.z);
+
+	info.vColor		= _Color;
+	info.bDepthTest = _bDepthTest;
+	info.fDuration	= _Duration;
+
+	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
+}
+
+void GamePlayStatic::DrawDebugCone(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec4 _qWorldRot, Vec3 _Color, bool _bDepthTest,
+								   float _Duration)
+{
+	tDebugShapeInfo info = {};
+	info.eShape			 = DEBUG_SHAPE::CONE;
+
+	info.vWorldPos			= _vWorldPos;
+	info.vWorldScale		= _vWorldScale;
+	XMMATRIX rotationMatrix = XMMatrixRotationQuaternion(_qWorldRot);
+
+	info.matWorld = XMMatrixScaling(info.vWorldScale.x, info.vWorldScale.y, info.vWorldScale.z) * rotationMatrix *
 					XMMatrixTranslation(info.vWorldPos.x, info.vWorldPos.y, info.vWorldPos.z);
 
 	info.vColor		= _Color;

@@ -7,6 +7,8 @@
 #include <Engine\CTaskMgr.h>
 #include <Engine\components.h>
 
+#include <Engine/CGameObject.h>
+
 CMemoryPoolMgrScript::CMemoryPoolMgrScript()
 	: CScript((UINT)SCRIPT_TYPE::MEMORYPOOLMGRSCRIPT)
 {
@@ -93,16 +95,41 @@ void CMemoryPoolMgrScript::PushObject(CGameObject* _Object)
 	// EX OBJ의 Filter를 받아온다.
 	vector<CGameObject*> vecObj = GetOwner()->GetChild();
 
+	string s = CMemoryPoolMgr::GetInst()->GetBaseName(ToString(_Object->GetName()));
+
 	for (int i = 0; i < vecObj.size(); ++i)
 	{
-		string s = ToString(vecObj[i]->GetName());
+		string p = ToString(vecObj[i]->GetName());
 
-		if (ToString(_Object->GetName()).find(s))
+		if (p.find(s) != string::npos)
 		{
+			if (nullptr != _Object->PhysX())
+			{
+				_Object->PhysX()->releaseActor();
+			}
 			vecObj[i]->AddChild(_Object);
+			CTaskMgr::GetInst()->SetMemoryPoolEvent(true);
 			return;
 		}
 	}
+}
 
-	CTaskMgr::GetInst()->SetMemoryPoolEvent(true);
+void CMemoryPoolMgrScript::PushObject(string _strMapKey, CGameObject* _Object)
+{
+	// EX OBJ의 Filter를 받아온다.
+	vector<CGameObject*> vecObj = GetOwner()->GetChild();
+
+	for (int i = 0; i < vecObj.size(); ++i)
+	{
+		if (_strMapKey == ToString(vecObj[i]->GetName()))
+		{
+			if (nullptr != _Object->PhysX())
+			{
+				_Object->PhysX()->releaseActor();
+			}
+			vecObj[i]->AddChild(_Object);
+			CTaskMgr::GetInst()->SetMemoryPoolEvent(true);
+			return;
+		}
+	}
 }

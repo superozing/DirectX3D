@@ -49,7 +49,7 @@ CGameObject::CGameObject(const CGameObject& _OriginObject)
 	for (size_t i = 0; i < _OriginObject.m_vecChild.size(); ++i)
 	{
 		CGameObject* ChildClone = _OriginObject.m_vecChild[i]->Clone();
-		AddChild(ChildClone, true);
+		AddChild_RealFunc(ChildClone, true);
 		ChildClone->m_iLayerIdx = _OriginObject.m_vecChild[i]->m_iLayerIdx;
 	}
 }
@@ -253,6 +253,31 @@ int CGameObject::DisconnectWithLayer()
 
 void CGameObject::AddChild(CGameObject* _Child, bool spawn)
 {
+	GamePlayStatic::AddChild(this, _Child, spawn);
+}
+
+void CGameObject::Destroy()
+{
+	GamePlayStatic::DestroyGameObject(this);
+}
+
+bool CGameObject::IsAncestor(CGameObject* _Other)
+{
+	CGameObject* pParent = m_Parent;
+
+	while (pParent)
+	{
+		if (pParent == _Other)
+			return true;
+
+		pParent = pParent->m_Parent;
+	}
+
+	return false;
+}
+
+void CGameObject::AddChild_RealFunc(CGameObject* _Child, bool spawn)
+{
 	if (spawn)
 	{
 		// 새로 스폰하는 경우 아무것도 하지 않고 부모자식 연결 해주어야 함
@@ -281,24 +306,5 @@ void CGameObject::AddChild(CGameObject* _Child, bool spawn)
 	// 부모 자식 연결
 	_Child->m_Parent = this;
 	m_vecChild.push_back(_Child);
-}
-
-void CGameObject::Destroy()
-{
-	GamePlayStatic::DestroyGameObject(this);
-}
-
-bool CGameObject::IsAncestor(CGameObject* _Other)
-{
-	CGameObject* pParent = m_Parent;
-
-	while (pParent)
-	{
-		if (pParent == _Other)
-			return true;
-
-		pParent = pParent->m_Parent;
-	}
-
-	return false;
+	GamePlayStatic::ResetOutliner();
 }

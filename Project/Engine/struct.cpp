@@ -91,6 +91,8 @@ ifstream& operator>>(ifstream& fin, tLightInfo& info)
 }
 
 #define TagModuleName(moduleNum) "[" + ToString(magic_enum::enum_name(PARTICLE_MODULE::moduleNum)) + "]"
+#define TagSpawnType "[SpawnType]"
+#define TagBurstInterval "[BurstInterval]"
 #define TagSpawnColor "[SpawnColor]"
 #define TagSpawnMinScale "[SpawnMinScale]"
 #define TagSpawnMaxScale "[SpawnMaxScale]"
@@ -121,11 +123,20 @@ ifstream& operator>>(ifstream& fin, tLightInfo& info)
 #define TagAlphaBasedLife "[[AlphaBasedLife] (0 : off, 1 : NomrlizedAge, 2: Age)]"
 #define TagAlphaMaxAge "[AlphaMaxAge]"
 
+#define TagTileX "[TileX]"
+#define TagTileY "[TileY]"
+
 ofstream& operator<<(ofstream& fout, const tParticleModule& module)
 {
 	// Sapwn 모듈
 	fout << TagModuleName(SPAWN) << endl;
 	fout << module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPAWN] << endl;
+
+	fout << TagSpawnType << endl;
+	fout << module.SpawnType << endl;
+
+	fout << TagBurstInterval << endl;
+	fout << module.BurstInterval << endl;
 
 	fout << TagSpawnColor << endl;
 	fout << module.vSpawnColor << endl;
@@ -213,6 +224,15 @@ ofstream& operator<<(ofstream& fout, const tParticleModule& module)
 	fout << TagAlphaMaxAge << endl;
 	fout << module.AlphaMaxAge << endl;
 
+	// Animation
+	fout << TagModuleName(ANIMATION) << endl;
+	fout << module.arrModuleCheck[(UINT)PARTICLE_MODULE::ANIMATION] << endl;
+
+	fout << TagTileX << endl;
+	fout << module.TileX << endl;
+	fout << TagTileY << endl;
+	fout << module.TileY << endl;
+
 	return fout;
 }
 
@@ -221,6 +241,12 @@ ifstream& operator>>(ifstream& fin, tParticleModule& module)
 	// 스폰 모듈
 	Utils::GetLineUntilString(fin, TagModuleName(SPAWN));
 	fin >> module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPAWN];
+
+	Utils::GetLineUntilString(fin, TagSpawnType);
+	fin >> module.SpawnType;
+
+	Utils::GetLineUntilString(fin, TagBurstInterval);
+	fin >> module.BurstInterval;
 
 	Utils::GetLineUntilString(fin, TagSpawnColor);
 	fin >> module.vSpawnColor;
@@ -313,6 +339,16 @@ ifstream& operator>>(ifstream& fin, tParticleModule& module)
 
 	Utils::GetLineUntilString(fin, TagAlphaMaxAge);
 	fin >> module.AlphaMaxAge;
+
+	// Animation
+	Utils::GetLineUntilString(fin, TagModuleName(ANIMATION));
+	fin >> module.arrModuleCheck[(UINT)PARTICLE_MODULE::ANIMATION];
+
+	Utils::GetLineUntilString(fin, TagTileX);
+	fin >> module.TileX;
+
+	Utils::GetLineUntilString(fin, TagTileY);
+	fin >> module.TileY;
 
 	return fin;
 }

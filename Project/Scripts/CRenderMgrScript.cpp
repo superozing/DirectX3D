@@ -26,14 +26,33 @@ CRenderMgrScript::CRenderMgrScript()
 	// AppendScriptParam("m_Res", SCRIPT_PARAM::FLOAT, &m_TestParam.result);
 	// AppendMemberFunction("m_LerpFloat", SCRIPT_PARAM::FUNC_MEMBER, "Lerp",
 	//					 std::bind(&CRenderMgrScript::m_LerpTest, this));
+
+	// ClearColor
 	AppendScriptParam("Clear Color", SCRIPT_PARAM::COLOR, &(RENDERMGR->m_vClearColor));
-	AppendScriptParam("Bloom::Activate", SCRIPT_PARAM::BOOL, &(RENDERMGR->m_BloomInfo.Activate));
-	AppendScriptParam("Bloom::Threshold", SCRIPT_PARAM::FLOAT, &(RENDERMGR->m_BloomInfo.Threshold), 0.f, 1.f, false, "",
-					  true);
-	AppendScriptParam("Bloom::Color", SCRIPT_PARAM::COLOR, &(RENDERMGR->m_BloomInfo.vColor));
-	AppendScriptParam("Bloom::BlurCnt", SCRIPT_PARAM::INT, &(RENDERMGR->m_BloomInfo.BlurLevel), 0, MAXBLURLEVEL);
-	AppendScriptParam("Bloom::MergeRatio", SCRIPT_PARAM::FLOAT, &(RENDERMGR->m_BloomInfo.Ratio), 0.f, 0.f, false, "",
-					  true);
+
+	// Bloom
+	AppendScriptParam("Bloom::Activate", SCRIPT_PARAM::BOOL, &(RENDERMGR->m_GlobalBloomInfo.BloomActivate));
+	AppendScriptParam("Bloom::Global Bloom", SCRIPT_PARAM::BOOL, &(RENDERMGR->m_GlobalBloomInfo.GlobalBloom));
+	AppendScriptParam("Bloom::Global Threshold", SCRIPT_PARAM::FLOAT,
+					  &(RENDERMGR->m_GlobalBloomInfo.GlbalBloomSetting.fThreshold), 0.f, 1.f, false, "", true);
+	AppendScriptParam("Bloom::Global Color", SCRIPT_PARAM::COLOR,
+					  &(RENDERMGR->m_GlobalBloomInfo.GlbalBloomSetting.vBloomColor));
+
+	AppendScriptParam("Bloom::BlurCnt", SCRIPT_PARAM::INT, &(RENDERMGR->m_GlobalBloomInfo.BlurLevel), 0, MAXBLURLEVEL);
+	AppendScriptParam("Bloom::MergeRatio", SCRIPT_PARAM::FLOAT, &(RENDERMGR->m_GlobalBloomInfo.Ratio), 0.f, 0.f, false,
+					  "", true);
+
+	// CromaticAberration
+	AppendMemberFunction("CA::PushEvent", SCRIPT_PARAM::FUNC_MEMBER, "PushEvent",
+						 std::bind(&CRenderMgr::PushCAEvent, RENDERMGR));
+	AppendScriptParam("CA::Activate", SCRIPT_PARAM::BOOL, &(RENDERMGR->m_CAInfo.Activate));
+	AppendScriptParam("CA::Duration", SCRIPT_PARAM::FLOAT, &(RENDERMGR->m_CAInfo.Duration));
+	AppendScriptParam("CA::RedOffset", SCRIPT_PARAM::VEC2, &(RENDERMGR->m_CAInfo.MaxRedOffSet));
+	AppendScriptParam("CA::GreenOffset", SCRIPT_PARAM::VEC2, &(RENDERMGR->m_CAInfo.MaxGreenOffset));
+	AppendScriptParam("CA::BlueOffset", SCRIPT_PARAM::VEC2, &(RENDERMGR->m_CAInfo.MaxBlueOffset));
+	AppendScriptParam("CA::CropOffset", SCRIPT_PARAM::VEC2, &(RENDERMGR->m_CAInfo.CropOffset));
+
+	AppendScriptParam("GRAY::bGrayWeight", SCRIPT_PARAM::BOOL, &(RENDERMGR->m_bGrayWeight));
 }
 
 CRenderMgrScript::~CRenderMgrScript()

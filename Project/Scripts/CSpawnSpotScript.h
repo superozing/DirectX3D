@@ -45,9 +45,9 @@ public:
 	void ClearPrefab();
 	void DeletePrefab();
 
-	void RegisterObject();
-	void SpawnObject();
-	void DeAllocateAllObject();
+	void		 RegisterObject();
+	CGameObject* SpawnObject();
+	void		 DeAllocateAllObject();
 
 public:
 	virtual void begin() override;

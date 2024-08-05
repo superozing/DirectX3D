@@ -133,6 +133,12 @@ void CTaskMgr::tick()
 		break;
 
 		case TASK_TYPE::ADD_CHILD: {
+			CGameObject* pParent = (CGameObject*)m_vecTask[i].Param_1;
+			CGameObject* pChild	 = (CGameObject*)m_vecTask[i].Param_2;
+			bool		 bSpawn	 = (bool)m_vecTask[i].Param_3;
+
+			pParent->AddChild_RealFunc(pChild, bSpawn);
+			m_bCreateObject;
 		}
 		break;
 

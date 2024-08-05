@@ -8,15 +8,12 @@
 #include "CRenderMgrScript.h"
 #include "CTimeMgrScript.h"
 #include "CCameraEffect.h"
-#include "CSpringArm.h"
 #include "CBtnUIScript.h"
 #include "CImageUIScript.h"
 #include "CPanelUIScript.h"
 #include "CCrosshair.h"
-#include "CWeaponInfo.h"
 #include "CPausePanel.h"
 #include "CPauseBtn.h"
-#include "CDamageFont.h"
 #include "CProgressBar.h"
 #include "CBossHP.h"
 #include "CMonsterHP.h"
@@ -24,29 +21,54 @@
 #include "CAmmoInfo.h"
 #include "CPhysXMgrScript.h"
 #include "CSkillIcon.h"
-#include "CWrapImage.h"
-#include "CLevelTransition.h"
 #include "CEditorCameraMoveScript.h"
-#include "CSpawnSpotScript.h"
 #include "CMemoryPoolMgrScript.h"
 #include "CHaloScript.h"
 #include "CStudentScript.h"
 #include "CPlayerScript.h"
 #include "CDialog.h"
 #include "CPlayerDamagedScript.h"
-#include "CWallScript.h"
-#include "CCoverLow.h"
 #include "CBossMissileScript.h"
 #include "CBossScript.h"
 #include "CDamagedDirection.h"
 #include "CMegaFistScript.h"
-#include "CCoverArea.h"
-#include "CCoverUI.h"
-#include "CTutorialGameMode.h"
 #include "CAtlasImageUIScript.h"
 #include "CDamagedDirectionMgr.h"
 #include "CHUD.h"
-#include "CAfterImage.h"
+#include "CBossShieldScript.h"
+#include "CDigitUI.h"
+#include "CReloadUI.h"
+#include "CStretchUIScript.h"
+#include "CTextUI.h"
+#include "CWelcomeTutorialEvent.h"
+#include "CCoverArea.h"
+#include "CCoverUI.h"
+#include "CDashEventListener.h"
+#include "CShootingTutorialEvent.h"
+#include "CArona.h"
+#include "CLevelTransition.h"
+#include "CBloomScript.h"
+#include "CObjectGrayMaskScript.h"
+#include "CSpawnSpotScript.h"
+#include "CSpringArm.h"
+#include "CBoostScript.h"
+#include "CMissileTrailScript.h"
+#include "CMuzzleFlashScript.h"
+#include "CBulletHitParticleSpawner.h"
+#include "CBulletScript.h"
+#include "CButtons.h"
+#include "CCoverHIghTutorialEvent.h"
+#include "CTutorialGameMode.h"
+#include "CDirectionalLight.h"
+#include "CShootingRecoil.h"
+#include "CTitle.h"
+#include "CWallScript.h"
+#include "CWrapImage.h"
+#include "CTitleTex.h"
+#include "CTutorialTarget.h"
+#include "CBulletShellSpawner.h"
+#include "CBulletMarkSpawner.h"
+#include "CShootingSystemScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -57,15 +79,12 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CRenderMgrScript");
 	_vec.push_back(L"CTimeMgrScript");
 	_vec.push_back(L"CCameraEffect");
-	_vec.push_back(L"CSpringArm");
 	_vec.push_back(L"CBtnUIScript");
 	_vec.push_back(L"CImageUIScript");
 	_vec.push_back(L"CPanelUIScript");
 	_vec.push_back(L"CCrosshair");
-	_vec.push_back(L"CWeaponInfo");
 	_vec.push_back(L"CPausePanel");
 	_vec.push_back(L"CPauseBtn");
-	_vec.push_back(L"CDamageFont");
 	_vec.push_back(L"CProgressBar");
 	_vec.push_back(L"CBossHP");
 	_vec.push_back(L"CMonsterHP");
@@ -73,29 +92,54 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CAmmoInfo");
 	_vec.push_back(L"CPhysXMgrScript");
 	_vec.push_back(L"CSkillIcon");
-	_vec.push_back(L"CWrapImage");
-	_vec.push_back(L"CLevelTransition");
 	_vec.push_back(L"CEditorCameraMoveScript");
-	_vec.push_back(L"CSpawnSpotScript");
 	_vec.push_back(L"CMemoryPoolMgrScript");
 	_vec.push_back(L"CHaloScript");
 	_vec.push_back(L"CStudentScript");
 	_vec.push_back(L"CPlayerScript");
 	_vec.push_back(L"CDialog");
 	_vec.push_back(L"CPlayerDamagedScript");
-	_vec.push_back(L"CWallScript");
-	_vec.push_back(L"CCoverLow");
 	_vec.push_back(L"CBossMissileScript");
 	_vec.push_back(L"CBossScript");
 	_vec.push_back(L"CDamagedDirection");
 	_vec.push_back(L"CMegaFistScript");
-	_vec.push_back(L"CCoverArea");
-	_vec.push_back(L"CCoverUI");
-	_vec.push_back(L"CTutorialGameMode");
 	_vec.push_back(L"CAtlasImageUIScript");
 	_vec.push_back(L"CDamagedDirectionMgr");
 	_vec.push_back(L"CHUD");
-	_vec.push_back(L"CAfterImage");
+	_vec.push_back(L"CBossShieldScript");
+	_vec.push_back(L"CDigitUI");
+	_vec.push_back(L"CReloadUI");
+	_vec.push_back(L"CStretchUIScript");
+	_vec.push_back(L"CTextUI");
+	_vec.push_back(L"CWelcomeTutorialEvent");
+	_vec.push_back(L"CCoverArea");
+	_vec.push_back(L"CCoverUI");
+	_vec.push_back(L"CDashEventListener");
+	_vec.push_back(L"CShootingTutorialEvent");
+	_vec.push_back(L"CArona");
+	_vec.push_back(L"CLevelTransition");
+	_vec.push_back(L"CBloomScript");
+	_vec.push_back(L"CObjectGrayMaskScript");
+	_vec.push_back(L"CSpawnSpotScript");
+	_vec.push_back(L"CSpringArm");
+	_vec.push_back(L"CBoostScript");
+	_vec.push_back(L"CMissileTrailScript");
+	_vec.push_back(L"CMuzzleFlashScript");
+	_vec.push_back(L"CBulletHitParticleSpawner");
+	_vec.push_back(L"CBulletScript");
+	_vec.push_back(L"CButtons");
+	_vec.push_back(L"CCoverHIghTutorialEvent");
+	_vec.push_back(L"CTutorialGameMode");
+	_vec.push_back(L"CDirectionalLight");
+	_vec.push_back(L"CShootingRecoil");
+	_vec.push_back(L"CTitle");
+	_vec.push_back(L"CWallScript");
+	_vec.push_back(L"CWrapImage");
+	_vec.push_back(L"CTitleTex");
+	_vec.push_back(L"CTutorialTarget");
+	_vec.push_back(L"CBulletShellSpawner");
+	_vec.push_back(L"CBulletMarkSpawner");
+	_vec.push_back(L"CShootingSystemScript");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -114,8 +158,6 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CTimeMgrScript;
 	if (L"CCameraEffect" == _strScriptName)
 		return new CCameraEffect;
-	if (L"CSpringArm" == _strScriptName)
-		return new CSpringArm;
 	if (L"CBtnUIScript" == _strScriptName)
 		return new CBtnUIScript;
 	if (L"CImageUIScript" == _strScriptName)
@@ -124,14 +166,10 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPanelUIScript;
 	if (L"CCrosshair" == _strScriptName)
 		return new CCrosshair;
-	if (L"CWeaponInfo" == _strScriptName)
-		return new CWeaponInfo;
 	if (L"CPausePanel" == _strScriptName)
 		return new CPausePanel;
 	if (L"CPauseBtn" == _strScriptName)
 		return new CPauseBtn;
-	if (L"CDamageFont" == _strScriptName)
-		return new CDamageFont;
 	if (L"CProgressBar" == _strScriptName)
 		return new CProgressBar;
 	if (L"CBossHP" == _strScriptName)
@@ -146,14 +184,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPhysXMgrScript;
 	if (L"CSkillIcon" == _strScriptName)
 		return new CSkillIcon;
-	if (L"CWrapImage" == _strScriptName)
-		return new CWrapImage;
-	if (L"CLevelTransition" == _strScriptName)
-		return new CLevelTransition;
 	if (L"CEditorCameraMoveScript" == _strScriptName)
 		return new CEditorCameraMoveScript;
-	if (L"CSpawnSpotScript" == _strScriptName)
-		return new CSpawnSpotScript;
 	if (L"CMemoryPoolMgrScript" == _strScriptName)
 		return new CMemoryPoolMgrScript;
 	if (L"CHaloScript" == _strScriptName)
@@ -166,10 +198,6 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CDialog;
 	if (L"CPlayerDamagedScript" == _strScriptName)
 		return new CPlayerDamagedScript;
-	if (L"CWallScript" == _strScriptName)
-		return new CWallScript;
-	if (L"CCoverLow" == _strScriptName)
-		return new CCoverLow;
 	if (L"CBossMissileScript" == _strScriptName)
 		return new CBossMissileScript;
 	if (L"CBossScript" == _strScriptName)
@@ -178,20 +206,80 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CDamagedDirection;
 	if (L"CMegaFistScript" == _strScriptName)
 		return new CMegaFistScript;
-	if (L"CCoverArea" == _strScriptName)
-		return new CCoverArea;
-	if (L"CCoverUI" == _strScriptName)
-		return new CCoverUI;
-	if (L"CTutorialGameMode" == _strScriptName)
-		return new CTutorialGameMode;
 	if (L"CAtlasImageUIScript" == _strScriptName)
 		return new CAtlasImageUIScript;
 	if (L"CDamagedDirectionMgr" == _strScriptName)
 		return new CDamagedDirectionMgr;
 	if (L"CHUD" == _strScriptName)
 		return new CHUD;
-	if (L"CAfterImage" == _strScriptName)
-		return new CAfterImage;
+	if (L"CBossShieldScript" == _strScriptName)
+		return new CBossShieldScript;
+	if (L"CDigitUI" == _strScriptName)
+		return new CDigitUI;
+	if (L"CReloadUI" == _strScriptName)
+		return new CReloadUI;
+	if (L"CStretchUIScript" == _strScriptName)
+		return new CStretchUIScript;
+	if (L"CTextUI" == _strScriptName)
+		return new CTextUI;
+	if (L"CWelcomeTutorialEvent" == _strScriptName)
+		return new CWelcomeTutorialEvent;
+	if (L"CCoverArea" == _strScriptName)
+		return new CCoverArea;
+	if (L"CCoverUI" == _strScriptName)
+		return new CCoverUI;
+	if (L"CDashEventListener" == _strScriptName)
+		return new CDashEventListener;
+	if (L"CShootingTutorialEvent" == _strScriptName)
+		return new CShootingTutorialEvent;
+	if (L"CArona" == _strScriptName)
+		return new CArona;
+	if (L"CLevelTransition" == _strScriptName)
+		return new CLevelTransition;
+	if (L"CBloomScript" == _strScriptName)
+		return new CBloomScript;
+	if (L"CObjectGrayMaskScript" == _strScriptName)
+		return new CObjectGrayMaskScript;
+	if (L"CSpawnSpotScript" == _strScriptName)
+		return new CSpawnSpotScript;
+	if (L"CSpringArm" == _strScriptName)
+		return new CSpringArm;
+	if (L"CBoostScript" == _strScriptName)
+		return new CBoostScript;
+	if (L"CMissileTrailScript" == _strScriptName)
+		return new CMissileTrailScript;
+	if (L"CMuzzleFlashScript" == _strScriptName)
+		return new CMuzzleFlashScript;
+	if (L"CBulletHitParticleSpawner" == _strScriptName)
+		return new CBulletHitParticleSpawner;
+	if (L"CBulletScript" == _strScriptName)
+		return new CBulletScript;
+	if (L"CButtons" == _strScriptName)
+		return new CButtons;
+	if (L"CCoverHIghTutorialEvent" == _strScriptName)
+		return new CCoverHIghTutorialEvent;
+	if (L"CTutorialGameMode" == _strScriptName)
+		return new CTutorialGameMode;
+	if (L"CDirectionalLight" == _strScriptName)
+		return new CDirectionalLight;
+	if (L"CShootingRecoil" == _strScriptName)
+		return new CShootingRecoil;
+	if (L"CTitle" == _strScriptName)
+		return new CTitle;
+	if (L"CWallScript" == _strScriptName)
+		return new CWallScript;
+	if (L"CWrapImage" == _strScriptName)
+		return new CWrapImage;
+	if (L"CTitleTex" == _strScriptName)
+		return new CTitleTex;
+	if (L"CTutorialTarget" == _strScriptName)
+		return new CTutorialTarget;
+	if (L"CBulletShellSpawner" == _strScriptName)
+		return new CBulletShellSpawner;
+	if (L"CBulletMarkSpawner" == _strScriptName)
+		return new CBulletMarkSpawner;
+	if (L"CShootingSystemScript" == _strScriptName)
+		return new CShootingSystemScript;
 	return nullptr;
 }
 
@@ -220,9 +308,6 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::CAMERAEFFECT:
 		return new CCameraEffect;
 		break;
-	case (UINT)SCRIPT_TYPE::SPRINGARM:
-		return new CSpringArm;
-		break;
 	case (UINT)SCRIPT_TYPE::BTNUISCRIPT:
 		return new CBtnUIScript;
 		break;
@@ -235,17 +320,11 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::CROSSHAIR:
 		return new CCrosshair;
 		break;
-	case (UINT)SCRIPT_TYPE::WEAPONINFO:
-		return new CWeaponInfo;
-		break;
 	case (UINT)SCRIPT_TYPE::PAUSEPANEL:
 		return new CPausePanel;
 		break;
 	case (UINT)SCRIPT_TYPE::PAUSEBTN:
 		return new CPauseBtn;
-		break;
-	case (UINT)SCRIPT_TYPE::DAMAGEFONT:
-		return new CDamageFont;
 		break;
 	case (UINT)SCRIPT_TYPE::PROGRESSBAR:
 		return new CProgressBar;
@@ -268,17 +347,8 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::SKILLICON:
 		return new CSkillIcon;
 		break;
-	case (UINT)SCRIPT_TYPE::WRAPIMAGE:
-		return new CWrapImage;
-		break;
-	case (UINT)SCRIPT_TYPE::LEVELTRANSITION:
-		return new CLevelTransition;
-		break;
 	case (UINT)SCRIPT_TYPE::EDITORCAMERAMOVESCRIPT:
 		return new CEditorCameraMoveScript;
-		break;
-	case (UINT)SCRIPT_TYPE::SPAWNSPOTSCRIPT:
-		return new CSpawnSpotScript;
 		break;
 	case (UINT)SCRIPT_TYPE::MEMORYPOOLMGRSCRIPT:
 		return new CMemoryPoolMgrScript;
@@ -298,12 +368,6 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::PLAYERDAMAGEDSCRIPT:
 		return new CPlayerDamagedScript;
 		break;
-	case (UINT)SCRIPT_TYPE::WALLSCRIPT:
-		return new CWallScript;
-		break;
-	case (UINT)SCRIPT_TYPE::COVERLOW:
-		return new CCoverLow;
-		break;
 	case (UINT)SCRIPT_TYPE::BOSSMISSILESCRIPT:
 		return new CBossMissileScript;
 		break;
@@ -316,15 +380,6 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::MEGAFISTSCRIPT:
 		return new CMegaFistScript;
 		break;
-	case (UINT)SCRIPT_TYPE::COVERAREA:
-		return new CCoverArea;
-		break;
-	case (UINT)SCRIPT_TYPE::COVERUI:
-		return new CCoverUI;
-		break;
-	case (UINT)SCRIPT_TYPE::TUTORIALGAMEMODE:
-		return new CTutorialGameMode;
-		break;
 	case (UINT)SCRIPT_TYPE::ATLASIMAGEUISCRIPT:
 		return new CAtlasImageUIScript;
 		break;
@@ -334,8 +389,107 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::HUD:
 		return new CHUD;
 		break;
-	case (UINT)SCRIPT_TYPE::AFTERIMAGE:
-		return new CAfterImage;
+	case (UINT)SCRIPT_TYPE::BOSSSHIELDSCRIPT:
+		return new CBossShieldScript;
+		break;
+	case (UINT)SCRIPT_TYPE::DIGITUI:
+		return new CDigitUI;
+		break;
+	case (UINT)SCRIPT_TYPE::RELOADUI:
+		return new CReloadUI;
+		break;
+	case (UINT)SCRIPT_TYPE::STRETCHUISCRIPT:
+		return new CStretchUIScript;
+		break;
+	case (UINT)SCRIPT_TYPE::TEXTUI:
+		return new CTextUI;
+		break;
+	case (UINT)SCRIPT_TYPE::WELCOMETUTORIALEVENT:
+		return new CWelcomeTutorialEvent;
+		break;
+	case (UINT)SCRIPT_TYPE::COVERAREA:
+		return new CCoverArea;
+		break;
+	case (UINT)SCRIPT_TYPE::COVERUI:
+		return new CCoverUI;
+		break;
+	case (UINT)SCRIPT_TYPE::DASHEVENTLISTENER:
+		return new CDashEventListener;
+		break;
+	case (UINT)SCRIPT_TYPE::SHOOTINGTUTORIALEVENT:
+		return new CShootingTutorialEvent;
+		break;
+	case (UINT)SCRIPT_TYPE::ARONA:
+		return new CArona;
+		break;
+	case (UINT)SCRIPT_TYPE::LEVELTRANSITION:
+		return new CLevelTransition;
+		break;
+	case (UINT)SCRIPT_TYPE::BLOOMSCRIPT:
+		return new CBloomScript;
+		break;
+	case (UINT)SCRIPT_TYPE::OBJECTGRAYMASKSCRIPT:
+		return new CObjectGrayMaskScript;
+		break;
+	case (UINT)SCRIPT_TYPE::SPAWNSPOTSCRIPT:
+		return new CSpawnSpotScript;
+		break;
+	case (UINT)SCRIPT_TYPE::SPRINGARM:
+		return new CSpringArm;
+		break;
+	case (UINT)SCRIPT_TYPE::BOOSTSCRIPT:
+		return new CBoostScript;
+		break;
+	case (UINT)SCRIPT_TYPE::MISSILETRAILSCRIPT:
+		return new CMissileTrailScript;
+		break;
+	case (UINT)SCRIPT_TYPE::MUZZLEFLASHSCRIPT:
+		return new CMuzzleFlashScript;
+		break;
+	case (UINT)SCRIPT_TYPE::BULLETHITPARTICLESPAWNER:
+		return new CBulletHitParticleSpawner;
+		break;
+	case (UINT)SCRIPT_TYPE::BULLETSCRIPT:
+		return new CBulletScript;
+		break;
+	case (UINT)SCRIPT_TYPE::BUTTONS:
+		return new CButtons;
+		break;
+	case (UINT)SCRIPT_TYPE::COVERHIGHTUTORIALEVENT:
+		return new CCoverHIghTutorialEvent;
+		break;
+	case (UINT)SCRIPT_TYPE::TUTORIALGAMEMODE:
+		return new CTutorialGameMode;
+		break;
+	case (UINT)SCRIPT_TYPE::DIRECTIONALLIGHT:
+		return new CDirectionalLight;
+		break;
+	case (UINT)SCRIPT_TYPE::SHOOTINGRECOIL:
+		return new CShootingRecoil;
+		break;
+	case (UINT)SCRIPT_TYPE::TITLE:
+		return new CTitle;
+		break;
+	case (UINT)SCRIPT_TYPE::WALLSCRIPT:
+		return new CWallScript;
+		break;
+	case (UINT)SCRIPT_TYPE::WRAPIMAGE:
+		return new CWrapImage;
+		break;
+	case (UINT)SCRIPT_TYPE::TITLETEX:
+		return new CTitleTex;
+		break;
+	case (UINT)SCRIPT_TYPE::TUTORIALTARGET:
+		return new CTutorialTarget;
+		break;
+	case (UINT)SCRIPT_TYPE::BULLETSHELLSPAWNER:
+		return new CBulletShellSpawner;
+		break;
+	case (UINT)SCRIPT_TYPE::BULLETMARKSPAWNER:
+		return new CBulletMarkSpawner;
+		break;
+	case (UINT)SCRIPT_TYPE::SHOOTINGSYSTEMSCRIPT:
+		return new CShootingSystemScript;
 		break;
 	}
 	return nullptr;
@@ -373,10 +527,6 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CCameraEffect";
 		break;
 
-	case SCRIPT_TYPE::SPRINGARM:
-		return L"CSpringArm";
-		break;
-
 	case SCRIPT_TYPE::BTNUISCRIPT:
 		return L"CBtnUIScript";
 		break;
@@ -393,20 +543,12 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CCrosshair";
 		break;
 
-	case SCRIPT_TYPE::WEAPONINFO:
-		return L"CWeaponInfo";
-		break;
-
 	case SCRIPT_TYPE::PAUSEPANEL:
 		return L"CPausePanel";
 		break;
 
 	case SCRIPT_TYPE::PAUSEBTN:
 		return L"CPauseBtn";
-		break;
-
-	case SCRIPT_TYPE::DAMAGEFONT:
-		return L"CDamageFont";
 		break;
 
 	case SCRIPT_TYPE::PROGRESSBAR:
@@ -437,20 +579,8 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CSkillIcon";
 		break;
 
-	case SCRIPT_TYPE::WRAPIMAGE:
-		return L"CWrapImage";
-		break;
-
-	case SCRIPT_TYPE::LEVELTRANSITION:
-		return L"CLevelTransition";
-		break;
-
 	case SCRIPT_TYPE::EDITORCAMERAMOVESCRIPT:
 		return L"CEditorCameraMoveScript";
-		break;
-
-	case SCRIPT_TYPE::SPAWNSPOTSCRIPT:
-		return L"CSpawnSpotScript";
 		break;
 
 	case SCRIPT_TYPE::MEMORYPOOLMGRSCRIPT:
@@ -477,14 +607,6 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CPlayerDamagedScript";
 		break;
 
-	case SCRIPT_TYPE::WALLSCRIPT:
-		return L"CWallScript";
-		break;
-
-	case SCRIPT_TYPE::COVERLOW:
-		return L"CCoverLow";
-		break;
-
 	case SCRIPT_TYPE::BOSSMISSILESCRIPT:
 		return L"CBossMissileScript";
 		break;
@@ -501,18 +623,6 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CMegaFistScript";
 		break;
 
-	case SCRIPT_TYPE::COVERAREA:
-		return L"CCoverArea";
-		break;
-
-	case SCRIPT_TYPE::COVERUI:
-		return L"CCoverUI";
-		break;
-
-	case SCRIPT_TYPE::TUTORIALGAMEMODE:
-		return L"CTutorialGameMode";
-		break;
-
 	case SCRIPT_TYPE::ATLASIMAGEUISCRIPT:
 		return L"CAtlasImageUIScript";
 		break;
@@ -525,8 +635,140 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CHUD";
 		break;
 
-	case SCRIPT_TYPE::AFTERIMAGE:
-		return L"CAfterImage";
+	case SCRIPT_TYPE::BOSSSHIELDSCRIPT:
+		return L"CBossShieldScript";
+		break;
+
+	case SCRIPT_TYPE::DIGITUI:
+		return L"CDigitUI";
+		break;
+
+	case SCRIPT_TYPE::RELOADUI:
+		return L"CReloadUI";
+		break;
+
+	case SCRIPT_TYPE::STRETCHUISCRIPT:
+		return L"CStretchUIScript";
+		break;
+
+	case SCRIPT_TYPE::TEXTUI:
+		return L"CTextUI";
+		break;
+
+	case SCRIPT_TYPE::WELCOMETUTORIALEVENT:
+		return L"CWelcomeTutorialEvent";
+		break;
+
+	case SCRIPT_TYPE::COVERAREA:
+		return L"CCoverArea";
+		break;
+
+	case SCRIPT_TYPE::COVERUI:
+		return L"CCoverUI";
+		break;
+
+	case SCRIPT_TYPE::DASHEVENTLISTENER:
+		return L"CDashEventListener";
+		break;
+
+	case SCRIPT_TYPE::SHOOTINGTUTORIALEVENT:
+		return L"CShootingTutorialEvent";
+		break;
+
+	case SCRIPT_TYPE::ARONA:
+		return L"CArona";
+		break;
+
+	case SCRIPT_TYPE::LEVELTRANSITION:
+		return L"CLevelTransition";
+		break;
+
+	case SCRIPT_TYPE::BLOOMSCRIPT:
+		return L"CBloomScript";
+		break;
+
+	case SCRIPT_TYPE::OBJECTGRAYMASKSCRIPT:
+		return L"CObjectGrayMaskScript";
+		break;
+
+	case SCRIPT_TYPE::SPAWNSPOTSCRIPT:
+		return L"CSpawnSpotScript";
+		break;
+
+	case SCRIPT_TYPE::SPRINGARM:
+		return L"CSpringArm";
+		break;
+
+	case SCRIPT_TYPE::BOOSTSCRIPT:
+		return L"CBoostScript";
+		break;
+
+	case SCRIPT_TYPE::MISSILETRAILSCRIPT:
+		return L"CMissileTrailScript";
+		break;
+
+	case SCRIPT_TYPE::MUZZLEFLASHSCRIPT:
+		return L"CMuzzleFlashScript";
+		break;
+
+	case SCRIPT_TYPE::BULLETHITPARTICLESPAWNER:
+		return L"CBulletHitParticleSpawner";
+		break;
+
+	case SCRIPT_TYPE::BULLETSCRIPT:
+		return L"CBulletScript";
+		break;
+
+	case SCRIPT_TYPE::BUTTONS:
+		return L"CButtons";
+		break;
+
+	case SCRIPT_TYPE::COVERHIGHTUTORIALEVENT:
+		return L"CCoverHIghTutorialEvent";
+		break;
+
+	case SCRIPT_TYPE::TUTORIALGAMEMODE:
+		return L"CTutorialGameMode";
+		break;
+
+	case SCRIPT_TYPE::DIRECTIONALLIGHT:
+		return L"CDirectionalLight";
+		break;
+
+	case SCRIPT_TYPE::SHOOTINGRECOIL:
+		return L"CShootingRecoil";
+		break;
+
+	case SCRIPT_TYPE::TITLE:
+		return L"CTitle";
+		break;
+
+	case SCRIPT_TYPE::WALLSCRIPT:
+		return L"CWallScript";
+		break;
+
+	case SCRIPT_TYPE::WRAPIMAGE:
+		return L"CWrapImage";
+		break;
+
+	case SCRIPT_TYPE::TITLETEX:
+		return L"CTitleTex";
+		break;
+
+	case SCRIPT_TYPE::TUTORIALTARGET:
+		return L"CTutorialTarget";
+		break;
+
+	case SCRIPT_TYPE::BULLETSHELLSPAWNER:
+		return L"CBulletShellSpawner";
+		break;
+
+	case SCRIPT_TYPE::BULLETMARKSPAWNER:
+		return L"CBulletMarkSpawner";
+		break;
+
+	case SCRIPT_TYPE::SHOOTINGSYSTEMSCRIPT:
+		return L"CShootingSystemScript";
 		break;
 
 	}

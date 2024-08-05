@@ -80,9 +80,11 @@ public:
 
 	bool IsAncestor(CGameObject* _Other);
 
-	CLONE(CGameObject);
+private:
+	void AddChild_RealFunc(CGameObject* _Child, bool spawn = false);
 
 public:
+	CLONE(CGameObject);
 	CGameObject();
 	CGameObject(const CGameObject& _OriginObject);
 	~CGameObject();

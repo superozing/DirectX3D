@@ -4,30 +4,36 @@
 CImageUIScript::CImageUIScript()
 	: CUIScript((UINT)SCRIPT_TYPE::IMAGEUISCRIPT)
 	, m_bDraw(true)
+	, m_vBlendColor(Vec4(1.f, 1.f, 1.f, 1.f))
 {
-	AppendScriptAsset("Img", &m_UIImg, ASSET_TYPE::TEXTURE);
-	AppendScriptParam("Draw", SCRIPT_PARAM::BOOL, &m_bDraw);
+	init();
 }
 
 CImageUIScript::CImageUIScript(UINT _type)
 	: CUIScript(_type)
 	, m_bDraw(true)
+	, m_vBlendColor(Vec4(1.f, 1.f, 1.f, 1.f))
 {
-	AppendScriptAsset("Img", &m_UIImg, ASSET_TYPE::TEXTURE);
-	AppendScriptParam("Draw", SCRIPT_PARAM::BOOL, &m_bDraw);
+	init();
 }
 
 CImageUIScript::CImageUIScript(const CImageUIScript& _Other)
-	: CUIScript(_Other.GetScriptType())
+	: CUIScript(_Other)
 	, m_bDraw(_Other.m_bDraw)
 	, m_UIImg(_Other.m_UIImg)
+	, m_vBlendColor(_Other.m_vBlendColor)
 {
-	AppendScriptAsset("Img", &m_UIImg, ASSET_TYPE::TEXTURE);
-	AppendScriptParam("Draw", SCRIPT_PARAM::BOOL, &m_bDraw);
 }
 
 CImageUIScript::~CImageUIScript()
 {
+}
+
+void CImageUIScript::init()
+{
+	AppendScriptAsset("Img", &m_UIImg, ASSET_TYPE::TEXTURE);
+	AppendScriptParam("Draw", SCRIPT_PARAM::BOOL, &m_bDraw);
+	AppendScriptParam("BlendColor", SCRIPT_PARAM::VEC4, &m_vBlendColor);
 }
 
 void CImageUIScript::begin()
@@ -82,8 +88,16 @@ void CImageUIScript::tick()
 	if (m_bAllowBindTexPerFrame && m_UIImg.Get())
 		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_UIImg);
 
-	m_bDraw ? GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_UIImg)
-			: GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, nullptr);
+	if (m_bDraw)
+	{
+		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_UIImg);
+		MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, m_vBlendColor);
+	}
+	else
+	{
+		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, nullptr);
+		MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, Vec4(0.f, 0.f, 0.f, 0.f));
+	}
 }
 
 void CImageUIScript::BindUIImgOnTexParam()
@@ -97,14 +111,7 @@ void CImageUIScript::BindUIImgOnTexParam()
 #define TagUIImg "[UIImg]"
 #define TagAllowBindTexPerFrame "[AllowBindTexPerFrame]"
 #define TagDraw "[Draw]"
-
-void CImageUIScript::SaveToFile(FILE* _File)
-{
-}
-
-void CImageUIScript::LoadFromFile(FILE* _File)
-{
-}
+#define TagColor "[BlendColor]"
 
 void CImageUIScript::SaveToFile(ofstream& fout)
 {
@@ -116,6 +123,9 @@ void CImageUIScript::SaveToFile(ofstream& fout)
 
 	fout << TagDraw << endl;
 	fout << m_bDraw << endl;
+
+	fout << TagColor << endl;
+	fout << m_vBlendColor << endl;
 }
 
 void CImageUIScript::LoadFromFile(ifstream& fin)
@@ -128,4 +138,7 @@ void CImageUIScript::LoadFromFile(ifstream& fin)
 
 	Utils::GetLineUntilString(fin, TagDraw);
 	fin >> m_bDraw;
+
+	Utils::GetLineUntilString(fin, TagColor);
+	fin >> m_vBlendColor;
 }

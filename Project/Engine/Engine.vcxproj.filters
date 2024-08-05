@@ -811,6 +811,12 @@
     <Filter Include="ShaderCode\03. Compute\Scale">
       <UniqueIdentifier>{22e38a52-6687-448c-a9fd-49d9ca5b507a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\04. Content">
+      <UniqueIdentifier>{ebc1b7e8-ae81-4335-9038-4bdf4aa97852}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\04. Content\BossShield">
+      <UniqueIdentifier>{73e8853c-79c9-44d6-9e69-936f0e72fad1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -952,7 +958,19 @@
     <FxCompile Include="atlasStaticUI.fx">
       <Filter>ShaderCode\02. Render\UIShader</Filter>
     </FxCompile>
-    <FxCompile Include="AfterImageRender.fx">
+    <FxCompile Include="stretchBox.fx">
+      <Filter>ShaderCode\02. Render\UIShader</Filter>
+    </FxCompile>
+    <FxCompile Include="BossShield.fx">
+      <Filter>ShaderCode\04. Content\BossShield</Filter>
+    </FxCompile>
+    <FxCompile Include="BossTriangle.fx">
+      <Filter>ShaderCode\04. Content\BossShield</Filter>
+    </FxCompile>
+    <FxCompile Include="HexShield.fx">
+      <Filter>ShaderCode\04. Content\BossShield</Filter>
+    </FxCompile>
+    <FxCompile Include="obj_grayfilter.fx">
       <Filter>ShaderCode\02. Render\3DShader</Filter>
     </FxCompile>
   </ItemGroup>

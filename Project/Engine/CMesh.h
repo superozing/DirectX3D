@@ -10,7 +10,7 @@ struct tIndexInfo
 	ComPtr<ID3D11Buffer> pIB;
 	D3D11_BUFFER_DESC	 tIBDesc;
 	UINT				 iIdxCount;
-	void*				 pIdxSysMem;
+	void* pIdxSysMem;
 };
 
 class CMesh : public CAsset
@@ -36,16 +36,17 @@ private:
 	vector<CStructuredBuffer*> m_vecBoneFrameData; // 전체 본 프레임 정보(크기, 이동, 회전) (프레임 개수만큼)
 
 public:
-	Vtx*			   GetVtxSysMem() { return (Vtx*)m_VtxSysMem; }
-	UINT			   GetSubsetCount() { return (UINT)m_vecIdxInfo.size(); }
+	UINT GetVtxCount() { return m_VtxCount; }
+	Vtx* GetVtxSysMem() { return (Vtx*)m_VtxSysMem; }
+	UINT GetSubsetCount() { return (UINT)m_vecIdxInfo.size(); }
 	vector<tIndexInfo> GetvecIndexInfo() { return m_vecIdxInfo; }
 
-	const vector<tMTBone>*	   GetBones() { return &m_vecBones; }
+	const vector<tMTBone>* GetBones() { return &m_vecBones; }
 	UINT					   GetBoneCount() { return (UINT)m_vecBones.size(); }
 	const vector<tMTAnimClip>* GetAnimClip() { return &m_vecAnimClip; }
 	bool					   IsAnimMesh() { return !m_vecAnimClip.empty(); }
 
-	CStructuredBuffer*		   GetBoneOffsetBuffer() { return m_pBoneOffset; }		   // 각 뼈의 offset 행렬
+	CStructuredBuffer* GetBoneOffsetBuffer() { return m_pBoneOffset; }		   // 각 뼈의 offset 행렬
 	vector<CStructuredBuffer*> GetBoneFrameDataBuffer() { return m_vecBoneFrameData; } // 전체 본 프레임 정보
 
 private:

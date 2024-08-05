@@ -111,6 +111,93 @@ bool CPhysXMgr::ViewPortRaycast(tRoRHitInfo& _HitInfo, UINT _LAYER, int _DebugFl
 	return hit;
 }
 
+PxShape* CPhysXMgr::createConeShape(PxRigidActor* actor, PxPhysics* gPhysics, PxMaterial* gMaterial, float radius,
+									float height, int numSides)
+{
+	Ptr<CMesh> pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MESHcubedebug);
+
+	PxConvexMeshDesc convexDesc;
+	convexDesc.points.count	 = pMesh->GetVtxCount();
+	convexDesc.points.stride = sizeof(Vtx);
+	convexDesc.points.data	 = pMesh->GetVtxSysMem();
+
+	// if (pMeshCol->m_bConvex)
+	convexDesc.flags |= PxConvexFlag::eCOMPUTE_CONVEX;
+
+	// PxConvexMesh 생성
+	PxTolerancesScale				scale;
+	PxCookingParams					params(scale);
+	PxDefaultMemoryOutputStream		buf;
+	PxConvexMeshCookingResult::Enum result;
+
+	// 유효한 메쉬인 경우에만 생성
+	if (PxCookConvexMesh(params, convexDesc, buf, &result))
+	{
+		PxDefaultMemoryInputData input(buf.getData(), buf.getSize());
+		PxConvexMesh*			 convexMesh = gPhysics->createConvexMesh(input);
+
+		PxShape* shape = PxRigidActorExt::createExclusiveShape(
+			*actor, PxConvexMeshGeometry(convexMesh, PxMeshScale(PxVec3(height, radius, radius))), *gMaterial);
+		return shape;
+	}
+
+	return nullptr;
+	// static PxTriangleMesh* triangleMesh = nullptr;
+
+	// if (nullptr == triangleMesh)
+	//{
+	//	// 원뿔의 꼭짓점과 바닥을 구성하는 정점 벡터
+	//	std::vector<PxVec3> vertices;
+	//	vertices.push_back(PxVec3(0.0f, height / 2, 0.0f)); // 원뿔의 꼭짓점
+
+	//	// 바닥 원형의 정점들
+	//	for (int i = 0; i < numSides; ++i)
+	//	{
+	//		float angle = i * PxPi * 2 / numSides;
+	//		float x		= radius * cos(angle);
+	//		float z		= radius * sin(angle);
+	//		vertices.push_back(PxVec3(x, -height / 2, z));
+	//	}
+
+	//	// 삼각형 인덱스 벡터
+	//	std::vector<PxU32> indices;
+	//	for (int i = 1; i <= numSides; ++i)
+	//	{
+	//		indices.push_back(0); // 꼭짓점
+	//		indices.push_back(i);
+	//		indices.push_back(i % numSides + 1);
+	//	}
+
+	//	// 바닥 삼각형들
+	//	for (int i = 1; i <= numSides; ++i)
+	//	{
+	//		indices.push_back(i);
+	//		indices.push_back(numSides + 1);
+	//		indices.push_back(i % numSides + 1);
+	//	}
+
+	//	// 삼각형 메시 생성
+	//	PxTriangleMeshDesc meshDesc;
+	//	meshDesc.points.count  = static_cast<PxU32>(vertices.size());
+	//	meshDesc.points.stride = sizeof(PxVec3);
+	//	meshDesc.points.data   = vertices.data();
+
+	//	meshDesc.triangles.count  = static_cast<PxU32>(indices.size() / 3);
+	//	meshDesc.triangles.stride = 3 * sizeof(PxU32);
+	//	meshDesc.triangles.data	  = indices.data();
+	//	PxDefaultMemoryOutputStream		  writeBuffer;
+	//	PxTriangleMeshCookingResult::Enum result;
+	//	if (!gPhysics->getCooking()->cookTriangleMesh(meshDesc, writeBuffer, &result))
+	//	{
+	//		return nullptr;
+	//	}
+	//	PxDefaultMemoryInputData readBuffer(writeBuffer.getData(), writeBuffer.getSize());
+	//	triangleMesh = gPhysics->createTriangleMesh(readBuffer);
+	//}
+
+	// return gPhysics->createShape(PxTriangleMeshGeometry(triangleMesh), *gMaterial);
+}
+
 PxFilterFlags CustomFilterShader(PxFilterObjectAttributes attributes0, PxFilterData filterData0,
 								 PxFilterObjectAttributes attributes1, PxFilterData filterData1, PxPairFlags& pairFlags,
 								 const void* constantBlock, PxU32 constantBlockSize)
@@ -219,18 +306,22 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 		// 동적 물리 객체 생성
 		PxRigidDynamic* dynamicActor = gPhysics->createRigidDynamic(transform);
 		PxRigidBodyExt::updateMassAndInertia(*dynamicActor, 10.0f);
+		dynamicActor->setAngularDamping(0.5f);
 		// dynamicActor->setMass(1.0f);
-		actor = dynamicActor;
+		PhysX->m_DActor = dynamicActor;
+		actor			= dynamicActor;
 	}
 	else
 	{
 		// 동적 물리 객체 생성
 		PxRigidDynamic* dynamicActor = gPhysics->createRigidDynamic(transform);
 		PxRigidBodyExt::updateMassAndInertia(*dynamicActor, 10.0f);
+		dynamicActor->setAngularDamping(0.5f);
 		// dynamicActor->setMass(1.0f);
 		dynamicActor->setRigidBodyFlag(PxRigidBodyFlag::eENABLE_CCD, true);
 		dynamicActor->setRigidBodyFlag(PxRigidBodyFlag::eENABLE_SPECULATIVE_CCD, true);
-		actor = dynamicActor;
+		PhysX->m_DActor = dynamicActor;
+		actor			= dynamicActor;
 	}
 
 	// 게임 오브젝트의 스케일 정보
@@ -247,9 +338,17 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 	{
 		shape = gPhysics->createShape(PxBoxGeometry(scale.x / 2, scale.y / 2, scale.z / 2), *gMaterial);
 	}
-	else
+	else if (PhysShape::SPHERE == PhysX->m_Shape)
 	{
 		shape = gPhysics->createShape(PxSphereGeometry(scale.x / 2), *gMaterial);
+	}
+	else
+	{
+		float radius   = scale.x / 2; // 원뿔의 반지름
+		float height   = scale.y;	  // 원뿔의 높이
+		int	  numSides = 20;		  // 원뿔 바닥의 변 개수
+
+		shape = createConeShape(actor, gPhysics, gMaterial, radius, height, numSides);
 	}
 
 	// 필터정보 세팅
@@ -264,7 +363,8 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 	if (PhysBodyType::TRIGGER != PhysX->m_bPhysBodyType)
 	{
 		shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
-		shape->setRestOffset(200.f);
+		// shape->setContactOffset(m_fContactOffset);
+		shape->setRestOffset(m_fLestOffset);
 	}
 	if (PhysBodyType::TRIGGER == PhysX->m_bPhysBodyType)
 	{
@@ -296,18 +396,46 @@ void CPhysXMgr::init()
 	// PhysX 초기화
 	gPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *gFoundation, PxTolerancesScale(), true, gPvd);
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
-	const float gravityMul	= 10.f;
-	sceneDesc.gravity		= PxVec3(0.0f, -9.81f * gravityMul, 0.0f);
+	sceneDesc.gravity		= PxVec3(0.0f, -9.81f * m_fGravityMul, 0.0f);
 	gDispatcher				= PxDefaultCpuDispatcherCreate(2);
 	sceneDesc.cpuDispatcher = gDispatcher;
 
 	// 필터
-	LayerCheck((UINT)LAYER::LAYER_MONSTER, (UINT)LAYER::LAYER_PLAYER);
-	LayerCheck((UINT)LAYER::LAYER_MONSTER, (UINT)LAYER::LAYER_RAYCAST);
-	// LayerCheck((UINT)LAYER::LAYER_PLAYER, (UINT)LAYER::LAYER_RAYCAST);
-	LayerCheck((UINT)LAYER::LAYER_WALL, (UINT)LAYER::LAYER_RAYCAST);
-	LayerCheck((UINT)LAYER::LAYER_DEFAULT, (UINT)LAYER::LAYER_DEFAULT);
-	LayerCheck((UINT)LAYER::LAYER_DEFAULT, (UINT)LAYER::LAYER_PLAYER);
+	LayerCheck((UINT)LAYER::LAYER_PLANE, (UINT)LAYER::LAYER_ETC_OBJECT);		  // ex 바닥과 탄피
+	LayerCheck((UINT)LAYER::LAYER_PLANE, (UINT)LAYER::LAYER_PLAYER_SKILL);		  // ex 바닥과 수류탄
+	LayerCheck((UINT)LAYER::LAYER_PLANE, (UINT)LAYER::LAYER_MONSTER);			  // ex 바닥과 몬스터 스탠딩
+	LayerCheck((UINT)LAYER::LAYER_PLANE, (UINT)LAYER::LAYER_MONSTER_SKILL);		  // ex 바닥과 몬스터스킬
+	LayerCheck((UINT)LAYER::LAYER_PLANE, (UINT)LAYER::LAYER_BOSS);				  // ex 바닥과 보스 스탠딩
+	LayerCheck((UINT)LAYER::LAYER_PLANE, (UINT)LAYER::LAYER_BOSS_SKILL);		  // ex 바닥과 보스 스킬
+	LayerCheck((UINT)LAYER::LAYER_PLANE, (UINT)LAYER::LAYER_PLAYER_CAMERA_RAY);	  // ex 바닥과 카메라스프링암
+	LayerCheck((UINT)LAYER::LAYER_PLANE, (UINT)LAYER::LAYER_PLAYER_SHOOTING_RAY); // ex 바닥과 사격데칼
+
+	LayerCheck((UINT)LAYER::LAYER_WALL, (UINT)LAYER::LAYER_PLAYER_SHOOTING_RAY); // ex 벽과 사격
+	LayerCheck((UINT)LAYER::LAYER_WALL, (UINT)LAYER::LAYER_PLAYER);				 // ex 벽과 사격
+	LayerCheck((UINT)LAYER::LAYER_WALL, (UINT)LAYER::LAYER_ETC_OBJECT);			 // ex 벽과 탄피
+	LayerCheck((UINT)LAYER::LAYER_WALL, (UINT)LAYER::LAYER_PLAYER_SKILL);		 // ex 벽과 수류탄
+	LayerCheck((UINT)LAYER::LAYER_WALL, (UINT)LAYER::LAYER_MONSTER);			 // ex 벽과 몬스터 스탠딩
+	LayerCheck((UINT)LAYER::LAYER_WALL, (UINT)LAYER::LAYER_MONSTER_SKILL);		 // ex 벽과  몬스터스킬
+	LayerCheck((UINT)LAYER::LAYER_WALL, (UINT)LAYER::LAYER_BOSS);				 // ex 벽과 보스 스탠딩
+	LayerCheck((UINT)LAYER::LAYER_WALL, (UINT)LAYER::LAYER_BOSS_SKILL);			 // ex 벽과 보스 스킬
+	LayerCheck((UINT)LAYER::LAYER_WALL, (UINT)LAYER::LAYER_PLAYER_CAMERA_RAY);	 // ex 벽과 카메라스프링암
+	LayerCheck((UINT)LAYER::LAYER_WALL, (UINT)LAYER::LAYER_PLAYER_SHOOTING_RAY); // ex 벽과 사격데칼
+
+	LayerCheck((UINT)LAYER::LAYER_PLAYER, (UINT)LAYER::LAYER_MONSTER);
+	LayerCheck((UINT)LAYER::LAYER_PLAYER, (UINT)LAYER::LAYER_MONSTER_SKILL);
+	LayerCheck((UINT)LAYER::LAYER_PLAYER, (UINT)LAYER::LAYER_BOSS);
+	LayerCheck((UINT)LAYER::LAYER_PLAYER, (UINT)LAYER::LAYER_BOSS_SKILL);
+
+	LayerCheck((UINT)LAYER::LAYER_PLAYER_SKILL, (UINT)LAYER::LAYER_MONSTER);
+	LayerCheck((UINT)LAYER::LAYER_PLAYER_SKILL, (UINT)LAYER::LAYER_BOSS);
+
+	LayerCheck((UINT)LAYER::LAYER_MONSTER, (UINT)LAYER::LAYER_MONSTER);
+	LayerCheck((UINT)LAYER::LAYER_MONSTER, (UINT)LAYER::LAYER_BOSS);
+
+	LayerCheck((UINT)LAYER::LAYER_EVENT, (UINT)LAYER::LAYER_PLAYER);
+
+	LayerCheck((UINT)LAYER::LAYER_PLAYER_SHOOTING_RAY, (UINT)LAYER::LAYER_MONSTER);
+	LayerCheck((UINT)LAYER::LAYER_PLAYER_SHOOTING_RAY, (UINT)LAYER::LAYER_BOSS);
 
 	sceneDesc.filterShader			  = CustomFilterShader;
 	sceneDesc.kineKineFilteringMode	  = PxPairFilteringMode::eKEEP;
@@ -315,7 +443,7 @@ void CPhysXMgr::init()
 	// sceneDesc.flags |= PxSceneFlag::eENABLE_CCD;
 
 	gScene = gPhysics->createScene(sceneDesc);
-	gMaterial = gPhysics->createMaterial(0.5f, 0.5f, 0.f); // (정지 마찰 계수, 동적 마찰 계수, 반발 계수)
+	gMaterial = gPhysics->createMaterial(200.0f, 200.0f, 0.f); // (정지 마찰 계수, 동적 마찰 계수, 반발 계수)
 
 	gCollisionCalback = new RoRCollisionCallback;
 	gScene->setSimulationEventCallback(gCollisionCalback);
@@ -323,15 +451,16 @@ void CPhysXMgr::init()
 
 void CPhysXMgr::tick()
 {
-	// RETURN_IF_NOT_PLAYING
+	RETURN_IF_NOT_PLAYING
 
-	static const float ThresholdTime = 1.f / 60.f;
+	static const float ThresholdTime = 1.f / 200.f;
 	static float	   acctime		 = 0.f;
 	acctime += DT;
 	if (acctime < ThresholdTime)
 		return;
-	acctime -= ThresholdTime;
+	acctime -= int(acctime / ThresholdTime) * ThresholdTime;
 	gScene->simulate(ThresholdTime);
+	// gScene->simulate(DT);
 	gScene->fetchResults(true);
 
 	for (auto& e : m_vecColInfo)
@@ -364,8 +493,26 @@ void CPhysXMgr::ClearAllActors()
 	for (physx::PxActor* actor : actors)
 	{
 		gScene->removeActor(*actor);
+		actor->userData = nullptr;
 		actor->release();
+		// auto e = static_cast<CGameObject*>(actor->userData);
+		//  if (e && e->PhysX())
+		//{
+		//	e->PhysX()->m_Actor = nullptr;
+		//  }
 	}
+
+	// 씬 잠금 해제
+	gScene->unlockWrite();
+}
+
+void CPhysXMgr::ReleaseActor(PxRigidActor* actor)
+{
+	// 씬 잠금
+	gScene->lockWrite();
+
+	gScene->removeActor(*actor);
+	actor->release();
 
 	// 씬 잠금 해제
 	gScene->unlockWrite();

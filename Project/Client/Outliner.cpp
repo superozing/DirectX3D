@@ -272,7 +272,7 @@ void Outliner::CheckCopy()
 {
 	if (KEY_PRESSED_EDITOR(KEY::LCTRL))
 	{
-		if (KEY_TAP_EDITOR(KEY::C))
+		if (KEY_TAP_EDITOR(KEY::C) && ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows))
 		{
 			TreeNode* pNode = m_Tree->GetSelectedNode();
 
@@ -281,7 +281,7 @@ void Outliner::CheckCopy()
 				m_CopyTarget = (CGameObject*)pNode->GetData();
 			}
 		}
-		else if (KEY_TAP_EDITOR(KEY::V))
+		else if (KEY_TAP_EDITOR(KEY::V) && ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows))
 		{
 			if (nullptr != m_CopyTarget)
 			{

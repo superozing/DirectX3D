@@ -74,6 +74,9 @@ cbuffer MATERIAL_CONST : register(b1)
     int g_iAnim;
     int g_iBoneCount;
     
+    int g_iBloomUse;
+    int3 ipadding;
+    
 }
 
 cbuffer ANIM_DATA2D : register(b2)
@@ -147,5 +150,8 @@ StructuredBuffer<AfterImageInfo> g_AfterImage : register(t29);
 
 // Animation3D Bone Matrix Buffer
 StructuredBuffer<Matrix> g_arrBoneMat : register(t30);
+
+// Bloom Info Buffer
+StructuredBuffer<tBloomInfo> g_BloomInfo : register(t15);
 
 #endif

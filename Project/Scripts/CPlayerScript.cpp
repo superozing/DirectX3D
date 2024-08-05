@@ -18,6 +18,8 @@
 #include "CPlayerController.h"
 #include "CSpringArm.h"
 
+#include "CShootingSystemScript.h"
+
 #include "CCrosshair.h"
 #include "CHUD.h"
 
@@ -28,6 +30,7 @@ CPlayerScript::CPlayerScript()
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
 	, m_tStatus{}
 	, m_pSpringArm(nullptr)
+	, m_pMuzzleFlash(nullptr)
 {
 	// 디버깅용
 	AppendScriptParam("CurState", SCRIPT_PARAM::STRING, (void*)&state);
@@ -82,7 +85,7 @@ void CPlayerScript::InitScriptParamUI()
 	AppendScriptParam("Critical Damage", SCRIPT_PARAM::FLOAT, &m_tStatus.CriticalDamage);
 	AppendScriptParam("MoveSpeed", SCRIPT_PARAM::FLOAT, &m_tStatus.MoveSpeed);
 	AppendScriptParam("AttackMoveSpeed", SCRIPT_PARAM::FLOAT, &m_tStatus.AttackMoveSpeed);
-	AppendScriptParam("SpreadRatio", SCRIPT_PARAM::FLOAT, &m_tStatus.SpreadRatio);
+	AppendScriptParam("SpreadRatio", SCRIPT_PARAM::FLOAT, &m_tStatus.SpreadRatioSpeed);
 }
 
 void CPlayerScript::InitStateMachine()
@@ -243,6 +246,11 @@ void CPlayerScript::InitSpringArmSetting()
 
 #include <Engine/CRenderMgr.h>
 
+int CPlayerScript::GetCurState()
+{
+	return m_FSM->GetCurState();
+}
+
 void CPlayerScript::SetCoverType(CoverType _type)
 {
 	m_iCorverType = _type;
@@ -277,15 +285,33 @@ void CPlayerScript::begin()
 			break;
 	}
 
+	for (size_t i = 0; i < vecChild.size(); i++)
+	{
+		m_pMuzzleFlash = vecChild[i]->GetScript<CMuzzleFlashScript>();
+		if (m_pMuzzleFlash)
+			break;
+	}
+
 	// 저장 재시작하면 터져서 임시로 막아둠
 	if (m_pSpringArm)
 		m_pSpringArm->SetTargetObject(CRenderMgr::GetInst()->GetMainCam()->GetOwner());
 
 	m_FSM->Begin();
 
+	m_pShootingSystem = new CShootingSystemScript;
+
+	GetOwner()->AddComponent(m_pShootingSystem);
+
+	m_pShootingSystem->SetSpreadRatioSpeed(m_tStatus.SpreadRatioSpeed);
+
 	auto pObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"HUD");
 	if (pObj)
-		m_pShootingSystem = pObj->GetScript<CHUD>()->GetHUD<CCrosshair>();
+	{
+		m_pCrosshair = pObj->GetScript<CHUD>()->GetHUD<CCrosshair>();
+		m_pCrosshair->SetShootingSystem(m_pShootingSystem);
+	}
+	else
+		CLogMgr::GetInst()->AddLog(Log_Level::ERR, L"Can't find \"HUD\"Object.");
 }
 
 void CPlayerScript::tick()
@@ -309,9 +335,6 @@ void CPlayerScript::tick()
 	ChangeToVictory();
 	ChangeToDash();
 
-	// 엄폐 판정 할 수 있게되면 지울 함수
-	SwitchCoverType();
-
 	if (KEY_TAP(CPlayerController::Skill))
 	{
 		m_FSM->SetCurState((int)PLAYER_STATE::SkillThrow);
@@ -325,10 +348,21 @@ void CPlayerScript::tick()
 		m_tStatus.MoveSpeed = 5 * originSpeed;
 	}
 
-	if (KEY_TAP(TAB))
+	if (KEY_TAP(CPlayerController::Flip))
 	{
 		SetRight(!IsRight());
 	}
+
+	// 탄피 힘 방향을 확인하기 위한 자동 사격
+	//static float autoShoot = 0.f;
+	//autoShoot += DT;
+
+	//if (autoShoot > 0.5f)
+	//{
+	//	m_pShootingSystem->ShootPlayerBulletRay();
+	//	autoShoot = 0.f;
+	//}
+
 }
 
 void CPlayerScript::CameraMove()
@@ -611,16 +645,6 @@ void CPlayerScript::NormalAttack()
 
 			m_FSM->SetCurState((int)PLAYER_STATE::NormalAttackIng);
 	}
-}
-
-void CPlayerScript::SwitchCoverType()
-{
-	if (KEY_TAP(KEY::_1))
-		SetCoverType(CoverType::Normal);
-	if (KEY_TAP(KEY::_2))
-		SetCoverType(CoverType::Stand);
-	if (KEY_TAP(KEY::_3))
-		SetCoverType(CoverType::Kneel);
 }
 
 void CPlayerScript::BeginOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)

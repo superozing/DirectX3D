@@ -193,7 +193,7 @@ void RTViewPort::Gizmo()
 	RoRMath::MatrixToFloat16(cameraProjection, cameraProjMat);
 	RoRMath::MatrixToFloat16(objectMatrix, objmat);
 
-	EditTransform(cameraView, cameraProjection, objectMatrix, true, distance);
+	EditTransform(cameraView, cameraProjection, objectMatrix, false, distance);
 
 	RoRMath::Float16ToMatrix(cameraViewMat, cameraView);
 	RoRMath::Float16ToMatrix(cameraProjMat, cameraProjection);
@@ -214,14 +214,14 @@ void EditTransform(float* cameraView, float* cameraProjection, float* matrix, bo
 	static bool				   boundSizingSnap = false;
 	static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
 
+	if (KEY_TAP(W) && KEY_NONE(RBTN))
+		mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+	if (KEY_TAP(E) && KEY_NONE(RBTN))
+		mCurrentGizmoOperation = ImGuizmo::ROTATE;
+	if (KEY_TAP(R) && KEY_NONE(RBTN)) // r Key
+		mCurrentGizmoOperation = ImGuizmo::SCALE;
 	if (editTransformDecomposition)
 	{
-		if (KEY_TAP(W) && KEY_NONE(RBTN))
-			mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-		if (KEY_TAP(E) && KEY_NONE(RBTN))
-			mCurrentGizmoOperation = ImGuizmo::ROTATE;
-		if (KEY_TAP(R) && KEY_NONE(RBTN)) // r Key
-			mCurrentGizmoOperation = ImGuizmo::SCALE;
 		if (ImGui::RadioButton("Translate", mCurrentGizmoOperation == ImGuizmo::TRANSLATE))
 			mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
 		ImGui::SameLine();

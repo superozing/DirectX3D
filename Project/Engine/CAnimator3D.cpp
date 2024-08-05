@@ -65,6 +65,9 @@ void CAnimator3D::finaltick()
 {
 	m_dCurTime = 0.f;
 
+	if (!MeshRender())
+		return;
+
 	m_dCurTime = m_pVecClip->at(m_iCurClip).dStartTime + m_vecClipUpdateTime[m_iCurClip];
 
 	// 현재 재생중인 Clip 의 시간을 진행한다.

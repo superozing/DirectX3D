@@ -15,6 +15,9 @@ DecalUI::DecalUI()
 	, fDecalRenderDistance(0)
 	, strCustomAlpha(" ")
 	, fCustomAlpha(1.f)
+	, fDecalAnimationActionTime(0.f)
+	, AnimationOutlinerColor(0.f, 0.f, 0.f, 1.f)
+	, AnimationInsideColor(0.f, 0.f, 0.f, 1.f)
 {
 	SetComponentTitle("Decal");
 	strEmissiveCondition = "Emissive Off";
@@ -37,6 +40,12 @@ void DecalUI::render_update()
 	CRenderComponent* pRenComp = pTarget->GetRenderComponent();
 
 	string meshname, mtrlname;
+	UIDecalShape			  = pTarget->Decal()->GetDecalShape();
+	UIDecalType				  = pTarget->Decal()->GetDecalType();
+	fDecalAnimationActionTime = pTarget->Decal()->GetAnimationActionTime();
+
+	AnimationOutlinerColor = pTarget->Decal()->GetAnimationOutlinerColor();
+	AnimationInsideColor   = pTarget->Decal()->GetAnimationInsideColor();
 
 	Ptr<CMaterial> pMtrl = pRenComp->GetMaterial(0);
 
@@ -203,6 +212,40 @@ void DecalUI::render_update()
 
 	ImGui::SeparatorText("Decal Option");
 
+	ImGui::Text("Decal Shape : ");
+	ImGui::SameLine();
+
+	string strDecalShape = ToString(magic_enum::enum_name(UIDecalShape));
+
+	if (ImGui::Button(strDecalShape.c_str()))
+	{
+		if (strDecalShape == "Rect")
+		{
+			GetTargetObject()->Decal()->SetDecalShape(DecalShape::Circle);
+		}
+		else
+		{
+			GetTargetObject()->Decal()->SetDecalShape(DecalShape::Rect);
+		}
+	}
+
+	ImGui::Text("Decal Type : ");
+	ImGui::SameLine();
+
+	string strDecalType = ToString(magic_enum::enum_name(UIDecalType));
+
+	if (ImGui::Button(strDecalType.c_str()))
+	{
+		if (strDecalType == "Texture")
+		{
+			GetTargetObject()->Decal()->SetDecalType(DecalType::Animation);
+		}
+		else
+		{
+			GetTargetObject()->Decal()->SetDecalType(DecalType::Texture);
+		}
+	}
+
 	ImGui::Text("Decal Emissive : ");
 	ImGui::SameLine();
 
@@ -253,7 +296,7 @@ void DecalUI::render_update()
 	// CustomAlpha 설정
 	if (ImGui::Button(strCustomAlpha.c_str(), ImVec2(120.f, 20.f)))
 	{
-		int iCAlpha = GetTargetObject()->Decal()->GetUsetCustomAlpha();
+		int iCAlpha = GetTargetObject()->Decal()->GetUseCustomAlpha();
 
 		if (iCAlpha > 0)
 		{
@@ -274,6 +317,63 @@ void DecalUI::render_update()
 	if (ImGui::DragFloat("##DecalCustomfAlpha", &fCustomAlpha, 0.01f, 0.f, 1.f))
 	{
 		GetTargetObject()->Decal()->SetCustomAlpha(fCustomAlpha);
+	}
+
+	// 데칼 에니메이션 옵션 설정
+
+	if (UIDecalType == DecalType::Animation)
+	{
+		ImGui::SeparatorText("Animation Option");
+
+		ImGui::Text("Decal Acction Time : ");
+		ImGui::SameLine();
+
+		if (ImGui::InputFloat("##Decal Animation", &fDecalAnimationActionTime))
+		{
+			pTarget->Decal()->SetAnimationActionOriginTime(fDecalAnimationActionTime);
+			pTarget->Decal()->SyncTime();
+		}
+
+		ImGui::SameLine();
+
+		if (ImGui::Button("Reset"))
+		{
+			pTarget->Decal()->SyncTime();
+		}
+
+		static Vec3 ColorPicker[2];
+
+		ColorPicker[0] = pTarget->Decal()->GetAnimationOutlinerColor();
+		ColorPicker[1] = pTarget->Decal()->GetAnimationInsideColor();
+
+		ImGui::Text("Outliner Color");
+		ImGui::SameLine();
+		ImGui::PushItemWidth(200.f);
+		ImGui::ColorPicker3("##AnimationDecalOutlinerColor", ColorPicker[0],
+							ImGuiColorEditFlags_HDR | ImGuiColorEditFlags_PickerHueWheel);
+
+		ImGui::Text("Inside Color");
+		ImGui::SameLine();
+		ImGui::PushItemWidth(200.f);
+		ImGui::ColorPicker3("##AnimationDecalInsideColor", ColorPicker[1],
+							ImGuiColorEditFlags_HDR | ImGuiColorEditFlags_PickerHueWheel);
+
+		static float AnimDecalAlpha[2] = {1.f, 1.f};
+
+		AnimationOutlinerColor = Vec4(ColorPicker[0], AnimDecalAlpha[0]);
+		AnimationInsideColor   = Vec4(ColorPicker[1], AnimDecalAlpha[1]);
+
+		ImGui::Text("Outliner Color : ");
+		ImGui::SameLine();
+		ImGui::InputFloat4("##OutlinerColor", AnimationOutlinerColor);
+
+		pTarget->Decal()->SetAnimationOutlinerColor(AnimationOutlinerColor);
+
+		ImGui::Text("Inside Color : ");
+		ImGui::SameLine();
+		ImGui::InputFloat4("##InsideColor", AnimationInsideColor);
+
+		pTarget->Decal()->SetAnimationInsideColor(AnimationInsideColor);
 	}
 }
 

@@ -302,6 +302,54 @@ int CDevice::CreateDepthStencilState()
 	if (FAILED(hr))
 		return E_FAIL;
 
+	// 오브젝트 그리기
+	tDesc				   = {};
+	tDesc.DepthEnable	   = true;
+	tDesc.DepthFunc		   = D3D11_COMPARISON_LESS_EQUAL;
+	tDesc.DepthWriteMask   = D3D11_DEPTH_WRITE_MASK_ALL;
+	tDesc.StencilEnable	   = true;
+	tDesc.StencilReadMask  = 0xFF;
+	tDesc.StencilWriteMask = 0xFF;
+
+	tDesc.FrontFace.StencilFunc		   = D3D11_COMPARISON_ALWAYS;
+	tDesc.FrontFace.StencilPassOp	   = D3D11_STENCIL_OP_REPLACE;
+	tDesc.FrontFace.StencilFailOp	   = D3D11_STENCIL_OP_KEEP;
+	tDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+
+	tDesc.BackFace.StencilFunc		  = D3D11_COMPARISON_ALWAYS;
+	tDesc.BackFace.StencilPassOp	  = D3D11_STENCIL_OP_REPLACE;
+	tDesc.BackFace.StencilFailOp	  = D3D11_STENCIL_OP_KEEP;
+	tDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+
+	hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::STENCIL_WRITE].GetAddressOf());
+	if (FAILED(hr))
+		return E_FAIL;
+
+	// 비트마스킹을 이용한 스텐실 테스트 설정
+	D3D11_DEPTH_STENCIL_DESC tDescTestMask = {};
+	tDescTestMask.DepthEnable			   = true;
+	tDescTestMask.DepthFunc				   = D3D11_COMPARISON_LESS_EQUAL;
+	tDescTestMask.DepthWriteMask		   = D3D11_DEPTH_WRITE_MASK_ALL;
+	tDescTestMask.StencilEnable			   = true;
+	tDescTestMask.StencilReadMask		   = 1 << (UINT)STENCIL_TYPE::GRAY; // 테스트할 비트 마스크 (2)
+	tDescTestMask.StencilWriteMask		   = 0xFF;
+
+	tDescTestMask.FrontFace.StencilFunc =
+		D3D11_COMPARISON_NOT_EQUAL; // GRAY 비트가 미설정된 경우만 그냥통과(discard),설정된경우는 쉐이더로들어감
+	tDescTestMask.FrontFace.StencilPassOp	   = D3D11_STENCIL_OP_KEEP;
+	tDescTestMask.FrontFace.StencilFailOp	   = D3D11_STENCIL_OP_KEEP;
+	tDescTestMask.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+
+	tDescTestMask.BackFace.StencilFunc =
+		D3D11_COMPARISON_NOT_EQUAL; // GRAY 비트가 미설정된 경우만 그냥통과(discard),설정된경우는 쉐이더로들어감
+	tDescTestMask.BackFace.StencilPassOp	  = D3D11_STENCIL_OP_KEEP;
+	tDescTestMask.BackFace.StencilFailOp	  = D3D11_STENCIL_OP_KEEP;
+	tDescTestMask.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+
+	hr = DEVICE->CreateDepthStencilState(&tDescTestMask, m_arrDS[(UINT)DS_TYPE::STENCIL_GRAY_TEST].GetAddressOf());
+	if (FAILED(hr))
+		return E_FAIL;
+
 	//// BackFace Check
 	// tDesc.DepthEnable = true;
 	// tDesc.DepthFunc = D3D11_COMPARISON_GREATER;
@@ -321,8 +369,8 @@ int CDevice::CreateDepthStencilState()
 	// tDesc.StencilEnable = true;
 
 	// tDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-	// tDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_INCR;
-	// tDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_DECR;
+	//   tDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_INCR;
+	//   tDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_DECR;
 
 	// hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::FRONTFACE_CHECK].GetAddressOf());
 	// if (FAILED(hr)) return E_FAIL;
@@ -484,6 +532,9 @@ int CDevice::CreateStructuredBuffer()
 
 	m_arrSB[(UINT)SB_TYPE::WEIGHTMAP] = new CStructuredBuffer;
 	m_arrSB[(UINT)SB_TYPE::WEIGHTMAP]->Create(sizeof(tWeight_4), 1024 * 1024, SB_READ_TYPE::READ_WRITE, false);
+
+	m_arrSB[(UINT)SB_TYPE::BLOOM] = new CStructuredBuffer;
+	m_arrSB[(UINT)SB_TYPE::BLOOM]->Create(sizeof(tBloom), 1, SB_READ_TYPE::READ_ONLY, true);
 
 	m_arrSB[(UINT)SB_TYPE::AFTERIMAGE] = new CStructuredBuffer;
 	m_arrSB[(UINT)SB_TYPE::AFTERIMAGE]->Create(sizeof(AfterImageInfo), 1, SB_READ_TYPE::READ_ONLY, true);

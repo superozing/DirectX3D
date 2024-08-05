@@ -80,6 +80,14 @@ struct CmpDescending
 	}
 };
 
+struct CmpUIDescending
+{
+	bool operator()(CGameObject* _First, CGameObject* _Second)
+	{
+		return _First->Transform()->GetWorldPos().z > _Second->Transform()->GetWorldPos().z;
+	}
+};
+
 struct CmpDecalPriority
 {
 	bool operator()(CGameObject* _First, CGameObject* _Second)
@@ -327,7 +335,14 @@ void CCamera::SortObject()
 	}
 
 	// Depth Sorting
-	std::sort(m_vecTransparent.begin(), m_vecTransparent.end(), CmpDescending());
+	if (this == CRenderMgr::GetInst()->GetMainCam())
+	{
+		std::sort(m_vecTransparent.begin(), m_vecTransparent.end(), CmpDescending());
+	}
+	else
+	{
+		std::sort(m_vecTransparent.begin(), m_vecTransparent.end(), CmpUIDescending());
+	}
 }
 
 void CCamera::render_deferred()
@@ -411,11 +426,12 @@ void CCamera::render_Instance(const map<ULONG64, vector<tInstObj>>& m_mapInstGro
 			pMtrl->SetBoneCount(pMesh->GetBoneCount());
 		}
 
-		// Bloom
-		// auto BloomInfo = CRenderMgr::GetInst()->m_BloomInfo;
-		// pMtrl->SetScalarParam(SCALAR_PARAM::FLOAT_0, BloomInfo.Threshold);
-		// pMtrl->SetScalarParam(SCALAR_PARAM::VEC4_0, BloomInfo.vColor);
 		pMtrl->UpdateData_Inst();
+		// auto vecScript = pObj->GetScripts();
+		// for (int i = 0; i < vecScript.size(); ++i)
+		//{
+		//	vecScript[i]->UpdateData();
+		// }
 		pMesh->render_instancing(pair.second[0].iMtrlIdx);
 
 		// 정리
@@ -433,17 +449,9 @@ void CCamera::render_Instance(const map<ULONG64, vector<tInstObj>>& m_mapInstGro
 			continue;
 
 		pair.second[0].pObj->Transform()->UpdateData();
-		// auto BloomInfo = CRenderMgr::GetInst()->m_BloomInfo;
+		// auto BloomInfo = CRenderMgr::GetInst()->m_GlobalBloomInfo;
 		for (auto& instObj : pair.second)
 		{
-			// Bloom
-			// instObj.pObj->GetRenderComponent()
-			//	->GetMaterial(instObj.iMtrlIdx)
-			//	->SetScalarParam(SCALAR_PARAM::FLOAT_0, BloomInfo.Threshold);
-			// instObj.pObj->GetRenderComponent()
-			//	->GetMaterial(instObj.iMtrlIdx)
-			//	->SetScalarParam(SCALAR_PARAM::VEC4_0, BloomInfo.vColor);
-
 			instObj.pObj->GetRenderComponent()->render(instObj.iMtrlIdx);
 		}
 
@@ -478,20 +486,31 @@ void CCamera::render_forward()
 
 void CCamera::render_postprocess()
 {
-	for (size_t i = 0; i < m_vecPostProcess.size(); ++i)
+	// Blur&Bloom처리
+	if (true == CRenderMgr::GetInst()->m_GlobalBloomInfo.BloomActivate)
 	{
-		// 최종 렌더링 이미지를 후처리 타겟에 복사
-		CRenderMgr::GetInst()->CopyRenderTargetToPostProcessTarget();
-
-		// 복사받은 후처리 텍스쳐를 t13 레지스터에 바인딩
-		Ptr<CTexture> pPostProcessTex = CRenderMgr::GetInst()->GetPostProcessTex();
-		pPostProcessTex->UpdateData(13);
-
-		// 후처리 오브젝트 렌더링
-		m_vecPostProcess[i]->render();
+		Blur();
+		Bloom();
 	}
 
-	m_vecPostProcess.clear();
+	Cromatic_Aberration();
+
+	GrayFilter_by_Object();
+
+	// for (size_t i = 0; i < m_vecPostProcess.size(); ++i)
+	//{
+	//	// 최종 렌더링 이미지를 후처리 타겟에 복사
+	//	CRenderMgr::GetInst()->CopyRenderTargetToPostProcessTarget();
+
+	//	// 복사받은 후처리 텍스쳐를 t13 레지스터에 바인딩
+	//	Ptr<CTexture> pPostProcessTex = CRenderMgr::GetInst()->GetPostProcessTex();
+	//	pPostProcessTex->UpdateData(13);
+
+	//	// 후처리 오브젝트 렌더링
+	//	m_vecPostProcess[i]->render();
+	//}
+
+	// m_vecPostProcess.clear();
 }
 
 void CCamera::Merge()
@@ -519,7 +538,7 @@ void CCamera::Blur()
 	auto BlurTarget = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RelativeLuminanceTargetTex");
 
 	// Bloom Level <= MAXBLURLEVEL
-	int BlurLevel = min(MAXBLURLEVEL, CRenderMgr::GetInst()->m_BloomInfo.BlurLevel);
+	int BlurLevel = min(MAXBLURLEVEL, CRenderMgr::GetInst()->m_GlobalBloomInfo.BlurLevel);
 
 	// Blur Tex
 	auto BloomOne = CRenderMgr::GetInst()->m_vecBlurOneTex;
@@ -587,7 +606,7 @@ void CCamera::Bloom()
 	pBloomMtrl = CAssetMgr::GetInst()->Load<CMaterial>(MTRLBloom);
 
 	// 블랜드비율
-	auto  BlurInfo	 = CRenderMgr::GetInst()->m_BloomInfo;
+	auto  BlurInfo	 = CRenderMgr::GetInst()->m_GlobalBloomInfo;
 	float Bloomratio = BlurInfo.Ratio;
 
 	// 텍스쳐, 블랜드비율 바인딩
@@ -598,6 +617,66 @@ void CCamera::Bloom()
 
 	// 타겟->리소스 복사
 	CRenderMgr::GetInst()->CopyFromTextureToTexture(ColorCopy, RenderTarget);
+	pRectMesh->render(0);
+}
+
+void CCamera::Cromatic_Aberration()
+{
+	auto& RefInfo = CRenderMgr::GetInst()->m_CAInfo;
+	if (false == RefInfo.Activate)
+		return;
+
+	RefInfo.RemainTime -= DT;
+	if (0.f >= RefInfo.RemainTime)
+	{
+		RefInfo.Activate   = false;
+		RefInfo.RemainTime = 0.f;
+	}
+	float LifeRatio = RefInfo.RemainTime / RefInfo.Duration;
+
+	auto ColorCopy	  = CAssetMgr::GetInst()->FindAsset<CTexture>(L"PostProcessTex");
+	auto RenderTarget = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
+
+	// 매쉬,머터리얼 받아오기
+	static Ptr<CMesh>	  pRectMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect);
+	static Ptr<CMaterial> pCAMat;
+	pCAMat = CAssetMgr::GetInst()->Load<CMaterial>(MTRLCromatic_Aberration);
+
+	// 텍스쳐, 오프셋바인딩
+	pCAMat->SetTexParam(TEX_PARAM::TEX_0, ColorCopy);
+	pCAMat->SetScalarParam(SCALAR_PARAM::VEC2_0, RefInfo.MaxRedOffSet * LifeRatio);
+	pCAMat->SetScalarParam(SCALAR_PARAM::VEC2_1, RefInfo.MaxGreenOffset * LifeRatio);
+	pCAMat->SetScalarParam(SCALAR_PARAM::VEC2_2, RefInfo.MaxBlueOffset * LifeRatio);
+	pCAMat->SetScalarParam(SCALAR_PARAM::VEC2_3, RoRMath::Lerp(Vec2(1.f, 1.f), RefInfo.CropOffset, LifeRatio));
+	pCAMat->UpdateData();
+
+	// 타겟->리소스 복사
+	CRenderMgr::GetInst()->CopyFromTextureToTexture(ColorCopy, RenderTarget);
+	pRectMesh->render(0);
+}
+
+void CCamera::GrayFilter_by_Object()
+{
+	// 리소스,타겟 얻어오기
+	auto PPTEX1 = CAssetMgr::GetInst()->FindAsset<CTexture>(L"PostProcessTex");
+	auto RTTEX	= CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
+
+	// 매쉬,머터리얼 받아오기
+	static Ptr<CMesh>	  pRectMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect);
+	static Ptr<CMaterial> pGrayMtrl;
+	pGrayMtrl = CAssetMgr::GetInst()->Load<CMaterial>(MTRLObjGrayFilter);
+
+	// 흑백방법
+	auto bGrayWieght = CRenderMgr::GetInst()->m_bGrayWeight;
+
+	// 텍스쳐, 블랜드비율 바인딩
+	pGrayMtrl->SetTexParam(TEX_PARAM::TEX_0, PPTEX1);
+	pGrayMtrl->SetScalarParam(SCALAR_PARAM::BOOL_0, bGrayWieght);
+	pGrayMtrl->UpdateData();
+	CONTEXT->OMSetDepthStencilState(CDevice::GetInst()->GetDSState(DS_TYPE::STENCIL_GRAY_TEST).Get(), 1);
+
+	// 타겟->리소스 복사
+	CRenderMgr::GetInst()->CopyFromTextureToTexture(PPTEX1, RTTEX);
 	pRectMesh->render(0);
 }
 

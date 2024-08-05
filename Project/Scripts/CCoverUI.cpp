@@ -37,19 +37,21 @@ void CCoverUI::begin()
 			m_vecUI.push_back(script);
 	}
 
-	Vec3 vOwnScale = Transform()->GetRelativeScale();
-	Vec3 vScale	   = GetOwner()->GetParent()->Transform()->GetWorldScale();
+	// Vec3 vOwnScale = Transform()->GetRelativeScale();
+	// Vec3 vScale	   = GetOwner()->GetParent()->Transform()->GetWorldScale();
 
-	// Parent에 상대적이면서 절대적인 오프셋 조정이 필요
-	vOwnScale.x = vScale.x + 100.f;
-	vOwnScale.y = vScale.y;
-	vOwnScale.z = vScale.z + 700.f;
-	Transform()->SetRelativeScale(vOwnScale);
+	//// Parent에 상대적이면서 절대적인 오프셋 조정이 필요
+	// vOwnScale.x = vScale.x + 100.f;
+	// vOwnScale.y = vScale.y;
+	// vOwnScale.z = vScale.z + 700.f;
+	// Transform()->SetRelativeScale(vOwnScale);
 }
 
 void CCoverUI::tick()
 {
 	CEventListener::tick();
+
+	DrawUI(HasTargets());
 }
 
 void CCoverUI::BeginOverlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider)

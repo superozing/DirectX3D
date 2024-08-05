@@ -22,7 +22,7 @@ CUIScript::CUIScript(UINT _ScriptType)
 }
 
 CUIScript::CUIScript(const CUIScript& _Other)
-	: CScript(_Other.GetScriptType())
+	: CScript(_Other)
 	, m_bMouseOn(false)
 	, m_bMouseOn_Prev(false)
 	, m_bMouseLBtnDown(false)

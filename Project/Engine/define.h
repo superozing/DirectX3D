@@ -63,13 +63,23 @@ private:                  \
 enum class LAYER
 {
 	LAYER_DEFAULT,
-	LAYER_BACKGROUND,
+	LAYER_PLANE,
+	LAYER_CEIL,
+	// LAYER_BACKGROUND,
 	LAYER_WALL,
-	LAYER_TILE,
+	// LAYER_TILE,
 	LAYER_PLAYER,
+	LAYER_PLAYER_SKILL,
 	LAYER_MONSTER,
+	LAYER_MONSTER_SKILL,
+	LAYER_BOSS,
+	LAYER_BOSS_SKILL,
 	LAYER_LIGHT,
+	LAYER_EVENT,
 	LAYER_RAYCAST,
+	LAYER_PLAYER_CAMERA_RAY,
+	LAYER_PLAYER_SHOOTING_RAY,
+	LAYER_ETC_OBJECT,
 	LAYER_UI  = 31,
 	LAYER_MAX = 32,
 };
@@ -148,6 +158,7 @@ enum class SB_TYPE
 	LIGHT3D,
 	CROSS,
 	WEIGHTMAP,
+	BLOOM,
 	AFTERIMAGE,
 	END,
 };
@@ -160,6 +171,15 @@ enum class RS_TYPE
 	CULL_NONE,
 	WIRE_FRAME,
 
+	END,
+};
+
+// Stencil State TYPE
+enum class STENCIL_TYPE
+{
+	NONE,
+	GRAY,
+	OUTLINE,
 	END,
 };
 
@@ -176,6 +196,10 @@ enum class DS_TYPE
 	NO_WRITE, // 깊이 테스트 O			깊이 기록 X
 
 	NO_TEST_NO_WRITE, // 깊이 테스트 X			깊이 기록 X
+
+	// 스텐실 Write,Test용
+	STENCIL_WRITE,
+	STENCIL_GRAY_TEST,
 
 	// Volume Mesh 용
 	BACKFACE_CHECK,
@@ -337,6 +361,7 @@ enum class PARTICLE_MODULE
 	CALCULATE_FORCE, // 주어진 힘을 계산하는 모듈
 
 	RENDER, // 렌더링 때의 옵션 관련
+	ANIMATION,
 
 	END,
 };
@@ -417,6 +442,21 @@ enum class UI_TYPE
 
 	END
 };
+
+enum class DecalShape
+{
+	Rect,
+	Circle,
+	End
+};
+
+enum class DecalType
+{
+	Texture,
+	Animation,
+	End
+};
+
 #define MAXBLURLEVEL 9
 
 #define DecalPriorityMax 20

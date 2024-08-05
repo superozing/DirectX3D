@@ -6,6 +6,7 @@
 
 #define LeftTop g_vec2_0
 #define Size g_vec2_1
+#define BlendColor g_vec4_0
 
 #define AtlasCheck g_btex_0
 #define Atlas g_tex_0
@@ -35,13 +36,14 @@ VS_OUT VS_StaticUI(VS_IN _in)
 float4 PS_StaticUI(VS_OUT _in) : SV_Target
 {
     // 출력 색상
-    float4 vOutColor = (float4) 0.f;
+    float4 vOutColor = (float4) (0.f);
     
     if (AtlasCheck)
     {
         float2 uv = _in.vUV * Size;
         uv += LeftTop;
         vOutColor = Atlas.Sample(g_sam_0, uv);
+        vOutColor *= BlendColor;
     }
     
     return vOutColor;

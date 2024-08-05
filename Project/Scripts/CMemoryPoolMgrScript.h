@@ -15,6 +15,7 @@ public:
 public:
 	CGameObject* PopObject(string _strMapKey);
 	void		 PushObject(CGameObject* _Object);
+	void		 PushObject(string _strMapKey, CGameObject* _Object);
 
 public:
 	CLONE(CMemoryPoolMgrScript);
