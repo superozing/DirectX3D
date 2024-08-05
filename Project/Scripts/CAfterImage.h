@@ -8,15 +8,10 @@ private:
 	float		   fUpdateTimer;
 	bool		   bDisplayNode;
 
-	vector<Matrix> vec_ParentsBones;
-
-	CStructuredBuffer* m_arr[AfterImageMaxCount];
+	CStructuredBuffer* m_Bonearr[AfterImageMaxCount];
 
 private:
 	void UpdateBoneMatrix();
-
-public:
-	vector<Matrix> GetAfterImageBoneMatrix() { return vec_ParentsBones; }
 
 public:
 	virtual void begin() override;
