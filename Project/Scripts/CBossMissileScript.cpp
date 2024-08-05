@@ -3,6 +3,7 @@
 
 #include <Engine\CRandomMgr.h>
 #include "CBossScript.h"
+#include "CParticleSpawnScript.h"
 
 CBossMissileScript::CBossMissileScript()
 	: CProjectileScript((UINT)SCRIPT_TYPE::BOSSMISSILESCRIPT)
@@ -25,7 +26,7 @@ void CBossMissileScript::begin()
 	CProjectileScript::begin();
 
 	Transform()->SetRelativePos(m_Pos);
-	
+
 	Vec3  VelDir = m_TargetPos - m_Pos;
 	float Offset = VelDir.Length();
 	VelDir.y	 = 0.f;
@@ -44,6 +45,12 @@ void CBossMissileScript::tick()
 	{
 		if (m_Pos.y < 0.f)
 		{
+			// 미사일 충돌 시 폭발 파티클 스폰
+			CGameObject* pObj	  = CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Explode)->Instantiate();
+			int			 layeridx = pObj->GetLayerIdx();
+			GamePlayStatic::SpawnGameObject(pObj, layeridx);
+			pObj->GetScript<CParticleSpawnScript>()->SetParticleInfo(Transform()->GetRelativePos(), 0.5f);
+
 			m_IsAlive	   = false;
 			m_ForceAccTime = 0.f;
 			GamePlayStatic::DestroyGameObject(GetOwner());
@@ -77,12 +84,12 @@ void CBossMissileScript::tick()
 	}
 
 	Transform()->SetDir(m_CurVelocity);
-	//m_CurVelocity = Vec3(0.f, 0.f, 100.f);
+	// m_CurVelocity = Vec3(0.f, 0.f, 100.f);
 	m_Pos = Transform()->GetRelativePos();
 	m_Pos += m_CurVelocity * DT;
 
 	Transform()->SetRelativePos(m_Pos);
-	//Transform()->SetRelativePos(Vec3(-750.f, 200.f, 7540.f));
+	// Transform()->SetRelativePos(Vec3(-750.f, 200.f, 7540.f));
 }
 
 void CBossMissileScript::OnHit()
