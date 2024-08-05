@@ -5,9 +5,7 @@ class CMuzzleFlashScript : public CScript
 {
 private:
 	class CGameObject* m_pTarget;
-
-public:
-	void InitMuzzleFlash();
+	tParticleModule	   m_Module;
 
 public:
 	virtual void begin() override;

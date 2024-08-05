@@ -172,6 +172,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CAtlasImageUIScript.h" />
     <ClInclude Include="CBackgroundScript.h" />
     <ClInclude Include="CBloomScript.h" />
+    <ClInclude Include="CBoostScript.h" />
     <ClInclude Include="CBossHP.h" />
     <ClInclude Include="CBossMissileScript.h" />
     <ClInclude Include="CBossScript.h" />
@@ -200,6 +201,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CMegaFistScript.h" />
     <ClInclude Include="CMemoryPoolMgrScript.h" />
     <ClInclude Include="CMissileScript.h" />
+    <ClInclude Include="CMissileTrailScript.h" />
     <ClInclude Include="CMonsterHP.h" />
     <ClInclude Include="CMonsterScript.h" />
     <ClInclude Include="CMuzzleFlashScript.h" />
@@ -247,6 +249,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CAtlasImageUIScript.cpp" />
     <ClCompile Include="CBackgroundScript.cpp" />
     <ClCompile Include="CBloomScript.cpp" />
+    <ClCompile Include="CBoostScript.cpp" />
     <ClCompile Include="CBossHP.cpp" />
     <ClCompile Include="CBossMissileScript.cpp" />
     <ClCompile Include="CBossScript.cpp" />
@@ -275,6 +278,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CMegaFistScript.cpp" />
     <ClCompile Include="CMemoryPoolMgrScript.cpp" />
     <ClCompile Include="CMissileScript.cpp" />
+    <ClCompile Include="CMissileTrailScript.cpp" />
     <ClCompile Include="CMonsterHP.cpp" />
     <ClCompile Include="CMonsterScript.cpp" />
     <ClCompile Include="CMuzzleFlashScript.cpp" />
