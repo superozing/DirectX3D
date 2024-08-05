@@ -349,3 +349,15 @@ struct tFontInfo
 	// FW1_LEFT - 왼 쪽 정렬
 	FW1_TEXT_FLAG TextFlag = FW1_RESTORESTATE;
 };
+
+struct AfterImageInfo
+{
+	int	   NodeCount; // max는 10개
+	Matrix WorldTransform[10];
+	float  TimeStep;
+	Vec2   Padding;
+
+	// 에니메이션 정보
+	int	  AnimationClipIdx[10];
+	float AnimationRatio[10];
+};

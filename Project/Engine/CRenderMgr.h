@@ -66,7 +66,7 @@ private:
 
 	// render function pointer
 	typedef void (CRenderMgr::*RENDER_FUNC)(void);
-	RENDER_FUNC m_RenderFunc;
+	RENDER_FUNC	 m_RenderFunc;
 
 	Vec4 m_vClearColor;
 

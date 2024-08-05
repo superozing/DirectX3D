@@ -65,6 +65,7 @@ void CRenderMgr::ClearMRT()
 	m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->ClearRT();
 	m_arrMRT[(UINT)MRT_TYPE::LIGHT]->ClearRT();
 	m_arrMRT[(UINT)MRT_TYPE::SHADOW_DEPTH]->Clear();
+	m_arrMRT[(UINT)MRT_TYPE::AFTER_IMAGE]->ClearRT();
 }
 
 void CRenderMgr::ResetMRT()
@@ -116,6 +117,10 @@ void CRenderMgr::render_play()
 		// Decal 물체 렌더링
 		GetMRT(MRT_TYPE::DECAL)->OMSet();
 		pMainCam->render_decal();
+
+		// After Image 렌더링
+		GetMRT(MRT_TYPE::AFTER_IMAGE)->OMSet();
+		pMainCam->render_afterimage();
 
 		// 그림자 판정
 

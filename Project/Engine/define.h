@@ -159,6 +159,7 @@ enum class SB_TYPE
 	CROSS,
 	WEIGHTMAP,
 	BLOOM,
+	AFTERIMAGE,
 	END,
 };
 
@@ -387,6 +388,7 @@ enum class MRT_TYPE
 	DECAL,		  // RT 2, DS 0
 	LIGHT,		  // RT 2, DS 0
 	SHADOW_DEPTH, // RT 1, DS 1
+	AFTER_IMAGE,  // RT 1, DS 0
 
 	END,
 };
@@ -458,3 +460,5 @@ enum class DecalType
 #define MAXBLURLEVEL 9
 
 #define DecalPriorityMax 20
+#define AfterImageMaxCount 10
+#define AfterImageUpdateKey "AfterImage"

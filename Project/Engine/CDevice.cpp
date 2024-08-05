@@ -536,6 +536,9 @@ int CDevice::CreateStructuredBuffer()
 	m_arrSB[(UINT)SB_TYPE::BLOOM] = new CStructuredBuffer;
 	m_arrSB[(UINT)SB_TYPE::BLOOM]->Create(sizeof(tBloom), 1, SB_READ_TYPE::READ_ONLY, true);
 
+	m_arrSB[(UINT)SB_TYPE::AFTERIMAGE] = new CStructuredBuffer;
+	m_arrSB[(UINT)SB_TYPE::AFTERIMAGE]->Create(sizeof(AfterImageInfo), 1, SB_READ_TYPE::READ_ONLY, true);
+
 	return S_OK;
 }
 

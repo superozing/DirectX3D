@@ -60,6 +60,8 @@ private:
 
 	vector<CGameObject*> m_vecShadow;
 
+	vector<std::pair<CGameObject*, AfterImageInfo>> m_vecAfterImage;
+
 public:
 	PROJ_TYPE GetProjType() { return m_ProjType; }
 	void	  SetProjType(PROJ_TYPE _Type) { m_ProjType = _Type; }
@@ -95,6 +97,12 @@ public:
 
 	const tRay& GetRay() { return m_ray; }
 
+	void RegisterAfterImage(CGameObject* pObj, AfterImageInfo _info)
+	{
+		m_vecAfterImage.push_back(std::make_pair(pObj, _info));
+	}
+	void ClearvecAfterImage() { m_vecAfterImage.clear(); }
+
 private:
 	shared_ptr<class CCameraShake> m_pShake;
 
@@ -126,6 +134,7 @@ public:
 
 	void SortShadowMapObject();
 	void render_shadowmap();
+	void render_afterimage();
 
 	void CalculateRay();
 

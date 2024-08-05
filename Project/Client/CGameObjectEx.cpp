@@ -62,9 +62,9 @@ void CGameObjectEx::begin()
 		ObjScript[i]->begin();
 	}
 
-	vector<CGameObject*> ObjChild = this->GetChild();
+	/*vector<CGameObject*> ObjChild = this->GetChild();
 	for (size_t i = 0; i < ObjChild.size(); ++i)
 	{
 		ObjChild[i]->begin();
-	}
+	}*/
 }
