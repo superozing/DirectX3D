@@ -18,6 +18,8 @@
 
 #include "CKeyMgr.h"
 
+#include "CMemoryPoolMgr.h"
+
 Restart_Level	CLevelMgr::LevelChangeFunc = nullptr;
 Save_CheckPoint CLevelMgr::CheckPointFunc  = nullptr;
 
@@ -73,6 +75,7 @@ void CLevelMgr::tick()
 
 void CLevelMgr::enter()
 {
+	CMemoryPoolMgr::GetInst()->enter();
 }
 
 void CLevelMgr::exit()
@@ -102,6 +105,7 @@ void CLevelMgr::ChangeLevel_Task(CLevel* _NextLevel, LEVEL_STATE _NextLevelState
 	CCollisionMgr::GetInst()->exit();
 	CGC::GetInst()->exit();
 	CPhysXMgr::GetInst()->exit();
+	CMemoryPoolMgr::GetInst()->exit();
 
 	if (nullptr != m_CurLevel)
 		delete m_CurLevel;

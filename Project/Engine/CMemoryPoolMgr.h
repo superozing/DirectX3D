@@ -41,7 +41,8 @@ public:
 	virtual void tick() override;
 	virtual void init() override{};
 	void		 Poolbegin(string strPrefabRelativePath);
-	virtual void enter() override{};
+	virtual void enter() override;
+	void		 exit();
 
 	friend class CMemoryPoolMgrScript;
 };
