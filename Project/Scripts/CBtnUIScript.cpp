@@ -2,6 +2,8 @@
 #include "CBtnUIScript.h"
 #include <Engine/CLogMgr.h>
 
+static string strImg = "";
+
 CBtnUIScript::CBtnUIScript()
 	: CUIScript((UINT)SCRIPT_TYPE::BTNUISCRIPT)
 	, m_NormalImg(nullptr)
@@ -13,6 +15,9 @@ CBtnUIScript::CBtnUIScript()
 	, m_Delegate(nullptr)
 	, m_AllowTexSet(false)
 {
+	AppendScriptParam("Draw", SCRIPT_PARAM::BOOL, &m_bDraw);
+	AppendScriptAsset("Normal", &m_NormalImg, ASSET_TYPE::TEXTURE);
+	AppendScriptParam("CurImg", SCRIPT_PARAM::STRING, &strImg);
 }
 
 CBtnUIScript::CBtnUIScript(const CBtnUIScript& _Other)
@@ -41,6 +46,7 @@ void CBtnUIScript::begin()
 void CBtnUIScript::tick()
 {
 	CUIScript::tick();
+	strImg = ToString(m_CurImg->GetKey());
 
 	if (m_bDraw)
 		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_CurImg);

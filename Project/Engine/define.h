@@ -173,6 +173,15 @@ enum class RS_TYPE
 	END,
 };
 
+// Stencil State TYPE
+enum class STENCIL_TYPE
+{
+	NONE,
+	GRAY,
+	OUTLINE,
+	END,
+};
+
 // DepthStencil State Type
 enum class DS_TYPE
 {
@@ -186,6 +195,10 @@ enum class DS_TYPE
 	NO_WRITE, // 깊이 테스트 O			깊이 기록 X
 
 	NO_TEST_NO_WRITE, // 깊이 테스트 X			깊이 기록 X
+
+	// 스텐실 Write,Test용
+	STENCIL_WRITE,
+	STENCIL_GRAY_TEST,
 
 	// Volume Mesh 용
 	BACKFACE_CHECK,

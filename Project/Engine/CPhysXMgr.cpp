@@ -306,6 +306,7 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 		// 동적 물리 객체 생성
 		PxRigidDynamic* dynamicActor = gPhysics->createRigidDynamic(transform);
 		PxRigidBodyExt::updateMassAndInertia(*dynamicActor, 10.0f);
+		dynamicActor->setAngularDamping(0.5f);
 		// dynamicActor->setMass(1.0f);
 		PhysX->m_DActor = dynamicActor;
 		actor			= dynamicActor;
@@ -315,6 +316,7 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 		// 동적 물리 객체 생성
 		PxRigidDynamic* dynamicActor = gPhysics->createRigidDynamic(transform);
 		PxRigidBodyExt::updateMassAndInertia(*dynamicActor, 10.0f);
+		dynamicActor->setAngularDamping(0.5f);
 		// dynamicActor->setMass(1.0f);
 		dynamicActor->setRigidBodyFlag(PxRigidBodyFlag::eENABLE_CCD, true);
 		dynamicActor->setRigidBodyFlag(PxRigidBodyFlag::eENABLE_SPECULATIVE_CCD, true);
@@ -361,6 +363,7 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 	if (PhysBodyType::TRIGGER != PhysX->m_bPhysBodyType)
 	{
 		shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
+		// shape->setContactOffset(m_fContactOffset);
 		shape->setRestOffset(m_fLestOffset);
 	}
 	if (PhysBodyType::TRIGGER == PhysX->m_bPhysBodyType)
@@ -450,13 +453,14 @@ void CPhysXMgr::tick()
 {
 	RETURN_IF_NOT_PLAYING
 
-	static const float ThresholdTime = 1.f / 180.f;
+	static const float ThresholdTime = 1.f / 200.f;
 	static float	   acctime		 = 0.f;
 	acctime += DT;
 	if (acctime < ThresholdTime)
 		return;
-	acctime -= ThresholdTime;
+	acctime -= int(acctime / ThresholdTime) * ThresholdTime;
 	gScene->simulate(ThresholdTime);
+	// gScene->simulate(DT);
 	gScene->fetchResults(true);
 
 	for (auto& e : m_vecColInfo)

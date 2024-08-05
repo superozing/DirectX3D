@@ -166,7 +166,9 @@ call ScriptsCopy.bat</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CButtons.h" />
     <ClInclude Include="CAmmoInfo.h" />
+    <ClInclude Include="CArona.h" />
     <ClInclude Include="CAtlasImageUIScript.h" />
     <ClInclude Include="CBackgroundScript.h" />
     <ClInclude Include="CBloomScript.h" />
@@ -180,6 +182,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CBulletShellSpawner.h" />
     <ClInclude Include="CCameraEffect.h" />
     <ClInclude Include="CCameraMoveScript.h" />
+    <ClInclude Include="CCoverHIghTutorialEvent.h" />
     <ClInclude Include="CCoverLow.h" />
     <ClInclude Include="CCoverArea.h" />
     <ClInclude Include="CCoverUI.h" />
@@ -188,6 +191,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CDashEventListener.h" />
     <ClInclude Include="CDigitUI.h" />
     <ClInclude Include="CDialog.h" />
+    <ClInclude Include="CDirectionalLight.h" />
     <ClInclude Include="CEditorCameraMoveScript.h" />
     <ClInclude Include="CEventListener.h" />
     <ClInclude Include="CGameMode.h" />
@@ -201,6 +205,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CMonsterHP.h" />
     <ClInclude Include="CMonsterScript.h" />
     <ClInclude Include="CMuzzleFlashScript.h" />
+    <ClInclude Include="CObjectGrayMaskScript.h" />
     <ClInclude Include="CPanelUIScript.h" />
     <ClInclude Include="CPhysXMgrScript.h" />
     <ClInclude Include="CPauseBtn.h" />
@@ -211,6 +216,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CProgressBar.h" />
     <ClInclude Include="CProjectileScript.h" />
+    <ClInclude Include="CTitleTex.h" />
     <ClInclude Include="CRenderMgrScript.h" />
     <ClInclude Include="CRoRStateMachine.h" />
     <ClInclude Include="CScriptMgr.h" />
@@ -224,7 +230,9 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CStudentScript.h" />
     <ClInclude Include="CTextUI.h" />
     <ClInclude Include="CTimeMgrScript.h" />
+    <ClInclude Include="CTitle.h" />
     <ClInclude Include="CTutorialGameMode.h" />
+    <ClInclude Include="CTutorialTarget.h" />
     <ClInclude Include="CWallScript.h" />
     <ClInclude Include="CWelcomeTutorialEvent.h" />
     <ClInclude Include="CWrapImage.h" />
@@ -235,7 +243,9 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="strings.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CButtons.cpp" />
     <ClCompile Include="CAmmoInfo.cpp" />
+    <ClCompile Include="CArona.cpp" />
     <ClCompile Include="CAtlasImageUIScript.cpp" />
     <ClCompile Include="CBackgroundScript.cpp" />
     <ClCompile Include="CBloomScript.cpp" />
@@ -250,6 +260,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CBulletShellSpawner.cpp" />
     <ClCompile Include="CCameraEffect.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
+    <ClCompile Include="CCoverHighTutorialEvent.cpp" />
     <ClCompile Include="CCoverLow.cpp" />
     <ClCompile Include="CCoverArea.cpp" />
     <ClCompile Include="CCoverUI.cpp" />
@@ -258,6 +269,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CDashEventListener.cpp" />
     <ClCompile Include="CDigitUI.cpp" />
     <ClCompile Include="CDialog.cpp" />
+    <ClCompile Include="CDirectionalLight.cpp" />
     <ClCompile Include="CEditorCameraMoveScript.cpp" />
     <ClCompile Include="CEventListener.cpp" />
     <ClCompile Include="CHaloScript.cpp" />
@@ -270,6 +282,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CMonsterHP.cpp" />
     <ClCompile Include="CMonsterScript.cpp" />
     <ClCompile Include="CMuzzleFlashScript.cpp" />
+    <ClCompile Include="CObjectGrayMaskScript.cpp" />
     <ClCompile Include="CPanelUIScript.cpp" />
     <ClCompile Include="CPhysXMgrScript.cpp" />
     <ClCompile Include="CPauseBtn.cpp" />
@@ -281,6 +294,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CPlayerScript_State.cpp" />
     <ClCompile Include="CProgressBar.cpp" />
     <ClCompile Include="CProjectileScript.cpp" />
+    <ClCompile Include="CTitleTex.cpp" />
     <ClCompile Include="CRenderMgrScript.cpp" />
     <ClCompile Include="CRoRStateMachine.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
@@ -294,7 +308,9 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CStudentScript.cpp" />
     <ClCompile Include="CTextUI.cpp" />
     <ClCompile Include="CTimeMgrScript.cpp" />
+    <ClCompile Include="CTitle.cpp" />
     <ClCompile Include="CTutorialGameMode.cpp" />
+    <ClCompile Include="CTutorialTarget.cpp" />
     <ClCompile Include="CWallScript.cpp" />
     <ClCompile Include="CWelcomeTutorialEvent.cpp" />
     <ClCompile Include="CWrapImage.cpp" />

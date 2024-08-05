@@ -216,12 +216,12 @@ void CSpawnSpotScript::DeAllocateAllObject()
 	m_CurrentSpawnObject.clear();
 }
 
-void CSpawnSpotScript::SpawnObject()
+CGameObject* CSpawnSpotScript::SpawnObject()
 {
 	if (m_listSpawnObject.size() == 0)
 	{
 		MessageBox(nullptr, L"등록된 obj가 없음", L"스폰 불가능", MB_OK);
-		return;
+		return nullptr;
 	}
 
 	// 등록된 순서대로 나갈 수 있도록 한다.
@@ -236,7 +236,7 @@ void CSpawnSpotScript::SpawnObject()
 	pObj->Transform()->SetRelativePos(pos);
 
 	pObj->Transform()->SetRelativeRotation(GetOwner()->Transform()->GetRelativeRotation());
-	pObj->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 50.f));
+	// pObj->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 50.f));
 
 	string pObjName	 = ToString(pObj->GetName());
 	int	   Prefabidx = -1;
@@ -244,6 +244,8 @@ void CSpawnSpotScript::SpawnObject()
 	Prefabidx = CMemoryPoolMgr::GetInst()->GetPrefabLayer(pObj);
 
 	GamePlayStatic::SpawnGameObject(pObj, Prefabidx);
+
+	return pObj;
 }
 
 void CSpawnSpotScript::RegisterPrefab()
@@ -448,8 +450,10 @@ void CSpawnSpotScript::LoadFromFile(ifstream& fin)
 	Utils::GetLineUntilString(fin, TagSpawnType);
 	getline(fin, strSpawnType);
 
-	auto Type = magic_enum::enum_cast<SpawnObjType>(strSpawnType);
-	SpawnType = Type.value();
+	auto Type				  = magic_enum::enum_cast<SpawnObjType>(strSpawnType);
+	SpawnType				  = Type.value();
+	strDisplaySpawnTypeString = ToString(magic_enum::enum_name(SpawnType));
+	m_ivecModeIdx			  = (int)SpawnType;
 
 	int iPrefabCount;
 	Utils::GetLineUntilString(fin, TagPrefabCount);
@@ -469,11 +473,6 @@ void CSpawnSpotScript::LoadFromFile(ifstream& fin)
 		Ptr<CPrefab> pPrefab = CAssetMgr::GetInst()->Load<CPrefab>(m_vecPrefabKey[i]);
 
 		m_vecPrefab.push_back(pPrefab);
-	}
-
-	for (int i = 0; i < m_vecPrefabKey.size(); ++i)
-	{
-		CMemoryPoolMgr::GetInst()->Poolbegin(ToString(m_vecPrefabKey[i]));
 	}
 }
 
@@ -506,7 +505,7 @@ void CSpawnSpotScript::SetDisplayMode()
 void CSpawnSpotScript::SetSpawnTypePlayer()
 {
 	SpawnType				  = SpawnObjType::Player;
-	strDisplaySpawnTypeString = ToString(magic_enum::enum_name(SpawnObjType::Player));
+	strDisplaySpawnTypeString = ToString(magic_enum::enum_name(SpawnType));
 	ModeColor				  = Vec4(0.f, 1.f, 0.f, 1.f);
 
 	GetOwner()->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, ModeColor);
@@ -516,7 +515,7 @@ void CSpawnSpotScript::SetSpawnTypePlayer()
 void CSpawnSpotScript::SetSpawnTypeMonster()
 {
 	SpawnType				  = SpawnObjType::Monster;
-	strDisplaySpawnTypeString = ToString(magic_enum::enum_name(SpawnObjType::Monster));
+	strDisplaySpawnTypeString = ToString(magic_enum::enum_name(SpawnType));
 	ModeColor				  = Vec4(1.f, 0.f, 0.f, 1.f);
 
 	GetOwner()->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, ModeColor);
@@ -526,7 +525,7 @@ void CSpawnSpotScript::SetSpawnTypeMonster()
 void CSpawnSpotScript::SetSpawnTypeBoss()
 {
 	SpawnType				  = SpawnObjType::BOSS;
-	strDisplaySpawnTypeString = ToString(magic_enum::enum_name(SpawnObjType::BOSS));
+	strDisplaySpawnTypeString = ToString(magic_enum::enum_name(SpawnType));
 	ModeColor				  = Vec4(0.f, 0.f, 1.f, 1.f);
 
 	GetOwner()->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, ModeColor);
@@ -536,7 +535,7 @@ void CSpawnSpotScript::SetSpawnTypeBoss()
 void CSpawnSpotScript::SetSpawnTypeETC()
 {
 	SpawnType				  = SpawnObjType::Etc;
-	strDisplaySpawnTypeString = ToString(magic_enum::enum_name(SpawnObjType::Etc));
+	strDisplaySpawnTypeString = ToString(magic_enum::enum_name(SpawnType));
 	ModeColor				  = Vec4(0.3f, 0.3f, 0.3f, 1.f);
 
 	GetOwner()->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, ModeColor);
@@ -546,7 +545,7 @@ void CSpawnSpotScript::SetSpawnTypeETC()
 void CSpawnSpotScript::SetSpawnTypeNone()
 {
 	SpawnType				  = SpawnObjType::None;
-	strDisplaySpawnTypeString = ToString(magic_enum::enum_name(SpawnObjType::None));
+	strDisplaySpawnTypeString = ToString(magic_enum::enum_name(SpawnType));
 	ModeColor				  = Vec4(0.f, 0.f, 0.f, 1.f);
 
 	GetOwner()->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, ModeColor);

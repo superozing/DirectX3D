@@ -13,18 +13,15 @@ enum class TutorialState
 class CTutorialGameMode : public CGameMode<CTutorialGameMode>
 {
 private:
+	class CArona*	   m_pArona;
+	class CGameObject* m_pWall;
+
+private:
 	bool m_arrIsClear[(UINT)TutorialState::END];
 
 public:
-	bool ClearBasicMove();
-	void ChangeToDash();
-	bool ClearDash();
-	void ChangeToShooting();
-	bool ClearShooting();
-	void ChangeToCombatFirst();
-	bool ClearCombatFirst();
-	void ChangeToCombatSecond();
-	bool ClearCombatSecond();
+	void Clear(TutorialState _state);
+	bool IsClear(TutorialState _state);
 
 public:
 	virtual void begin() override;

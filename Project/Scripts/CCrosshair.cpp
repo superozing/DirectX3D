@@ -12,7 +12,6 @@
 #include "CPlayerScript.h"
 #include "CShootingSystemScript.h"
 
-
 CCrosshair::CCrosshair()
 	: CScript((UINT)SCRIPT_TYPE::CROSSHAIR)
 	, m_CrosshairColor(Vec4(255, 255, 255, 255))
@@ -34,7 +33,6 @@ void CCrosshair::begin()
 {
 	m_pPlayer		= CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(PlayerName);
 	m_pPlayerScript = m_pPlayer->GetScript<CPlayerScript>();
-
 }
 
 void CCrosshair::tick()
@@ -44,7 +42,6 @@ void CCrosshair::tick()
 	MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_2, m_fLength);
 	MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, m_CrosshairColor);
 	MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, nullptr);
-
 
 	// switch 사용 고려할 필요 있어요.
 	LAYER _layer = m_pShootingSystem->GetMainCamAimLayer();
@@ -61,7 +58,6 @@ void CCrosshair::tick()
 		SetCrosshairColor(Vec4(255.f, 255.f, 255.f, 255.f));
 		m_pShootingSystem->SetShootAvailable(true);
 	}
-
 }
 
 #define TagBarThikness "[Bar Thikness]"

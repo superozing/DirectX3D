@@ -188,11 +188,8 @@
     <ClInclude Include="CShootingTutorialEvent.h">
       <Filter>Scripts\Event\Tutorial</Filter>
     </ClInclude>
-    <ClInclude Include="CMissileTrailScript.h">
-      <Filter>Scripts\Particle</Filter>
-    </ClInclude>
-    <ClInclude Include="CBoostScript.h">
-      <Filter>Scripts\Particle</Filter>
+    <ClInclude Include="CObjectGrayMaskScript.h">
+      <Filter>Scripts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -385,11 +382,8 @@
     <ClCompile Include="CShootingTutorialEvent.cpp">
       <Filter>Scripts\Event\Tutorial</Filter>
     </ClCompile>
-    <ClCompile Include="CMissileTrailScript.cpp">
-      <Filter>Scripts\Particle</Filter>
-    </ClCompile>
-    <ClCompile Include="CBoostScript.cpp">
-      <Filter>Scripts\Particle</Filter>
+    <ClCompile Include="CObjectGrayMaskScript.cpp">
+      <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

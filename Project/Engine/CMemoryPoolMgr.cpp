@@ -35,6 +35,27 @@ void CMemoryPoolMgr::Poolbegin(string strPrefabRelativePath)
 		return;
 }
 
+void CMemoryPoolMgr::enter()
+{
+	CGameObject* pObj = GetEX();
+
+	vector<CGameObject*> vecChildObj = pObj->GetChild();
+
+	for (int i = 0; i < vecChildObj.size(); ++i)
+	{
+		CGameObject* pObj = vecChildObj[i];
+		pObj->DisconnectWithParent();
+		delete pObj;
+
+		vecChildObj[i] = nullptr;
+	}
+}
+
+void CMemoryPoolMgr::exit()
+{
+	Delete_Map<string, CMemoryPool*>(m_mapMemoryPool);
+}
+
 CGameObject* CMemoryPoolMgr::PopObject(string _strMapKey)
 {
 	CMemoryPool* pPool = FindPool(_strMapKey);

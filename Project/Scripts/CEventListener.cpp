@@ -5,7 +5,8 @@
 #include <Engine\CLevel.h>
 #include <Engine\CLogMgr.h>
 
-static string strNotation = "This Is EvenetListen Script";
+static string strNotation				 = "This Is EvenetListen Script";
+bool		  CEventListener::m_bAllDraw = false;
 
 CEventListener::CEventListener(UINT _type)
 	: CScript((UINT)_type)
@@ -70,7 +71,7 @@ void CEventListener::SubTargetEditor()
 
 void CEventListener::tick()
 {
-	if (m_bDrawing)
+	if (m_bDrawing && m_bAllDraw)
 	{
 		if (HasTargets())
 			GamePlayStatic::DrawDebugCube(Transform()->GetWorldMat(), Vec3(0.f, 1.f, 1.f), false);
