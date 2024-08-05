@@ -31,9 +31,6 @@
     <ClInclude Include="CCameraEffect.h">
       <Filter>Scripts\Manager\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="CSpringArm.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="CBtnUIScript.h">
       <Filter>Scripts\DefaultUI\Button</Filter>
     </ClInclude>
@@ -76,17 +73,8 @@
     <ClInclude Include="CSkillIcon.h">
       <Filter>Scripts\UI\ProgressBar\SkillIcon</Filter>
     </ClInclude>
-    <ClInclude Include="CWrapImage.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="CLevelTransition.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="CEditorCameraMoveScript.h">
       <Filter>Scripts\Manager\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="CSpawnSpotScript.h">
-      <Filter>Scripts</Filter>
     </ClInclude>
     <ClInclude Include="CMemoryPoolMgrScript.h">
       <Filter>Scripts\Manager\MemoryPool</Filter>
@@ -100,18 +88,11 @@
     <ClInclude Include="CPlayerScript.h">
       <Filter>Scripts\Player</Filter>
     </ClInclude>
-    <ClInclude Include="CPlayerController.h" />
     <ClInclude Include="CDialog.h">
       <Filter>Scripts\UI\Image\Dialog</Filter>
     </ClInclude>
     <ClInclude Include="CPlayerDamagedScript.h">
       <Filter>Scripts\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="CWallScript.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="CCoverLow.h">
-      <Filter>Scripts</Filter>
     </ClInclude>
     <ClInclude Include="CBossMissileScript.h">
       <Filter>Scripts\Boss\BossMissile</Filter>
@@ -125,11 +106,6 @@
     <ClInclude Include="CMegaFistScript.h">
       <Filter>Scripts\Boss\MegaFist</Filter>
     </ClInclude>
-    <ClInclude Include="CProjectileScript.h" />
-    <ClInclude Include="CGameMode.h" />
-    <ClInclude Include="CTutorialGameMode.h">
-      <Filter>Scripts\Level</Filter>
-    </ClInclude>
     <ClInclude Include="CAtlasImageUIScript.h">
       <Filter>Scripts\DefaultUI\Image</Filter>
     </ClInclude>
@@ -139,29 +115,14 @@
     <ClInclude Include="CHUD.h">
       <Filter>Scripts\UI</Filter>
     </ClInclude>
-    <ClInclude Include="CMuzzleFlashScript.h">
-      <Filter>Scripts\Particle</Filter>
-    </ClInclude>
-    <ClInclude Include="CBloomScript.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="CBossShieldScript.h">
       <Filter>Scripts\Boss\Shield</Filter>
-    </ClInclude>
-    <ClInclude Include="CBulletMarkSpawner.h">
-      <Filter>Scripts\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="CBulletShellSpawner.h">
-      <Filter>Scripts\Player</Filter>
     </ClInclude>
     <ClInclude Include="CDigitUI.h">
       <Filter>Scripts\DefaultUI\Digit</Filter>
     </ClInclude>
     <ClInclude Include="CReloadUI.h">
       <Filter>Scripts\UI\Image\WeaponInfo</Filter>
-    </ClInclude>
-    <ClInclude Include="CShootingSystemScript.h">
-      <Filter>Scripts\Player</Filter>
     </ClInclude>
     <ClInclude Include="CStretchUIScript.h">
       <Filter>Scripts\DefaultUI\Image</Filter>
@@ -172,7 +133,6 @@
     <ClInclude Include="strings.h">
       <Filter>Default</Filter>
     </ClInclude>
-    <ClInclude Include="CEventListener.h" />
     <ClInclude Include="CWelcomeTutorialEvent.h">
       <Filter>Scripts\Event\Tutorial</Filter>
     </ClInclude>
@@ -188,8 +148,89 @@
     <ClInclude Include="CShootingTutorialEvent.h">
       <Filter>Scripts\Event\Tutorial</Filter>
     </ClInclude>
+    <ClInclude Include="CArona.h">
+      <Filter>Scripts\UI\Image\Arona</Filter>
+    </ClInclude>
+    <ClInclude Include="CLevelTransition.h">
+      <Filter>Scripts\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="CBloomScript.h">
+      <Filter>Scripts\Render\Bloom</Filter>
+    </ClInclude>
     <ClInclude Include="CObjectGrayMaskScript.h">
-      <Filter>Scripts</Filter>
+      <Filter>Scripts\Render\Gray</Filter>
+    </ClInclude>
+    <ClInclude Include="CSpawnSpotScript.h">
+      <Filter>Scripts\Event\Spawn</Filter>
+    </ClInclude>
+    <ClInclude Include="CSpringArm.h">
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CBoostScript.h">
+      <Filter>Scripts\Particle\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="CMissileTrailScript.h">
+      <Filter>Scripts\Particle\MissileTrail</Filter>
+    </ClInclude>
+    <ClInclude Include="CMuzzleFlashScript.h">
+      <Filter>Scripts\Particle\MuzzleFlash</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletHitParticleSpawner.h">
+      <Filter>Scripts\ShootingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletScript.h">
+      <Filter>Scripts\ShootingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CButtons.h">
+      <Filter>Scripts\Level\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="CCoverHIghTutorialEvent.h">
+      <Filter>Scripts\Level\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="CTutorialGameMode.h">
+      <Filter>Scripts\Level\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="CDirectionalLight.h">
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CGameMode.h">
+      <Filter>BassClass</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayerController.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CProjectileScript.h">
+      <Filter>BassClass</Filter>
+    </ClInclude>
+    <ClInclude Include="CShootingRecoil.h">
+      <Filter>Scripts\ShootingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CTitle.h">
+      <Filter>Scripts\Level\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="CWallScript.h">
+      <Filter>Scripts\Level\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="CWrapImage.h">
+      <Filter>Scripts\Level\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="CTitleTex.h">
+      <Filter>Scripts\Level\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="CTutorialTarget.h">
+      <Filter>Scripts\Level\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="CEventListener.h">
+      <Filter>BassClass</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletShellSpawner.h">
+      <Filter>Scripts\ShootingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletMarkSpawner.h">
+      <Filter>Scripts\ShootingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CShootingSystemScript.h">
+      <Filter>Scripts\ShootingSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -222,9 +263,6 @@
     </ClCompile>
     <ClCompile Include="CCameraEffect.cpp">
       <Filter>Scripts\Manager\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="CSpringArm.cpp">
-      <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CBtnUIScript.cpp">
       <Filter>Scripts\DefaultUI\Button</Filter>
@@ -268,17 +306,8 @@
     <ClCompile Include="CSkillIcon.cpp">
       <Filter>Scripts\UI\ProgressBar\SkillIcon</Filter>
     </ClCompile>
-    <ClCompile Include="CWrapImage.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
-    <ClCompile Include="CLevelTransition.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
     <ClCompile Include="CEditorCameraMoveScript.cpp">
       <Filter>Scripts\Manager\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="CSpawnSpotScript.cpp">
-      <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CMemoryPoolMgrScript.cpp">
       <Filter>Scripts\Manager\MemoryPool</Filter>
@@ -295,18 +324,11 @@
     <ClCompile Include="CPlayerScript_State.cpp">
       <Filter>Scripts\Player</Filter>
     </ClCompile>
-    <ClCompile Include="CPlayerController.cpp" />
     <ClCompile Include="CDialog.cpp">
       <Filter>Scripts\UI\Image\Dialog</Filter>
     </ClCompile>
     <ClCompile Include="CPlayerDamagedScript.cpp">
       <Filter>Scripts\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="CWallScript.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
-    <ClCompile Include="CCoverLow.cpp">
-      <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CBossMissileScript.cpp">
       <Filter>Scripts\Boss\BossMissile</Filter>
@@ -323,10 +345,6 @@
     <ClCompile Include="CMegaFistScript.cpp">
       <Filter>Scripts\Boss\MegaFist</Filter>
     </ClCompile>
-    <ClCompile Include="CProjectileScript.cpp" />
-    <ClCompile Include="CTutorialGameMode.cpp">
-      <Filter>Scripts\Level</Filter>
-    </ClCompile>
     <ClCompile Include="CAtlasImageUIScript.cpp">
       <Filter>Scripts\DefaultUI\Image</Filter>
     </ClCompile>
@@ -336,20 +354,8 @@
     <ClCompile Include="CHUD.cpp">
       <Filter>Scripts\UI</Filter>
     </ClCompile>
-    <ClCompile Include="CMuzzleFlashScript.cpp">
-      <Filter>Scripts\Particle</Filter>
-    </ClCompile>
-    <ClCompile Include="CBloomScript.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
     <ClCompile Include="CBossShieldScript.cpp">
       <Filter>Scripts\Boss\Shield</Filter>
-    </ClCompile>
-    <ClCompile Include="CBulletMarkSpawner.cpp">
-      <Filter>Scripts\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="CBulletShellSpawner.cpp">
-      <Filter>Scripts\Player</Filter>
     </ClCompile>
     <ClCompile Include="CDigitUI.cpp">
       <Filter>Scripts\DefaultUI\Digit</Filter>
@@ -357,16 +363,12 @@
     <ClCompile Include="CReloadUI.cpp">
       <Filter>Scripts\UI\Image\WeaponInfo</Filter>
     </ClCompile>
-    <ClCompile Include="CShootingSystemScript.cpp">
-      <Filter>Scripts\Player</Filter>
-    </ClCompile>
     <ClCompile Include="CStretchUIScript.cpp">
       <Filter>Scripts\DefaultUI\Image</Filter>
     </ClCompile>
     <ClCompile Include="CTextUI.cpp">
       <Filter>Scripts\DefaultUI\Text</Filter>
     </ClCompile>
-    <ClCompile Include="CEventListener.cpp" />
     <ClCompile Include="CWelcomeTutorialEvent.cpp">
       <Filter>Scripts\Event\Tutorial</Filter>
     </ClCompile>
@@ -382,8 +384,86 @@
     <ClCompile Include="CShootingTutorialEvent.cpp">
       <Filter>Scripts\Event\Tutorial</Filter>
     </ClCompile>
+    <ClCompile Include="CArona.cpp">
+      <Filter>Scripts\UI\Image\Arona</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevelTransition.cpp">
+      <Filter>Scripts\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="CBloomScript.cpp">
+      <Filter>Scripts\Render\Bloom</Filter>
+    </ClCompile>
     <ClCompile Include="CObjectGrayMaskScript.cpp">
-      <Filter>Scripts</Filter>
+      <Filter>Scripts\Render\Gray</Filter>
+    </ClCompile>
+    <ClCompile Include="CSpawnSpotScript.cpp">
+      <Filter>Scripts\Event\Spawn</Filter>
+    </ClCompile>
+    <ClCompile Include="CSpringArm.cpp">
+      <Filter>Scripts\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CBoostScript.cpp">
+      <Filter>Scripts\Particle\Boost</Filter>
+    </ClCompile>
+    <ClCompile Include="CMissileTrailScript.cpp">
+      <Filter>Scripts\Particle\MissileTrail</Filter>
+    </ClCompile>
+    <ClCompile Include="CMuzzleFlashScript.cpp">
+      <Filter>Scripts\Particle\MuzzleFlash</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletHitParticleSpawner.cpp">
+      <Filter>Scripts\ShootingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletScript.cpp">
+      <Filter>Scripts\ShootingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CButtons.cpp">
+      <Filter>Scripts\Level\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="CCoverHighTutorialEvent.cpp">
+      <Filter>Scripts\Level\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="CTutorialGameMode.cpp">
+      <Filter>Scripts\Level\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="CDirectionalLight.cpp">
+      <Filter>Scripts\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerController.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CProjectileScript.cpp">
+      <Filter>BassClass</Filter>
+    </ClCompile>
+    <ClCompile Include="CShootingRecoil.cpp">
+      <Filter>Scripts\ShootingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CTitle.cpp">
+      <Filter>Scripts\Level\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="CWallScript.cpp">
+      <Filter>Scripts\Level\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="CWrapImage.cpp">
+      <Filter>Scripts\Level\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="CTitleTex.cpp">
+      <Filter>Scripts\Level\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="CTutorialTarget.cpp">
+      <Filter>Scripts\Level\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="CEventListener.cpp">
+      <Filter>BassClass</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletMarkSpawner.cpp">
+      <Filter>Scripts\ShootingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletShellSpawner.cpp">
+      <Filter>Scripts\ShootingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CShootingSystemScript.cpp">
+      <Filter>Scripts\ShootingSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -512,6 +592,48 @@
     </Filter>
     <Filter Include="Scripts\Event\Cover">
       <UniqueIdentifier>{b90d22b9-9236-4dc4-88d5-171a281eac75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\Image\Arona">
+      <UniqueIdentifier>{f3178af6-eaa4-40d8-96d6-89bad58dc55d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Render">
+      <UniqueIdentifier>{0762eb02-039f-4ca1-b175-1cb76811f77f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Render\Bloom">
+      <UniqueIdentifier>{e0650fde-3550-45bd-975b-b391261791ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Render\Gray">
+      <UniqueIdentifier>{f85a7339-471c-45d0-a7c2-709588d3012c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Event\Spawn">
+      <UniqueIdentifier>{a7f8c14b-59b7-4999-838e-2b119296a608}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Particle\Boost">
+      <UniqueIdentifier>{1daf374c-fd58-439d-9616-2da40af4cbcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Particle\MissileTrail">
+      <UniqueIdentifier>{e9dfd079-edea-43b4-b8ab-4df1940c9eb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Particle\MuzzleFlash">
+      <UniqueIdentifier>{fb4dd360-df15-4e31-9a66-fd2bc62d8289}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\ShootingSystem">
+      <UniqueIdentifier>{564b496f-afda-4920-8547-d025a47b8175}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Level\Title">
+      <UniqueIdentifier>{0fafadc0-1e54-4215-ae3c-380b409a2357}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Level\Tutorial">
+      <UniqueIdentifier>{e70a7466-06a9-4bd2-b0e0-c80b3721b9d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BassClass">
+      <UniqueIdentifier>{1a747eb1-b753-4dc8-8cdb-b6d7e92eb4b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{b19b5cc4-3a58-46b1-8df6-1a2f0512312f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Level\Object">
+      <UniqueIdentifier>{caa1c5dd-0086-4dfb-a00e-f60c6df53e65}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
