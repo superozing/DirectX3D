@@ -57,6 +57,10 @@ void CPhysX::applyBulletImpact(const PxVec3& bulletVelocity, float bulletMass, c
 	// 토크 계산 (외적)
 	PxVec3 torque = r.cross(adjustedImpulse);
 
+	// 토크 감소 비율 적용
+	float torqueAttenuationFactor = 1.0f / (1.0f + distance * distance);
+	torque *= torqueAttenuationFactor;
+
 	// 물체에 충격량 적용
 	m_DActor->addForce(adjustedImpulse, PxForceMode::eIMPULSE);
 
@@ -261,6 +265,19 @@ PxTransform CPhysX::getTransform() const
 
 void CPhysX::BeginOverlap(CGameObject* other)
 {
+	auto iter = m_vThisFrameContact.begin();
+	while (m_vThisFrameContact.end() != iter)
+	{
+		if (other == (*iter).Other)
+		{
+			return;
+		}
+		else
+		{
+			++iter;
+		}
+	}
+
 	++m_CollisionCount;
 
 	m_vThisFrameContact.push_back(tCollisionData{other, eColType::COL_ON});
@@ -288,6 +305,7 @@ void CPhysX::EndOverlap(CGameObject* other)
 		if (iter->Other == other)
 		{
 			iter = m_vThisFrameContact.erase(iter);
+			--m_CollisionCount;
 			break;
 		}
 		else
@@ -296,7 +314,6 @@ void CPhysX::EndOverlap(CGameObject* other)
 		}
 	}
 
-	--m_CollisionCount;
 	const vector<CScript*>& vecScript = GetOwner()->GetScripts();
 	for (size_t i = 0; i < vecScript.size(); ++i)
 	{

@@ -970,6 +970,9 @@
     <FxCompile Include="HexShield.fx">
       <Filter>ShaderCode\04. Content\BossShield</Filter>
     </FxCompile>
+    <FxCompile Include="obj_grayfilter.fx">
+      <Filter>ShaderCode\02. Render\3DShader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine.rc" />

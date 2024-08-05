@@ -38,6 +38,7 @@
 #include "CBossScript.h"
 #include "CDamagedDirection.h"
 #include "CMegaFistScript.h"
+#include "CTutorialGameMode.h"
 #include "CAtlasImageUIScript.h"
 #include "CDamagedDirectionMgr.h"
 #include "CHUD.h"
@@ -56,14 +57,7 @@
 #include "CCoverUI.h"
 #include "CDashEventListener.h"
 #include "CShootingTutorialEvent.h"
-#include "CDirectionalLight.h"
-#include "CArona.h"
-#include "CCoverHIghTutorialEvent.h"
-#include "CTutorialGameMode.h"
-#include "CTutorialTarget.h"
-#include "CTitle.h"
-#include "CTitleTex.h"
-#include "CButtons.h"
+#include "CObjectGrayMaskScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -104,6 +98,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CBossScript");
 	_vec.push_back(L"CDamagedDirection");
 	_vec.push_back(L"CMegaFistScript");
+	_vec.push_back(L"CTutorialGameMode");
 	_vec.push_back(L"CAtlasImageUIScript");
 	_vec.push_back(L"CDamagedDirectionMgr");
 	_vec.push_back(L"CHUD");
@@ -122,14 +117,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CCoverUI");
 	_vec.push_back(L"CDashEventListener");
 	_vec.push_back(L"CShootingTutorialEvent");
-	_vec.push_back(L"CDirectionalLight");
-	_vec.push_back(L"CArona");
-	_vec.push_back(L"CCoverHIghTutorialEvent");
-	_vec.push_back(L"CTutorialGameMode");
-	_vec.push_back(L"CTutorialTarget");
-	_vec.push_back(L"CTitle");
-	_vec.push_back(L"CTitleTex");
-	_vec.push_back(L"CButtons");
+	_vec.push_back(L"CObjectGrayMaskScript");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -208,6 +196,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CDamagedDirection;
 	if (L"CMegaFistScript" == _strScriptName)
 		return new CMegaFistScript;
+	if (L"CTutorialGameMode" == _strScriptName)
+		return new CTutorialGameMode;
 	if (L"CAtlasImageUIScript" == _strScriptName)
 		return new CAtlasImageUIScript;
 	if (L"CDamagedDirectionMgr" == _strScriptName)
@@ -244,22 +234,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CDashEventListener;
 	if (L"CShootingTutorialEvent" == _strScriptName)
 		return new CShootingTutorialEvent;
-	if (L"CDirectionalLight" == _strScriptName)
-		return new CDirectionalLight;
-	if (L"CArona" == _strScriptName)
-		return new CArona;
-	if (L"CCoverHIghTutorialEvent" == _strScriptName)
-		return new CCoverHIghTutorialEvent;
-	if (L"CTutorialGameMode" == _strScriptName)
-		return new CTutorialGameMode;
-	if (L"CTutorialTarget" == _strScriptName)
-		return new CTutorialTarget;
-	if (L"CTitle" == _strScriptName)
-		return new CTitle;
-	if (L"CTitleTex" == _strScriptName)
-		return new CTitleTex;
-	if (L"CButtons" == _strScriptName)
-		return new CButtons;
+	if (L"CObjectGrayMaskScript" == _strScriptName)
+		return new CObjectGrayMaskScript;
 	return nullptr;
 }
 
@@ -378,6 +354,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::MEGAFISTSCRIPT:
 		return new CMegaFistScript;
 		break;
+	case (UINT)SCRIPT_TYPE::TUTORIALGAMEMODE:
+		return new CTutorialGameMode;
+		break;
 	case (UINT)SCRIPT_TYPE::ATLASIMAGEUISCRIPT:
 		return new CAtlasImageUIScript;
 		break;
@@ -432,29 +411,8 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::SHOOTINGTUTORIALEVENT:
 		return new CShootingTutorialEvent;
 		break;
-	case (UINT)SCRIPT_TYPE::DIRECTIONALLIGHT:
-		return new CDirectionalLight;
-		break;
-	case (UINT)SCRIPT_TYPE::ARONA:
-		return new CArona;
-		break;
-	case (UINT)SCRIPT_TYPE::COVERHIGHTUTORIALEVENT:
-		return new CCoverHIghTutorialEvent;
-		break;
-	case (UINT)SCRIPT_TYPE::TUTORIALGAMEMODE:
-		return new CTutorialGameMode;
-		break;
-	case (UINT)SCRIPT_TYPE::TUTORIALTARGET:
-		return new CTutorialTarget;
-		break;
-	case (UINT)SCRIPT_TYPE::TITLE:
-		return new CTitle;
-		break;
-	case (UINT)SCRIPT_TYPE::TITLETEX:
-		return new CTitleTex;
-		break;
-	case (UINT)SCRIPT_TYPE::BUTTONS:
-		return new CButtons;
+	case (UINT)SCRIPT_TYPE::OBJECTGRAYMASKSCRIPT:
+		return new CObjectGrayMaskScript;
 		break;
 	}
 	return nullptr;
@@ -612,6 +570,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CMegaFistScript";
 		break;
 
+	case SCRIPT_TYPE::TUTORIALGAMEMODE:
+		return L"CTutorialGameMode";
+		break;
+
 	case SCRIPT_TYPE::ATLASIMAGEUISCRIPT:
 		return L"CAtlasImageUIScript";
 		break;
@@ -684,36 +646,8 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CShootingTutorialEvent";
 		break;
 
-	case SCRIPT_TYPE::DIRECTIONALLIGHT:
-		return L"CDirectionalLight";
-		break;
-
-	case SCRIPT_TYPE::ARONA:
-		return L"CArona";
-		break;
-
-	case SCRIPT_TYPE::COVERHIGHTUTORIALEVENT:
-		return L"CCoverHIghTutorialEvent";
-		break;
-
-	case SCRIPT_TYPE::TUTORIALGAMEMODE:
-		return L"CTutorialGameMode";
-		break;
-
-	case SCRIPT_TYPE::TUTORIALTARGET:
-		return L"CTutorialTarget";
-		break;
-
-	case SCRIPT_TYPE::TITLE:
-		return L"CTitle";
-		break;
-
-	case SCRIPT_TYPE::TITLETEX:
-		return L"CTitleTex";
-		break;
-
-	case SCRIPT_TYPE::BUTTONS:
-		return L"CButtons";
+	case SCRIPT_TYPE::OBJECTGRAYMASKSCRIPT:
+		return L"CObjectGrayMaskScript";
 		break;
 
 	}

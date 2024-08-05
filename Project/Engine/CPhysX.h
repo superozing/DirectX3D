@@ -42,7 +42,7 @@ private:
 	void			updateFromPhysics();
 	void			updateToPhysics();
 
-	bool m_bDrawing;
+	bool m_bDrawing = true;
 
 	void BeginOverlap(CGameObject* other);
 	void Overlap(CGameObject* other);

@@ -129,6 +129,7 @@ public:
 
 	tGlobalBloomInfo		 m_GlobalBloomInfo;
 	tCromatic_AberrationInfo m_CAInfo;
+	bool					 m_bGrayWeight = true;
 
 public:
 	virtual void init() override;

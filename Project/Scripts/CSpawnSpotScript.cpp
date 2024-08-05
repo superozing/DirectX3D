@@ -474,11 +474,6 @@ void CSpawnSpotScript::LoadFromFile(ifstream& fin)
 
 		m_vecPrefab.push_back(pPrefab);
 	}
-
-	for (int i = 0; i < m_vecPrefabKey.size(); ++i)
-	{
-		CMemoryPoolMgr::GetInst()->Poolbegin(ToString(m_vecPrefabKey[i]));
-	}
 }
 
 void CSpawnSpotScript::SetDisplayMode()
