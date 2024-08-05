@@ -188,6 +188,9 @@
     <ClInclude Include="CShootingTutorialEvent.h">
       <Filter>Scripts\Event\Tutorial</Filter>
     </ClInclude>
+    <ClInclude Include="CObjectGrayMaskScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -378,6 +381,9 @@
     </ClCompile>
     <ClCompile Include="CShootingTutorialEvent.cpp">
       <Filter>Scripts\Event\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="CObjectGrayMaskScript.cpp">
+      <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

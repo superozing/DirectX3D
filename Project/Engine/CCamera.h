@@ -122,6 +122,7 @@ public:
 	void Blur();
 	void Bloom();
 	void Cromatic_Aberration();
+	void GrayFilter_by_Object();
 
 	void SortShadowMapObject();
 	void render_shadowmap();
