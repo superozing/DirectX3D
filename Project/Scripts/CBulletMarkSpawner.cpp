@@ -46,6 +46,7 @@ void CBulletMarkSpawner::tick()
 
 void CBulletMarkSpawner::SpawnBulletMarkDecal(const tRoRHitInfo& _HitInfo, CGameObject* _pPlayer, float _ActiveTime)
 {
+	bool		 spawnFlag = false;
 	CGameObject* pDecalObj = nullptr;
 
 	// 만약 최대 개수보다 많은 오브젝트가 생성될 경우
@@ -59,6 +60,7 @@ void CBulletMarkSpawner::SpawnBulletMarkDecal(const tRoRHitInfo& _HitInfo, CGame
 	{
 		// 풀에서 오브젝트 가져오기
 		pDecalObj = m_PoolMgr->PopObject(BulletMarkPath);
+		spawnFlag = true;
 	}
 
 	
@@ -91,7 +93,8 @@ void CBulletMarkSpawner::SpawnBulletMarkDecal(const tRoRHitInfo& _HitInfo, CGame
 	pDecalObj->Decal()->GetDynamicMaterial(0);
 	pDecalObj->Decal()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture/particle/AlphaCircle.png"));
 	// 오브젝트를 레벨에 스폰
-	GamePlayStatic::SpawnGameObject(pDecalObj, 0);
+	if (spawnFlag)
+		GamePlayStatic::SpawnGameObject(pDecalObj, 0);
 
 	// 리스트에 추가
 	m_BulletDecalList.push_back({pDecalObj, _ActiveTime});
