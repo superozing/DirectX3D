@@ -40,7 +40,7 @@ void CAfterImage::begin()
 	for (int i = 0; i < AfterImageMaxCount; ++i)
 	{
 		CStructuredBuffer* pBuffer = new CStructuredBuffer;
-		pBuffer->Create(sizeof(Matrix), 1, SB_READ_TYPE::READ_WRITE, true);
+		pBuffer->Create(sizeof(Matrix), BoneCount, SB_READ_TYPE::READ_WRITE, true);
 
 		m_BoneArr[i] = pBuffer;
 	}
@@ -81,8 +81,6 @@ void CAfterImage::tick()
 			m_info.AnimationRatio[0]   = pAnimator->GetCurClipLength();
 
 			UpdateBoneMatrix();
-
-			m_BoneArr[0]->SetData(pAnimator->GetFinalBoneMat(), 1);
 		}
 	}
 
@@ -93,9 +91,21 @@ void CAfterImage::tick()
 
 void CAfterImage::UpdateBoneMatrix()
 {
-	for (int i = 1; i < AfterImageMaxCount - 1; ++i)
+	CAnimator3D* pAnimator = GetOwner()->GetParent()->Animator3D();
+	int			 boneCount = pAnimator->GetBoneCount();
+
+	// 새로운 포즈를 첫 번째 버퍼에 저장
+	m_BoneArr[0]->SetData(pAnimator->GetFinalBoneMat(), 1);
+
+	// 나머지 버퍼들을 한 칸씩 밀기
+	for (int i = m_info.NodeCount - 1; i > 0; --i)
 	{
-		m_BoneArr[i]->SetData(m_BoneArr[i - 1], 1);
+		void* data = nullptr;
+		if (data != nullptr)
+		{
+			m_BoneArr[i - 1]->GetData(&data, 1);
+			m_BoneArr[i]->SetData(data, 1);
+		}
 	}
 }
 

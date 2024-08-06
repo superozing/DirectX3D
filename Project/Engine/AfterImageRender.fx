@@ -90,6 +90,12 @@ VS_OUT VS_AfterImageRender(VS_IN _in)
     float4x4 worldMat = data.AfterImageWorldMat[_in.instanceID];
     float4 worldPos = mul(float4(_in.vPos, 1.f), worldMat);
     
+    if (g_iAnim)
+    {
+        Skinning(_in.vPos, _in.vTangent, _in.vBinormal, _in.vNormal
+              , _in.vWeights, _in.vIndices, 0);
+    }
+    
     // 뷰 및 투영 변환
     output.vPosition = mul(mul(worldPos, g_matView), g_matProj);
     output.vUV = _in.vUV;
