@@ -40,6 +40,9 @@ void CTutorialGameMode::begin()
 
 	m_pArona = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(AronaName)->GetScript<CArona>();
 	m_pWall	 = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"WALL_SHOOT");
+
+	m_pBGM = CAssetMgr::GetInst()->Load<CSound>(SNDKaiten_Screw_BGM);
+	m_pBGM->Play(0, 1.f);
 }
 
 void CTutorialGameMode::tick()

@@ -7,9 +7,12 @@
 #include <Engine/CLevel.h>
 #include <Engine/CKeyMgr.h>
 #include <Engine\CTaskMgr.h>
+#include <Engine\CSound.h>
 #include "CLevelSaveLoad.h"
 
 #include <Engine\CMemoryPoolMgr.h>
+
+#include <Scripts\CPlayerController.h>
 
 #include "CImGuiMgr.h"
 #include "UI.h"
@@ -17,8 +20,11 @@
 #define TagResolution "[Resolution(x, y), FullScreen]"
 #define TagLevel "[Level]"
 #define TagIMGUI "[Imgui]"
+#define TagSound "[MasterVolume]"
+#define TagController "[PlayerController]"
 
 CEnvMgr::CEnvMgr()
+	: m_fMasterVolume(100.f)
 {
 }
 
@@ -76,9 +82,20 @@ void CEnvMgr::init()
 	// Viewport
 	fin >> b;
 	m_bImguiActivate.push_back(b);
+	// Setting
+	fin >> b;
+	m_bImguiActivate.push_back(b);
 	// Demo
 	fin >> b;
 	m_bImguiActivate.push_back(b);
+
+	Utils::GetLineUntilString(fin, TagSound);
+	fin >> m_fMasterVolume;
+
+	PlayerKeyInfo info;
+	Utils::GetLineUntilString(fin, TagController);
+	fin >> info;
+	CPlayerController::SetInfo(info);
 }
 
 void CEnvMgr::ImguiInit()
@@ -95,8 +112,12 @@ void CEnvMgr::ImguiInit()
 						: CImGuiMgr::GetInst()->FindUI("##ModelUI")->Deactivate();
 	m_bImguiActivate[5] ? CImGuiMgr::GetInst()->FindUI("##Viewport")->Activate()
 						: CImGuiMgr::GetInst()->FindUI("##Viewport")->Deactivate();
+	m_bImguiActivate[6] ? CImGuiMgr::GetInst()->FindUI("##Setting")->Activate()
+						: CImGuiMgr::GetInst()->FindUI("##Setting")->Deactivate();
 
-	CImGuiMgr::GetInst()->m_bDemoUI = m_bImguiActivate[6] ? true : false;
+	CImGuiMgr::GetInst()->m_bDemoUI = m_bImguiActivate[7] ? true : false;
+
+	CSound::SetMasterVolume(m_fMasterVolume);
 }
 
 void CEnvMgr::exit()
@@ -132,7 +153,14 @@ void CEnvMgr::exit()
 		 << CImGuiMgr::GetInst()->m_mapUI["##Inspector"]->IsActivate() << " "
 		 << CImGuiMgr::GetInst()->m_mapUI["##LogUI"]->IsActivate() << " "
 		 << CImGuiMgr::GetInst()->m_mapUI["##ModelUI"]->IsActivate() << " "
-		 << CImGuiMgr::GetInst()->m_mapUI["##Viewport"]->IsActivate() << " " << CImGuiMgr::GetInst()->m_bDemoUI;
+		 << CImGuiMgr::GetInst()->m_mapUI["##Viewport"]->IsActivate() << " "
+		 << CImGuiMgr::GetInst()->m_mapUI["##Setting"]->IsActivate() << " " << CImGuiMgr::GetInst()->m_bDemoUI;
+
+	fout << TagSound << endl;
+	fout << CSound::GetMasterVolume() << endl;
+
+	fout << TagController << endl;
+	fout << CPlayerController::GetInfo() << endl;
 
 	fout.close();
 }

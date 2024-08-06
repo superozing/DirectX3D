@@ -16,6 +16,8 @@ private:
 	class CArona*	   m_pArona;
 	class CGameObject* m_pWall;
 
+	Ptr<CSound> m_pBGM;
+
 private:
 	bool m_arrIsClear[(UINT)TutorialState::END];
 

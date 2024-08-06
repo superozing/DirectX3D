@@ -70,6 +70,8 @@ void DrawDebugCone(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Co
 void DrawDebugCone(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec4 _qWorldRot, Vec3 _Color, bool _bDepthTest,
 				   float _Duration = 0.f);
 
+void ScreenResize(Vec2 _vRes, bool _bWindow);
+
 class COLOR
 {
 	// 유지보수 1/4 .Enum추가

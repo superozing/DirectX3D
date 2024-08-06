@@ -3,6 +3,7 @@
 #include "CTaskMgr.h"
 #include "CRenderMgr.h"
 #include "CLevel.h"
+#include "CDevice.h"
 
 void GamePlayStatic::SpawnGameObject(CGameObject* _Target, int _LayerIdx, bool _IsPrefab)
 {
@@ -245,6 +246,18 @@ void GamePlayStatic::DrawDebugCone(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec4 _qWo
 	info.fDuration	= _Duration;
 
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
+}
+
+void GamePlayStatic::ScreenResize(Vec2 _vRes, bool _bWindow)
+{
+	tTask Task;
+	Task.Type	 = TASK_TYPE::CHANGE_RESOLUTION;
+	Task.Param_1 = (UINT_PTR)_vRes.x;
+	Task.Param_2 = (UINT_PTR)_vRes.y;
+
+	CDevice::GetInst()->SetScreenMode(_bWindow);
+
+	CTaskMgr::GetInst()->AddTask(Task);
 }
 
 #include "CLevel.h"

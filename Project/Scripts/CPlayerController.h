@@ -18,6 +18,9 @@ struct PlayerKeyInfo
 	KEY	  Jump;
 	KEY	  Flip;
 	float Sensitivity;
+
+	friend ofstream& operator<<(ofstream& fout, const PlayerKeyInfo& _info);
+	friend ifstream& operator>>(ifstream& fin, PlayerKeyInfo& _info);
 };
 
 class CPlayerController : public CSingleton<CPlayerController>
@@ -45,4 +48,5 @@ public:
 
 	static PlayerKeyInfo GetInfo();
 	static void			 SetInfo(PlayerKeyInfo _info);
+	static void			 Init();
 };
