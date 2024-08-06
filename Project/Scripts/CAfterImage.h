@@ -8,7 +8,7 @@ private:
 	float		   fUpdateTimer;
 	bool		   bDisplayNode;
 
-	CStructuredBuffer* m_Bonearr[AfterImageMaxCount];
+	CStructuredBuffer* m_BoneArr[AfterImageMaxCount];
 
 private:
 	void UpdateBoneMatrix();

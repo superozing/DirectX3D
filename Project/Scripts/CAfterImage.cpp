@@ -29,6 +29,7 @@ CAfterImage::CAfterImage()
 
 CAfterImage::~CAfterImage()
 {
+	Delete_Array(m_BoneArr);
 }
 
 void CAfterImage::begin()
@@ -36,13 +37,13 @@ void CAfterImage::begin()
 	CAnimator3D* pAnimator = GetOwner()->GetParent()->Animator3D();
 	int			 BoneCount = (int)pAnimator->GetBoneCount();
 
-	/*for (int i = 0; i < AfterImageMaxCount; ++i)
+	for (int i = 0; i < AfterImageMaxCount; ++i)
 	{
 		CStructuredBuffer* pBuffer = new CStructuredBuffer;
-		pBuffer->Create(sizeof(Matrix), BoneCount, SB_READ_TYPE::READ_ONLY, true);
+		pBuffer->Create(sizeof(Matrix), 1, SB_READ_TYPE::READ_WRITE, true);
 
-		m_Bonearr[i] = pBuffer;
-	}*/
+		m_BoneArr[i] = pBuffer;
+	}
 }
 
 void CAfterImage::tick()
@@ -74,15 +75,15 @@ void CAfterImage::tick()
 
 		m_info.WorldTransform[0] = CurrentWolrdMat;
 
-		/*if (pAnimator != nullptr)
+		if (pAnimator != nullptr)
 		{
 			m_info.AnimationClipIdx[0] = pAnimator->GetCurClip();
 			m_info.AnimationRatio[0]   = pAnimator->GetCurClipLength();
 
 			UpdateBoneMatrix();
 
-			m_Bonearr[0] = pAnimator->GetFinalBoneMat();
-		}*/
+			m_BoneArr[0]->SetData(pAnimator->GetFinalBoneMat(), 1);
+		}
 	}
 
 	CCamera* pMainCam = CRenderMgr::GetInst()->GetMainCam();
@@ -92,10 +93,10 @@ void CAfterImage::tick()
 
 void CAfterImage::UpdateBoneMatrix()
 {
-	//for (int i = 1; i < AfterImageMaxCount - 1; ++i)
-	//{
-	//	m_Bonearr[i + 1] = m_Bonearr[i];
-	//}
+	for (int i = 1; i < AfterImageMaxCount - 1; ++i)
+	{
+		m_BoneArr[i]->SetData(m_BoneArr[i - 1], 1);
+	}
 }
 
 void CAfterImage::ParticularUpdateData(string _Key)
@@ -107,13 +108,13 @@ void CAfterImage::ParticularUpdateData(string _Key)
 	AfterImageBuffer->SetData(&m_info, 1);
 	AfterImageBuffer->UpdateData(29);
 
-	/*for (int i = 0; i < m_info.NodeCount; ++i)
+	for (int i = 0; i < m_info.NodeCount; ++i)
 	{
-		if (m_Bonearr[i] != nullptr)
+		if (m_BoneArr[i] != nullptr)
 		{
-			m_Bonearr[i]->UpdateData(40 + i);
+			m_BoneArr[i]->UpdateData(40 + i);
 		}
-	}*/
+	}
 }
 
 void CAfterImage::ParticularClear(string _Key)
@@ -124,13 +125,13 @@ void CAfterImage::ParticularClear(string _Key)
 	CStructuredBuffer* AfterImageBuffer = CDevice::GetInst()->GetStructuredBuffer(SB_TYPE::AFTERIMAGE);
 	AfterImageBuffer->Clear(29);
 
-	/*for (int i = 0; i < AfterImageMaxCount; ++i)
+	for (int i = 0; i < AfterImageMaxCount; ++i)
 	{
-		if (m_Bonearr[i] != nullptr)
+		if (m_BoneArr[i] != nullptr)
 		{
-			m_Bonearr[i]->Clear(40 + i);
+			m_BoneArr[i]->Clear(40 + i);
 		}
-	}*/
+	}
 }
 
 #define TagAfterImageCount "[AfterImage Node Count]"
