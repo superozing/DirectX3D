@@ -73,7 +73,8 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 					PxVec3(ShootDir.x, ShootDir.y, ShootDir.z), 1000.f,
 					PxVec3(hitInfo.vHitPos.x, hitInfo.vHitPos.y, hitInfo.vHitPos.z));
 			}
-			m_pDamageFontSpawner->SpawnDamageFont(hitInfo.vHitPos, 10);
+			//m_pDamageFontSpawner->SpawnDamageFont(hitInfo.vHitPos, 10);
+			m_pBulletHitParticleSpawner->SpawnBulletHitParticle(hitInfo);
 		}
 			break;
 
