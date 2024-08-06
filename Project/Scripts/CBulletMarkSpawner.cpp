@@ -11,6 +11,7 @@
 
 CBulletMarkSpawner::CBulletMarkSpawner()
 	: CScript((UINT)SCRIPT_TYPE::BULLETMARKSPAWNER)
+	, m_iMaxDecalCount(20)
 {
 }
 
@@ -45,8 +46,24 @@ void CBulletMarkSpawner::tick()
 
 void CBulletMarkSpawner::SpawnBulletMarkDecal(const tRoRHitInfo& _HitInfo, CGameObject* _pPlayer, float _ActiveTime)
 {
-	// 풀에서 오브젝트 가져오기
-	auto pDecalObj = m_PoolMgr->PopObject(BulletMarkPath);
+	bool		 spawnFlag = false;
+	CGameObject* pDecalObj = nullptr;
+
+	// 만약 최대 개수보다 많은 오브젝트가 생성될 경우
+	if (m_BulletDecalList.size() > m_iMaxDecalCount)
+	{
+		// 기존 front에 있는 데칼 오브젝트를 사용
+		pDecalObj = m_BulletDecalList.front().first;
+		m_BulletDecalList.pop_front();
+	}
+	else
+	{
+		// 풀에서 오브젝트 가져오기
+		pDecalObj = m_PoolMgr->PopObject(BulletMarkPath);
+		spawnFlag = true;
+	}
+
+	
 
 	// 총이 맞은 위치로 총알 자국 데칼 스폰
 	pDecalObj->Transform()->SetRelativePos(_HitInfo.vHitPos);
@@ -76,10 +93,11 @@ void CBulletMarkSpawner::SpawnBulletMarkDecal(const tRoRHitInfo& _HitInfo, CGame
 	pDecalObj->Decal()->GetDynamicMaterial(0);
 	pDecalObj->Decal()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture/particle/AlphaCircle.png"));
 	// 오브젝트를 레벨에 스폰
-	GamePlayStatic::SpawnGameObject(pDecalObj, 0);
+	if (spawnFlag)
+		GamePlayStatic::SpawnGameObject(pDecalObj, 0);
 
 	// 리스트에 추가
-	m_BulletDecalList.push_back({pDecalObj, 90}); //_ActiveTime});
+	m_BulletDecalList.push_back({pDecalObj, _ActiveTime});
 }
 
 Vec3 CBulletMarkSpawner::GetCenterNormal()
