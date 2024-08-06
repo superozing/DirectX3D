@@ -37,11 +37,14 @@ void CDamageFontSpawner::tick()
 
 		// pos를 위로 올리기 (알파 값 조절과 같이)
 		auto pDF = it->DamageFont;
+		auto pDigit = pDF->GetChild()[0];
 		Vec3 pos = pDF->Transform()->GetWorldPos();
-		pos.y += 100.f * DT;
+		pos.y += 200.f * DT;
 		pDF->Transform()->SetRelativePos(pos);
-
-		// 추가로 알파 적용해야 해요.
+		pDigit->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0,
+															 Vec4(1.f, 1.f, 1.f, it->ActiveTime / it->MaxTime));
+		pDF->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0,
+															 Vec4(1.f, 0.2f, 0.2f, it->ActiveTime / it->MaxTime));
 
 		if (it->ActiveTime < 0.f)
 		{
@@ -59,16 +62,20 @@ void CDamageFontSpawner::SpawnDamageFont(const Vec3& _HitPos, int Damage, float 
 
 	pObj->MeshRender()->GetDynamicMaterial(0);
 	auto PanalMtrl = pObj->MeshRender()->GetMaterial(0);
+	pObj->Transform()->SetRelativePos(_HitPos);
 	PanalMtrl->SetScalarParam(SCALAR_PARAM::BOOL_2, true);
 	PanalMtrl->SetScalarParam(SCALAR_PARAM::VEC4_0, Vec4(1.f, 0.2f, 0.2f, 1.f));
 	PanalMtrl->SetTexParam(TEX_PARAM::TEX_0, 
 		CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Damage_Bg.png"));
 	
 	// 자식 오브젝트 가져오기
-	auto pDigitVec = pObj->GetChild();
-	auto pDigit	   = pDigitVec.front();
+	auto pDigit	   = pObj->GetChild()[0];
 
 	pDigit->MeshRender()->GetDynamicMaterial(0);
+	pDigit->MeshRender()->GetDynamicMaterial(0);
+	auto DigitMtrl = pDigit->MeshRender()->GetMaterial(0);
+	DigitMtrl->SetScalarParam(SCALAR_PARAM::BOOL_2, true);
+	DigitMtrl->SetScalarParam(SCALAR_PARAM::VEC4_0, Vec4(1.f, 1.f, 1.f, 1.f));
 	auto pUIScript = pDigit->GetScript<CDigitUI>();
 	pUIScript->SetValue(Damage);
 
