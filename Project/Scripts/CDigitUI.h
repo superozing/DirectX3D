@@ -7,6 +7,9 @@ private:
 	int m_iDigit;
 
 public:
+	void SetNum(int _digit) { m_iDigit = _digit; }
+
+public:
 	virtual void begin() override;
 	virtual void tick() override;
 
