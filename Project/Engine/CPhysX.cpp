@@ -76,9 +76,9 @@ void CPhysX::releaseActor()
 
 	CPhysXMgr::GetInst()->ReleaseActor(m_Actor);
 
-	m_Actor->userData = nullptr;
-	m_Actor			  = nullptr;
-	m_DActor		  = nullptr;
+	// m_Actor->userData = nullptr;
+	m_Actor	 = nullptr;
+	m_DActor = nullptr;
 }
 
 void CPhysX::updateFromPhysics()
