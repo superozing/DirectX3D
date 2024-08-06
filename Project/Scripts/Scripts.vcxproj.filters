@@ -235,6 +235,9 @@
     <ClInclude Include="CAfterImage.h">
       <Filter>Scripts\Render\AfterImage</Filter>
     </ClInclude>
+    <ClInclude Include="CDamageFontSpawner.h">
+      <Filter>Scripts\ShootingSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -470,6 +473,9 @@
     </ClCompile>
     <ClCompile Include="CAfterImage.cpp">
       <Filter>Scripts\Render\AfterImage</Filter>
+    </ClCompile>
+    <ClCompile Include="CDamageFontSpawner.cpp">
+      <Filter>Scripts\ShootingSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
