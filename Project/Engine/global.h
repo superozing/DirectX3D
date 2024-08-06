@@ -59,9 +59,10 @@ using namespace DirectX;
 #include "SimpleMath.h"
 using namespace DirectX::SimpleMath;
 
-typedef Vector2 Vec2;
-typedef Vector3 Vec3;
-typedef Vector4 Vec4;
+typedef Vector2	   Vec2;
+typedef Vector3	   Vec3;
+typedef Vector4	   Vec4;
+typedef Quaternion Quat;
 
 // Fbx Loader
 #include <FBXLoader/fbxsdk.h>
