@@ -76,6 +76,8 @@ CPlayerScript::~CPlayerScript()
 void CPlayerScript::InitScriptParamUI()
 {
 	AppendScriptParam("IsDead", SCRIPT_PARAM::BOOL, &m_tStatus.IsDead, 0, 0, true);
+	AppendScriptParam("IsInvincibility", SCRIPT_PARAM::BOOL, &m_tStatus.Invincibility, 0, 0, true);
+
 	AppendScriptParam("Damage", SCRIPT_PARAM::FLOAT, &m_tStatus.Damage);
 	AppendScriptParam("Health", SCRIPT_PARAM::FLOAT, &m_tStatus.curHealth);
 	AppendScriptParam("Stamina", SCRIPT_PARAM::FLOAT, &m_tStatus.curStamina);
@@ -354,15 +356,14 @@ void CPlayerScript::tick()
 	}
 
 	// 탄피 힘 방향을 확인하기 위한 자동 사격
-	//static float autoShoot = 0.f;
-	//autoShoot += DT;
+	// static float autoShoot = 0.f;
+	// autoShoot += DT;
 
-	//if (autoShoot > 0.5f)
+	// if (autoShoot > 0.5f)
 	//{
 	//	m_pShootingSystem->ShootPlayerBulletRay();
 	//	autoShoot = 0.f;
-	//}
-
+	// }
 }
 
 void CPlayerScript::CameraMove()
