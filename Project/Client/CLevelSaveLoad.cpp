@@ -508,7 +508,7 @@ CGameObject* CLevelSaveLoad::LoadGameObject(ifstream& fin)
 
 	for (size_t i = 0; i < childCnt; i++)
 	{
-		pObject->AddChild(LoadGameObject(fin), true);
+		pObject->AddChild_RealFunc(LoadGameObject(fin), true);
 	}
 
 	return pObject;
