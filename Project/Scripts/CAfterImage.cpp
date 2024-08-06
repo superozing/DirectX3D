@@ -9,7 +9,7 @@
 
 #include <Engine\CAnimator3D.h>
 
-#include <Engine\CStructuredBuffer.h>
+#include <Engine\CRenderComponent.h>
 
 CAfterImage::CAfterImage()
 	: CScript((UINT)SCRIPT_TYPE::AFTERIMAGE)

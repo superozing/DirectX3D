@@ -5,6 +5,14 @@
 #include "struct.fx"
 #include "func.fx"
 
+// ======================
+// AfterImageRender Shader
+// MRT : AfterImage MRT
+#define AfterImageTexture        g_tex_0
+
+#define ColorTextureCheck   g_btex_0
+// ======================
+
 StructuredBuffer<Matrix> g_AfterImageBoneMat : register(t40);
 StructuredBuffer<Matrix> g_AfterImageBoneMat2 : register(t41);
 StructuredBuffer<Matrix> g_AfterImageBoneMat3 : register(t42);
@@ -16,13 +24,56 @@ StructuredBuffer<Matrix> g_AfterImageBoneMat8 : register(t47);
 StructuredBuffer<Matrix> g_AfterImageBoneMat9 : register(t48);
 StructuredBuffer<Matrix> g_AfterImageBoneMat10 : register(t49);
 
-// ======================
-// AfterImageRender Shader
-// MRT : AfterImage MRT
-#define AfterImageTexture        g_tex_0
+matrix GetInstanceBoneMat(int iBoneIdx, int iInstanceID)
+{
+    switch (iInstanceID)
+    {
+        case 0:
+            return g_AfterImageBoneMat[iBoneIdx];
+        case 1:
+            return g_AfterImageBoneMat2[iBoneIdx];
+        case 2:
+            return g_AfterImageBoneMat3[iBoneIdx];
+        case 3:
+            return g_AfterImageBoneMat4[iBoneIdx];
+        case 4:
+            return g_AfterImageBoneMat5[iBoneIdx];
+        case 5:
+            return g_AfterImageBoneMat6[iBoneIdx];
+        case 6:
+            return g_AfterImageBoneMat7[iBoneIdx];
+        case 7:
+            return g_AfterImageBoneMat8[iBoneIdx];
+        case 8:
+            return g_AfterImageBoneMat9[iBoneIdx];
+        case 9:
+            return g_AfterImageBoneMat10[iBoneIdx];
+        default:
+            return g_AfterImageBoneMat[iBoneIdx];
+    }
+}
 
-#define ColorTextureCheck   g_btex_0
-// ======================
+void AfterImageSkinning(inout float3 vPos, inout float3 vTangent, inout float3 vBinormal, inout float3 vNormal,
+              float4 vWeight, uint4 vIndices, int iInstanceID)
+{
+    tSkinningInfo info = (tSkinningInfo) 0.f;
+    
+    for (int i = 0; i < 4; ++i)
+    {
+        if (vWeight[i] == 0.f)
+            continue;
+        matrix matBone = GetInstanceBoneMat(vIndices[i], iInstanceID);
+        info.vPos += (mul(float4(vPos, 1.f), matBone) * vWeight[i]).xyz;
+        info.vTangent += (mul(float4(vTangent, 0.f), matBone) * vWeight[i]).xyz;
+        info.vBinormal += (mul(float4(vBinormal, 0.f), matBone) * vWeight[i]).xyz;
+        info.vNormal += (mul(float4(vNormal, 0.f), matBone) * vWeight[i]).xyz;
+    }
+    vPos = info.vPos;
+    vTangent = normalize(info.vTangent);
+    vBinormal = normalize(info.vBinormal);
+    vNormal = normalize(info.vNormal);
+}
+
 
 struct VS_IN
 {
@@ -57,38 +108,11 @@ VS_OUT VS_AfterImageRender(VS_IN _in)
     
     AfterImageInfo data = g_AfterImage[0];
     
-    float4x4 AnimationBoneInfo;
-    
-    if (_in.instanceID == 0)
-        AnimationBoneInfo = g_AfterImageBoneMat[0];
-    else if (_in.instanceID == 1)
-        AnimationBoneInfo = g_AfterImageBoneMat2[0];
-    else if (_in.instanceID == 2)
-        AnimationBoneInfo = g_AfterImageBoneMat3[0];
-    else if (_in.instanceID == 3)
-        AnimationBoneInfo = g_AfterImageBoneMat4[0];
-    else if (_in.instanceID == 4)
-        AnimationBoneInfo = g_AfterImageBoneMat5[0];
-    else if (_in.instanceID == 5)
-        AnimationBoneInfo = g_AfterImageBoneMat6[0];
-    else if (_in.instanceID == 6)
-        AnimationBoneInfo = g_AfterImageBoneMat7[0];
-    else if (_in.instanceID == 7)
-        AnimationBoneInfo = g_AfterImageBoneMat8[0];
-    else if (_in.instanceID == 8)
-        AnimationBoneInfo = g_AfterImageBoneMat9[0];
-    else if (_in.instanceID == 9)
-        AnimationBoneInfo = g_AfterImageBoneMat10[0];
-    
-     // 애니메이션 행렬 적용
-    float4 animatedPos = mul(float4(_in.vPos, 1.f), AnimationBoneInfo);
-    float3 animatedNormal = mul(float4(_in.vNormal, 0.f), AnimationBoneInfo).xyz;
-    float3 animatedTangent = mul(float4(_in.vTangent, 0.f), AnimationBoneInfo).xyz;
-    float3 animatedBinormal = mul(float4(_in.vBinormal, 0.f), AnimationBoneInfo).xyz;
-    
-    // 인스턴스별 월드 변환 행렬 적용
-    float4x4 worldMat = data.AfterImageWorldMat[_in.instanceID];
-    float4 worldPos = mul(float4(_in.vPos, 1.f), worldMat);
+    // 스키닝 적용
+    float3 skinnedPos = _in.vPos;
+    float3 skinnedTangent = _in.vTangent;
+    float3 skinnedBinormal = _in.vBinormal;
+    float3 skinnedNormal = _in.vNormal;
     
     if (g_iAnim)
     {
@@ -96,25 +120,22 @@ VS_OUT VS_AfterImageRender(VS_IN _in)
               , _in.vWeights, _in.vIndices, 0);
     }
     
+    // 인스턴스별 월드 변환 행렬 적용
+    float4x4 worldMat = data.AfterImageWorldMat[_in.instanceID];
+    float4 worldPos = mul(float4(skinnedPos, 1.f), worldMat);
+    
     // 뷰 및 투영 변환
     output.vPosition = mul(mul(worldPos, g_matView), g_matProj);
     output.vUV = _in.vUV;
     
     // 뷰 공간에서의 위치 및 법선 계산
     output.vViewPos = mul(worldPos, g_matView).xyz;
-    output.vViewNormal = normalize(mul(float4(_in.vNormal, 0.f), mul(worldMat, g_matView)).xyz);
-    output.vViewTangent = normalize(mul(float4(_in.vTangent, 0.f), mul(worldMat, g_matView)).xyz);
-    output.vViewBinormal = normalize(mul(float4(_in.vBinormal, 0.f), mul(worldMat, g_matView)).xyz);
+    output.vViewNormal = normalize(mul(float4(skinnedNormal, 0.f), mul(worldMat, g_matView)).xyz);
+    output.vViewTangent = normalize(mul(float4(skinnedTangent, 0.f), mul(worldMat, g_matView)).xyz);
+    output.vViewBinormal = normalize(mul(float4(skinnedBinormal, 0.f), mul(worldMat, g_matView)).xyz);
     
-    // 디버깅: 인스턴스 ID에 따라 색상 변경
-    float3 debugColor = float3(1.0, 0.0, 0.0) * (_in.instanceID / float(data.NodeCount));
-    output.vViewNormal = debugColor;
-
-    // 알파값 조정
+    // 알파값 계산
     output.fAlpha = 0.5 - (_in.instanceID / float(data.NodeCount)) * 0.5;
-    
-    // 시간에 따른 알파값 계산 (예시)
-    //output.fAlpha = 1.0 - (_in.instanceID / float(data.NodeCount));
     
     return output;
 }
@@ -128,19 +149,15 @@ PS_OUT PS_AfterImageRender(VS_OUT _in) : SV_Target
 {
     PS_OUT output = (PS_OUT) 0.f;
     
-    //float4 vOutColor = float4(1.f, 0.f, 1.f, _in.fAlpha);
+    float4 vOutColor = float4(1.f, 0.f, 1.f, _in.fAlpha);
     
-    //if (ColorTextureCheck)
-    //{
-    //    vOutColor = AfterImageTexture.Sample(g_sam_0, _in.vUV);
-    //    vOutColor.a *= _in.fAlpha; // 알파값 적용
-    //}
+    if (ColorTextureCheck)
+    {
+        vOutColor = AfterImageTexture.Sample(g_sam_0, _in.vUV);
+        vOutColor.a *= _in.fAlpha; // 알파값 적용
+    }
     
-    //output.vColor = vOutColor;
-    //return output;
-    
-    
-    output.vColor = float4(_in.vViewNormal, _in.fAlpha);
+    output.vColor = vOutColor;
     return output;
 }
 
