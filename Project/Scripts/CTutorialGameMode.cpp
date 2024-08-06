@@ -43,6 +43,10 @@ void CTutorialGameMode::begin()
 
 	m_pBGM = CAssetMgr::GetInst()->Load<CSound>(SNDKaiten_Screw_BGM);
 	m_pBGM->Play(0, 1.f);
+
+	m_arrIsClear[0] = true;
+	m_arrIsClear[1] = true;
+	m_arrIsClear[2] = true;
 }
 
 void CTutorialGameMode::tick()

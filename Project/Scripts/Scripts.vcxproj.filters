@@ -184,9 +184,6 @@
     <ClInclude Include="CButtons.h">
       <Filter>Scripts\Level\Title</Filter>
     </ClInclude>
-    <ClInclude Include="CCoverHIghTutorialEvent.h">
-      <Filter>Scripts\Level\Tutorial</Filter>
-    </ClInclude>
     <ClInclude Include="CTutorialGameMode.h">
       <Filter>Scripts\Level\Tutorial</Filter>
     </ClInclude>
@@ -234,6 +231,9 @@
     </ClInclude>
     <ClInclude Include="CAfterImage.h">
       <Filter>Scripts\Render\AfterImage</Filter>
+    </ClInclude>
+    <ClInclude Include="CCoverHIghTutorialEvent.h">
+      <Filter>Scripts\Event\Tutorial</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -423,9 +423,6 @@
     <ClCompile Include="CButtons.cpp">
       <Filter>Scripts\Level\Title</Filter>
     </ClCompile>
-    <ClCompile Include="CCoverHighTutorialEvent.cpp">
-      <Filter>Scripts\Level\Tutorial</Filter>
-    </ClCompile>
     <ClCompile Include="CTutorialGameMode.cpp">
       <Filter>Scripts\Level\Tutorial</Filter>
     </ClCompile>
@@ -470,6 +467,9 @@
     </ClCompile>
     <ClCompile Include="CAfterImage.cpp">
       <Filter>Scripts\Render\AfterImage</Filter>
+    </ClCompile>
+    <ClCompile Include="CCoverHighTutorialEvent.cpp">
+      <Filter>Scripts\Event\Tutorial</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
