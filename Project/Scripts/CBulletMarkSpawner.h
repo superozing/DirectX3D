@@ -24,8 +24,10 @@ public:
 public:
 	void SpawnBulletMarkDecal(const struct tRoRHitInfo& _HitInfo, CGameObject* _pPlayer, float _ActiveTime = 3.f);
 
+
 private:
 	Vec3 GetCenterNormal();
+	Vec3 TransformNormalToWorld(const Vec3& normal);
 
 public:
 	CLONE(CBulletMarkSpawner);
