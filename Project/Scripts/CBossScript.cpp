@@ -11,6 +11,7 @@
 #include "CMiniGunScript.h"
 #include "CBossMissileScript.h"
 #include "CBossShieldScript.h"
+#include <Engine\CLogMgr.h>
 
 static string DebugState = "";
 
@@ -25,9 +26,10 @@ CBossScript::CBossScript()
 	, m_Target(nullptr)
 	, m_ArrMissile{}
 	, m_ArrShield{}
+	, m_hitInfo{}
 {
 	AppendScriptParam("CurState    ", SCRIPT_PARAM::STRING, &DebugState);
-
+	AppendScriptParam("drill", SCRIPT_PARAM::BOOL, &m_Drill);
 	InitScriptParamUI();
 
 	InitStateMachine();
@@ -44,6 +46,7 @@ CBossScript::CBossScript(const CBossScript& _Origin)
 	, m_Target(nullptr)
 	, m_ArrMissile{}
 	, m_ArrShield{}
+	, m_hitInfo{}
 {
 	InitScriptParamUI();
 
@@ -83,6 +86,30 @@ void CBossScript::tick()
 
 	// Vital 상태
 	CheckVital();
+	if (!m_Drill)
+	{
+		Vec3 worldPos  = Transform()->GetWorldPos() + Vec3(0.f, 1000.f, 0.f);
+		Vec3 TargetPos = m_Target->Transform()->GetWorldPos() + Vec3(0.f, 50.f, 0.f);
+		m_hitInfo	   = {};
+		Vec3 dir	   = TargetPos - worldPos;
+		dir.Normalize();
+		// 일반 Raycast
+		int	 mask = RayCastDebugFlag::AllVisible;
+		bool iscontact =
+			CPhysXMgr::GetInst()->PerfomRaycast(worldPos, dir, m_hitInfo, (UINT)LAYER::LAYER_BOSS_SKILL, mask);
+
+		if (true == iscontact)
+		{
+			string strobj	  = ToString(m_hitInfo.pOtherObj->GetName());
+			Vec3   contactpos = m_hitInfo.vHitPos;
+
+			CLogMgr::GetInst()->AddLog(Log_Level::INFO, ToWString(strobj));
+		}
+		else
+		{
+			string strobj = "";
+		}
+	}
 }
 
 void CBossScript::CheckDuration()

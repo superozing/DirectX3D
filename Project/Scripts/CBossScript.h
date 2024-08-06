@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <Engine\CScript.h>
+#include <Engine\CPhysXMgr.h>
 
 enum class BOSS_STATE
 {
@@ -45,6 +46,7 @@ private:
 	CRoRStateMachine<CBossScript>* m_FSM;
 	tBossStatus					   m_BossStatus;
 	class CGameObject*			   m_Target;
+	tRoRHitInfo					   m_hitInfo;
 
 	float m_AttDuration;
 	float m_EXsDuration;
@@ -56,7 +58,8 @@ private:
 	bool m_ArrShield[2];  // 쉴드 전개 여부
 
 	// @@디버그용
-	int m_EXsType; // 현재 선택된 EX 타입
+	int	 m_EXsType; // 현재 선택된 EX 타입
+	bool m_Drill;
 
 #pragma region About State
 
