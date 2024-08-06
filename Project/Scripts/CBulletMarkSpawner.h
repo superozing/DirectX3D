@@ -5,6 +5,7 @@ class CBulletMarkSpawner : public CScript
 {
 private:
 	list<pair<CGameObject*, float>> m_BulletDecalList;
+	int								m_iMaxDecalCount;
 
 	Ptr<CTexture> m_NormalTargetTex;
 
