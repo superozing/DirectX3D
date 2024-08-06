@@ -12,6 +12,7 @@
 #include "CBulletHitParticleSpawner.h"
 #include "CShootingRecoil.h"
 #include "CPlayerScript.h"
+#include "CDamageFontSpawner.h"
 
 CShootingSystemScript::CShootingSystemScript()
 	: CScript((UINT)SCRIPT_TYPE::SHOOTINGSYSTEMSCRIPT)
@@ -72,6 +73,7 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 					PxVec3(ShootDir.x, ShootDir.y, ShootDir.z), 1000.f,
 					PxVec3(hitInfo.vHitPos.x, hitInfo.vHitPos.y, hitInfo.vHitPos.z));
 			}
+			m_pDamageFontSpawner->SpawnDamageFont(hitInfo.vHitPos, 10);
 		}
 			break;
 
@@ -167,6 +169,9 @@ void CShootingSystemScript::begin()
 
 	m_pShootingRecoil = new CShootingRecoil;
 	GetOwner()->AddComponent(m_pShootingRecoil);
+
+	m_pDamageFontSpawner = new CDamageFontSpawner;
+	GetOwner()->AddComponent(m_pDamageFontSpawner);
 	
 	// 윈도우 좌표 기준이기 떄문에 반동을 주기 위해 y를 -방향으로 세팅
 	m_pShootingRecoil->SetShootingRecoilValue(Vec2(0.f, -1.f)); // 나중에 수치를 조정할 필요가 있음.

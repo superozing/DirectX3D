@@ -36,6 +36,7 @@ private:
 	class CBulletShellSpawner*	m_pBulletShellSpawner;
 	class CBulletHitParticleSpawner* m_pBulletHitParticleSpawner;
 	class CShootingRecoil*			 m_pShootingRecoil;
+	class CDamageFontSpawner*		 m_pDamageFontSpawner;
 
 public:
 	void SetSpreadRatioSpeed(float _fSpreadRatioSpeed) { m_fSpreadRatioSpeed = _fSpreadRatioSpeed; }
