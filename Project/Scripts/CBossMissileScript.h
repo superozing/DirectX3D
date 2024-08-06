@@ -20,9 +20,15 @@ public:
 	void InitBossMissileInfo(CGameObject* _Shooter, CGameObject* _Target, Vec3 _Pos, float _InitSpeed, float _MaxSpeed,
 							 float _LifeSpan, float _Damage, bool _Explode, bool _Alive);
 
+	bool IsRedZone();
+
 public:
 	virtual void begin() override;
 	virtual void tick() override;
+
+	virtual void BeginOverlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider);
+	virtual void Overlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider);
+	virtual void EndOverlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider);
 
 public:
 	CLONE(CBossMissileScript);

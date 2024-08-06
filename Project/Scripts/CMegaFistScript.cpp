@@ -60,9 +60,7 @@ void CMegaFistScript::tick()
 		m_LifeSpan -= DT;
 
 		if (m_LifeSpan <= 0.f)
-		{
 			GamePlayStatic::DestroyGameObject(GetOwner());
-		}
 	}
 	else
 		GamePlayStatic::DestroyGameObject(GetOwner());

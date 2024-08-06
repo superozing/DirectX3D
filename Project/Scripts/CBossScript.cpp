@@ -94,7 +94,7 @@ void CBossScript::CheckDuration()
 		{
 			m_AttDuration  = 0.f;
 			m_ActiveAttack = true;
-			// m_FSM->SetCurState((int)BOSS_STATE::NormalAttackStart);
+			m_FSM->SetCurState((int)BOSS_STATE::NormalAttackStart);
 		}
 	}
 
