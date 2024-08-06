@@ -151,7 +151,7 @@ struct tParticleModule
 
 	// Module On / Off
 	int arrModuleCheck[(UINT)PARTICLE_MODULE::END];
-	int				 modulepadding[2];
+	int modulepadding[2];
 
 	friend ofstream& operator<<(ofstream& fout, const tParticleModule& module);
 	friend ifstream& operator>>(ifstream& fin, tParticleModule& module);
@@ -356,9 +356,6 @@ struct AfterImageInfo
 	int	   NodeCount; // max는 10개
 	Matrix WorldTransform[10];
 	float  TimeStep;
-	Vec2   Padding;
-
-	// 에니메이션 정보
-	int	  AnimationClipIdx[10];
-	float AnimationRatio[10];
+	int	   iBoneCount;
+	int	   iPadding;
 };

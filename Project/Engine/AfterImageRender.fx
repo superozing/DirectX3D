@@ -54,24 +54,34 @@ matrix GetInstanceBoneMat(int iBoneIdx, int iInstanceID)
 }
 
 void AfterImageSkinning(inout float3 vPos, inout float3 vTangent, inout float3 vBinormal, inout float3 vNormal,
-              float4 vWeight, uint4 vIndices, int iInstanceID)
+                        float4 vWeight, uint4 vIndices, int iInstanceID)
 {
-    tSkinningInfo info = (tSkinningInfo) 0.f;
+    AfterImageInfo info = g_AfterImage[0];
+    int iBoneCount = info.iBoneCount;
+    
+    float3 skinned_pos = float3(0.0f, 0.0f, 0.0f);
+    float3 skinned_tangent = float3(0.0f, 0.0f, 0.0f);
+    float3 skinned_binormal = float3(0.0f, 0.0f, 0.0f);
+    float3 skinned_normal = float3(0.0f, 0.0f, 0.0f);
     
     for (int i = 0; i < 4; ++i)
     {
-        if (vWeight[i] == 0.f)
-            continue;
-        matrix matBone = GetInstanceBoneMat(vIndices[i], iInstanceID);
-        info.vPos += (mul(float4(vPos, 1.f), matBone) * vWeight[i]).xyz;
-        info.vTangent += (mul(float4(vTangent, 0.f), matBone) * vWeight[i]).xyz;
-        info.vBinormal += (mul(float4(vBinormal, 0.f), matBone) * vWeight[i]).xyz;
-        info.vNormal += (mul(float4(vNormal, 0.f), matBone) * vWeight[i]).xyz;
+        if (vWeight[i] > 0.0f)
+        {
+            int boneIndex = iInstanceID * iBoneCount + vIndices[i];
+            matrix bone_matrix = g_arrBoneMat[boneIndex];
+            
+            skinned_pos += mul(float4(vPos, 1.0f), bone_matrix).xyz * vWeight[i];
+            skinned_tangent += mul(vTangent, (float3x3) bone_matrix) * vWeight[i];
+            skinned_binormal += mul(vBinormal, (float3x3) bone_matrix) * vWeight[i];
+            skinned_normal += mul(vNormal, (float3x3) bone_matrix) * vWeight[i];
+        }
     }
-    vPos = info.vPos;
-    vTangent = normalize(info.vTangent);
-    vBinormal = normalize(info.vBinormal);
-    vNormal = normalize(info.vNormal);
+    
+    vPos = skinned_pos;
+    vTangent = normalize(skinned_tangent);
+    vBinormal = normalize(skinned_binormal);
+    vNormal = normalize(skinned_normal);
 }
 
 
@@ -116,8 +126,8 @@ VS_OUT VS_AfterImageRender(VS_IN _in)
     
     if (g_iAnim)
     {
-        Skinning(_in.vPos, _in.vTangent, _in.vBinormal, _in.vNormal
-              , _in.vWeights, _in.vIndices, 0);
+        AfterImageSkinning(skinnedPos, skinnedTangent, skinnedBinormal, skinnedNormal,
+                           _in.vWeights, _in.vIndices, _in.instanceID);
     }
     
     // 인스턴스별 월드 변환 행렬 적용
