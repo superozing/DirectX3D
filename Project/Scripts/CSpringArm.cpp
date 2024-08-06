@@ -61,7 +61,7 @@ void CSpringArm::tick()
 	tRoRHitInfo tHitInfo;
 
 	if (CPhysXMgr::GetInst()->PerfomRaycast(vNewPos, -vNewDir, tHitInfo, (UINT)LAYER::LAYER_PLAYER_CAMERA_RAY,
-											(int)RayCastDebugFlag::RayLineVisible))
+											(int)RayCastDebugFlag::AllInvisible))
 	{
 		float length = (tHitInfo.vHitPos - vNewPos).Length();
 		SetCurDistance(length);

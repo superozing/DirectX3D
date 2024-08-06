@@ -15,6 +15,20 @@ CButtons::~CButtons()
 {
 }
 
+void CButtons::Play()
+{
+	GamePlayStatic::ChangeLevel(CLevelMgr::GetInst()->LevelLoadFunc(LEVELTutPlace), LEVEL_STATE::PLAY);
+}
+
+void CButtons::Settings()
+{
+}
+
+void CButtons::Exit()
+{
+	PostQuitMessage(0);
+}
+
 void CButtons::AddIdx()
 {
 	m_iIdx = RoRMath::ClampInt(m_iIdx + 1, 0, m_vecButtons.size());
@@ -37,6 +51,9 @@ void CButtons::begin()
 	{
 		m_vecButtons.push_back(child->GetScript<CBtnUIScript>());
 	}
+	m_vecButtons[(UINT)TitleButton::Play]->SetDeletage(this, (DelegateFunc)&CButtons::Play);
+	m_vecButtons[(UINT)TitleButton::Settings]->SetDeletage(this, (DelegateFunc)&CButtons::Settings);
+	m_vecButtons[(UINT)TitleButton::Exit]->SetDeletage(this, (DelegateFunc)&CButtons::Exit);
 
 	m_iIdx = 0;
 }
@@ -45,16 +62,15 @@ void CButtons::tick()
 {
 	if (KEY_TAP(UP))
 	{
-		AddIdx();
+		SubIdx();
 	}
 	if (KEY_TAP(DOWN))
 	{
-		SubIdx();
+		AddIdx();
 	}
 
-	if (KEY_TAP(LBTN))
+	if (KEY_TAP(ENTER))
 	{
-		auto pLevel = CLevelMgr::GetInst()->LevelLoadFunc(LEVELTutPlace);
-		GamePlayStatic::ChangeLevel(pLevel, LEVEL_STATE::PLAY);
+		m_vecButtons[m_iIdx]->LBtnClicked();
 	}
 }

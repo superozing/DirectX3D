@@ -1,5 +1,13 @@
 ﻿#pragma once
 #include <Engine\CScript.h>
+
+enum class TitleButton
+{
+	Play,
+	Settings,
+	Exit,
+	END
+};
 class CButtons : public CScript
 {
 private:
@@ -18,4 +26,9 @@ public:
 	CLONE(CButtons);
 	CButtons();
 	~CButtons();
+
+private:
+	void Play();
+	void Settings();
+	void Exit();
 };

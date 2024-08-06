@@ -187,6 +187,10 @@ CUIScript* CUIMgr::GetPriorityCheck(CGameObject* _Parent)
 		{
 			pPriorityUI = pUIScript;
 		}
+		else if (pUIScript->m_bMouseOn_Prev && pUIScript->GetOwner()->GetParent())
+		{
+			pUIScript->OnUnHovered();
+		}
 	}
 
 	return pPriorityUI;
