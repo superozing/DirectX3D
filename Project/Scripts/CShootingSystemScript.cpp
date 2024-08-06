@@ -73,7 +73,7 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 					PxVec3(ShootDir.x, ShootDir.y, ShootDir.z), 1000.f,
 					PxVec3(hitInfo.vHitPos.x, hitInfo.vHitPos.y, hitInfo.vHitPos.z));
 			}
-			//m_pDamageFontSpawner->SpawnDamageFont(hitInfo.vHitPos, 10);
+			m_pDamageFontSpawner->SpawnDamageFont(hitInfo.vHitPos, 10);
 			m_pBulletHitParticleSpawner->SpawnBulletHitParticle(hitInfo);
 		}
 			break;
@@ -175,7 +175,7 @@ void CShootingSystemScript::begin()
 	GetOwner()->AddComponent(m_pDamageFontSpawner);
 	
 	// 윈도우 좌표 기준이기 떄문에 반동을 주기 위해 y를 -방향으로 세팅
-	m_pShootingRecoil->SetShootingRecoilValue(Vec2(0.f, -1.f)); // 나중에 수치를 조정할 필요가 있음.
+	m_pShootingRecoil->SetShootingRecoilValue(Vec2(0.f, -0.0001f)); // 나중에 수치를 조정할 필요가 있음.
 	// 예를 들어 자세에 따라서 다른 반동을 준다던가... 그런 것 들 말이죠.
 }
 
