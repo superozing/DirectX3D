@@ -463,7 +463,8 @@ void CPhysXMgr::tick()
 	// gScene->simulate(DT);
 	gScene->fetchResults(true);
 
-	for (auto& e : m_vecColInfo)
+	// Trigger Obj Overlap판정
+	for (auto& e : m_vecTriggerColInfo)
 	{
 		if (PxPairFlag::eNOTIFY_TOUCH_PERSISTS == e.State)
 		{
@@ -521,7 +522,7 @@ void CPhysXMgr::ReleaseActor(PxRigidActor* actor)
 void CPhysXMgr::exit()
 {
 	ClearAllActors();
-	m_vecColInfo.clear();
+	m_vecTriggerColInfo.clear();
 }
 
 CPhysXMgr::~CPhysXMgr()
