@@ -6,7 +6,7 @@ class CAfterImage : public CScript
 private:
 	AfterImageInfo m_info;
 	float		   fUpdateTimer;
-	bool		   bDisplayNode;
+	bool		   bDisplay;
 
 	CStructuredBuffer* m_BoneArr[AfterImageMaxCount];
 

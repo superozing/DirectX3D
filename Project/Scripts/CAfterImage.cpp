@@ -20,11 +20,11 @@ CAfterImage::CAfterImage()
 	m_info.NodeCount = 10;
 	m_info.TimeStep	 = 0.1f;
 	fUpdateTimer	 = 0.1f;
-	bDisplayNode	 = true;
+	bDisplay		 = true;
 
 	AppendScriptParam("Node Count", SCRIPT_PARAM::INT, &m_info.NodeCount, 0, 10, false, "Afterimage Node count");
 	AppendScriptParam("Time Interval", SCRIPT_PARAM::FLOAT, &m_info.TimeStep);
-	AppendScriptParam("View Node", SCRIPT_PARAM::BOOL, &bDisplayNode);
+	AppendScriptParam("View Node", SCRIPT_PARAM::BOOL, &bDisplay);
 }
 
 CAfterImage::~CAfterImage()
@@ -62,12 +62,6 @@ void CAfterImage::tick()
 			for (int i = m_info.NodeCount; i > 1; --i)
 			{
 				m_info.WorldTransform[i - 1] = m_info.WorldTransform[i - 2];
-
-				if (pAnimator != nullptr)
-				{
-					m_info.AnimationClipIdx[i - 1] = m_info.AnimationClipIdx[i - 2];
-					m_info.AnimationRatio[i - 1]   = m_info.AnimationRatio[i - 2];
-				}
 			}
 		}
 
@@ -77,16 +71,14 @@ void CAfterImage::tick()
 
 		if (pAnimator != nullptr)
 		{
-			m_info.AnimationClipIdx[0] = pAnimator->GetCurClip();
-			m_info.AnimationRatio[0]   = pAnimator->GetCurClipLength();
-
 			UpdateBoneMatrix();
 		}
 	}
 
 	CCamera* pMainCam = CRenderMgr::GetInst()->GetMainCam();
 
-	pMainCam->RegisterAfterImage(this->GetOwner()->GetParent(), m_info);
+	if (bDisplay == true)
+		pMainCam->RegisterAfterImage(this->GetOwner()->GetParent(), m_info);
 }
 
 void CAfterImage::UpdateBoneMatrix()
@@ -157,7 +149,7 @@ void CAfterImage::SaveToFile(ofstream& fout)
 	fout << m_info.TimeStep << endl;
 
 	fout << TagRenderNode << endl;
-	fout << (int)bDisplayNode << endl;
+	fout << (int)bDisplay << endl;
 }
 
 void CAfterImage::LoadFromFile(ifstream& fin)
@@ -169,5 +161,5 @@ void CAfterImage::LoadFromFile(ifstream& fin)
 	fin >> m_info.TimeStep;
 
 	Utils::GetLineUntilString(fin, TagRenderNode);
-	fin >> bDisplayNode;
+	fin >> bDisplay;
 }
