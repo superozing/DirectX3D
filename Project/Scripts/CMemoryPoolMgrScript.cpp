@@ -107,6 +107,8 @@ void CMemoryPoolMgrScript::PushObject(CGameObject* _Object)
 			{
 				_Object->PhysX()->releaseActor();
 			}
+			_Object->DisconnectWithLayer();
+			_Object->SetName(s);
 			vecObj[i]->AddChild(_Object);
 			CTaskMgr::GetInst()->SetMemoryPoolEvent(true);
 			return;
@@ -119,6 +121,8 @@ void CMemoryPoolMgrScript::PushObject(string _strMapKey, CGameObject* _Object)
 	// EX OBJ의 Filter를 받아온다.
 	vector<CGameObject*> vecObj = GetOwner()->GetChild();
 
+	string s = CMemoryPoolMgr::GetInst()->GetBaseName(ToString(_Object->GetName()));
+
 	for (int i = 0; i < vecObj.size(); ++i)
 	{
 		if (_strMapKey == ToString(vecObj[i]->GetName()))
@@ -127,6 +131,8 @@ void CMemoryPoolMgrScript::PushObject(string _strMapKey, CGameObject* _Object)
 			{
 				_Object->PhysX()->releaseActor();
 			}
+			_Object->DisconnectWithLayer();
+			_Object->SetName(s);
 			vecObj[i]->AddChild(_Object);
 			CTaskMgr::GetInst()->SetMemoryPoolEvent(true);
 			return;
