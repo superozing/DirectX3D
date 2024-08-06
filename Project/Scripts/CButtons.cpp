@@ -6,6 +6,8 @@
 #include <Engine\CLevelMgr.h>
 #include <Engine\CLevel.h>
 
+void (*CButtons::Setting)() = nullptr;
+
 CButtons::CButtons()
 	: CScript((UINT)SCRIPT_TYPE::BUTTONS)
 {
@@ -22,6 +24,8 @@ void CButtons::Play()
 
 void CButtons::Settings()
 {
+	if (CButtons::Setting)
+		CButtons::Setting();
 }
 
 void CButtons::Exit()

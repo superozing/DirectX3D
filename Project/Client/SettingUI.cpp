@@ -8,10 +8,15 @@
 #include <Engine\CKeyMgr.h>
 
 #include <Scripts\CPlayerController.h>
-
+#include <Scripts\CButtons.h>
+void SettingActive()
+{
+	CImGuiMgr::GetInst()->FindUI("##Setting")->Activate();
+}
 SettingUI::SettingUI()
 	: UI("Setting", "##Setting")
 {
+	CButtons::Setting = &(SettingActive);
 }
 
 SettingUI::~SettingUI()

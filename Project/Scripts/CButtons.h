@@ -18,6 +18,8 @@ public:
 	void AddIdx();
 	void SubIdx();
 
+	static void (*Setting)();
+
 public:
 	virtual void begin() override;
 	virtual void tick() override;
