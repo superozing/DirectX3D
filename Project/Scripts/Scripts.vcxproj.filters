@@ -238,6 +238,9 @@
     <ClInclude Include="CParticleSpawnScript.h">
       <Filter>Scripts\Particle</Filter>
     </ClInclude>
+    <ClInclude Include="CChildCollider.h">
+      <Filter>Scripts\Manager\ChildCollider</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -477,6 +480,9 @@
     <ClCompile Include="CParticleSpawnScript.cpp">
       <Filter>Scripts\Particle</Filter>
     </ClCompile>
+    <ClCompile Include="CChildCollider.cpp">
+      <Filter>Scripts\Manager\ChildCollider</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -649,6 +655,9 @@
     </Filter>
     <Filter Include="Scripts\Render\AfterImage">
       <UniqueIdentifier>{99f4cea7-18fd-4509-956c-5c2ef7a671e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager\ChildCollider">
+      <UniqueIdentifier>{457fb80e-30b0-44cb-8c9f-ae0b24cdfce5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

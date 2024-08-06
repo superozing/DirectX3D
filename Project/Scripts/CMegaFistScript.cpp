@@ -6,7 +6,9 @@
 #include <Engine\CLevel.h>
 #include <Engine\CGameObject.h>
 #include <Engine\CRandomMgr.h>
+#include <Engine\CPhysX.h>
 
+#include "CPlayerScript.h"
 #include "CBossScript.h"
 #include "CRoRStateMachine.h"
 
@@ -57,12 +59,13 @@ void CMegaFistScript::tick()
 	{
 		m_LifeSpan -= DT;
 
-		if (m_LifeSpan <= 0.f || m_Pos.y <= 0.f)
+		if (m_LifeSpan <= 0.f)
 		{
-			m_IsAlive = false;
 			GamePlayStatic::DestroyGameObject(GetOwner());
 		}
 	}
+	else
+		GamePlayStatic::DestroyGameObject(GetOwner());
 
 	m_CurVelocity += m_Gravity * DT;
 	Transform()->SetDir(m_CurVelocity);
@@ -74,6 +77,7 @@ void CMegaFistScript::tick()
 
 void CMegaFistScript::OnHit()
 {
+	m_Target->GetScript<CPlayerScript>()->Hit(m_Damage);
 }
 
 void CMegaFistScript::InitMegaFistInfo(CGameObject* _Shooter, CGameObject* _Target, Vec3 _Pos, float _InitSpeed,
@@ -86,4 +90,22 @@ void CMegaFistScript::InitMegaFistInfo(CGameObject* _Shooter, CGameObject* _Targ
 	// 타겟 위치 기준 바닥보다 조금 더 위를 노리도록 설정
 	m_TargetPos = m_Target->Transform()->GetRelativePos();
 	m_TargetPos.y += 50.f;
+}
+
+void CMegaFistScript::BeginOverlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider)
+{
+	if ((int)LAYER::LAYER_PLAYER == _OtherObj->GetLayerIdx())
+	{
+		OnHit();
+	}
+
+	m_IsAlive = false;
+}
+
+void CMegaFistScript::Overlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider)
+{
+}
+
+void CMegaFistScript::EndOverlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider)
+{
 }
