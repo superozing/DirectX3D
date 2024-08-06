@@ -235,6 +235,9 @@
     <ClInclude Include="CAfterImage.h">
       <Filter>Scripts\Render\AfterImage</Filter>
     </ClInclude>
+    <ClInclude Include="CSpawnPhysX.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -470,6 +473,9 @@
     </ClCompile>
     <ClCompile Include="CAfterImage.cpp">
       <Filter>Scripts\Render\AfterImage</Filter>
+    </ClCompile>
+    <ClCompile Include="CSpawnPhysX.cpp">
+      <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

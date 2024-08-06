@@ -218,6 +218,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CProgressBar.h" />
     <ClInclude Include="CProjectileScript.h" />
+    <ClInclude Include="CSpawnPhysX.h" />
     <ClInclude Include="CTitleTex.h" />
     <ClInclude Include="CRenderMgrScript.h" />
     <ClInclude Include="CRoRStateMachine.h" />
@@ -299,6 +300,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CPlayerScript_State.cpp" />
     <ClCompile Include="CProgressBar.cpp" />
     <ClCompile Include="CProjectileScript.cpp" />
+    <ClCompile Include="CSpawnPhysX.cpp" />
     <ClCompile Include="CTitleTex.cpp" />
     <ClCompile Include="CRenderMgrScript.cpp" />
     <ClCompile Include="CRoRStateMachine.cpp" />
