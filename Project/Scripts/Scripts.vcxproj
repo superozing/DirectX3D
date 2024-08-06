@@ -203,6 +203,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CLevelTransition.h" />
     <ClInclude Include="CMegaFistScript.h" />
     <ClInclude Include="CMemoryPoolMgrScript.h" />
+    <ClInclude Include="CMiniGunScript.h" />
     <ClInclude Include="CMissileScript.h" />
     <ClInclude Include="CMissileTrailScript.h" />
     <ClInclude Include="CMonsterHP.h" />
@@ -285,6 +286,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CLevelTransition.cpp" />
     <ClCompile Include="CMegaFistScript.cpp" />
     <ClCompile Include="CMemoryPoolMgrScript.cpp" />
+    <ClCompile Include="CMiniGunScript.cpp" />
     <ClCompile Include="CMissileScript.cpp" />
     <ClCompile Include="CMissileTrailScript.cpp" />
     <ClCompile Include="CMonsterHP.cpp" />

@@ -8,6 +8,7 @@
 #include <Engine\CAssetMgr.h>
 #include "CRoRStateMachine.h"
 #include "CMegaFistScript.h"
+#include "CMiniGunScript.h"
 #include "CBossMissileScript.h"
 #include "CBossShieldScript.h"
 
@@ -112,7 +113,7 @@ void CBossScript::CheckDuration()
 	if (m_ActiveEXs)
 	{
 		// m_EXsType = CRandomMgr::GetInst()->GetRandomInt(4);
-		m_EXsType = 1;
+		m_EXsType = 0;
 		switch (m_EXsType)
 		{
 		case 0:
@@ -164,6 +165,18 @@ void CBossScript::FireMegaFist()
 															 false, true);
 	int layeridx = megafist->GetLayerIdx();
 	GamePlayStatic::SpawnGameObject(megafist, layeridx);
+}
+
+void CBossScript::FireMiniGun()
+{
+	if (nullptr == m_Target)
+		return;
+
+	CGameObject* pMinigun = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Particle\\p_Minigun.pref")->Instantiate();
+	pMinigun->GetScript<CMiniGunScript>()->SetParent(GetOwner());
+
+	int layeridx = pMinigun->GetLayerIdx();
+	GamePlayStatic::SpawnGameObject(pMinigun, layeridx);
 }
 
 void CBossScript::FireBossMissile(int _idx)

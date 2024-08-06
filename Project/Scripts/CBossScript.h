@@ -29,9 +29,9 @@ struct tBossStatus
 	float CurHP = MaxHP;
 
 	float ATTDamage = 10.f;
-	float ATTSpeed	= 2.f;
+	float ATTSpeed	= 2000.f;
 
-	float EXsCoolTime = 1000.f;
+	float EXsCoolTime = 1.f;
 
 	bool IsGroggy = false;
 	bool IsDead	  = false;
@@ -122,6 +122,7 @@ public:
 	void CheckVital();
 
 	void FireMegaFist();
+	void FireMiniGun();
 	void FireBossMissile(int _idx);
 	void ActiveInnerShield();
 	void ActiveOutsideShield();

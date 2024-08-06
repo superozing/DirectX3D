@@ -112,6 +112,7 @@ void CBossScript::NormalAttackEndEnd()
 void CBossScript::EXs1Begin()
 {
 	Animator3D()->Play((int)BOSS_STATE::EXs1, 0);
+	FireMiniGun();
 }
 
 int CBossScript::EXs1Update()

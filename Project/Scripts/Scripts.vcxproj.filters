@@ -241,6 +241,9 @@
     <ClInclude Include="CChildCollider.h">
       <Filter>Scripts\Manager\ChildCollider</Filter>
     </ClInclude>
+    <ClInclude Include="CMiniGunScript.h">
+      <Filter>Scripts\Particle\MiniGun</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -483,6 +486,9 @@
     <ClCompile Include="CChildCollider.cpp">
       <Filter>Scripts\Manager\ChildCollider</Filter>
     </ClCompile>
+    <ClCompile Include="CMiniGunScript.cpp">
+      <Filter>Scripts\Particle\MiniGun</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -658,6 +664,9 @@
     </Filter>
     <Filter Include="Scripts\Manager\ChildCollider">
       <UniqueIdentifier>{457fb80e-30b0-44cb-8c9f-ae0b24cdfce5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Particle\MiniGun">
+      <UniqueIdentifier>{95fca25e-885b-4263-9a3d-420f8c450937}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
