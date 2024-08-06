@@ -63,8 +63,10 @@ void CAmmoInfo::tick()
 
 void CAmmoInfo::SaveToFile(ofstream& fout)
 {
+	CTextUI::SaveToFile(fout);
 }
 
 void CAmmoInfo::LoadFromFile(ifstream& fin)
 {
+	CTextUI::LoadFromFile(fin);
 }

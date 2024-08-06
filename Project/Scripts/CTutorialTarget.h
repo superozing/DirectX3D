@@ -5,7 +5,13 @@
 class CTutorialTarget : public CScript
 {
 public:
+	bool m_bGroundType;
 	bool m_bHit;
+
+	float m_fMoveLength;
+	bool  m_bMoveRight;
+	float m_fAccTime;
+	float m_fMoveTime;
 
 public:
 	bool IsHit() { return m_bHit; }
@@ -15,7 +21,8 @@ public:
 	virtual void begin() override;
 	virtual void tick() override;
 
-	// virtual void BeginOverlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider);
+	virtual void SaveToFile(ofstream& fout);
+	virtual void LoadFromFile(ifstream& fin);
 
 public:
 	CLONE(CTutorialTarget);
