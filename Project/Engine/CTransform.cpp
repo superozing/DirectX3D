@@ -273,6 +273,7 @@ void CTransform::CalWorldMat()
 	Quaternion quat	  = Quaternion::CreateFromRotationMatrix(matRotX * matRotY * matRotZ);
 	Matrix	   matRot = Matrix::CreateFromQuaternion(quat);
 
+	m_WorldQuaternion	  = quat;
 	Matrix matTranslation = XMMatrixTranslation(m_vRelativePos.x, m_vRelativePos.y, m_vRelativePos.z);
 
 	m_matWorld = matScale * matRot * matTranslation;
