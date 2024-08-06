@@ -13,6 +13,7 @@ CPhysX::CPhysX()
 
 CPhysX::~CPhysX()
 {
+	releaseActor();
 }
 
 void CPhysX::setLinearVelocity(const Vec3& _vLVel)
