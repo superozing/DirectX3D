@@ -272,12 +272,17 @@ void CPhysXMgr::setFillterData(PxShape* _shape, UINT _Layer)
 	_shape->setQueryFilterData(filterData);
 }
 
+#include "CLogMgr.h"
 void CPhysXMgr::addGameObject(CGameObject* object)
 {
 	auto PhysX = object->PhysX();
 
-	auto	   Rot		  = object->Transform()->GetWorldRot();
-	Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(Rot.y, Rot.x, Rot.z);
+	auto Rot = object->Transform()->GetWorldRot();
+	// Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(Rot.z, Rot.y, Rot.x);
+	Quat WorldQuat = object->Transform()->GetWorldQuaternion();
+	CLogMgr::GetInst()->AddLog(Log_Level::INFO, "Quat:" + std::to_string(WorldQuat.x) + "," +
+													std::to_string(WorldQuat.y) + "," + std::to_string(WorldQuat.z) +
+													"," + std::to_string(WorldQuat.w));
 
 	auto ObjPos	   = object->Transform()->GetWorldPos();
 	auto OffsetPos = PhysX->m_vOffsetPos;
@@ -285,7 +290,7 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 
 	// 게임 오브젝트의 위치와 회전 정보
 	PxTransform transform(PxVec3(FinalPos.x, FinalPos.y, FinalPos.z),
-						  PxQuat(quaternion.x, quaternion.y, quaternion.z, quaternion.w));
+						  PxQuat(WorldQuat.x, WorldQuat.y, -WorldQuat.z, -WorldQuat.w));
 
 	PxRigidActor* actor = nullptr;
 
@@ -310,6 +315,7 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 		// dynamicActor->setMass(1.0f);
 		PhysX->m_DActor = dynamicActor;
 		actor			= dynamicActor;
+		dynamicActor->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, true);
 	}
 	else
 	{
@@ -322,6 +328,8 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 		dynamicActor->setRigidBodyFlag(PxRigidBodyFlag::eENABLE_SPECULATIVE_CCD, true);
 		PhysX->m_DActor = dynamicActor;
 		actor			= dynamicActor;
+		// dynamicActor->setLinearVelocity(PxVec3(0.f, 0.f, 0.f));
+		// dynamicActor->setAngularVelocity(PxVec3(0.f, 0.f, 0.f));
 	}
 
 	// 게임 오브젝트의 스케일 정보
@@ -363,11 +371,12 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 	if (PhysBodyType::TRIGGER != PhysX->m_bPhysBodyType)
 	{
 		shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
-		// shape->setContactOffset(m_fContactOffset);
+		shape->setContactOffset(m_fContactOffset);
 		shape->setRestOffset(m_fLestOffset);
 	}
 	if (PhysBodyType::TRIGGER == PhysX->m_bPhysBodyType)
 	{
+		shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
 		shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
 	}
 
@@ -449,11 +458,13 @@ void CPhysXMgr::init()
 	gScene->setSimulationEventCallback(gCollisionCalback);
 }
 
+#include "imgui.h "
+#include "ImGuizmo.h "
 void CPhysXMgr::tick()
 {
 	RETURN_IF_NOT_PLAYING
 
-	static const float ThresholdTime = 1.f / 200.f;
+	static const float ThresholdTime = 1.f / 60.f;
 	static float	   acctime		 = 0.f;
 	acctime += DT;
 	if (acctime < ThresholdTime)
@@ -475,6 +486,48 @@ void CPhysXMgr::tick()
 			// 다음 프레임부터 Persist처리
 			e.State = PxPairFlag::eNOTIFY_TOUCH_PERSISTS;
 		}
+	}
+
+	// 시뮬레이션 결과로 트랜스폼 업데이트
+	PxU32 nbActors = gScene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
+	std::vector<PxRigidActor*> actors(nbActors);
+	gScene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC,
+					  reinterpret_cast<PxActor**>(&actors[0]), nbActors);
+
+	for (PxU32 i = 0; i < nbActors; i++)
+	{
+		if (!actors[i]->is<PxRigidDynamic>())
+			continue;
+
+		CGameObject* obj = (CGameObject*)actors[i]->userData;
+		if (PhysBodyType::TRIGGER == obj->PhysX()->m_bPhysBodyType)
+			continue;
+
+		// RigidDynamic이 캐릭터 컨트롤러인 경우
+		if (nullptr == actors[i]->userData)
+			continue;
+
+		CTransform* pTr = obj->Transform();
+
+		const PxMat44 ActorPose(actors[i]->getGlobalPose());
+		Matrix		  SimulatedMat = Matrix(ActorPose.front());
+
+		// 시뮬레이션 Matrix SRT 분해
+		Vec3 Translation, Rotation, Scale;
+		ImGuizmo::DecomposeMatrixToComponents(*SimulatedMat.m, Translation, Rotation, Scale);
+
+		// PPM 적용
+		// Translation *= m_PPM;
+		Rotation.ToRadian();
+		// Rotation.z = -Rotation.z;
+
+		// 변화량 추출
+		Vec3 vPosOffset = pTr->GetWorldPos() - Translation;
+		Vec3 vRotOffset = pTr->GetWorldRot() - Rotation;
+
+		// 변화량만큼 Relative 에 적용
+		pTr->SetRelativePos(pTr->GetRelativePos() - vPosOffset);
+		pTr->SetRelativeRotation(pTr->GetRelativeRotation() - vRotOffset);
 	}
 }
 
