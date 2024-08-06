@@ -2,6 +2,7 @@
 #include "CBulletShellSpawner.h"
 
 #include <Engine/CMemoryPoolMgr.h>
+#include <Engine/CRandomMgr.h>
 
 #include "CMemoryPoolMgrScript.h"
 #include "CBulletScript.h"
@@ -66,7 +67,10 @@ void CBulletShellSpawner::SpawnBulletShell(CGameObject* _pPlayer, float _ActiveT
 	// 힘 주기
 	auto pBulletScript = pBulletShell->GetScript<CBulletScript>(); // WeaponMat.Front()
 	auto rDir		   = _ParentWorldMat.Right().Normalize();	   // WeaponMat.Right().Normalize();
-	pBulletScript->SetLinearVelocity((rDir * 300.f) + (Vec3(0, 1, 0) * 0));
+	
+	// 속도 조절 수정 이후 조절하기.
+	//  * (CRandomMgr::GetInst()->GetRandomFloat() / 2.f + 1);
+	pBulletScript->SetLinearVelocity(rDir * 300.f);
 
 	// 게임 오브젝트 스폰
 	GamePlayStatic::SpawnGameObject(pBulletShell, (UINT)LAYER::LAYER_ETC_OBJECT);
