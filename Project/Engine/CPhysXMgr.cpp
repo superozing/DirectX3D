@@ -446,6 +446,7 @@ void CPhysXMgr::init()
 	LayerCheck((UINT)LAYER::LAYER_PLAYER_SHOOTING_RAY, (UINT)LAYER::LAYER_MONSTER);
 	LayerCheck((UINT)LAYER::LAYER_PLAYER_SHOOTING_RAY, (UINT)LAYER::LAYER_BOSS);
 
+	// ViewPort RayCast 디버그용
 	sceneDesc.filterShader			  = CustomFilterShader;
 	sceneDesc.kineKineFilteringMode	  = PxPairFilteringMode::eKEEP;
 	sceneDesc.staticKineFilteringMode = PxPairFilteringMode::eKEEP;
