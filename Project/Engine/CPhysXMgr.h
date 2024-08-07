@@ -49,9 +49,12 @@ private:
 	float						m_fGravityMul	 = 5.f;
 	float						m_fContactOffset = 0.1f;
 	float						m_fLestOffset	 = 0.5f;
+	float						m_PPM			 = 20.f;
 
-	void LayerCheck(UINT _left, UINT _right);
-	void LayerCheckToggle(UINT _left, UINT _right);
+	float GetPPM() { return m_PPM; }
+	void  SetPPM(float _PPM) { m_PPM = _PPM; }
+	void  LayerCheck(UINT _left, UINT _right);
+	void  LayerCheckToggle(UINT _left, UINT _right);
 	class MyPhysXErrorCallback : public PxErrorCallback
 	{
 	public:
