@@ -24,6 +24,7 @@ void CDamageFontSpawner::begin()
 	// 풀 매니저 스크립트 세팅
 	auto pObj = CMemoryPoolMgr::GetInst()->GetEX();
 	m_PoolMgr = pObj->GetScript<CMemoryPoolMgrScript>();
+	m_PoolMgr->PoolSet(DamageFontPath, 10);
 }
 
 void CDamageFontSpawner::tick()

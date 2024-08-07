@@ -21,6 +21,7 @@ void CBulletHitParticleSpawner::begin()
 	// 메모리 풀 관리자 가져오기
 	auto pObj = CMemoryPoolMgr::GetInst()->GetEX();
 	m_PoolMgr = pObj->GetScript<CMemoryPoolMgrScript>();
+	m_PoolMgr->PoolSet(BulletHitParticlePath, 10);
 }
 
 void CBulletHitParticleSpawner::tick()

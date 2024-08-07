@@ -102,6 +102,7 @@ private:
 	class CShootingSystemScript* m_pShootingSystem;
 	class CCrosshair*			 m_pCrosshair;
 	class CMuzzleFlashScript*	 m_pMuzzleFlash;
+	class CBulletLineSpawner*	 m_pBulletLine;
 
 public:
 #pragma region StatusFunc

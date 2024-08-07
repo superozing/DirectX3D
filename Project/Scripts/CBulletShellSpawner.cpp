@@ -22,6 +22,7 @@ void CBulletShellSpawner::begin()
 	// 메모리 풀 관리자 가져오기
 	auto pObj = CMemoryPoolMgr::GetInst()->GetEX();
 	m_PoolMgr = pObj->GetScript<CMemoryPoolMgrScript>();
+	m_PoolMgr->PoolSet(Bullet_ShellPath, 10);
 }
 
 void CBulletShellSpawner::tick()

@@ -25,6 +25,8 @@ void CBulletMarkSpawner::begin()
 	m_PoolMgr = pObj->GetScript<CMemoryPoolMgrScript>();
 
 	m_NormalTargetTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex");
+
+	m_PoolMgr->PoolSet(BulletMarkPath, 10);
 }
 
 void CBulletMarkSpawner::tick()

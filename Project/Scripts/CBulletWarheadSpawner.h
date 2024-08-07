@@ -13,11 +13,12 @@ private:
 	list<tBulletWarheadNode> m_BulletWarheadList;
 
 	class CMemoryPoolMgrScript* m_PoolMgr;
+	class CGameObject* m_pPlayer;
+	Vec3						m_RelativePos;
 
 public:
 	virtual void begin();
 	virtual void tick();
-
 
 public:
 	void SpawnBulletWarhead(CGameObject* _pPlayer);
