@@ -277,12 +277,7 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 {
 	auto PhysX = object->PhysX();
 
-	auto Rot = object->Transform()->GetWorldRot();
-	// Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(Rot.z, Rot.y, Rot.x);
 	Quat WorldQuat = object->Transform()->GetWorldQuaternion();
-	CLogMgr::GetInst()->AddLog(Log_Level::INFO, "Quat:" + std::to_string(WorldQuat.x) + "," +
-													std::to_string(WorldQuat.y) + "," + std::to_string(WorldQuat.z) +
-													"," + std::to_string(WorldQuat.w));
 
 	auto ObjPos	   = object->Transform()->GetWorldPos();
 	auto OffsetPos = PhysX->m_vOffsetPos;
