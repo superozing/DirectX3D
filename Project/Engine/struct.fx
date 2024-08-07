@@ -142,9 +142,12 @@ struct AfterImageInfo
     int NodeCount;
     row_major Matrix AfterImageWorldMat[10];
     float TimeStep;
-    float2 Padding;
-    int AnimationClipIdx[10];
-    float AnimationRatio[10];
+    int iBoneCount;
+    float fLifeTIme[10];
+    float fMaxLifeTime;
+    int iColorMode;
+    float4 AfterImageColor;
+    int Padding;
 };
 
 #endif

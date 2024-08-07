@@ -1,17 +1,27 @@
 ﻿#pragma once
 #include <Engine\CScript.h>
 
+enum class ColorMode
+{
+	Original,
+	Custom,
+};
+
 class CAfterImage : public CScript
 {
 private:
 	AfterImageInfo m_info;
 	float		   fUpdateTimer;
-	bool		   bDisplayNode;
+	float		   fSetLifeTime;
+	string		   strDisplayColorMode;
+	Vec4		   CustomColor;
+	bool		   bDisplay;
 
-	CStructuredBuffer* m_Bonearr[AfterImageMaxCount];
+	CStructuredBuffer* m_BoneArr[AfterImageMaxCount];
 
 private:
 	void UpdateBoneMatrix();
+	void CalLifeTime(float _Time);
 
 public:
 	virtual void begin() override;
@@ -19,6 +29,8 @@ public:
 
 	virtual void ParticularUpdateData(string _Key) override;
 	virtual void ParticularClear(string _Key) override;
+
+	void ChangeColorMode();
 
 	virtual void SaveToFile(ofstream& fout) override;
 	virtual void LoadFromFile(ifstream& fin) override;

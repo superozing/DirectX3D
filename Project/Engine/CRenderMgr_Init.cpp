@@ -171,17 +171,18 @@ void CRenderMgr::CreateMRT()
 	// AFTER_IMAGE
 	// ============
 	{
-		Ptr<CTexture> pRTTex[1] = {CAssetMgr::GetInst()->CreateTexture(
-			L"AfterImageTargetTex", vResolution.x, vResolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
-			D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE)};
+		Ptr<CTexture> pRTTex[2] = {CAssetMgr::GetInst()->CreateTexture(
+									   L"AfterImageTargetTex", vResolution.x, vResolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
+									   D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE),
+								   CAssetMgr::GetInst()->FindAsset<CTexture>(L"ColorTargetTex")};
 
-		Vec4 arrClearColor[1] = {Vec4(0.f, 0.f, 0.f, 1.f)};
+		Vec4 arrClearColor[1] = {Vec4(0.f, 0.f, 0.f, 0.f)};
 
 		if (m_arrMRT[(UINT)MRT_TYPE::AFTER_IMAGE] == nullptr)
 			m_arrMRT[(UINT)MRT_TYPE::AFTER_IMAGE] = new CMRT;
 
-		m_arrMRT[(UINT)MRT_TYPE::AFTER_IMAGE]->Create(pRTTex, 1, nullptr);
-		m_arrMRT[(UINT)MRT_TYPE::AFTER_IMAGE]->SetClearColor(arrClearColor, 1);
+		m_arrMRT[(UINT)MRT_TYPE::AFTER_IMAGE]->Create(pRTTex, 2, nullptr);
+		m_arrMRT[(UINT)MRT_TYPE::AFTER_IMAGE]->SetClearColor(arrClearColor, 2);
 	}
 }
 

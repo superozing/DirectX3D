@@ -357,9 +357,10 @@ struct AfterImageInfo
 	int	   NodeCount; // max는 10개
 	Matrix WorldTransform[10];
 	float  TimeStep;
-	Vec2   Padding;
-
-	// 에니메이션 정보
-	int	  AnimationClipIdx[10];
-	float AnimationRatio[10];
+	int	   iBoneCount;
+	float  fLifeTime[10];
+	float  fMaxLifeTime;
+	int	   iColorMode;
+	Vec4   AfterImageColor;
+	int	   Padding;
 };

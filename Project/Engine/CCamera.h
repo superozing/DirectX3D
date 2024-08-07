@@ -135,6 +135,7 @@ public:
 	void SortShadowMapObject();
 	void render_shadowmap();
 	void render_afterimage();
+	void merge_afterimage();
 
 	void CalculateRay();
 
