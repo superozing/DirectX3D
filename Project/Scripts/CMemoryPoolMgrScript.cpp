@@ -140,7 +140,7 @@ void CMemoryPoolMgrScript::PushObject(string _strMapKey, CGameObject* _Object)
 	}
 }
 
-void CMemoryPoolMgrScript::PoolSet(string _strMapKey, int _Count)
+void CMemoryPoolMgrScript::PoolSet(string _strMapKey, int _Count) // 실제로 사용하는 함수
 {
 	vector<CGameObject*> vecChild = GetOwner()->GetChild();
 
