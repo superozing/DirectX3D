@@ -106,15 +106,14 @@ void RenderInSide(int Shape, float2 vLocal, inout float4 _Color)
 
 void AnimationRisingSquare(float2 vLocal, inout float4 _Color)
 {
-    float animProgress = smoothstep(0, 2, 1 - (CurAnimtime / MaxAnimtime)); // 0에서 1 사이로 제한
+    float animProgress = smoothstep(0, 1, 1 - (CurAnimtime / MaxAnimtime)); // 0에서 1 사이로 제한
     
-    if (vLocal.y <= animProgress)
+    if (vLocal.x <= animProgress)
     {
         _Color = InsideColor;
 
     }
-    else
-        discard;
+
     
 }
 
