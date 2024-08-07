@@ -2,6 +2,7 @@
 #include "CBulletShellSpawner.h"
 
 #include <Engine/CMemoryPoolMgr.h>
+#include <Engine/CRandomMgr.h>
 
 #include "CMemoryPoolMgrScript.h"
 #include "CBulletScript.h"
@@ -9,7 +10,6 @@
 #define Bullet_ShellPath "prefab/ShootingSystem/Bullet_Shell.pref"
 
 CBulletShellSpawner::CBulletShellSpawner()
-	: CScript((UINT)SCRIPT_TYPE::BULLETSHELLSPAWNER)
 {
 }
 
@@ -22,6 +22,7 @@ void CBulletShellSpawner::begin()
 	// 메모리 풀 관리자 가져오기
 	auto pObj = CMemoryPoolMgr::GetInst()->GetEX();
 	m_PoolMgr = pObj->GetScript<CMemoryPoolMgrScript>();
+	m_PoolMgr->PoolSet(Bullet_ShellPath, 10);
 }
 
 void CBulletShellSpawner::tick()
@@ -50,7 +51,6 @@ void CBulletShellSpawner::SpawnBulletShell(CGameObject* _pPlayer, float _ActiveT
 	Matrix _ParentWorldMat = _pPlayer->Transform()->GetWorldMat();
 	Matrix _WeaponBoneMat = _pPlayer->Animator3D()->FindBoneMat(L"Bip001_Weapon");
 
-
 	// 풀에서 오브젝트 가져오기
 	auto pBulletShell = m_PoolMgr->PopObject(Bullet_ShellPath);
 
@@ -66,27 +66,14 @@ void CBulletShellSpawner::SpawnBulletShell(CGameObject* _pPlayer, float _ActiveT
 	// 힘 주기
 	auto pBulletScript = pBulletShell->GetScript<CBulletScript>(); // WeaponMat.Front()
 	auto rDir		   = _ParentWorldMat.Right().Normalize();	   // WeaponMat.Right().Normalize();
-	pBulletScript->SetLinearVelocity((rDir * 300.f) + (Vec3(0, 1, 0) * 0));
+	
+	// 속도 조절 수정 이후 조절하기.
+	//  * (CRandomMgr::GetInst()->GetRandomFloat() / 2.f + 1);
+	pBulletScript->SetLinearVelocity(rDir * 300.f);
 
 	// 게임 오브젝트 스폰
 	GamePlayStatic::SpawnGameObject(pBulletShell, (UINT)LAYER::LAYER_ETC_OBJECT);
 
 	// 관리를 위해 리스트에 추가
 	m_BulletShellList.push_back({pBulletShell, _ActiveTime});
-}
-
-void CBulletShellSpawner::SaveToFile(FILE* _File)
-{
-}
-
-void CBulletShellSpawner::SaveToFile(ofstream& fout)
-{
-}
-
-void CBulletShellSpawner::LoadFromFile(FILE* _File)
-{
-}
-
-void CBulletShellSpawner::LoadFromFile(ifstream& fin)
-{
 }

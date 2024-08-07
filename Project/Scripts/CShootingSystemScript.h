@@ -31,11 +31,15 @@ private:
 	CGameObject*		 m_pPlayer;
 	class CPlayerScript* m_pPlayerScript;
 
-	class CDamagedDirectionMgr* m_pDamagedDirectionMgr;
-	class CBulletMarkSpawner*	m_pBulletMarkDecalSpawner;
-	class CBulletShellSpawner*	m_pBulletShellSpawner;
-	class CBulletHitParticleSpawner* m_pBulletHitParticleSpawner;
-	class CShootingRecoil*			 m_pShootingRecoil;
+	class CDamagedDirectionMgr*			m_pDamagedDirectionMgr;
+	class CBulletMarkSpawner*			m_pBulletMarkDecalSpawner;
+	class CBulletShellSpawner*			m_pBulletShellSpawner;
+	class CBulletHitParticleSpawner*	m_pBulletHitParticleSpawner;
+	class CShootingRecoil*				m_pShootingRecoil;
+	class CDamageFontSpawner*			m_pDamageFontSpawner;
+
+	Vec3						 m_HitPos;
+	class CBulletWarheadSpawner*		m_pBulletWarheadSpawner;
 
 public:
 	void SetSpreadRatioSpeed(float _fSpreadRatioSpeed) { m_fSpreadRatioSpeed = _fSpreadRatioSpeed; }
@@ -51,17 +55,9 @@ public:
 	// 메인 카메라 광선 쏘기
 	void ShootMainCamRay();
 
-	// 탄피 생성
-	void SpawnBulletShell();
-
 public:
 	virtual void begin() override;
 	virtual void tick() override;
-
-	virtual void SaveToFile(FILE* _File) override;
-	virtual void SaveToFile(ofstream& fout) override;
-	virtual void LoadFromFile(FILE* _File) override;
-	virtual void LoadFromFile(ifstream& fin) override;
 
 public:
 	CLONE(CShootingSystemScript);

@@ -4,6 +4,8 @@
 #include "value.fx"
 #include "struct.fx"
 
+#define UseMulColor   g_bool_2
+#define MulColor   g_vec4_0
 #define DIGIT   g_int_0
 #define DAMAGE  g_int_1
 
@@ -150,6 +152,9 @@ float4 PS_DamageFont(GS_OUT _in) : SV_Target
     {
         vOutColor = g_tex_0.Sample(g_sam_0, _in.vUV);
     }
+    
+    if (UseMulColor)
+        vOutColor *= MulColor;
     
     if (vOutColor.a < 0.001f)
         discard;

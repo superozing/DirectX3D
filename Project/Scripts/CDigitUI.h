@@ -14,6 +14,9 @@ public:
 	virtual void LoadFromFile(ifstream& fin) override;
 
 public:
+	void SetValue(int _iVal) { m_iDigit = _iVal; }
+
+public:
 	CLONE(CDigitUI);
 	CDigitUI();
 	CDigitUI(const CDigitUI& _Origin);
