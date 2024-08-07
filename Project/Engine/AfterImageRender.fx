@@ -26,7 +26,9 @@ StructuredBuffer<Matrix> g_AfterImageBoneMat10 : register(t49);
 
 matrix GetInstanceBoneMat(int iBoneIdx, int iInstanceID)
 {
-    switch (iInstanceID)
+    int reversedInstanceID = 9 - iInstanceID;
+    
+    switch (reversedInstanceID)
     {
         case 0:
             return g_AfterImageBoneMat[iBoneIdx];

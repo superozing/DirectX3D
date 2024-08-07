@@ -111,16 +111,16 @@ void CAfterImage::UpdateBoneMatrix()
 	CAnimator3D* pAnimator = GetOwner()->GetParent()->Animator3D();
 	int			 boneCount = pAnimator->GetBoneCount();
 
-	// 새로운 포즈를 마지막 버퍼에 저장
-	m_BoneArr[m_info.NodeCount - 1]->SetData(pAnimator->GetFinalBoneMat(), 1);
+	// 새로운 포즈를 첫 번째 버퍼에 저장
+	m_BoneArr[0]->SetData(pAnimator->GetFinalBoneMat(), 1);
 
-	// 나머지 버퍼들을 한 칸씩 당기기
-	for (int i = 0; i < m_info.NodeCount; ++i)
+	// 나머지 버퍼들을 한 칸씩 밀기
+	for (int i = m_info.NodeCount - 1; i > 0; --i)
 	{
 		void* data = nullptr;
-		m_BoneArr[i + 1]->GetData(&data, 1);
 		if (data != nullptr)
 		{
+			m_BoneArr[i - 1]->GetData(&data, 1);
 			m_BoneArr[i]->SetData(data, 1);
 		}
 	}
