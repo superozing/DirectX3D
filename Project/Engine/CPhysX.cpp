@@ -38,7 +38,7 @@ void CPhysX::applyBulletImpact(const PxVec3& bulletVelocity, float bulletMass, c
 	PxVec3 impulse = bulletMass * bulletVelocity;
 
 	// 물체의 중심
-	PxVec3 actorCenter = m_DActor->getGlobalPose().p;
+	PxVec3 actorCenter = m_DActor->getGlobalPose().p * CPhysXMgr::GetInst()->m_PPM;
 
 	// 충돌 지점과 중심 사이의 벡터
 	PxVec3 r = hitPoint - actorCenter;

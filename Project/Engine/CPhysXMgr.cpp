@@ -339,8 +339,8 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 	{
 		scale			= object->Transform()->GetWorldScale();
 		PhysX->m_vScale = scale;
-		scale /= m_PPM;
 	}
+	scale /= m_PPM;
 	PxShape* shape;
 
 	// Collider 추가 (여기서는 예시로 Box Collider를 사용)
