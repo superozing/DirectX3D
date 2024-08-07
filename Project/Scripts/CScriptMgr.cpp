@@ -24,7 +24,6 @@
 #include "CEditorCameraMoveScript.h"
 #include "CMemoryPoolMgrScript.h"
 #include "CHaloScript.h"
-#include "CStudentScript.h"
 #include "CPlayerScript.h"
 #include "CDialog.h"
 #include "CPlayerDamagedScript.h"
@@ -99,7 +98,6 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CEditorCameraMoveScript");
 	_vec.push_back(L"CMemoryPoolMgrScript");
 	_vec.push_back(L"CHaloScript");
-	_vec.push_back(L"CStudentScript");
 	_vec.push_back(L"CPlayerScript");
 	_vec.push_back(L"CDialog");
 	_vec.push_back(L"CPlayerDamagedScript");
@@ -198,8 +196,6 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CMemoryPoolMgrScript;
 	if (L"CHaloScript" == _strScriptName)
 		return new CHaloScript;
-	if (L"CStudentScript" == _strScriptName)
-		return new CStudentScript;
 	if (L"CPlayerScript" == _strScriptName)
 		return new CPlayerScript;
 	if (L"CDialog" == _strScriptName)
@@ -371,9 +367,6 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::HALOSCRIPT:
 		return new CHaloScript;
-		break;
-	case (UINT)SCRIPT_TYPE::STUDENTSCRIPT:
-		return new CStudentScript;
 		break;
 	case (UINT)SCRIPT_TYPE::PLAYERSCRIPT:
 		return new CPlayerScript;
@@ -617,10 +610,6 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::HALOSCRIPT:
 		return L"CHaloScript";
-		break;
-
-	case SCRIPT_TYPE::STUDENTSCRIPT:
-		return L"CStudentScript";
 		break;
 
 	case SCRIPT_TYPE::PLAYERSCRIPT:

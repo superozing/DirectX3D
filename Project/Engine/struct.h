@@ -28,6 +28,7 @@ struct tDebugShapeInfo
 	float fLifeTime;
 	float fDuration;
 	bool  bDepthTest;
+	int	  iLayer;
 };
 
 struct tLightInfo
@@ -151,7 +152,7 @@ struct tParticleModule
 
 	// Module On / Off
 	int arrModuleCheck[(UINT)PARTICLE_MODULE::END];
-	int				 modulepadding[2];
+	int modulepadding[2];
 
 	friend ofstream& operator<<(ofstream& fout, const tParticleModule& module);
 	friend ifstream& operator>>(ifstream& fin, tParticleModule& module);

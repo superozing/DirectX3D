@@ -52,23 +52,25 @@ void DrawDebugCross(Vec3 _vWorldPos, float _fScale, Vec3 _Color, bool _bDepthTes
 void Play2DSound(const wstring& _SoundPath, int _Loop, float _Volume, bool _Overlap = true);
 void Play2DBGM(const wstring& _SoundPath, float _Volume);
 
-void DrawDebugCube(const Matrix& _WorldMat, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
+void DrawDebugCube(const Matrix& _WorldMat, Vec3 _Color, bool _bDepthTest, int _layer = (int)LAYER::LAYER_DEFAULT,
+				   float _Duration = 0.f);
 // 회전에 문제가 있을 수 있음
 void DrawDebugCube(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, bool _bDepthTest,
-				   float _Duration = 0.f);
+				   int _layer = (int)LAYER::LAYER_DEFAULT, float _Duration = 0.f);
 void DrawDebugCube(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec4 _qWorldRot, Vec3 _Color, bool _bDepthTest,
-				   float _Duration = 0.f);
+				   int _layer = (int)LAYER::LAYER_DEFAULT, float _Duration = 0.f);
 
-void DrawDebugSphere(Vec3 _vWorldPos, float _fRadius, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
+void DrawDebugSphere(Vec3 _vWorldPos, float _fRadius, Vec3 _Color, bool _bDepthTest,
+					 int _layer = (int)LAYER::LAYER_DEFAULT, float _Duration = 0.f);
 void DrawDebugCylinder(Vec3 _FromPos, Vec3 _ToPos, float _LineWidth, Vec3 _Color, bool _bDepthTest,
-					   float _Duration = 0.f);
+					   int _layer = (int)LAYER::LAYER_DEFAULT, float _Duration = 0.f);
 
 // 회전에 문제가 있을 수 있음
 void DrawDebugCone(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, bool _bDepthTest,
-				   float _Duration = 0.f);
+				   int _layer = (int)LAYER::LAYER_DEFAULT, float _Duration = 0.f);
 
 void DrawDebugCone(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec4 _qWorldRot, Vec3 _Color, bool _bDepthTest,
-				   float _Duration = 0.f);
+				   int _layer = (int)LAYER::LAYER_DEFAULT, float _Duration = 0.f);
 
 void ScreenResize(Vec2 _vRes, bool _bWindow);
 

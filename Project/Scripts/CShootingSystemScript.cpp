@@ -38,8 +38,8 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 									m_fSpreadRatio * CRandomMgr::GetInst()->GetRandomFloat() * MaxSpread);
 
 	bool isBulletHit =
-		CPhysXMgr::GetInst()->PerfomRaycast(pMainCam->Transform()->GetWorldPos(), ShootDir, hitInfo,
-											(UINT)LAYER::LAYER_PLAYER_SHOOTING_RAY, RayCastDebugFlag::AllVisible);
+		CPhysXMgr::GetInst()->PerformRaycast(pMainCam->Transform()->GetWorldPos(), ShootDir, hitInfo,
+											 (UINT)LAYER::LAYER_PLAYER_SHOOTING_RAY, RayCastDebugFlag::AllInvisible);
 
 	if (isBulletHit)
 	{
@@ -51,12 +51,11 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 
 		case LAYER::LAYER_PLANE:
 		case LAYER::LAYER_CEIL:
-		case LAYER::LAYER_WALL:
-		{
+		case LAYER::LAYER_WALL: {
 			m_pBulletMarkDecalSpawner->SpawnBulletMarkDecal(hitInfo, m_pPlayer);
 			m_pBulletHitParticleSpawner->SpawnBulletHitParticle(hitInfo);
 		}
-			break;
+		break;
 
 		case LAYER::LAYER_PLAYER:
 			break;
@@ -64,8 +63,7 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 		case LAYER::LAYER_PLAYER_SKILL:
 			break;
 
-		case LAYER::LAYER_MONSTER:
-		{
+		case LAYER::LAYER_MONSTER: {
 			if (hitInfo.pOtherObj->PhysX()->m_bPhysBodyType == PhysBodyType::DYNAMIC)
 			{
 				hitInfo.pOtherObj->PhysX()->applyBulletImpact(
@@ -73,7 +71,7 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 					PxVec3(hitInfo.vHitPos.x, hitInfo.vHitPos.y, hitInfo.vHitPos.z));
 			}
 		}
-			break;
+		break;
 
 		case LAYER::LAYER_MONSTER_SKILL:
 			break;
@@ -108,7 +106,6 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 		default:
 			break;
 		}
-
 	}
 
 	// 무기 본 위치에 탄피 오브젝트 생성, Velocity 추가
@@ -130,8 +127,8 @@ void CShootingSystemScript::ShootMainCamRay()
 	auto		pMainCam = CRenderMgr::GetInst()->GetMainCam();
 	auto		FrontDir = pMainCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
 
-	bool isContact = CPhysXMgr::GetInst()->PerfomRaycast(pMainCam->Transform()->GetWorldPos(), FrontDir, hitInfo,
-														 (UINT)LAYER::LAYER_RAYCAST, RayCastDebugFlag::AllVisible);
+	bool isContact = CPhysXMgr::GetInst()->PerformRaycast(pMainCam->Transform()->GetWorldPos(), FrontDir, hitInfo,
+														  (UINT)LAYER::LAYER_RAYCAST, RayCastDebugFlag::AllInvisible);
 
 	m_bShootAvailable = true;
 
@@ -167,7 +164,7 @@ void CShootingSystemScript::begin()
 
 	m_pShootingRecoil = new CShootingRecoil;
 	GetOwner()->AddComponent(m_pShootingRecoil);
-	
+
 	// 윈도우 좌표 기준이기 떄문에 반동을 주기 위해 y를 -방향으로 세팅
 	m_pShootingRecoil->SetShootingRecoilValue(Vec2(0.f, -1.f)); // 나중에 수치를 조정할 필요가 있음.
 	// 예를 들어 자세에 따라서 다른 반동을 준다던가... 그런 것 들 말이죠.

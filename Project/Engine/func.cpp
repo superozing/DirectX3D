@@ -89,7 +89,7 @@ void GamePlayStatic::DrawDebugRect(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWo
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
 
-void GamePlayStatic::DrawDebugCube(const Matrix& _WorldMat, Vec3 _Color, bool _bDepthTest, float _Duration)
+void GamePlayStatic::DrawDebugCube(const Matrix& _WorldMat, Vec3 _Color, bool _bDepthTest, int _layer, float _Duration)
 {
 	tDebugShapeInfo info = {};
 	info.eShape			 = DEBUG_SHAPE::CUBE;
@@ -97,12 +97,13 @@ void GamePlayStatic::DrawDebugCube(const Matrix& _WorldMat, Vec3 _Color, bool _b
 	info.vColor			 = _Color;
 	info.bDepthTest		 = _bDepthTest;
 	info.fDuration		 = _Duration;
+	info.iLayer			 = _layer;
 
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
 
 void GamePlayStatic::DrawDebugCube(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, bool _bDepthTest,
-								   float _Duration)
+								   int _layer, float _Duration)
 {
 	tDebugShapeInfo info = {};
 	info.eShape			 = DEBUG_SHAPE::CUBE;
@@ -119,12 +120,13 @@ void GamePlayStatic::DrawDebugCube(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWo
 	info.vColor		= _Color;
 	info.bDepthTest = _bDepthTest;
 	info.fDuration	= _Duration;
+	info.iLayer		= _layer;
 
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
 
 void GamePlayStatic::DrawDebugCube(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec4 _qWorldRot, Vec3 _Color, bool _bDepthTest,
-								   float _Duration)
+								   int _layer, float _Duration)
 {
 	tDebugShapeInfo info = {};
 	info.eShape			 = DEBUG_SHAPE::CUBE;
@@ -139,11 +141,13 @@ void GamePlayStatic::DrawDebugCube(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec4 _qWo
 	info.vColor		= _Color;
 	info.bDepthTest = _bDepthTest;
 	info.fDuration	= _Duration;
+	info.iLayer		= _layer;
 
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
 
-void GamePlayStatic::DrawDebugSphere(Vec3 _vWorldPos, float _fRadius, Vec3 _Color, bool _bDepthTest, float _Duration)
+void GamePlayStatic::DrawDebugSphere(Vec3 _vWorldPos, float _fRadius, Vec3 _Color, bool _bDepthTest, int _layer,
+									 float _Duration)
 {
 	tDebugShapeInfo info = {};
 	info.eShape			 = DEBUG_SHAPE::SPHERE;
@@ -160,12 +164,13 @@ void GamePlayStatic::DrawDebugSphere(Vec3 _vWorldPos, float _fRadius, Vec3 _Colo
 	info.vColor		= _Color;
 	info.bDepthTest = _bDepthTest;
 	info.fDuration	= _Duration;
+	info.iLayer		= _layer;
 
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
 
 void GamePlayStatic::DrawDebugCylinder(Vec3 _FromPos, Vec3 _ToPos, float _LineWidth, Vec3 _Color, bool _bDepthTest,
-									   float _Duration)
+									   int _layer, float _Duration)
 {
 	tDebugShapeInfo info = {};
 	info.eShape			 = DEBUG_SHAPE::CYLINDER;
@@ -202,12 +207,13 @@ void GamePlayStatic::DrawDebugCylinder(Vec3 _FromPos, Vec3 _ToPos, float _LineWi
 	info.vColor		= _Color;
 	info.bDepthTest = _bDepthTest;
 	info.fDuration	= _Duration;
+	info.iLayer		= _layer;
 
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
 
 void GamePlayStatic::DrawDebugCone(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, bool _bDepthTest,
-								   float _Duration)
+								   int _layer, float _Duration)
 {
 	tDebugShapeInfo info = {};
 	info.eShape			 = DEBUG_SHAPE::CONE;
@@ -224,12 +230,13 @@ void GamePlayStatic::DrawDebugCone(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWo
 	info.vColor		= _Color;
 	info.bDepthTest = _bDepthTest;
 	info.fDuration	= _Duration;
+	info.iLayer		= _layer;
 
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
 
 void GamePlayStatic::DrawDebugCone(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec4 _qWorldRot, Vec3 _Color, bool _bDepthTest,
-								   float _Duration)
+								   int _layer, float _Duration)
 {
 	tDebugShapeInfo info = {};
 	info.eShape			 = DEBUG_SHAPE::CONE;
@@ -244,6 +251,7 @@ void GamePlayStatic::DrawDebugCone(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec4 _qWo
 	info.vColor		= _Color;
 	info.bDepthTest = _bDepthTest;
 	info.fDuration	= _Duration;
+	info.iLayer		= _layer;
 
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
