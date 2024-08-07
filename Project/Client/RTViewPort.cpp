@@ -148,10 +148,6 @@ void RTViewPort::render_update()
 										 ImVec2(renderPos.x + renderSize.x, renderPos.y + renderSize.y), ImVec2(0, 0),
 										 ImVec2(1, 1));
 
-	// 스왑체인 렌더타겟 복사
-	// ImGui::GetWindowDrawList()->AddImage(m_ViewPortTexture->GetSRV().Get(), ViewPortPos, ViewPortPos + ViewPortSize,
-	//									 ImVec2(0, 0), ImVec2(1, 1));
-
 	CImGuiMgr::GetInst()->SetViewportFocused(ImGui::IsWindowFocused(ImGuiFocusedFlags_None));
 
 	// IMGUIZMO
