@@ -542,29 +542,29 @@ void CPhysXMgr::tick()
 		Translation -= OffsetPos; // 오프셋 적용된 위치
 
 		// 변화량 추출
-		Vec3 vPosOffset = pTr->GetWorldPos() - Translation;
-		Vec3 vRotOffset = pTr->GetWorldRot() - Rotation;
+		Vec3 vPosDiff = pTr->GetWorldPos() - Translation;
+		Vec3 vRotDiff = pTr->GetWorldRot() - Rotation;
 
 		if (true == m_bUseTH)
 		{
-			// if (vPosOffset.x < m_fPosTreshold.x || vPosOffset.x >= m_fPosTreshold.y)
-			//	vPosOffset.x = 0.f;
-			// if (vPosOffset.y < m_fPosTreshold.x || vPosOffset.y >= m_fPosTreshold.y)
-			//	vPosOffset.y = 0.f;
-			// if (vPosOffset.z < m_fPosTreshold.x || vPosOffset.z >= m_fPosTreshold.y)
-			//	vPosOffset.z = 0.f;
+			// if (vPosDiff.x < m_fPosTreshold.x || vPosDiff.x >= m_fPosTreshold.y)
+			//	vPosDiff.x = 0.f;
+			// if (vPosDiff.y < m_fPosTreshold.x || vPosDiff.y >= m_fPosTreshold.y)
+			//	vPosDiff.y = 0.f;
+			// if (vPosDiff.z < m_fPosTreshold.x || vPosDiff.z >= m_fPosTreshold.y)
+			//	vPosDiff.z = 0.f;
 
-			if (abs(vRotOffset.x) < m_fRotTreshold.x || abs(vRotOffset.x) >= m_fRotTreshold.y)
-				vRotOffset.x = 0.f;
-			if (abs(vRotOffset.y) < m_fRotTreshold.x || abs(vRotOffset.y) >= m_fRotTreshold.y)
-				vRotOffset.y = 0.f;
-			if (abs(vRotOffset.z) < m_fRotTreshold.x || abs(vRotOffset.z) >= m_fRotTreshold.y)
-				vRotOffset.z = 0.f;
+			if (abs(vRotDiff.x) < m_fRotTreshold.x || abs(vRotDiff.x) >= m_fRotTreshold.y)
+				vRotDiff.x = 0.f;
+			if (abs(vRotDiff.y) < m_fRotTreshold.x || abs(vRotDiff.y) >= m_fRotTreshold.y)
+				vRotDiff.y = 0.f;
+			if (abs(vRotDiff.z) < m_fRotTreshold.x || abs(vRotDiff.z) >= m_fRotTreshold.y)
+				vRotDiff.z = 0.f;
 		}
 
 		// 변화량만큼 Relative 에 적용
-		pTr->SetRelativePos(pTr->GetRelativePos() - vPosOffset);
-		pTr->SetRelativeRotation(pTr->GetRelativeRotation() - vRotOffset);
+		pTr->SetRelativeRotation(pTr->GetRelativeRotation() - vRotDiff);
+		pTr->SetRelativePos(pTr->GetRelativePos() - vPosDiff);
 	}
 }
 
