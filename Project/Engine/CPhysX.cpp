@@ -26,7 +26,7 @@ void CPhysX::setAngularVelocity(const Vec3& _vAVel)
 {
 	if (nullptr == m_DActor)
 		return;
-	m_DActor->setLinearVelocity(PxVec3(_vAVel.x, _vAVel.y, -_vAVel.z));
+	m_DActor->setAngularVelocity(PxVec3(_vAVel.x, _vAVel.y, -_vAVel.z));
 }
 
 void CPhysX::applyBulletImpact(const PxVec3& bulletVelocity, float bulletMass, const PxVec3& hitPoint)
