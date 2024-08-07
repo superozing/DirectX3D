@@ -17,7 +17,7 @@ CPhysXMgr::CPhysXMgr()
 
 bool CPhysXMgr::PerfomRaycast(Vec3 _OriginPos, Vec3 _Dir, tRoRHitInfo& _HitInfo, UINT _LAYER, int _DebugFlagMask)
 {
-	PxVec3 OriginPos = PxVec3(_OriginPos.x, _OriginPos.y, _OriginPos.z);
+	PxVec3 OriginPos = PxVec3(_OriginPos.x, _OriginPos.y, _OriginPos.z) / m_PPM;
 	PxVec3 Dir		 = PxVec3(_Dir.x, _Dir.y, _Dir.z);
 	Dir.normalize();
 
@@ -42,7 +42,7 @@ bool CPhysXMgr::PerfomRaycast(Vec3 _OriginPos, Vec3 _Dir, tRoRHitInfo& _HitInfo,
 		// 충돌한 경우
 
 		PxRaycastHit  hitInfo  = hit.block;
-		PxVec3		  hitPoint = hitInfo.position;
+		PxVec3		  hitPoint = hitInfo.position * m_PPM;
 		PxRigidActor* hitActor = hitInfo.actor;
 
 		auto pGO		   = hitActor->userData;
@@ -287,6 +287,7 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 	auto ObjPos	   = object->Transform()->GetWorldPos();
 	auto OffsetPos = PhysX->m_vOffsetPos;
 	auto FinalPos  = ObjPos + OffsetPos;
+	FinalPos /= m_PPM;
 
 	// 게임 오브젝트의 위치와 회전 정보
 	PxTransform transform(PxVec3(FinalPos.x, FinalPos.y, FinalPos.z),
@@ -338,6 +339,7 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 	{
 		scale			= object->Transform()->GetWorldScale();
 		PhysX->m_vScale = scale;
+		scale /= m_PPM;
 	}
 	PxShape* shape;
 
@@ -371,8 +373,8 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 	if (PhysBodyType::TRIGGER != PhysX->m_bPhysBodyType)
 	{
 		shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
-		shape->setContactOffset(m_fContactOffset);
-		shape->setRestOffset(m_fLestOffset);
+		// shape->setContactOffset(m_fContactOffset);
+		// shape->setRestOffset(m_fLestOffset);
 	}
 	if (PhysBodyType::TRIGGER == PhysX->m_bPhysBodyType)
 	{
@@ -520,7 +522,7 @@ void CPhysXMgr::tick()
 		ImGuizmo::DecomposeMatrixToComponents(*SimulatedMat.m, Translation, Rotation, Scale);
 
 		// PPM 적용
-		// Translation *= m_PPM;
+		Translation *= m_PPM;
 		Rotation.ToRadian();
 		// Rotation.z = -Rotation.z;
 
@@ -537,11 +539,11 @@ void CPhysXMgr::tick()
 			// if (vPosOffset.z < m_fPosTreshold.x || vPosOffset.z >= m_fPosTreshold.y)
 			//	vPosOffset.z = 0.f;
 
-			if (vRotOffset.x < m_fRotTreshold.x || vRotOffset.x >= m_fRotTreshold.y)
+			if (abs(vRotOffset.x) < m_fRotTreshold.x || abs(vRotOffset.x) >= m_fRotTreshold.y)
 				vRotOffset.x = 0.f;
-			if (vRotOffset.y < m_fRotTreshold.x || vRotOffset.y >= m_fRotTreshold.y)
+			if (abs(vRotOffset.y) < m_fRotTreshold.x || abs(vRotOffset.y) >= m_fRotTreshold.y)
 				vRotOffset.y = 0.f;
-			if (vRotOffset.z < m_fRotTreshold.x || vRotOffset.z >= m_fRotTreshold.y)
+			if (abs(vRotOffset.z) < m_fRotTreshold.x || abs(vRotOffset.z) >= m_fRotTreshold.y)
 				vRotOffset.z = 0.f;
 		}
 
