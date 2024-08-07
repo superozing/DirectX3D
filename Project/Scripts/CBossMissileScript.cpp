@@ -140,5 +140,5 @@ bool CBossMissileScript::IsRedZone()
 
 	float dist = (vTargetPos - vPos).Length();
 
-	return dist >= 100.f ? false : true;
+	return dist >= 200.f ? false : true;
 }

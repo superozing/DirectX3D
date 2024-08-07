@@ -132,6 +132,8 @@ public:
 	void ActiveHexShield();
 	void DeActiveHexShield();
 
+	void LoadAsset();
+
 	CRoRStateMachine<CBossScript>* GetBossFSM() { return m_FSM; }
 
 	CGameObject* GetTarget() { return m_Target; }

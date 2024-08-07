@@ -64,6 +64,8 @@ CBossScript::~CBossScript()
 
 void CBossScript::begin()
 {
+	LoadAsset();
+
 	m_FSM->Begin();
 	m_FSM->SetCurState((int)BOSS_STATE::NormalIdle);
 
@@ -140,7 +142,7 @@ void CBossScript::CheckDuration()
 	if (m_ActiveEXs)
 	{
 		// m_EXsType = CRandomMgr::GetInst()->GetRandomInt(4);
-		m_EXsType = 0;
+		m_EXsType = 1;
 		switch (m_EXsType)
 		{
 		case 0:
@@ -187,7 +189,7 @@ void CBossScript::FireMegaFist()
 
 	Vec3 HandBonePos = (Animator3D()->FindBoneMat(L"Bip001 R Hand_01") * Transform()->GetWorldMat()).Translation();
 
-	CGameObject* megafist = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Boss\\Kaiten_Punch.pref")->Instantiate();
+	CGameObject* megafist = CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Punch)->Instantiate();
 	megafist->GetScript<CMegaFistScript>()->InitMegaFistInfo(GetOwner(), m_Target, HandBonePos, 500.f, 500.f, 3.f, 10.f,
 															 false, true);
 	int layeridx = megafist->GetLayerIdx();
@@ -199,7 +201,7 @@ void CBossScript::FireMiniGun()
 	if (nullptr == m_Target)
 		return;
 
-	CGameObject* pMinigun = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Particle\\p_Minigun.pref")->Instantiate();
+	CGameObject* pMinigun = CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Minigun)->Instantiate();
 	pMinigun->GetScript<CMiniGunScript>()->SetParent(GetOwner());
 
 	int layeridx = pMinigun->GetLayerIdx();
@@ -243,7 +245,7 @@ void CBossScript::FireBossMissile(int _idx)
 		break;
 	}
 
-	CGameObject* Missile = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Boss\\Kaiten_Missile.pref")->Instantiate();
+	CGameObject* Missile = CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Missile)->Instantiate();
 	Missile->GetScript<CBossMissileScript>()->InitBossMissileInfo(GetOwner(), m_Target, MissileBonePos, 600.f, 1200.f,
 																  3.f, 10.f, true, true);
 
@@ -258,7 +260,7 @@ void CBossScript::ActiveInnerShield()
 
 	Vec3 ShieldPos = (Animator3D()->FindBoneMat(L"Bone_shield_03") * Transform()->GetWorldMat()).Translation();
 
-	CGameObject* Shield = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Boss\\Kaiten_Shield.pref")->Instantiate();
+	CGameObject* Shield = CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Shield)->Instantiate();
 	Shield->GetScript<CBossShieldScript>()->SetParent(GetOwner());
 	Shield->GetScript<CBossShieldScript>()->SetShieldType(SHIELD_TYPE::InnerShield);
 
@@ -273,7 +275,7 @@ void CBossScript::ActiveOutsideShield()
 
 	Vec3 ShieldPos = (Animator3D()->FindBoneMat(L"Bone_shield_03") * Transform()->GetWorldMat()).Translation();
 
-	CGameObject* Shield = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Boss\\Kaiten_Shield2.pref")->Instantiate();
+	CGameObject* Shield = CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Shield2)->Instantiate();
 	Shield->GetScript<CBossShieldScript>()->SetParent(GetOwner());
 	Shield->GetScript<CBossShieldScript>()->SetShieldType(SHIELD_TYPE::OutsideShield);
 
@@ -286,7 +288,7 @@ void CBossScript::ActiveHexShield()
 	if (nullptr == m_Target)
 		return;
 
-	CGameObject* Shield = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Boss\\Kaiten_HexShield.pref")->Instantiate();
+	CGameObject* Shield = CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_HexShield)->Instantiate();
 	Shield->GetScript<CBossShieldScript>()->SetParent(GetOwner());
 	Shield->GetScript<CBossShieldScript>()->SetShieldType(SHIELD_TYPE::HexShield);
 
@@ -298,6 +300,17 @@ void CBossScript::DeActiveHexShield()
 {
 	CGameObject* pObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Kaiten_HexShield");
 	GamePlayStatic::DestroyGameObject(pObj);
+}
+
+void CBossScript::LoadAsset()
+{
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Punch);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Minigun);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Missile);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Shield);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Shield2);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_HexShield);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Explode);
 }
 
 void CBossScript::InitStateMachine()
