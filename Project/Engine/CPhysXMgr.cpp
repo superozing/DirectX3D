@@ -599,9 +599,12 @@ void CPhysXMgr::ClearAllActors()
 
 void CPhysXMgr::ReleaseActor(PxRigidActor* actor)
 {
+	if (gScene == nullptr || actor->userData == nullptr)
+		return;
 	// 씬 잠금
 	gScene->lockWrite();
 
+	actor->userData = nullptr;
 	gScene->removeActor(*actor);
 	actor->release();
 
@@ -617,6 +620,9 @@ void CPhysXMgr::exit()
 
 CPhysXMgr::~CPhysXMgr()
 {
+	if (gScene == nullptr)
+		return;
+
 	gScene->release();
 	gDispatcher->release();
 	gPhysics->release();
