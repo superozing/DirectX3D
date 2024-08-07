@@ -24,6 +24,7 @@
 #include "CEditorCameraMoveScript.h"
 #include "CMemoryPoolMgrScript.h"
 #include "CHaloScript.h"
+#include "CStudentScript.h"
 #include "CPlayerScript.h"
 #include "CDialog.h"
 #include "CPlayerDamagedScript.h"
@@ -53,25 +54,19 @@
 #include "CBoostScript.h"
 #include "CMissileTrailScript.h"
 #include "CMuzzleFlashScript.h"
-#include "CBulletHitParticleSpawner.h"
 #include "CBulletScript.h"
 #include "CButtons.h"
+#include "CCoverHIghTutorialEvent.h"
 #include "CTutorialGameMode.h"
 #include "CDirectionalLight.h"
-#include "CShootingRecoil.h"
 #include "CTitle.h"
 #include "CWallScript.h"
 #include "CWrapImage.h"
 #include "CTitleTex.h"
 #include "CTutorialTarget.h"
-#include "CBulletShellSpawner.h"
-#include "CBulletMarkSpawner.h"
 #include "CShootingSystemScript.h"
 #include "CAfterImage.h"
-#include "CCoverHIghTutorialEvent.h"
-#include "CCoverJumpTutorialEvent.h"
-#include "CCoverLowEventListener.h"
-#include "CTutorialEndingEvent.h"
+#include "CSpawnPhysX.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -98,6 +93,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CEditorCameraMoveScript");
 	_vec.push_back(L"CMemoryPoolMgrScript");
 	_vec.push_back(L"CHaloScript");
+	_vec.push_back(L"CStudentScript");
 	_vec.push_back(L"CPlayerScript");
 	_vec.push_back(L"CDialog");
 	_vec.push_back(L"CPlayerDamagedScript");
@@ -127,25 +123,19 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CBoostScript");
 	_vec.push_back(L"CMissileTrailScript");
 	_vec.push_back(L"CMuzzleFlashScript");
-	_vec.push_back(L"CBulletHitParticleSpawner");
 	_vec.push_back(L"CBulletScript");
 	_vec.push_back(L"CButtons");
+	_vec.push_back(L"CCoverHIghTutorialEvent");
 	_vec.push_back(L"CTutorialGameMode");
 	_vec.push_back(L"CDirectionalLight");
-	_vec.push_back(L"CShootingRecoil");
 	_vec.push_back(L"CTitle");
 	_vec.push_back(L"CWallScript");
 	_vec.push_back(L"CWrapImage");
 	_vec.push_back(L"CTitleTex");
 	_vec.push_back(L"CTutorialTarget");
-	_vec.push_back(L"CBulletShellSpawner");
-	_vec.push_back(L"CBulletMarkSpawner");
 	_vec.push_back(L"CShootingSystemScript");
 	_vec.push_back(L"CAfterImage");
-	_vec.push_back(L"CCoverHIghTutorialEvent");
-	_vec.push_back(L"CCoverJumpTutorialEvent");
-	_vec.push_back(L"CCoverLowEventListener");
-	_vec.push_back(L"CTutorialEndingEvent");
+	_vec.push_back(L"CSpawnPhysX");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -196,6 +186,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CMemoryPoolMgrScript;
 	if (L"CHaloScript" == _strScriptName)
 		return new CHaloScript;
+	if (L"CStudentScript" == _strScriptName)
+		return new CStudentScript;
 	if (L"CPlayerScript" == _strScriptName)
 		return new CPlayerScript;
 	if (L"CDialog" == _strScriptName)
@@ -254,18 +246,16 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CMissileTrailScript;
 	if (L"CMuzzleFlashScript" == _strScriptName)
 		return new CMuzzleFlashScript;
-	if (L"CBulletHitParticleSpawner" == _strScriptName)
-		return new CBulletHitParticleSpawner;
 	if (L"CBulletScript" == _strScriptName)
 		return new CBulletScript;
 	if (L"CButtons" == _strScriptName)
 		return new CButtons;
+	if (L"CCoverHIghTutorialEvent" == _strScriptName)
+		return new CCoverHIghTutorialEvent;
 	if (L"CTutorialGameMode" == _strScriptName)
 		return new CTutorialGameMode;
 	if (L"CDirectionalLight" == _strScriptName)
 		return new CDirectionalLight;
-	if (L"CShootingRecoil" == _strScriptName)
-		return new CShootingRecoil;
 	if (L"CTitle" == _strScriptName)
 		return new CTitle;
 	if (L"CWallScript" == _strScriptName)
@@ -276,22 +266,12 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CTitleTex;
 	if (L"CTutorialTarget" == _strScriptName)
 		return new CTutorialTarget;
-	if (L"CBulletShellSpawner" == _strScriptName)
-		return new CBulletShellSpawner;
-	if (L"CBulletMarkSpawner" == _strScriptName)
-		return new CBulletMarkSpawner;
 	if (L"CShootingSystemScript" == _strScriptName)
 		return new CShootingSystemScript;
 	if (L"CAfterImage" == _strScriptName)
 		return new CAfterImage;
-	if (L"CCoverHIghTutorialEvent" == _strScriptName)
-		return new CCoverHIghTutorialEvent;
-	if (L"CCoverJumpTutorialEvent" == _strScriptName)
-		return new CCoverJumpTutorialEvent;
-	if (L"CCoverLowEventListener" == _strScriptName)
-		return new CCoverLowEventListener;
-	if (L"CTutorialEndingEvent" == _strScriptName)
-		return new CTutorialEndingEvent;
+	if (L"CSpawnPhysX" == _strScriptName)
+		return new CSpawnPhysX;
 	return nullptr;
 }
 
@@ -367,6 +347,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::HALOSCRIPT:
 		return new CHaloScript;
+		break;
+	case (UINT)SCRIPT_TYPE::STUDENTSCRIPT:
+		return new CStudentScript;
 		break;
 	case (UINT)SCRIPT_TYPE::PLAYERSCRIPT:
 		return new CPlayerScript;
@@ -455,23 +438,20 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::MUZZLEFLASHSCRIPT:
 		return new CMuzzleFlashScript;
 		break;
-	case (UINT)SCRIPT_TYPE::BULLETHITPARTICLESPAWNER:
-		return new CBulletHitParticleSpawner;
-		break;
 	case (UINT)SCRIPT_TYPE::BULLETSCRIPT:
 		return new CBulletScript;
 		break;
 	case (UINT)SCRIPT_TYPE::BUTTONS:
 		return new CButtons;
 		break;
+	case (UINT)SCRIPT_TYPE::COVERHIGHTUTORIALEVENT:
+		return new CCoverHIghTutorialEvent;
+		break;
 	case (UINT)SCRIPT_TYPE::TUTORIALGAMEMODE:
 		return new CTutorialGameMode;
 		break;
 	case (UINT)SCRIPT_TYPE::DIRECTIONALLIGHT:
 		return new CDirectionalLight;
-		break;
-	case (UINT)SCRIPT_TYPE::SHOOTINGRECOIL:
-		return new CShootingRecoil;
 		break;
 	case (UINT)SCRIPT_TYPE::TITLE:
 		return new CTitle;
@@ -488,29 +468,14 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::TUTORIALTARGET:
 		return new CTutorialTarget;
 		break;
-	case (UINT)SCRIPT_TYPE::BULLETSHELLSPAWNER:
-		return new CBulletShellSpawner;
-		break;
-	case (UINT)SCRIPT_TYPE::BULLETMARKSPAWNER:
-		return new CBulletMarkSpawner;
-		break;
 	case (UINT)SCRIPT_TYPE::SHOOTINGSYSTEMSCRIPT:
 		return new CShootingSystemScript;
 		break;
 	case (UINT)SCRIPT_TYPE::AFTERIMAGE:
 		return new CAfterImage;
 		break;
-	case (UINT)SCRIPT_TYPE::COVERHIGHTUTORIALEVENT:
-		return new CCoverHIghTutorialEvent;
-		break;
-	case (UINT)SCRIPT_TYPE::COVERJUMPTUTORIALEVENT:
-		return new CCoverJumpTutorialEvent;
-		break;
-	case (UINT)SCRIPT_TYPE::COVERLOWEVENTLISTENER:
-		return new CCoverLowEventListener;
-		break;
-	case (UINT)SCRIPT_TYPE::TUTORIALENDINGEVENT:
-		return new CTutorialEndingEvent;
+	case (UINT)SCRIPT_TYPE::SPAWNPHYSX:
+		return new CSpawnPhysX;
 		break;
 	}
 	return nullptr;
@@ -610,6 +575,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::HALOSCRIPT:
 		return L"CHaloScript";
+		break;
+
+	case SCRIPT_TYPE::STUDENTSCRIPT:
+		return L"CStudentScript";
 		break;
 
 	case SCRIPT_TYPE::PLAYERSCRIPT:
@@ -728,10 +697,6 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CMuzzleFlashScript";
 		break;
 
-	case SCRIPT_TYPE::BULLETHITPARTICLESPAWNER:
-		return L"CBulletHitParticleSpawner";
-		break;
-
 	case SCRIPT_TYPE::BULLETSCRIPT:
 		return L"CBulletScript";
 		break;
@@ -740,16 +705,16 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CButtons";
 		break;
 
+	case SCRIPT_TYPE::COVERHIGHTUTORIALEVENT:
+		return L"CCoverHIghTutorialEvent";
+		break;
+
 	case SCRIPT_TYPE::TUTORIALGAMEMODE:
 		return L"CTutorialGameMode";
 		break;
 
 	case SCRIPT_TYPE::DIRECTIONALLIGHT:
 		return L"CDirectionalLight";
-		break;
-
-	case SCRIPT_TYPE::SHOOTINGRECOIL:
-		return L"CShootingRecoil";
 		break;
 
 	case SCRIPT_TYPE::TITLE:
@@ -772,14 +737,6 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CTutorialTarget";
 		break;
 
-	case SCRIPT_TYPE::BULLETSHELLSPAWNER:
-		return L"CBulletShellSpawner";
-		break;
-
-	case SCRIPT_TYPE::BULLETMARKSPAWNER:
-		return L"CBulletMarkSpawner";
-		break;
-
 	case SCRIPT_TYPE::SHOOTINGSYSTEMSCRIPT:
 		return L"CShootingSystemScript";
 		break;
@@ -788,20 +745,8 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CAfterImage";
 		break;
 
-	case SCRIPT_TYPE::COVERHIGHTUTORIALEVENT:
-		return L"CCoverHIghTutorialEvent";
-		break;
-
-	case SCRIPT_TYPE::COVERJUMPTUTORIALEVENT:
-		return L"CCoverJumpTutorialEvent";
-		break;
-
-	case SCRIPT_TYPE::COVERLOWEVENTLISTENER:
-		return L"CCoverLowEventListener";
-		break;
-
-	case SCRIPT_TYPE::TUTORIALENDINGEVENT:
-		return L"CTutorialEndingEvent";
+	case SCRIPT_TYPE::SPAWNPHYSX:
+		return L"CSpawnPhysX";
 		break;
 
 	}

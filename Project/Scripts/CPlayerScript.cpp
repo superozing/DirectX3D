@@ -294,6 +294,13 @@ void CPlayerScript::begin()
 			break;
 	}
 
+	//for (size_t i = 0; i < vecChild.size(); i++)
+	//{
+	//	m_pBulletLine = vecChild[i]->GetScript<CBulletLineSpawner>();
+	//	if (m_pBulletLine)
+	//		break;
+	//}
+
 	// 저장 재시작하면 터져서 임시로 막아둠
 	if (m_pSpringArm)
 		m_pSpringArm->SetTargetObject(CRenderMgr::GetInst()->GetMainCam()->GetOwner());

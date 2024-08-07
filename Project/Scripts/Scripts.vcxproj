@@ -167,6 +167,7 @@ call ScriptsCopy.bat</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CAfterImage.h" />
+    <ClInclude Include="CBulletWarheadSpawner.h" />
     <ClInclude Include="CButtons.h" />
     <ClInclude Include="CAmmoInfo.h" />
     <ClInclude Include="CArona.h" />
@@ -192,6 +193,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CCoverUI.h" />
     <ClInclude Include="CCrosshair.h" />
     <ClInclude Include="CDamagedDirectionMgr.h" />
+    <ClInclude Include="CDamageFontSpawner.h" />
     <ClInclude Include="CDashEventListener.h" />
     <ClInclude Include="CDigitUI.h" />
     <ClInclude Include="CDialog.h" />
@@ -220,6 +222,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CProgressBar.h" />
     <ClInclude Include="CProjectileScript.h" />
+    <ClInclude Include="CSpawnPhysX.h" />
     <ClInclude Include="CTitleTex.h" />
     <ClInclude Include="CRenderMgrScript.h" />
     <ClInclude Include="CRoRStateMachine.h" />
@@ -249,6 +252,7 @@ call ScriptsCopy.bat</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAfterImage.cpp" />
+    <ClCompile Include="CBulletWarheadSpawner.cpp" />
     <ClCompile Include="CButtons.cpp" />
     <ClCompile Include="CAmmoInfo.cpp" />
     <ClCompile Include="CArona.cpp" />
@@ -275,6 +279,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CCoverUI.cpp" />
     <ClCompile Include="CCrosshair.cpp" />
     <ClCompile Include="CDamagedDirectionMgr.cpp" />
+    <ClCompile Include="CDamageFontSpawner.cpp" />
     <ClCompile Include="CDashEventListener.cpp" />
     <ClCompile Include="CDigitUI.cpp" />
     <ClCompile Include="CDialog.cpp" />
@@ -303,6 +308,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CPlayerScript_State.cpp" />
     <ClCompile Include="CProgressBar.cpp" />
     <ClCompile Include="CProjectileScript.cpp" />
+    <ClCompile Include="CSpawnPhysX.cpp" />
     <ClCompile Include="CTitleTex.cpp" />
     <ClCompile Include="CRenderMgrScript.cpp" />
     <ClCompile Include="CRoRStateMachine.cpp" />

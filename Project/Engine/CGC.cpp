@@ -14,7 +14,7 @@ CGC::~CGC()
 
 void CGC::tick()
 {
-	if (100 < m_vecEntity.size())
+	if (50 < m_vecEntity.size())
 	{
 		Delete_Vec(m_vecEntity);
 	}

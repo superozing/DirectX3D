@@ -17,7 +17,7 @@ CPhysXMgr::CPhysXMgr()
 
 bool CPhysXMgr::PerformRaycast(Vec3 _OriginPos, Vec3 _Dir, tRoRHitInfo& _HitInfo, UINT _LAYER, int _DebugFlagMask)
 {
-	PxVec3 OriginPos = PxVec3(_OriginPos.x, _OriginPos.y, _OriginPos.z);
+	PxVec3 OriginPos = PxVec3(_OriginPos.x, _OriginPos.y, _OriginPos.z) / m_PPM;
 	PxVec3 Dir		 = PxVec3(_Dir.x, _Dir.y, _Dir.z);
 	Dir.normalize();
 
@@ -42,7 +42,7 @@ bool CPhysXMgr::PerformRaycast(Vec3 _OriginPos, Vec3 _Dir, tRoRHitInfo& _HitInfo
 		// 충돌한 경우
 
 		PxRaycastHit  hitInfo  = hit.block;
-		PxVec3		  hitPoint = hitInfo.position;
+		PxVec3		  hitPoint = hitInfo.position * m_PPM;
 		PxRigidActor* hitActor = hitInfo.actor;
 
 		auto pGO		   = hitActor->userData;
@@ -273,20 +273,29 @@ void CPhysXMgr::setFillterData(PxShape* _shape, UINT _Layer)
 	_shape->setQueryFilterData(filterData);
 }
 
+#include "CLogMgr.h"
 void CPhysXMgr::addGameObject(CGameObject* object)
 {
 	auto PhysX = object->PhysX();
 
-	auto	   Rot		  = object->Transform()->GetWorldRot();
-	Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(Rot.y, Rot.x, Rot.z);
+	Quat WorldQuat = object->Transform()->GetWorldQuaternion();
 
 	auto ObjPos	   = object->Transform()->GetWorldPos();
 	auto OffsetPos = PhysX->m_vOffsetPos;
-	auto FinalPos  = ObjPos + OffsetPos;
+	auto relrot	   = object->Transform()->GetRelativeRotation();
+	relrot.Normalize();
 
+	Matrix matRot = Matrix::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), relrot.x) *
+					Matrix::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), relrot.y) *
+					Matrix::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), relrot.z);
+	Matrix OffsetPosMat		 = XMMatrixTranslation(OffsetPos.x, OffsetPos.y, OffsetPos.z);
+	auto   RotatedOffesetPos = OffsetPosMat * matRot;
+	auto   VecROP			 = RotatedOffesetPos.Translation();
+	auto   FinalPos			 = ObjPos + OffsetPos;
+	FinalPos /= m_PPM;
 	// 게임 오브젝트의 위치와 회전 정보
 	PxTransform transform(PxVec3(FinalPos.x, FinalPos.y, FinalPos.z),
-						  PxQuat(quaternion.x, quaternion.y, quaternion.z, quaternion.w));
+						  PxQuat(WorldQuat.x, WorldQuat.y, -WorldQuat.z, -WorldQuat.w));
 
 	PxRigidActor* actor = nullptr;
 
@@ -311,6 +320,7 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 		// dynamicActor->setMass(1.0f);
 		PhysX->m_DActor = dynamicActor;
 		actor			= dynamicActor;
+		dynamicActor->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, true);
 	}
 	else
 	{
@@ -323,6 +333,8 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 		dynamicActor->setRigidBodyFlag(PxRigidBodyFlag::eENABLE_SPECULATIVE_CCD, true);
 		PhysX->m_DActor = dynamicActor;
 		actor			= dynamicActor;
+		// dynamicActor->setLinearVelocity(PxVec3(0.f, 0.f, 0.f));
+		// dynamicActor->setAngularVelocity(PxVec3(0.f, 0.f, 0.f));
 	}
 
 	// 게임 오브젝트의 스케일 정보
@@ -332,6 +344,7 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 		scale			= object->Transform()->GetWorldScale();
 		PhysX->m_vScale = scale;
 	}
+	scale /= m_PPM;
 	PxShape* shape;
 
 	// Collider 추가 (여기서는 예시로 Box Collider를 사용)
@@ -365,10 +378,11 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 	{
 		shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
 		// shape->setContactOffset(m_fContactOffset);
-		shape->setRestOffset(m_fLestOffset);
+		// shape->setRestOffset(m_fLestOffset);
 	}
 	if (PhysBodyType::TRIGGER == PhysX->m_bPhysBodyType)
 	{
+		shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
 		shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
 	}
 
@@ -438,6 +452,9 @@ void CPhysXMgr::init()
 	LayerCheck((UINT)LAYER::LAYER_PLAYER_SHOOTING_RAY, (UINT)LAYER::LAYER_MONSTER);
 	LayerCheck((UINT)LAYER::LAYER_PLAYER_SHOOTING_RAY, (UINT)LAYER::LAYER_BOSS);
 
+	// ViewPort RayCast 디버그용
+	LayerCheck((UINT)LAYER::LAYER_RAYCAST, (UINT)LAYER::LAYER_MONSTER);
+
 	sceneDesc.filterShader			  = CustomFilterShader;
 	sceneDesc.kineKineFilteringMode	  = PxPairFilteringMode::eKEEP;
 	sceneDesc.staticKineFilteringMode = PxPairFilteringMode::eKEEP;
@@ -450,21 +467,24 @@ void CPhysXMgr::init()
 	gScene->setSimulationEventCallback(gCollisionCalback);
 }
 
+#include "imgui.h "
+#include "ImGuizmo.h "
 void CPhysXMgr::tick()
 {
 	RETURN_IF_NOT_PLAYING
 
-	static const float ThresholdTime = 1.f / 200.f;
-	static float	   acctime		 = 0.f;
+	// static const float ThresholdTime = 1.f / 120.f;
+	static float acctime = 0.f;
 	acctime += DT;
-	if (acctime < ThresholdTime)
+	if (acctime < m_TimeStep)
 		return;
-	acctime -= int(acctime / ThresholdTime) * ThresholdTime;
-	gScene->simulate(ThresholdTime);
+	acctime -= int(acctime / m_TimeStep) * m_TimeStep;
+	gScene->simulate(m_TimeStep);
 	// gScene->simulate(DT);
 	gScene->fetchResults(true);
 
-	for (auto& e : m_vecColInfo)
+	// Trigger Obj Overlap판정
+	for (auto& e : m_vecTriggerColInfo)
 	{
 		if (PxPairFlag::eNOTIFY_TOUCH_PERSISTS == e.State)
 		{
@@ -475,6 +495,77 @@ void CPhysXMgr::tick()
 			// 다음 프레임부터 Persist처리
 			e.State = PxPairFlag::eNOTIFY_TOUCH_PERSISTS;
 		}
+	}
+
+	// 시뮬레이션 결과로 트랜스폼 업데이트
+	PxU32 nbActors = gScene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
+	std::vector<PxRigidActor*> actors(nbActors);
+	gScene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC,
+					  reinterpret_cast<PxActor**>(&actors[0]), nbActors);
+
+	for (PxU32 i = 0; i < nbActors; i++)
+	{
+		if (!actors[i]->is<PxRigidDynamic>())
+			continue;
+
+		CGameObject* obj = (CGameObject*)actors[i]->userData;
+		if (PhysBodyType::TRIGGER == obj->PhysX()->m_bPhysBodyType)
+			continue;
+
+		// RigidDynamic이 캐릭터 컨트롤러인 경우
+		if (nullptr == actors[i]->userData)
+			continue;
+
+		CTransform* pTr = obj->Transform();
+
+		const PxMat44 ActorPose(actors[i]->getGlobalPose());
+		Matrix		  SimulatedMat = Matrix(ActorPose.front());
+
+		// 시뮬레이션 Matrix SRT 분해
+		Vec3 Translation, Rotation, Scale;
+		ImGuizmo::DecomposeMatrixToComponents(*SimulatedMat.m, Translation, Rotation, Scale);
+
+		// PPM 적용
+		Translation *= m_PPM;
+		Rotation.ToRadian();
+		// Rotation.z = -Rotation.z;
+
+		auto OffsetPos = obj->PhysX()->m_vOffsetPos;
+		auto norrot	   = Rotation;
+		norrot.Normalize();
+		Matrix matRot = Matrix::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), norrot.x) *
+						Matrix::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), norrot.y) *
+						Matrix::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), norrot.z);
+		Matrix OffsetPosMat		 = XMMatrixTranslation(OffsetPos.x, OffsetPos.y, OffsetPos.z);
+		auto   RotatedOffesetPos = DirectX::XMVector3TransformNormal(OffsetPos, matRot);
+		// auto   VecROP			 = RotatedOffesetPos.Translation();
+		// Translation -= RotatedOffesetPos; // 오프셋 적용된 위치
+		Translation -= OffsetPos; // 오프셋 적용된 위치
+
+		// 변화량 추출
+		Vec3 vPosDiff = pTr->GetWorldPos() - Translation;
+		Vec3 vRotDiff = pTr->GetWorldRot() - Rotation;
+
+		if (true == m_bUseTH)
+		{
+			// if (vPosDiff.x < m_fPosTreshold.x || vPosDiff.x >= m_fPosTreshold.y)
+			//	vPosDiff.x = 0.f;
+			// if (vPosDiff.y < m_fPosTreshold.x || vPosDiff.y >= m_fPosTreshold.y)
+			//	vPosDiff.y = 0.f;
+			// if (vPosDiff.z < m_fPosTreshold.x || vPosDiff.z >= m_fPosTreshold.y)
+			//	vPosDiff.z = 0.f;
+
+			if (abs(vRotDiff.x) < m_fRotTreshold.x || abs(vRotDiff.x) >= m_fRotTreshold.y)
+				vRotDiff.x = 0.f;
+			if (abs(vRotDiff.y) < m_fRotTreshold.x || abs(vRotDiff.y) >= m_fRotTreshold.y)
+				vRotDiff.y = 0.f;
+			if (abs(vRotDiff.z) < m_fRotTreshold.x || abs(vRotDiff.z) >= m_fRotTreshold.y)
+				vRotDiff.z = 0.f;
+		}
+
+		// 변화량만큼 Relative 에 적용
+		pTr->SetRelativeRotation(pTr->GetRelativeRotation() - vRotDiff);
+		pTr->SetRelativePos(pTr->GetRelativePos() - vPosDiff);
 	}
 }
 
@@ -509,9 +600,12 @@ void CPhysXMgr::ClearAllActors()
 
 void CPhysXMgr::ReleaseActor(PxRigidActor* actor)
 {
+	if (gScene == nullptr || actor->userData == nullptr)
+		return;
 	// 씬 잠금
 	gScene->lockWrite();
 
+	actor->userData = nullptr;
 	gScene->removeActor(*actor);
 	actor->release();
 
@@ -522,11 +616,14 @@ void CPhysXMgr::ReleaseActor(PxRigidActor* actor)
 void CPhysXMgr::exit()
 {
 	ClearAllActors();
-	m_vecColInfo.clear();
+	m_vecTriggerColInfo.clear();
 }
 
 CPhysXMgr::~CPhysXMgr()
 {
+	if (gScene == nullptr)
+		return;
+
 	gScene->release();
 	gDispatcher->release();
 	gPhysics->release();

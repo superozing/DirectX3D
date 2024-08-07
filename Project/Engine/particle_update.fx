@@ -118,7 +118,20 @@ void CS_ParticleUpdate(uint3 id : SV_DispatchThreadID)
                     if (2 == Module.AddVelocityType)
                     {
                         float3 vDir = normalize(Module.FixedDirection);
-                        Particle.vVelocity.xyz = vDir * clamp(vRand[2], Module.MinSpeed, Module.MaxSpeed);
+                        
+                        float cosAngle = cos(radians(Module.FixedAngle) * 0.5);
+                        float sinAngle = sqrt(1.0 - cosAngle * cosAngle);
+
+                        float3 randDir = float3((vRand[0] * 2.0f - 1.0f) * sinAngle,
+                                                (vRand[1] * 2.0f - 1.0f) * sinAngle, cosAngle);
+                        
+                        float3 tangent = normalize(cross(float3(0.0f, 1.0f, 0.0f), vDir));
+                        float3 bitangent = cross(vDir, tangent);
+                        float3 newDir = randDir.z * vDir + randDir.x * tangent + randDir.y * bitangent;
+                        
+                        Particle.vVelocity.xyz = normalize(newDir) * clamp(vRand[2], Module.MinSpeed, Module.MaxSpeed);
+                        
+                        //Particle.vVelocity.xyz = vDir * clamp(vRand[2], Module.MinSpeed, Module.MaxSpeed);
                     }
 
                 }

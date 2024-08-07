@@ -21,7 +21,7 @@ void RoRCollisionCallback::onTrigger(PxTriggerPair* pairs, PxU32 count)
 		ColInfo.Actor1			 = actor1;
 		ColInfo.Actor2			 = actor2;
 		ColInfo.State			 = PxPairFlag::eNOTIFY_TOUCH_FOUND;
-		CPhysXMgr::GetInst()->m_vecColInfo.push_back(ColInfo);
+		CPhysXMgr::GetInst()->m_vecTriggerColInfo.push_back(ColInfo);
 	}
 	// Note : Flag방식은 PERSIST이벤트가 들어오지않으므로 별도의 자료구조로 관리해야 한다
 	// if (pairs->status & PxPairFlag::eNOTIFY_TOUCH_PERSISTS)
@@ -31,12 +31,12 @@ void RoRCollisionCallback::onTrigger(PxTriggerPair* pairs, PxU32 count)
 	if (pairs->status & PxPairFlag::eNOTIFY_TOUCH_LOST)
 	{
 		handleEndOverlap(actor1, actor2);
-		auto iter = CPhysXMgr::GetInst()->m_vecColInfo.begin();
-		while (CPhysXMgr::GetInst()->m_vecColInfo.end() != iter)
+		auto iter = CPhysXMgr::GetInst()->m_vecTriggerColInfo.begin();
+		while (CPhysXMgr::GetInst()->m_vecTriggerColInfo.end() != iter)
 		{
 			if (actor1 == iter->Actor1 && actor2 == iter->Actor2)
 			{
-				iter = CPhysXMgr::GetInst()->m_vecColInfo.erase(iter);
+				iter = CPhysXMgr::GetInst()->m_vecTriggerColInfo.erase(iter);
 				break;
 			}
 			++iter;

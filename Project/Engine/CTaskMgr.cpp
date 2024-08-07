@@ -11,7 +11,7 @@
 #include "CDevice.h"
 
 #include "CLogMgr.h"
-
+#include "CPhysX.h"
 CTaskMgr::CTaskMgr()
 	: m_bCreateObject(false)
 	, m_bDeleteObject(false)
@@ -61,7 +61,10 @@ void CTaskMgr::tick()
 			{
 				CGameObject* pObject = queue.front();
 				queue.pop_front();
-
+				if (nullptr != pObject->PhysX())
+				{
+					pObject->PhysX()->releaseActor();
+				}
 				pObject->m_bDead = true;
 
 				for (size_t i = 0; i < pObject->m_vecChild.size(); ++i)
