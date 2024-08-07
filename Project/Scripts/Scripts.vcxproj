@@ -168,6 +168,7 @@ call ScriptsCopy.bat</Command>
   <ItemGroup>
     <ClInclude Include="CAfterImage.h" />
     <ClInclude Include="CBossBulletShellSpawner.h" />
+    <ClInclude Include="CBossSmokeWaveScript.h" />
     <ClInclude Include="CButtons.h" />
     <ClInclude Include="CAmmoInfo.h" />
     <ClInclude Include="CArona.h" />
@@ -222,6 +223,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CProgressBar.h" />
     <ClInclude Include="CProjectileScript.h" />
+    <ClInclude Include="CSmokeScript.h" />
     <ClInclude Include="CTitleTex.h" />
     <ClInclude Include="CRenderMgrScript.h" />
     <ClInclude Include="CRoRStateMachine.h" />
@@ -252,6 +254,7 @@ call ScriptsCopy.bat</Command>
   <ItemGroup>
     <ClCompile Include="CAfterImage.cpp" />
     <ClCompile Include="CBossBulletShellSpawner.cpp" />
+    <ClCompile Include="CBossSmokeWaveScript.cpp" />
     <ClCompile Include="CButtons.cpp" />
     <ClCompile Include="CAmmoInfo.cpp" />
     <ClCompile Include="CArona.cpp" />
@@ -307,6 +310,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CPlayerScript_State.cpp" />
     <ClCompile Include="CProgressBar.cpp" />
     <ClCompile Include="CProjectileScript.cpp" />
+    <ClCompile Include="CSmokeScript.cpp" />
     <ClCompile Include="CTitleTex.cpp" />
     <ClCompile Include="CRenderMgrScript.cpp" />
     <ClCompile Include="CRoRStateMachine.cpp" />

@@ -13,6 +13,7 @@
 #include "CMiniGunScript.h"
 #include "CBossMissileScript.h"
 #include "CBossShieldScript.h"
+#include "CBossSmokeWaveScript.h"
 #include "CBossBulletShellSpawner.h"
 
 static string DebugState = "";
@@ -149,7 +150,7 @@ void CBossScript::CheckDuration()
 	if (m_ActiveEXs)
 	{
 		// m_EXsType = CRandomMgr::GetInst()->GetRandomInt(4);
-		m_EXsType = 0;
+		// m_EXsType = 0;
 		switch (m_EXsType)
 		{
 		case 0:
@@ -288,6 +289,14 @@ void CBossScript::ActiveOutsideShield()
 
 	int layeridx = Shield->GetLayerIdx();
 	GamePlayStatic::SpawnGameObject(Shield, layeridx);
+
+	// SmokeWave 스폰
+	CGameObject* SmokeWave = CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_SmokeWave)->Instantiate();
+	// SmokeWave->GetScript<CBossSmokeWaveScript>()->SetParent(GetOwner());
+
+	layeridx = SmokeWave->GetLayerIdx();
+	GetOwner()->AddChild(SmokeWave, true);
+	GamePlayStatic::SpawnGameObject(SmokeWave, layeridx);
 }
 
 void CBossScript::ActiveHexShield()

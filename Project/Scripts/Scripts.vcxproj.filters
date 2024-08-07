@@ -247,6 +247,12 @@
     <ClInclude Include="CBossBulletShellSpawner.h">
       <Filter>Scripts\ShootingSystem</Filter>
     </ClInclude>
+    <ClInclude Include="CBossSmokeWaveScript.h">
+      <Filter>Scripts\Boss\SmokeWave</Filter>
+    </ClInclude>
+    <ClInclude Include="CSmokeScript.h">
+      <Filter>Scripts\Particle\Smoke</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -495,6 +501,12 @@
     <ClCompile Include="CBossBulletShellSpawner.cpp">
       <Filter>Scripts\ShootingSystem</Filter>
     </ClCompile>
+    <ClCompile Include="CBossSmokeWaveScript.cpp">
+      <Filter>Scripts\Boss\SmokeWave</Filter>
+    </ClCompile>
+    <ClCompile Include="CSmokeScript.cpp">
+      <Filter>Scripts\Particle\Smoke</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -673,6 +685,12 @@
     </Filter>
     <Filter Include="Scripts\Particle\MiniGun">
       <UniqueIdentifier>{95fca25e-885b-4263-9a3d-420f8c450937}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Boss\SmokeWave">
+      <UniqueIdentifier>{1f518c93-5518-477e-9378-8f6527eee565}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Particle\Smoke">
+      <UniqueIdentifier>{5fe7160e-f479-4eb3-ae97-4dcdb0929e62}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
