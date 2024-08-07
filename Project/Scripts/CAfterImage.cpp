@@ -20,14 +20,26 @@ CAfterImage::CAfterImage()
 	m_info.NodeCount	= 10;
 	m_info.TimeStep		= 0.1f;
 	m_info.fMaxLifeTime = 0.1f;
+	m_info.iColorMode	= (int)ColorMode::Original;
 	fUpdateTimer		= 0.1f;
 	bDisplay			= true;
 
 	fSetLifeTime = m_info.fMaxLifeTime;
 
+	strDisplayColorMode = ToString(magic_enum::enum_name((ColorMode)m_info.iColorMode));
+
+	m_info.AfterImageColor = Vec4(0.f, 0.f, 0.f, 0.f);
+
 	AppendScriptParam("Node Count", SCRIPT_PARAM::INT, &m_info.NodeCount, 0, 10, false, "Afterimage Node count");
 	AppendScriptParam("Time Interval", SCRIPT_PARAM::FLOAT, &m_info.TimeStep);
 	AppendScriptParam("Max Life Time", SCRIPT_PARAM::FLOAT, &fSetLifeTime);
+
+	AppendScriptParam("Color Mode", SCRIPT_PARAM::STRING, &strDisplayColorMode);
+	SameLine();
+	AppendMemberFunction("Change", SCRIPT_PARAM::FUNC_MEMBER, "", std::bind(&CAfterImage::ChangeColorMode, this));
+
+	AppendScriptParam("AfterImageColor", SCRIPT_PARAM::COLOR, &m_info.AfterImageColor);
+
 	AppendScriptParam("View Node", SCRIPT_PARAM::BOOL, &bDisplay);
 }
 
@@ -158,10 +170,26 @@ void CAfterImage::ParticularClear(string _Key)
 	}
 }
 
+void CAfterImage::ChangeColorMode()
+{
+	if (m_info.iColorMode == 0)
+	{
+		m_info.iColorMode	= 1;
+		strDisplayColorMode = ToString(magic_enum::enum_name((ColorMode)m_info.iColorMode));
+	}
+	else if (m_info.iColorMode == 1)
+	{
+		m_info.iColorMode	= 0;
+		strDisplayColorMode = ToString(magic_enum::enum_name((ColorMode)m_info.iColorMode));
+	}
+}
+
 #define TagAfterImageCount "[AfterImage Node Count]"
 #define TagAfterImageTimeStep "[After Image TimeStep]"
 #define TagRenderNode "[Node bRender]"
 #define TagMaxLifeTime "[AfterImage Max Life Time]"
+#define TagColorType "[AfterImage Color Type]"
+#define TagCustomColor "[AfterImage Custom Color]"
 
 void CAfterImage::SaveToFile(ofstream& fout)
 {
@@ -176,6 +204,13 @@ void CAfterImage::SaveToFile(ofstream& fout)
 
 	fout << TagMaxLifeTime << endl;
 	fout << m_info.fMaxLifeTime << endl;
+
+	fout << TagColorType << endl;
+	fout << m_info.iColorMode << endl;
+
+	fout << TagCustomColor << endl;
+	fout << m_info.AfterImageColor.x << " " << m_info.AfterImageColor.y << " " << m_info.AfterImageColor.z << " "
+		 << m_info.AfterImageColor.w << endl;
 }
 
 void CAfterImage::LoadFromFile(ifstream& fin)
@@ -193,4 +228,16 @@ void CAfterImage::LoadFromFile(ifstream& fin)
 	fin >> m_info.fMaxLifeTime;
 
 	fSetLifeTime = m_info.fMaxLifeTime;
+
+	Utils::GetLineUntilString(fin, TagColorType);
+	fin >> m_info.iColorMode;
+
+	strDisplayColorMode = ToString(magic_enum::enum_name((ColorMode)m_info.iColorMode));
+
+	Vec4 vColor;
+
+	Utils::GetLineUntilString(fin, TagCustomColor);
+	fin >> vColor.x >> vColor.y >> vColor.z >> vColor.w;
+
+	m_info.AfterImageColor = vColor;
 }

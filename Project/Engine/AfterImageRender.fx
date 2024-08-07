@@ -110,6 +110,8 @@ struct VS_OUT
     float3 vViewNormal : NORMAL;
     float3 vViewBinormal : BINORMAL;
     float fAlpha : TEXCOORD1;
+    
+    uint instanceID : SV_InstanceID;
 };
 
 VS_OUT VS_AfterImageRender(VS_IN _in)
@@ -147,6 +149,8 @@ VS_OUT VS_AfterImageRender(VS_IN _in)
     // 알파값 계산
     output.fAlpha = data.fLifeTIme[_in.instanceID] / data.fMaxLifeTime;
     
+    output.instanceID = _in.instanceID;
+    
     return output;
 }
 
@@ -159,13 +163,24 @@ PS_OUT PS_AfterImageRender(VS_OUT _in) : SV_Target
 {
     PS_OUT output = (PS_OUT) 0.f;
     
+    AfterImageInfo data = g_AfterImage[0];
+    
     float4 vOutColor = float4(1.f, 0.f, 1.f, _in.fAlpha);
     
-    if (ColorTextureCheck)
+    if (data.iColorMode == 0)
     {
-        vOutColor = AfterImageTexture.Sample(g_sam_0, _in.vUV);
-        vOutColor.a *= _in.fAlpha; // 알파값 적용
+        if (ColorTextureCheck)
+        {
+            vOutColor = AfterImageTexture.Sample(g_sam_0, _in.vUV);
+            vOutColor.a *= _in.fAlpha; // 알파값 적용
+        }
     }
+    else if (data.iColorMode == 1)
+    {
+        vOutColor = data.AfterImageColor * (data.fLifeTIme[_in.instanceID] / data.fMaxLifeTime);
+
+    }
+
     
     output.vColor = vOutColor;
     return output;

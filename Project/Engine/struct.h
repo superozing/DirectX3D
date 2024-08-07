@@ -359,5 +359,7 @@ struct AfterImageInfo
 	int	   iBoneCount;
 	float  fLifeTime[10];
 	float  fMaxLifeTime;
-	int	   Padding[2];
+	int	   iColorMode;
+	Vec4   AfterImageColor;
+	int	   Padding;
 };

@@ -145,7 +145,9 @@ struct AfterImageInfo
     int iBoneCount;
     float fLifeTIme[10];
     float fMaxLifeTime;
-    int Padding[2];
+    int iColorMode;
+    float4 AfterImageColor;
+    int Padding;
 };
 
 #endif
