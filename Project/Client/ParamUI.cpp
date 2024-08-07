@@ -559,6 +559,10 @@ bool ParamUI::Param_MGR_PHYSX(void* _pPhysXMgr)
 	// ImGui::DragFloat("LestOffset:", &(pPhysXMgr->m_fLestOffset));
 
 	// 레이어 수를 정의합니다.
+	static float InvTimeStep;
+	InvTimeStep = 1.f / pPhysXMgr->m_TimeStep;
+	ImGui::DragFloat("TimeStep(FPS):", &(InvTimeStep));
+	pPhysXMgr->m_TimeStep		 = 1.f / InvTimeStep;
 	const int		  LayerCount = static_cast<int>(LAYER::LAYER_MAX);
 	static const auto LayerMap	 = GamePlayStatic::GetLayerMap();
 

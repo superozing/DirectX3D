@@ -45,6 +45,7 @@ private:
 	PxMaterial*					gMaterial		  = nullptr;
 	class RoRCollisionCallback* gCollisionCalback = nullptr;
 	vector<FlagActorColInfo>	m_vecTriggerColInfo;
+	float						m_TimeStep		 = 1.f / 120.f;
 	float						m_fGravityMul	 = 5.f;
 	float						m_fContactOffset = 0.1f;
 	float						m_fLestOffset	 = 0.5f;

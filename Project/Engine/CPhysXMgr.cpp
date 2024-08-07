@@ -464,13 +464,13 @@ void CPhysXMgr::tick()
 {
 	RETURN_IF_NOT_PLAYING
 
-	static const float ThresholdTime = 1.f / 60.f;
-	static float	   acctime		 = 0.f;
+	// static const float ThresholdTime = 1.f / 120.f;
+	static float acctime = 0.f;
 	acctime += DT;
-	if (acctime < ThresholdTime)
+	if (acctime < m_TimeStep)
 		return;
-	acctime -= int(acctime / ThresholdTime) * ThresholdTime;
-	gScene->simulate(ThresholdTime);
+	acctime -= int(acctime / m_TimeStep) * m_TimeStep;
+	gScene->simulate(m_TimeStep);
 	// gScene->simulate(DT);
 	gScene->fetchResults(true);
 
