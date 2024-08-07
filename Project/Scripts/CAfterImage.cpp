@@ -39,14 +39,17 @@ CAfterImage::~CAfterImage()
 void CAfterImage::begin()
 {
 	CAnimator3D* pAnimator = GetOwner()->GetParent()->Animator3D();
-	int			 BoneCount = (int)pAnimator->GetBoneCount();
-
-	for (int i = 0; i < AfterImageMaxCount; ++i)
+	if (pAnimator != nullptr)
 	{
-		CStructuredBuffer* pBuffer = new CStructuredBuffer;
-		pBuffer->Create(sizeof(Matrix), BoneCount, SB_READ_TYPE::READ_WRITE, true);
+		int BoneCount = (int)pAnimator->GetBoneCount();
 
-		m_BoneArr[i] = pBuffer;
+		for (int i = 0; i < AfterImageMaxCount; ++i)
+		{
+			CStructuredBuffer* pBuffer = new CStructuredBuffer;
+			pBuffer->Create(sizeof(Matrix), BoneCount, SB_READ_TYPE::READ_WRITE, true);
+
+			m_BoneArr[i] = pBuffer;
+		}
 	}
 }
 
