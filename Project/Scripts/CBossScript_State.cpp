@@ -2,6 +2,7 @@
 #include "CBossScript.h"
 
 #include "CRoRStateMachine.h"
+#include "CBossBulletShellSpawner.h"
 
 #pragma region Normal
 
@@ -119,6 +120,16 @@ int CBossScript::EXs1Update()
 {
 	if (!Animator3D()->IsPlayable())
 		return (int)BOSS_STATE::NormalIdle;
+
+	int idx = Animator3D()->GetCurFrameIdx();
+
+	m_BulletInterval += DT;
+
+	if (idx > 60 && idx < 123 && m_BulletInterval > 0.1f)
+	{
+		m_BulletShell->SpawnBossBulletShell(GetOwner(), 3.5f);
+		m_BulletInterval = 0.f;
+	}
 
 	return m_FSM->GetCurState();
 }

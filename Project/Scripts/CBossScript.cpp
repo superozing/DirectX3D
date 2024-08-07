@@ -6,12 +6,14 @@
 #include <Engine\CTimeMgr.h>
 #include <Engine\CRandomMgr.h>
 #include <Engine\CAssetMgr.h>
+#include <Engine\CLogMgr.h>
+
 #include "CRoRStateMachine.h"
 #include "CMegaFistScript.h"
 #include "CMiniGunScript.h"
 #include "CBossMissileScript.h"
 #include "CBossShieldScript.h"
-#include <Engine\CLogMgr.h>
+#include "CBossBulletShellSpawner.h"
 
 static string DebugState = "";
 
@@ -27,6 +29,7 @@ CBossScript::CBossScript()
 	, m_ArrMissile{}
 	, m_ArrShield{}
 	, m_hitInfo{}
+	, m_BulletInterval(0.f)
 {
 	AppendScriptParam("CurState    ", SCRIPT_PARAM::STRING, &DebugState);
 	AppendScriptParam("drill", SCRIPT_PARAM::BOOL, &m_Drill);
@@ -70,6 +73,9 @@ void CBossScript::begin()
 	m_FSM->SetCurState((int)BOSS_STATE::NormalIdle);
 
 	m_Target = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Azusa");
+
+	m_BulletShell = new CBossBulletShellSpawner;
+	GetOwner()->AddComponent(m_BulletShell);
 }
 
 void CBossScript::tick()
@@ -88,30 +94,31 @@ void CBossScript::tick()
 
 	// Vital 상태
 	CheckVital();
-	if (!m_Drill)
-	{
-		Vec3 worldPos  = Transform()->GetWorldPos() + Vec3(0.f, 1000.f, 0.f);
-		Vec3 TargetPos = m_Target->Transform()->GetWorldPos() + Vec3(0.f, 50.f, 0.f);
-		m_hitInfo	   = {};
-		Vec3 dir	   = TargetPos - worldPos;
-		dir.Normalize();
-		// 일반 Raycast
-		int	 mask = RayCastDebugFlag::AllVisible;
-		bool iscontact =
-			CPhysXMgr::GetInst()->PerfomRaycast(worldPos, dir, m_hitInfo, (UINT)LAYER::LAYER_BOSS_SKILL, mask);
 
-		if (true == iscontact)
-		{
-			string strobj	  = ToString(m_hitInfo.pOtherObj->GetName());
-			Vec3   contactpos = m_hitInfo.vHitPos;
+	// if (!m_Drill)
+	//{
+	//	Vec3 worldPos  = Transform()->GetWorldPos() + Vec3(0.f, 1000.f, 0.f);
+	//	Vec3 TargetPos = m_Target->Transform()->GetWorldPos() + Vec3(0.f, 50.f, 0.f);
+	//	m_hitInfo	   = {};
+	//	Vec3 dir	   = TargetPos - worldPos;
+	//	dir.Normalize();
+	//	// 일반 Raycast
+	//	int	 mask = RayCastDebugFlag::AllInvisible;
+	//	bool iscontact =
+	//		CPhysXMgr::GetInst()->PerfomRaycast(worldPos, dir, m_hitInfo, (UINT)LAYER::LAYER_BOSS_SKILL, mask);
 
-			CLogMgr::GetInst()->AddLog(Log_Level::INFO, ToWString(strobj));
-		}
-		else
-		{
-			string strobj = "";
-		}
-	}
+	//	if (true == iscontact)
+	//	{
+	//		string strobj	  = ToString(m_hitInfo.pOtherObj->GetName());
+	//		Vec3   contactpos = m_hitInfo.vHitPos;
+
+	//		CLogMgr::GetInst()->AddLog(Log_Level::INFO, ToWString(strobj));
+	//	}
+	//	else
+	//	{
+	//		string strobj = "";
+	//	}
+	//}
 }
 
 void CBossScript::CheckDuration()
@@ -142,7 +149,7 @@ void CBossScript::CheckDuration()
 	if (m_ActiveEXs)
 	{
 		// m_EXsType = CRandomMgr::GetInst()->GetRandomInt(4);
-		m_EXsType = 1;
+		m_EXsType = 0;
 		switch (m_EXsType)
 		{
 		case 0:

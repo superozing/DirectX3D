@@ -57,6 +57,9 @@ private:
 	bool m_ArrMissile[8]; // 미사일 발사여부
 	bool m_ArrShield[2];  // 쉴드 전개 여부
 
+	class CBossBulletShellSpawner* m_BulletShell;
+	float						   m_BulletInterval;
+
 	// @@디버그용
 	int	 m_EXsType; // 현재 선택된 EX 타입
 	bool m_Drill;

@@ -244,6 +244,9 @@
     <ClInclude Include="CMiniGunScript.h">
       <Filter>Scripts\Particle\MiniGun</Filter>
     </ClInclude>
+    <ClInclude Include="CBossBulletShellSpawner.h">
+      <Filter>Scripts\ShootingSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -488,6 +491,9 @@
     </ClCompile>
     <ClCompile Include="CMiniGunScript.cpp">
       <Filter>Scripts\Particle\MiniGun</Filter>
+    </ClCompile>
+    <ClCompile Include="CBossBulletShellSpawner.cpp">
+      <Filter>Scripts\ShootingSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
