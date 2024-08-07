@@ -43,6 +43,8 @@ void CCoverHIghTutorialEvent::Combat()
 	// }
 
 	GamePlayStatic::DestroyGameObject(GetOwner());
+	m_pArona->Message("Congratulations!", 340, 3.f);
+	m_pGM->Clear(TutorialState::CoverHigh);
 }
 
 void CCoverHIghTutorialEvent::begin()

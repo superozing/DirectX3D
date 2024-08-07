@@ -187,6 +187,8 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CCameraMoveScript.h" />
     <ClInclude Include="CCoverHIghTutorialEvent.h" />
     <ClInclude Include="CCoverArea.h" />
+    <ClInclude Include="CCoverJumpTutorialEvent.h" />
+    <ClInclude Include="CCoverLowEventListener.h" />
     <ClInclude Include="CCoverUI.h" />
     <ClInclude Include="CCrosshair.h" />
     <ClInclude Include="CDamagedDirectionMgr.h" />
@@ -234,6 +236,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CTextUI.h" />
     <ClInclude Include="CTimeMgrScript.h" />
     <ClInclude Include="CTitle.h" />
+    <ClInclude Include="CTutorialEndingEvent.h" />
     <ClInclude Include="CTutorialGameMode.h" />
     <ClInclude Include="CTutorialTarget.h" />
     <ClInclude Include="CWallScript.h" />
@@ -268,6 +271,8 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CCameraMoveScript.cpp" />
     <ClCompile Include="CCoverHighTutorialEvent.cpp" />
     <ClCompile Include="CCoverArea.cpp" />
+    <ClCompile Include="CCoverJumpTutorialEvent.cpp" />
+    <ClCompile Include="CCoverLowEventListener.cpp" />
     <ClCompile Include="CCoverUI.cpp" />
     <ClCompile Include="CCrosshair.cpp" />
     <ClCompile Include="CDamagedDirectionMgr.cpp" />
@@ -315,6 +320,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CTextUI.cpp" />
     <ClCompile Include="CTimeMgrScript.cpp" />
     <ClCompile Include="CTitle.cpp" />
+    <ClCompile Include="CTutorialEndingEvent.cpp" />
     <ClCompile Include="CTutorialGameMode.cpp" />
     <ClCompile Include="CTutorialTarget.cpp" />
     <ClCompile Include="CWallScript.cpp" />

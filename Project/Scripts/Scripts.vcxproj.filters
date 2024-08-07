@@ -235,6 +235,15 @@
     <ClInclude Include="CCoverHIghTutorialEvent.h">
       <Filter>Scripts\Event\Tutorial</Filter>
     </ClInclude>
+    <ClInclude Include="CCoverJumpTutorialEvent.h">
+      <Filter>Scripts\Event\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="CCoverLowEventListener.h">
+      <Filter>Scripts\Event\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="CTutorialEndingEvent.h">
+      <Filter>Scripts\Event\Tutorial</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -469,6 +478,15 @@
       <Filter>Scripts\Render\AfterImage</Filter>
     </ClCompile>
     <ClCompile Include="CCoverHighTutorialEvent.cpp">
+      <Filter>Scripts\Event\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="CCoverJumpTutorialEvent.cpp">
+      <Filter>Scripts\Event\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="CCoverLowEventListener.cpp">
+      <Filter>Scripts\Event\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="CTutorialEndingEvent.cpp">
       <Filter>Scripts\Event\Tutorial</Filter>
     </ClCompile>
   </ItemGroup>
