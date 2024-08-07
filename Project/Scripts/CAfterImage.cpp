@@ -78,17 +78,17 @@ void CAfterImage::tick()
 
 		if (m_info.NodeCount > 1)
 		{
-			for (int i = m_info.NodeCount; i > 1; --i)
+			for (int i = 1; m_info.NodeCount > i; ++i)
 			{
-				m_info.WorldTransform[i - 1] = m_info.WorldTransform[i - 2];
-				m_info.fLifeTime[i - 1]		 = m_info.fLifeTime[i - 2];
+				m_info.WorldTransform[i] = m_info.WorldTransform[i + 1];
+				m_info.fLifeTime[i]		 = m_info.fLifeTime[i + 1];
 			}
 		}
 
 		Matrix CurrentWolrdMat = GetOwner()->GetParent()->Transform()->GetWorldMat();
 
-		m_info.WorldTransform[0] = CurrentWolrdMat;
-		m_info.fLifeTime[0]		 = m_info.fMaxLifeTime;
+		m_info.WorldTransform[m_info.NodeCount - 1] = CurrentWolrdMat;
+		m_info.fLifeTime[m_info.NodeCount - 1]		= m_info.fMaxLifeTime;
 
 		if (pAnimator != nullptr)
 		{
@@ -111,16 +111,16 @@ void CAfterImage::UpdateBoneMatrix()
 	CAnimator3D* pAnimator = GetOwner()->GetParent()->Animator3D();
 	int			 boneCount = pAnimator->GetBoneCount();
 
-	// 새로운 포즈를 첫 번째 버퍼에 저장
-	m_BoneArr[0]->SetData(pAnimator->GetFinalBoneMat(), 1);
+	// 새로운 포즈를 마지막 버퍼에 저장
+	m_BoneArr[m_info.NodeCount - 1]->SetData(pAnimator->GetFinalBoneMat(), 1);
 
-	// 나머지 버퍼들을 한 칸씩 밀기
-	for (int i = m_info.NodeCount - 1; i > 0; --i)
+	// 나머지 버퍼들을 한 칸씩 당기기
+	for (int i = 0; i < m_info.NodeCount; ++i)
 	{
 		void* data = nullptr;
+		m_BoneArr[i + 1]->GetData(&data, 1);
 		if (data != nullptr)
 		{
-			m_BoneArr[i - 1]->GetData(&data, 1);
 			m_BoneArr[i]->SetData(data, 1);
 		}
 	}
