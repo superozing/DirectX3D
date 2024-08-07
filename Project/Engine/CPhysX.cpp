@@ -134,13 +134,8 @@ void CPhysX::updateToPhysics()
 	auto Rot = Obj->Transform()->GetWorldRot();
 	auto Pos = Obj->Transform()->GetWorldPos() + m_vOffsetPos;
 
-	Matrix worldMat	   = Obj->Transform()->GetWorldMat();
-	Matrix transInvMat = Matrix::CreateTranslation(worldMat.Translation()).Invert();
-	Matrix scaleInvMat = Matrix::CreateScale(Obj->Transform()->GetRelativeScale()).Invert();
-	Matrix rotationMat = scaleInvMat * worldMat;
-
-	Quaternion quaternion = Quaternion::CreateFromRotationMatrix(rotationMat);
-	// Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(Rot.y, Rot.z, Rot.x);
+	Quat quaternion = Obj->Transform()->GetWorldQuaternion();
+	Pos /= CPhysXMgr::GetInst()->m_PPM;
 
 	// 게임 오브젝트의 위치와 회전 정보
 	PxTransform transform(PxVec3(Pos.x, Pos.y, Pos.z), PxQuat(quaternion.x, quaternion.y, quaternion.z, quaternion.w));
@@ -204,7 +199,7 @@ void CPhysX::finaltick()
 
 	if (PhysBodyType::DYNAMIC != m_bPhysBodyType)
 	{
-		// updateToPhysics();
+		updateToPhysics();
 	}
 	else
 	{
