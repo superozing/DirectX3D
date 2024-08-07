@@ -13,6 +13,7 @@
 #include "CShootingRecoil.h"
 #include "CPlayerScript.h"
 #include "CDamageFontSpawner.h"
+#include "CBulletWarheadSpawner.h"
 
 CShootingSystemScript::CShootingSystemScript()
 	: CScript((UINT)SCRIPT_TYPE::SHOOTINGSYSTEMSCRIPT)
@@ -33,7 +34,9 @@ CShootingSystemScript::~CShootingSystemScript()
 	if (m_pShootingRecoil)
 		delete m_pShootingRecoil;
 	if (m_pDamageFontSpawner)
-		delete m_pDamageFontSpawner;
+		delete m_pDamageFontSpawner;	
+	if (m_pBulletWarheadSpawner)
+		delete m_pBulletWarheadSpawner;
 }
 
 void CShootingSystemScript::ShootPlayerBulletRay()
@@ -129,6 +132,9 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 	// 무기 본 위치에 탄피 오브젝트 생성, Velocity 추가
 	m_pBulletShellSpawner->SpawnBulletShell(m_pPlayer);
 
+	// 무기 총구 위치에 탄두 오브젝트 
+	m_pBulletWarheadSpawner->SpawnBulletWarhead(m_pPlayer);
+
 	// 반동 적용
 	m_pShootingRecoil->ApplyShootingRecoil();
 
@@ -169,11 +175,13 @@ void CShootingSystemScript::begin()
 	m_pBulletHitParticleSpawner = new CBulletHitParticleSpawner;
 	m_pDamageFontSpawner = new CDamageFontSpawner;
 	m_pShootingRecoil = new CShootingRecoil;
+	m_pBulletWarheadSpawner = new CBulletWarheadSpawner;
 
 	m_pBulletMarkDecalSpawner->begin();
 	m_pBulletShellSpawner->begin();
 	m_pBulletHitParticleSpawner->begin();
 	m_pDamageFontSpawner->begin();
+	m_pBulletWarheadSpawner->begin();
 
 	// 윈도우 좌표 기준이기 떄문에 반동을 주기 위해 y를 -방향으로 세팅
 	m_pShootingRecoil->SetShootingRecoilValue(Vec2(0.f, -0.0001f));
@@ -187,6 +195,7 @@ void CShootingSystemScript::tick()
 	m_pBulletShellSpawner->tick();
 	m_pBulletHitParticleSpawner->tick();
 	m_pDamageFontSpawner->tick();
+	m_pBulletWarheadSpawner->tick();
 
 	m_fSpreadRatio = RoRMath::ClampFloat(m_fSpreadRatio - DT, 0.1f);
 }

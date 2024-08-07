@@ -175,9 +175,6 @@
     <ClInclude Include="CMuzzleFlashScript.h">
       <Filter>Scripts\Particle\MuzzleFlash</Filter>
     </ClInclude>
-    <ClInclude Include="CBulletHitParticleSpawner.h">
-      <Filter>Scripts\ShootingSystem</Filter>
-    </ClInclude>
     <ClInclude Include="CBulletScript.h">
       <Filter>Scripts\ShootingSystem</Filter>
     </ClInclude>
@@ -202,9 +199,6 @@
     <ClInclude Include="CProjectileScript.h">
       <Filter>BassClass</Filter>
     </ClInclude>
-    <ClInclude Include="CShootingRecoil.h">
-      <Filter>Scripts\ShootingSystem</Filter>
-    </ClInclude>
     <ClInclude Include="CTitle.h">
       <Filter>Scripts\Level\Title</Filter>
     </ClInclude>
@@ -223,20 +217,29 @@
     <ClInclude Include="CEventListener.h">
       <Filter>BassClass</Filter>
     </ClInclude>
-    <ClInclude Include="CBulletShellSpawner.h">
-      <Filter>Scripts\ShootingSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="CBulletMarkSpawner.h">
-      <Filter>Scripts\ShootingSystem</Filter>
-    </ClInclude>
     <ClInclude Include="CShootingSystemScript.h">
       <Filter>Scripts\ShootingSystem</Filter>
     </ClInclude>
     <ClInclude Include="CAfterImage.h">
       <Filter>Scripts\Render\AfterImage</Filter>
     </ClInclude>
+    <ClInclude Include="CBulletHitParticleSpawner.h">
+      <Filter>ShootingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletMarkSpawner.h">
+      <Filter>ShootingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletShellSpawner.h">
+      <Filter>ShootingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CShootingRecoil.h">
+      <Filter>ShootingSystem</Filter>
+    </ClInclude>
     <ClInclude Include="CDamageFontSpawner.h">
-      <Filter>Scripts\ShootingSystem</Filter>
+      <Filter>ShootingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletWarheadSpawner.h">
+      <Filter>ShootingSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -417,9 +420,6 @@
     <ClCompile Include="CMuzzleFlashScript.cpp">
       <Filter>Scripts\Particle\MuzzleFlash</Filter>
     </ClCompile>
-    <ClCompile Include="CBulletHitParticleSpawner.cpp">
-      <Filter>Scripts\ShootingSystem</Filter>
-    </ClCompile>
     <ClCompile Include="CBulletScript.cpp">
       <Filter>Scripts\ShootingSystem</Filter>
     </ClCompile>
@@ -441,9 +441,6 @@
     <ClCompile Include="CProjectileScript.cpp">
       <Filter>BassClass</Filter>
     </ClCompile>
-    <ClCompile Include="CShootingRecoil.cpp">
-      <Filter>Scripts\ShootingSystem</Filter>
-    </ClCompile>
     <ClCompile Include="CTitle.cpp">
       <Filter>Scripts\Level\Title</Filter>
     </ClCompile>
@@ -462,20 +459,29 @@
     <ClCompile Include="CEventListener.cpp">
       <Filter>BassClass</Filter>
     </ClCompile>
-    <ClCompile Include="CBulletMarkSpawner.cpp">
-      <Filter>Scripts\ShootingSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="CBulletShellSpawner.cpp">
-      <Filter>Scripts\ShootingSystem</Filter>
-    </ClCompile>
     <ClCompile Include="CShootingSystemScript.cpp">
       <Filter>Scripts\ShootingSystem</Filter>
     </ClCompile>
     <ClCompile Include="CAfterImage.cpp">
       <Filter>Scripts\Render\AfterImage</Filter>
     </ClCompile>
+    <ClCompile Include="CBulletHitParticleSpawner.cpp">
+      <Filter>ShootingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletMarkSpawner.cpp">
+      <Filter>ShootingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletShellSpawner.cpp">
+      <Filter>ShootingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CShootingRecoil.cpp">
+      <Filter>ShootingSystem</Filter>
+    </ClCompile>
     <ClCompile Include="CDamageFontSpawner.cpp">
-      <Filter>Scripts\ShootingSystem</Filter>
+      <Filter>ShootingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletWarheadSpawner.cpp">
+      <Filter>ShootingSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -649,6 +655,9 @@
     </Filter>
     <Filter Include="Scripts\Render\AfterImage">
       <UniqueIdentifier>{99f4cea7-18fd-4509-956c-5c2ef7a671e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShootingSystem">
+      <UniqueIdentifier>{ffaf2495-1187-4ac8-9200-ed4a440ab4c5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -38,6 +38,9 @@ private:
 	class CShootingRecoil*				m_pShootingRecoil;
 	class CDamageFontSpawner*			m_pDamageFontSpawner;
 
+	Vec3						 m_HitPos;
+	class CBulletWarheadSpawner*		m_pBulletWarheadSpawner;
+
 public:
 	void SetSpreadRatioSpeed(float _fSpreadRatioSpeed) { m_fSpreadRatioSpeed = _fSpreadRatioSpeed; }
 	void SetShootAvailable(bool _Available) { m_bShootAvailable = _Available; }
