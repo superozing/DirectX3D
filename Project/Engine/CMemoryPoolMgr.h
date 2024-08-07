@@ -41,6 +41,7 @@ public:
 	virtual void tick() override;
 	virtual void init() override{};
 	void		 Poolbegin(string strPrefabRelativePath);
+	void		 PoolSet(string strPrefabRelativePath, int _SetCount);
 	virtual void enter() override;
 	void		 exit();
 
