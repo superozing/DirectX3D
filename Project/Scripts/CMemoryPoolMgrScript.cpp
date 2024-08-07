@@ -37,13 +37,13 @@ void CMemoryPoolMgrScript::begin()
 		// 레이어가 -1이 아닌 상태에서 자식으로 추가되는것에 대한 예외처리
 		CMemoryPoolMgr::GetInst()->SavePrefabLayer(RegisterLayerobj);
 		RegisterLayerobj->m_iLayerIdx = -1;
-		pFilterObj->AddChild(RegisterLayerobj);
+		pFilterObj->AddChild_RealFunc(RegisterLayerobj);
 
 		for (int i = 0; pPool->GetCurCount() - 1; ++i)
 		{
 			CGameObject* pObj = pPool->PopObject();
 			pObj->m_iLayerIdx = -1;
-			pFilterObj->AddChild(pObj);
+			pFilterObj->AddChild_RealFunc(pObj);
 		}
 	}
 
@@ -82,7 +82,7 @@ CGameObject* CMemoryPoolMgrScript::PopObject(string _strMapKey)
 		pFilterObj->AddComponent(new CTransform);
 		pFilterObj->SetName(_strMapKey);
 
-		GetOwner()->AddChild(pFilterObj);
+		GetOwner()->AddChild_RealFunc(pFilterObj);
 
 		pObj = CMemoryPoolMgr::GetInst()->PopObject(_strMapKey);
 	}
@@ -107,7 +107,8 @@ void CMemoryPoolMgrScript::PushObject(CGameObject* _Object)
 			{
 				_Object->PhysX()->releaseActor();
 			}
-			_Object->DisconnectWithLayer();
+			if (_Object->GetLayerIdx() != -1)
+				_Object->DisconnectWithLayer();
 			_Object->SetName(s);
 			vecObj[i]->AddChild(_Object);
 			CTaskMgr::GetInst()->SetMemoryPoolEvent(true);
@@ -131,7 +132,8 @@ void CMemoryPoolMgrScript::PushObject(string _strMapKey, CGameObject* _Object)
 			{
 				_Object->PhysX()->releaseActor();
 			}
-			_Object->DisconnectWithLayer();
+			if (_Object->GetLayerIdx() != -1)
+				_Object->DisconnectWithLayer();
 			_Object->SetName(s);
 			vecObj[i]->AddChild(_Object);
 			CTaskMgr::GetInst()->SetMemoryPoolEvent(true);
