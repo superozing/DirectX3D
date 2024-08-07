@@ -104,7 +104,7 @@ void RenderInSide(int Shape, float2 vLocal, inout float4 _Color)
 
 }
 
-void AnimationRisingSquare(float2 vLocal, inout float4 _Color)
+void AnimationRisingSquare(float2 vLocal, inout float4 _Color) // 사각형 에니메이션은 그냥 이것만 씀
 {
     float animProgress = smoothstep(0, 1, 1 - (CurAnimtime / MaxAnimtime)); // 0에서 1 사이로 제한
     
