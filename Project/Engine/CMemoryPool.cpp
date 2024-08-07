@@ -39,13 +39,6 @@ void CMemoryPool::begin(string strPrefabrRelactivePath)
 	RegisterLayerObj->m_iLayerIdx = -1;
 
 	m_listObjectPool.push_back(RegisterLayerObj);
-
-	for (int i = 0; i < 4; ++i)
-	{
-		CGameObject* pObj = m_PoolPrefab->Instantiate();
-		pObj->m_iLayerIdx = -1;
-		m_listObjectPool.push_back(pObj);
-	}
 }
 
 CGameObject* CMemoryPool::PopObject()
@@ -84,4 +77,14 @@ void CMemoryPool::PushObject(CGameObject* _Object)
 	m_listObjectPool.push_back(_Object);
 
 	CTaskMgr::GetInst()->SetMemoryPoolEvent(true);
+}
+
+void CMemoryPool::SetPool(int _Count)
+{
+	for (int i = 0; i < _Count; ++i)
+	{
+		CGameObject* pObj = nullptr;
+		pObj			  = m_PoolPrefab.Get()->Instantiate();
+		m_listObjectPool.push_back(pObj);
+	}
 }

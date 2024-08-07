@@ -139,3 +139,36 @@ void CMemoryPoolMgrScript::PushObject(string _strMapKey, CGameObject* _Object)
 		}
 	}
 }
+
+void CMemoryPoolMgrScript::PoolSet(string _strMapKey, int _Count)
+{
+	vector<CGameObject*> vecChild = GetOwner()->GetChild();
+
+	CTaskMgr::GetInst()->SetMemoryPoolEvent(true);
+
+	bool bPoolExist = false;
+
+	// 이미 POOL이 존재하는 경우
+	for (int i = 0; i < vecChild.size(); ++i)
+	{
+		if (ToString(vecChild[i]->GetName()) == _strMapKey)
+		{
+			CMemoryPoolMgr::GetInst()->PoolSet(_strMapKey, _Count);
+
+			bPoolExist = true;
+			break;
+		}
+	}
+
+	// POOL이 없는 경우 EX에 필터를 만들고 PoolMgr를 통해 pop한다.
+	if (bPoolExist == false)
+	{
+		CGameObject* pFilterObj = new CGameObject;
+		pFilterObj->AddComponent(new CTransform);
+		pFilterObj->SetName(_strMapKey);
+
+		GetOwner()->AddChild_RealFunc(pFilterObj);
+
+		CMemoryPoolMgr::GetInst()->PoolSet(_strMapKey, _Count);
+	}
+}
