@@ -1,8 +1,7 @@
-#ifndef _BOSSSMOKEWAVE
-#define _BOSSSMOKEWAVE
+#ifndef _BOSSSWORDBEAM
+#define _BOSSSWORDBEAM
 
 #include "value.fx"
-#include "func.fx"
 
 struct VS_IN
 {
@@ -30,11 +29,14 @@ struct VS_OUT
     float3 vViewBinormal : BINORMAL;
 };
 
-VS_OUT VS_SmokeWave(VS_IN _in)
+// =============
+// BossSwordBeam
+// =============
+VS_OUT VS_BossSwordBeam(VS_IN _in)
 {
     VS_OUT output = (VS_OUT) 0.f;
     
-    output.vPosition = mul(float4(_in.vPos, 1.f), g_matWVP);
+    output.vPosition = mul(float4(_in.vPos, 1.0), g_matWVP);
     output.vUV = _in.vUV;
     
     output.vViewPos = mul(float4(_in.vPos, 1.f), g_matWV);
@@ -45,24 +47,26 @@ VS_OUT VS_SmokeWave(VS_IN _in)
     return output;
 }
 
-float4 PS_SmokeWave(VS_OUT _in) : SV_Target
+float4 PS_BossSwordBeam(VS_OUT _in) : SV_Target
 {
-    float4 output = (float4) 0.f;
+    float4 vColor = (float4) 0.f;
     
-    float4 vOutColor = float4(1.f, 0.f, 1.f, 1.f);
+    float2 uv = _in.vUV;
     
-    if (g_btex_0)
-    {
-        vOutColor = g_tex_0.Sample(g_sam_0, _in.vUV - float2(g_time, 0.f));
-    }
+    uv = uv + float2(0.f, g_float_0);
     
-    vOutColor.rgb *= float3(0.63f, 0.6f, 0.56f);
+    float2 NewUV = clamp(uv, 0.f, 1.f);
     
-    output = vOutColor;
+    float4 TexColor = g_tex_0.Sample(g_sam_0, NewUV);
     
-    if (output.a <= 0.01f)
-        discard;
+    //float4 TexColor = g_tex_0.Sample(g_sam_0, _in.vUV);
     
-    return output;
+    // 검기 색상 (푸른 계열)
+    float3 BeamColor = float3(0, 0.6, 1);
+    vColor.rgb = TexColor.rgb * BeamColor * TexColor.a;
+    
+    return vColor;
 }
+
+
 #endif

@@ -830,6 +830,9 @@
     <Filter Include="ShaderCode\04. Content\BossSmokeWave">
       <UniqueIdentifier>{aed54676-5204-4f61-bf7d-bff0671901a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\04. Content\BossSwordBeam">
+      <UniqueIdentifier>{c7e8546a-6612-4dbb-8c54-6118dc6d6a35}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -995,6 +998,9 @@
     </FxCompile>
     <FxCompile Include="BossSmokeWave.fx">
       <Filter>ShaderCode\04. Content\BossSmokeWave</Filter>
+    </FxCompile>
+    <FxCompile Include="BossSwordBeam.fx">
+      <Filter>ShaderCode\04. Content\BossSwordBeam</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
