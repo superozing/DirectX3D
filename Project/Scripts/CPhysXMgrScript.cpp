@@ -17,10 +17,10 @@ CPhysXMgrScript::~CPhysXMgrScript()
 // static Vec3 RayDir	  = Vec3(0.f, -1.f, 0.f);
 
 // RayContactInfo
-// static tRoRHitInfo hitinfo	  = {};
-// static bool		   iscontact  = false;
-// static string	   strobj	  = "";
-// static Vec3		   contactpos = Vec3();
+static tRoRHitInfo hitinfo	  = {};
+static bool		   iscontact  = false;
+static string	   strobj	  = "";
+static Vec3		   contactpos = Vec3();
 //
 // static bool bTypeViewPortRC = false;
 
@@ -31,8 +31,8 @@ void CPhysXMgrScript::begin()
 	// AppendScriptParam("[Script]RayOrigin", SCRIPT_PARAM::VEC3, (void*)&RayOrigin);
 	// AppendScriptParam("[Script]RayDir", SCRIPT_PARAM::VEC3, (void*)&RayDir);
 
-	// AppendScriptParam("[Script]raycol_result", SCRIPT_PARAM::BOOL, (void*)&iscontact, 0.f, 0.f, true);
-	// AppendScriptParam("[Script]raycol_obj", SCRIPT_PARAM::STRING, (void*)&strobj, 0.f, 0.f, true);
+	AppendScriptParam("[Script]raycol_result", SCRIPT_PARAM::BOOL, (void*)&iscontact, 0.f, 0.f, true);
+	AppendScriptParam("[Script]raycol_obj", SCRIPT_PARAM::STRING, (void*)&strobj, 0.f, 0.f, true);
 	// AppendScriptParam("[Script]raycol_pos", SCRIPT_PARAM::VEC3, (void*)&contactpos, 0.f, 0.f, true);
 
 	// AppendScriptParam("[Script]T:ViewPortRC/F:PointRC", SCRIPT_PARAM::BOOL, (void*)&bTypeViewPortRC);
@@ -50,9 +50,9 @@ void CPhysXMgrScript::tick()
 	// }
 	// else
 	//{
-	//	// 뷰포트 Raycast
-	//	int mask  = RayCastDebugFlag::EndPointVisible;
-	//	iscontact = CPhysXMgr::GetInst()->ViewPortRaycast(hitinfo);
+	// 뷰포트 Raycast
+	// int mask  = RayCastDebugFlag::AllInvisible;
+	// iscontact = CPhysXMgr::GetInst()->ViewPortRaycast(hitinfo, mask);
 	// }
 
 	// if (true == iscontact)

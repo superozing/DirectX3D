@@ -3,7 +3,6 @@
 #include <Engine/CKeyMgr.h>
 
 CShootingRecoil::CShootingRecoil()
-	: CScript((UINT)SCRIPT_TYPE::SHOOTINGRECOIL)
 {
 }
 

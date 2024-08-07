@@ -42,7 +42,7 @@ private:
 	void			updateFromPhysics();
 	void			updateToPhysics();
 
-	bool m_bDrawing = false;
+	bool m_bDrawing = true;
 
 	void BeginOverlap(CGameObject* other);
 	void Overlap(CGameObject* other);
@@ -53,7 +53,7 @@ public:
 	PhysBodyType		   m_bPhysBodyType = PhysBodyType::STATIC;
 	PhysShape			   m_Shape		   = PhysShape::BOX;
 	Vec3				   m_vScale;
-	Vec3				   m_vOffsetPos;
+	Vec3				   m_vOffsetPos = {};
 	virtual void		   begin() override;
 	virtual void		   finaltick() override;
 

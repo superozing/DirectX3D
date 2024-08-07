@@ -266,13 +266,18 @@ void CTransform::CalWorldMat()
 
 	Matrix matScale = XMMatrixScaling(m_vRelativeScale.x, m_vRelativeScale.y, m_vRelativeScale.z);
 
-	Matrix matRotX = XMMatrixRotationX(m_vRelativeRotation.x);
-	Matrix matRotY = XMMatrixRotationY(m_vRelativeRotation.y);
-	Matrix matRotZ = XMMatrixRotationZ(m_vRelativeRotation.z);
+	Matrix matRot = Matrix::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), m_vRelativeRotation.x) *
+					Matrix::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), m_vRelativeRotation.y) *
+					Matrix::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), m_vRelativeRotation.z);
 
-	Quaternion quat	  = Quaternion::CreateFromRotationMatrix(matRotX * matRotY * matRotZ);
-	Matrix	   matRot = Matrix::CreateFromQuaternion(quat);
+	// Matrix matRotX = XMMatrixRotationX(m_vRelativeRotation.x);
+	// Matrix matRotY = XMMatrixRotationY(m_vRelativeRotation.y);
+	// Matrix matRotZ = XMMatrixRotationZ(m_vRelativeRotation.z);
 
+	Quaternion quat = Quaternion::CreateFromRotationMatrix(matRot);
+	// Matrix	   matRot = Matrix::CreateFromQuaternion(quat);
+
+	m_WorldQuaternion	  = quat;
 	Matrix matTranslation = XMMatrixTranslation(m_vRelativePos.x, m_vRelativePos.y, m_vRelativePos.z);
 
 	m_matWorld = matScale * matRot * matTranslation;
@@ -291,6 +296,35 @@ void CTransform::CalWorldMat()
 		m_arrLocalDir[i] = XMVector3TransformNormal(arrAxis[i], m_matWorld);
 		m_arrWorldDir[i] = m_arrLocalDir[i].Normalize();
 	}
+
+	Vec3 vScale, vRot, vPos;
+	m_matWorld.Decompose(vScale, quat, vPos);
+	auto mat = XMMatrixRotationQuaternion(quat);
+	vRot	 = DecomposeRotMat(mat);
+
+	// 스케일이 조금씩 서서히 줄어드는 현상 예외처리
+	Vec3 vOriginPos = GetRelativePos();
+	if (fabs(vPos.x - vOriginPos.x) < 0.05f)
+		vPos.x = vOriginPos.x;
+	if (fabs(vPos.y - vOriginPos.y) < 0.05f)
+		vPos.y = vOriginPos.y;
+	if (fabs(vPos.z - vOriginPos.z) < 0.05f)
+		vPos.z = vOriginPos.z;
+
+	Vec3 vOriginScale = GetRelativeScale();
+	if (fabs(vScale.x - vOriginScale.x) < 0.01f)
+		vScale.x = vOriginScale.x;
+	if (fabs(vScale.y - vOriginScale.y) < 0.01f)
+		vScale.y = vOriginScale.y;
+	if (fabs(vScale.z - vOriginScale.z) < 0.01f)
+		vScale.z = vOriginScale.z;
+
+	if (m_matFrame != XMMatrixIdentity())
+		return;
+
+	SetRelativePos(vPos);
+	SetRelativeRotation(vRot);
+	SetRelativeScale(vScale);
 
 	// 부모 오브젝트가 있다면
 	if (GetOwner()->GetParent())

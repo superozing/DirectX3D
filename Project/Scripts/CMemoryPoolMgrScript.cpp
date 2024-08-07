@@ -37,13 +37,13 @@ void CMemoryPoolMgrScript::begin()
 		// 레이어가 -1이 아닌 상태에서 자식으로 추가되는것에 대한 예외처리
 		CMemoryPoolMgr::GetInst()->SavePrefabLayer(RegisterLayerobj);
 		RegisterLayerobj->m_iLayerIdx = -1;
-		pFilterObj->AddChild(RegisterLayerobj);
+		pFilterObj->AddChild_RealFunc(RegisterLayerobj);
 
 		for (int i = 0; pPool->GetCurCount() - 1; ++i)
 		{
 			CGameObject* pObj = pPool->PopObject();
 			pObj->m_iLayerIdx = -1;
-			pFilterObj->AddChild(pObj);
+			pFilterObj->AddChild_RealFunc(pObj);
 		}
 	}
 
@@ -82,7 +82,7 @@ CGameObject* CMemoryPoolMgrScript::PopObject(string _strMapKey)
 		pFilterObj->AddComponent(new CTransform);
 		pFilterObj->SetName(_strMapKey);
 
-		GetOwner()->AddChild(pFilterObj);
+		GetOwner()->AddChild_RealFunc(pFilterObj);
 
 		pObj = CMemoryPoolMgr::GetInst()->PopObject(_strMapKey);
 	}
@@ -107,6 +107,9 @@ void CMemoryPoolMgrScript::PushObject(CGameObject* _Object)
 			{
 				_Object->PhysX()->releaseActor();
 			}
+			if (_Object->GetLayerIdx() != -1)
+				_Object->DisconnectWithLayer();
+			_Object->SetName(s);
 			vecObj[i]->AddChild(_Object);
 			CTaskMgr::GetInst()->SetMemoryPoolEvent(true);
 			return;
@@ -119,6 +122,8 @@ void CMemoryPoolMgrScript::PushObject(string _strMapKey, CGameObject* _Object)
 	// EX OBJ의 Filter를 받아온다.
 	vector<CGameObject*> vecObj = GetOwner()->GetChild();
 
+	string s = CMemoryPoolMgr::GetInst()->GetBaseName(ToString(_Object->GetName()));
+
 	for (int i = 0; i < vecObj.size(); ++i)
 	{
 		if (_strMapKey == ToString(vecObj[i]->GetName()))
@@ -127,9 +132,45 @@ void CMemoryPoolMgrScript::PushObject(string _strMapKey, CGameObject* _Object)
 			{
 				_Object->PhysX()->releaseActor();
 			}
+			if (_Object->GetLayerIdx() != -1)
+				_Object->DisconnectWithLayer();
+			_Object->SetName(s);
 			vecObj[i]->AddChild(_Object);
 			CTaskMgr::GetInst()->SetMemoryPoolEvent(true);
 			return;
 		}
+	}
+}
+
+void CMemoryPoolMgrScript::PoolSet(string _strMapKey, int _Count) // 실제로 사용하는 함수
+{
+	vector<CGameObject*> vecChild = GetOwner()->GetChild();
+
+	CTaskMgr::GetInst()->SetMemoryPoolEvent(true);
+
+	bool bPoolExist = false;
+
+	// 이미 POOL이 존재하는 경우
+	for (int i = 0; i < vecChild.size(); ++i)
+	{
+		if (ToString(vecChild[i]->GetName()) == _strMapKey)
+		{
+			CMemoryPoolMgr::GetInst()->PoolSet(_strMapKey, _Count);
+
+			bPoolExist = true;
+			break;
+		}
+	}
+
+	// POOL이 없는 경우 EX에 필터를 만들고 PoolMgr를 통해 pop한다.
+	if (bPoolExist == false)
+	{
+		CGameObject* pFilterObj = new CGameObject;
+		pFilterObj->AddComponent(new CTransform);
+		pFilterObj->SetName(_strMapKey);
+
+		GetOwner()->AddChild_RealFunc(pFilterObj);
+
+		CMemoryPoolMgr::GetInst()->PoolSet(_strMapKey, _Count);
 	}
 }

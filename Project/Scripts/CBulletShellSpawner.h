@@ -1,6 +1,5 @@
 ﻿#pragma once
-#include <Engine/CScript.h>
-class CBulletShellSpawner : public CScript
+class CBulletShellSpawner
 {
 	// - 탄피 생성기
 	//	메모리 풀 매니저 스크립트 사용과 탄피 오브젝트 관리를 위해 감싸는 클래스
@@ -16,13 +15,8 @@ private:
 	class CMemoryPoolMgrScript* m_PoolMgr;
 
 public:
-	virtual void begin() override;
-	virtual void tick() override;
-
-	virtual void SaveToFile(FILE* _File) override;
-	virtual void SaveToFile(ofstream& fout) override;
-	virtual void LoadFromFile(FILE* _File) override;
-	virtual void LoadFromFile(ifstream& fin) override;
+	virtual void begin() ;
+	virtual void tick() ;
 
 public:
 	void SpawnBulletShell(CGameObject* _pObj, float _ActiveTime = 2.f);

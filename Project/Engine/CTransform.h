@@ -35,12 +35,18 @@ private:
 	bool  m_bRotLerp;
 	bool  m_bScaleLerp;
 	bool  m_bLerp;
+	Quat  m_WorldQuaternion;
 
 public:
 	void Lerp(Vec3 _pos, bool _bMoveRot = false, Vec3 _rot = Vec3(), bool _bMoveScale = false, Vec3 _scale = Vec3(),
 			  float _time = 0.f);
 
 public:
+	virtual void begin() override
+	{
+		m_bDirty = true;
+		CalWorldMat();
+	};
 	virtual void tick() override;
 	virtual void finaltick() override;
 	virtual void UpdateData() override;
@@ -110,6 +116,12 @@ public:
 	virtual void SaveToFile(ofstream& fout) override;
 	virtual void LoadFromFile(FILE* _File) override;
 	virtual void LoadFromFile(ifstream& fin) override;
+	Quat		 GetWorldQuaternion()
+	{
+		if (m_bDirty)
+			CalWorldMat();
+		return m_WorldQuaternion;
+	}
 
 	// Vec4 GetWorldRotQuat() { m_vWorldRotQuat; }
 public:
