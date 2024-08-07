@@ -37,7 +37,7 @@ void CDigitUI::tick()
 	int digit = to_string(m_iDigit).size();
 
 	// 2. 자릿수에 따라서 x scale 늘리기
-	Transform()->SetRelativeScale(Vec3(32.f * digit, 32.f, 1.f));
+	Transform()->SetRelativeScale(Vec3(26.f * digit, 32.f, 1.f));
 
 	// 3. 자릿수를 텍스쳐 레지스터에 바인딩
 	GetRenderComponent()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_0, digit);

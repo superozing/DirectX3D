@@ -560,6 +560,8 @@ void CDevice::DeleteTexturesForResolutionChange()
 
 	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"CopyRTtex");
 	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"PostProcessTex");
+
+	CAssetMgr::GetInst()->DeleteAsset<CTexture>(L"AfterImageTargetTex");
 }
 
 void CDevice::RematchMtrlTexParam()
