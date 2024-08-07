@@ -44,13 +44,20 @@ private:
 	PxScene*					gScene			  = nullptr;
 	PxMaterial*					gMaterial		  = nullptr;
 	class RoRCollisionCallback* gCollisionCalback = nullptr;
-	vector<FlagActorColInfo>	m_vecColInfo;
-	float						m_fGravityMul	 = 250.f;
-	float						m_fContactOffset = 800.f;
-	float						m_fLestOffset	 = 2000.f;
+	vector<FlagActorColInfo>	m_vecTriggerColInfo;
+	float						m_TimeStep		 = 1.f / 120.f;
+	float						m_fGravityMul	 = 4.f;
+	float						m_fContactOffset = 0.02f;
+	float						m_fLestOffset	 = 0.05f;
+	float						m_PPM			 = 20.f;
+	bool						m_bUseTH		 = false;
+	Vec2						m_fPosTreshold	 = Vec2(0.01f, 0.01f);
+	Vec2						m_fRotTreshold	 = Vec2(0.0f, 0.3f);
 
-	void LayerCheck(UINT _left, UINT _right);
-	void LayerCheckToggle(UINT _left, UINT _right);
+	float GetPPM() { return m_PPM; }
+	void  SetPPM(float _PPM) { m_PPM = _PPM; }
+	void  LayerCheck(UINT _left, UINT _right);
+	void  LayerCheckToggle(UINT _left, UINT _right);
 	class MyPhysXErrorCallback : public PxErrorCallback
 	{
 	public:
