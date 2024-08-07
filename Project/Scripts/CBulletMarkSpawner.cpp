@@ -11,8 +11,7 @@
 #define BulletMarkPath "prefab/ShootingSystem/BulletMarkDecal.pref"
 
 CBulletMarkSpawner::CBulletMarkSpawner()
-	: CScript((UINT)SCRIPT_TYPE::BULLETMARKSPAWNER)
-	, m_iMaxDecalCount(20)
+	: m_iMaxDecalCount(20)
 {
 }
 
@@ -128,20 +127,4 @@ Vec3 CBulletMarkSpawner::GetCenterNormal()
 					  static_cast<float>(pixel.b) / 255.0f * 2.0f - 1.0f};
 
 	return normal.Normalize();
-}
-
-void CBulletMarkSpawner::SaveToFile(FILE* _File)
-{
-}
-
-void CBulletMarkSpawner::SaveToFile(ofstream& fout)
-{
-}
-
-void CBulletMarkSpawner::LoadFromFile(FILE* _File)
-{
-}
-
-void CBulletMarkSpawner::LoadFromFile(ifstream& fin)
-{
 }

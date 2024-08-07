@@ -22,6 +22,18 @@ CShootingSystemScript::CShootingSystemScript()
 
 CShootingSystemScript::~CShootingSystemScript()
 {
+	if (m_pDamagedDirectionMgr)
+		delete m_pDamagedDirectionMgr;
+	if (m_pBulletMarkDecalSpawner)
+		delete m_pBulletMarkDecalSpawner;
+	if (m_pBulletShellSpawner)
+		delete m_pBulletShellSpawner;
+	if (m_pBulletHitParticleSpawner)
+		delete m_pBulletHitParticleSpawner;
+	if (m_pShootingRecoil)
+		delete m_pShootingRecoil;
+	if (m_pDamageFontSpawner)
+		delete m_pDamageFontSpawner;
 }
 
 void CShootingSystemScript::ShootPlayerBulletRay()
@@ -146,58 +158,35 @@ void CShootingSystemScript::ShootMainCamRay()
 		m_MainCamAimLayer = LAYER::LAYER_DEFAULT;
 }
 
-void CShootingSystemScript::SpawnBulletShell()
-{
-}
-
 void CShootingSystemScript::begin()
 {
 	// 레벨에서 플레이어 스크립트 가져오기
 	m_pPlayer		= CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(PlayerName);
 	m_pPlayerScript = m_pPlayer->GetScript<CPlayerScript>();
 
-	// m_pDamagedDirectionMgr = new CDamagedDirectionMgr;
-	// GetOwner()->AddComponent(m_pDamagedDirectionMgr);
-
 	m_pBulletMarkDecalSpawner = new CBulletMarkSpawner;
-	GetOwner()->AddComponent(m_pBulletMarkDecalSpawner);
-
 	m_pBulletShellSpawner = new CBulletShellSpawner;
-	GetOwner()->AddComponent(m_pBulletShellSpawner);
-
 	m_pBulletHitParticleSpawner = new CBulletHitParticleSpawner;
-	GetOwner()->AddComponent(m_pBulletHitParticleSpawner);
-
-	m_pShootingRecoil = new CShootingRecoil;
-	GetOwner()->AddComponent(m_pShootingRecoil);
-
 	m_pDamageFontSpawner = new CDamageFontSpawner;
-	GetOwner()->AddComponent(m_pDamageFontSpawner);
-	
+	m_pShootingRecoil = new CShootingRecoil;
+
+	m_pBulletMarkDecalSpawner->begin();
+	m_pBulletShellSpawner->begin();
+	m_pBulletHitParticleSpawner->begin();
+	m_pDamageFontSpawner->begin();
+
 	// 윈도우 좌표 기준이기 떄문에 반동을 주기 위해 y를 -방향으로 세팅
-	m_pShootingRecoil->SetShootingRecoilValue(Vec2(0.f, -0.0001f)); // 나중에 수치를 조정할 필요가 있음.
-	// 예를 들어 자세에 따라서 다른 반동을 준다던가... 그런 것 들 말이죠.
+	m_pShootingRecoil->SetShootingRecoilValue(Vec2(0.f, -0.0001f));
 }
 
 void CShootingSystemScript::tick()
 {
 	ShootMainCamRay();
+	
+	m_pBulletMarkDecalSpawner->tick();
+	m_pBulletShellSpawner->tick();
+	m_pBulletHitParticleSpawner->tick();
+	m_pDamageFontSpawner->tick();
 
 	m_fSpreadRatio = RoRMath::ClampFloat(m_fSpreadRatio - DT, 0.1f);
-}
-
-void CShootingSystemScript::SaveToFile(FILE* _File)
-{
-}
-
-void CShootingSystemScript::SaveToFile(ofstream& fout)
-{
-}
-
-void CShootingSystemScript::LoadFromFile(FILE* _File)
-{
-}
-
-void CShootingSystemScript::LoadFromFile(ifstream& fin)
-{
 }

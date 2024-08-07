@@ -10,7 +10,6 @@
 #define Bullet_ShellPath "prefab/ShootingSystem/Bullet_Shell.pref"
 
 CBulletShellSpawner::CBulletShellSpawner()
-	: CScript((UINT)SCRIPT_TYPE::BULLETSHELLSPAWNER)
 {
 }
 
@@ -51,7 +50,6 @@ void CBulletShellSpawner::SpawnBulletShell(CGameObject* _pPlayer, float _ActiveT
 	Matrix _ParentWorldMat = _pPlayer->Transform()->GetWorldMat();
 	Matrix _WeaponBoneMat = _pPlayer->Animator3D()->FindBoneMat(L"Bip001_Weapon");
 
-
 	// 풀에서 오브젝트 가져오기
 	auto pBulletShell = m_PoolMgr->PopObject(Bullet_ShellPath);
 
@@ -77,20 +75,4 @@ void CBulletShellSpawner::SpawnBulletShell(CGameObject* _pPlayer, float _ActiveT
 
 	// 관리를 위해 리스트에 추가
 	m_BulletShellList.push_back({pBulletShell, _ActiveTime});
-}
-
-void CBulletShellSpawner::SaveToFile(FILE* _File)
-{
-}
-
-void CBulletShellSpawner::SaveToFile(ofstream& fout)
-{
-}
-
-void CBulletShellSpawner::LoadFromFile(FILE* _File)
-{
-}
-
-void CBulletShellSpawner::LoadFromFile(ifstream& fin)
-{
 }

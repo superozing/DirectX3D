@@ -12,7 +12,6 @@
 #define DamageFontPath "prefab/ShootingSystem/DamageFont.pref"
 
 CDamageFontSpawner::CDamageFontSpawner()
-	: CScript((UINT)SCRIPT_TYPE::DAMAGEFONTSPAWNER)
 {
 }
 
@@ -98,20 +97,4 @@ void CDamageFontSpawner::SpawnDamageFont(const Vec3& _HitPos, int Damage, float 
 	// 알파 값은 구조체에 있는 Max와 ActiveTime 나눠서 구하면 되겠네요.
 	// Pos는 매 틱 마다 계속 위로 올려주면 될 듯.
 
-}
-
-void CDamageFontSpawner::SaveToFile(FILE* _File)
-{
-}
-
-void CDamageFontSpawner::SaveToFile(ofstream& fout)
-{
-}
-
-void CDamageFontSpawner::LoadFromFile(FILE* _File)
-{
-}
-
-void CDamageFontSpawner::LoadFromFile(ifstream& fin)
-{
 }

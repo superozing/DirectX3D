@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include <Engine/CScript.h>
 
 struct tDamageFontNode
 {
@@ -8,7 +7,7 @@ struct tDamageFontNode
 	float			MaxTime;
 };
 
-class CDamageFontSpawner : public CScript
+class CDamageFontSpawner
 {
 private:
 	list<tDamageFontNode>	m_DamageFontList;
@@ -19,17 +18,11 @@ private:
 	class CMemoryPoolMgrScript* m_PoolMgr;
 
 public:
-	virtual void begin() override;
-	virtual void tick() override;
-
-
-	virtual void SaveToFile(FILE* _File) override;
-	virtual void SaveToFile(ofstream& fout) override;
-	virtual void LoadFromFile(FILE* _File) override;
-	virtual void LoadFromFile(ifstream& fin) override;
+	virtual void begin() ;
+	virtual void tick() ;
 
 public:
-	void SpawnDamageFont(const Vec3& _HitPos, int Damage, float _ActiveTime = 3.f);
+	void SpawnDamageFont(const Vec3& _HitPos, int Damage, float _ActiveTime = 0.5f);
 
 public:
 	CLONE(CDamageFontSpawner);

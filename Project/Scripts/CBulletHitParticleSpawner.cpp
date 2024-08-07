@@ -9,7 +9,6 @@
 #define BulletHitParticlePath "prefab/ShootingSystem/BulletHitParticle.pref"
 
 CBulletHitParticleSpawner::CBulletHitParticleSpawner()
-	: CScript((UINT)SCRIPT_TYPE::BULLETHITPARTICLESPAWNER)
 {
 }
 
@@ -65,21 +64,4 @@ void CBulletHitParticleSpawner::SpawnBulletHitParticle(const tRoRHitInfo& _HitIn
 
 	// 관리를 위해 리스트에 추가
 	m_BulletShellList.push_back({pBulletHitParticle, 0.2f});
-}
-
-
-void CBulletHitParticleSpawner::SaveToFile(FILE* _File)
-{
-}
-
-void CBulletHitParticleSpawner::SaveToFile(ofstream& fout)
-{
-}
-
-void CBulletHitParticleSpawner::LoadFromFile(FILE* _File)
-{
-}
-
-void CBulletHitParticleSpawner::LoadFromFile(ifstream& fin)
-{
 }
