@@ -106,7 +106,7 @@ void CAfterImage::tick()
 		pMainCam->RegisterAfterImage(this->GetOwner()->GetParent(), m_info);
 }
 
-void CAfterImage::UpdateBoneMatrix()
+void CAfterImage::UpdateBoneMatrix() // 본은 hlsl에서 거꾸로 사용한다. 구조화 버퍼의 뭔가모를 에러가 있어서
 {
 	CAnimator3D* pAnimator = GetOwner()->GetParent()->Animator3D();
 	int			 boneCount = pAnimator->GetBoneCount();
