@@ -566,6 +566,10 @@ bool ParamUI::Param_MGR_PHYSX(void* _pPhysXMgr)
 	const int		  LayerCount = static_cast<int>(LAYER::LAYER_MAX);
 	static const auto LayerMap	 = GamePlayStatic::GetLayerMap();
 
+	ImGui::Checkbox("UseTransformTreshold", &(pPhysXMgr->m_bUseTH));
+	ImGui::DragFloat2("PosTreshold", &(pPhysXMgr->m_fPosTreshold.x), 0.0001f, 0.f, 10.f, "%.4f");
+	ImGui::DragFloat2("RotTreshold", &(pPhysXMgr->m_fRotTreshold.x), 0.0001f, 0.f, 10.f, "%.4f");
+
 	static ImGuiTableFlags table_flags = ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersInnerH |
 										 ImGuiTableFlags_Hideable | ImGuiTableFlags_Resizable |
 										 ImGuiTableFlags_HighlightHoveredColumn;

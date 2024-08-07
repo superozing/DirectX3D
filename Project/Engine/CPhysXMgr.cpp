@@ -528,6 +528,23 @@ void CPhysXMgr::tick()
 		Vec3 vPosOffset = pTr->GetWorldPos() - Translation;
 		Vec3 vRotOffset = pTr->GetWorldRot() - Rotation;
 
+		if (true == m_bUseTH)
+		{
+			// if (vPosOffset.x < m_fPosTreshold.x || vPosOffset.x >= m_fPosTreshold.y)
+			//	vPosOffset.x = 0.f;
+			// if (vPosOffset.y < m_fPosTreshold.x || vPosOffset.y >= m_fPosTreshold.y)
+			//	vPosOffset.y = 0.f;
+			// if (vPosOffset.z < m_fPosTreshold.x || vPosOffset.z >= m_fPosTreshold.y)
+			//	vPosOffset.z = 0.f;
+
+			if (vRotOffset.x < m_fRotTreshold.x || vRotOffset.x >= m_fRotTreshold.y)
+				vRotOffset.x = 0.f;
+			if (vRotOffset.y < m_fRotTreshold.x || vRotOffset.y >= m_fRotTreshold.y)
+				vRotOffset.y = 0.f;
+			if (vRotOffset.z < m_fRotTreshold.x || vRotOffset.z >= m_fRotTreshold.y)
+				vRotOffset.z = 0.f;
+		}
+
 		// 변화량만큼 Relative 에 적용
 		pTr->SetRelativePos(pTr->GetRelativePos() - vPosOffset);
 		pTr->SetRelativeRotation(pTr->GetRelativeRotation() - vRotOffset);

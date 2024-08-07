@@ -50,6 +50,9 @@ private:
 	float						m_fContactOffset = 0.1f;
 	float						m_fLestOffset	 = 0.5f;
 	float						m_PPM			 = 20.f;
+	bool						m_bUseTH		 = false;
+	Vec2						m_fPosTreshold	 = Vec2(0.01f, 0.01f);
+	Vec2						m_fRotTreshold	 = Vec2(0.01f, 0.01f);
 
 	float GetPPM() { return m_PPM; }
 	void  SetPPM(float _PPM) { m_PPM = _PPM; }
