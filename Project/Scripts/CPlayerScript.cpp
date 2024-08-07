@@ -76,6 +76,8 @@ CPlayerScript::~CPlayerScript()
 void CPlayerScript::InitScriptParamUI()
 {
 	AppendScriptParam("IsDead", SCRIPT_PARAM::BOOL, &m_tStatus.IsDead, 0, 0, true);
+	AppendScriptParam("IsInvincibility", SCRIPT_PARAM::BOOL, &m_tStatus.Invincibility, 0, 0, true);
+
 	AppendScriptParam("Damage", SCRIPT_PARAM::FLOAT, &m_tStatus.Damage);
 	AppendScriptParam("Health", SCRIPT_PARAM::FLOAT, &m_tStatus.curHealth);
 	AppendScriptParam("Stamina", SCRIPT_PARAM::FLOAT, &m_tStatus.curStamina);
@@ -292,6 +294,13 @@ void CPlayerScript::begin()
 			break;
 	}
 
+	//for (size_t i = 0; i < vecChild.size(); i++)
+	//{
+	//	m_pBulletLine = vecChild[i]->GetScript<CBulletLineSpawner>();
+	//	if (m_pBulletLine)
+	//		break;
+	//}
+
 	// 저장 재시작하면 터져서 임시로 막아둠
 	if (m_pSpringArm)
 		m_pSpringArm->SetTargetObject(CRenderMgr::GetInst()->GetMainCam()->GetOwner());
@@ -354,15 +363,14 @@ void CPlayerScript::tick()
 	}
 
 	// 탄피 힘 방향을 확인하기 위한 자동 사격
-	//static float autoShoot = 0.f;
-	//autoShoot += DT;
+	// static float autoShoot = 0.f;
+	// autoShoot += DT;
 
-	//if (autoShoot > 0.5f)
+	// if (autoShoot > 0.5f)
 	//{
 	//	m_pShootingSystem->ShootPlayerBulletRay();
 	//	autoShoot = 0.f;
-	//}
-
+	// }
 }
 
 void CPlayerScript::CameraMove()

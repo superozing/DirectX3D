@@ -5,7 +5,8 @@
 FMOD_RESULT CHANNEL_CALLBACK(FMOD_CHANNELCONTROL* channelcontrol, FMOD_CHANNELCONTROL_TYPE controltype,
 							 FMOD_CHANNELCONTROL_CALLBACK_TYPE callbacktype, void* commanddata1, void* commanddata2);
 
-FMOD::System* CSound::g_pFMOD = nullptr;
+FMOD::System*		CSound::g_pFMOD		   = nullptr;
+FMOD::ChannelGroup* CSound::g_pMasterGroup = nullptr;
 
 CSound::CSound(bool _Engine)
 	: CAsset(ASSET_TYPE::SOUND, _Engine)
@@ -20,6 +21,18 @@ CSound::~CSound()
 		m_pSound->release();
 		m_pSound = nullptr;
 	}
+}
+
+void CSound::SetMasterVolume(float _volume)
+{
+	CSound::g_pMasterGroup->setVolume(_volume);
+}
+
+float CSound::GetMasterVolume()
+{
+	float volume;
+	CSound::g_pMasterGroup->getVolume(&volume);
+	return volume;
 }
 
 int CSound::Play(int _iRoopCount, float _fVolume, bool _bOverlap)

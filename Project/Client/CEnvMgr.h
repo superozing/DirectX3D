@@ -14,6 +14,7 @@ private:
 	tRes		 m_tRes;
 	string		 m_strLevelRelativePath;
 	vector<bool> m_bImguiActivate;
+	float		 m_fMasterVolume;
 
 public:
 	tRes   GetResolutionData() { return m_tRes; }

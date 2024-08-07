@@ -18,6 +18,8 @@ public:
 	int GetCurCount() { return m_listObjectPool.size(); }
 	int GetMaxCount() { return iPoolMaxCount; }
 
+	void SetPool(int _Count);
+
 public:
 	CMemoryPool();
 	~CMemoryPool();

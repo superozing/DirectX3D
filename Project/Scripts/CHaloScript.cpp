@@ -3,7 +3,7 @@
 
 #include <Engine\CLevelMgr.h>
 #include <Engine\CLevel.h>
-#include "CStudentScript.h"
+#include "CPlayerScript.h"
 
 CHaloScript::CHaloScript()
 	: CScript((UINT)SCRIPT_TYPE::HALOSCRIPT)
@@ -22,7 +22,7 @@ CHaloScript::~CHaloScript()
 
 void CHaloScript::begin()
 {
-	if (nullptr == GetOwner()->GetParent() || nullptr == GetOwner()->GetParent()->GetScript<CStudentScript>())
+	if (nullptr == GetOwner()->GetParent() || nullptr == GetOwner()->GetParent()->GetScript<CPlayerScript>())
 		return;
 
 	m_Parent = GetOwner()->GetParent();

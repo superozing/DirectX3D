@@ -17,6 +17,8 @@ public:
 	void		 PushObject(CGameObject* _Object);
 	void		 PushObject(string _strMapKey, CGameObject* _Object);
 
+	void PoolSet(string _strMapKey, int _Count);
+
 public:
 	CLONE(CMemoryPoolMgrScript);
 	CMemoryPoolMgrScript();

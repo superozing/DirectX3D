@@ -48,6 +48,8 @@ private:
 	vector<CCamera*> m_vecCam;
 	CCamera*		 m_EditorCam;
 	bool			 m_bEscape;
+	bool			 m_bGlobalShadowRender = true;
+	bool			 m_bGlobalPCF		   = true;
 
 	Ptr<CTexture> m_PostProcessTex;
 
@@ -71,6 +73,11 @@ private:
 	Vec4 m_vClearColor;
 
 public:
+	bool IsRenderShadow() { return m_bGlobalShadowRender; }
+	void RenderShadow(bool _render) { m_bGlobalShadowRender = _render; }
+	bool IsPCFShadow() { return m_bGlobalPCF; }
+	void PCFShadow(bool _render) { m_bGlobalPCF = _render; }
+
 	bool IsEscape() { return m_bEscape; }
 
 	static void (*CameraChange)(CCamera*);
@@ -175,4 +182,5 @@ private:
 	friend class CRenderMgrScript;
 	friend class CDevice;
 	friend class CCamera;
+	friend class SettingUI;
 };

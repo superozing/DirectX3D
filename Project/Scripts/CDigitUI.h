@@ -7,11 +7,17 @@ private:
 	int m_iDigit;
 
 public:
+	void SetNum(int _digit) { m_iDigit = _digit; }
+
+public:
 	virtual void begin() override;
 	virtual void tick() override;
 
 	virtual void SaveToFile(ofstream& fout) override;
 	virtual void LoadFromFile(ifstream& fin) override;
+
+public:
+	void SetValue(int _iVal) { m_iDigit = _iVal; }
 
 public:
 	CLONE(CDigitUI);

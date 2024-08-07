@@ -28,6 +28,7 @@ struct tDebugShapeInfo
 	float fLifeTime;
 	float fDuration;
 	bool  bDepthTest;
+	int	  iLayer;
 };
 
 struct tLightInfo

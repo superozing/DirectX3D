@@ -20,6 +20,7 @@
 #include "LogUI.h"
 #include "ModelUI.h"
 #include "RTViewPort.h"
+#include "SettingUI.h"
 
 #include "TreeUI.h"
 #include "CLevelSaveLoad.h"
@@ -337,6 +338,12 @@ void MenuUI::View()
 			pRTViewPort->Activate();
 		}
 
+		auto pSetting = (SettingUI*)CImGuiMgr::GetInst()->FindUI("##Setting");
+		if (ImGui::MenuItem("Setting", "", false, !pSetting->IsActivate()))
+		{
+			pSetting->Activate();
+		}
+
 		ImGui::Separator();
 		if (ImGui::MenuItem("ImguiDemo", "", false, !CImGuiMgr::GetInst()->m_bDemoUI))
 		{
@@ -414,7 +421,6 @@ void MenuUI::ContentSaveAll()
 
 void MenuUI::ScreenResize(Vec2 _Resolution, bool IsWindowMode)
 {
-
 	tTask Task;
 	Task.Type	 = TASK_TYPE::CHANGE_RESOLUTION;
 	Task.Param_1 = (UINT_PTR)_Resolution.x;
@@ -442,6 +448,7 @@ void MenuUI::ScreenControl()
 		static bool IsWindowMode = true;
 		ImGui::Checkbox("Window Mode", &IsWindowMode);
 
+		// TODO : 동윤이 CreateMRT 정상화 되면 GPS로 변경해야 함
 		if (ImGui::MenuItem("1366 X 720"))
 		{
 			ScreenResize(Vec2(1366.f, 720.f), IsWindowMode);

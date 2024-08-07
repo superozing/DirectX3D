@@ -13,6 +13,7 @@ CPhysX::CPhysX()
 
 CPhysX::~CPhysX()
 {
+	releaseActor();
 }
 
 void CPhysX::setLinearVelocity(const Vec3& _vLVel)
@@ -26,7 +27,7 @@ void CPhysX::setAngularVelocity(const Vec3& _vAVel)
 {
 	if (nullptr == m_DActor)
 		return;
-	m_DActor->setLinearVelocity(PxVec3(_vAVel.x, _vAVel.y, _vAVel.z));
+	m_DActor->setAngularVelocity(PxVec3(_vAVel.x, _vAVel.y, -_vAVel.z));
 }
 
 void CPhysX::applyBulletImpact(const PxVec3& bulletVelocity, float bulletMass, const PxVec3& hitPoint)
@@ -38,7 +39,7 @@ void CPhysX::applyBulletImpact(const PxVec3& bulletVelocity, float bulletMass, c
 	PxVec3 impulse = bulletMass * bulletVelocity;
 
 	// 물체의 중심
-	PxVec3 actorCenter = m_DActor->getGlobalPose().p;
+	PxVec3 actorCenter = m_DActor->getGlobalPose().p * CPhysXMgr::GetInst()->m_PPM;
 
 	// 충돌 지점과 중심 사이의 벡터
 	PxVec3 r = hitPoint - actorCenter;
@@ -75,9 +76,9 @@ void CPhysX::releaseActor()
 
 	CPhysXMgr::GetInst()->ReleaseActor(m_Actor);
 
-	m_Actor->userData = nullptr;
-	m_Actor			  = nullptr;
-	m_DActor		  = nullptr;
+	// m_Actor->userData = nullptr;
+	m_Actor	 = nullptr;
+	m_DActor = nullptr;
 }
 
 void CPhysX::updateFromPhysics()
@@ -134,13 +135,8 @@ void CPhysX::updateToPhysics()
 	auto Rot = Obj->Transform()->GetWorldRot();
 	auto Pos = Obj->Transform()->GetWorldPos() + m_vOffsetPos;
 
-	Matrix worldMat	   = Obj->Transform()->GetWorldMat();
-	Matrix transInvMat = Matrix::CreateTranslation(worldMat.Translation()).Invert();
-	Matrix scaleInvMat = Matrix::CreateScale(Obj->Transform()->GetRelativeScale()).Invert();
-	Matrix rotationMat = scaleInvMat * worldMat;
-
-	Quaternion quaternion = Quaternion::CreateFromRotationMatrix(rotationMat);
-	// Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(Rot.y, Rot.z, Rot.x);
+	Quat quaternion = Obj->Transform()->GetWorldQuaternion();
+	Pos /= CPhysXMgr::GetInst()->m_PPM;
 
 	// 게임 오브젝트의 위치와 회전 정보
 	PxTransform transform(PxVec3(Pos.x, Pos.y, Pos.z), PxQuat(quaternion.x, quaternion.y, quaternion.z, quaternion.w));
@@ -153,12 +149,42 @@ void CPhysX::begin()
 	CPhysXMgr::GetInst()->addGameObject(GetOwner());
 }
 
+// #include "CLogMgr.h"
 void CPhysX::finaltick()
 {
 	// 콘텍트벡터를 초기화
 	// if (0 != m_vThisFrameContact.size())
 	//{
 	//	m_vThisFrameContact.resize(0);
+	//}
+
+	// static Vec3	 VecCurPos	= Transform()->GetWorldPos();
+	// static Vec3	 VecPrevPos = {};
+	// static Vec3	 Vec3CurVel = {};
+	// static Vec3	 VecPrevVel = {};
+	// static float acctime	= 0.f;
+	// acctime += DT;
+	// if (acctime >= 1.f && PhysBodyType::DYNAMIC == m_bPhysBodyType)
+	//{
+	//	VecPrevPos = VecCurPos;
+	//	VecCurPos  = Transform()->GetWorldPos();
+	//	// 속력계산
+	//	auto diffpos = Vec3::Distance(VecCurPos, VecPrevPos);
+
+	//	// 이전 속도저장,현재 속도계산
+	//	VecPrevVel = Vec3CurVel;
+	//	Vec3CurVel = VecCurPos - VecPrevPos;
+
+	//	// 가속도계산
+	//	auto diffvel	= Vec3::Distance(Vec3CurVel, VecPrevVel);
+	//	auto VecDiffVel = Vec3CurVel - VecPrevVel;
+
+	//	// CLogMgr::GetInst()->AddLog(Log_Level::INFO, "Vel:" + std::to_string(diffpos));
+	//	// CLogMgr::GetInst()->AddLog(Log_Level::INFO, "Acc:" + std::to_string(diffvel));
+	//	CLogMgr::GetInst()->AddLog(Log_Level::INFO, "Acc:" + std::to_string(VecDiffVel.x) + "," +
+	//													std::to_string(VecDiffVel.y) + "," +
+	//													std::to_string(VecDiffVel.z));
+	//	acctime = 0.f;
 	//}
 
 	// imgui가 포커스되어있으면 ,현재프레임에 충돌한 오브젝트정보를 수집
@@ -178,15 +204,26 @@ void CPhysX::finaltick()
 	}
 	else
 	{
-		updateFromPhysics();
+		// updateFromPhysics();
 	}
 
 	if (nullptr == m_Actor)
 		return;
-	const auto& trans		  = Transform();
-	auto		ObjWorldPos	  = trans->GetWorldPos();
-	auto		DebugFinalPos = ObjWorldPos + m_vOffsetPos;
-	auto		Rot			  = getTransform().q;
+	const auto& trans		= Transform();
+	auto		ObjWorldPos = trans->GetWorldPos();
+	auto		dir			= trans->GetRelativeRotation();
+	auto		Rot			= getTransform().q;
+	dir.Normalize();
+
+	auto norrot = dir;
+	norrot.Normalize();
+	Matrix matRot = Matrix::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), norrot.x) *
+					Matrix::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), norrot.y) *
+					Matrix::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), norrot.z);
+	Matrix OffsetPosMat		 = XMMatrixTranslation(m_vOffsetPos.x, m_vOffsetPos.y, m_vOffsetPos.z);
+	auto   RotatedOffesetPos = matRot * OffsetPosMat;
+	auto   VecROP			 = RotatedOffesetPos.Translation();
+	auto   DebugFinalPos	 = ObjWorldPos + m_vOffsetPos;
 
 	if (m_bDrawing)
 	{
@@ -194,6 +231,8 @@ void CPhysX::finaltick()
 		{
 			GamePlayStatic::DrawDebugCube(DebugFinalPos, m_vScale, Vec4(Rot.x, Rot.y, Rot.z, Rot.w),
 										  Vec3(0.3f, .3f, 0.3f), false);
+
+			// GamePlayStatic::DrawDebugCube(worldmat, Vec3(0.3f, .3f, 0.3f), false);
 		}
 		else if (PhysShape::SPHERE == m_Shape)
 		{

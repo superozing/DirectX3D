@@ -106,6 +106,7 @@ void CPausePanel::begin()
 void CPausePanel::tick()
 {
 	CImageUIScript::tick();
+
 	static float xTimer = 0.f;
 	static float yTimer = 0.f;
 
