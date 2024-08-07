@@ -145,7 +145,7 @@ VS_OUT VS_AfterImageRender(VS_IN _in)
     output.vViewBinormal = normalize(mul(float4(skinnedBinormal, 0.f), mul(worldMat, g_matView)).xyz);
     
     // 알파값 계산
-    output.fAlpha = 0.5 - (_in.instanceID / float(data.NodeCount)) * 0.5;
+    output.fAlpha = data.fLifeTIme[_in.instanceID] / data.fMaxLifeTime;
     
     return output;
 }

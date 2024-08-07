@@ -357,5 +357,7 @@ struct AfterImageInfo
 	Matrix WorldTransform[10];
 	float  TimeStep;
 	int	   iBoneCount;
-	int	   iPadding;
+	float  fLifeTime[10];
+	float  fMaxLifeTime;
+	int	   Padding[2];
 };

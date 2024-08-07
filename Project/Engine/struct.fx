@@ -143,7 +143,9 @@ struct AfterImageInfo
     row_major Matrix AfterImageWorldMat[10];
     float TimeStep;
     int iBoneCount;
-    int Padding;
+    float fLifeTIme[10];
+    float fMaxLifeTime;
+    int Padding[2];
 };
 
 #endif

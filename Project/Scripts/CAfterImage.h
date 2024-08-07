@@ -6,12 +6,14 @@ class CAfterImage : public CScript
 private:
 	AfterImageInfo m_info;
 	float		   fUpdateTimer;
+	float		   fSetLifeTime;
 	bool		   bDisplay;
 
 	CStructuredBuffer* m_BoneArr[AfterImageMaxCount];
 
 private:
 	void UpdateBoneMatrix();
+	void CalLifeTime(float _Time);
 
 public:
 	virtual void begin() override;

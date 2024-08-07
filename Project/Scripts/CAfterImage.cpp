@@ -17,13 +17,17 @@ CAfterImage::CAfterImage()
 
 	// 디폴트 세팅
 
-	m_info.NodeCount = 10;
-	m_info.TimeStep	 = 0.1f;
-	fUpdateTimer	 = 0.1f;
-	bDisplay		 = true;
+	m_info.NodeCount	= 10;
+	m_info.TimeStep		= 0.1f;
+	m_info.fMaxLifeTime = 0.1f;
+	fUpdateTimer		= 0.1f;
+	bDisplay			= true;
+
+	fSetLifeTime = m_info.fMaxLifeTime;
 
 	AppendScriptParam("Node Count", SCRIPT_PARAM::INT, &m_info.NodeCount, 0, 10, false, "Afterimage Node count");
 	AppendScriptParam("Time Interval", SCRIPT_PARAM::FLOAT, &m_info.TimeStep);
+	AppendScriptParam("Max Life Time", SCRIPT_PARAM::FLOAT, &fSetLifeTime);
 	AppendScriptParam("View Node", SCRIPT_PARAM::BOOL, &bDisplay);
 }
 
@@ -62,18 +66,24 @@ void CAfterImage::tick()
 			for (int i = m_info.NodeCount; i > 1; --i)
 			{
 				m_info.WorldTransform[i - 1] = m_info.WorldTransform[i - 2];
+				m_info.fLifeTime[i - 1]		 = m_info.fLifeTime[i - 2];
 			}
 		}
 
 		Matrix CurrentWolrdMat = GetOwner()->GetParent()->Transform()->GetWorldMat();
 
 		m_info.WorldTransform[0] = CurrentWolrdMat;
+		m_info.fLifeTime[0]		 = m_info.fMaxLifeTime;
 
 		if (pAnimator != nullptr)
 		{
 			UpdateBoneMatrix();
 		}
 	}
+
+	CalLifeTime(DT);
+
+	m_info.fMaxLifeTime = fSetLifeTime;
 
 	CCamera* pMainCam = CRenderMgr::GetInst()->GetMainCam();
 
@@ -98,6 +108,15 @@ void CAfterImage::UpdateBoneMatrix()
 			m_BoneArr[i - 1]->GetData(&data, 1);
 			m_BoneArr[i]->SetData(data, 1);
 		}
+	}
+}
+
+void CAfterImage::CalLifeTime(float _Time)
+{
+	for (int i = 0; i < AfterImageMaxCount; ++i)
+	{
+		if (m_info.fLifeTime[i] > 0.f)
+			m_info.fLifeTime[i] -= _Time;
 	}
 }
 
@@ -139,6 +158,7 @@ void CAfterImage::ParticularClear(string _Key)
 #define TagAfterImageCount "[AfterImage Node Count]"
 #define TagAfterImageTimeStep "[After Image TimeStep]"
 #define TagRenderNode "[Node bRender]"
+#define TagMaxLifeTime "[AfterImage Max Life Time]"
 
 void CAfterImage::SaveToFile(ofstream& fout)
 {
@@ -150,6 +170,9 @@ void CAfterImage::SaveToFile(ofstream& fout)
 
 	fout << TagRenderNode << endl;
 	fout << (int)bDisplay << endl;
+
+	fout << TagMaxLifeTime << endl;
+	fout << m_info.fMaxLifeTime << endl;
 }
 
 void CAfterImage::LoadFromFile(ifstream& fin)
@@ -162,4 +185,9 @@ void CAfterImage::LoadFromFile(ifstream& fin)
 
 	Utils::GetLineUntilString(fin, TagRenderNode);
 	fin >> bDisplay;
+
+	Utils::GetLineUntilString(fin, TagMaxLifeTime);
+	fin >> m_info.fMaxLifeTime;
+
+	fSetLifeTime = m_info.fMaxLifeTime;
 }
