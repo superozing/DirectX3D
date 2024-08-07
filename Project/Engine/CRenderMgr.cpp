@@ -95,7 +95,8 @@ void CRenderMgr::render_play()
 	if (m_vecCam.empty())
 		return;
 
-	CreateDynamicShadowDepth();
+	if (m_bGlobalShadowRender)
+		CreateDynamicShadowDepth();
 
 	// 메인 카메라 시점 렌더링
 	if (nullptr != m_vecCam[0])
@@ -210,6 +211,9 @@ void CRenderMgr::render_editor()
 
 void CRenderMgr::render_debug()
 {
+	if (m_DbgShapeInfo.size() == 0)
+		return;
+
 	// 레벨이 플레이상태일경우(랜더Func가 render_play 일 경우)
 	if (&CRenderMgr::render_play == m_RenderFunc)
 	{
@@ -229,9 +233,12 @@ void CRenderMgr::render_debug()
 		g_Transform.matProj = m_EditorCam->GetProjMat();
 	}
 
-	list<tDebugShapeInfo>::iterator iter = m_DbgShapeInfo.begin();
+	list<tDebugShapeInfo>::iterator iter	   = m_DbgShapeInfo.begin();
+	auto							cam		   = GetMainCam();
+	UINT							LayerCheck = cam->GetLayerCheck();
 	for (; iter != m_DbgShapeInfo.end();)
 	{
+
 		switch ((*iter).eShape)
 		{
 		case DEBUG_SHAPE::RECT:
@@ -292,7 +299,8 @@ void CRenderMgr::render_debug()
 		m_pDebugObj->Transform()->SetWorldMat((*iter).matWorld);
 		m_pDebugObj->Transform()->UpdateData();
 
-		m_pDebugObj->render();
+		if (LayerCheck & 1 << iter->iLayer)
+			m_pDebugObj->render();
 
 		m_pDebugObj->MeshRender()->GetMaterial(0)->GetShader()->SetTopology(PrevTopology);
 
@@ -432,7 +440,7 @@ void CRenderMgr::CheckEscape()
 
 CCamera* CRenderMgr::GetMainCam()
 {
-	if (LEVEL_STATE::PLAY == CLevelMgr::GetInst()->GetCurrentLevel()->GetState())
+	if (LEVEL_STATE::PLAY == CLevelMgr::GetInst()->GetCurrentLevel()->GetState() && !IsEscape())
 	{
 		if (m_vecCam.empty())
 			return nullptr;

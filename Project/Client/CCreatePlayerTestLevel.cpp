@@ -25,7 +25,6 @@
 #include <Scripts/CTimeMgrScript.h>
 #include <Scripts/CCameraEffect.h>
 #include <Scripts/CCameraMoveScript.h>
-#include <Scripts/CStudentScript.h>
 #include <Scripts/CHaloScript.h>
 
 #include <Engine/CAssetMgr.h>

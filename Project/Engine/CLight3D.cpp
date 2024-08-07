@@ -78,6 +78,7 @@ void CLight3D::finaltick()
 void CLight3D::render()
 {
 	m_LightMtrl->SetScalarParam(SCALAR_PARAM::INT_0, m_LightIdx);
+	m_LightMtrl->SetScalarParam(SCALAR_PARAM::BOOL_0, CRenderMgr::GetInst()->IsPCFShadow());
 
 	if (LIGHT_TYPE::DIRECTIONAL == (LIGHT_TYPE)m_Info.LightType)
 	{

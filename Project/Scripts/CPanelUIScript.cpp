@@ -5,11 +5,13 @@
 CPanelUIScript::CPanelUIScript()
 	: CUIScript((UINT)SCRIPT_TYPE::PANELUISCRIPT)
 {
+	AppendScriptParam("Drag", SCRIPT_PARAM::BOOL, &m_AllowDragAndDrop);
 }
 
 CPanelUIScript::CPanelUIScript(const CPanelUIScript& _Other)
 	: CUIScript(_Other.GetScriptType())
 {
+	AppendScriptParam("Drag", SCRIPT_PARAM::BOOL, &m_AllowDragAndDrop);
 }
 
 CPanelUIScript::~CPanelUIScript()

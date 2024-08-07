@@ -54,8 +54,8 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 									m_fSpreadRatio * CRandomMgr::GetInst()->GetRandomFloat() * MaxSpread);
 
 	bool isBulletHit =
-		CPhysXMgr::GetInst()->PerfomRaycast(pMainCam->Transform()->GetWorldPos(), ShootDir, hitInfo,
-											(UINT)LAYER::LAYER_PLAYER_SHOOTING_RAY, RayCastDebugFlag::AllVisible);
+		CPhysXMgr::GetInst()->PerformRaycast(pMainCam->Transform()->GetWorldPos(), ShootDir, hitInfo,
+											 (UINT)LAYER::LAYER_PLAYER_SHOOTING_RAY, RayCastDebugFlag::AllInvisible);
 
 	if (isBulletHit)
 	{
@@ -148,8 +148,8 @@ void CShootingSystemScript::ShootMainCamRay()
 	auto		pMainCam = CRenderMgr::GetInst()->GetMainCam();
 	auto		FrontDir = pMainCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
 
-	bool isContact = CPhysXMgr::GetInst()->PerfomRaycast(pMainCam->Transform()->GetWorldPos(), FrontDir, hitInfo,
-														 (UINT)LAYER::LAYER_RAYCAST, RayCastDebugFlag::AllVisible);
+	bool isContact = CPhysXMgr::GetInst()->PerformRaycast(pMainCam->Transform()->GetWorldPos(), FrontDir, hitInfo,
+														  (UINT)LAYER::LAYER_RAYCAST, RayCastDebugFlag::AllInvisible);
 
 	m_bShootAvailable = true;
 

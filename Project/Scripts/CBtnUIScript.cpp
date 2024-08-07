@@ -14,9 +14,11 @@ CBtnUIScript::CBtnUIScript()
 	, m_Inst(nullptr)
 	, m_Delegate(nullptr)
 	, m_AllowTexSet(false)
+	, m_bDraw(true)
 {
 	AppendScriptParam("Draw", SCRIPT_PARAM::BOOL, &m_bDraw);
 	AppendScriptAsset("Normal", &m_NormalImg, ASSET_TYPE::TEXTURE);
+	AppendScriptAsset("Hovered", &m_HoverImg, ASSET_TYPE::TEXTURE);
 	AppendScriptParam("CurImg", SCRIPT_PARAM::STRING, &strImg);
 }
 
@@ -30,6 +32,7 @@ CBtnUIScript::CBtnUIScript(const CBtnUIScript& _Other)
 	, m_Inst(_Other.m_Inst)
 	, m_Delegate(_Other.m_Delegate)
 	, m_AllowTexSet(true)
+	, m_bDraw(true)
 {
 }
 
@@ -46,10 +49,15 @@ void CBtnUIScript::begin()
 void CBtnUIScript::tick()
 {
 	CUIScript::tick();
-	strImg = ToString(m_CurImg->GetKey());
+
+	if (m_CurImg.Get())
+		strImg = ToString(m_CurImg->GetKey());
 
 	if (m_bDraw)
+	{
 		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_CurImg);
+		MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, Vec4(1.f, 1.f, 1.f, 1.f));
+	}
 	else
 		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, nullptr);
 }

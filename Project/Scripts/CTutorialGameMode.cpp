@@ -17,8 +17,10 @@ CTutorialGameMode::CTutorialGameMode()
 	FSMInit(TutorialState, CTutorialGameMode, BasicMove);
 	FSMInit(TutorialState, CTutorialGameMode, Dash);
 	FSMInit(TutorialState, CTutorialGameMode, Shooting);
-	FSMInit(TutorialState, CTutorialGameMode, CombatFirst);
-	FSMInit(TutorialState, CTutorialGameMode, CombatSecond);
+	FSMInit(TutorialState, CTutorialGameMode, CoverHigh);
+	FSMInit(TutorialState, CTutorialGameMode, CoverJump);
+	FSMInit(TutorialState, CTutorialGameMode, CoverLow);
+	FSMInit(TutorialState, CTutorialGameMode, Ending);
 
 	AppendScriptParam("State", SCRIPT_PARAM::STRING, &state, 0.f, 0.f, true);
 
@@ -40,6 +42,13 @@ void CTutorialGameMode::begin()
 
 	m_pArona = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(AronaName)->GetScript<CArona>();
 	m_pWall	 = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"WALL_SHOOT");
+
+	m_pBGM = CAssetMgr::GetInst()->Load<CSound>(SNDKaiten_Screw_BGM);
+	m_pBGM->Play(0, 1.f);
+
+	m_arrIsClear[0] = true;
+	m_arrIsClear[1] = true;
+	m_arrIsClear[2] = true;
 }
 
 void CTutorialGameMode::tick()
@@ -114,57 +123,73 @@ void CTutorialGameMode::ShootingEnd()
 	m_pArona->Message("Congratulations!", 340, 3.f);
 }
 
-void CTutorialGameMode::CombatFirstBegin()
+void CTutorialGameMode::CoverHighBegin()
 {
 }
 
-int CTutorialGameMode::CombatFirstUpdate()
+int CTutorialGameMode::CoverHighUpdate()
 {
-	// TODO : 소환된 몬스터를 모두 잡으면
-	// 1. 위치에 도달하면 몬스터 생성
-	// 2. 몬스터한테 맞으면 다음단계
-	// 3. 스탠드 엄폐 하면 다음단계
-	// 4. 줌하면 다음단계
-	// 5. 사격하면 다음단계
-	// 6. 모두 잡으면 다음단계
-
-	if (IsClear(TutorialState::CombatFirst))
+	if (IsClear(TutorialState::CoverHigh))
 	{
 		return m_FSM->GetCurState() + 1;
 	}
-
 	return m_FSM->GetCurState();
 }
 
-void CTutorialGameMode::CombatFirstEnd()
+void CTutorialGameMode::CoverHighEnd()
 {
 }
 
-void CTutorialGameMode::CombatSecondBegin()
+void CTutorialGameMode::CoverJumpBegin()
 {
 }
 
-int CTutorialGameMode::CombatSecondUpdate()
+int CTutorialGameMode::CoverJumpUpdate()
 {
-	// TODO : 세분화
-	// 1. 일정 지점에 도달하면 몬스터 소환
-	// 2. 낮은 엄폐에 도달해서 맞으면 다음단계
-	// 3. 낮은 엄폐하면 다음 단계
-	// 4. 점프하면 다음단계
-	// 5. 낮은엄폐하고 사격하면 다음단계
-	// 6. 수류탄 던지면 다음단계
-	// 6. 모두 잡으면 다음단계
-
-	if (IsClear(TutorialState::CombatSecond))
+	if (IsClear(TutorialState::CoverJump))
 	{
 		return m_FSM->GetCurState() + 1;
 	}
-
 	return m_FSM->GetCurState();
 }
 
-void CTutorialGameMode::CombatSecondEnd()
+void CTutorialGameMode::CoverJumpEnd()
 {
+}
+
+void CTutorialGameMode::CoverLowBegin()
+{
+}
+
+int CTutorialGameMode::CoverLowUpdate()
+{
+	if (IsClear(TutorialState::CoverJump))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CTutorialGameMode::CoverLowEnd()
+{
+}
+
+void CTutorialGameMode::EndingBegin()
+{
+}
+
+int CTutorialGameMode::EndingUpdate()
+{
+	if (IsClear(TutorialState::Ending))
+	{
+		return m_FSM->GetCurState() + 1;
+	}
+	return m_FSM->GetCurState();
+}
+
+void CTutorialGameMode::EndingEnd()
+{
+	GamePlayStatic::ChangeLevel(CLevelMgr::GetInst()->LevelLoadFunc(LEVELTitle), LEVEL_STATE::PLAY);
 }
 
 void CTutorialGameMode::Clear(TutorialState _state)

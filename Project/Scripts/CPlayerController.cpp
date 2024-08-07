@@ -63,3 +63,75 @@ void CPlayerController::SetInfo(PlayerKeyInfo _info)
 	Flip		= _info.Flip;
 	Sensitivity = _info.Sensitivity;
 }
+void CPlayerController::Init()
+{
+	CPlayerController::Front = KEY::W;
+	CPlayerController::Right = KEY::D;
+	CPlayerController::Back	 = KEY::S;
+	CPlayerController::Left	 = KEY::A;
+	CPlayerController::Dash	 = KEY::SPACE;
+
+	CPlayerController::Attack = KEY::LBTN;
+	CPlayerController::Zoom	  = KEY::RBTN;
+	CPlayerController::Reload = KEY::R;
+
+	CPlayerController::Cover = KEY::LSHIFT;
+	CPlayerController::Skill = KEY::F;
+	CPlayerController::Jump	 = KEY::SPACE;
+	CPlayerController::Flip	 = KEY::TAB;
+
+	CPlayerController::Sensitivity = 6.f;
+}
+
+ofstream& operator<<(ofstream& fout, const PlayerKeyInfo& _info)
+{
+	fout << _info.Front << endl;
+	fout << _info.Right << endl;
+	fout << _info.Back << endl;
+	fout << _info.Left << endl;
+	fout << _info.Dash << endl;
+	fout << _info.Attack << endl;
+	fout << _info.Zoom << endl;
+	fout << _info.Reload << endl;
+	fout << _info.Cover << endl;
+	fout << _info.Skill << endl;
+	fout << _info.Jump << endl;
+	fout << _info.Flip << endl;
+	fout << _info.Sensitivity << endl;
+
+	return fout;
+}
+
+ifstream& operator>>(ifstream& fin, PlayerKeyInfo& _info)
+{
+	int key;
+	fin >> key;
+	_info.Front = (KEY)key;
+	fin >> key;
+	_info.Right = (KEY)key;
+	fin >> key;
+	_info.Back = (KEY)key;
+	fin >> key;
+	_info.Left = (KEY)key;
+	fin >> key;
+	_info.Dash = (KEY)key;
+	fin >> key;
+	_info.Attack = (KEY)key;
+	fin >> key;
+	_info.Zoom = (KEY)key;
+	fin >> key;
+	_info.Reload = (KEY)key;
+	fin >> key;
+	_info.Cover = (KEY)key;
+	fin >> key;
+	_info.Skill = (KEY)key;
+	fin >> key;
+	_info.Jump = (KEY)key;
+	fin >> key;
+	_info.Flip = (KEY)key;
+	float fSensitive;
+	fin >> fSensitive;
+	_info.Sensitivity = fSensitive;
+
+	return fin;
+}

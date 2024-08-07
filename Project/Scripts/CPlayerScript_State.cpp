@@ -811,38 +811,37 @@ void CPlayerScript::SkillDashBegin()
 int CPlayerScript::SkillDashUpdate()
 {
 	// 대시상태 움직임 속도 조절
+	int curFrm = Animator3D()->GetCurFrameIdx();
+	int maxFrm = Animator3D()->GetCurClipLength();
+	if (curFrm > maxFrm)
+		return SwitchToCoverTypeIdle();
+
+	float fCurSpeed;
+	int	  iGroudnTapFrm = 20;
+
+	// 땅에 닿는 순간을 분기점으로 스피드 변경 + 무적 판정 해제
+	if (curFrm < iGroudnTapFrm)
 	{
-		int curFrm = Animator3D()->GetCurFrameIdx();
-		int maxFrm = Animator3D()->GetCurClipLength();
-		if (curFrm > maxFrm)
-			return SwitchToCoverTypeIdle();
-
-		float fCurSpeed;
-		int	  iGroudnTapFrm = 20;
-
-		// 땅에 닿는 순간을 분기점으로 스피드 변경 + 무적 판정 해제
-		if (curFrm < iGroudnTapFrm)
-		{
-			fCurSpeed =
-				RoRMath::SmoothStep(m_tStatus.DashMaxSpeed, m_tStatus.DashGroundSpeed, (float)curFrm / iGroudnTapFrm);
-		}
-		else
-		{
-			fCurSpeed = RoRMath::SmoothStep(m_tStatus.DashGroundSpeed, m_tStatus.DashMinSpeed,
-											(float)(curFrm - iGroudnTapFrm) / (maxFrm - iGroudnTapFrm));
-			SetInvincivility(true);
-		}
-
-		Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-		vFront.Normalize();
-		Vec3 vPos = Transform()->GetRelativePos();
-		vPos += vFront * fCurSpeed * DT;
-
-		Transform()->SetRelativePos(vPos);
+		fCurSpeed =
+			RoRMath::SmoothStep(m_tStatus.DashMaxSpeed, m_tStatus.DashGroundSpeed, (float)curFrm / iGroudnTapFrm);
+	}
+	else
+	{
+		fCurSpeed = RoRMath::SmoothStep(m_tStatus.DashGroundSpeed, m_tStatus.DashMinSpeed,
+										(float)(curFrm - iGroudnTapFrm) / (maxFrm - iGroudnTapFrm));
+		SetInvincivility(false);
 	}
 
+	Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+	vFront.Normalize();
+	Vec3 vPos = Transform()->GetRelativePos();
+	vPos += vFront * fCurSpeed * DT;
+
+	Transform()->SetRelativePos(vPos);
+
 	// 애니메이션 종료시 MoveEnd상태로 전환
-	if (!Animator3D()->IsPlayable())
+	int stopFrm = 60;
+	if (curFrm > stopFrm)
 		return SwitchToCoverTypeMoveEnd();
 
 	return m_FSM->GetCurState();

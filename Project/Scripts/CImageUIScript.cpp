@@ -85,6 +85,8 @@ void CImageUIScript::begin()
 
 void CImageUIScript::tick()
 {
+	CUIScript::tick();
+
 	if (m_bAllowBindTexPerFrame && m_UIImg.Get())
 		GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, m_UIImg);
 

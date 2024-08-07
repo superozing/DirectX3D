@@ -69,10 +69,11 @@ void CShootingTutorialEvent::tick()
 		m_bFirstFrm = true;
 	}
 
+	float SpawnDelay = 1.f;
 	if (!bSecondMsg)
 	{
 		AccTime += DT;
-		if (AccTime >= MsgDelay)
+		if (AccTime >= SpawnDelay)
 		{
 			m_pArona->Message("Remove all targets", 360, -1.f);
 			bSecondMsg = true;

@@ -105,6 +105,9 @@ private:
 	class CBulletLineSpawner*	 m_pBulletLine;
 
 public:
+	CShootingSystemScript* GetShootingSystem() { return m_pShootingSystem; }
+
+public:
 #pragma region StatusFunc
 	/// @brief 현재 무적 여부를 리턴합니다.
 	bool IsInvincivility() { return m_tStatus.Invincibility; }

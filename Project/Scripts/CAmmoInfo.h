@@ -7,6 +7,10 @@ private:
 	int m_iCurAmmo;
 	int m_iMaxAmmo;
 
+	class CDigitUI*				 m_pCurAmmo;
+	class CDigitUI*				 m_pMaxAmmo;
+	class CShootingSystemScript* m_pSS;
+
 public:
 	virtual void begin() override;
 	virtual void tick() override;

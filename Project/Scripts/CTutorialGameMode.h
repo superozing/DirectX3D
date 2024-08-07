@@ -6,8 +6,10 @@ enum class TutorialState
 	BasicMove,
 	Dash,
 	Shooting,
-	CombatFirst,
-	CombatSecond,
+	CoverHigh,
+	CoverJump,
+	CoverLow,
+	Ending,
 	END,
 };
 class CTutorialGameMode : public CGameMode<CTutorialGameMode>
@@ -15,6 +17,8 @@ class CTutorialGameMode : public CGameMode<CTutorialGameMode>
 private:
 	class CArona*	   m_pArona;
 	class CGameObject* m_pWall;
+
+	Ptr<CSound> m_pBGM;
 
 private:
 	bool m_arrIsClear[(UINT)TutorialState::END];
@@ -44,12 +48,20 @@ public:
 	int	 ShootingUpdate();
 	void ShootingEnd();
 
-	void CombatFirstBegin();
-	int	 CombatFirstUpdate();
-	void CombatFirstEnd();
+	void CoverHighBegin();
+	int	 CoverHighUpdate();
+	void CoverHighEnd();
 
-	void CombatSecondBegin();
-	int	 CombatSecondUpdate();
-	void CombatSecondEnd();
+	void CoverJumpBegin();
+	int	 CoverJumpUpdate();
+	void CoverJumpEnd();
+
+	void CoverLowBegin();
+	int	 CoverLowUpdate();
+	void CoverLowEnd();
+
+	void EndingBegin();
+	int	 EndingUpdate();
+	void EndingEnd();
 #pragma endregion
 };

@@ -13,7 +13,11 @@ private:
 	void GameObject();
 	void Asset();
 	void View();
+
+public:
 	void ScreenControl();
+
+private:
 	void GameStart();
 	void GameStop();
 

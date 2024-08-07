@@ -14,7 +14,10 @@
 class CSound : public CAsset
 {
 public:
-	static FMOD::System* g_pFMOD; // FMOD 관리자 클래스
+	static FMOD::System*	   g_pFMOD; // FMOD 관리자 클래스
+	static FMOD::ChannelGroup* g_pMasterGroup;
+	static void				   SetMasterVolume(float _volume);
+	static float			   GetMasterVolume();
 
 public:
 	FMOD::Sound*		 m_pSound;		// 로딩된 사운드 객체

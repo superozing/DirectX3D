@@ -15,7 +15,7 @@ CPhysXMgr::CPhysXMgr()
 {
 }
 
-bool CPhysXMgr::PerfomRaycast(Vec3 _OriginPos, Vec3 _Dir, tRoRHitInfo& _HitInfo, UINT _LAYER, int _DebugFlagMask)
+bool CPhysXMgr::PerformRaycast(Vec3 _OriginPos, Vec3 _Dir, tRoRHitInfo& _HitInfo, UINT _LAYER, int _DebugFlagMask)
 {
 	PxVec3 OriginPos = PxVec3(_OriginPos.x, _OriginPos.y, _OriginPos.z) / m_PPM;
 	PxVec3 Dir		 = PxVec3(_Dir.x, _Dir.y, _Dir.z);
@@ -34,7 +34,7 @@ bool CPhysXMgr::PerfomRaycast(Vec3 _OriginPos, Vec3 _Dir, tRoRHitInfo& _HitInfo,
 	// 시작지점출력
 	if (0 != (_DebugFlagMask & RayCastDebugFlag::StartPointVisible))
 	{
-		GamePlayStatic::DrawDebugSphere(_OriginPos, 50.f, Vec4(1.f, 0.8f, 0.f, 1.f), false);
+		GamePlayStatic::DrawDebugSphere(_OriginPos, 50.f, Vec4(1.f, 0.8f, 0.f, 1.f), false, _LAYER);
 	}
 
 	if (true == status)
@@ -54,11 +54,11 @@ bool CPhysXMgr::PerfomRaycast(Vec3 _OriginPos, Vec3 _Dir, tRoRHitInfo& _HitInfo,
 		// 예: 충돌 지점 출력
 		if (0 != (_DebugFlagMask & RayCastDebugFlag::RayLineVisible))
 		{
-			GamePlayStatic::DrawDebugCylinder(_OriginPos, _HitInfo.vHitPos, 5.f, Vec3(0.f, .8f, 0.f), true);
+			GamePlayStatic::DrawDebugCylinder(_OriginPos, _HitInfo.vHitPos, 5.f, Vec3(0.f, .8f, 0.f), false, _LAYER);
 		}
 		if (0 != (_DebugFlagMask & RayCastDebugFlag::EndPointVisible))
 		{
-			GamePlayStatic::DrawDebugSphere(_HitInfo.vHitPos, 50.f, Vec4(0.f, 0.8f, 0.f, 1.f), false);
+			GamePlayStatic::DrawDebugSphere(_HitInfo.vHitPos, 50.f, Vec4(0.f, 0.8f, 0.f, 1.f), false, _LAYER);
 		}
 		return true;
 	}
@@ -66,7 +66,8 @@ bool CPhysXMgr::PerfomRaycast(Vec3 _OriginPos, Vec3 _Dir, tRoRHitInfo& _HitInfo,
 	{
 		if (0 != (_DebugFlagMask & RayCastDebugFlag::RayLineVisible))
 		{
-			GamePlayStatic::DrawDebugCylinder(_OriginPos, _OriginPos + _Dir * 1000.f, 5.f, Vec3(0.f, .8f, 0.f), true);
+			GamePlayStatic::DrawDebugCylinder(_OriginPos, _OriginPos + _Dir * 1000.f, 5.f, Vec3(0.f, .8f, 0.f), true,
+											  _LAYER);
 		}
 		return false;
 	}
@@ -106,8 +107,8 @@ bool CPhysXMgr::ViewPortRaycast(tRoRHitInfo& _HitInfo, UINT _LAYER, int _DebugFl
 
 	// 레이케스트 수행
 	bool hit =
-		CPhysXMgr::GetInst()->PerfomRaycast(Vec3(rayOrigin.x, rayOrigin.y, rayOrigin.z),
-											Vec3(rayDir.x, rayDir.y, rayDir.z), _HitInfo, _LAYER, _DebugFlagMask);
+		CPhysXMgr::GetInst()->PerformRaycast(Vec3(rayOrigin.x, rayOrigin.y, rayOrigin.z),
+											 Vec3(rayDir.x, rayDir.y, rayDir.z), _HitInfo, _LAYER, _DebugFlagMask);
 	return hit;
 }
 
