@@ -82,9 +82,6 @@
     <ClInclude Include="CHaloScript.h">
       <Filter>Scripts\Player</Filter>
     </ClInclude>
-    <ClInclude Include="CStudentScript.h">
-      <Filter>Scripts\Player</Filter>
-    </ClInclude>
     <ClInclude Include="CPlayerScript.h">
       <Filter>Scripts\Player</Filter>
     </ClInclude>
@@ -325,9 +322,6 @@
       <Filter>Scripts\Manager\MemoryPool</Filter>
     </ClCompile>
     <ClCompile Include="CHaloScript.cpp">
-      <Filter>Scripts\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="CStudentScript.cpp">
       <Filter>Scripts\Player</Filter>
     </ClCompile>
     <ClCompile Include="CPlayerScript.cpp">
