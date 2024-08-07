@@ -213,18 +213,30 @@ void CPhysX::finaltick()
 
 	if (nullptr == m_Actor)
 		return;
-	const auto& trans		  = Transform();
-	auto		ObjWorldPos	  = trans->GetWorldPos();
-	auto		DebugFinalPos = ObjWorldPos + m_vOffsetPos;
-	auto		Rot			  = getTransform().q;
+	const auto& trans		= Transform();
+	auto		ObjWorldPos = trans->GetWorldPos();
+	auto		dir			= trans->GetRelativeRotation();
+	auto		Rot			= getTransform().q;
+	dir.Normalize();
+
+	auto norrot = dir;
+	norrot.Normalize();
+	Matrix matRot = Matrix::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), norrot.x) *
+					Matrix::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), norrot.y) *
+					Matrix::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), norrot.z);
+	Matrix OffsetPosMat		 = XMMatrixTranslation(m_vOffsetPos.x, m_vOffsetPos.y, m_vOffsetPos.z);
+	auto   RotatedOffesetPos = matRot * OffsetPosMat;
+	auto   VecROP			 = RotatedOffesetPos.Translation();
+	auto   DebugFinalPos	 = ObjWorldPos + m_vOffsetPos;
 
 	if (m_bDrawing)
 	{
 		if (PhysShape::BOX == m_Shape)
 		{
-			// GamePlayStatic::DrawDebugCube(DebugFinalPos, m_vScale, Vec4(Rot.x, Rot.y, Rot.z, Rot.w),
-			//							  Vec3(0.3f, .3f, 0.3f), false);
-			GamePlayStatic::DrawDebugCube(trans->GetWorldMat(), Vec3(0.3f, .3f, 0.3f), false);
+			GamePlayStatic::DrawDebugCube(DebugFinalPos, m_vScale, Vec4(Rot.x, Rot.y, Rot.z, Rot.w),
+										  Vec3(0.3f, .3f, 0.3f), false);
+
+			// GamePlayStatic::DrawDebugCube(worldmat, Vec3(0.3f, .3f, 0.3f), false);
 		}
 		else if (PhysShape::SPHERE == m_Shape)
 		{

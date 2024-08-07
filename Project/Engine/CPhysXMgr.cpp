@@ -286,9 +286,17 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 
 	auto ObjPos	   = object->Transform()->GetWorldPos();
 	auto OffsetPos = PhysX->m_vOffsetPos;
-	auto FinalPos  = ObjPos + OffsetPos;
-	FinalPos /= m_PPM;
+	auto relrot	   = object->Transform()->GetRelativeRotation();
+	relrot.Normalize();
 
+	Matrix matRot = Matrix::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), relrot.x) *
+					Matrix::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), relrot.y) *
+					Matrix::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), relrot.z);
+	Matrix OffsetPosMat		 = XMMatrixTranslation(OffsetPos.x, OffsetPos.y, OffsetPos.z);
+	auto   RotatedOffesetPos = OffsetPosMat * matRot;
+	auto   VecROP			 = RotatedOffesetPos.Translation();
+	auto   FinalPos			 = ObjPos + OffsetPos;
+	FinalPos /= m_PPM;
 	// 게임 오브젝트의 위치와 회전 정보
 	PxTransform transform(PxVec3(FinalPos.x, FinalPos.y, FinalPos.z),
 						  PxQuat(WorldQuat.x, WorldQuat.y, -WorldQuat.z, -WorldQuat.w));
@@ -525,6 +533,18 @@ void CPhysXMgr::tick()
 		Translation *= m_PPM;
 		Rotation.ToRadian();
 		// Rotation.z = -Rotation.z;
+
+		auto OffsetPos = obj->PhysX()->m_vOffsetPos;
+		auto norrot	   = Rotation;
+		norrot.Normalize();
+		Matrix matRot = Matrix::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), norrot.x) *
+						Matrix::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), norrot.y) *
+						Matrix::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), norrot.z);
+		Matrix OffsetPosMat		 = XMMatrixTranslation(OffsetPos.x, OffsetPos.y, OffsetPos.z);
+		auto   RotatedOffesetPos = DirectX::XMVector3TransformNormal(OffsetPos, matRot);
+		// auto   VecROP			 = RotatedOffesetPos.Translation();
+		// Translation -= RotatedOffesetPos; // 오프셋 적용된 위치
+		Translation -= OffsetPos; // 오프셋 적용된 위치
 
 		// 변화량 추출
 		Vec3 vPosOffset = pTr->GetWorldPos() - Translation;
