@@ -241,6 +241,9 @@
     <ClInclude Include="CBulletWarheadSpawner.h">
       <Filter>ShootingSystem</Filter>
     </ClInclude>
+    <ClInclude Include="CBulletLineScript.h">
+      <Filter>Scripts\ShootingSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -482,6 +485,9 @@
     </ClCompile>
     <ClCompile Include="CBulletWarheadSpawner.cpp">
       <Filter>ShootingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletLineScript.cpp">
+      <Filter>Scripts\ShootingSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
