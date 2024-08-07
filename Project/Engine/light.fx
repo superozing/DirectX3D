@@ -15,6 +15,7 @@
 // Parameter
 // g_mat_1 : ±¤¿ø ½ÃÁ¡ÀÇ View * Proj Matrix
 
+// g_bool_0 : pcf on/off
 // g_int_0 : Light Idex
 // g_tex_0 : PositionTargetTex
 // g_tex_1 : NormalTargetTex
@@ -92,34 +93,40 @@ PS_OUT PS_DirLight(VS_OUT _in)
     int samples = 16;
     float2 texelSize = 1.f / 8192.f;
     
-    for (int i = 0; i < samples; ++i)
+    if (g_bool_0)
     {
-        float2 offset = poissonDisk[i] * texelSize;
-        float2 sampleUV = vShadowMapUV + offset;
-        
-        if (sampleUV.x >= 0.0f && sampleUV.x <= 1.0f && sampleUV.y >= 0.0f && sampleUV.y <= 1.0f)
+        for (int i = 0; i < samples; ++i)
         {
-            float sampleDepth = g_tex_2.Sample(g_sam_0, sampleUV).x;
-            if (sampleDepth + 0.00005f < vLightProjPos.z / vLightProjPos.w)
+            float2 offset = poissonDisk[i] * texelSize;
+            float2 sampleUV = vShadowMapUV + offset;
+        
+            if (sampleUV.x >= 0.0f && sampleUV.x <= 1.0f && sampleUV.y >= 0.0f && sampleUV.y <= 1.0f)
             {
-                fShadowPow += 0.8f;
+                float sampleDepth = g_tex_2.Sample(g_sam_0, sampleUV).x;
+                if (sampleDepth + 0.00005f < vLightProjPos.z / vLightProjPos.w)
+                {
+                    fShadowPow += 0.8f;
+                }
+            }
+        }
+        fShadowPow = saturate(fShadowPow / samples);
+    }
+    else
+    {
+        if (0.f <= vShadowMapUV.x && vShadowMapUV.x <= 1.f
+        && 0.f <= vShadowMapUV.y && vShadowMapUV.y <= 1.f)
+        {
+            float fDepth = g_tex_2.Sample(g_sam_0, vShadowMapUV).x;
+        
+        // Magic Number
+            if (fDepth + 0.00001f < vLightProjPos.z / vLightProjPos.w)
+            {
+                fShadowPow = 0.8f;
             }
         }
     }
     
-    fShadowPow = saturate(fShadowPow / samples);
-    
-    //if (0.f <= vShadowMapUV.x && vShadowMapUV.x <= 1.f
-    //    && 0.f <= vShadowMapUV.y && vShadowMapUV.y <= 1.f)
-    //{
-    //    float fDepth = g_tex_2.Sample(g_sam_0, vShadowMapUV).x;
-        
-    //    // Magic Number
-    //    if (fDepth + 0.00001f < vLightProjPos.z / vLightProjPos.w)
-    //    {
-    //        fShadowPow = 0.8f;
-    //    }
-    //}
+   
         
     output.vDiffuse = LightColor.vColor * (1.f - fShadowPow) + LightColor.vAmbient;
     output.vSpecular = LightColor.vSpecular * (1.f - fShadowPow);

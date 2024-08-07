@@ -119,7 +119,7 @@ void UI::render()
 		// Modal
 		if (!m_bModal)
 		{
-			ImGui::Begin(string(m_strName + m_strID).c_str(), &Active, ImGuiWindowFlags_AlwaysAutoResize);
+			ImGui::Begin(string(m_strName + m_strID).c_str(), &Active, m_iImguiFlag);
 
 			// 활성화, 비활성화 전환이 발생한 경우에는 Activate or Deactivate 를 호출시킨다.
 			if (Active != m_bActive)

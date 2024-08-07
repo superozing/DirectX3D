@@ -95,7 +95,8 @@ void CRenderMgr::render_play()
 	if (m_vecCam.empty())
 		return;
 
-	CreateDynamicShadowDepth();
+	if (m_bGlobalShadowRender)
+		CreateDynamicShadowDepth();
 
 	// 메인 카메라 시점 렌더링
 	if (nullptr != m_vecCam[0])

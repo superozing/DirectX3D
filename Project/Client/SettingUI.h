@@ -4,9 +4,12 @@
 
 class SettingUI : public UI
 {
+	void (SettingUI::*select_render)();
+
 public:
 	virtual void tick() override;
 	virtual void render_update() override;
+	virtual void Activate() override;
 
 private:
 	void Display();
