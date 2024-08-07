@@ -318,6 +318,7 @@ void CBossScript::LoadAsset()
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Shield2);
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_HexShield);
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Explode);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFBoss_Bullet_Shell);
 }
 
 void CBossScript::InitStateMachine()
