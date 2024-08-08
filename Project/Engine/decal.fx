@@ -111,7 +111,7 @@ void AnimationRisingSquare(float2 vLocal, inout float4 _Color) // 사각형 에니메�
     if (vLocal.x <= animProgress)
     {
         _Color = InsideColor;
-
+        _Color.a = 0.5f;
     }
 
     
@@ -234,7 +234,7 @@ PS_OUT PS_Decal(VS_OUT _in)
         {
             AnimationRisingSquare(vLocal.xz, _Color);
             
-            RenderOutline(DecalShape, vLocal.xz, _Color);
+            //RenderOutline(DecalShape, vLocal.xz, _Color);
         }
     
         output.vColor = _Color;
