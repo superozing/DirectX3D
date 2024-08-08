@@ -640,6 +640,9 @@ void CPlayerScript::MoveIngBegin()
 
 int CPlayerScript::MoveIngUpdate()
 {
+	// 발자국 소리를 어떻게 넣어주어야 할까요?
+	//m_vecSound[(UINT)PlayerSoundType::MOVEMENT]->Play(1, 1.f, false);
+
 	if (MoveEndCondition)
 	{
 		switch (GetCoverType())
@@ -862,6 +865,7 @@ void CPlayerScript::SkillThrowBegin()
 	Animator3D()->Play((int)PLAYER_STATE::SkillThrow, 0);
 	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::SkillThrow]);
 	bThrow = false;
+	m_vecSound[(UINT)PlayerSoundType::THROW_UP]->Play(1, 1.f);
 }
 
 int CPlayerScript::SkillThrowUpdate()
@@ -880,6 +884,7 @@ int CPlayerScript::SkillThrowUpdate()
 		{
 			Animator3D()->Pause(false);
 			bThrow = true;
+			m_vecSound[(UINT)PlayerSoundType::THROW_AWAY]->Play(1, 1.f);
 		}
 	}
 

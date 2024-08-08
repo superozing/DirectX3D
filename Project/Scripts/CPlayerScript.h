@@ -57,6 +57,9 @@ enum class PlayerSoundType
 	EX1,
 	EX2,
 	RELOAD,
+	MOVEMENT,
+	THROW_UP,
+	THROW_AWAY,
 	End,
 };
 
