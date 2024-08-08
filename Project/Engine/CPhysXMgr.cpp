@@ -66,7 +66,7 @@ bool CPhysXMgr::PerformRaycast(Vec3 _OriginPos, Vec3 _Dir, tRoRHitInfo& _HitInfo
 	{
 		if (0 != (_DebugFlagMask & RayCastDebugFlag::RayLineVisible))
 		{
-			GamePlayStatic::DrawDebugCylinder(_OriginPos, _OriginPos + _Dir * 1000.f, 5.f, Vec3(0.f, .8f, 0.f), true,
+			GamePlayStatic::DrawDebugCylinder(_OriginPos, _OriginPos + _Dir * 1000.f, 5.f, Vec3(0.f, .8f, 0.f), false,
 											  _LAYER);
 		}
 		return false;
