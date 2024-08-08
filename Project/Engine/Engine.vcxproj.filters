@@ -833,6 +833,9 @@
     <Filter Include="ShaderCode\04. Content\BossSwordBeam">
       <UniqueIdentifier>{c7e8546a-6612-4dbb-8c54-6118dc6d6a35}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\04. Content\BossSwordTrail">
+      <UniqueIdentifier>{bb12dd5b-ccbf-4f22-aa98-e80ff4b0729e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -1004,6 +1007,9 @@
     </FxCompile>
     <FxCompile Include="AfterImageMerge.fx">
       <Filter>ShaderCode\02. Render\3DShader</Filter>
+    </FxCompile>
+    <FxCompile Include="BossSwordTrail.fx">
+      <Filter>ShaderCode\04. Content\BossSwordTrail</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
