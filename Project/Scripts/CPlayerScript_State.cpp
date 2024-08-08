@@ -925,6 +925,8 @@ void CPlayerScript::SkillEXBegin()
 	bEXFirst  = false;
 	bEXSecond = false;
 	bEXThird  = false;
+
+	m_vecSound[(UINT)PlayerSoundType::SKILLEX]->Play(1, 1.f);
 }
 
 int CPlayerScript::SkillEXUpdate()
@@ -964,6 +966,7 @@ int CPlayerScript::SkillEXUpdate()
 		info.fCamSpeed	  = 10.f;
 		info.fCamRotSpeed = 20.f;
 		m_pSpringArm->SetInfo(info);
+		m_vecSound[(UINT)PlayerSoundType::EX2]->Play(1, 1.f);
 	}
 	else if (!bEXThird && curFrm >= 45)
 	{

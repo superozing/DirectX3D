@@ -60,6 +60,7 @@ enum class PlayerSoundType
 	MOVEMENT,
 	THROW_UP,
 	THROW_AWAY,
+	SKILLEX,
 	End,
 };
 

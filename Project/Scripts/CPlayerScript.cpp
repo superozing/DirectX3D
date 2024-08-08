@@ -343,6 +343,9 @@ void CPlayerScript::begin()
 	pSnd									 = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Grenade_Throw_Away);
 	m_vecSound[(UINT)PlayerSoundType::THROW_AWAY] = pSnd;
 
+	pSnd									   = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Skill_Azusa_Ex_Cut_in);
+	m_vecSound[(UINT)PlayerSoundType::SKILLEX] = pSnd;
+
 }
 
 void CPlayerScript::tick()
