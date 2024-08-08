@@ -90,7 +90,7 @@ void CPlayerScript::NormalAttackIngBegin()
 	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalAttackStart]);
 	m_pShootingSystem->ShootPlayerBulletRay();
 	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
-	//m_pBulletLine->GetOwner()->ParticleSystem()->Play();
+	// m_pBulletLine->GetOwner()->ParticleSystem()->Play();
 }
 
 int CPlayerScript::NormalAttackIngUpdate()
@@ -105,7 +105,7 @@ int CPlayerScript::NormalAttackIngUpdate()
 void CPlayerScript::NormalAttackIngEnd()
 {
 	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Stop();
-	//m_pBulletLine->GetOwner()->ParticleSystem()->Stop();
+	// m_pBulletLine->GetOwner()->ParticleSystem()->Stop();
 }
 
 void CPlayerScript::NormalAttackDelayBegin()
@@ -230,7 +230,7 @@ void CPlayerScript::StandAttackIngBegin()
 	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::StandAttackStart]);
 	m_pShootingSystem->ShootPlayerBulletRay();
 	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
-	//m_pBulletLine->GetOwner()->ParticleSystem()->Play();
+	// m_pBulletLine->GetOwner()->ParticleSystem()->Play();
 }
 
 int CPlayerScript::StandAttackIngUpdate()
@@ -245,7 +245,7 @@ int CPlayerScript::StandAttackIngUpdate()
 void CPlayerScript::StandAttackIngEnd()
 {
 	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Stop();
-	//m_pBulletLine->GetOwner()->ParticleSystem()->Stop();
+	// m_pBulletLine->GetOwner()->ParticleSystem()->Stop();
 }
 
 void CPlayerScript::StandAttackDelayBegin()
@@ -388,7 +388,7 @@ void CPlayerScript::KneelAttackIngBegin()
 	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::KneelAttackStart], 0.1f);
 	m_pShootingSystem->ShootPlayerBulletRay();
 	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
-	//m_pBulletLine->GetOwner()->ParticleSystem()->Play();
+	// m_pBulletLine->GetOwner()->ParticleSystem()->Play();
 }
 
 int CPlayerScript::KneelAttackIngUpdate()
@@ -403,7 +403,7 @@ int CPlayerScript::KneelAttackIngUpdate()
 void CPlayerScript::KneelAttackIngEnd()
 {
 	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Stop();
-	//m_pBulletLine->GetOwner()->ParticleSystem()->Stop();
+	// m_pBulletLine->GetOwner()->ParticleSystem()->Stop();
 }
 
 void CPlayerScript::KneelAttackDelayBegin()
