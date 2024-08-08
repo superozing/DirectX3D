@@ -19,6 +19,11 @@ private:
 	UI*			m_Parent;
 	vector<UI*> m_vecChildUI;
 
+	UINT m_iImguiFlag = ImGuiWindowFlags_AlwaysAutoResize;
+
+public:
+	void AddFlag(UINT _flag) { m_iImguiFlag |= _flag; }
+
 protected:
 	static void StaticButton(const wstring& _content, STATIC_BTN_TYPE _type = STATIC_BTN_TYPE::TITLE);
 	static void StaticButton(const string& _content, STATIC_BTN_TYPE _type = STATIC_BTN_TYPE::TITLE);

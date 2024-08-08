@@ -11,7 +11,7 @@
 #define ScaleRatio g_float_1
 #define MaxAnimtime g_vec2_1.x
 #define CurAnimtime g_vec2_1.y
-#define CircleInsideColor g_vec4_1
+#define InsideColor g_vec4_1
 // ==========================
 // Decal Shader
 // Domain   : DOMAIN_DECAL
@@ -90,7 +90,7 @@ void RenderInSide(int Shape, float2 vLocal, inout float4 _Color)
         float2 adjustedDist = CurrnetDist * float2(1.0 / aspectRatio, 1.0); // aspectRatio로 가로 방향 조정
         float2 animSize = float2(animProgress, animProgress);
         if (all(adjustedDist < animSize))
-            _Color = CircleInsideColor;
+            _Color = InsideColor;
     }
     else // 원
     {
@@ -99,9 +99,22 @@ void RenderInSide(int Shape, float2 vLocal, inout float4 _Color)
         float CurrentPixelDistance = distance(vLocal, center);
         
         if (fRadius > CurrentPixelDistance)
-            _Color = CircleInsideColor;
+            _Color = InsideColor;
     }
 
+}
+
+void AnimationRisingSquare(float2 vLocal, inout float4 _Color) // 사각형 에니메이션은 그냥 이것만 씀
+{
+    float animProgress = smoothstep(0, 1, 1 - (CurAnimtime / MaxAnimtime)); // 0에서 1 사이로 제한
+    
+    if (vLocal.x <= animProgress)
+    {
+        _Color = InsideColor;
+
+    }
+
+    
 }
 
 
@@ -208,19 +221,22 @@ PS_OUT PS_Decal(VS_OUT _in)
     }
     else
     {
-
-        //static float fSecondCircleRadius = 0.01 + (g_time * 0.03);
-        
-        //if (PixelDistance < fSecondCircleRadius)
-            //output.vColor = float4(0.7f, 0.f, 0.f, 1.f);
-    
         float4 _Color = { 0.f, 0.f, 0.f, 0.f };
+
+        if (DecalShape == 1)
+        {
+            RenderInSide(DecalShape, vLocal.xz, _Color);
         
-        RenderInSide(DecalShape, vLocal.xz, _Color);
-        
-        RenderOutline(DecalShape, vLocal.xz, _Color);
-      
-        
+            RenderOutline(DecalShape, vLocal.xz, _Color);
+   
+        }
+        else
+        {
+            AnimationRisingSquare(vLocal.xz, _Color);
+            
+            RenderOutline(DecalShape, vLocal.xz, _Color);
+        }
+    
         output.vColor = _Color;
         
     }

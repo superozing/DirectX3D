@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <Engine\CScript.h>
+#include <Engine\CPhysXMgr.h>
 
 enum class BOSS_STATE
 {
@@ -45,6 +46,7 @@ private:
 	CRoRStateMachine<CBossScript>* m_FSM;
 	tBossStatus					   m_BossStatus;
 	class CGameObject*			   m_Target;
+	tRoRHitInfo					   m_hitInfo;
 
 	float m_AttDuration;
 	float m_EXsDuration;
@@ -53,10 +55,14 @@ private:
 	bool m_ActiveEXs;
 
 	bool m_ArrMissile[8]; // 미사일 발사여부
-	bool m_ArrShield[2]; // 쉴드 전개 여부
+	bool m_ArrShield[2];  // 쉴드 전개 여부
+
+	class CBossBulletShellSpawner* m_BulletShell;
+	float						   m_BulletInterval;
 
 	// @@디버그용
-	int m_EXsType; // 현재 선택된 EX 타입
+	int	 m_EXsType; // 현재 선택된 EX 타입
+	bool m_Drill;
 
 #pragma region About State
 
@@ -122,14 +128,16 @@ public:
 	void CheckVital();
 
 	void FireMegaFist();
+	void FireMiniGun();
 	void FireBossMissile(int _idx);
 	void ActiveInnerShield();
 	void ActiveOutsideShield();
 	void ActiveHexShield();
 	void DeActiveHexShield();
 
-	CRoRStateMachine<CBossScript>* GetBossFSM() { return m_FSM; }
+	void LoadAsset();
 
+	CRoRStateMachine<CBossScript>* GetBossFSM() { return m_FSM; }
 
 	CGameObject* GetTarget() { return m_Target; }
 	void		 SetTarget(CGameObject* _Target) { m_Target = _Target; }

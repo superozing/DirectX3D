@@ -35,6 +35,15 @@ void CMemoryPoolMgr::Poolbegin(string strPrefabRelativePath)
 		return;
 }
 
+void CMemoryPoolMgr::PoolSet(string strPrefabRelativePath, int _SetCount)
+{
+	Poolbegin(strPrefabRelativePath);
+
+	CMemoryPool* pPool = FindPool(strPrefabRelativePath);
+
+	pPool->SetPool(_SetCount);
+}
+
 void CMemoryPoolMgr::enter()
 {
 	CGameObject* pObj = GetEX();

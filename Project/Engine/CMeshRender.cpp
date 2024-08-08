@@ -161,6 +161,21 @@ void CMeshRender::render_AfterImage(int instanceCount)
 	if (nullptr == GetMesh())
 		return;
 
+	// Animator3D 업데이트
+	if (Animator3D())
+	{
+		Animator3D()->UpdateData();
+
+		for (UINT i = 0; i < GetMtrlCount(); ++i)
+		{
+			if (nullptr == GetMaterial(i))
+				continue;
+
+			GetMaterial(i)->SetAnim3D(true); // Animation Mesh 알리기
+			GetMaterial(i)->SetBoneCount(Animator3D()->GetBoneCount());
+		}
+	}
+
 	for (int i = 0; i < GetMesh()->GetSubsetCount(); ++i)
 	{
 		if (GetMaterial(i) == nullptr)
@@ -170,4 +185,7 @@ void CMeshRender::render_AfterImage(int instanceCount)
 
 		GetMesh()->render_structuredbuffer_Instance(i, instanceCount);
 	}
+
+	if (Animator3D())
+		Animator3D()->ClearData();
 }

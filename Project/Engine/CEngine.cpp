@@ -85,11 +85,11 @@ void CEngine::progress()
 	CTimeMgr::GetInst()->render();
 	CPhysXMgr::GetInst()->tick();
 
-	// GC
-	CGC::GetInst()->tick();
-
 	// Task
 	CTaskMgr::GetInst()->tick();
+
+	// GC
+	CGC::GetInst()->tick();
 
 	DebugFunctionCheck();
 

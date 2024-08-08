@@ -6,12 +6,12 @@
 #include "CMemoryPoolMgrScript.h"
 #include <Engine/CPhysXMgr.h>
 #include <Engine/CRenderMgr.h>
+#include <Engine/CLogMgr.h>
 
 #define BulletMarkPath "prefab/ShootingSystem/BulletMarkDecal.pref"
 
 CBulletMarkSpawner::CBulletMarkSpawner()
-	: CScript((UINT)SCRIPT_TYPE::BULLETMARKSPAWNER)
-	, m_iMaxDecalCount(20)
+	: m_iMaxDecalCount(20)
 {
 }
 
@@ -25,6 +25,8 @@ void CBulletMarkSpawner::begin()
 	m_PoolMgr = pObj->GetScript<CMemoryPoolMgrScript>();
 
 	m_NormalTargetTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex");
+
+	m_PoolMgr->PoolSet(BulletMarkPath, 10);
 }
 
 void CBulletMarkSpawner::tick()
@@ -63,20 +65,31 @@ void CBulletMarkSpawner::SpawnBulletMarkDecal(const tRoRHitInfo& _HitInfo, CGame
 		spawnFlag = true;
 	}
 
-	
-
 	// 총이 맞은 위치로 총알 자국 데칼 스폰
 	pDecalObj->Transform()->SetRelativePos(_HitInfo.vHitPos);
-
-	// NormalTargetTex 중앙에서 normal 값 가져오기
-	//Vec3 vNormal = GetCenterNormal();
 	
-	// 노말 벡터를 z축으로 회전
-	//Vec3 vRotNormal = Vec3(-vNormal.y, vNormal.x, vNormal.z);
-	//pDecalObj->Transform()->SetRelativeRotation(GetCenterNormal().Normalize());
+	Vec3 vWorldNormal = TransformNormalToWorld(GetCenterNormal());
 	
-	Vec3 normal = GetCenterNormal().Normalize();
+	// 노말 벡터를 Z축 기준으로 90도 회전
+	Vec3 vRotNormal = Vec3(-vWorldNormal.y, vWorldNormal.x, vWorldNormal.z); 
+	
+	// 월드 노말 기준으로 값 세팅
+	//pDecalObj->Transform()->SetDir(vRotNormal);
+	pDecalObj->Transform()->SetRelativeRotation(vRotNormal);
 
+	pDecalObj->Decal()->GetDynamicMaterial(0);
+	pDecalObj->Decal()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture/particle/AlphaCircle.png"));
+	
+	// 오브젝트를 레벨에 스폰
+	if (spawnFlag)
+		GamePlayStatic::SpawnGameObject(pDecalObj, 0);
+
+	// 리스트에 추가
+	m_BulletDecalList.push_back({pDecalObj, _ActiveTime});
+}
+
+Vec3 CBulletMarkSpawner::TransformNormalToWorld(const Vec3& normal)
+{
 	// 노말 벡터를 XMVECTOR로 변환
 	XMVECTOR normalVec = XMVectorSet(normal.x, normal.y, normal.z, 0.0f);
 
@@ -86,61 +99,34 @@ void CBulletMarkSpawner::SpawnBulletMarkDecal(const tRoRHitInfo& _HitInfo, CGame
 	// 변환된 벡터를 Vec3로 다시 변환
 	Vec3 worldNormal;
 	XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&worldNormal), normalVec);
-	
-	// 월드 노말 기준으로 값 세팅
-	pDecalObj->Transform()->SetRelativeRotation(worldNormal);
 
-	pDecalObj->Decal()->GetDynamicMaterial(0);
-	pDecalObj->Decal()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture/particle/AlphaCircle.png"));
-	// 오브젝트를 레벨에 스폰
-	if (spawnFlag)
-		GamePlayStatic::SpawnGameObject(pDecalObj, 0);
-
-	// 리스트에 추가
-	m_BulletDecalList.push_back({pDecalObj, _ActiveTime});
+	return worldNormal.Normalize();
 }
 
 Vec3 CBulletMarkSpawner::GetCenterNormal()
 {
-	Vec2 vTexResol  = Vec2(m_NormalTargetTex->GetWidth(), m_NormalTargetTex->GetHeight());
-
 	// 픽셀 배열 가져오기
 	tPixel* pixels = m_NormalTargetTex->GetPixels();
+
+	// 픽셀을 가져오는 것을 실패했을 경우 예외 처리
 	if (!pixels)
 	{
-		int i = 0;
+		CLogMgr::GetInst()->AddLog(Log_Level::ERR, L"Can't Get NormalTargetTex Pixels.");
+		return Vec3();
 	}
 
-	// 화면 중앙 좌표
-	int centerX = vTexResol.x / 2;
-	int centerY = vTexResol.y / 2;
+	// 노말 타겟 텍스쳐 중앙 좌표 구하기
+	Vec2 vTexResol = Vec2(m_NormalTargetTex->GetWidth(), m_NormalTargetTex->GetHeight());
+	Vec2 vTexCenter = vTexResol / 2;
 
 	// 1차원 배열에서 인덱스 계산
-	int idx = centerY * vTexResol.x + centerX;
+	int idx = vTexCenter.y * vTexResol.x + vTexCenter.x;
 
-	// 중앙 픽셀 값을 Vec3로 반환
+	// 중앙 픽셀 값을 가져오기
 	tPixel& pixel  = pixels[idx];
-	//Vec3 normal = {static_cast<float>(pixel.r), static_cast<float>(pixel.g), static_cast<float>(pixel.b)};
-	//// 중앙 픽셀 값을 Vec3로 반환 (노말 데이터가 tPixel에 저장된 방식에 따라 변환 필요)
-	Vec3 normal = {static_cast<float>(pixel.r) / 255.0f * 2.0f - 1.0f,
+	Vec3	normal = {static_cast<float>(pixel.r) / 255.0f * 2.0f - 1.0f,
 					  static_cast<float>(pixel.g) / 255.0f * 2.0f - 1.0f,
 					  static_cast<float>(pixel.b) / 255.0f * 2.0f - 1.0f};
 
-	return normal;
-}
-
-void CBulletMarkSpawner::SaveToFile(FILE* _File)
-{
-}
-
-void CBulletMarkSpawner::SaveToFile(ofstream& fout)
-{
-}
-
-void CBulletMarkSpawner::LoadFromFile(FILE* _File)
-{
-}
-
-void CBulletMarkSpawner::LoadFromFile(ifstream& fin)
-{
+	return normal.Normalize();
 }

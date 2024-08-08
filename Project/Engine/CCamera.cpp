@@ -486,6 +486,10 @@ void CCamera::render_forward()
 
 void CCamera::render_postprocess()
 {
+
+	// 잔상 처리
+	merge_afterimage();
+
 	// Blur&Bloom처리
 	if (true == CRenderMgr::GetInst()->m_GlobalBloomInfo.BloomActivate)
 	{
@@ -511,6 +515,8 @@ void CCamera::render_postprocess()
 	//}
 
 	// m_vecPostProcess.clear();
+
+	m_vecAfterImage.clear();
 }
 
 void CCamera::Merge()
@@ -812,8 +818,26 @@ void CCamera::render_afterimage()
 			}
 		}
 	}
+}
 
-	m_vecAfterImage.clear();
+void CCamera::merge_afterimage()
+{
+	auto RenderTarget	  = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
+	auto ColorCopy		  = CAssetMgr::GetInst()->FindAsset<CTexture>(L"PostProcessTex");
+	auto AfterImageSource = CAssetMgr::GetInst()->FindAsset<CTexture>(L"AfterImageTargetTex");
+
+	// 매쉬,머터리얼 받아오기
+	static Ptr<CMesh>	  pRectMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect);
+	static Ptr<CMaterial> pAfterImageMtrl;
+	pAfterImageMtrl = CAssetMgr::GetInst()->Load<CMaterial>(MTRLAfterImageMergeMtrl);
+
+	pAfterImageMtrl->SetTexParam(TEX_PARAM::TEX_0, ColorCopy);
+	pAfterImageMtrl->SetTexParam(TEX_PARAM::TEX_1, AfterImageSource);
+	pAfterImageMtrl->UpdateData();
+
+	// 타겟->리소스 복사
+	CRenderMgr::GetInst()->CopyFromTextureToTexture(ColorCopy, RenderTarget);
+	pRectMesh->render(0);
 }
 
 #include "CKeyMgr.h"

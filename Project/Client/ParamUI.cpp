@@ -559,8 +559,16 @@ bool ParamUI::Param_MGR_PHYSX(void* _pPhysXMgr)
 	// ImGui::DragFloat("LestOffset:", &(pPhysXMgr->m_fLestOffset));
 
 	// 레이어 수를 정의합니다.
+	static float InvTimeStep;
+	InvTimeStep = 1.f / pPhysXMgr->m_TimeStep;
+	ImGui::DragFloat("TimeStep(FPS):", &(InvTimeStep));
+	pPhysXMgr->m_TimeStep		 = 1.f / InvTimeStep;
 	const int		  LayerCount = static_cast<int>(LAYER::LAYER_MAX);
 	static const auto LayerMap	 = GamePlayStatic::GetLayerMap();
+
+	ImGui::Checkbox("UseTransformTreshold", &(pPhysXMgr->m_bUseTH));
+	ImGui::DragFloat2("PosTreshold", &(pPhysXMgr->m_fPosTreshold.x), 0.0001f, 0.f, 10.f, "%.4f");
+	ImGui::DragFloat2("RotTreshold", &(pPhysXMgr->m_fRotTreshold.x), 0.0001f, 0.f, 10.f, "%.4f");
 
 	static ImGuiTableFlags table_flags = ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersInnerH |
 										 ImGuiTableFlags_Hideable | ImGuiTableFlags_Resizable |

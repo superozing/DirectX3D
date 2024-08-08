@@ -12,6 +12,8 @@
 #include "CBulletHitParticleSpawner.h"
 #include "CShootingRecoil.h"
 #include "CPlayerScript.h"
+#include "CDamageFontSpawner.h"
+#include "CBulletWarheadSpawner.h"
 
 CShootingSystemScript::CShootingSystemScript()
 	: CScript((UINT)SCRIPT_TYPE::SHOOTINGSYSTEMSCRIPT)
@@ -21,6 +23,20 @@ CShootingSystemScript::CShootingSystemScript()
 
 CShootingSystemScript::~CShootingSystemScript()
 {
+	if (m_pDamagedDirectionMgr)
+		delete m_pDamagedDirectionMgr;
+	if (m_pBulletMarkDecalSpawner)
+		delete m_pBulletMarkDecalSpawner;
+	if (m_pBulletShellSpawner)
+		delete m_pBulletShellSpawner;
+	if (m_pBulletHitParticleSpawner)
+		delete m_pBulletHitParticleSpawner;
+	if (m_pShootingRecoil)
+		delete m_pShootingRecoil;
+	if (m_pDamageFontSpawner)
+		delete m_pDamageFontSpawner;	
+	if (m_pBulletWarheadSpawner)
+		delete m_pBulletWarheadSpawner;
 }
 
 void CShootingSystemScript::ShootPlayerBulletRay()
@@ -38,8 +54,8 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 									m_fSpreadRatio * CRandomMgr::GetInst()->GetRandomFloat() * MaxSpread);
 
 	bool isBulletHit =
-		CPhysXMgr::GetInst()->PerfomRaycast(pMainCam->Transform()->GetWorldPos(), ShootDir, hitInfo,
-											(UINT)LAYER::LAYER_PLAYER_SHOOTING_RAY, RayCastDebugFlag::AllVisible);
+		CPhysXMgr::GetInst()->PerformRaycast(pMainCam->Transform()->GetWorldPos(), ShootDir, hitInfo,
+											 (UINT)LAYER::LAYER_PLAYER_SHOOTING_RAY, RayCastDebugFlag::AllInvisible);
 
 	if (isBulletHit)
 	{
@@ -51,12 +67,11 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 
 		case LAYER::LAYER_PLANE:
 		case LAYER::LAYER_CEIL:
-		case LAYER::LAYER_WALL:
-		{
+		case LAYER::LAYER_WALL: {
 			m_pBulletMarkDecalSpawner->SpawnBulletMarkDecal(hitInfo, m_pPlayer);
 			m_pBulletHitParticleSpawner->SpawnBulletHitParticle(hitInfo);
 		}
-			break;
+		break;
 
 		case LAYER::LAYER_PLAYER:
 			break;
@@ -64,16 +79,17 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 		case LAYER::LAYER_PLAYER_SKILL:
 			break;
 
-		case LAYER::LAYER_MONSTER:
-		{
+		case LAYER::LAYER_MONSTER: {
 			if (hitInfo.pOtherObj->PhysX()->m_bPhysBodyType == PhysBodyType::DYNAMIC)
 			{
 				hitInfo.pOtherObj->PhysX()->applyBulletImpact(
-					PxVec3(ShootDir.x, ShootDir.y, ShootDir.z), 1000.f,
+					PxVec3(ShootDir.x, ShootDir.y, ShootDir.z), 3000.f,
 					PxVec3(hitInfo.vHitPos.x, hitInfo.vHitPos.y, hitInfo.vHitPos.z));
 			}
+			m_pDamageFontSpawner->SpawnDamageFont(hitInfo.vHitPos, 10);
+			m_pBulletHitParticleSpawner->SpawnBulletHitParticle(hitInfo);
 		}
-			break;
+		break;
 
 		case LAYER::LAYER_MONSTER_SKILL:
 			break;
@@ -108,11 +124,13 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 		default:
 			break;
 		}
-
 	}
 
 	// 무기 본 위치에 탄피 오브젝트 생성, Velocity 추가
 	m_pBulletShellSpawner->SpawnBulletShell(m_pPlayer);
+
+	// 무기 총구 위치에 탄두 오브젝트 
+	m_pBulletWarheadSpawner->SpawnBulletWarhead(m_pPlayer);
 
 	// 반동 적용
 	m_pShootingRecoil->ApplyShootingRecoil();
@@ -130,8 +148,8 @@ void CShootingSystemScript::ShootMainCamRay()
 	auto		pMainCam = CRenderMgr::GetInst()->GetMainCam();
 	auto		FrontDir = pMainCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
 
-	bool isContact = CPhysXMgr::GetInst()->PerfomRaycast(pMainCam->Transform()->GetWorldPos(), FrontDir, hitInfo,
-														 (UINT)LAYER::LAYER_RAYCAST, RayCastDebugFlag::AllVisible);
+	bool isContact = CPhysXMgr::GetInst()->PerformRaycast(pMainCam->Transform()->GetWorldPos(), FrontDir, hitInfo,
+														  (UINT)LAYER::LAYER_RAYCAST, RayCastDebugFlag::AllInvisible);
 
 	m_bShootAvailable = true;
 
@@ -143,55 +161,39 @@ void CShootingSystemScript::ShootMainCamRay()
 		m_MainCamAimLayer = LAYER::LAYER_DEFAULT;
 }
 
-void CShootingSystemScript::SpawnBulletShell()
-{
-}
-
 void CShootingSystemScript::begin()
 {
 	// 레벨에서 플레이어 스크립트 가져오기
 	m_pPlayer		= CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(PlayerName);
 	m_pPlayerScript = m_pPlayer->GetScript<CPlayerScript>();
 
-	// m_pDamagedDirectionMgr = new CDamagedDirectionMgr;
-	// GetOwner()->AddComponent(m_pDamagedDirectionMgr);
-
 	m_pBulletMarkDecalSpawner = new CBulletMarkSpawner;
-	GetOwner()->AddComponent(m_pBulletMarkDecalSpawner);
-
 	m_pBulletShellSpawner = new CBulletShellSpawner;
-	GetOwner()->AddComponent(m_pBulletShellSpawner);
-
 	m_pBulletHitParticleSpawner = new CBulletHitParticleSpawner;
-	GetOwner()->AddComponent(m_pBulletHitParticleSpawner);
-
+	m_pDamageFontSpawner = new CDamageFontSpawner;
 	m_pShootingRecoil = new CShootingRecoil;
-	GetOwner()->AddComponent(m_pShootingRecoil);
-	
+	m_pBulletWarheadSpawner = new CBulletWarheadSpawner;
+
+	m_pBulletMarkDecalSpawner->begin();
+	m_pBulletShellSpawner->begin();
+	m_pBulletHitParticleSpawner->begin();
+	m_pDamageFontSpawner->begin();
+	m_pBulletWarheadSpawner->begin();
+
 	// 윈도우 좌표 기준이기 떄문에 반동을 주기 위해 y를 -방향으로 세팅
-	m_pShootingRecoil->SetShootingRecoilValue(Vec2(0.f, -1.f)); // 나중에 수치를 조정할 필요가 있음.
+	m_pShootingRecoil->SetShootingRecoilValue(Vec2(0.f, -0.f)); // 나중에 수치를 조정할 필요가 있음.
 	// 예를 들어 자세에 따라서 다른 반동을 준다던가... 그런 것 들 말이죠.
 }
 
 void CShootingSystemScript::tick()
 {
 	ShootMainCamRay();
+	
+	m_pBulletMarkDecalSpawner->tick();
+	m_pBulletShellSpawner->tick();
+	m_pBulletHitParticleSpawner->tick();
+	m_pDamageFontSpawner->tick();
+	m_pBulletWarheadSpawner->tick();
 
 	m_fSpreadRatio = RoRMath::ClampFloat(m_fSpreadRatio - DT, 0.1f);
-}
-
-void CShootingSystemScript::SaveToFile(FILE* _File)
-{
-}
-
-void CShootingSystemScript::SaveToFile(ofstream& fout)
-{
-}
-
-void CShootingSystemScript::LoadFromFile(FILE* _File)
-{
-}
-
-void CShootingSystemScript::LoadFromFile(ifstream& fin)
-{
 }

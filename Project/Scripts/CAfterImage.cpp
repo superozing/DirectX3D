@@ -9,7 +9,7 @@
 
 #include <Engine\CAnimator3D.h>
 
-#include <Engine\CStructuredBuffer.h>
+#include <Engine\CRenderComponent.h>
 
 CAfterImage::CAfterImage()
 	: CScript((UINT)SCRIPT_TYPE::AFTERIMAGE)
@@ -17,32 +17,52 @@ CAfterImage::CAfterImage()
 
 	// 디폴트 세팅
 
-	m_info.NodeCount = 10;
-	m_info.TimeStep	 = 0.1f;
-	fUpdateTimer	 = 0.1f;
-	bDisplayNode	 = true;
+	m_info.NodeCount	= 10;
+	m_info.TimeStep		= 0.1f;
+	m_info.fMaxLifeTime = 0.1f;
+	m_info.iColorMode	= (int)ColorMode::Original;
+	fUpdateTimer		= 0.1f;
+	bDisplay			= true;
+
+	fSetLifeTime = m_info.fMaxLifeTime;
+
+	strDisplayColorMode = ToString(magic_enum::enum_name((ColorMode)m_info.iColorMode));
+
+	m_info.AfterImageColor = Vec4(0.f, 0.f, 0.f, 0.f);
 
 	AppendScriptParam("Node Count", SCRIPT_PARAM::INT, &m_info.NodeCount, 0, 10, false, "Afterimage Node count");
 	AppendScriptParam("Time Interval", SCRIPT_PARAM::FLOAT, &m_info.TimeStep);
-	AppendScriptParam("View Node", SCRIPT_PARAM::BOOL, &bDisplayNode);
+	AppendScriptParam("Max Life Time", SCRIPT_PARAM::FLOAT, &fSetLifeTime);
+
+	AppendScriptParam("Color Mode", SCRIPT_PARAM::STRING, &strDisplayColorMode);
+	SameLine();
+	AppendMemberFunction("Change", SCRIPT_PARAM::FUNC_MEMBER, "", std::bind(&CAfterImage::ChangeColorMode, this));
+
+	AppendScriptParam("AfterImageColor", SCRIPT_PARAM::COLOR, &m_info.AfterImageColor);
+
+	AppendScriptParam("View Node", SCRIPT_PARAM::BOOL, &bDisplay);
 }
 
 CAfterImage::~CAfterImage()
 {
+	Delete_Array(m_BoneArr);
 }
 
 void CAfterImage::begin()
 {
 	CAnimator3D* pAnimator = GetOwner()->GetParent()->Animator3D();
-	int			 BoneCount = (int)pAnimator->GetBoneCount();
-
-	/*for (int i = 0; i < AfterImageMaxCount; ++i)
+	if (pAnimator != nullptr)
 	{
-		CStructuredBuffer* pBuffer = new CStructuredBuffer;
-		pBuffer->Create(sizeof(Matrix), BoneCount, SB_READ_TYPE::READ_ONLY, true);
+		int BoneCount = (int)pAnimator->GetBoneCount();
 
-		m_Bonearr[i] = pBuffer;
-	}*/
+		for (int i = 0; i < AfterImageMaxCount; ++i)
+		{
+			CStructuredBuffer* pBuffer = new CStructuredBuffer;
+			pBuffer->Create(sizeof(Matrix), BoneCount, SB_READ_TYPE::READ_WRITE, true);
+
+			m_BoneArr[i] = pBuffer;
+		}
+	}
 }
 
 void CAfterImage::tick()
@@ -58,44 +78,61 @@ void CAfterImage::tick()
 
 		if (m_info.NodeCount > 1)
 		{
-			for (int i = m_info.NodeCount; i > 1; --i)
+			for (int i = 1; m_info.NodeCount > i; ++i)
 			{
-				m_info.WorldTransform[i - 1] = m_info.WorldTransform[i - 2];
-
-				if (pAnimator != nullptr)
-				{
-					m_info.AnimationClipIdx[i - 1] = m_info.AnimationClipIdx[i - 2];
-					m_info.AnimationRatio[i - 1]   = m_info.AnimationRatio[i - 2];
-				}
+				m_info.WorldTransform[i] = m_info.WorldTransform[i + 1];
+				m_info.fLifeTime[i]		 = m_info.fLifeTime[i + 1];
 			}
 		}
 
 		Matrix CurrentWolrdMat = GetOwner()->GetParent()->Transform()->GetWorldMat();
 
-		m_info.WorldTransform[0] = CurrentWolrdMat;
+		m_info.WorldTransform[m_info.NodeCount - 1] = CurrentWolrdMat;
+		m_info.fLifeTime[m_info.NodeCount - 1]		= m_info.fMaxLifeTime;
 
-		/*if (pAnimator != nullptr)
+		if (pAnimator != nullptr)
 		{
-			m_info.AnimationClipIdx[0] = pAnimator->GetCurClip();
-			m_info.AnimationRatio[0]   = pAnimator->GetCurClipLength();
-
 			UpdateBoneMatrix();
-
-			m_Bonearr[0] = pAnimator->GetFinalBoneMat();
-		}*/
+		}
 	}
+
+	CalLifeTime(DT);
+
+	m_info.fMaxLifeTime = fSetLifeTime;
 
 	CCamera* pMainCam = CRenderMgr::GetInst()->GetMainCam();
 
-	pMainCam->RegisterAfterImage(this->GetOwner()->GetParent(), m_info);
+	if (bDisplay == true)
+		pMainCam->RegisterAfterImage(this->GetOwner()->GetParent(), m_info);
 }
 
-void CAfterImage::UpdateBoneMatrix()
+void CAfterImage::UpdateBoneMatrix() // 본은 hlsl에서 거꾸로 사용한다. 구조화 버퍼의 뭔가모를 에러가 있어서
 {
-	//for (int i = 1; i < AfterImageMaxCount - 1; ++i)
-	//{
-	//	m_Bonearr[i + 1] = m_Bonearr[i];
-	//}
+	CAnimator3D* pAnimator = GetOwner()->GetParent()->Animator3D();
+	int			 boneCount = pAnimator->GetBoneCount();
+
+	// 새로운 포즈를 첫 번째 버퍼에 저장
+	m_BoneArr[0]->SetData(pAnimator->GetFinalBoneMat(), 1);
+
+	// 나머지 버퍼들을 한 칸씩 밀기
+	for (int i = m_info.NodeCount - 1; i > 0; --i)
+	{
+		void* data = nullptr;
+		if (data != nullptr)
+		{
+			m_BoneArr[i - 1]->GetData(&data, 1);
+			m_BoneArr[i]->SetData(data, 1);
+		}
+	}
+}
+
+void CAfterImage::CalLifeTime(float _Time)
+{
+	for (int i = 0; i < AfterImageMaxCount; ++i)
+	{
+		if (m_info.fLifeTime[i] > 0.f)
+			m_info.fLifeTime[i] -= _Time;
+	}
 }
 
 void CAfterImage::ParticularUpdateData(string _Key)
@@ -107,13 +144,13 @@ void CAfterImage::ParticularUpdateData(string _Key)
 	AfterImageBuffer->SetData(&m_info, 1);
 	AfterImageBuffer->UpdateData(29);
 
-	/*for (int i = 0; i < m_info.NodeCount; ++i)
+	for (int i = 0; i < m_info.NodeCount; ++i)
 	{
-		if (m_Bonearr[i] != nullptr)
+		if (m_BoneArr[i] != nullptr)
 		{
-			m_Bonearr[i]->UpdateData(40 + i);
+			m_BoneArr[i]->UpdateData(40 + i);
 		}
-	}*/
+	}
 }
 
 void CAfterImage::ParticularClear(string _Key)
@@ -124,18 +161,35 @@ void CAfterImage::ParticularClear(string _Key)
 	CStructuredBuffer* AfterImageBuffer = CDevice::GetInst()->GetStructuredBuffer(SB_TYPE::AFTERIMAGE);
 	AfterImageBuffer->Clear(29);
 
-	/*for (int i = 0; i < AfterImageMaxCount; ++i)
+	for (int i = 0; i < AfterImageMaxCount; ++i)
 	{
-		if (m_Bonearr[i] != nullptr)
+		if (m_BoneArr[i] != nullptr)
 		{
-			m_Bonearr[i]->Clear(40 + i);
+			m_BoneArr[i]->Clear(40 + i);
 		}
-	}*/
+	}
+}
+
+void CAfterImage::ChangeColorMode()
+{
+	if (m_info.iColorMode == 0)
+	{
+		m_info.iColorMode	= 1;
+		strDisplayColorMode = ToString(magic_enum::enum_name((ColorMode)m_info.iColorMode));
+	}
+	else if (m_info.iColorMode == 1)
+	{
+		m_info.iColorMode	= 0;
+		strDisplayColorMode = ToString(magic_enum::enum_name((ColorMode)m_info.iColorMode));
+	}
 }
 
 #define TagAfterImageCount "[AfterImage Node Count]"
 #define TagAfterImageTimeStep "[After Image TimeStep]"
 #define TagRenderNode "[Node bRender]"
+#define TagMaxLifeTime "[AfterImage Max Life Time]"
+#define TagColorType "[AfterImage Color Type]"
+#define TagCustomColor "[AfterImage Custom Color]"
 
 void CAfterImage::SaveToFile(ofstream& fout)
 {
@@ -146,7 +200,17 @@ void CAfterImage::SaveToFile(ofstream& fout)
 	fout << m_info.TimeStep << endl;
 
 	fout << TagRenderNode << endl;
-	fout << (int)bDisplayNode << endl;
+	fout << (int)bDisplay << endl;
+
+	fout << TagMaxLifeTime << endl;
+	fout << m_info.fMaxLifeTime << endl;
+
+	fout << TagColorType << endl;
+	fout << m_info.iColorMode << endl;
+
+	fout << TagCustomColor << endl;
+	fout << m_info.AfterImageColor.x << " " << m_info.AfterImageColor.y << " " << m_info.AfterImageColor.z << " "
+		 << m_info.AfterImageColor.w << endl;
 }
 
 void CAfterImage::LoadFromFile(ifstream& fin)
@@ -158,5 +222,22 @@ void CAfterImage::LoadFromFile(ifstream& fin)
 	fin >> m_info.TimeStep;
 
 	Utils::GetLineUntilString(fin, TagRenderNode);
-	fin >> bDisplayNode;
+	fin >> bDisplay;
+
+	Utils::GetLineUntilString(fin, TagMaxLifeTime);
+	fin >> m_info.fMaxLifeTime;
+
+	fSetLifeTime = m_info.fMaxLifeTime;
+
+	Utils::GetLineUntilString(fin, TagColorType);
+	fin >> m_info.iColorMode;
+
+	strDisplayColorMode = ToString(magic_enum::enum_name((ColorMode)m_info.iColorMode));
+
+	Vec4 vColor;
+
+	Utils::GetLineUntilString(fin, TagCustomColor);
+	fin >> vColor.x >> vColor.y >> vColor.z >> vColor.w;
+
+	m_info.AfterImageColor = vColor;
 }

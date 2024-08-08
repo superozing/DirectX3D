@@ -82,9 +82,6 @@
     <ClInclude Include="CHaloScript.h">
       <Filter>Scripts\Player</Filter>
     </ClInclude>
-    <ClInclude Include="CStudentScript.h">
-      <Filter>Scripts\Player</Filter>
-    </ClInclude>
     <ClInclude Include="CPlayerScript.h">
       <Filter>Scripts\Player</Filter>
     </ClInclude>
@@ -175,9 +172,6 @@
     <ClInclude Include="CMuzzleFlashScript.h">
       <Filter>Scripts\Particle\MuzzleFlash</Filter>
     </ClInclude>
-    <ClInclude Include="CBulletHitParticleSpawner.h">
-      <Filter>Scripts\ShootingSystem</Filter>
-    </ClInclude>
     <ClInclude Include="CBulletScript.h">
       <Filter>Scripts\ShootingSystem</Filter>
     </ClInclude>
@@ -202,9 +196,6 @@
     <ClInclude Include="CProjectileScript.h">
       <Filter>BassClass</Filter>
     </ClInclude>
-    <ClInclude Include="CShootingRecoil.h">
-      <Filter>Scripts\ShootingSystem</Filter>
-    </ClInclude>
     <ClInclude Include="CTitle.h">
       <Filter>Scripts\Level\Title</Filter>
     </ClInclude>
@@ -223,17 +214,59 @@
     <ClInclude Include="CEventListener.h">
       <Filter>BassClass</Filter>
     </ClInclude>
-    <ClInclude Include="CBulletShellSpawner.h">
-      <Filter>Scripts\ShootingSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="CBulletMarkSpawner.h">
-      <Filter>Scripts\ShootingSystem</Filter>
-    </ClInclude>
     <ClInclude Include="CShootingSystemScript.h">
       <Filter>Scripts\ShootingSystem</Filter>
     </ClInclude>
     <ClInclude Include="CAfterImage.h">
       <Filter>Scripts\Render\AfterImage</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletHitParticleSpawner.h">
+      <Filter>ShootingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletMarkSpawner.h">
+      <Filter>ShootingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletShellSpawner.h">
+      <Filter>ShootingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CShootingRecoil.h">
+      <Filter>ShootingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CDamageFontSpawner.h">
+      <Filter>ShootingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletWarheadSpawner.h">
+      <Filter>ShootingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CBossBulletShellSpawner.h">
+      <Filter>Scripts\ShootingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CBossSmokeWaveScript.h">
+      <Filter>Scripts\Boss\SmokeWave</Filter>
+    </ClInclude>
+    <ClInclude Include="CChildCollider.h">
+      <Filter>Scripts\Manager\ChildCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="CCoverJumpTutorialEvent.h">
+      <Filter>Scripts\Event\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="CCoverLowEventListener.h">
+      <Filter>Scripts\Event\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="CMiniGunScript.h">
+      <Filter>Scripts\Particle\Minigun</Filter>
+    </ClInclude>
+    <ClInclude Include="CParticleSpawnScript.h">
+      <Filter>Scripts\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="CSmokeScript.h">
+      <Filter>Scripts\Particle\Smoke</Filter>
+    </ClInclude>
+    <ClInclude Include="CSpawnPhysX.h">
+      <Filter>Scripts\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="CTutorialEndingEvent.h">
+      <Filter>Scripts\Event\Tutorial</Filter>
     </ClInclude>
     <ClInclude Include="CDamageRay.h">
       <Filter>Scripts</Filter>
@@ -319,9 +352,6 @@
       <Filter>Scripts\Manager\MemoryPool</Filter>
     </ClCompile>
     <ClCompile Include="CHaloScript.cpp">
-      <Filter>Scripts\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="CStudentScript.cpp">
       <Filter>Scripts\Player</Filter>
     </ClCompile>
     <ClCompile Include="CPlayerScript.cpp">
@@ -417,9 +447,6 @@
     <ClCompile Include="CMuzzleFlashScript.cpp">
       <Filter>Scripts\Particle\MuzzleFlash</Filter>
     </ClCompile>
-    <ClCompile Include="CBulletHitParticleSpawner.cpp">
-      <Filter>Scripts\ShootingSystem</Filter>
-    </ClCompile>
     <ClCompile Include="CBulletScript.cpp">
       <Filter>Scripts\ShootingSystem</Filter>
     </ClCompile>
@@ -441,9 +468,6 @@
     <ClCompile Include="CProjectileScript.cpp">
       <Filter>BassClass</Filter>
     </ClCompile>
-    <ClCompile Include="CShootingRecoil.cpp">
-      <Filter>Scripts\ShootingSystem</Filter>
-    </ClCompile>
     <ClCompile Include="CTitle.cpp">
       <Filter>Scripts\Level\Title</Filter>
     </ClCompile>
@@ -462,17 +486,59 @@
     <ClCompile Include="CEventListener.cpp">
       <Filter>BassClass</Filter>
     </ClCompile>
-    <ClCompile Include="CBulletMarkSpawner.cpp">
-      <Filter>Scripts\ShootingSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="CBulletShellSpawner.cpp">
-      <Filter>Scripts\ShootingSystem</Filter>
-    </ClCompile>
     <ClCompile Include="CShootingSystemScript.cpp">
       <Filter>Scripts\ShootingSystem</Filter>
     </ClCompile>
     <ClCompile Include="CAfterImage.cpp">
       <Filter>Scripts\Render\AfterImage</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletHitParticleSpawner.cpp">
+      <Filter>ShootingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletMarkSpawner.cpp">
+      <Filter>ShootingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletShellSpawner.cpp">
+      <Filter>ShootingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CShootingRecoil.cpp">
+      <Filter>ShootingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CDamageFontSpawner.cpp">
+      <Filter>ShootingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletWarheadSpawner.cpp">
+      <Filter>ShootingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CBossBulletShellSpawner.cpp">
+      <Filter>Scripts\ShootingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CBossSmokeWaveScript.cpp">
+      <Filter>Scripts\Boss\SmokeWave</Filter>
+    </ClCompile>
+    <ClCompile Include="CChildCollider.cpp">
+      <Filter>Scripts\Manager\ChildCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="CCoverJumpTutorialEvent.cpp">
+      <Filter>Scripts\Event\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="CCoverLowEventListener.cpp">
+      <Filter>Scripts\Event\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="CMiniGunScript.cpp">
+      <Filter>Scripts\Particle\Minigun</Filter>
+    </ClCompile>
+    <ClCompile Include="CParticleSpawnScript.cpp">
+      <Filter>Scripts\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="CSmokeScript.cpp">
+      <Filter>Scripts\Particle\Smoke</Filter>
+    </ClCompile>
+    <ClCompile Include="CSpawnPhysX.cpp">
+      <Filter>Scripts\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="CTutorialEndingEvent.cpp">
+      <Filter>Scripts\Event\Tutorial</Filter>
     </ClCompile>
     <ClCompile Include="CDamageRay.cpp">
       <Filter>Scripts</Filter>
@@ -649,6 +715,24 @@
     </Filter>
     <Filter Include="Scripts\Render\AfterImage">
       <UniqueIdentifier>{99f4cea7-18fd-4509-956c-5c2ef7a671e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShootingSystem">
+      <UniqueIdentifier>{ffaf2495-1187-4ac8-9200-ed4a440ab4c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Boss\SmokeWave">
+      <UniqueIdentifier>{0747c7b4-8198-40f8-9524-7430eeae9a83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager\ChildCollider">
+      <UniqueIdentifier>{91f4b420-6a0c-4a29-82e2-ba2cfff80f0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Particle\Minigun">
+      <UniqueIdentifier>{c31d5188-d6f8-47aa-a12f-42f3cae74a99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Particle\Smoke">
+      <UniqueIdentifier>{4817127e-0f21-4666-9593-f034b78ef244}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Test">
+      <UniqueIdentifier>{6c3cc7b2-0f38-43dc-bf8a-c55783846644}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

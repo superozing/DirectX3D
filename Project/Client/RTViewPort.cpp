@@ -134,9 +134,21 @@ void RTViewPort::render_update()
 		ImGui::EndDragDropTarget();
 	}
 
-	// 스왑체인 렌더타겟 복사
-	ImGui::GetWindowDrawList()->AddImage(m_ViewPortTexture->GetSRV().Get(), ImGui::GetWindowPos(),
-										 ImGui::GetWindowPos() + ImGui::GetWindowSize(), ImVec2(0, 0), ImVec2(1, 1));
+	// 스케일 계산 + 종횡비 및 최대크기 보장
+	float scaleX = m_ViewportSize.x / static_cast<float>(m_ViewPortTexture.Get()->GetWidth());
+	float scaleY = m_ViewportSize.y / static_cast<float>(m_ViewPortTexture.Get()->GetHeight());
+	float scale	 = (std::min)(scaleX, scaleY);
+
+	// 렌더링 크기 및 위치 계산 + 가운데 비율 맞춰주려고
+	ImVec2 renderSize(m_ViewPortTexture.Get()->GetWidth() * scale, (m_ViewPortTexture.Get()->GetHeight() * scale));
+	ImVec2 renderPos(m_ViewportPos.x + (m_ViewportSize.x - renderSize.x) * 0.5f,
+					 (m_ViewportPos.y + (m_ViewportSize.y - renderSize.y) * 0.5f + m_fTapHeight));
+	;
+
+	// AddImage를 사용하여 뷰포트에 이미지 렌더링
+	ImGui::GetWindowDrawList()->AddImage(m_ViewPortTexture->GetSRV().Get(), renderPos,
+										 ImVec2(renderPos.x + renderSize.x, renderPos.y + renderSize.y), ImVec2(0, 0),
+										 ImVec2(1, 1));
 
 	CImGuiMgr::GetInst()->SetViewportFocused(ImGui::IsWindowFocused(ImGuiFocusedFlags_None));
 

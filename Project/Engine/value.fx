@@ -132,17 +132,17 @@ Texture2D g_NoiseTex : register(t14);
 SamplerState g_sam_0 : register(s0);
 SamplerState g_sam_1 : register(s1);
 
-//AfterImageBoneBufer
-StructuredBuffer<Matrix> g_AfterImgeBoneMat : register(t40);
-StructuredBuffer<Matrix> g_AfterImgeBoneMat2 : register(t41);
-StructuredBuffer<Matrix> g_AfterImgeBoneMat3 : register(t42);
-StructuredBuffer<Matrix> g_AfterImgeBoneMat4 : register(t43);
-StructuredBuffer<Matrix> g_AfterImgeBoneMat5 : register(t44);
-StructuredBuffer<Matrix> g_AfterImgeBoneMat6 : register(t45);
-StructuredBuffer<Matrix> g_AfterImgeBoneMat7 : register(t46);
-StructuredBuffer<Matrix> g_AfterImgeBoneMat8 : register(t47);
-StructuredBuffer<Matrix> g_AfterImgeBoneMat9 : register(t48);
-StructuredBuffer<Matrix> g_AfterImgeBoneMat10 : register(t49);
+//AfterImageBoneBufer  잔상 에니메이션 버퍼 10개 사용
+//StructuredBuffer<Matrix> g_AfterImageBoneMat : register(t40);
+//StructuredBuffer<Matrix> g_AfterImageBoneMat2 : register(t41);
+//StructuredBuffer<Matrix> g_AfterImageBoneMat3 : register(t42);
+//StructuredBuffer<Matrix> g_AfterImageBoneMat4 : register(t43);
+//StructuredBuffer<Matrix> g_AfterImageBoneMat5 : register(t44);
+//StructuredBuffer<Matrix> g_AfterImageBoneMat6 : register(t45);
+//StructuredBuffer<Matrix> g_AfterImageBoneMat7 : register(t46);
+//StructuredBuffer<Matrix> g_AfterImageBoneMat8 : register(t47);
+//StructuredBuffer<Matrix> g_AfterImageBoneMat9 : register(t48);
+//StructuredBuffer<Matrix> g_AfterImageBoneMat10 : register(t49);
 
 
 //AfterImage Buffer

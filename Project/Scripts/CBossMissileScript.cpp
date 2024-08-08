@@ -2,7 +2,9 @@
 #include "CBossMissileScript.h"
 
 #include <Engine\CRandomMgr.h>
+#include "CPlayerScript.h"
 #include "CBossScript.h"
+#include "CParticleSpawnScript.h"
 
 CBossMissileScript::CBossMissileScript()
 	: CProjectileScript((UINT)SCRIPT_TYPE::BOSSMISSILESCRIPT)
@@ -25,7 +27,7 @@ void CBossMissileScript::begin()
 	CProjectileScript::begin();
 
 	Transform()->SetRelativePos(m_Pos);
-	
+
 	Vec3  VelDir = m_TargetPos - m_Pos;
 	float Offset = VelDir.Length();
 	VelDir.y	 = 0.f;
@@ -42,13 +44,13 @@ void CBossMissileScript::tick()
 
 	if (m_IsAlive)
 	{
-		if (m_Pos.y < 0.f)
-		{
-			m_IsAlive	   = false;
-			m_ForceAccTime = 0.f;
+		m_LifeSpan -= DT;
+
+		if (m_LifeSpan <= 0.f)
 			GamePlayStatic::DestroyGameObject(GetOwner());
-		}
 	}
+	else
+		GamePlayStatic::DestroyGameObject(GetOwner());
 
 	m_ForceAccTime += DT;
 
@@ -77,16 +79,17 @@ void CBossMissileScript::tick()
 	}
 
 	Transform()->SetDir(m_CurVelocity);
-	//m_CurVelocity = Vec3(0.f, 0.f, 100.f);
+	// m_CurVelocity = Vec3(0.f, 0.f, 100.f);
 	m_Pos = Transform()->GetRelativePos();
 	m_Pos += m_CurVelocity * DT;
 
 	Transform()->SetRelativePos(m_Pos);
-	//Transform()->SetRelativePos(Vec3(-750.f, 200.f, 7540.f));
+	// Transform()->SetRelativePos(Vec3(-750.f, 200.f, 7540.f));
 }
 
 void CBossMissileScript::OnHit()
 {
+	m_Target->GetScript<CPlayerScript>()->Hit(m_Damage);
 }
 
 void CBossMissileScript::InitBossMissileInfo(CGameObject* _Shooter, CGameObject* _Target, Vec3 _Pos, float _InitSpeed,
@@ -106,4 +109,36 @@ void CBossMissileScript::InitBossMissileInfo(CGameObject* _Shooter, CGameObject*
 	z				   = CRandomMgr::GetInst()->GetRandomFloat(-MaxVal, MaxVal);
 	m_TargetPos.x += x;
 	m_TargetPos.z += z;
+}
+
+void CBossMissileScript::BeginOverlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider)
+{
+	// 미사일 충돌 시 폭발 파티클 스폰
+	CGameObject* pObj	  = CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Explode)->Instantiate();
+	int			 layeridx = pObj->GetLayerIdx();
+	GamePlayStatic::SpawnGameObject(pObj, layeridx);
+	pObj->GetScript<CParticleSpawnScript>()->SetParticleInfo(Transform()->GetRelativePos(), 0.5f);
+
+	if (IsRedZone())
+		OnHit();
+
+	m_IsAlive = false;
+}
+
+void CBossMissileScript::Overlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider)
+{
+}
+
+void CBossMissileScript::EndOverlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider)
+{
+}
+
+bool CBossMissileScript::IsRedZone()
+{
+	Vec3 vPos		= Transform()->GetRelativePos();
+	Vec3 vTargetPos = m_Target->Transform()->GetRelativePos();
+
+	float dist = (vTargetPos - vPos).Length();
+
+	return dist >= 200.f ? false : true;
 }
