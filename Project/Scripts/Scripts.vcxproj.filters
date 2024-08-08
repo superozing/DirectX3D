@@ -268,6 +268,9 @@
     <ClInclude Include="CTutorialEndingEvent.h">
       <Filter>Scripts\Event\Tutorial</Filter>
     </ClInclude>
+    <ClInclude Include="CBossSwordTrailScript.h">
+      <Filter>Scripts\Boss\BossSwordTrail</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -537,6 +540,9 @@
     <ClCompile Include="CTutorialEndingEvent.cpp">
       <Filter>Scripts\Event\Tutorial</Filter>
     </ClCompile>
+    <ClCompile Include="CBossSwordTrailScript.cpp">
+      <Filter>Scripts\Boss\BossSwordTrail</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -727,6 +733,9 @@
     </Filter>
     <Filter Include="Scripts\Test">
       <UniqueIdentifier>{6c3cc7b2-0f38-43dc-bf8a-c55783846644}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Boss\BossSwordTrail">
+      <UniqueIdentifier>{6b0fbec3-e67a-41b0-8c2d-a9dcde3ee120}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

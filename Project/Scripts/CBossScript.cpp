@@ -292,7 +292,6 @@ void CBossScript::ActiveOutsideShield()
 
 	// SmokeWave 스폰
 	CGameObject* SmokeWave = CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_SmokeWave)->Instantiate();
-	// SmokeWave->GetScript<CBossSmokeWaveScript>()->SetParent(GetOwner());
 
 	layeridx = SmokeWave->GetLayerIdx();
 	GetOwner()->AddChild(SmokeWave, true);
@@ -318,6 +317,17 @@ void CBossScript::DeActiveHexShield()
 	GamePlayStatic::DestroyGameObject(pObj);
 }
 
+void CBossScript::ActiveSwordTrail()
+{
+	if (nullptr == m_Target)
+		return;
+
+	CGameObject* SwordTrail = CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Slash)->Instantiate();
+	int			 layeridx	= SwordTrail->GetLayerIdx();
+	GetOwner()->AddChild(SwordTrail, true);
+	GamePlayStatic::SpawnGameObject(SwordTrail, layeridx);
+}
+
 void CBossScript::LoadAsset()
 {
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Punch);
@@ -328,6 +338,7 @@ void CBossScript::LoadAsset()
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_HexShield);
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Explode);
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFBoss_Bullet_Shell);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Slash);
 }
 
 void CBossScript::InitStateMachine()

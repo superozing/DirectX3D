@@ -169,6 +169,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CAfterImage.h" />
     <ClInclude Include="CBossBulletShellSpawner.h" />
     <ClInclude Include="CBossSmokeWaveScript.h" />
+    <ClInclude Include="CBossSwordTrailScript.h" />
     <ClInclude Include="CBulletWarheadSpawner.h" />
     <ClInclude Include="CButtons.h" />
     <ClInclude Include="CAmmoInfo.h" />
@@ -260,6 +261,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CAfterImage.cpp" />
     <ClCompile Include="CBossBulletShellSpawner.cpp" />
     <ClCompile Include="CBossSmokeWaveScript.cpp" />
+    <ClCompile Include="CBossSwordTrailScript.cpp" />
     <ClCompile Include="CBulletWarheadSpawner.cpp" />
     <ClCompile Include="CButtons.cpp" />
     <ClCompile Include="CAmmoInfo.cpp" />

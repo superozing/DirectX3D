@@ -273,6 +273,8 @@ void CBossScript::EXs3End()
 void CBossScript::EXs4Begin()
 {
 	Animator3D()->Play((int)BOSS_STATE::EXs4, 0);
+
+	ActiveSwordTrail();
 }
 
 int CBossScript::EXs4Update()

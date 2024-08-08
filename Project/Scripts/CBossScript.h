@@ -134,6 +134,7 @@ public:
 	void ActiveOutsideShield();
 	void ActiveHexShield();
 	void DeActiveHexShield();
+	void ActiveSwordTrail();
 
 	void LoadAsset();
 
