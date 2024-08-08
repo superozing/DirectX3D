@@ -34,6 +34,8 @@ CBossHP::~CBossHP()
 {
 }
 
+static int tempDamageBuffer = 0;
+
 void CBossHP::begin()
 {
 	CProgressBar::begin();
@@ -41,6 +43,8 @@ void CBossHP::begin()
 	// 디버그 용 멤버 함수 등록
 	AppendMemberFunction("Add 100 HP", SCRIPT_PARAM::FUNC_MEMBER, "Add 100 HP", std::bind(&CBossHP::Add100, this));
 	AppendMemberFunction("Sub 100 HP", SCRIPT_PARAM::FUNC_MEMBER, "Sub 100 HP", std::bind(&CBossHP::Sub100, this));
+	AppendScriptParam("Damage Value", SCRIPT_PARAM::INT, &tempDamageBuffer);
+	AppendMemberFunction("Append Damage", SCRIPT_PARAM::FUNC_MEMBER, "+ -> Damage, - -> Heal", std::bind(&CBossHP::DbgAppendDamageWrap, this));
 
 	// 임시로 HP 값 세팅
 	SetMaxHP(20000);
@@ -55,7 +59,7 @@ void CBossHP::tick()
 	int CurHP = GetCurHP();
 	int MaxHP = GetMaxHP();
 
-	m_CurLerpHP = RoRMath::Lerp(m_CurLerpHP, CurHP, DT * 0.1f);
+	m_CurLerpHP = RoRMath::Lerp(m_CurLerpHP, CurHP, DT * 6.f);
 
 	// 현재 남은 줄 개수와 렌더링 할 색상 구하기
 	UINT  LineInfo		 = 0;
@@ -114,6 +118,16 @@ void CBossHP::Add100()
 void CBossHP::Sub100()
 {
 	SetCurHP(GetCurHP() - 100);
+}
+
+void CBossHP::AppendDamage(int _Damage)
+{
+	SetCurHP(GetCurHP() - _Damage);
+}
+
+void CBossHP::DbgAppendDamageWrap()
+{
+	AppendDamage(tempDamageBuffer);
 }
 
 void CBossHP::MakeChildObjects()

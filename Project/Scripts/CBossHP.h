@@ -49,6 +49,11 @@ public:
 	void Add100();
 	void Sub100();
 
+	// 음수를 입력할 경우 체력을 회복합니다.
+	void AppendDamage(int _Damage);
+
+	void DbgAppendDamageWrap();
+
 private:
 	virtual void MakeChildObjects() override;
 
