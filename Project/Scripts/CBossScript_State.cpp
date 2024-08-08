@@ -5,6 +5,7 @@
 #include <Engine\CLevel.h>
 #include "CRoRStateMachine.h"
 #include "CBossBulletShellSpawner.h"
+#include "CParticleSpawnScript.h"
 
 #pragma region Normal
 
@@ -339,6 +340,7 @@ void CBossScript::EXs5End()
 void CBossScript::VitalDeathBegin()
 {
 	Animator3D()->Play((int)BOSS_STATE::VitalDeath, 0);
+	m_ChaseDir = false;
 }
 
 int CBossScript::VitalDeathUpdate()
@@ -353,6 +355,17 @@ void CBossScript::VitalDeathEnd()
 void CBossScript::VitalGroggyBegin()
 {
 	Animator3D()->Play((int)BOSS_STATE::VitalGroggy, 0);
+	m_ChaseDir = false;
+
+	// 그로기 전기 스파크 파티클 스폰
+	Vec3 vPos = (Animator3D()->FindBoneMat(L"Bip001 Spine") * Transform()->GetWorldMat()).Translation();
+	Vec3 vDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+	vPos += vDir * 200.f;
+
+	CGameObject* pObj	  = CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Electric)->Instantiate();
+	int			 layeridx = pObj->GetLayerIdx();
+	GamePlayStatic::SpawnGameObject(pObj, layeridx);
+	pObj->GetScript<CParticleSpawnScript>()->SetParticleInfo(vPos, 7.8f);
 }
 
 int CBossScript::VitalGroggyUpdate()
@@ -368,12 +381,16 @@ int CBossScript::VitalGroggyUpdate()
 void CBossScript::VitalGroggyEnd()
 {
 	if (!m_BossStatus.IsDead)
+	{
 		m_BossStatus.IsGroggy = false;
+		m_ChaseDir			  = true;
+	}
 }
 
 void CBossScript::VitalGroggyDeathBegin()
 {
 	Animator3D()->Play((int)BOSS_STATE::VitalGroggyDeath, 0);
+	m_ChaseDir = false;
 }
 
 int CBossScript::VitalGroggyDeathUpdate()
