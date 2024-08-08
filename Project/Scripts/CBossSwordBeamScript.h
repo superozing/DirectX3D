@@ -14,8 +14,8 @@ private:
 
 public:
 	virtual void OnHit() override;
-	void InitSwordBeamInfo(CGameObject* _Shooter, CGameObject* _Target, Vec3 _Pos, float _InitSpeed, float _MaxSpeed,
-						   float _LifeSpan, float _Damage, bool _Explode, bool _Alive);
+	void InitSwordBeamInfo(CGameObject* _Shooter, CGameObject* _Target, Vec3 _TargetPos, Vec3 _Pos, float _InitSpeed,
+						   float _MaxSpeed, float _LifeSpan, float _Damage, bool _Explode, bool _Alive);
 
 public:
 	virtual void begin() override;

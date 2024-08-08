@@ -1,6 +1,8 @@
 ﻿#include "pch.h"
 #include "CBossScript.h"
 
+#include <Engine\CLevelMgr.h>
+#include <Engine\CLevel.h>
 #include "CRoRStateMachine.h"
 #include "CBossBulletShellSpawner.h"
 
@@ -274,6 +276,9 @@ void CBossScript::EXs4Begin()
 {
 	Animator3D()->Play((int)BOSS_STATE::EXs4, 0);
 
+	m_ChaseDir = false;
+	CheckTargetPos();
+	ActiveWarningDecal();
 	ActiveSwordTrail();
 }
 
@@ -288,6 +293,10 @@ int CBossScript::EXs4Update()
 	{
 		FireSwordBeam();
 		m_bSwordBeam = true;
+
+		CGameObject* pObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"SwordBeam_WarningDecal");
+		if (nullptr != pObj)
+			GamePlayStatic::DestroyGameObject(pObj);
 	}
 
 	return m_FSM->GetCurState();
@@ -296,6 +305,7 @@ int CBossScript::EXs4Update()
 void CBossScript::EXs4End()
 {
 	m_bSwordBeam = false;
+	m_ChaseDir	 = true;
 }
 
 void CBossScript::EXs5Begin()

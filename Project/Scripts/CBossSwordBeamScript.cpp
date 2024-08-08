@@ -65,17 +65,19 @@ void CBossSwordBeamScript::EndOverlap(CPhysX* _Collider, CGameObject* _OtherObj,
 {
 }
 
-void CBossSwordBeamScript::InitSwordBeamInfo(CGameObject* _Shooter, CGameObject* _Target, Vec3 _Pos, float _InitSpeed,
-											 float _MaxSpeed, float _LifeSpan, float _Damage, bool _Explode,
-											 bool _Alive)
+void CBossSwordBeamScript::InitSwordBeamInfo(CGameObject* _Shooter, CGameObject* _Target, Vec3 _TargetPos, Vec3 _Pos,
+											 float _InitSpeed, float _MaxSpeed, float _LifeSpan, float _Damage,
+											 bool _Explode, bool _Alive)
 {
-	m_Shooter = _Shooter;
-	m_Target  = _Target;
+	m_Shooter	  = _Shooter;
+	m_Target	  = _Target;
+	m_TargetPos	  = _TargetPos;
+	m_TargetPos.y = m_Shooter->Transform()->GetRelativePos().y;
 	CProjectileScript::InitProjectileInfo(_Pos, _InitSpeed, _MaxSpeed, _LifeSpan, _Damage, _Explode, _Alive);
 
-	// y축 좌표 통일시켜 검기가 평행하게 날아가도록 설정
-	m_TargetPos	  = m_Target->Transform()->GetRelativePos();
-	m_TargetPos.y = m_Shooter->Transform()->GetRelativePos().y;
-	// m_TargetPos.y += 100.f;
-	// m_TargetPos.x += 500.f;
+	//// y축 좌표 통일시켜 검기가 평행하게 날아가도록 설정
+	// m_TargetPos	  = m_Target->Transform()->GetRelativePos();
+	// m_TargetPos.y = m_Shooter->Transform()->GetRelativePos().y;
+	//  m_TargetPos.y += 100.f;
+	//  m_TargetPos.x += 500.f;
 }

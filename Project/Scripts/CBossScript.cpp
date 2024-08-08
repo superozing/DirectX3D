@@ -24,10 +24,12 @@ CBossScript::CBossScript()
 	, m_BossStatus{}
 	, m_AttDuration(0.f)
 	, m_EXsDuration(0.f)
+	, m_ChaseDir(true)
 	, m_ActiveAttack(false)
 	, m_ActiveEXs(false)
 	, m_EXsType(0)
 	, m_Target(nullptr)
+	, m_TargetPos{}
 	, m_ArrMissile{}
 	, m_ArrShield{}
 	, m_bSwordBeam(false)
@@ -46,10 +48,12 @@ CBossScript::CBossScript(const CBossScript& _Origin)
 	, m_BossStatus(_Origin.m_BossStatus)
 	, m_AttDuration(0.f)
 	, m_EXsDuration(0.f)
+	, m_ChaseDir(true)
 	, m_ActiveAttack(false)
 	, m_ActiveEXs(false)
 	, m_EXsType(0)
 	, m_Target(nullptr)
+	, m_TargetPos{}
 	, m_ArrMissile{}
 	, m_ArrShield{}
 	, m_bSwordBeam(false)
@@ -88,8 +92,11 @@ void CBossScript::tick()
 	m_FSM->Update();
 	DebugState = magic_enum::enum_name((BOSS_STATE)m_FSM->GetCurState());
 
-	Vec3 vDir = m_Target->Transform()->GetRelativePos() - Transform()->GetRelativePos();
-	Transform()->SetDir(vDir);
+	if (m_ChaseDir)
+	{
+		Vec3 vDir = m_Target->Transform()->GetRelativePos() - Transform()->GetRelativePos();
+		Transform()->SetDir(vDir);
+	}
 
 	if ((int)BOSS_STATE::NormalIdle == m_FSM->GetCurState())
 	{
@@ -340,10 +347,24 @@ void CBossScript::FireSwordBeam()
 	Vec3 HandBonePos = (Animator3D()->FindBoneMat(L"Bip001 R Hand_01") * Transform()->GetWorldMat()).Translation();
 
 	CGameObject* SwordBeam = CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_SwordBeam)->Instantiate();
-	SwordBeam->GetScript<CBossSwordBeamScript>()->InitSwordBeamInfo(GetOwner(), m_Target, HandBonePos, 5000.f, 5000.f,
-																	3.f, 100.f, false, true);
+	SwordBeam->GetScript<CBossSwordBeamScript>()->InitSwordBeamInfo(GetOwner(), m_Target, m_TargetPos, HandBonePos,
+																	5000.f, 5000.f, 3.f, 100.f, false, true);
 	int layeridx = SwordBeam->GetLayerIdx();
 	GamePlayStatic::SpawnGameObject(SwordBeam, layeridx);
+}
+
+void CBossScript::ActiveWarningDecal()
+{
+	Vec3 vPos = Transform()->GetWorldPos();
+
+	Vec3 vDir = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+
+	CGameObject* pDecal = CAssetMgr::GetInst()->Load<CPrefab>(PREFSwordBeam_WarningDecal)->Instantiate();
+	pDecal->Transform()->SetDir(-vDir);
+	pDecal->Transform()->SetRelativePos(m_TargetPos);
+
+	int layeridx = pDecal->GetLayerIdx();
+	GamePlayStatic::SpawnGameObject(pDecal, layeridx);
 }
 
 void CBossScript::LoadAsset()
@@ -358,6 +379,15 @@ void CBossScript::LoadAsset()
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFBoss_Bullet_Shell);
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Slash);
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_SwordBeam);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFSwordBeam_WarningDecal);
+}
+
+void CBossScript::CheckTargetPos()
+{
+	if (nullptr == m_Target)
+		return;
+
+	m_TargetPos = m_Target->Transform()->GetRelativePos();
 }
 
 void CBossScript::InitStateMachine()

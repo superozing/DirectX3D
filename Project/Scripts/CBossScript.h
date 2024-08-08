@@ -46,15 +46,18 @@ private:
 	CRoRStateMachine<CBossScript>* m_FSM;
 	tBossStatus					   m_BossStatus;
 	class CGameObject*			   m_Target;
+	Vec3						   m_TargetPos; // 투사체 전용 위치 (유도탄 X)
 	tRoRHitInfo					   m_hitInfo;
 
 	float m_AttDuration;
 	float m_EXsDuration;
 
+	bool m_ChaseDir; // 플레이어를 바라보는지 결정
+
 	bool m_ActiveAttack;
 	bool m_ActiveEXs;
 
-	bool m_ArrMissile[8]; // 미사일 발사여부
+	bool m_ArrMissile[8]; // 미사일 발사 여부
 	bool m_ArrShield[2];  // 쉴드 전개 여부
 	bool m_bSwordBeam;	  // 검기 발사 여부
 
@@ -138,7 +141,10 @@ public:
 	void ActiveSwordTrail();
 	void FireSwordBeam();
 
+	void ActiveWarningDecal();
+
 	void LoadAsset();
+	void CheckTargetPos();
 
 	CRoRStateMachine<CBossScript>* GetBossFSM() { return m_FSM; }
 
