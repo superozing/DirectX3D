@@ -53,7 +53,7 @@ void CTutorialGameMode::begin()
 	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::BGM] = CAssetMgr::GetInst()->Load<CSound>(SNDKaiten_Screw_BGM);
 	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::DoorOpen] = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Door_Open);
 
-	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::BGM]->Play(0, 1.f);
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::BGM]->Play(0, .4f);
 
 }
 
