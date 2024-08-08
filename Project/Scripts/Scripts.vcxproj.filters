@@ -269,7 +269,7 @@
       <Filter>Scripts\Event\Tutorial</Filter>
     </ClInclude>
     <ClInclude Include="CDamageRay.h">
-      <Filter>Scripts</Filter>
+      <Filter>Scripts\MapObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -541,7 +541,7 @@
       <Filter>Scripts\Event\Tutorial</Filter>
     </ClCompile>
     <ClCompile Include="CDamageRay.cpp">
-      <Filter>Scripts</Filter>
+      <Filter>Scripts\MapObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -733,6 +733,9 @@
     </Filter>
     <Filter Include="Scripts\Test">
       <UniqueIdentifier>{6c3cc7b2-0f38-43dc-bf8a-c55783846644}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\MapObject">
+      <UniqueIdentifier>{6b54aa33-108d-4354-baf9-c06a3c3951a5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
