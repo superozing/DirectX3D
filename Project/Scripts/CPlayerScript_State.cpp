@@ -729,7 +729,7 @@ void CPlayerScript::VitalDeathEnd()
 
 void CPlayerScript::VitalPanicBegin()
 {
-	if (IsInvincivility() == false)
+	if (IsInvincivility() == false) // 피격이 처음 되면 무적이 아니므로 피격 상태로 들어간다.
 	{
 		Animator3D()->Play((int)PLAYER_STATE::VitalPanic, 0);
 		SetInvincivility(true);
