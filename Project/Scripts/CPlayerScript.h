@@ -2,6 +2,8 @@
 
 #include <Engine/CScript.h>
 
+#define InvincivilityTime 1.5f
+
 enum class PLAYER_STATE
 {
 	NormalIdle,
@@ -76,14 +78,17 @@ struct PlayerStatus
 
 	float SpreadRatioSpeed = 0.f;
 
-	bool IsDead = false;
+	bool IsDamaged = false;
+	bool IsDead	   = false;
 
-	bool Invincibility = false;
+	bool  Invincibility		  = false;
+	float fInvincibilityTimer = InvincivilityTime;
 };
 
 template <typename T> class CRoRStateMachine;
 #include "CSpringArm.h"
 #include "CMuzzleFlashScript.h"
+#include <Engine\CLogMgr.h>
 
 class CPlayerScript : public CScript
 {
@@ -123,6 +128,12 @@ public:
 			return false;
 
 		m_tStatus.curHealth -= _damage;
+
+		string s = std::to_string(m_tStatus.curHealth);
+		CLogMgr::GetInst()->AddLog(Log_Level::ERR, s);
+
+		this->SetDamaged(true);
+
 		if (m_tStatus.curHealth <= 0.f)
 			m_tStatus.IsDead = true;
 		return true;
@@ -237,6 +248,10 @@ public:
 
 	/// @brief 현재 방어도를 반환합니다.
 	float GetDefensive() { return m_tStatus.Defensive; }
+
+	/// @brief 피격 여부를 반환합니다.
+	bool IsDamaged() { return m_tStatus.IsDamaged; }
+	void SetDamaged(bool _Damaged) { m_tStatus.IsDamaged = _Damaged; }
 
 	/// @brief 사망 여부를 반환합니다.
 	bool IsDead() { return m_tStatus.IsDead; }

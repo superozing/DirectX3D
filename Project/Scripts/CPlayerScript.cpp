@@ -19,6 +19,7 @@
 #include "CSpringArm.h"
 
 #include "CShootingSystemScript.h"
+#include "CPlayerDamagedScript.h"
 
 #include "CCrosshair.h"
 #include "CHUD.h"
@@ -294,12 +295,12 @@ void CPlayerScript::begin()
 			break;
 	}
 
-	//for (size_t i = 0; i < vecChild.size(); i++)
+	// for (size_t i = 0; i < vecChild.size(); i++)
 	//{
 	//	m_pBulletLine = vecChild[i]->GetScript<CBulletLineSpawner>();
 	//	if (m_pBulletLine)
 	//		break;
-	//}
+	// }
 
 	// 저장 재시작하면 터져서 임시로 막아둠
 	if (m_pSpringArm)
@@ -329,6 +330,18 @@ void CPlayerScript::tick()
 	m_FSM->Update();
 	state = magic_enum::enum_name((PLAYER_STATE)m_FSM->GetCurState());
 	cover = magic_enum::enum_name((CoverType)GetCoverType());
+
+	// 전역 무적 판정
+	if (m_tStatus.Invincibility == true)
+	{
+		m_tStatus.fInvincibilityTimer -= DT;
+
+		if (m_tStatus.fInvincibilityTimer <= 0.f)
+		{
+			SetInvincivility(false);
+			m_tStatus.fInvincibilityTimer = InvincivilityTime;
+		}
+	}
 
 	// 카메라 움직임
 	CameraMove();
@@ -362,6 +375,11 @@ void CPlayerScript::tick()
 		SetRight(!IsRight());
 	}
 
+	// 데미지 처리
+	if (m_tStatus.IsDamaged == true)
+	{
+		m_FSM->SetCurState((int)PLAYER_STATE::VitalPanic);
+	}
 	// 탄피 힘 방향을 확인하기 위한 자동 사격
 	// static float autoShoot = 0.f;
 	// autoShoot += DT;

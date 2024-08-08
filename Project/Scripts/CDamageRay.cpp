@@ -4,6 +4,8 @@
 #include <Engine\CPhysXMgr.h>
 #include "CPlayerScript.h"
 
+#define RayDamage 30.f
+
 CDamageRay::CDamageRay()
 	: CScript((UINT)SCRIPT_TYPE::DAMAGERAY)
 {
@@ -36,9 +38,6 @@ void CDamageRay::tick()
 
 	if (bHit)
 	{
-		wstring s = hitInfo.pOtherObj->GetName();
-		CLogMgr::GetInst()->AddLog(Log_Level::INFO, s);
-
 		if (hitInfo.pOtherObj->GetName() == L"Azusa")
 		{
 			CPlayerScript* pScript = nullptr;
@@ -46,10 +45,7 @@ void CDamageRay::tick()
 
 			if (pScript != nullptr)
 			{
-				pScript->Hit(30.f);
-				float AzusaHP = pScript->CurHealth();
-
-				CLogMgr::GetInst()->AddLog(Log_Level::WARN, std::to_string(AzusaHP));
+				pScript->Hit(RayDamage);
 			}
 		}
 	}
