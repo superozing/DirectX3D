@@ -35,7 +35,7 @@ void CBossSwordTrailScript::tick()
 	{
 		m_TrailOffset = -0.9f;
 
-		if (LayerIdx > 150)
+		if (LayerIdx > 140)
 			GamePlayStatic::DestroyGameObject(GetOwner());
 	}
 

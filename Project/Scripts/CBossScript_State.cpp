@@ -282,11 +282,20 @@ int CBossScript::EXs4Update()
 	if (!Animator3D()->IsPlayable())
 		return (int)BOSS_STATE::NormalIdle;
 
+	int layeridx = Animator3D()->GetCurFrameIdx();
+
+	if (layeridx > 120 && !m_bSwordBeam)
+	{
+		FireSwordBeam();
+		m_bSwordBeam = true;
+	}
+
 	return m_FSM->GetCurState();
 }
 
 void CBossScript::EXs4End()
 {
+	m_bSwordBeam = false;
 }
 
 void CBossScript::EXs5Begin()

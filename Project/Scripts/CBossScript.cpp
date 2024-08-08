@@ -15,6 +15,7 @@
 #include "CBossShieldScript.h"
 #include "CBossSmokeWaveScript.h"
 #include "CBossBulletShellSpawner.h"
+#include "CBossSwordBeamScript.h"
 
 static string DebugState = "";
 
@@ -29,6 +30,7 @@ CBossScript::CBossScript()
 	, m_Target(nullptr)
 	, m_ArrMissile{}
 	, m_ArrShield{}
+	, m_bSwordBeam(false)
 	, m_hitInfo{}
 	, m_BulletInterval(0.f)
 {
@@ -50,7 +52,9 @@ CBossScript::CBossScript(const CBossScript& _Origin)
 	, m_Target(nullptr)
 	, m_ArrMissile{}
 	, m_ArrShield{}
+	, m_bSwordBeam(false)
 	, m_hitInfo{}
+	, m_BulletInterval(0.f)
 {
 	InitScriptParamUI();
 
@@ -328,6 +332,20 @@ void CBossScript::ActiveSwordTrail()
 	GamePlayStatic::SpawnGameObject(SwordTrail, layeridx);
 }
 
+void CBossScript::FireSwordBeam()
+{
+	if (nullptr == m_Target)
+		return;
+
+	Vec3 HandBonePos = (Animator3D()->FindBoneMat(L"Bip001 R Hand_01") * Transform()->GetWorldMat()).Translation();
+
+	CGameObject* SwordBeam = CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_SwordBeam)->Instantiate();
+	SwordBeam->GetScript<CBossSwordBeamScript>()->InitSwordBeamInfo(GetOwner(), m_Target, HandBonePos, 5000.f, 5000.f,
+																	3.f, 100.f, false, true);
+	int layeridx = SwordBeam->GetLayerIdx();
+	GamePlayStatic::SpawnGameObject(SwordBeam, layeridx);
+}
+
 void CBossScript::LoadAsset()
 {
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Punch);
@@ -339,6 +357,7 @@ void CBossScript::LoadAsset()
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Explode);
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFBoss_Bullet_Shell);
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Slash);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_SwordBeam);
 }
 
 void CBossScript::InitStateMachine()

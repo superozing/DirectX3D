@@ -271,6 +271,9 @@
     <ClInclude Include="CBossSwordTrailScript.h">
       <Filter>Scripts\Boss\BossSwordTrail</Filter>
     </ClInclude>
+    <ClInclude Include="CBossSwordBeamScript.h">
+      <Filter>Scripts\Boss\BossSwordBeam</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -543,6 +546,9 @@
     <ClCompile Include="CBossSwordTrailScript.cpp">
       <Filter>Scripts\Boss\BossSwordTrail</Filter>
     </ClCompile>
+    <ClCompile Include="CBossSwordBeamScript.cpp">
+      <Filter>Scripts\Boss\BossSwordBeam</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -736,6 +742,9 @@
     </Filter>
     <Filter Include="Scripts\Boss\BossSwordTrail">
       <UniqueIdentifier>{6b0fbec3-e67a-41b0-8c2d-a9dcde3ee120}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Boss\BossSwordBeam">
+      <UniqueIdentifier>{a6a1729c-7876-450a-b8d1-6f7506c31e46}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

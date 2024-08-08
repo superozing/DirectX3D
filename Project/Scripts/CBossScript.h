@@ -56,9 +56,10 @@ private:
 
 	bool m_ArrMissile[8]; // 미사일 발사여부
 	bool m_ArrShield[2];  // 쉴드 전개 여부
+	bool m_bSwordBeam;	  // 검기 발사 여부
 
 	class CBossBulletShellSpawner* m_BulletShell;
-	float						   m_BulletInterval;
+	float						   m_BulletInterval; // 탄피 생성 간격 체크용 (간격을 설정하는 것 X)
 
 	// @@디버그용
 	int	 m_EXsType; // 현재 선택된 EX 타입
@@ -135,6 +136,7 @@ public:
 	void ActiveHexShield();
 	void DeActiveHexShield();
 	void ActiveSwordTrail();
+	void FireSwordBeam();
 
 	void LoadAsset();
 
