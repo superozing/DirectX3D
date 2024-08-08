@@ -5,6 +5,9 @@
 
 #include "CImageUIScript.h"
 #include "CPanelUIScript.h"
+#include <Engine/CFontMgr.h>
+#include <Engine/CUIMgr.h>
+#include <Engine/CDevice.h>
 
 namespace BOSSHP
 {
@@ -50,6 +53,28 @@ void CBossHP::begin()
 	SetMaxHP(20000);
 	SetLineHP(1000);
 	SetCurHP(20000);
+
+	Vec2 resol = CDevice::GetInst()->GetRenderResolution();
+
+	// 기본 폰트 세팅
+	m_BossNameFont.Color	= FONT_RGBA(255, 20, 20, 255);
+	m_BossNameFont.TextFlag	= FW1_TEXT_FLAG::FW1_CENTER;
+	m_BossNameFont.WStr		= BOSS_NAME;
+	m_BossNameFont.FontType	= FONT_TYPE::MAIN_BOLD;
+	m_BossNameFont.fFontSize	= 40.f;
+	m_BossNameFont.vPos		 = Vec2(resol.x / 2 + 60.f, 120.f);
+
+	m_HPFont.Color	= FONT_RGBA(255, 255, 255, 255);
+	m_HPFont.TextFlag	= FW1_TEXT_FLAG::FW1_CENTER;
+	m_HPFont.FontType	= FONT_TYPE::MAIN_BOLD;
+	m_HPFont.fFontSize	= 30.f;
+	m_HPFont.vPos		= Vec2(resol.x / 2 + 60.f, resol.y / 2.f - Transform()->GetWorldPos().y - 105);
+
+	m_LineCountFont.Color	= FONT_RGBA(255, 255, 255, 255);
+	m_LineCountFont.TextFlag	= FW1_TEXT_FLAG::FW1_CENTER;
+	m_LineCountFont.FontType	= FONT_TYPE::MAIN_BOLD;
+	m_LineCountFont.fFontSize	= 45.f;
+	m_LineCountFont.vPos		= Vec2(resol.x / 2 + 500.f, resol.y / 2.f - Transform()->GetWorldPos().y - 113);
 }
 
 void CBossHP::tick()
@@ -92,6 +117,17 @@ void CBossHP::tick()
 	m_pHPLineUI->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_0, LineInfo);
 	m_pHPLineUI->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, CurLerpHPRatio);
 	m_pHPLineUI->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_1, HPRatio);
+
+	// UI가 활성화 상태일 경우에만 폰트를 줄력
+	if (CUIMgr::GetInst()->IsActiveUIType(GetPanelUI()->GetUIType()))
+	{
+		m_HPFont.WStr = to_wstring(m_CurLerpHP) + L" / " + to_wstring(GetMaxHP());
+		CFontMgr::GetInst()->RegisterFont(m_HPFont);
+		CFontMgr::GetInst()->RegisterFont(m_BossNameFont);
+		m_LineCountFont.WStr = L"X " + to_wstring(LineCount);
+		CFontMgr::GetInst()->RegisterFont(m_LineCountFont);
+	}
+
 }
 
 void CBossHP::SetLineHP(int _LineHP)

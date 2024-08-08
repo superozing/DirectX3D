@@ -19,8 +19,8 @@ private:
 	int m_CurLerpHP;
 
 	tFontInfo m_HPFont;
-	tFontInfo m_BossName;
-	tFontInfo m_HPLineFont;
+	tFontInfo m_BossNameFont;
+	tFontInfo m_LineCountFont;
 
 
 public:
