@@ -2,6 +2,7 @@
 #include "CDamageRay.h"
 
 #include <Engine\CPhysXMgr.h>
+#include "CPlayerScript.h"
 
 CDamageRay::CDamageRay()
 	: CScript((UINT)SCRIPT_TYPE::DAMAGERAY)
@@ -29,13 +30,28 @@ void CDamageRay::tick()
 	Vec3 RayPos		   = GetOwner()->Transform()->GetWorldPos();
 	Vec3 WorldFrontDir = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
 
-	bool bHit = CPhysXMgr::GetInst()->PerfomRaycast(RayPos, WorldFrontDir, hitInfo, (UINT)LAYER::LAYER_PLAYER,
-													RayCastDebugFlag::AllVisible);
+	bool bHit = false;
+	bHit	  = CPhysXMgr::GetInst()->PerformRaycast(RayPos, WorldFrontDir, hitInfo, (UINT)LAYER::LAYER_RAYCAST,
+													 RayCastDebugFlag::AllVisible);
 
 	if (bHit)
 	{
-		string s = "Player Hit";
+		wstring s = hitInfo.pOtherObj->GetName();
 		CLogMgr::GetInst()->AddLog(Log_Level::INFO, s);
+
+		if (hitInfo.pOtherObj->GetName() == L"Azusa")
+		{
+			CPlayerScript* pScript = nullptr;
+			pScript				   = hitInfo.pOtherObj->GetScript<CPlayerScript>();
+
+			if (pScript != nullptr)
+			{
+				pScript->Hit(30.f);
+				float AzusaHP = pScript->CurHealth();
+
+				CLogMgr::GetInst()->AddLog(Log_Level::WARN, std::to_string(AzusaHP));
+			}
+		}
 	}
 }
 
