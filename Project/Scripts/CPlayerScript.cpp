@@ -331,6 +331,9 @@ void CPlayerScript::begin()
 	pSnd = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Skill_Azusa_Ex_2);
 	m_vecSound[(UINT)PlayerSoundType::EX2]	 = pSnd;
 
+	pSnd								   = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Common_CH0240_SR_Reload_01);
+	m_vecSound[(UINT)PlayerSoundType::RELOAD]	 = pSnd;
+
 }
 
 void CPlayerScript::tick()

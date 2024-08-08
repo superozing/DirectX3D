@@ -50,6 +50,7 @@ void CPlayerScript::NormalIdleEnd()
 void CPlayerScript::NormalReloadBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::NormalReload, 0);
+	m_vecSound[(UINT)PlayerSoundType::RELOAD]->Play(1, 1);
 }
 
 int CPlayerScript::NormalReloadUpdate()
@@ -57,7 +58,6 @@ int CPlayerScript::NormalReloadUpdate()
 	// 애니메이션 종료시 Idle상태로 전환
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::NormalIdle;
-
 	return m_FSM->GetCurState();
 }
 
@@ -187,6 +187,7 @@ void CPlayerScript::StandIdleEnd()
 void CPlayerScript::StandReloadBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::StandReload, 0);
+	m_vecSound[(UINT)PlayerSoundType::RELOAD]->Play(1, 1);
 }
 
 int CPlayerScript::StandReloadUpdate()
@@ -345,6 +346,7 @@ void CPlayerScript::KneelIdleEnd()
 void CPlayerScript::KneelReloadBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::KneelReload, 0);
+	m_vecSound[(UINT)PlayerSoundType::RELOAD]->Play(1, 1);
 }
 
 int CPlayerScript::KneelReloadUpdate()
@@ -352,7 +354,6 @@ int CPlayerScript::KneelReloadUpdate()
 	// 애니메이션 종료시 Idle상태로 전환
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::KneelIdle;
-
 	return m_FSM->GetCurState();
 }
 

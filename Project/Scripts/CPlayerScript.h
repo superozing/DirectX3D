@@ -56,6 +56,7 @@ enum class PlayerSoundType
 {
 	EX1,
 	EX2,
+	RELOAD,
 	End,
 };
 
