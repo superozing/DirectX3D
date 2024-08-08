@@ -62,6 +62,8 @@ void RTViewPort::render_update()
 	m_ViewportPos = Vec2((float)ImGui::GetWindowPos().x, (float)ImGui::GetWindowPos().y);
 	m_MouseCoord  = Vec2((float)ImGui::GetIO().MousePos.x, (float)ImGui::GetIO().MousePos.y);
 
+	ImGui::Dummy(ImVec2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y - 40));
+
 	// 레벨 파일 드랍 체크
 	if (ImGui::BeginDragDropTarget())
 	{
