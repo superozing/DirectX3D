@@ -52,6 +52,13 @@ enum class CoverType
 	End,
 };
 
+enum class PlayerSoundType
+{
+	EX1,
+	EX2,
+	End,
+};
+
 struct PlayerStatus
 {
 	float MaxHealth	 = 100.f;
@@ -98,6 +105,8 @@ private:
 	class CSpringArm* m_pSpringArm;
 
 	map<PLAYER_STATE, SpringArmInfo> m_mSpringInfos;
+
+	vector<Ptr<CSound>> m_vecSound;
 
 	class CShootingSystemScript* m_pShootingSystem;
 	class CCrosshair*			 m_pCrosshair;

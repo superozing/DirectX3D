@@ -321,6 +321,16 @@ void CPlayerScript::begin()
 	}
 	else
 		CLogMgr::GetInst()->AddLog(Log_Level::ERR, L"Can't find \"HUD\"Object.");
+
+	// Player Sound Init
+	m_vecSound.resize((UINT)PlayerSoundType::End);
+
+	Ptr<CSound> pSnd = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Skill_Azusa_Ex_1);
+	m_vecSound[(UINT)PlayerSoundType::EX1]	 = pSnd;
+
+	pSnd = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Skill_Azusa_Ex_2);
+	m_vecSound[(UINT)PlayerSoundType::EX2]	 = pSnd;
+
 }
 
 void CPlayerScript::tick()
