@@ -6,8 +6,11 @@
 
 CMonsterScript::CMonsterScript()
 	: CScript((UINT)SCRIPT_TYPE::MONSTERSCRIPT)
-	, m_DetectRange(400.f)
-	, m_Speed(200.f)
+{
+}
+
+CMonsterScript::CMonsterScript(const CMonsterScript& _Origin)
+	: CScript((UINT)SCRIPT_TYPE::MONSTERSCRIPT)
 {
 }
 
@@ -17,23 +20,23 @@ CMonsterScript::~CMonsterScript()
 
 void CMonsterScript::begin()
 {
-	if (StateMachine())
-	{
-		StateMachine()->AddBlackboardData(L"DetectRange", BB_DATA::FLOAT, &m_DetectRange);
-		StateMachine()->AddBlackboardData(L"Speed", BB_DATA::FLOAT, &m_Speed);
+	//if (StateMachine())
+	//{
+	//	StateMachine()->AddBlackboardData(L"DetectRange", BB_DATA::FLOAT, &m_DetectRange);
+	//	StateMachine()->AddBlackboardData(L"Speed", BB_DATA::FLOAT, &m_Speed);
 
-		// 플레이어를 찾아서 Object 타입으로 블랙보드에 기록한다.
-		CGameObject* pPlayer = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Player");
-		if (pPlayer)
-		{
-			StateMachine()->AddBlackboardData(L"TargetObject", BB_DATA::OBJECT, pPlayer);
-		}
+	//	// 플레이어를 찾아서 Object 타입으로 블랙보드에 기록한다.
+	//	CGameObject* pPlayer = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Player");
+	//	if (pPlayer)
+	//	{
+	//		StateMachine()->AddBlackboardData(L"TargetObject", BB_DATA::OBJECT, pPlayer);
+	//	}
 
-		if (nullptr != StateMachine()->GetFSM())
-		{
-			StateMachine()->GetFSM()->SetState(L"IdleState");
-		}
-	}
+	//	if (nullptr != StateMachine()->GetFSM())
+	//	{
+	//		StateMachine()->GetFSM()->SetState(L"IdleState");
+	//	}
+	//}
 }
 
 void CMonsterScript::tick()

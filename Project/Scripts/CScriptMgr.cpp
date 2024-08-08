@@ -3,7 +3,6 @@
 
 #include "CBackgroundScript.h"
 #include "CMissileScript.h"
-#include "CMonsterScript.h"
 #include "CCameraMoveScript.h"
 #include "CRenderMgrScript.h"
 #include "CTimeMgrScript.h"
@@ -75,12 +74,12 @@
 #include "CSmokeScript.h"
 #include "CSpawnPhysX.h"
 #include "CTutorialEndingEvent.h"
+#include "CMonsterScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
 	_vec.push_back(L"CBackgroundScript");
 	_vec.push_back(L"CMissileScript");
-	_vec.push_back(L"CMonsterScript");
 	_vec.push_back(L"CCameraMoveScript");
 	_vec.push_back(L"CRenderMgrScript");
 	_vec.push_back(L"CTimeMgrScript");
@@ -152,6 +151,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CSmokeScript");
 	_vec.push_back(L"CSpawnPhysX");
 	_vec.push_back(L"CTutorialEndingEvent");
+	_vec.push_back(L"CMonsterScript");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -160,8 +160,6 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CBackgroundScript;
 	if (L"CMissileScript" == _strScriptName)
 		return new CMissileScript;
-	if (L"CMonsterScript" == _strScriptName)
-		return new CMonsterScript;
 	if (L"CCameraMoveScript" == _strScriptName)
 		return new CCameraMoveScript;
 	if (L"CRenderMgrScript" == _strScriptName)
@@ -304,6 +302,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CSpawnPhysX;
 	if (L"CTutorialEndingEvent" == _strScriptName)
 		return new CTutorialEndingEvent;
+	if (L"CMonsterScript" == _strScriptName)
+		return new CMonsterScript;
 	return nullptr;
 }
 
@@ -316,9 +316,6 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::MISSILESCRIPT:
 		return new CMissileScript;
-		break;
-	case (UINT)SCRIPT_TYPE::MONSTERSCRIPT:
-		return new CMonsterScript;
 		break;
 	case (UINT)SCRIPT_TYPE::CAMERAMOVESCRIPT:
 		return new CCameraMoveScript;
@@ -533,6 +530,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::TUTORIALENDINGEVENT:
 		return new CTutorialEndingEvent;
 		break;
+	case (UINT)SCRIPT_TYPE::MONSTERSCRIPT:
+		return new CMonsterScript;
+		break;
 	}
 	return nullptr;
 }
@@ -547,10 +547,6 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::MISSILESCRIPT:
 		return L"CMissileScript";
-		break;
-
-	case SCRIPT_TYPE::MONSTERSCRIPT:
-		return L"CMonsterScript";
 		break;
 
 	case SCRIPT_TYPE::CAMERAMOVESCRIPT:
@@ -835,6 +831,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::TUTORIALENDINGEVENT:
 		return L"CTutorialEndingEvent";
+		break;
+
+	case SCRIPT_TYPE::MONSTERSCRIPT:
+		return L"CMonsterScript";
 		break;
 
 	}

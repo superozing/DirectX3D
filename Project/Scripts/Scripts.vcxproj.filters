@@ -16,9 +16,6 @@
     <ClInclude Include="CMissileScript.h">
       <Filter>Scripts\Lecture</Filter>
     </ClInclude>
-    <ClInclude Include="CMonsterScript.h">
-      <Filter>Scripts\Lecture</Filter>
-    </ClInclude>
     <ClInclude Include="CCameraMoveScript.h">
       <Filter>Scripts\Manager\Camera</Filter>
     </ClInclude>
@@ -268,6 +265,9 @@
     <ClInclude Include="CTutorialEndingEvent.h">
       <Filter>Scripts\Event\Tutorial</Filter>
     </ClInclude>
+    <ClInclude Include="CMonsterScript.h">
+      <Filter>Scripts\Monster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -283,9 +283,6 @@
       <Filter>Scripts\Lecture</Filter>
     </ClCompile>
     <ClCompile Include="CMissileScript.cpp">
-      <Filter>Scripts\Lecture</Filter>
-    </ClCompile>
-    <ClCompile Include="CMonsterScript.cpp">
       <Filter>Scripts\Lecture</Filter>
     </ClCompile>
     <ClCompile Include="CCameraMoveScript.cpp">
@@ -537,6 +534,12 @@
     <ClCompile Include="CTutorialEndingEvent.cpp">
       <Filter>Scripts\Event\Tutorial</Filter>
     </ClCompile>
+    <ClCompile Include="CMonsterScript.cpp">
+      <Filter>Scripts\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonsterScript_State.cpp">
+      <Filter>Scripts\Monster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -727,6 +730,9 @@
     </Filter>
     <Filter Include="Scripts\Test">
       <UniqueIdentifier>{6c3cc7b2-0f38-43dc-bf8a-c55783846644}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Monster">
+      <UniqueIdentifier>{50f58c11-4170-414a-bb03-78d1f29b11c8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
