@@ -213,18 +213,10 @@ void CPhysX::finaltick()
 	auto		ObjWorldPos = trans->GetWorldPos();
 	auto		dir			= trans->GetRelativeRotation();
 	auto		Rot			= getTransform().q;
-	dir.Normalize();
 
-	auto norrot = dir;
-	norrot.Normalize();
-	Matrix matRot = Matrix::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), norrot.x) *
-					Matrix::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), norrot.y) *
-					Matrix::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), norrot.z);
-	Matrix OffsetPosMat		 = XMMatrixTranslation(m_vOffsetPos.x, m_vOffsetPos.y, m_vOffsetPos.z);
-	auto   RotatedOffesetPos = matRot * OffsetPosMat;
-	auto   VecROP			 = RotatedOffesetPos.Translation();
-	auto   DebugFinalPos	 = ObjWorldPos;
-	DebugFinalPos += m_vOffsetPos;
+	auto DebugFinalPos = ObjWorldPos;
+	auto rotatedoffset = RoRMath::RotateVectorByRotationVector(m_vOffsetPos, dir);
+	DebugFinalPos += rotatedoffset;
 
 	if (m_bDrawing)
 	{

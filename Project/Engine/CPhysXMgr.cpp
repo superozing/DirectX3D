@@ -285,7 +285,10 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 	auto relrot	   = object->Transform()->GetRelativeRotation();
 	relrot.Normalize();
 
-	auto FinalPos = ObjPos;
+	auto rotatedoffset = RoRMath::RotateVectorByQuaternion(OffsetPos, WorldQuat);
+	auto FinalPos	   = ObjPos;
+	FinalPos += rotatedoffset;
+
 	FinalPos /= m_PPM;
 	// 게임 오브젝트의 위치와 회전 정보
 	PxTransform transform(PxVec3(FinalPos.x, FinalPos.y, FinalPos.z),
@@ -523,12 +526,17 @@ void CPhysXMgr::tick()
 		Rotation.ToRadian();
 		// Rotation.z = -Rotation.z;
 
-		auto scale = pTr->Transform()->GetRelativeScale();
-
 		SimulatedMat._41 *= m_PPM;
 		SimulatedMat._42 *= m_PPM;
 		SimulatedMat._43 *= m_PPM;
 
+		auto rotatedoffset = RoRMath::RotateVectorByRotationVector(obj->PhysX()->m_vOffsetPos, Rotation);
+
+		SimulatedMat._41 -= rotatedoffset.x;
+		SimulatedMat._42 -= rotatedoffset.y;
+		SimulatedMat._43 -= rotatedoffset.z;
+
+		auto scale = pTr->Transform()->GetRelativeScale();
 		pTr->Transform()->SetWorldMat(SimulatedMat);
 		pTr->Transform()->SetRelativeScale(scale);
 	}
