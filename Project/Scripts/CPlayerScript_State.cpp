@@ -31,6 +31,7 @@ void CPlayerScript::NormalIdleBegin()
 
 int CPlayerScript::NormalIdleUpdate()
 {
+
 	// TODO : 재장전 조건 추가 필요 (현재 탄창이 최대 탄창과 같으면 x)
 	// 재장전
 	if (KEY_TAP(CPlayerController::Reload))
@@ -90,7 +91,7 @@ void CPlayerScript::NormalAttackIngBegin()
 	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalAttackStart]);
 	m_pShootingSystem->ShootPlayerBulletRay();
 	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
-	//m_pBulletLine->GetOwner()->ParticleSystem()->Play();
+	// m_pBulletLine->GetOwner()->ParticleSystem()->Play();
 }
 
 int CPlayerScript::NormalAttackIngUpdate()
@@ -105,7 +106,7 @@ int CPlayerScript::NormalAttackIngUpdate()
 void CPlayerScript::NormalAttackIngEnd()
 {
 	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Stop();
-	//m_pBulletLine->GetOwner()->ParticleSystem()->Stop();
+	// m_pBulletLine->GetOwner()->ParticleSystem()->Stop();
 }
 
 void CPlayerScript::NormalAttackDelayBegin()
@@ -230,7 +231,7 @@ void CPlayerScript::StandAttackIngBegin()
 	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::StandAttackStart]);
 	m_pShootingSystem->ShootPlayerBulletRay();
 	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
-	//m_pBulletLine->GetOwner()->ParticleSystem()->Play();
+	// m_pBulletLine->GetOwner()->ParticleSystem()->Play();
 }
 
 int CPlayerScript::StandAttackIngUpdate()
@@ -245,7 +246,7 @@ int CPlayerScript::StandAttackIngUpdate()
 void CPlayerScript::StandAttackIngEnd()
 {
 	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Stop();
-	//m_pBulletLine->GetOwner()->ParticleSystem()->Stop();
+	// m_pBulletLine->GetOwner()->ParticleSystem()->Stop();
 }
 
 void CPlayerScript::StandAttackDelayBegin()
@@ -388,7 +389,7 @@ void CPlayerScript::KneelAttackIngBegin()
 	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::KneelAttackStart], 0.1f);
 	m_pShootingSystem->ShootPlayerBulletRay();
 	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
-	//m_pBulletLine->GetOwner()->ParticleSystem()->Play();
+	// m_pBulletLine->GetOwner()->ParticleSystem()->Play();
 }
 
 int CPlayerScript::KneelAttackIngUpdate()
@@ -403,7 +404,7 @@ int CPlayerScript::KneelAttackIngUpdate()
 void CPlayerScript::KneelAttackIngEnd()
 {
 	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Stop();
-	//m_pBulletLine->GetOwner()->ParticleSystem()->Stop();
+	// m_pBulletLine->GetOwner()->ParticleSystem()->Stop();
 }
 
 void CPlayerScript::KneelAttackDelayBegin()
@@ -728,13 +729,27 @@ void CPlayerScript::VitalDeathEnd()
 
 void CPlayerScript::VitalPanicBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::VitalPanic, 0);
+	if (IsInvincivility() == false)
+	{
+		Animator3D()->Play((int)PLAYER_STATE::VitalPanic, 0);
+		SetInvincivility(true);
+		this->SetDamaged(false);
+	}
 }
 
+#include <Engine\CLogMgr.h>
 int CPlayerScript::VitalPanicUpdate()
 {
 	// TODO: 패닉이 풀렸는지 검사해야 함
 	// return ispanic ? (int)PLAYER_STATE::NormalIdle : m_FSM->GetCurState();
+
+	int iMaxFrame = Animator3D()->GetCurClipLength();
+	int iCurFrame = Animator3D()->GetCurFrameIdx();
+
+	if (iCurFrame > 10)
+	{
+		return (int)PLAYER_STATE::NormalIdle;
+	}
 	return m_FSM->GetCurState();
 }
 
