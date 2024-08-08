@@ -24,7 +24,6 @@
 #include "CEditorCameraMoveScript.h"
 #include "CMemoryPoolMgrScript.h"
 #include "CHaloScript.h"
-#include "CStudentScript.h"
 #include "CPlayerScript.h"
 #include "CDialog.h"
 #include "CPlayerDamagedScript.h"
@@ -66,7 +65,16 @@
 #include "CTutorialTarget.h"
 #include "CShootingSystemScript.h"
 #include "CAfterImage.h"
+#include "CBossBulletShellSpawner.h"
+#include "CBossSmokeWaveScript.h"
+#include "CChildCollider.h"
+#include "CCoverJumpTutorialEvent.h"
+#include "CCoverLowEventListener.h"
+#include "CMiniGunScript.h"
+#include "CParticleSpawnScript.h"
+#include "CSmokeScript.h"
 #include "CSpawnPhysX.h"
+#include "CTutorialEndingEvent.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -93,7 +101,6 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CEditorCameraMoveScript");
 	_vec.push_back(L"CMemoryPoolMgrScript");
 	_vec.push_back(L"CHaloScript");
-	_vec.push_back(L"CStudentScript");
 	_vec.push_back(L"CPlayerScript");
 	_vec.push_back(L"CDialog");
 	_vec.push_back(L"CPlayerDamagedScript");
@@ -135,7 +142,16 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CTutorialTarget");
 	_vec.push_back(L"CShootingSystemScript");
 	_vec.push_back(L"CAfterImage");
+	_vec.push_back(L"CBossBulletShellSpawner");
+	_vec.push_back(L"CBossSmokeWaveScript");
+	_vec.push_back(L"CChildCollider");
+	_vec.push_back(L"CCoverJumpTutorialEvent");
+	_vec.push_back(L"CCoverLowEventListener");
+	_vec.push_back(L"CMiniGunScript");
+	_vec.push_back(L"CParticleSpawnScript");
+	_vec.push_back(L"CSmokeScript");
 	_vec.push_back(L"CSpawnPhysX");
+	_vec.push_back(L"CTutorialEndingEvent");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -186,8 +202,6 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CMemoryPoolMgrScript;
 	if (L"CHaloScript" == _strScriptName)
 		return new CHaloScript;
-	if (L"CStudentScript" == _strScriptName)
-		return new CStudentScript;
 	if (L"CPlayerScript" == _strScriptName)
 		return new CPlayerScript;
 	if (L"CDialog" == _strScriptName)
@@ -270,8 +284,26 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CShootingSystemScript;
 	if (L"CAfterImage" == _strScriptName)
 		return new CAfterImage;
+	if (L"CBossBulletShellSpawner" == _strScriptName)
+		return new CBossBulletShellSpawner;
+	if (L"CBossSmokeWaveScript" == _strScriptName)
+		return new CBossSmokeWaveScript;
+	if (L"CChildCollider" == _strScriptName)
+		return new CChildCollider;
+	if (L"CCoverJumpTutorialEvent" == _strScriptName)
+		return new CCoverJumpTutorialEvent;
+	if (L"CCoverLowEventListener" == _strScriptName)
+		return new CCoverLowEventListener;
+	if (L"CMiniGunScript" == _strScriptName)
+		return new CMiniGunScript;
+	if (L"CParticleSpawnScript" == _strScriptName)
+		return new CParticleSpawnScript;
+	if (L"CSmokeScript" == _strScriptName)
+		return new CSmokeScript;
 	if (L"CSpawnPhysX" == _strScriptName)
 		return new CSpawnPhysX;
+	if (L"CTutorialEndingEvent" == _strScriptName)
+		return new CTutorialEndingEvent;
 	return nullptr;
 }
 
@@ -347,9 +379,6 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::HALOSCRIPT:
 		return new CHaloScript;
-		break;
-	case (UINT)SCRIPT_TYPE::STUDENTSCRIPT:
-		return new CStudentScript;
 		break;
 	case (UINT)SCRIPT_TYPE::PLAYERSCRIPT:
 		return new CPlayerScript;
@@ -474,8 +503,35 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::AFTERIMAGE:
 		return new CAfterImage;
 		break;
+	case (UINT)SCRIPT_TYPE::BOSSBULLETSHELLSPAWNER:
+		return new CBossBulletShellSpawner;
+		break;
+	case (UINT)SCRIPT_TYPE::BOSSSMOKEWAVESCRIPT:
+		return new CBossSmokeWaveScript;
+		break;
+	case (UINT)SCRIPT_TYPE::CHILDCOLLIDER:
+		return new CChildCollider;
+		break;
+	case (UINT)SCRIPT_TYPE::COVERJUMPTUTORIALEVENT:
+		return new CCoverJumpTutorialEvent;
+		break;
+	case (UINT)SCRIPT_TYPE::COVERLOWEVENTLISTENER:
+		return new CCoverLowEventListener;
+		break;
+	case (UINT)SCRIPT_TYPE::MINIGUNSCRIPT:
+		return new CMiniGunScript;
+		break;
+	case (UINT)SCRIPT_TYPE::PARTICLESPAWNSCRIPT:
+		return new CParticleSpawnScript;
+		break;
+	case (UINT)SCRIPT_TYPE::SMOKESCRIPT:
+		return new CSmokeScript;
+		break;
 	case (UINT)SCRIPT_TYPE::SPAWNPHYSX:
 		return new CSpawnPhysX;
+		break;
+	case (UINT)SCRIPT_TYPE::TUTORIALENDINGEVENT:
+		return new CTutorialEndingEvent;
 		break;
 	}
 	return nullptr;
@@ -575,10 +631,6 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::HALOSCRIPT:
 		return L"CHaloScript";
-		break;
-
-	case SCRIPT_TYPE::STUDENTSCRIPT:
-		return L"CStudentScript";
 		break;
 
 	case SCRIPT_TYPE::PLAYERSCRIPT:
@@ -745,8 +797,44 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CAfterImage";
 		break;
 
+	case SCRIPT_TYPE::BOSSBULLETSHELLSPAWNER:
+		return L"CBossBulletShellSpawner";
+		break;
+
+	case SCRIPT_TYPE::BOSSSMOKEWAVESCRIPT:
+		return L"CBossSmokeWaveScript";
+		break;
+
+	case SCRIPT_TYPE::CHILDCOLLIDER:
+		return L"CChildCollider";
+		break;
+
+	case SCRIPT_TYPE::COVERJUMPTUTORIALEVENT:
+		return L"CCoverJumpTutorialEvent";
+		break;
+
+	case SCRIPT_TYPE::COVERLOWEVENTLISTENER:
+		return L"CCoverLowEventListener";
+		break;
+
+	case SCRIPT_TYPE::MINIGUNSCRIPT:
+		return L"CMiniGunScript";
+		break;
+
+	case SCRIPT_TYPE::PARTICLESPAWNSCRIPT:
+		return L"CParticleSpawnScript";
+		break;
+
+	case SCRIPT_TYPE::SMOKESCRIPT:
+		return L"CSmokeScript";
+		break;
+
 	case SCRIPT_TYPE::SPAWNPHYSX:
 		return L"CSpawnPhysX";
+		break;
+
+	case SCRIPT_TYPE::TUTORIALENDINGEVENT:
+		return L"CTutorialEndingEvent";
 		break;
 
 	}
