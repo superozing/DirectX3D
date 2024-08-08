@@ -151,6 +151,8 @@ public:
 	CGameObject* GetTarget() { return m_Target; }
 	void		 SetTarget(CGameObject* _Target) { m_Target = _Target; }
 
+	bool IsVital();
+
 public:
 	virtual void begin() override;
 	virtual void tick() override;

@@ -42,6 +42,11 @@ void CBossMissileScript::tick()
 {
 	CProjectileScript::tick();
 
+	if (m_Shooter->GetScript<CBossScript>()->IsVital())
+	{
+		GamePlayStatic::DestroyGameObject(GetOwner());
+	}
+
 	if (m_IsAlive)
 	{
 		m_LifeSpan -= DT;

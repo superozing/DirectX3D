@@ -1,6 +1,8 @@
 ﻿#include "pch.h"
 #include "CBossSwordBeamScript.h"
 
+#include "CBossScript.h"
+
 CBossSwordBeamScript::CBossSwordBeamScript()
 	: CProjectileScript((UINT)SCRIPT_TYPE::BOSSSWORDBEAMSCRIPT)
 	, m_Shooter(nullptr)
@@ -33,6 +35,11 @@ void CBossSwordBeamScript::begin()
 void CBossSwordBeamScript::tick()
 {
 	CProjectileScript::tick();
+
+	if (m_Shooter->GetScript<CBossScript>()->IsVital())
+	{
+		GamePlayStatic::DestroyGameObject(GetOwner());
+	}
 
 	if (m_IsAlive)
 	{
@@ -74,10 +81,4 @@ void CBossSwordBeamScript::InitSwordBeamInfo(CGameObject* _Shooter, CGameObject*
 	m_TargetPos	  = _TargetPos;
 	m_TargetPos.y = m_Shooter->Transform()->GetRelativePos().y;
 	CProjectileScript::InitProjectileInfo(_Pos, _InitSpeed, _MaxSpeed, _LifeSpan, _Damage, _Explode, _Alive);
-
-	//// y축 좌표 통일시켜 검기가 평행하게 날아가도록 설정
-	// m_TargetPos	  = m_Target->Transform()->GetRelativePos();
-	// m_TargetPos.y = m_Shooter->Transform()->GetRelativePos().y;
-	//  m_TargetPos.y += 100.f;
-	//  m_TargetPos.x += 500.f;
 }

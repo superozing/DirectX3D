@@ -306,6 +306,13 @@ void CBossScript::EXs4End()
 {
 	m_bSwordBeam = false;
 	m_ChaseDir	 = true;
+
+	if (IsVital())
+	{
+		CGameObject* pObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"SwordBeam_WarningDecal");
+		if (nullptr != pObj)
+			GamePlayStatic::DestroyGameObject(pObj);
+	}
 }
 
 void CBossScript::EXs5Begin()
@@ -360,6 +367,8 @@ int CBossScript::VitalGroggyUpdate()
 
 void CBossScript::VitalGroggyEnd()
 {
+	if (!m_BossStatus.IsDead)
+		m_BossStatus.IsGroggy = false;
 }
 
 void CBossScript::VitalGroggyDeathBegin()

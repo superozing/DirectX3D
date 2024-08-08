@@ -1,6 +1,8 @@
 ﻿#include "pch.h"
 #include "CBossSwordTrailScript.h"
 
+#include "CBossScript.h"
+
 CBossSwordTrailScript::CBossSwordTrailScript()
 	: CScript((UINT)SCRIPT_TYPE::BOSSSWORDTRAILSCRIPT)
 	, m_Kaiten(nullptr)
@@ -22,6 +24,11 @@ void CBossSwordTrailScript::begin()
 
 void CBossSwordTrailScript::tick()
 {
+	if (m_Kaiten->GetScript<CBossScript>()->IsVital())
+	{
+		GamePlayStatic::DestroyGameObject(GetOwner());
+	}
+
 	int LayerIdx = m_Kaiten->Animator3D()->GetCurFrameIdx();
 
 	if (LayerIdx > 120 && LayerIdx < 135)

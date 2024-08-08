@@ -74,6 +74,17 @@ CBossScript::~CBossScript()
 	}
 }
 
+bool CBossScript::IsVital()
+{
+	int State = m_FSM->GetCurState();
+
+	if ((int)BOSS_STATE::VitalGroggy == State || (int)BOSS_STATE::VitalDeath == State ||
+		(int)BOSS_STATE::VitalGroggyDeath == State)
+		return true;
+
+	return false;
+}
+
 void CBossScript::begin()
 {
 	LoadAsset();
@@ -115,9 +126,9 @@ void CBossScript::tick()
 	//	Vec3 dir	   = TargetPos - worldPos;
 	//	dir.Normalize();
 	//	// 일반 Raycast
-	//	int	 mask = RayCastDebugFlag::AllInvisible;
+	//	int	 mask = RayCastDebugFlag::AllVisible;
 	//	bool iscontact =
-	//		CPhysXMgr::GetInst()->PerfomRaycast(worldPos, dir, m_hitInfo, (UINT)LAYER::LAYER_BOSS_SKILL, mask);
+	//		CPhysXMgr::GetInst()->PerformRaycast(worldPos, dir, m_hitInfo, (UINT)LAYER::LAYER_BOSS_SKILL, mask);
 
 	//	if (true == iscontact)
 	//	{
@@ -190,6 +201,9 @@ void CBossScript::CheckDuration()
 
 void CBossScript::CheckVital()
 {
+	if (!m_BossStatus.IsDead && !m_BossStatus.IsGroggy && m_BossStatus.CurHP > 0.f && m_BossStatus.CurHP <= 500.f)
+		m_BossStatus.IsGroggy = true;
+
 	if (m_BossStatus.CurHP <= 0.f)
 		m_BossStatus.IsDead = true;
 
@@ -325,7 +339,9 @@ void CBossScript::ActiveHexShield()
 void CBossScript::DeActiveHexShield()
 {
 	CGameObject* pObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Kaiten_HexShield");
-	GamePlayStatic::DestroyGameObject(pObj);
+
+	if (nullptr != pObj)
+		GamePlayStatic::DestroyGameObject(pObj);
 }
 
 void CBossScript::ActiveSwordTrail()
@@ -361,7 +377,7 @@ void CBossScript::ActiveWarningDecal()
 
 	CGameObject* pDecal = CAssetMgr::GetInst()->Load<CPrefab>(PREFSwordBeam_WarningDecal)->Instantiate();
 	pDecal->Transform()->SetDir(-vDir);
-	pDecal->Transform()->SetRelativePos(m_TargetPos);
+	pDecal->Transform()->SetRelativePos(Vec3(m_TargetPos.x, m_TargetPos.y - 5.f, m_TargetPos.z));
 
 	int layeridx = pDecal->GetLayerIdx();
 	GamePlayStatic::SpawnGameObject(pDecal, layeridx);
