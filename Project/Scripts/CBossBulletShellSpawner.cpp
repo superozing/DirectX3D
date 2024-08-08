@@ -2,6 +2,7 @@
 #include "CBossBulletShellSpawner.h"
 
 #include <Engine/CMemoryPoolMgr.h>
+#include <Engine\CRandomMgr.h>
 
 #include "CMemoryPoolMgrScript.h"
 #include "CBulletScript.h"
@@ -61,10 +62,12 @@ void CBossBulletShellSpawner::SpawnBossBulletShell(CGameObject* _pObj, float _Ac
 	// + 90도 회전이 추가되어야 탄피가 앞쪽을 바라본다.
 	pBulletShell->Transform()->SetRelativeRotation(WeaponMat.Up());
 
+	float random = CRandomMgr::GetInst()->GetRandomFloat(75.f, 155.f);
+
 	// 힘 주기
 	auto pBulletScript = pBulletShell->GetScript<CBulletScript>(); // WeaponMat.Front()
 	auto rDir		   = _ParentWorldMat.Right().Normalize();	   // WeaponMat.Right().Normalize();
-	pBulletScript->SetLinearVelocity((rDir * 500.f) + (Vec3(0, 1, 0) * 500.f));
+	pBulletScript->SetLinearVelocity((rDir * random) + (Vec3(0, 1, 0) * random));
 
 	// 게임 오브젝트 스폰
 	GamePlayStatic::SpawnGameObject(pBulletShell, (UINT)LAYER::LAYER_ETC_OBJECT);
