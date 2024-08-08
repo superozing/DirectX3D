@@ -223,7 +223,8 @@ void CPhysX::finaltick()
 	Matrix OffsetPosMat		 = XMMatrixTranslation(m_vOffsetPos.x, m_vOffsetPos.y, m_vOffsetPos.z);
 	auto   RotatedOffesetPos = matRot * OffsetPosMat;
 	auto   VecROP			 = RotatedOffesetPos.Translation();
-	auto   DebugFinalPos	 = ObjWorldPos + m_vOffsetPos;
+	auto   DebugFinalPos	 = ObjWorldPos;
+	DebugFinalPos += m_vOffsetPos;
 
 	if (m_bDrawing)
 	{
