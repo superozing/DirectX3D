@@ -461,7 +461,7 @@ void CPhysXMgr::init()
 	// sceneDesc.flags |= PxSceneFlag::eENABLE_CCD;
 
 	gScene = gPhysics->createScene(sceneDesc);
-	gMaterial = gPhysics->createMaterial(200.0f, 200.0f, 0.f); // (정지 마찰 계수, 동적 마찰 계수, 반발 계수)
+	gMaterial = gPhysics->createMaterial(7.5f, 7.5f, 0.2f); // (정지 마찰 계수, 동적 마찰 계수, 반발 계수)
 
 	gCollisionCalback = new RoRCollisionCallback;
 	gScene->setSimulationEventCallback(gCollisionCalback);
