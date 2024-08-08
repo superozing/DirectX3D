@@ -526,46 +526,55 @@ void CPhysXMgr::tick()
 		ImGuizmo::DecomposeMatrixToComponents(*SimulatedMat.m, Translation, Rotation, Scale);
 
 		// PPM 적용
-		Translation *= m_PPM;
+		// Translation *= m_PPM;
 		Rotation.ToRadian();
 		// Rotation.z = -Rotation.z;
 
-		auto OffsetPos = obj->PhysX()->m_vOffsetPos;
-		auto norrot	   = Rotation;
-		norrot.Normalize();
-		Matrix matRot = Matrix::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), norrot.x) *
-						Matrix::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), norrot.y) *
-						Matrix::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), norrot.z);
-		Matrix OffsetPosMat		 = XMMatrixTranslation(OffsetPos.x, OffsetPos.y, OffsetPos.z);
-		auto   RotatedOffesetPos = DirectX::XMVector3TransformNormal(OffsetPos, matRot);
-		// auto   VecROP			 = RotatedOffesetPos.Translation();
-		// Translation -= RotatedOffesetPos; // 오프셋 적용된 위치
-		Translation -= OffsetPos; // 오프셋 적용된 위치
+		auto scale = pTr->Transform()->GetRelativeScale();
 
-		// 변화량 추출
-		Vec3 vPosDiff = pTr->GetWorldPos() - Translation;
-		Vec3 vRotDiff = pTr->GetWorldRot() - Rotation;
+		SimulatedMat._41 *= m_PPM;
+		SimulatedMat._42 *= m_PPM;
+		SimulatedMat._43 *= m_PPM;
 
-		if (true == m_bUseTH)
-		{
-			// if (vPosDiff.x < m_fPosTreshold.x || vPosDiff.x >= m_fPosTreshold.y)
-			//	vPosDiff.x = 0.f;
-			// if (vPosDiff.y < m_fPosTreshold.x || vPosDiff.y >= m_fPosTreshold.y)
-			//	vPosDiff.y = 0.f;
-			// if (vPosDiff.z < m_fPosTreshold.x || vPosDiff.z >= m_fPosTreshold.y)
-			//	vPosDiff.z = 0.f;
+		pTr->Transform()->SetWorldMat(SimulatedMat);
+		pTr->Transform()->SetRelativeScale(scale);
 
-			if (abs(vRotDiff.x) < m_fRotTreshold.x || abs(vRotDiff.x) >= m_fRotTreshold.y)
-				vRotDiff.x = 0.f;
-			if (abs(vRotDiff.y) < m_fRotTreshold.x || abs(vRotDiff.y) >= m_fRotTreshold.y)
-				vRotDiff.y = 0.f;
-			if (abs(vRotDiff.z) < m_fRotTreshold.x || abs(vRotDiff.z) >= m_fRotTreshold.y)
-				vRotDiff.z = 0.f;
-		}
+		// auto OffsetPos = obj->PhysX()->m_vOffsetPos;
+		// auto norrot	   = Rotation;
+		// norrot.Normalize();
+		// Matrix matRot = Matrix::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), norrot.x) *
+		//				Matrix::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), norrot.y) *
+		//				Matrix::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), norrot.z);
+		// Matrix OffsetPosMat		 = XMMatrixTranslation(OffsetPos.x, OffsetPos.y, OffsetPos.z);
+		// auto   RotatedOffesetPos = DirectX::XMVector3TransformNormal(OffsetPos, matRot);
+		//// auto   VecROP			 = RotatedOffesetPos.Translation();
+		//// Translation -= RotatedOffesetPos; // 오프셋 적용된 위치
+		// Translation -= OffsetPos; // 오프셋 적용된 위치
 
-		// 변화량만큼 Relative 에 적용
-		pTr->SetRelativeRotation(pTr->GetRelativeRotation() - vRotDiff);
-		pTr->SetRelativePos(pTr->GetRelativePos() - vPosDiff);
+		//// 변화량 추출
+		// Vec3 vPosDiff = pTr->GetWorldPos() - Translation;
+		// Vec3 vRotDiff = pTr->GetWorldRot() - Rotation;
+
+		// if (true == m_bUseTH)
+		//{
+		//	// if (vPosDiff.x < m_fPosTreshold.x || vPosDiff.x >= m_fPosTreshold.y)
+		//	//	vPosDiff.x = 0.f;
+		//	// if (vPosDiff.y < m_fPosTreshold.x || vPosDiff.y >= m_fPosTreshold.y)
+		//	//	vPosDiff.y = 0.f;
+		//	// if (vPosDiff.z < m_fPosTreshold.x || vPosDiff.z >= m_fPosTreshold.y)
+		//	//	vPosDiff.z = 0.f;
+
+		//	if (abs(vRotDiff.x) < m_fRotTreshold.x || abs(vRotDiff.x) >= m_fRotTreshold.y)
+		//		vRotDiff.x = 0.f;
+		//	if (abs(vRotDiff.y) < m_fRotTreshold.x || abs(vRotDiff.y) >= m_fRotTreshold.y)
+		//		vRotDiff.y = 0.f;
+		//	if (abs(vRotDiff.z) < m_fRotTreshold.x || abs(vRotDiff.z) >= m_fRotTreshold.y)
+		//		vRotDiff.z = 0.f;
+		//}
+
+		//// 변화량만큼 Relative 에 적용
+		// pTr->SetRelativeRotation(pTr->GetRelativeRotation() - vRotDiff);
+		// pTr->SetRelativePos(pTr->GetRelativePos() - vPosDiff);
 	}
 }
 
