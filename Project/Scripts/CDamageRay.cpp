@@ -21,13 +21,22 @@ void CDamageRay::begin()
 {
 }
 
+#include <Engine\CLogMgr.h>
 void CDamageRay::tick()
 {
 	tRoRHitInfo hitInfo = {};
 
-	CPhysXMgr::GetInst()->PerfomRaycast(GetOwner()->Transform()->GetWorldPos(),
-										GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT), hitInfo,
-										(UINT)LAYER::LAYER_PLAYER);
+	Vec3 RayPos		   = GetOwner()->Transform()->GetWorldPos();
+	Vec3 WorldFrontDir = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+
+	bool bHit = CPhysXMgr::GetInst()->PerfomRaycast(RayPos, WorldFrontDir, hitInfo, (UINT)LAYER::LAYER_PLAYER,
+													RayCastDebugFlag::AllVisible);
+
+	if (bHit)
+	{
+		string s = "Player Hit";
+		CLogMgr::GetInst()->AddLog(Log_Level::INFO, s);
+	}
 }
 
 void CDamageRay::SaveToFile(FILE* _File)
