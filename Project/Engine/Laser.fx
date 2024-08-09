@@ -13,7 +13,6 @@
 // g_float_0 : Length
 // g_float_1 : Alpha 
 // g_float_2 : Width
-// g_float_3 : Height
 //===========
 
 struct VS_IN
