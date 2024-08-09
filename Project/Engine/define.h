@@ -462,3 +462,6 @@ enum class DecalType
 #define DecalPriorityMax 20
 #define AfterImageMaxCount 10
 #define AfterImageUpdateKey "AfterImage"
+
+#define VignetteDuration 3.f
+#define VignetteAlpha 1.f

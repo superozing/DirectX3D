@@ -38,6 +38,13 @@ struct tCromatic_AberrationInfo
 	Vec2 CropOffset = Vec2(0.8f, 0.8f);
 };
 
+struct tVignetteInfo
+{
+	bool  bVignetteRender;
+	float fDuration;
+	float fAlpha;
+};
+
 class CRenderMgr : public CManager<CRenderMgr>
 {
 	SINGLE(CRenderMgr);
@@ -143,7 +150,22 @@ public:
 	tCromatic_AberrationInfo m_CAInfo;
 	bool					 m_bGrayWeight = true;
 
-	bool m_VignetteRender = false;
+	tVignetteInfo m_VignetteInfo;
+	bool		  GetRenderVignette() { return m_VignetteInfo.bVignetteRender; }
+
+	float* GetVignetteDuration() { return &m_VignetteInfo.fDuration; }
+	float* GetVignetteAlpha() { return &m_VignetteInfo.fAlpha; }
+
+	void SwitchVignette()
+	{
+		m_VignetteInfo.bVignetteRender = m_VignetteInfo.bVignetteRender ? false : true;
+
+		if (m_VignetteInfo.bVignetteRender == false)
+		{
+			m_VignetteInfo.fDuration = VignetteDuration;
+			m_VignetteInfo.fAlpha	 = VignetteAlpha;
+		}
+	}
 
 public:
 	virtual void init() override;

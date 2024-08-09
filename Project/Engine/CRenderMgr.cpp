@@ -28,6 +28,10 @@ CRenderMgr::CRenderMgr()
 	, m_bEscape(false)
 {
 	m_RenderFunc = &CRenderMgr::render_play;
+
+	m_VignetteInfo.bVignetteRender = false;
+	m_VignetteInfo.fAlpha		   = VignetteDuration;
+	m_VignetteInfo.fDuration	   = VignetteAlpha;
 }
 
 CRenderMgr::~CRenderMgr()

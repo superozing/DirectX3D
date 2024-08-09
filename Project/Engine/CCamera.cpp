@@ -665,7 +665,7 @@ void CCamera::Cromatic_Aberration()
 
 void CCamera::Vignette_Effect()
 {
-	if (CRenderMgr::GetInst()->m_VignetteRender == false)
+	if (CRenderMgr::GetInst()->GetRenderVignette() == false)
 		return;
 
 	auto ColorCopy	  = CAssetMgr::GetInst()->FindAsset<CTexture>(L"PostProcessTex");
@@ -675,6 +675,22 @@ void CCamera::Vignette_Effect()
 	static Ptr<CMesh>	  pRectMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect);
 	static Ptr<CMaterial> pVignetteMtrl;
 	pVignetteMtrl = CAssetMgr::GetInst()->Load<CMaterial>(MTRLVignetteMtrl);
+
+	float* fVignetteDuration = CRenderMgr::GetInst()->GetVignetteDuration();
+	float* fVignetteAlpha	 = CRenderMgr::GetInst()->GetVignetteAlpha();
+
+	// 지속 시간 관련  이벤트가 on이라면 계속 활성화
+	if (*fVignetteDuration >= 0.f)
+		*fVignetteDuration -= DT;
+	else
+		*fVignetteDuration = VignetteDuration;
+
+	float DurationRatio = 1.0f - (*fVignetteDuration / VignetteDuration);
+
+	// 시간에 따른 알파값 조절
+	*fVignetteAlpha = (sin(DurationRatio * 3.14159f) + 1.0f) * 0.5f;
+
+	pVignetteMtrl->SetScalarParam(SCALAR_PARAM::FLOAT_0, *fVignetteAlpha);
 
 	pVignetteMtrl->UpdateData();
 
