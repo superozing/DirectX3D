@@ -191,10 +191,10 @@ PS_OUT PS_Decal(VS_OUT _in)
         
             if (bCustomAlpha)
             {
-                float animProgress = smoothstep(0, 1, 1 - (CurAnimtime / MaxAnimtime)); // 0에서 1 사이로 제한
+                //float animProgress = smoothstep(0, 1, 1 - (CurAnimtime / MaxAnimtime)); // 0에서 1 사이로 제한
                 
-                //output.vColor.a *= CustomAlpha;
-                output.vColor.a *= (1 - animProgress);
+                output.vColor.a *= CustomAlpha;
+                //output.vColor.a *= (1 - animProgress);
             }
         
             if (g_int_0)

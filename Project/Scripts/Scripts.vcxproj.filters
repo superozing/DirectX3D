@@ -280,6 +280,9 @@
     <ClInclude Include="CBulletLineScript.h">
       <Filter>Scripts\Particle\BulletLine</Filter>
     </ClInclude>
+    <ClInclude Include="CGroundCrackScript.h">
+      <Filter>Scripts\Boss\BossMissile\GroundDecal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -561,6 +564,9 @@
     <ClCompile Include="CBulletLineScript.cpp">
       <Filter>Scripts\Particle\BulletLine</Filter>
     </ClCompile>
+    <ClCompile Include="CGroundCrackScript.cpp">
+      <Filter>Scripts\Boss\BossMissile\GroundDecal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -760,6 +766,9 @@
     </Filter>
     <Filter Include="Scripts\Particle\BulletLine">
       <UniqueIdentifier>{cc42cb81-78b5-468c-a168-3021c5e7d12c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Boss\BossMissile\GroundDecal">
+      <UniqueIdentifier>{c98a1cf1-7fa0-4fc0-9092-58f90f05515e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -2,9 +2,11 @@
 #include "CBossMissileScript.h"
 
 #include <Engine\CRandomMgr.h>
+#include <Engine\CLogMgr.h>
 #include "CPlayerScript.h"
 #include "CBossScript.h"
 #include "CParticleSpawnScript.h"
+#include "CGroundCrackScript.h"
 
 CBossMissileScript::CBossMissileScript()
 	: CProjectileScript((UINT)SCRIPT_TYPE::BOSSMISSILESCRIPT)
@@ -95,6 +97,8 @@ void CBossMissileScript::tick()
 void CBossMissileScript::OnHit()
 {
 	m_Target->GetScript<CPlayerScript>()->Hit(m_Damage);
+
+	CLogMgr::GetInst()->AddLog(Log_Level::INFO, L"Azusa hit");
 }
 
 void CBossMissileScript::InitBossMissileInfo(CGameObject* _Shooter, CGameObject* _Target, Vec3 _Pos, float _InitSpeed,
@@ -118,11 +122,19 @@ void CBossMissileScript::InitBossMissileInfo(CGameObject* _Shooter, CGameObject*
 
 void CBossMissileScript::BeginOverlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider)
 {
+	Vec3 vPos = Transform()->GetRelativePos();
+
 	// 미사일 충돌 시 폭발 파티클 스폰
 	CGameObject* pObj	  = CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Explode)->Instantiate();
 	int			 layeridx = pObj->GetLayerIdx();
 	GamePlayStatic::SpawnGameObject(pObj, layeridx);
-	pObj->GetScript<CParticleSpawnScript>()->SetParticleInfo(Transform()->GetRelativePos(), 0.5f);
+	pObj->GetScript<CParticleSpawnScript>()->SetParticleInfo(vPos, 0.5f);
+
+	pObj	 = CAssetMgr::GetInst()->Load<CPrefab>(PREFGroundCrackDecal)->Instantiate();
+	layeridx = pObj->GetLayerIdx();
+	GamePlayStatic::SpawnGameObject(pObj, layeridx);
+	vPos.y = m_Target->Transform()->GetRelativePos().y;
+	pObj->GetScript<CGroundCrackScript>()->SetDecalPos(vPos);
 
 	if (IsRedZone())
 		OnHit();

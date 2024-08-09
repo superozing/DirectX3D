@@ -207,6 +207,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CEditorCameraMoveScript.h" />
     <ClInclude Include="CEventListener.h" />
     <ClInclude Include="CGameMode.h" />
+    <ClInclude Include="CGroundCrackScript.h" />
     <ClInclude Include="CHaloScript.h" />
     <ClInclude Include="CImageUIScript.h" />
     <ClInclude Include="CLevelTransition.h" />
@@ -302,6 +303,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CDirectionalLight.cpp" />
     <ClCompile Include="CEditorCameraMoveScript.cpp" />
     <ClCompile Include="CEventListener.cpp" />
+    <ClCompile Include="CGroundCrackScript.cpp" />
     <ClCompile Include="CHaloScript.cpp" />
     <ClCompile Include="CImageUIScript.cpp" />
     <ClCompile Include="CLevelTransition.cpp" />
