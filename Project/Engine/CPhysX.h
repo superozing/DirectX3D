@@ -72,6 +72,11 @@ public:
 
 	PxRigidActor* getActor() const { return m_Actor; }
 	void		  releaseActor();
+	// 컬라이더의 위치를 반환합니다(오브젝트의 포지션에 기반)
+	// 이 값을 PPM에 비례해 처리한후 물리엔진에 set해야합니다
+	Vec3 GetColliderPos();
+	// 컬라이더의 위치를 오브젝트의 위치로 변환합니다.
+	Vec3 ConvertToObjectPos(Vec3 _ColPos);
 
 public:
 	CLONE(CPhysX);

@@ -280,17 +280,10 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 
 	Quat WorldQuat = object->Transform()->GetWorldQuaternion();
 
-	auto ObjPos	   = object->Transform()->GetWorldPos();
-	auto OffsetPos = PhysX->m_vOffsetPos;
-	auto worldrot  = object->Transform()->GetWorldRot();
-
-	auto rotatedoffset = RoRMath::RotateVectorByRotationVector(OffsetPos, worldrot);
-	auto FinalPos	   = ObjPos;
-	FinalPos += rotatedoffset;
-
-	FinalPos /= m_PPM;
+	auto ColPos = PhysX->GetColliderPos();
+	ColPos /= m_PPM;
 	// 게임 오브젝트의 위치와 회전 정보
-	PxTransform transform(PxVec3(FinalPos.x, FinalPos.y, FinalPos.z),
+	PxTransform transform(PxVec3(ColPos.x, ColPos.y, ColPos.z),
 						  PxQuat(WorldQuat.x, WorldQuat.y, -WorldQuat.z, -WorldQuat.w));
 
 	PxRigidActor* actor = nullptr;
