@@ -334,7 +334,7 @@ void CPlayerScript::begin()
 	pSnd								   = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Common_CH0240_SR_Reload_01);
 	m_vecSound[(UINT)PlayerSoundType::RELOAD]	 = pSnd;
 	
-	pSnd										= CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Field_Movement_02);
+	pSnd										= CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Field_Movement_03);
 	m_vecSound[(UINT)PlayerSoundType::MOVEMENT] = pSnd;
 
 	pSnd									 = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Grenade_Throw_Up);
