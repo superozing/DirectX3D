@@ -641,7 +641,19 @@ void CPlayerScript::MoveIngBegin()
 int CPlayerScript::MoveIngUpdate()
 {
 	// 발자국 소리를 어떻게 넣어주어야 할까요?
-	//m_vecSound[(UINT)PlayerSoundType::MOVEMENT]->Play(1, 1.f, false);
+
+	static bool IsLeftFoot = false;
+	if (Animator3D()->GetCurFrameIdx() == 0 && IsLeftFoot)
+	{
+		m_vecSound[(UINT)PlayerSoundType::EX1]->Play(1, 1.f, true);
+		IsLeftFoot = false;
+	}
+	if (Animator3D()->GetCurFrameIdx() == Animator3D()->GetCurClipLength() / 2 && !IsLeftFoot)
+	{
+		m_vecSound[(UINT)PlayerSoundType::EX1]->Play(1, 1.f, true);
+		IsLeftFoot = true;
+
+	}
 
 	if (MoveEndCondition)
 	{
