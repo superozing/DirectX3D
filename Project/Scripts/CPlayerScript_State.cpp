@@ -642,7 +642,7 @@ int CPlayerScript::MoveIngUpdate()
 {
 	// 발자국 소리를 어떻게 넣어주어야 할까요?
 
-	static bool IsLeftFoot = false;
+	static bool IsLeftFoot = true;
 	if (Animator3D()->GetCurFrameIdx() == 0 && IsLeftFoot)
 	{
 		m_vecSound[(UINT)PlayerSoundType::EX1]->Play(1, 1.f, true);
@@ -657,6 +657,7 @@ int CPlayerScript::MoveIngUpdate()
 
 	if (MoveEndCondition)
 	{
+		IsLeftFoot = true;
 		switch (GetCoverType())
 		{
 		case CoverType::Normal:
@@ -673,11 +674,17 @@ int CPlayerScript::MoveIngUpdate()
 
 	// 사격 준비
 	if (KEY_TAP(CPlayerController::Zoom))
+	{
+		IsLeftFoot = true;
 		return (int)PLAYER_STATE::NormalAttackStart;
+	}
 
 	// TODO: Reload 조건
 	if (KEY_TAP(CPlayerController::Reload))
+	{
+		IsLeftFoot = true;
 		return (int)PLAYER_STATE::NormalReload;
+	}
 
 	return m_FSM->GetCurState();
 }
