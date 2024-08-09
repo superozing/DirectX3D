@@ -499,6 +499,8 @@ void CCamera::render_postprocess()
 
 	Cromatic_Aberration();
 
+	Vignette_Effect();
+
 	GrayFilter_by_Object();
 
 	// for (size_t i = 0; i < m_vecPostProcess.size(); ++i)
@@ -655,6 +657,26 @@ void CCamera::Cromatic_Aberration()
 	pCAMat->SetScalarParam(SCALAR_PARAM::VEC2_2, RefInfo.MaxBlueOffset * LifeRatio);
 	pCAMat->SetScalarParam(SCALAR_PARAM::VEC2_3, RoRMath::Lerp(Vec2(1.f, 1.f), RefInfo.CropOffset, LifeRatio));
 	pCAMat->UpdateData();
+
+	// 타겟->리소스 복사
+	CRenderMgr::GetInst()->CopyFromTextureToTexture(ColorCopy, RenderTarget);
+	pRectMesh->render(0);
+}
+
+void CCamera::Vignette_Effect()
+{
+	if (CRenderMgr::GetInst()->m_VignetteRender == false)
+		return;
+
+	auto ColorCopy	  = CAssetMgr::GetInst()->FindAsset<CTexture>(L"PostProcessTex");
+	auto RenderTarget = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
+
+	// 매쉬,머터리얼 받아오기
+	static Ptr<CMesh>	  pRectMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect);
+	static Ptr<CMaterial> pVignetteMtrl;
+	pVignetteMtrl = CAssetMgr::GetInst()->Load<CMaterial>(MTRLVignetteMtrl);
+
+	pVignetteMtrl->UpdateData();
 
 	// 타겟->리소스 복사
 	CRenderMgr::GetInst()->CopyFromTextureToTexture(ColorCopy, RenderTarget);

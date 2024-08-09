@@ -98,7 +98,7 @@ float4 PS_Vignette(VS_OUT _in) : SV_Target
 
     float4 vignetteTex = (float4) 0.f;
     
-    if (g_btex_0 == 0)
+    if (g_btex_0 == 1)
         vignetteTex = g_tex_0.Sample(g_sam_0, _in.vUV);
 
     float alphaValue = vignetteTex.a * g_float_0;

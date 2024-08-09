@@ -143,6 +143,8 @@ public:
 	tCromatic_AberrationInfo m_CAInfo;
 	bool					 m_bGrayWeight = true;
 
+	bool m_VignetteRender = false;
+
 public:
 	virtual void init() override;
 	virtual void tick() override;

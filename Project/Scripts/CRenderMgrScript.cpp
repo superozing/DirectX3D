@@ -52,6 +52,9 @@ CRenderMgrScript::CRenderMgrScript()
 	AppendScriptParam("CA::BlueOffset", SCRIPT_PARAM::VEC2, &(RENDERMGR->m_CAInfo.MaxBlueOffset));
 	AppendScriptParam("CA::CropOffset", SCRIPT_PARAM::VEC2, &(RENDERMGR->m_CAInfo.CropOffset));
 
+	// Vignette
+	AppendScriptParam("Vignette::Activate", SCRIPT_PARAM::BOOL, &((RENDERMGR->m_VignetteRender)));
+
 	AppendScriptParam("GRAY::bGrayWeight", SCRIPT_PARAM::BOOL, &(RENDERMGR->m_bGrayWeight));
 }
 
