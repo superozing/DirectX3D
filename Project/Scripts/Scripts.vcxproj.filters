@@ -271,6 +271,9 @@
     <ClInclude Include="CDamageRay.h">
       <Filter>Scripts\MapObject</Filter>
     </ClInclude>
+    <ClInclude Include="CLaserSetting.h">
+      <Filter>Scripts\Setting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -543,6 +546,9 @@
     <ClCompile Include="CDamageRay.cpp">
       <Filter>Scripts\MapObject</Filter>
     </ClCompile>
+    <ClCompile Include="CLaserSetting.cpp">
+      <Filter>Scripts\Setting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -736,6 +742,9 @@
     </Filter>
     <Filter Include="Scripts\MapObject">
       <UniqueIdentifier>{6b54aa33-108d-4354-baf9-c06a3c3951a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Setting">
+      <UniqueIdentifier>{acc108d4-c010-4137-8bcb-cf21f8489e41}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -729,9 +729,12 @@ void CPlayerScript::VitalDeathEnd()
 
 void CPlayerScript::VitalPanicBegin()
 {
+	// Animator3D()->Play((int)PLAYER_STATE::VitalPanic, 0); 에니메이션 사용 안함
+
+	CCamera* pCamera = CRenderMgr::GetInst()->GetMainCam();
+
 	if (IsInvincivility() == false) // 피격이 처음 되면 무적이 아니므로 피격 상태로 들어간다.
 	{
-		Animator3D()->Play((int)PLAYER_STATE::VitalPanic, 0);
 		SetInvincivility(true);
 		this->SetDamaged(false);
 	}
@@ -743,13 +746,10 @@ int CPlayerScript::VitalPanicUpdate()
 	// TODO: 패닉이 풀렸는지 검사해야 함
 	// return ispanic ? (int)PLAYER_STATE::NormalIdle : m_FSM->GetCurState();
 
-	int iMaxFrame = Animator3D()->GetCurClipLength();
-	int iCurFrame = Animator3D()->GetCurFrameIdx();
-
-	if (iCurFrame > 10)
-	{
-		return (int)PLAYER_STATE::NormalIdle;
-	}
+	// if ()
+	//{
+	//	return (int)PLAYER_STATE::NormalIdle;
+	// }
 	return m_FSM->GetCurState();
 }
 

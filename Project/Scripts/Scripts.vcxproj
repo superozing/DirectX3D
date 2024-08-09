@@ -207,6 +207,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CGameMode.h" />
     <ClInclude Include="CHaloScript.h" />
     <ClInclude Include="CImageUIScript.h" />
+    <ClInclude Include="CLaserSetting.h" />
     <ClInclude Include="CLevelTransition.h" />
     <ClInclude Include="CMegaFistScript.h" />
     <ClInclude Include="CMemoryPoolMgrScript.h" />
@@ -299,6 +300,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CEventListener.cpp" />
     <ClCompile Include="CHaloScript.cpp" />
     <ClCompile Include="CImageUIScript.cpp" />
+    <ClCompile Include="CLaserSetting.cpp" />
     <ClCompile Include="CLevelTransition.cpp" />
     <ClCompile Include="CMegaFistScript.cpp" />
     <ClCompile Include="CMemoryPoolMgrScript.cpp" />

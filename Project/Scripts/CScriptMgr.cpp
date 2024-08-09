@@ -76,6 +76,7 @@
 #include "CSpawnPhysX.h"
 #include "CTutorialEndingEvent.h"
 #include "CDamageRay.h"
+#include "CLaserSetting.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -154,6 +155,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CSpawnPhysX");
 	_vec.push_back(L"CTutorialEndingEvent");
 	_vec.push_back(L"CDamageRay");
+	_vec.push_back(L"CLaserSetting");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -308,6 +310,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CTutorialEndingEvent;
 	if (L"CDamageRay" == _strScriptName)
 		return new CDamageRay;
+	if (L"CLaserSetting" == _strScriptName)
+		return new CLaserSetting;
 	return nullptr;
 }
 
@@ -539,6 +543,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::DAMAGERAY:
 		return new CDamageRay;
+		break;
+	case (UINT)SCRIPT_TYPE::LASERSETTING:
+		return new CLaserSetting;
 		break;
 	}
 	return nullptr;
@@ -846,6 +853,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::DAMAGERAY:
 		return L"CDamageRay";
+		break;
+
+	case SCRIPT_TYPE::LASERSETTING:
+		return L"CLaserSetting";
 		break;
 
 	}

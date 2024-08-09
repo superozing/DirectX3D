@@ -33,7 +33,7 @@ void CDamageRay::tick()
 	Vec3 WorldFrontDir = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
 
 	bool bHit = false;
-	bHit	  = CPhysXMgr::GetInst()->PerformRaycast(RayPos, WorldFrontDir, hitInfo, (UINT)LAYER::LAYER_RAYCAST,
+	bHit	  = CPhysXMgr::GetInst()->PerformRaycast(RayPos, WorldFrontDir, hitInfo, (UINT)LAYER::LAYER_MONSTER_SKILL,
 													 RayCastDebugFlag::AllVisible);
 
 	if (bHit)
