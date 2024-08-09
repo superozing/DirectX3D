@@ -1,62 +1,40 @@
 ﻿#pragma once
 #include <Engine/CScript.h>
-#include <Engine\CPhysXMgr.h>
-
-enum class MONSTER_STATE
-{
-	Ready1,
-	Ready2,
-	EXs1,
-	EXs2,
-	EXs3,
-	EXs4,
-	EXs5,
-	NormalAttackDelay,
-	NormalAttackIng,
-	NormalAttackEnd,
-	NormalAttackStart,
-	NormalIdle,
-	NormalReload,
-	VitalDeath,
-	VitalGroggy,
-	VitalGroggyDeath,
-
-	END,
-};
-
-struct tMonsterStatus
-{
-	float MaxHP = 1000.f;
-	float CurHP = MaxHP;
-
-	float ATTDamage = 10.f;
-	float ATTSpeed	= 2000.f;
-	float ATTCoolTime = 1.f;
-
-	float DetactRange = 1000.f;
-
-	bool IsGroggy = false;
-	bool IsDead	  = false;
-};
-
-template <typename T> class CRoRStateMachine;
-
 
 class CMonsterScript : public CScript
 {
 private:
-	CRoRStateMachine<CMonsterScript>* m_FSM;
-	tMonsterStatus					  m_BossStatus;
+	// 현재 체력
+	int m_CurHP;
+	
+	// 최대 체력
+	int m_MaxHP;
 
-	class CGameObject*				  m_Target;
-	tRoRHitInfo						  m_hitInfo;
+	// 사망한 몬스터 오브젝트인가?
+	bool m_IsDeadMonster;
 
 public:
 	virtual void begin() override;
 	virtual void tick() override;
 
 	virtual void SaveToFile(FILE* _File) override;
+	virtual void SaveToFile(ofstream& fout) override;
 	virtual void LoadFromFile(FILE* _File) override;
+	virtual void LoadFromFile(ifstream& fin) override;
+
+public:
+	void SetCurHP(int _HP) { m_CurHP = RoRMath::ClampInt(_HP, 0); }
+	void SetMaxHP(int _HP) { m_MaxHP = RoRMath::ClampInt(_HP, 0); }
+	
+	int GetCurHP() const { return m_CurHP; }
+	int GetMaxHP() const { return m_MaxHP; }
+	
+	void TakeDamage(int _Dmg);
+
+	bool IsDeadMonster() const { return m_IsDeadMonster; }
+
+private:
+	void DbgTakeDamage();
 
 public:
 	CLONE(CMonsterScript);
