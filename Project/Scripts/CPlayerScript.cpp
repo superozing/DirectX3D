@@ -325,7 +325,7 @@ void CPlayerScript::begin()
 	// Player Sound Init
 	m_vecSound.resize((UINT)PlayerSoundType::End);
 
-	Ptr<CSound> pSnd = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Skill_Azusa_Ex_1);
+	Ptr<CSound> pSnd					   = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_CH0138_Public_Shot);
 	m_vecSound[(UINT)PlayerSoundType::EX1]	 = pSnd;
 
 	pSnd = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Skill_Azusa_Ex_2);
