@@ -15,6 +15,7 @@ enum class TutorialState
 
 enum class TutorialGameModeSoundType
 {
+	TutorialStart,
 	BGM,
 	DoorOpen,
 	END
