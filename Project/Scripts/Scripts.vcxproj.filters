@@ -537,9 +537,6 @@
     <ClCompile Include="CMonsterScript.cpp">
       <Filter>Scripts\Monster</Filter>
     </ClCompile>
-    <ClCompile Include="CMonsterScript_State.cpp">
-      <Filter>Scripts\Monster</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">

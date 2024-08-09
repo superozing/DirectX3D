@@ -305,7 +305,6 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CMissileTrailScript.cpp" />
     <ClCompile Include="CMonsterHP.cpp" />
     <ClCompile Include="CMonsterScript.cpp" />
-    <ClCompile Include="CMonsterScript_State.cpp" />
     <ClCompile Include="CMuzzleFlashScript.cpp" />
     <ClCompile Include="CObjectGrayMaskScript.cpp" />
     <ClCompile Include="CPanelUIScript.cpp" />
