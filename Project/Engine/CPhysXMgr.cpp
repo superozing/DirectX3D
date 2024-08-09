@@ -500,6 +500,8 @@ void CPhysXMgr::tick()
 	// 시뮬레이션 결과로 트랜스폼 업데이트
 	PxU32 nbActors = gScene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
 	std::vector<PxRigidActor*> actors(nbActors);
+	if (nbActors == 0)
+		return;
 	gScene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC,
 					  reinterpret_cast<PxActor**>(&actors[0]), nbActors);
 
