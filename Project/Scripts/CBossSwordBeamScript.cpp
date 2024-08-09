@@ -2,6 +2,7 @@
 #include "CBossSwordBeamScript.h"
 
 #include "CBossScript.h"
+#include "CPlayerScript.h"
 
 CBossSwordBeamScript::CBossSwordBeamScript()
 	: CProjectileScript((UINT)SCRIPT_TYPE::BOSSSWORDBEAMSCRIPT)
@@ -58,10 +59,15 @@ void CBossSwordBeamScript::tick()
 
 void CBossSwordBeamScript::OnHit()
 {
+	m_Target->GetScript<CPlayerScript>()->Hit(m_Damage);
 }
 
 void CBossSwordBeamScript::BeginOverlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider)
 {
+	if ((int)LAYER::LAYER_PLAYER == _OtherObj->GetLayerIdx())
+	{
+		OnHit();
+	}
 }
 
 void CBossSwordBeamScript::Overlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider)

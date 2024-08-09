@@ -364,7 +364,7 @@ void CBossScript::FireSwordBeam()
 
 	CGameObject* SwordBeam = CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_SwordBeam)->Instantiate();
 	SwordBeam->GetScript<CBossSwordBeamScript>()->InitSwordBeamInfo(GetOwner(), m_Target, m_TargetPos, HandBonePos,
-																	5000.f, 5000.f, 3.f, 100.f, false, true);
+																	5000.f, 5000.f, 3.f, 50.f, false, true);
 	int layeridx = SwordBeam->GetLayerIdx();
 	GamePlayStatic::SpawnGameObject(SwordBeam, layeridx);
 }
