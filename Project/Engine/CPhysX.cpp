@@ -161,41 +161,6 @@ void CPhysX::begin()
 // #include "CLogMgr.h"
 void CPhysX::finaltick()
 {
-	// 콘텍트벡터를 초기화
-	// if (0 != m_vThisFrameContact.size())
-	//{
-	//	m_vThisFrameContact.resize(0);
-	//}
-
-	// static Vec3	 VecCurPos	= Transform()->GetWorldPos();
-	// static Vec3	 VecPrevPos = {};
-	// static Vec3	 Vec3CurVel = {};
-	// static Vec3	 VecPrevVel = {};
-	// static float acctime	= 0.f;
-	// acctime += DT;
-	// if (acctime >= 1.f && PhysBodyType::DYNAMIC == m_bPhysBodyType)
-	//{
-	//	VecPrevPos = VecCurPos;
-	//	VecCurPos  = Transform()->GetWorldPos();
-	//	// 속력계산
-	//	auto diffpos = Vec3::Distance(VecCurPos, VecPrevPos);
-
-	//	// 이전 속도저장,현재 속도계산
-	//	VecPrevVel = Vec3CurVel;
-	//	Vec3CurVel = VecCurPos - VecPrevPos;
-
-	//	// 가속도계산
-	//	auto diffvel	= Vec3::Distance(Vec3CurVel, VecPrevVel);
-	//	auto VecDiffVel = Vec3CurVel - VecPrevVel;
-
-	//	// CLogMgr::GetInst()->AddLog(Log_Level::INFO, "Vel:" + std::to_string(diffpos));
-	//	// CLogMgr::GetInst()->AddLog(Log_Level::INFO, "Acc:" + std::to_string(diffvel));
-	//	CLogMgr::GetInst()->AddLog(Log_Level::INFO, "Acc:" + std::to_string(VecDiffVel.x) + "," +
-	//													std::to_string(VecDiffVel.y) + "," +
-	//													std::to_string(VecDiffVel.z));
-	//	acctime = 0.f;
-	//}
-
 	// imgui가 포커스되어있으면 ,현재프레임에 충돌한 오브젝트정보를 수집
 	if (true == m_bImguiDirtyFlag)
 	{
