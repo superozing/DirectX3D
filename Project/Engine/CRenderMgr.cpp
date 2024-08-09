@@ -32,6 +32,7 @@ CRenderMgr::CRenderMgr()
 	m_VignetteInfo.bVignetteRender = false;
 	m_VignetteInfo.fAlpha		   = VignetteDuration;
 	m_VignetteInfo.fDuration	   = VignetteAlpha;
+	m_VignetteInfo.iVignettePower  = 1;
 }
 
 CRenderMgr::~CRenderMgr()

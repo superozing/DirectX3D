@@ -43,6 +43,7 @@ struct tVignetteInfo
 	bool  bVignetteRender;
 	float fDuration;
 	float fAlpha;
+	int	  iVignettePower; // 추가 alpha 변동폭
 };
 
 class CRenderMgr : public CManager<CRenderMgr>
@@ -155,6 +156,8 @@ public:
 
 	float* GetVignetteDuration() { return &m_VignetteInfo.fDuration; }
 	float* GetVignetteAlpha() { return &m_VignetteInfo.fAlpha; }
+	int*   GetVignettePower() { return &m_VignetteInfo.iVignettePower; }
+	void   SetVignettePower(int _Power) { m_VignetteInfo.iVignettePower = _Power; }
 
 	void SwitchVignette()
 	{

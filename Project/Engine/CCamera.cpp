@@ -679,9 +679,11 @@ void CCamera::Vignette_Effect()
 	float* fVignetteDuration = CRenderMgr::GetInst()->GetVignetteDuration();
 	float* fVignetteAlpha	 = CRenderMgr::GetInst()->GetVignetteAlpha();
 
+	int* iVignettePower = CRenderMgr::GetInst()->GetVignettePower();
+
 	// 지속 시간 관련  이벤트가 on이라면 계속 활성화
 	if (*fVignetteDuration >= 0.f)
-		*fVignetteDuration -= DT;
+		*fVignetteDuration -= DT * (*iVignettePower);
 	else
 		*fVignetteDuration = VignetteDuration;
 
