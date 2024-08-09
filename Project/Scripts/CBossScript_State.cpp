@@ -341,6 +341,20 @@ void CBossScript::VitalDeathBegin()
 {
 	Animator3D()->Play((int)BOSS_STATE::VitalDeath, 0);
 	m_ChaseDir = false;
+
+	// 사망 폭발 파티클 스폰
+	Vec3 vPos1 = (Animator3D()->FindBoneMat(L"Bip001 Spine1") * Transform()->GetWorldMat()).Translation();
+	Vec3 vPos2 = (Animator3D()->FindBoneMat(L"Bone_Belt") * Transform()->GetWorldMat()).Translation();
+
+	CGameObject* pObj	  = CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Explode_Lite)->Instantiate();
+	int			 layeridx = pObj->GetLayerIdx();
+	GamePlayStatic::SpawnGameObject(pObj, layeridx);
+	pObj->GetScript<CParticleSpawnScript>()->SetParticleInfo(vPos2, 3.f);
+
+	pObj	 = CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Explode)->Instantiate();
+	layeridx = pObj->GetLayerIdx();
+	GamePlayStatic::SpawnGameObject(pObj, layeridx);
+	pObj->GetScript<CParticleSpawnScript>()->SetParticleInfo(vPos1, 2.f);
 }
 
 int CBossScript::VitalDeathUpdate()
@@ -391,6 +405,20 @@ void CBossScript::VitalGroggyDeathBegin()
 {
 	Animator3D()->Play((int)BOSS_STATE::VitalGroggyDeath, 0);
 	m_ChaseDir = false;
+
+	// 사망 폭발 파티클 스폰
+	Vec3 vPos1 = (Animator3D()->FindBoneMat(L"Bip001 Spine") * Transform()->GetWorldMat()).Translation();
+	Vec3 vPos2 = (Animator3D()->FindBoneMat(L"Bone_Belt") * Transform()->GetWorldMat()).Translation();
+
+	CGameObject* pObj	  = CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Explode_Lite)->Instantiate();
+	int			 layeridx = pObj->GetLayerIdx();
+	GamePlayStatic::SpawnGameObject(pObj, layeridx);
+	pObj->GetScript<CParticleSpawnScript>()->SetParticleInfo(vPos2, 2.2f);
+
+	pObj	 = CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Explode)->Instantiate();
+	layeridx = pObj->GetLayerIdx();
+	GamePlayStatic::SpawnGameObject(pObj, layeridx);
+	pObj->GetScript<CParticleSpawnScript>()->SetParticleInfo(vPos1, 2.f);
 }
 
 int CBossScript::VitalGroggyDeathUpdate()
