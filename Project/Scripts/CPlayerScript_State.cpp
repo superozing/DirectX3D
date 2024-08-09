@@ -736,7 +736,11 @@ void CPlayerScript::VitalPanicBegin()
 
 	if (IsInvincivility() == false) // 피격이 처음 되면 무적이 아니므로 피격 상태로 들어간다.
 	{
-		Animator3D()->Play((int)PLAYER_STATE::VitalPanic, 0);
+		if (m_tStatus.IsDamageMoved == true) // 밀려날때만 재생
+		{
+			Animator3D()->Play((int)PLAYER_STATE::VitalPanic, 0);
+		}
+
 		SetInvincivility(true);
 		this->SetDamaged(false);
 	}
@@ -762,7 +766,7 @@ int CPlayerScript::VitalPanicUpdate()
 		Transform()->SetRelativePos(vPos);
 	}
 
-	if (Animator3D()->GetCurFrameIdx() > 3)
+	if (Animator3D()->GetCurFrameIdx() > 1)
 	{
 		return (int)PLAYER_STATE::NormalIdle;
 	}
