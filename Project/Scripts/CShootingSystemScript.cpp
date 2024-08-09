@@ -70,6 +70,7 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 		case LAYER::LAYER_WALL: {
 			m_pBulletMarkDecalSpawner->SpawnBulletMarkDecal(hitInfo, m_pPlayer);
 			m_pBulletHitParticleSpawner->SpawnBulletHitParticle(hitInfo);
+			m_vecSound[(UINT)ShootingSystemSoundType::WallNormalHit]->Play(1, 1.f, true);
 		}
 		break;
 
@@ -88,7 +89,7 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 			}
 			m_pDamageFontSpawner->SpawnDamageFont(hitInfo.vHitPos, 10);
 			m_pBulletHitParticleSpawner->SpawnBulletHitParticle(hitInfo);
-			m_vecSound[(UINT)ShootingSystemSoundType::NormHit]->Play(1, 1.f, true);
+			m_vecSound[(UINT)ShootingSystemSoundType::MonsterNormalHit]->Play(1, 1.f, true);
 		}
 		break;
 
@@ -188,11 +189,14 @@ void CShootingSystemScript::begin()
 	// ShootingSystemSound Init
 	m_vecSound.resize((UINT)ShootingSystemSoundType::End);
 
-	Ptr<CSound> pSnd = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Shot_Impact_Hit_01);
-	m_vecSound[(UINT)ShootingSystemSoundType::NormHit] = pSnd;
+	Ptr<CSound> pSnd = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Old_Skill_H_Ex_02_Hit);
+	m_vecSound[(UINT)ShootingSystemSoundType::WallNormalHit] = pSnd;
+	
+	pSnd = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Shot_Impact_Hit_01);
+	m_vecSound[(UINT)ShootingSystemSoundType::MonsterNormalHit] = pSnd;
 	
 	pSnd = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Shot_Impact_Hit_02);
-	m_vecSound[(UINT)ShootingSystemSoundType::CritHit] = pSnd;
+	m_vecSound[(UINT)ShootingSystemSoundType::MonsterCriticalHit] = pSnd;
 
 }
 

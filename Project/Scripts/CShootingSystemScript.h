@@ -3,8 +3,9 @@
 
 enum class ShootingSystemSoundType
 {
-	NormHit,
-	CritHit,
+	WallNormalHit,
+	MonsterNormalHit,
+	MonsterCriticalHit,
 	End,
 };
 
