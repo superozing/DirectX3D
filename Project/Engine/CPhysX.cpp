@@ -135,15 +135,20 @@ void CPhysX::updateToPhysics()
 	if (nullptr == m_Actor)
 		return;
 
-	auto Obj = GetOwner();
-	auto Rot = Obj->Transform()->GetWorldRot();
-	auto Pos = Obj->Transform()->GetWorldPos() + m_vOffsetPos;
-
+	auto Obj		= GetOwner();
+	auto Rot		= Obj->Transform()->GetWorldRot();
+	auto Pos		= Obj->Transform()->GetWorldPos();
 	Quat quaternion = Obj->Transform()->GetWorldQuaternion();
-	Pos /= CPhysXMgr::GetInst()->m_PPM;
+
+	auto rotatedoffset = RoRMath::RotateVectorByQuaternion(m_vOffsetPos, quaternion);
+	auto FinalPos	   = Pos;
+	FinalPos += rotatedoffset;
+
+	FinalPos /= CPhysXMgr::GetInst()->m_PPM;
 
 	// 게임 오브젝트의 위치와 회전 정보
-	PxTransform transform(PxVec3(Pos.x, Pos.y, Pos.z), PxQuat(quaternion.x, quaternion.y, quaternion.z, quaternion.w));
+	PxTransform transform(PxVec3(FinalPos.x, FinalPos.y, FinalPos.z),
+						  PxQuat(quaternion.x, quaternion.y, quaternion.z, quaternion.w));
 
 	m_Actor->setGlobalPose(transform);
 }
