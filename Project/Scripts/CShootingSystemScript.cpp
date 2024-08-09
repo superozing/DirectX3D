@@ -88,6 +88,7 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 			}
 			m_pDamageFontSpawner->SpawnDamageFont(hitInfo.vHitPos, 10);
 			m_pBulletHitParticleSpawner->SpawnBulletHitParticle(hitInfo);
+			m_vecSound[(UINT)ShootingSystemSoundType::NormHit]->Play(1, 1.f, true);
 		}
 		break;
 
@@ -183,6 +184,16 @@ void CShootingSystemScript::begin()
 	// 윈도우 좌표 기준이기 떄문에 반동을 주기 위해 y를 -방향으로 세팅
 	m_pShootingRecoil->SetShootingRecoilValue(Vec2(0.f, -0.f)); // 나중에 수치를 조정할 필요가 있음.
 	// 예를 들어 자세에 따라서 다른 반동을 준다던가... 그런 것 들 말이죠.
+
+	// ShootingSystemSound Init
+	m_vecSound.resize((UINT)ShootingSystemSoundType::End);
+
+	Ptr<CSound> pSnd = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Shot_Impact_Hit_01);
+	m_vecSound[(UINT)ShootingSystemSoundType::NormHit] = pSnd;
+	
+	pSnd = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Shot_Impact_Hit_02);
+	m_vecSound[(UINT)ShootingSystemSoundType::CritHit] = pSnd;
+
 }
 
 void CShootingSystemScript::tick()

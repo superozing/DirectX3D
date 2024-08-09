@@ -1,6 +1,13 @@
 ﻿#pragma once
 #include <Engine/CScript.h>
 
+enum class ShootingSystemSoundType
+{
+	NormHit,
+	CritHit,
+	End,
+};
+
 class CShootingSystemScript : public CScript
 {
 	// 사격 시스템
@@ -42,6 +49,8 @@ private:
 
 	Vec3						 m_HitPos;
 	class CBulletWarheadSpawner*		m_pBulletWarheadSpawner;
+
+	vector<Ptr<CSound>> m_vecSound;
 
 public:
 	int GetMaxAmmo() { return m_iMaxAmmo; }
