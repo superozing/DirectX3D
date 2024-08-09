@@ -174,10 +174,6 @@ int CBossScript::EXs1Update()
 
 			CLogMgr::GetInst()->AddLog(Log_Level::INFO, strobj);
 		}
-		else
-		{
-			string strobj = "";
-		}
 	}
 
 	return m_FSM->GetCurState();
@@ -442,13 +438,7 @@ int CBossScript::VitalGroggyUpdate()
 	if (!m_BossStatus.IsDead && !Animator3D()->IsPlayable())
 		return (int)BOSS_STATE::NormalIdle;
 	else if (m_BossStatus.IsDead)
-	{
-		CGameObject* pObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"p_Electric");
-		if (nullptr != pObj)
-			GamePlayStatic::DestroyGameObject(pObj);
-
 		return (int)BOSS_STATE::VitalGroggyDeath;
-	}
 
 	return m_FSM->GetCurState();
 }
@@ -459,6 +449,12 @@ void CBossScript::VitalGroggyEnd()
 	{
 		m_BossStatus.IsGroggy = false;
 		m_ChaseDir			  = true;
+	}
+	else if (m_BossStatus.IsDead)
+	{
+		CGameObject* pObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"p_Electric");
+		if (nullptr != pObj)
+			GamePlayStatic::DestroyGameObject(pObj);
 	}
 }
 

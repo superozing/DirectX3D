@@ -29,6 +29,8 @@ struct tBossStatus
 	float MaxHP = 1000.f;
 	float CurHP = MaxHP;
 
+	float GroggyBar = 0.f;
+
 	float ATTDamage = 10.f;
 	float ATTSpeed	= 2000.f;
 
@@ -64,10 +66,11 @@ private:
 	class CBossBulletShellSpawner* m_BulletShell;
 	float						   m_BulletInterval; // 탄피 생성 간격 체크용 (간격을 설정하는 것 X)
 
-	// @@디버그용
-	int	  m_EXsType; // 현재 선택된 EX 타입
 	bool  m_Raycast;
 	float m_RaycastInterval;
+
+	// @@디버그용
+	int m_EXsType; // 현재 선택된 EX 타입
 
 #pragma region About State
 
@@ -153,6 +156,8 @@ public:
 	void		 SetTarget(CGameObject* _Target) { m_Target = _Target; }
 
 	bool IsVital();
+	bool IsShield();
+	void Hit(float _Dmg);
 
 public:
 	virtual void begin() override;

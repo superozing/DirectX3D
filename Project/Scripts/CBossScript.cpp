@@ -89,6 +89,32 @@ bool CBossScript::IsVital()
 	return false;
 }
 
+bool CBossScript::IsShield()
+{
+	int State = m_FSM->GetCurState();
+
+	if ((int)BOSS_STATE::EXs3 == State)
+		return true;
+
+	return false;
+}
+
+void CBossScript::Hit(float _Dmg)
+{
+	m_BossStatus.CurHP -= _Dmg;
+
+	if (!IsVital())
+	{
+		m_BossStatus.GroggyBar += _Dmg * 0.3f; // 데미지의 30%만큼 그로기 수치 누적
+
+		if (m_BossStatus.GroggyBar >= 100.f)
+			m_BossStatus.GroggyBar = 100.f;
+	}
+
+	if (m_BossStatus.CurHP <= 0.f)
+		m_BossStatus.CurHP = 0.f;
+}
+
 void CBossScript::begin()
 {
 	LoadAsset();
@@ -180,8 +206,11 @@ void CBossScript::CheckDuration()
 
 void CBossScript::CheckVital()
 {
-	if (!m_BossStatus.IsDead && !m_BossStatus.IsGroggy && m_BossStatus.CurHP > 0.f && m_BossStatus.CurHP <= 500.f)
-		m_BossStatus.IsGroggy = true;
+	if (!m_BossStatus.IsDead && !m_BossStatus.IsGroggy && m_BossStatus.GroggyBar >= 100.f)
+	{
+		m_BossStatus.IsGroggy  = true;
+		m_BossStatus.GroggyBar = 0.f;
+	}
 
 	if (m_BossStatus.CurHP <= 0.f)
 		m_BossStatus.IsDead = true;
@@ -419,6 +448,7 @@ void CBossScript::InitScriptParamUI()
 {
 	AppendScriptParam("MaxHP       ", SCRIPT_PARAM::FLOAT, &m_BossStatus.MaxHP, 0.f);
 	AppendScriptParam("CurHP       ", SCRIPT_PARAM::FLOAT, &m_BossStatus.CurHP, 0.f);
+	AppendScriptParam("GroggyBar   ", SCRIPT_PARAM::FLOAT, &m_BossStatus.GroggyBar, 0.f);
 	AppendScriptParam("AttackDamage", SCRIPT_PARAM::FLOAT, &m_BossStatus.ATTDamage, 0.f);
 	AppendScriptParam("AttackSpeed ", SCRIPT_PARAM::FLOAT, &m_BossStatus.ATTSpeed, 0.f);
 	AppendScriptParam("EXsCoolTime ", SCRIPT_PARAM::FLOAT, &m_BossStatus.EXsCoolTime, 0.f);

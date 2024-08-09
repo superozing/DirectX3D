@@ -14,6 +14,7 @@
 #include "CPlayerScript.h"
 #include "CDamageFontSpawner.h"
 #include "CBulletWarheadSpawner.h"
+#include "CBossScript.h"
 
 CShootingSystemScript::CShootingSystemScript()
 	: CScript((UINT)SCRIPT_TYPE::SHOOTINGSYSTEMSCRIPT)
@@ -34,7 +35,7 @@ CShootingSystemScript::~CShootingSystemScript()
 	if (m_pShootingRecoil)
 		delete m_pShootingRecoil;
 	if (m_pDamageFontSpawner)
-		delete m_pDamageFontSpawner;	
+		delete m_pDamageFontSpawner;
 	if (m_pBulletWarheadSpawner)
 		delete m_pBulletWarheadSpawner;
 }
@@ -95,6 +96,27 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 			break;
 
 		case LAYER::LAYER_BOSS:
+			if (hitInfo.pOtherObj->PhysX()->m_bPhysBodyType == PhysBodyType::STATIC)
+			{
+				hitInfo.pOtherObj->PhysX()->applyBulletImpact(
+					PxVec3(ShootDir.x, ShootDir.y, ShootDir.z), 3000.f,
+					PxVec3(hitInfo.vHitPos.x, hitInfo.vHitPos.y, hitInfo.vHitPos.z));
+
+				float Dmg = 0.f;
+
+				if (hitInfo.pOtherObj->GetScript<CBossScript>()->IsShield())
+					Dmg = 1.f;
+				else
+					Dmg = m_pPlayerScript->GetDamage();
+
+				hitInfo.pOtherObj->GetScript<CBossScript>()->Hit(Dmg);
+			}
+
+			if (hitInfo.pOtherObj->GetScript<CBossScript>()->IsShield())
+				m_pDamageFontSpawner->SpawnDamageFont(hitInfo.vHitPos, 1);
+			else
+				m_pDamageFontSpawner->SpawnDamageFont(hitInfo.vHitPos, (int)m_pPlayerScript->GetDamage());
+			m_pBulletHitParticleSpawner->SpawnBulletHitParticle(hitInfo);
 			break;
 
 		case LAYER::LAYER_BOSS_SKILL:
@@ -129,7 +151,7 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 	// 무기 본 위치에 탄피 오브젝트 생성, Velocity 추가
 	m_pBulletShellSpawner->SpawnBulletShell(m_pPlayer);
 
-	// 무기 총구 위치에 탄두 오브젝트 
+	// 무기 총구 위치에 탄두 오브젝트
 	m_pBulletWarheadSpawner->SpawnBulletWarhead(m_pPlayer);
 
 	// 반동 적용
@@ -167,12 +189,12 @@ void CShootingSystemScript::begin()
 	m_pPlayer		= CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(PlayerName);
 	m_pPlayerScript = m_pPlayer->GetScript<CPlayerScript>();
 
-	m_pBulletMarkDecalSpawner = new CBulletMarkSpawner;
-	m_pBulletShellSpawner = new CBulletShellSpawner;
+	m_pBulletMarkDecalSpawner	= new CBulletMarkSpawner;
+	m_pBulletShellSpawner		= new CBulletShellSpawner;
 	m_pBulletHitParticleSpawner = new CBulletHitParticleSpawner;
-	m_pDamageFontSpawner = new CDamageFontSpawner;
-	m_pShootingRecoil = new CShootingRecoil;
-	m_pBulletWarheadSpawner = new CBulletWarheadSpawner;
+	m_pDamageFontSpawner		= new CDamageFontSpawner;
+	m_pShootingRecoil			= new CShootingRecoil;
+	m_pBulletWarheadSpawner		= new CBulletWarheadSpawner;
 
 	m_pBulletMarkDecalSpawner->begin();
 	m_pBulletShellSpawner->begin();
@@ -188,7 +210,7 @@ void CShootingSystemScript::begin()
 void CShootingSystemScript::tick()
 {
 	ShootMainCamRay();
-	
+
 	m_pBulletMarkDecalSpawner->tick();
 	m_pBulletShellSpawner->tick();
 	m_pBulletHitParticleSpawner->tick();
