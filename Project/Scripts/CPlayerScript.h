@@ -2,7 +2,7 @@
 
 #include <Engine/CScript.h>
 
-#define InvincivilityTime 1.5f
+#define InvincivilityTime 0.3f
 
 enum class PLAYER_STATE
 {
@@ -78,8 +78,9 @@ struct PlayerStatus
 
 	float SpreadRatioSpeed = 0.f;
 
-	bool IsDamaged = false;
-	bool IsDead	   = false;
+	bool IsDamaged	   = false;
+	bool IsDamageMoved = false;
+	bool IsDead		   = false;
 
 	bool  Invincibility		  = false;
 	float fInvincibilityTimer = InvincivilityTime;
@@ -88,7 +89,6 @@ struct PlayerStatus
 template <typename T> class CRoRStateMachine;
 #include "CSpringArm.h"
 #include "CMuzzleFlashScript.h"
-#include <Engine\CLogMgr.h>
 
 class CPlayerScript : public CScript
 {
@@ -128,9 +128,6 @@ public:
 			return false;
 
 		m_tStatus.curHealth -= _damage;
-
-		string s = std::to_string(m_tStatus.curHealth);
-		CLogMgr::GetInst()->AddLog(Log_Level::ERR, s);
 
 		this->SetDamaged(true);
 
@@ -251,6 +248,10 @@ public:
 
 	/// @brief 피격 여부를 반환합니다.
 	bool IsDamaged() { return m_tStatus.IsDamaged; }
+
+	/// @brief 밀려나는 공격 유형인지 외부에서 설정가능하도록 만든 함수
+	void SetDamagedMove(bool bMove) { m_tStatus.IsDamageMoved = bMove; }
+
 	void SetDamaged(bool _Damaged) { m_tStatus.IsDamaged = _Damaged; }
 
 	/// @brief 사망 여부를 반환합니다.

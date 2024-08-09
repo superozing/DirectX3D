@@ -21,6 +21,8 @@
 		(KEY_RELEASED(CPlayerController::Right) || KEY_NONE(CPlayerController::Right)) && \
 		(KEY_RELEASED(CPlayerController::Left) || KEY_NONE(CPlayerController::Left))
 
+#define KnockbackSpeed 500.f;
+
 #pragma region Normal
 
 void CPlayerScript::NormalIdleBegin()
@@ -729,12 +731,12 @@ void CPlayerScript::VitalDeathEnd()
 
 void CPlayerScript::VitalPanicBegin()
 {
-	// Animator3D()->Play((int)PLAYER_STATE::VitalPanic, 0); 에니메이션 사용 안함
 
 	CCamera* pCamera = CRenderMgr::GetInst()->GetMainCam();
 
 	if (IsInvincivility() == false) // 피격이 처음 되면 무적이 아니므로 피격 상태로 들어간다.
 	{
+		Animator3D()->Play((int)PLAYER_STATE::VitalPanic, 0);
 		SetInvincivility(true);
 		this->SetDamaged(false);
 	}
@@ -746,10 +748,24 @@ int CPlayerScript::VitalPanicUpdate()
 	// TODO: 패닉이 풀렸는지 검사해야 함
 	// return ispanic ? (int)PLAYER_STATE::NormalIdle : m_FSM->GetCurState();
 
-	// if ()
-	//{
-	//	return (int)PLAYER_STATE::NormalIdle;
-	// }
+	// 밀리는 공격이라면 계산해준다.
+	if (m_tStatus.IsDamageMoved == true)
+	{
+		float fCurSpeed = KnockbackSpeed;
+
+		Vec3 vBack = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+		vBack	   = -vBack;
+		vBack.Normalize();
+		Vec3 vPos = Transform()->GetRelativePos();
+		vPos += vBack * fCurSpeed * DT;
+
+		Transform()->SetRelativePos(vPos);
+	}
+
+	if (Animator3D()->GetCurFrameIdx() > 3)
+	{
+		return (int)PLAYER_STATE::NormalIdle;
+	}
 	return m_FSM->GetCurState();
 }
 
