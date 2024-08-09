@@ -53,12 +53,15 @@ private:
 
 	vector<Ptr<CSound>> m_vecSound;
 
+private:
+	void SetShootAvailable(bool _Available) { m_bShootAvailable = _Available; }
+
+
 public:
 	int GetMaxAmmo() { return m_iMaxAmmo; }
 	int GetCurAmmo() { return m_iCurAmmo; }
 
 	void SetSpreadRatioSpeed(float _fSpreadRatioSpeed) { m_fSpreadRatioSpeed = _fSpreadRatioSpeed; }
-	void SetShootAvailable(bool _Available) { m_bShootAvailable = _Available; }
 
 	bool IsShootAvailable() const { return m_bShootAvailable; }
 
@@ -69,6 +72,13 @@ public:
 
 	// 메인 카메라 광선 쏘기
 	void ShootMainCamRay();
+
+	// 재장전
+	void Reload() 
+	{ 
+		m_iCurAmmo = m_iMaxAmmo; 
+		m_bShootAvailable = true;
+	}
 
 public:
 	virtual void begin() override;

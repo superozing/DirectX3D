@@ -18,6 +18,9 @@
 CShootingSystemScript::CShootingSystemScript()
 	: CScript((UINT)SCRIPT_TYPE::SHOOTINGSYSTEMSCRIPT)
 	, m_fSpreadRatioSpeed(0.1)
+	, m_iCurAmmo(40)
+	, m_iMaxAmmo(40)
+	, m_bShootAvailable(true)
 {
 }
 
@@ -139,6 +142,12 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 
 	// SpreadRatio 늘리기
 	m_fSpreadRatio += m_fSpreadRatioSpeed * DT;
+
+	// 탄환 감소시키기
+	m_iCurAmmo = RoRMath::ClampInt(m_iCurAmmo - 1, 0);
+
+	if (m_iCurAmmo == 0)
+		m_bShootAvailable = false;
 }
 
 void CShootingSystemScript::ShootMainCamRay()
@@ -152,8 +161,6 @@ void CShootingSystemScript::ShootMainCamRay()
 
 	bool isContact = CPhysXMgr::GetInst()->PerformRaycast(pMainCam->Transform()->GetWorldPos(), FrontDir, hitInfo,
 														  (UINT)LAYER::LAYER_RAYCAST, RayCastDebugFlag::AllInvisible);
-
-	m_bShootAvailable = true;
 
 	if (isContact)
 		// 메인 카메라 ray에 충돌한 오브젝트가 있을 경우
