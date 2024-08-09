@@ -362,6 +362,25 @@ float4x4 CreateRotationMatrix4x4(float3 WorldRotation)
 
 }
 
+float3x3 CreateRotationMatrix(float3 axis, float angle)
+{
+    float s = sin(angle);
+    float c = cos(angle);
+    float oneMinusCos = 1.0 - c;
+    
+    float3x3 rotMatrix;
+    rotMatrix[0][0] = oneMinusCos * axis.x * axis.x + c;
+    rotMatrix[0][1] = oneMinusCos * axis.x * axis.y - axis.z * s;
+    rotMatrix[0][2] = oneMinusCos * axis.x * axis.z + axis.y * s;
+    rotMatrix[1][0] = oneMinusCos * axis.y * axis.x + axis.z * s;
+    rotMatrix[1][1] = oneMinusCos * axis.y * axis.y + c;
+    rotMatrix[1][2] = oneMinusCos * axis.y * axis.z - axis.x * s;
+    rotMatrix[2][0] = oneMinusCos * axis.z * axis.x - axis.y * s;
+    rotMatrix[2][1] = oneMinusCos * axis.z * axis.y + axis.x * s;
+    rotMatrix[2][2] = oneMinusCos * axis.z * axis.z + c;
+    
+    return rotMatrix;
+}
 
 
 #endif
