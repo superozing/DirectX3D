@@ -558,6 +558,10 @@ void CPhysXMgr::ClearAllActors()
 	for (physx::PxActor* actor : actors)
 	{
 		gScene->removeActor(*actor);
+		auto obj			   = static_cast<CGameObject*>(actor->userData);
+		obj->PhysX()->m_Actor  = nullptr;
+		obj->PhysX()->m_DActor = nullptr;
+
 		actor->userData = nullptr;
 		actor->release();
 		// auto e = static_cast<CGameObject*>(actor->userData);
