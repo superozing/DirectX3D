@@ -407,19 +407,25 @@ void CBossScript::ActiveWarningDecal()
 void CBossScript::LoadAsset()
 {
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Punch);
-	CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Minigun);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_HexShield);
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Missile);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Punch);
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Shield);
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Shield2);
-	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_HexShield);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Slash);
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_SmokeWave);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_SwordBeam);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFBoss_Bullet_Shell);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFSwordBeam_WarningDecal);
+
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFp_BulletLine);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Electric);
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Explode);
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Explode_Lite);
-	CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Electric);
-	CAssetMgr::GetInst()->Load<CPrefab>(PREFBoss_Bullet_Shell);
-	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Slash);
-	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_SwordBeam);
-	CAssetMgr::GetInst()->Load<CPrefab>(PREFSwordBeam_WarningDecal);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Minigun);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFp_MissileFire);
+
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFGroundCrackDecal);
 }
 
 void CBossScript::CheckTargetPos()

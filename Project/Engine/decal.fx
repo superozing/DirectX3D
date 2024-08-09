@@ -189,9 +189,12 @@ PS_OUT PS_Decal(VS_OUT _in)
         {
             output.vColor = g_tex_0.Sample(g_sam_0, vLocal.xz);
         
-            if (bCustomAlpha && output.vColor.a > 0.5f)
+            if (bCustomAlpha)
             {
-                output.vColor.a = CustomAlpha;
+                float animProgress = smoothstep(0, 1, 1 - (CurAnimtime / MaxAnimtime)); // 0에서 1 사이로 제한
+                
+                //output.vColor.a *= CustomAlpha;
+                output.vColor.a *= (1 - animProgress);
             }
         
             if (g_int_0)
