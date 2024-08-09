@@ -268,6 +268,9 @@
     <ClInclude Include="CTutorialEndingEvent.h">
       <Filter>Scripts\Event\Tutorial</Filter>
     </ClInclude>
+    <ClInclude Include="CVideoPlayer.h">
+      <Filter>Scripts\Render\Video</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -537,6 +540,9 @@
     <ClCompile Include="CTutorialEndingEvent.cpp">
       <Filter>Scripts\Event\Tutorial</Filter>
     </ClCompile>
+    <ClCompile Include="CVideoPlayer.cpp">
+      <Filter>Scripts\Render\Video</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -727,6 +733,9 @@
     </Filter>
     <Filter Include="Scripts\Test">
       <UniqueIdentifier>{6c3cc7b2-0f38-43dc-bf8a-c55783846644}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Render\Video">
+      <UniqueIdentifier>{c831f95b-4a1f-4f2a-ad7f-70f6c117d680}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

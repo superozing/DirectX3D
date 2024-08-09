@@ -75,6 +75,7 @@
 #include "CSmokeScript.h"
 #include "CSpawnPhysX.h"
 #include "CTutorialEndingEvent.h"
+#include "CVideoPlayer.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -152,6 +153,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CSmokeScript");
 	_vec.push_back(L"CSpawnPhysX");
 	_vec.push_back(L"CTutorialEndingEvent");
+	_vec.push_back(L"CVideoPlayer");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -304,6 +306,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CSpawnPhysX;
 	if (L"CTutorialEndingEvent" == _strScriptName)
 		return new CTutorialEndingEvent;
+	if (L"CVideoPlayer" == _strScriptName)
+		return new CVideoPlayer;
 	return nullptr;
 }
 
@@ -532,6 +536,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::TUTORIALENDINGEVENT:
 		return new CTutorialEndingEvent;
+		break;
+	case (UINT)SCRIPT_TYPE::VIDEOPLAYER:
+		return new CVideoPlayer;
 		break;
 	}
 	return nullptr;
@@ -835,6 +842,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::TUTORIALENDINGEVENT:
 		return L"CTutorialEndingEvent";
+		break;
+
+	case SCRIPT_TYPE::VIDEOPLAYER:
+		return L"CVideoPlayer";
 		break;
 
 	}

@@ -11,6 +11,7 @@
 #include "CPrefab.h"
 #include "CSound.h"
 #include "CFSM.h"
+#include "CVideo.h"
 #include "CMeshData.h"
 
 template <typename T1, typename T2> constexpr bool MyBool		  = false;
@@ -30,6 +31,7 @@ public:
 
 private:
 	void InitSound();
+	void InitVideo();
 	void CreateDefaultMesh();
 	void CreateDefaultGraphicsShader();
 	void CreateDefaultComputeShader();
@@ -104,6 +106,8 @@ template <typename T> ASSET_TYPE GetAssetType()
 	if constexpr (std::is_same_v<CSound, T>)
 		Type = ASSET_TYPE::SOUND;
 	if constexpr (std::is_same_v<CFSM, T>)
+		Type = ASSET_TYPE::FSM;
+	if constexpr (std::is_same_v<CVideo, T>)
 		Type = ASSET_TYPE::FSM;
 
 	return Type;
