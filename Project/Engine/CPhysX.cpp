@@ -75,6 +75,14 @@ void CPhysX::releaseActor()
 		return;
 
 	CPhysXMgr::GetInst()->ReleaseActor(m_Actor);
+	// 자신과 충돌중이던 오브젝트들 endoverlap호출
+	for (auto& e : m_vThisFrameContact)
+	{
+		if (e.Other->PhysX())
+		{
+			e.Other->PhysX()->EndOverlap(GetOwner());
+		}
+	}
 }
 
 void CPhysX::updateFromPhysics()

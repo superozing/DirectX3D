@@ -582,7 +582,25 @@ void CPhysXMgr::ReleaseActor(PxRigidActor* actor)
 	// 씬 잠금
 	gScene->lockWrite();
 
-	auto obj			   = static_cast<CGameObject*>(actor->userData);
+	auto obj = static_cast<CGameObject*>(actor->userData);
+
+	// trigger vec에 관리되던 요소제거
+	auto iter = m_vecTriggerColInfo.begin();
+	while (iter != m_vecTriggerColInfo.end())
+	{
+		auto GO1 = static_cast<CGameObject*>((*iter).Actor1->userData);
+		auto GO2 = static_cast<CGameObject*>((*iter).Actor2->userData);
+
+		if (obj == GO1 || obj == GO2)
+		{
+			iter = m_vecTriggerColInfo.erase(iter);
+		}
+		else
+		{
+			++iter;
+		}
+	}
+
 	obj->PhysX()->m_Actor  = nullptr;
 	obj->PhysX()->m_DActor = nullptr;
 	actor->userData		   = nullptr;
