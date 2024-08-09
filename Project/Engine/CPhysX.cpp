@@ -211,7 +211,7 @@ void CPhysX::finaltick()
 		return;
 	const auto& trans		= Transform();
 	auto		ObjWorldPos = trans->GetWorldPos();
-	auto		dir			= trans->GetRelativeRotation();
+	auto		dir			= trans->GetWorldRot();
 	auto		Rot			= getTransform().q;
 
 	auto DebugFinalPos = ObjWorldPos;
