@@ -277,6 +277,9 @@
     <ClInclude Include="CSBSmokeScript.h">
       <Filter>Scripts\Particle\Smoke</Filter>
     </ClInclude>
+    <ClInclude Include="CBulletLineScript.h">
+      <Filter>Scripts\Particle\BulletLine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -555,6 +558,9 @@
     <ClCompile Include="CSBSmokeScript.cpp">
       <Filter>Scripts\Particle\Smoke</Filter>
     </ClCompile>
+    <ClCompile Include="CBulletLineScript.cpp">
+      <Filter>Scripts\Particle\BulletLine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -751,6 +757,9 @@
     </Filter>
     <Filter Include="Scripts\Test">
       <UniqueIdentifier>{6c3cc7b2-0f38-43dc-bf8a-c55783846644}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Particle\BulletLine">
+      <UniqueIdentifier>{cc42cb81-78b5-468c-a168-3021c5e7d12c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

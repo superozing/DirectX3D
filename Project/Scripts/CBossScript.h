@@ -65,8 +65,9 @@ private:
 	float						   m_BulletInterval; // 탄피 생성 간격 체크용 (간격을 설정하는 것 X)
 
 	// @@디버그용
-	int	 m_EXsType; // 현재 선택된 EX 타입
-	bool m_Drill;
+	int	  m_EXsType; // 현재 선택된 EX 타입
+	bool  m_Raycast;
+	float m_RaycastInterval;
 
 #pragma region About State
 

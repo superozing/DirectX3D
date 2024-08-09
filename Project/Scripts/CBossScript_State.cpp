@@ -3,15 +3,20 @@
 
 #include <Engine\CLevelMgr.h>
 #include <Engine\CLevel.h>
+#include <Engine\CLogMgr.h>
+#include <Engine\CRandomMgr.h>
+
 #include "CRoRStateMachine.h"
 #include "CBossBulletShellSpawner.h"
 #include "CParticleSpawnScript.h"
+#include "CPlayerScript.h"
 
 #pragma region Normal
 
 void CBossScript::NormalIdleBegin()
 {
 	Animator3D()->Play((int)BOSS_STATE::NormalIdle);
+	m_ChaseDir = true;
 }
 
 int CBossScript::NormalIdleUpdate()
@@ -117,6 +122,8 @@ void CBossScript::EXs1Begin()
 {
 	Animator3D()->Play((int)BOSS_STATE::EXs1, 0);
 	FireMiniGun();
+	CheckTargetPos();
+	m_ChaseDir = false;
 }
 
 int CBossScript::EXs1Update()
@@ -132,6 +139,45 @@ int CBossScript::EXs1Update()
 	{
 		m_BulletShell->SpawnBossBulletShell(GetOwner(), 3.5f);
 		m_BulletInterval = 0.f;
+
+		if (!m_Raycast)
+			m_Raycast = true;
+	}
+
+	m_RaycastInterval += DT;
+
+	if (m_Raycast && m_RaycastInterval > 0.1f && idx > 60 && idx < 123)
+	{
+		float random = CRandomMgr::GetInst()->GetRandomFloat(-25.f, 25.f);
+
+		Vec3 worldPos  = Transform()->GetWorldPos() + Vec3(0.f, 1000.f, 0.f);
+		Vec3 targetPos = m_TargetPos + Vec3(random, 50.f, random);
+		m_hitInfo	   = {};
+		Vec3 dir	   = targetPos - worldPos;
+		dir.Normalize();
+		// 일반 Raycast
+		int	 mask = RayCastDebugFlag::AllVisible;
+		bool iscontact =
+			CPhysXMgr::GetInst()->PerformRaycast(worldPos, dir, m_hitInfo, (UINT)LAYER::LAYER_BOSS_SKILL, mask);
+
+		m_RaycastInterval = 0.f;
+
+		if (true == iscontact)
+		{
+			wstring strobj	   = m_hitInfo.pOtherObj->GetName();
+			Vec3	contactpos = m_hitInfo.vHitPos;
+
+			if (L"Azusa" == strobj)
+			{
+				m_Target->GetScript<CPlayerScript>()->Hit(5.f);
+			}
+
+			CLogMgr::GetInst()->AddLog(Log_Level::INFO, strobj);
+		}
+		else
+		{
+			string strobj = "";
+		}
 	}
 
 	return m_FSM->GetCurState();
@@ -139,11 +185,14 @@ int CBossScript::EXs1Update()
 
 void CBossScript::EXs1End()
 {
+	m_Raycast  = false;
+	m_ChaseDir = true;
 }
 
 void CBossScript::EXs2Begin()
 {
 	Animator3D()->Play((int)BOSS_STATE::EXs2, 0);
+	m_ChaseDir = false;
 }
 
 int CBossScript::EXs2Update()
@@ -232,6 +281,8 @@ void CBossScript::EXs2End()
 	{
 		m_ArrMissile[i] = false;
 	}
+
+	m_ChaseDir = true;
 }
 
 void CBossScript::EXs3Begin()
@@ -239,6 +290,8 @@ void CBossScript::EXs3Begin()
 	Animator3D()->Play((int)BOSS_STATE::EXs3, 0);
 
 	ActiveHexShield();
+
+	m_ChaseDir = false;
 }
 
 int CBossScript::EXs3Update()
@@ -271,6 +324,7 @@ void CBossScript::EXs3End()
 	}
 
 	DeActiveHexShield();
+	m_ChaseDir = true;
 }
 
 void CBossScript::EXs4Begin()
@@ -316,6 +370,7 @@ void CBossScript::EXs4End()
 	}
 }
 
+// 사용 X
 void CBossScript::EXs5Begin()
 {
 	Animator3D()->Play((int)BOSS_STATE::EXs5, 0);
