@@ -282,10 +282,9 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 
 	auto ObjPos	   = object->Transform()->GetWorldPos();
 	auto OffsetPos = PhysX->m_vOffsetPos;
-	auto relrot	   = object->Transform()->GetWorldRot();
-	relrot.Normalize();
+	auto worldrot  = object->Transform()->GetWorldRot();
 
-	auto rotatedoffset = RoRMath::RotateVectorByQuaternion(OffsetPos, WorldQuat);
+	auto rotatedoffset = RoRMath::RotateVectorByRotationVector(OffsetPos, worldrot);
 	auto FinalPos	   = ObjPos;
 	FinalPos += rotatedoffset;
 

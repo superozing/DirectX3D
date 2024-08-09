@@ -140,7 +140,7 @@ void CPhysX::updateToPhysics()
 	auto Pos		= Obj->Transform()->GetWorldPos();
 	Quat quaternion = Obj->Transform()->GetWorldQuaternion();
 
-	auto rotatedoffset = RoRMath::RotateVectorByQuaternion(m_vOffsetPos, quaternion);
+	auto rotatedoffset = RoRMath::RotateVectorByRotationVector(m_vOffsetPos, Rot);
 	auto FinalPos	   = Pos;
 	FinalPos += rotatedoffset;
 
