@@ -16,6 +16,7 @@
 #include "CBossBulletShellSpawner.h"
 #include "CBossSwordBeamScript.h"
 #include "CBulletLineScript.h"
+#include "CParticleSpawnScript.h"
 
 static string DebugState = "";
 
@@ -299,6 +300,11 @@ void CBossScript::FireBossMissile(int _idx)
 
 	int layeridx = Missile->GetLayerIdx();
 	GamePlayStatic::SpawnGameObject(Missile, layeridx);
+
+	CGameObject* effect = CAssetMgr::GetInst()->Load<CPrefab>(PREFp_MissileFire)->Instantiate();
+	layeridx			= effect->GetLayerIdx();
+	GamePlayStatic::SpawnGameObject(effect, layeridx);
+	effect->GetScript<CParticleSpawnScript>()->SetParticleInfo(MissileBonePos, 0.5f);
 }
 
 void CBossScript::ActiveInnerShield()
