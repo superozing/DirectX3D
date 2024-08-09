@@ -582,7 +582,11 @@ void CPhysXMgr::ReleaseActor(PxRigidActor* actor)
 	// 씬 잠금
 	gScene->lockWrite();
 
-	actor->userData = nullptr;
+	auto obj			   = static_cast<CGameObject*>(actor->userData);
+	obj->PhysX()->m_Actor  = nullptr;
+	obj->PhysX()->m_DActor = nullptr;
+	actor->userData		   = nullptr;
+
 	gScene->removeActor(*actor);
 	actor->release();
 
