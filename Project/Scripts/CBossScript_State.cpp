@@ -387,7 +387,13 @@ int CBossScript::VitalGroggyUpdate()
 	if (!m_BossStatus.IsDead && !Animator3D()->IsPlayable())
 		return (int)BOSS_STATE::NormalIdle;
 	else if (m_BossStatus.IsDead)
+	{
+		CGameObject* pObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"p_Electric");
+		if (nullptr != pObj)
+			GamePlayStatic::DestroyGameObject(pObj);
+
 		return (int)BOSS_STATE::VitalGroggyDeath;
+	}
 
 	return m_FSM->GetCurState();
 }
@@ -407,18 +413,17 @@ void CBossScript::VitalGroggyDeathBegin()
 	m_ChaseDir = false;
 
 	// 사망 폭발 파티클 스폰
-	Vec3 vPos1 = (Animator3D()->FindBoneMat(L"Bip001 Spine") * Transform()->GetWorldMat()).Translation();
-	Vec3 vPos2 = (Animator3D()->FindBoneMat(L"Bone_Belt") * Transform()->GetWorldMat()).Translation();
+	Vec3 vPos = (Animator3D()->FindBoneMat(L"Bone_Belt") * Transform()->GetWorldMat()).Translation();
 
 	CGameObject* pObj	  = CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Explode_Lite)->Instantiate();
 	int			 layeridx = pObj->GetLayerIdx();
 	GamePlayStatic::SpawnGameObject(pObj, layeridx);
-	pObj->GetScript<CParticleSpawnScript>()->SetParticleInfo(vPos2, 2.2f);
+	pObj->GetScript<CParticleSpawnScript>()->SetParticleInfo(vPos, 2.2f);
 
 	pObj	 = CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Explode)->Instantiate();
 	layeridx = pObj->GetLayerIdx();
 	GamePlayStatic::SpawnGameObject(pObj, layeridx);
-	pObj->GetScript<CParticleSpawnScript>()->SetParticleInfo(vPos1, 2.f);
+	pObj->GetScript<CParticleSpawnScript>()->SetParticleInfo(vPos, 2.f);
 }
 
 int CBossScript::VitalGroggyDeathUpdate()
