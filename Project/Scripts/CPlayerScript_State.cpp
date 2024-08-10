@@ -26,7 +26,7 @@
 void CPlayerScript::NormalIdleBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::NormalIdle);
-	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalIdle]);
+	// m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalIdle]);
 }
 
 int CPlayerScript::NormalIdleUpdate()
