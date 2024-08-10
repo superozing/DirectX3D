@@ -16,4 +16,9 @@ public:
 	CLONE(CCubePushScript);
 	CCubePushScript();
 	~CCubePushScript();
+
+private:
+	float distancePointToSegment(const Vec2& point, const Vec2& segmentStart, const Vec2& segmentEnd);
+
+	float distancePointToLineDirection(Vec2 D, Vec2 P);
 };
