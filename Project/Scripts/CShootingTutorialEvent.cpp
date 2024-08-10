@@ -56,8 +56,8 @@ void CShootingTutorialEvent::tick()
 {
 	CEventListener::tick();
 
-	if (HasTargets() && m_pGM->IsClear(TutorialState::Dash))
-		Activate(true);
+	// if (HasTargets() && m_pGM->IsClear(TutorialState::Dash))
+	Activate(true);
 
 	if (!IsActivate())
 		return;
@@ -93,7 +93,7 @@ void CShootingTutorialEvent::tick()
 
 	if (bClear)
 	{
-		m_pGM->Clear(TutorialState::Shooting);
+		// m_pGM->Clear(TutorialState::Shooting);
 		GamePlayStatic::DestroyGameObject(GetOwner());
 	}
 }

@@ -55,6 +55,7 @@ public:
 
 public:
 	CLONE(CEventListener);
+	CEventListener();
 	CEventListener(UINT _type);
 	~CEventListener();
 

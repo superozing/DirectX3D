@@ -130,17 +130,11 @@
     <ClInclude Include="strings.h">
       <Filter>Default</Filter>
     </ClInclude>
-    <ClInclude Include="CWelcomeTutorialEvent.h">
-      <Filter>Scripts\Event\Tutorial</Filter>
-    </ClInclude>
     <ClInclude Include="CCoverArea.h">
       <Filter>Scripts\Event\Cover</Filter>
     </ClInclude>
     <ClInclude Include="CCoverUI.h">
       <Filter>Scripts\Event\Cover</Filter>
-    </ClInclude>
-    <ClInclude Include="CDashEventListener.h">
-      <Filter>Scripts\Event\Tutorial</Filter>
     </ClInclude>
     <ClInclude Include="CShootingTutorialEvent.h">
       <Filter>Scripts\Event\Tutorial</Filter>
@@ -211,9 +205,6 @@
     <ClInclude Include="CTutorialTarget.h">
       <Filter>Scripts\Level\Object</Filter>
     </ClInclude>
-    <ClInclude Include="CEventListener.h">
-      <Filter>BassClass</Filter>
-    </ClInclude>
     <ClInclude Include="CShootingSystemScript.h">
       <Filter>Scripts\ShootingSystem</Filter>
     </ClInclude>
@@ -267,6 +258,9 @@
     </ClInclude>
     <ClInclude Include="CTutorialEndingEvent.h">
       <Filter>Scripts\Event\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="CEventListener.h">
+      <Filter>Scripts\Event</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -402,17 +396,11 @@
     <ClCompile Include="CTextUI.cpp">
       <Filter>Scripts\DefaultUI\Text</Filter>
     </ClCompile>
-    <ClCompile Include="CWelcomeTutorialEvent.cpp">
-      <Filter>Scripts\Event\Tutorial</Filter>
-    </ClCompile>
     <ClCompile Include="CCoverArea.cpp">
       <Filter>Scripts\Event\Cover</Filter>
     </ClCompile>
     <ClCompile Include="CCoverUI.cpp">
       <Filter>Scripts\Event\Cover</Filter>
-    </ClCompile>
-    <ClCompile Include="CDashEventListener.cpp">
-      <Filter>Scripts\Event\Tutorial</Filter>
     </ClCompile>
     <ClCompile Include="CShootingTutorialEvent.cpp">
       <Filter>Scripts\Event\Tutorial</Filter>
@@ -480,9 +468,6 @@
     <ClCompile Include="CTutorialTarget.cpp">
       <Filter>Scripts\Level\Object</Filter>
     </ClCompile>
-    <ClCompile Include="CEventListener.cpp">
-      <Filter>BassClass</Filter>
-    </ClCompile>
     <ClCompile Include="CShootingSystemScript.cpp">
       <Filter>Scripts\ShootingSystem</Filter>
     </ClCompile>
@@ -536,6 +521,9 @@
     </ClCompile>
     <ClCompile Include="CTutorialEndingEvent.cpp">
       <Filter>Scripts\Event\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="CEventListener.cpp">
+      <Filter>Scripts\Event</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
