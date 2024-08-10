@@ -1,16 +1,22 @@
 ﻿#pragma once
 
-#include <Engine/CScript.h>
-class CTitle : public CScript
+#include "CGameMode.h"
+
+enum class TitleState
+{
+	RoROpen,
+	RoRClose,
+	BAOpen,
+	BAClose,
+	MenuSelect,
+	END,
+};
+
+class CTitle : public CGameMode<CTitle>
 {
 private:
-	bool m_bRemnantsEnd;
-	bool m_bRemnantsDarkStart;
-	bool m_bBlueArchiveEnd;
-	bool m_bBlueArchiveBrightStart;
-	bool m_bBlueArchiveDarkStart;
+	float m_fAlphaTime;
 
-	bool			 m_bTitleShow;
 	class CTitleTex* m_pRemnants;
 	class CTitleTex* m_pBlueArchive;
 
@@ -24,13 +30,23 @@ public:
 	~CTitle();
 
 private:
-	void DrawRemnants();
-	void RemnantsBrightStart();
-	void RemnantsDarkStart();
+	void RoROpenBegin();
+	int	 RoROpenUpdate();
+	void RoROpenEnd();
 
-	void DrawBlueArchive();
-	void BlueArchiveBrightStart();
-	void BlueArchiveDarkStart();
+	void RoRCloseBegin();
+	int	 RoRCloseUpdate();
+	void RoRCloseEnd();
 
-	void SwitchToNextTexture();
+	void BAOpenBegin();
+	int	 BAOpenUpdate();
+	void BAOpenEnd();
+
+	void BACloseBegin();
+	int	 BACloseUpdate();
+	void BACloseEnd();
+
+	void MenuSelectBegin();
+	int	 MenuSelectUpdate();
+	void MenuSelectEnd();
 };

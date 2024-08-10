@@ -10,15 +10,36 @@ enum class BtnUISoundType
 	End,
 };
 
+enum class ButtonState
+{
+	Normal,
+	Hovered,
+	Pressed,
+	END,
+};
+
 class CBtnUIScript : public CUIScript
 {
 private:
-	bool m_bDraw;
+	bool		m_bDraw;
+	ButtonState m_State;
 
 	Ptr<CTexture> m_NormalImg;
+	Vec2		  m_vNLT;
+	Vec2		  m_vNSz;
+	Vec4		  m_vNColor;
 	Ptr<CTexture> m_HoverImg;
+	Vec2		  m_vHLT;
+	Vec2		  m_vHSz;
+	Vec4		  m_vHColor;
 	Ptr<CTexture> m_PressedImg;
+	Vec2		  m_vPLT;
+	Vec2		  m_vPSz;
+	Vec4		  m_vPColor;
 	Ptr<CTexture> m_CurImg;
+	Vec2		  m_vCLT;
+	Vec2		  m_vCSz;
+	Vec4		  m_vCColor;
 
 	bool m_AllowTexSet;
 	bool m_AllowCallFunc = true;
@@ -33,6 +54,8 @@ private:
 	vector<Ptr<CSound>> m_vecSound;
 
 public:
+	ButtonState GetState() { return m_State; }
+
 	void Draw(bool _draw) { m_bDraw = _draw; }
 	bool IsDraw() { return m_bDraw; }
 

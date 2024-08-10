@@ -6,6 +6,8 @@
 #include <Engine\CLevelMgr.h>
 #include <Engine\CLevel.h>
 
+#include "CTextUI.h"
+
 void (*CButtons::Setting)() = nullptr;
 
 CButtons::CButtons()
@@ -64,17 +66,31 @@ void CButtons::begin()
 
 void CButtons::tick()
 {
-	if (KEY_TAP(UP))
-	{
-		SubIdx();
-	}
-	if (KEY_TAP(DOWN))
-	{
-		AddIdx();
-	}
+	// if (KEY_TAP(UP))
+	//{
+	//	SubIdx();
+	// }
+	// if (KEY_TAP(DOWN))
+	//{
+	//	AddIdx();
+	// }
 
-	if (KEY_TAP(ENTER))
+	// if (KEY_TAP(ENTER))
+	//{
+	//	m_vecButtons[m_iIdx]->LBtnClicked();
+	// }
+
+	for (size_t i = 0; i < (UINT)TitleButton::END; i++)
 	{
-		m_vecButtons[m_iIdx]->LBtnClicked();
+		if (m_vecButtons[i]->GetState() == ButtonState::Normal)
+		{
+			m_vecButtons[i]->GetOwner()->GetChild()[0]->GetScript<CTextUI>()->SetColor(Vec4(255, 255, 255, 255) /
+																					   255.f);
+		}
+		else
+		{
+			m_vecButtons[i]->GetOwner()->GetChild()[0]->GetScript<CTextUI>()->SetColor(Vec4(122, 222, 252, 255) /
+																					   255.f);
+		}
 	}
 }

@@ -200,7 +200,6 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CCrosshair.h" />
     <ClInclude Include="CDamagedDirectionMgr.h" />
     <ClInclude Include="CDamageFontSpawner.h" />
-    <ClInclude Include="CDashEventListener.h" />
     <ClInclude Include="CDigitUI.h" />
     <ClInclude Include="CDialog.h" />
     <ClInclude Include="CDirectionalLight.h" />
@@ -241,7 +240,6 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CDamagedDirection.h" />
     <ClInclude Include="CShootingRecoil.h" />
     <ClInclude Include="CShootingSystemScript.h" />
-    <ClInclude Include="CShootingTutorialEvent.h" />
     <ClInclude Include="CSkillIcon.h" />
     <ClInclude Include="CSpawnSpotScript.h" />
     <ClInclude Include="CSpringArm.h" />
@@ -254,7 +252,6 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CTutorialTarget.h" />
     <ClInclude Include="CVideoPlayer.h" />
     <ClInclude Include="CWallScript.h" />
-    <ClInclude Include="CWelcomeTutorialEvent.h" />
     <ClInclude Include="CWrapImage.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="CHUD.h" />
@@ -298,7 +295,6 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CCrosshair.cpp" />
     <ClCompile Include="CDamagedDirectionMgr.cpp" />
     <ClCompile Include="CDamageFontSpawner.cpp" />
-    <ClCompile Include="CDashEventListener.cpp" />
     <ClCompile Include="CDigitUI.cpp" />
     <ClCompile Include="CDialog.cpp" />
     <ClCompile Include="CDirectionalLight.cpp" />
@@ -339,7 +335,6 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CDamagedDirection.cpp" />
     <ClCompile Include="CShootingRecoil.cpp" />
     <ClCompile Include="CShootingSystemScript.cpp" />
-    <ClCompile Include="CShootingTutorialEvent.cpp" />
     <ClCompile Include="CSkillIcon.cpp" />
     <ClCompile Include="CSpawnSpotScript.cpp" />
     <ClCompile Include="CSpringArm.cpp" />
@@ -352,7 +347,6 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CTutorialTarget.cpp" />
     <ClCompile Include="CVideoPlayer.cpp" />
     <ClCompile Include="CWallScript.cpp" />
-    <ClCompile Include="CWelcomeTutorialEvent.cpp" />
     <ClCompile Include="CWrapImage.cpp" />
     <ClCompile Include="CHUD.cpp" />
     <ClCompile Include="pch.cpp">
