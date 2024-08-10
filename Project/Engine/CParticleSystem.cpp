@@ -140,7 +140,7 @@ void CParticleSystem::finaltick()
 	if (!m_IsPlay)
 		return;
 
-	m_Time += DT;
+	m_Time += DT_ENGINE;
 
 	// if ((1.f / m_Module.SpawnRate) < m_Time)
 	//{

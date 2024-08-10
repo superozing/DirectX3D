@@ -111,7 +111,7 @@ void AnimationRisingSquare(float2 vLocal, inout float4 _Color) // 사각형 에니메�
     if (vLocal.x <= animProgress)
     {
         _Color = InsideColor;
-
+        _Color.a = 0.5f;
     }
 
     
@@ -189,9 +189,9 @@ PS_OUT PS_Decal(VS_OUT _in)
         {
             output.vColor = g_tex_0.Sample(g_sam_0, vLocal.xz);
         
-            if (bCustomAlpha && output.vColor.a > 0.5f)
+            if (bCustomAlpha)
             {
-                output.vColor.a = CustomAlpha;
+                output.vColor.a *= CustomAlpha;
             }
         
             if (g_int_0)
@@ -234,7 +234,7 @@ PS_OUT PS_Decal(VS_OUT _in)
         {
             AnimationRisingSquare(vLocal.xz, _Color);
             
-            RenderOutline(DecalShape, vLocal.xz, _Color);
+            //RenderOutline(DecalShape, vLocal.xz, _Color);
         }
     
         output.vColor = _Color;
