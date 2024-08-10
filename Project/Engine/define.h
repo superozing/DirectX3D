@@ -464,4 +464,3 @@ enum class DecalType
 #define AfterImageUpdateKey "AfterImage"
 
 #define VignetteDuration 3.f
-#define VignetteAlpha 1.f

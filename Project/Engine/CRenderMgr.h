@@ -10,6 +10,10 @@ class CLight3D;
 class CStructuredBuffer;
 class CMRT;
 
+#define VignetteLv1 40.f / 100.f
+#define VignetteLv2 60.f / 100.f
+#define VignetteLv3 100.f / 100.f
+
 struct tGlobalBloomInfo
 {
 	bool BloomActivate = true;
@@ -44,6 +48,7 @@ struct tVignetteInfo
 	float fDuration;
 	float fAlpha;
 	int	  iVignettePower; // 추가 alpha 변동폭
+	float fMaxAlpha;
 };
 
 class CRenderMgr : public CManager<CRenderMgr>
@@ -158,15 +163,34 @@ public:
 	float* GetVignetteAlpha() { return &m_VignetteInfo.fAlpha; }
 	int*   GetVignettePower() { return &m_VignetteInfo.iVignettePower; }
 	void   SetVignettePower(int _Power) { m_VignetteInfo.iVignettePower = _Power; }
+	float  GetVignetteMaxAlpha() { return m_VignetteInfo.fMaxAlpha; }
 
 	void SwitchVignette()
 	{
 		m_VignetteInfo.bVignetteRender = m_VignetteInfo.bVignetteRender ? false : true;
 
-		if (m_VignetteInfo.bVignetteRender == false)
+		// 최대 비네트 알파를 정해줄 때 쓰는 값
+		int*  iVignettePower = CRenderMgr::GetInst()->GetVignettePower();
+		float fMaxAlpha;
+
+		if (*iVignettePower <= 1)
+			fMaxAlpha = VignetteLv1;
+		else if (*iVignettePower == 2)
+			fMaxAlpha = VignetteLv2;
+		else if (*iVignettePower > 2)
+			fMaxAlpha = VignetteLv3;
+
+		if (m_VignetteInfo.bVignetteRender == true)
 		{
 			m_VignetteInfo.fDuration = VignetteDuration;
-			m_VignetteInfo.fAlpha	 = VignetteAlpha;
+			m_VignetteInfo.fAlpha	 = fMaxAlpha;
+			m_VignetteInfo.fMaxAlpha = fMaxAlpha;
+		}
+
+		if (m_VignetteInfo.bVignetteRender == false)
+		{
+			m_VignetteInfo.fDuration = 0.f;
+			m_VignetteInfo.fAlpha	 = 0.f;
 		}
 	}
 

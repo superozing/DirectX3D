@@ -30,8 +30,8 @@ CRenderMgr::CRenderMgr()
 	m_RenderFunc = &CRenderMgr::render_play;
 
 	m_VignetteInfo.bVignetteRender = false;
-	m_VignetteInfo.fAlpha		   = VignetteDuration;
-	m_VignetteInfo.fDuration	   = VignetteAlpha;
+	m_VignetteInfo.fAlpha		   = 1.f;
+	m_VignetteInfo.fDuration	   = VignetteDuration;
 	m_VignetteInfo.iVignettePower  = 1;
 }
 

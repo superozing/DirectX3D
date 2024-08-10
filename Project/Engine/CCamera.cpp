@@ -679,18 +679,19 @@ void CCamera::Vignette_Effect()
 	float* fVignetteDuration = CRenderMgr::GetInst()->GetVignetteDuration();
 	float* fVignetteAlpha	 = CRenderMgr::GetInst()->GetVignetteAlpha();
 
-	int* iVignettePower = CRenderMgr::GetInst()->GetVignettePower();
+	float fInitialAlpha = CRenderMgr::GetInst()->GetVignetteMaxAlpha();
 
 	// 지속 시간 관련  이벤트가 on이라면 계속 활성화
 	if (*fVignetteDuration >= 0.f)
-		*fVignetteDuration -= DT * (*iVignettePower);
+	{
+		*fVignetteDuration -= DT;
+
+		// 시간에 따른 알파값 조절
+		float DurationRatio = (*fVignetteDuration / VignetteDuration);
+		*fVignetteAlpha		= fInitialAlpha * DurationRatio;
+	}
 	else
-		*fVignetteDuration = VignetteDuration;
-
-	float DurationRatio = 1.0f - (*fVignetteDuration / VignetteDuration);
-
-	// 시간에 따른 알파값 조절
-	*fVignetteAlpha = (sin(DurationRatio * 3.14159f) + 1.0f) * 0.5f;
+		CRenderMgr::GetInst()->SwitchVignette();
 
 	pVignetteMtrl->SetScalarParam(SCALAR_PARAM::FLOAT_0, *fVignetteAlpha);
 
