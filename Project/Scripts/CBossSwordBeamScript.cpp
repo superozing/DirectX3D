@@ -31,6 +31,10 @@ void CBossSwordBeamScript::begin()
 	Vec3 Dir = m_Shooter->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
 
 	Transform()->SetDir(Dir);
+
+	m_Target->GetScript<CPlayerScript>()->GetSpringArm()->SetShakeAttribute(1.3f, Vec3(10.f, 20.f, 0.f),
+																			Vec3(0.f, 0.f, 0.f), 25.f, 0.2f);
+	m_Target->GetScript<CPlayerScript>()->GetSpringArm()->SpringArmShake();
 }
 
 void CBossSwordBeamScript::tick()

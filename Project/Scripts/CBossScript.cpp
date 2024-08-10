@@ -38,9 +38,11 @@ CBossScript::CBossScript()
 	, m_BulletInterval(0.f)
 	, m_Raycast(false)
 	, m_RaycastInterval(0.f)
+	, m_bDebug(false)
 {
 	AppendScriptParam("CurState    ", SCRIPT_PARAM::STRING, &DebugState);
 	AppendScriptParam("raycast", SCRIPT_PARAM::BOOL, &m_Raycast);
+	AppendScriptParam("Debug", SCRIPT_PARAM::BOOL, &m_bDebug);
 	InitScriptParamUI();
 
 	InitStateMachine();
@@ -64,6 +66,7 @@ CBossScript::CBossScript(const CBossScript& _Origin)
 	, m_BulletInterval(0.f)
 	, m_Raycast(false)
 	, m_RaycastInterval(0.f)
+	, m_bDebug(false)
 {
 	InitScriptParamUI();
 
@@ -177,7 +180,8 @@ void CBossScript::CheckDuration()
 
 	if (m_ActiveEXs)
 	{
-		m_EXsType = CRandomMgr::GetInst()->GetRandomInt(4);
+		if (!m_bDebug)
+			m_EXsType = CRandomMgr::GetInst()->GetRandomInt(4);
 
 		switch (m_EXsType)
 		{

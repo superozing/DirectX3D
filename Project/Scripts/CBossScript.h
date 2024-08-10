@@ -70,7 +70,8 @@ private:
 	float m_RaycastInterval;
 
 	// @@디버그용
-	int m_EXsType; // 현재 선택된 EX 타입
+	int	 m_EXsType; // 현재 선택된 EX 타입
+	bool m_bDebug;
 
 #pragma region About State
 
