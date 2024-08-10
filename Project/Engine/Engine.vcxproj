@@ -227,6 +227,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CMeshRender.h" />
     <ClInclude Include="CMRT.h" />
     <ClInclude Include="CUpScale.h" />
+    <ClInclude Include="CVideo.h" />
     <ClInclude Include="RoRCollisionCallback.h" />
     <ClInclude Include="components.h" />
     <ClInclude Include="CParticleSystem.h" />
@@ -335,6 +336,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CMeshRender.cpp" />
     <ClCompile Include="CMRT.cpp" />
     <ClCompile Include="CUpScale.cpp" />
+    <ClCompile Include="CVideo.cpp" />
     <ClCompile Include="RoRCollisionCallback.cpp" />
     <ClCompile Include="CParticleSystem.cpp" />
     <ClCompile Include="CParticleUpdate.cpp" />
