@@ -32,9 +32,9 @@ struct tBossStatus
 	float GroggyBar = 0.f;
 
 	float ATTDamage = 10.f;
-	float ATTSpeed	= 2000.f;
+	float ATTSpeed	= 2.f;
 
-	float EXsCoolTime = 1.f;
+	float EXsCoolTime = 5000.f;
 
 	bool IsGroggy = false;
 	bool IsDead	  = false;
