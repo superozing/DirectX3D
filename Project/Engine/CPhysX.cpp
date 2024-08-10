@@ -180,8 +180,7 @@ void CPhysX::finaltick()
 		}
 		else if (PhysShape::CONE == m_Shape)
 		{
-			GamePlayStatic::DrawDebugCone(ColPos, scale, Vec4(Rot.x, Rot.y, Rot.z, Rot.w), Vec3(0.3f, .3f, 0.3f),
-										  false);
+			//GamePlayStatic::DrawDebugCone(ColPos, scale, Vec4(Rot.x, Rot.y, Rot.z, Rot.w), Vec3(0.3f, .3f, 0.3f), false);
 		}
 	}
 }
