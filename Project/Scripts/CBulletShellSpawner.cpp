@@ -73,8 +73,8 @@ void CBulletShellSpawner::SpawnBulletShell(CGameObject* _pPlayer, float _ActiveT
 	//  * (CRandomMgr::GetInst()->GetRandomFloat() / 2.f + 1);
 	//pBulletScript->SetLinearVelocity(rDir * 3.f + uDir * 6.f);
 	
-	pBulletScript->SetLinearVelocity(rDir * m_pShootingSystem->m_RightRatio * (CRandomMgr::GetInst()->GetRandomFloat() / 2.f + 1) +
-									uDir * m_pShootingSystem->m_UpRatio * (CRandomMgr::GetInst()->GetRandomFloat() / 2.f + 1));
+	pBulletScript->SetLinearVelocity(rDir * (m_pShootingSystem->m_RightRatio * CRandomMgr::GetInst()->GetRandomFloat(0.9f, 1.1f))
+		+ uDir * m_pShootingSystem->m_UpRatio);
 
 	// 게임 오브젝트 스폰
 	GamePlayStatic::SpawnGameObject(pBulletShell, (UINT)LAYER::LAYER_ETC_OBJECT);
