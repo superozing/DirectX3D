@@ -75,17 +75,17 @@ void CBulletWarheadSpawner::SpawnBulletWarhead(CGameObject* _pPlayer)
 	Matrix _ParentWorldMat = _pPlayer->Transform()->GetWorldMat();
 	Matrix _WeaponBoneMat  = _pPlayer->Animator3D()->FindBoneMat(L"Bip001_Weapon");
 
-	// 트랜스폼 세팅
-	pBulletWarhead->Transform()->SetDir(_ParentWorldMat.Front().Normalize());
-
 	// 플레이어 월드 매트릭스
 	Matrix WeaponMat = _WeaponBoneMat * _pPlayer->Transform()->GetWorldMat();
 
 	// 트랜스폼 세팅
 	pBulletWarhead->Transform()->SetDir(_ParentWorldMat.Down().Normalize());
 	pBulletWarhead->Transform()->SetRelativePos(WeaponMat.Translation());
-	pBulletWarhead->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::BOOL_2, true);
+	pBulletWarhead->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::BOOL_0, true);
+	pBulletWarhead->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::BOOL_1, true);
 	pBulletWarhead->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, Vec4(1.f, 1.f, 1.f, 0.7f));
+	pBulletWarhead->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_1,
+																 Vec4(_ParentWorldMat.Front().Normalize(), 0.f));
 	GamePlayStatic::SpawnGameObject(pBulletWarhead, 0);
 
 	// 관리를 위해 리스트에 추가
