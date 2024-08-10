@@ -14,6 +14,12 @@ enum class SpawnObjType
 	END
 };
 
+enum class SpawnSpotSoundType
+{
+	Spawn,
+	End
+};
+
 class CSpawnSpotScript : public CScript
 {
 private:
@@ -30,6 +36,8 @@ private:
 	vector<string>		 m_vecPrefabKey;
 	CPrefab*			 m_CurBindPrefab;
 	int					 m_ivecPrefabIdx;
+
+	vector<Ptr<CSound>>	 m_vecSound;
 
 public:
 	void SetDisplayMode();

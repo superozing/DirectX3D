@@ -1,34 +1,39 @@
 ﻿#include "pch.h"
-#include "CMiniGunScript.h"
+#include "CBulletLineScript.h"
 
 #include "CBossScript.h"
-#include "CRoRStateMachine.h"
 
-CMiniGunScript::CMiniGunScript()
-	: CScript((UINT)SCRIPT_TYPE::MINIGUNSCRIPT)
+CBulletLineScript::CBulletLineScript()
+	: CScript((UINT)SCRIPT_TYPE::BULLETLINESCRIPT)
 	, m_Parent(nullptr)
+	, m_Target(nullptr)
+	, m_TargetPos{}
 	, m_vDir{}
 	, m_Module{}
 	, m_bParticle(false)
 	, m_offset(-10.f, -20.f, 100.f)
 	, m_offsetDir(0.f, -0.2f, 0.f)
+	, m_CurFrame(0)
+	, m_PrevFrame(0)
 {
 	AppendScriptParam("Offset", SCRIPT_PARAM::VEC3, &m_offset);
 	AppendScriptParam("OffsetDir", SCRIPT_PARAM::VEC3, &m_offsetDir);
 }
 
-CMiniGunScript::~CMiniGunScript()
+CBulletLineScript::~CBulletLineScript()
 {
 }
 
-void CMiniGunScript::begin()
+void CBulletLineScript::begin()
 {
 	m_Module = ParticleSystem()->GetParticleModule();
 	ParticleSystem()->SetModule(m_Module);
 	ParticleSystem()->Stop();
+
+	m_TargetPos = m_Target->Transform()->GetRelativePos();
 }
 
-void CMiniGunScript::tick()
+void CBulletLineScript::tick()
 {
 	if (m_Parent->GetScript<CBossScript>()->IsVital())
 	{
@@ -36,14 +41,24 @@ void CMiniGunScript::tick()
 		GamePlayStatic::DestroyGameObject(GetOwner());
 	}
 
-	m_vDir = m_Parent->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-	m_vDir += m_offsetDir;
-	m_Module.FixedDirection = m_vDir;
-
-	ParticleSystem()->SetModule(m_Module);
 	Vec3 vPos = (m_Parent->Animator3D()->FindBoneMat(L"fire_01") * m_Parent->Transform()->GetWorldMat()).Translation();
 	vPos += m_offset;
 	Transform()->SetRelativePos(vPos);
+
+	m_vDir					= m_TargetPos - vPos;
+	m_Module.FixedDirection = m_vDir;
+
+	m_CurFrame = m_Parent->Animator3D()->GetCurFrameIdx();
+
+	if (m_bParticle && m_CurFrame != m_PrevFrame)
+	{
+		m_Module.SpawnRate -= 1;
+
+		if (m_Module.SpawnRate <= 0)
+			m_Module.SpawnRate = 0;
+
+		m_PrevFrame = m_CurFrame;
+	}
 
 	if (60 <= m_Parent->Animator3D()->GetCurFrameIdx() && !m_bParticle)
 	{
@@ -55,4 +70,6 @@ void CMiniGunScript::tick()
 		ParticleSystem()->Stop();
 		GamePlayStatic::DestroyGameObject(GetOwner());
 	}
+
+	ParticleSystem()->SetModule(m_Module);
 }

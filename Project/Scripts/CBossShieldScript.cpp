@@ -38,6 +38,11 @@ void CBossShieldScript::tick()
 	if (!m_Parent)
 		return;
 
+	if (m_Parent->GetScript<CBossScript>()->IsVital())
+	{
+		GamePlayStatic::DestroyGameObject(GetOwner());
+	}
+
 	if (SHIELD_TYPE::InnerShield == m_ShieldType)
 		CheckInnerShield();
 	else if (SHIELD_TYPE::OutsideShield == m_ShieldType)
@@ -92,7 +97,7 @@ void CBossShieldScript::CheckOutsideShield()
 
 void CBossShieldScript::CheckHexShield()
 {
-	int idx = m_Parent->Animator3D()->GetCurFrameIdx();
+	int	  idx	= m_Parent->Animator3D()->GetCurFrameIdx();
 	float ftime = DT;
 
 	if (idx > 30 && idx < 155)

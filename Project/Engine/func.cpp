@@ -708,6 +708,49 @@ Vec3 RoRMath::QuaternionToEulerAngles(const XMFLOAT4& _Quaternion)
 	return Vec3(pitch, yaw, roll);
 }
 
+Vec3 RoRMath::RotateVectorByQuaternion(const Vec3& vector, const Quat& rotation)
+{
+	// Quaternion을 사용하여 Vector3를 회전시키는 수식을 이용
+	float num	= rotation.x * 2.f;
+	float num2	= rotation.y * 2.f;
+	float num3	= rotation.z * 2.f;
+	float num4	= rotation.x * num;
+	float num5	= rotation.y * num2;
+	float num6	= rotation.z * num3;
+	float num7	= rotation.x * num2;
+	float num8	= rotation.x * num3;
+	float num9	= rotation.y * num3;
+	float num10 = rotation.w * num;
+	float num11 = rotation.w * num2;
+	float num12 = rotation.w * num3;
+
+	Vector3 result;
+	result.x = (1.f - (num5 + num6)) * vector.x + (num7 - num12) * vector.y + (num8 + num11) * vector.z;
+	result.y = (num7 + num12) * vector.x + (1.f - (num4 + num6)) * vector.y + (num9 - num10) * vector.z;
+	result.z = (num8 - num11) * vector.x + (num9 + num10) * vector.y + (1.f - (num4 + num5)) * vector.z;
+	return result;
+}
+
+Vec3 RoRMath::RotateVectorByRotationVector(const Vec3& vector, const Vec3& rotation)
+{
+	// Euler 각도를 Quaternion으로 변환하는 수식 구현
+	float c1 = cosf(rotation.x * 0.5f);
+	float s1 = sinf(rotation.x * 0.5f);
+	float c2 = cosf(rotation.y * 0.5f);
+	float s2 = sinf(rotation.y * 0.5f);
+	float c3 = cosf(rotation.z * 0.5f);
+	float s3 = sinf(rotation.z * 0.5f);
+
+	Quat qrotation;
+	qrotation.w = c1 * c2 * c3 + s1 * s2 * s3;
+	qrotation.x = s1 * c2 * c3 - c1 * s2 * s3;
+	qrotation.y = c1 * s2 * c3 + s1 * c2 * s3;
+	qrotation.z = c1 * c2 * s3 - s1 * s2 * c3;
+
+	// Quaternion을 사용하여 벡터를 회전
+	return RotateVectorByQuaternion(vector, qrotation);
+}
+
 bool closeEnough(const float& a, const float& b, const float& epsilon = std::numeric_limits<float>::epsilon())
 {
 	return (epsilon > std::abs(a - b));

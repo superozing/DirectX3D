@@ -66,7 +66,7 @@ bool CPhysXMgr::PerformRaycast(Vec3 _OriginPos, Vec3 _Dir, tRoRHitInfo& _HitInfo
 	{
 		if (0 != (_DebugFlagMask & RayCastDebugFlag::RayLineVisible))
 		{
-			GamePlayStatic::DrawDebugCylinder(_OriginPos, _OriginPos + _Dir * 1000.f, 5.f, Vec3(0.f, .8f, 0.f), true,
+			GamePlayStatic::DrawDebugCylinder(_OriginPos, _OriginPos + _Dir * 1000.f, 5.f, Vec3(0.f, .8f, 0.f), false,
 											  _LAYER);
 		}
 		return false;
@@ -280,21 +280,10 @@ void CPhysXMgr::addGameObject(CGameObject* object)
 
 	Quat WorldQuat = object->Transform()->GetWorldQuaternion();
 
-	auto ObjPos	   = object->Transform()->GetWorldPos();
-	auto OffsetPos = PhysX->m_vOffsetPos;
-	auto relrot	   = object->Transform()->GetRelativeRotation();
-	relrot.Normalize();
-
-	Matrix matRot = Matrix::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), relrot.x) *
-					Matrix::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), relrot.y) *
-					Matrix::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), relrot.z);
-	Matrix OffsetPosMat		 = XMMatrixTranslation(OffsetPos.x, OffsetPos.y, OffsetPos.z);
-	auto   RotatedOffesetPos = OffsetPosMat * matRot;
-	auto   VecROP			 = RotatedOffesetPos.Translation();
-	auto   FinalPos			 = ObjPos + OffsetPos;
-	FinalPos /= m_PPM;
+	auto ColPos = PhysX->GetColliderPos();
+	ColPos /= m_PPM;
 	// 게임 오브젝트의 위치와 회전 정보
-	PxTransform transform(PxVec3(FinalPos.x, FinalPos.y, FinalPos.z),
+	PxTransform transform(PxVec3(ColPos.x, ColPos.y, ColPos.z),
 						  PxQuat(WorldQuat.x, WorldQuat.y, -WorldQuat.z, -WorldQuat.w));
 
 	PxRigidActor* actor = nullptr;
@@ -411,7 +400,7 @@ void CPhysXMgr::init()
 	// PhysX 초기화
 	gPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *gFoundation, PxTolerancesScale(), true, gPvd);
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
-	sceneDesc.gravity		= PxVec3(0.0f, -9.81f * m_fGravityMul, 0.0f);
+	sceneDesc.gravity		= PxVec3(0.0f, m_fGravity * m_fGravityMul, 0.0f);
 	gDispatcher				= PxDefaultCpuDispatcherCreate(2);
 	sceneDesc.cpuDispatcher = gDispatcher;
 
@@ -461,7 +450,7 @@ void CPhysXMgr::init()
 	// sceneDesc.flags |= PxSceneFlag::eENABLE_CCD;
 
 	gScene = gPhysics->createScene(sceneDesc);
-	gMaterial = gPhysics->createMaterial(200.0f, 200.0f, 0.f); // (정지 마찰 계수, 동적 마찰 계수, 반발 계수)
+	gMaterial = gPhysics->createMaterial(7.5f, 7.5f, 0.2f); // (정지 마찰 계수, 동적 마찰 계수, 반발 계수)
 
 	gCollisionCalback = new RoRCollisionCallback;
 	gScene->setSimulationEventCallback(gCollisionCalback);
@@ -526,46 +515,22 @@ void CPhysXMgr::tick()
 		ImGuizmo::DecomposeMatrixToComponents(*SimulatedMat.m, Translation, Rotation, Scale);
 
 		// PPM 적용
-		Translation *= m_PPM;
 		Rotation.ToRadian();
 		// Rotation.z = -Rotation.z;
 
-		auto OffsetPos = obj->PhysX()->m_vOffsetPos;
-		auto norrot	   = Rotation;
-		norrot.Normalize();
-		Matrix matRot = Matrix::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), norrot.x) *
-						Matrix::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), norrot.y) *
-						Matrix::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), norrot.z);
-		Matrix OffsetPosMat		 = XMMatrixTranslation(OffsetPos.x, OffsetPos.y, OffsetPos.z);
-		auto   RotatedOffesetPos = DirectX::XMVector3TransformNormal(OffsetPos, matRot);
-		// auto   VecROP			 = RotatedOffesetPos.Translation();
-		// Translation -= RotatedOffesetPos; // 오프셋 적용된 위치
-		Translation -= OffsetPos; // 오프셋 적용된 위치
+		SimulatedMat._41 *= m_PPM;
+		SimulatedMat._42 *= m_PPM;
+		SimulatedMat._43 *= m_PPM;
 
-		// 변화량 추출
-		Vec3 vPosDiff = pTr->GetWorldPos() - Translation;
-		Vec3 vRotDiff = pTr->GetWorldRot() - Rotation;
+		auto rotatedoffset = RoRMath::RotateVectorByRotationVector(obj->PhysX()->m_vOffsetPos, Rotation);
 
-		if (true == m_bUseTH)
-		{
-			// if (vPosDiff.x < m_fPosTreshold.x || vPosDiff.x >= m_fPosTreshold.y)
-			//	vPosDiff.x = 0.f;
-			// if (vPosDiff.y < m_fPosTreshold.x || vPosDiff.y >= m_fPosTreshold.y)
-			//	vPosDiff.y = 0.f;
-			// if (vPosDiff.z < m_fPosTreshold.x || vPosDiff.z >= m_fPosTreshold.y)
-			//	vPosDiff.z = 0.f;
+		SimulatedMat._41 -= rotatedoffset.x;
+		SimulatedMat._42 -= rotatedoffset.y;
+		SimulatedMat._43 -= rotatedoffset.z;
 
-			if (abs(vRotDiff.x) < m_fRotTreshold.x || abs(vRotDiff.x) >= m_fRotTreshold.y)
-				vRotDiff.x = 0.f;
-			if (abs(vRotDiff.y) < m_fRotTreshold.x || abs(vRotDiff.y) >= m_fRotTreshold.y)
-				vRotDiff.y = 0.f;
-			if (abs(vRotDiff.z) < m_fRotTreshold.x || abs(vRotDiff.z) >= m_fRotTreshold.y)
-				vRotDiff.z = 0.f;
-		}
-
-		// 변화량만큼 Relative 에 적용
-		pTr->SetRelativeRotation(pTr->GetRelativeRotation() - vRotDiff);
-		pTr->SetRelativePos(pTr->GetRelativePos() - vPosDiff);
+		auto scale = pTr->Transform()->GetRelativeScale();
+		pTr->Transform()->SetWorldMat(SimulatedMat);
+		pTr->Transform()->SetRelativeScale(scale);
 	}
 }
 
@@ -585,6 +550,10 @@ void CPhysXMgr::ClearAllActors()
 	for (physx::PxActor* actor : actors)
 	{
 		gScene->removeActor(*actor);
+		auto obj			   = static_cast<CGameObject*>(actor->userData);
+		obj->PhysX()->m_Actor  = nullptr;
+		obj->PhysX()->m_DActor = nullptr;
+
 		actor->userData = nullptr;
 		actor->release();
 		// auto e = static_cast<CGameObject*>(actor->userData);
@@ -605,7 +574,29 @@ void CPhysXMgr::ReleaseActor(PxRigidActor* actor)
 	// 씬 잠금
 	gScene->lockWrite();
 
-	actor->userData = nullptr;
+	auto obj = static_cast<CGameObject*>(actor->userData);
+
+	// trigger vec에 관리되던 요소제거
+	auto iter = m_vecTriggerColInfo.begin();
+	while (iter != m_vecTriggerColInfo.end())
+	{
+		auto GO1 = static_cast<CGameObject*>((*iter).Actor1->userData);
+		auto GO2 = static_cast<CGameObject*>((*iter).Actor2->userData);
+
+		if (obj == GO1 || obj == GO2)
+		{
+			iter = m_vecTriggerColInfo.erase(iter);
+		}
+		else
+		{
+			++iter;
+		}
+	}
+
+	obj->PhysX()->m_Actor  = nullptr;
+	obj->PhysX()->m_DActor = nullptr;
+	actor->userData		   = nullptr;
+
 	gScene->removeActor(*actor);
 	actor->release();
 

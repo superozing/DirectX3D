@@ -3,6 +3,7 @@
 
 #include "CBackgroundScript.h"
 #include "CMissileScript.h"
+#include "CMonsterScript.h"
 #include "CCameraMoveScript.h"
 #include "CRenderMgrScript.h"
 #include "CTimeMgrScript.h"
@@ -74,12 +75,17 @@
 #include "CSmokeScript.h"
 #include "CSpawnPhysX.h"
 #include "CTutorialEndingEvent.h"
-#include "CMonsterScript.h"
+#include "CBossSwordTrailScript.h"
+#include "CBossSwordBeamScript.h"
+#include "CSBSmokeScript.h"
+#include "CBulletLineScript.h"
+#include "CGroundCrackScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
 	_vec.push_back(L"CBackgroundScript");
 	_vec.push_back(L"CMissileScript");
+	_vec.push_back(L"CMonsterScript");
 	_vec.push_back(L"CCameraMoveScript");
 	_vec.push_back(L"CRenderMgrScript");
 	_vec.push_back(L"CTimeMgrScript");
@@ -151,7 +157,11 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CSmokeScript");
 	_vec.push_back(L"CSpawnPhysX");
 	_vec.push_back(L"CTutorialEndingEvent");
-	_vec.push_back(L"CMonsterScript");
+	_vec.push_back(L"CBossSwordTrailScript");
+	_vec.push_back(L"CBossSwordBeamScript");
+	_vec.push_back(L"CSBSmokeScript");
+	_vec.push_back(L"CBulletLineScript");
+	_vec.push_back(L"CGroundCrackScript");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -160,6 +170,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CBackgroundScript;
 	if (L"CMissileScript" == _strScriptName)
 		return new CMissileScript;
+	if (L"CMonsterScript" == _strScriptName)
+		return new CMonsterScript;
 	if (L"CCameraMoveScript" == _strScriptName)
 		return new CCameraMoveScript;
 	if (L"CRenderMgrScript" == _strScriptName)
@@ -302,8 +314,16 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CSpawnPhysX;
 	if (L"CTutorialEndingEvent" == _strScriptName)
 		return new CTutorialEndingEvent;
-	if (L"CMonsterScript" == _strScriptName)
-		return new CMonsterScript;
+	if (L"CBossSwordTrailScript" == _strScriptName)
+		return new CBossSwordTrailScript;
+	if (L"CBossSwordBeamScript" == _strScriptName)
+		return new CBossSwordBeamScript;
+	if (L"CSBSmokeScript" == _strScriptName)
+		return new CSBSmokeScript;
+	if (L"CBulletLineScript" == _strScriptName)
+		return new CBulletLineScript;
+	if (L"CGroundCrackScript" == _strScriptName)
+		return new CGroundCrackScript;
 	return nullptr;
 }
 
@@ -316,6 +336,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::MISSILESCRIPT:
 		return new CMissileScript;
+		break;
+	case (UINT)SCRIPT_TYPE::MONSTERSCRIPT:
+		return new CMonsterScript;
 		break;
 	case (UINT)SCRIPT_TYPE::CAMERAMOVESCRIPT:
 		return new CCameraMoveScript;
@@ -530,8 +553,20 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::TUTORIALENDINGEVENT:
 		return new CTutorialEndingEvent;
 		break;
-	case (UINT)SCRIPT_TYPE::MONSTERSCRIPT:
-		return new CMonsterScript;
+	case (UINT)SCRIPT_TYPE::BOSSSWORDTRAILSCRIPT:
+		return new CBossSwordTrailScript;
+		break;
+	case (UINT)SCRIPT_TYPE::BOSSSWORDBEAMSCRIPT:
+		return new CBossSwordBeamScript;
+		break;
+	case (UINT)SCRIPT_TYPE::SBSMOKESCRIPT:
+		return new CSBSmokeScript;
+		break;
+	case (UINT)SCRIPT_TYPE::BULLETLINESCRIPT:
+		return new CBulletLineScript;
+		break;
+	case (UINT)SCRIPT_TYPE::GROUNDCRACKSCRIPT:
+		return new CGroundCrackScript;
 		break;
 	}
 	return nullptr;
@@ -547,6 +582,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::MISSILESCRIPT:
 		return L"CMissileScript";
+		break;
+
+	case SCRIPT_TYPE::MONSTERSCRIPT:
+		return L"CMonsterScript";
 		break;
 
 	case SCRIPT_TYPE::CAMERAMOVESCRIPT:
@@ -833,8 +872,24 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CTutorialEndingEvent";
 		break;
 
-	case SCRIPT_TYPE::MONSTERSCRIPT:
-		return L"CMonsterScript";
+	case SCRIPT_TYPE::BOSSSWORDTRAILSCRIPT:
+		return L"CBossSwordTrailScript";
+		break;
+
+	case SCRIPT_TYPE::BOSSSWORDBEAMSCRIPT:
+		return L"CBossSwordBeamScript";
+		break;
+
+	case SCRIPT_TYPE::SBSMOKESCRIPT:
+		return L"CSBSmokeScript";
+		break;
+
+	case SCRIPT_TYPE::BULLETLINESCRIPT:
+		return L"CBulletLineScript";
+		break;
+
+	case SCRIPT_TYPE::GROUNDCRACKSCRIPT:
+		return L"CGroundCrackScript";
 		break;
 
 	}
