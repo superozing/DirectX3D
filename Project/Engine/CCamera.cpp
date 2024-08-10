@@ -663,6 +663,7 @@ void CCamera::Cromatic_Aberration()
 	pRectMesh->render(0);
 }
 
+#include "CLogMgr.h"
 void CCamera::Vignette_Effect()
 {
 	if (CRenderMgr::GetInst()->GetRenderVignette() == false)
@@ -689,6 +690,8 @@ void CCamera::Vignette_Effect()
 		// 시간에 따른 알파값 조절
 		float DurationRatio = (*fVignetteDuration / VignetteDuration);
 		*fVignetteAlpha		= fInitialAlpha * DurationRatio;
+
+		//CLogMgr::GetInst()->AddLog(Log_Level::WARN, std::to_string(*fVignetteAlpha));
 	}
 	else
 		CRenderMgr::GetInst()->SwitchVignette();
