@@ -693,3 +693,18 @@ void CPlayerScript::SaveToFile(FILE* _File)
 void CPlayerScript::LoadFromFile(FILE* _File)
 {
 }
+
+void CPlayerScript::SetPanicVignette()
+{
+	float fHpRatio	 = m_tStatus.curHealth / m_tStatus.MaxHealth * 100.f;
+	int	  InputPower = 0;
+
+	if (fHpRatio > 50.f)
+		InputPower = 1;
+	else if (fHpRatio < 50.f && fHpRatio > 25.f)
+		InputPower = 2;
+	else
+		InputPower = 3;
+
+	CRenderMgr::GetInst()->SetVignettePower(InputPower);
+}

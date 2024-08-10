@@ -741,6 +741,8 @@ void CPlayerScript::VitalPanicBegin()
 			Animator3D()->Play((int)PLAYER_STATE::VitalPanic, 0);
 		}
 
+		SetPanicVignette();
+		CRenderMgr::GetInst()->SwitchVignette();
 		SetInvincivility(true);
 		this->SetDamaged(false);
 	}

@@ -272,6 +272,8 @@ public:
 
 	CRoRStateMachine<CPlayerScript>* GetStateMachine() { return m_FSM; }
 
+	void SetPanicVignette();
+
 public:
 	virtual void begin() override;
 	virtual void tick() override;
