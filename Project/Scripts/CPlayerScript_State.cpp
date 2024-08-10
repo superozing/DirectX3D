@@ -87,13 +87,18 @@ void CPlayerScript::NormalAttackStartEnd()
 
 void CPlayerScript::NormalAttackIngBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::NormalAttackIng, 0, 5.f);
-	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalAttackStart]);
 	if (m_pShootingSystem->IsShootAvailable())
 	{
+		Animator3D()->Play((int)PLAYER_STATE::NormalAttackIng, 0, 5.f);
+		m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalAttackStart]);
 		m_pShootingSystem->ShootPlayerBulletRay();
 		m_vecSound[(UINT)PlayerSoundType::EX1]->Play(1, 1.f, true);
 		m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
+	}
+	else
+	{
+		m_FSM->SetCurState(m_FSM->GetPrevState());
+		return;
 	}
 	// m_pBulletLine->GetOwner()->ParticleSystem()->Play();
 }
@@ -233,14 +238,19 @@ void CPlayerScript::StandAttackStartEnd()
 
 void CPlayerScript::StandAttackIngBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::StandAttackIng, 0, 5.f);
-	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::StandAttackStart]);
 	if (m_pShootingSystem->IsShootAvailable())
 	{
+		Animator3D()->Play((int)PLAYER_STATE::StandAttackIng, 0, 5.f);
+		m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::StandAttackStart]);
 		m_pShootingSystem->ShootPlayerBulletRay();
 		m_vecSound[(UINT)PlayerSoundType::EX1]->Play(1, 1.f, true);
 		m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
-	};
+	}
+	else
+	{
+		m_FSM->SetCurState((int)PLAYER_STATE::StandAttackDelay);
+		return;
+	}
 	// m_pBulletLine->GetOwner()->ParticleSystem()->Play();
 }
 
@@ -396,14 +406,18 @@ void CPlayerScript::KneelAttackStartEnd()
 
 void CPlayerScript::KneelAttackIngBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::KneelAttackIng, 0, 5.f);
-	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::KneelAttackStart], 0.1f);
-
 	if (m_pShootingSystem->IsShootAvailable())
 	{
+		Animator3D()->Play((int)PLAYER_STATE::KneelAttackIng, 0, 5.f);
+		m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::KneelAttackStart]);
 		m_pShootingSystem->ShootPlayerBulletRay();
 		m_vecSound[(UINT)PlayerSoundType::EX1]->Play(1, 1.f, true);
 		m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
+	}
+	else
+	{
+		m_FSM->SetCurState((int)PLAYER_STATE::KneelAttackDelay);
+		return;
 	}
 	// m_pBulletLine->GetOwner()->ParticleSystem()->Play();
 }
