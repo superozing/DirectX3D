@@ -19,11 +19,11 @@ CCoverHIghTutorialEvent::~CCoverHIghTutorialEvent()
 
 void CCoverHIghTutorialEvent::Start()
 {
-	if (HasTargets() && m_pGM->IsClear(TutorialState::Shooting))
-	{
-		m_pArona->Message("Go to the cover & Press LShift to cover it up", 700.f);
-		tick_func = &CCoverHIghTutorialEvent::Cover;
-	}
+	// if (HasTargets() && m_pGM->IsClear(TutorialState::Shooting))
+	//{
+	//	m_pArona->Message("Go to the cover & Press LShift to cover it up", 700.f);
+	//	tick_func = &CCoverHIghTutorialEvent::Cover;
+	// }
 }
 
 void CCoverHIghTutorialEvent::Cover()
@@ -44,7 +44,7 @@ void CCoverHIghTutorialEvent::Combat()
 
 	GamePlayStatic::DestroyGameObject(GetOwner());
 	m_pArona->Message("Congratulations!", 340, 3.f);
-	m_pGM->Clear(TutorialState::CoverHigh);
+	// m_pGM->Clear(TutorialState::CoverHigh);
 }
 
 void CCoverHIghTutorialEvent::begin()

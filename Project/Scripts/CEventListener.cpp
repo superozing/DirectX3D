@@ -8,6 +8,29 @@
 static string strNotation				 = "This Is EvenetListen Script";
 bool		  CEventListener::m_bAllDraw = false;
 
+CEventListener::CEventListener()
+	: CScript((UINT)SCRIPT_TYPE::EVENTLISTENER)
+{
+	AppendScriptParam("Draw", SCRIPT_PARAM::BOOL, &m_bDrawing);
+	AppendScriptParam("", SCRIPT_PARAM::STRING, &strNotation);
+
+	m_vecAllScriptNames.resize((UINT)SCRIPT_TYPE::END);
+	for (size_t i = 0; i < (UINT)SCRIPT_TYPE::END; i++)
+	{
+		m_vecAllScriptNames[i] = ToString(magic_enum::enum_name((SCRIPT_TYPE)i));
+	}
+
+	AppendScriptVector("Scripts Lists", &m_vecAllScriptNames, &m_iAllNamesIdx, true, "This is All Script List for Add");
+	SameLine();
+	AppendMemberFunction("Add Target", SCRIPT_PARAM::FUNC_MEMBER, "Add Target",
+						 std::bind(&CEventListener::AddTargetEditor, this));
+
+	AppendScriptVector("Target Scripts", &m_vecScriptNames, &m_iNamesIdx, true, "This is Current Has Script List");
+	SameLine();
+	AppendMemberFunction("Sub Target", SCRIPT_PARAM::FUNC_MEMBER, "Sub Target",
+						 std::bind(&CEventListener::SubTargetEditor, this));
+}
+
 CEventListener::CEventListener(UINT _type)
 	: CScript((UINT)_type)
 	, m_bDrawing(true)

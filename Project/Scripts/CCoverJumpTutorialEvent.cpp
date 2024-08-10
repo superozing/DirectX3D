@@ -19,11 +19,11 @@ CCoverJumpTutorialEvent::~CCoverJumpTutorialEvent()
 
 void CCoverJumpTutorialEvent::Start()
 {
-	if (HasTargets() && m_pGM->IsClear(TutorialState::CoverHigh))
-	{
-		tick_func = &CCoverJumpTutorialEvent::EventClear;
-		m_pArona->Message("Cover And Press Space Bar To Jump", 600);
-	}
+	// if (HasTargets() && m_pGM->IsClear(TutorialState::CoverHigh))
+	//{
+	//	tick_func = &CCoverJumpTutorialEvent::EventClear;
+	//	m_pArona->Message("Cover And Press Space Bar To Jump", 600);
+	// }
 }
 
 void CCoverJumpTutorialEvent::EventClear()
@@ -32,7 +32,7 @@ void CCoverJumpTutorialEvent::EventClear()
 	{
 		GamePlayStatic::DestroyGameObject(GetOwner());
 		m_pArona->Message("Congratulations!", 340, 3.f);
-		m_pGM->Clear(TutorialState::CoverJump);
+		// m_pGM->Clear(TutorialState::CoverJump);
 	}
 }
 

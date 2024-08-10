@@ -39,11 +39,8 @@
 #include "CReloadUI.h"
 #include "CStretchUIScript.h"
 #include "CTextUI.h"
-#include "CWelcomeTutorialEvent.h"
 #include "CCoverArea.h"
 #include "CCoverUI.h"
-#include "CDashEventListener.h"
-#include "CShootingTutorialEvent.h"
 #include "CArona.h"
 #include "CLevelTransition.h"
 #include "CBloomScript.h"
@@ -80,7 +77,8 @@
 #include "CSBSmokeScript.h"
 #include "CBulletLineScript.h"
 #include "CGroundCrackScript.h"
-#include "CCubePushScript.h"
+#include "CVideoPlayer.h"
+#include "CEventListener.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -122,11 +120,8 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CReloadUI");
 	_vec.push_back(L"CStretchUIScript");
 	_vec.push_back(L"CTextUI");
-	_vec.push_back(L"CWelcomeTutorialEvent");
 	_vec.push_back(L"CCoverArea");
 	_vec.push_back(L"CCoverUI");
-	_vec.push_back(L"CDashEventListener");
-	_vec.push_back(L"CShootingTutorialEvent");
 	_vec.push_back(L"CArona");
 	_vec.push_back(L"CLevelTransition");
 	_vec.push_back(L"CBloomScript");
@@ -163,7 +158,8 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CSBSmokeScript");
 	_vec.push_back(L"CBulletLineScript");
 	_vec.push_back(L"CGroundCrackScript");
-	_vec.push_back(L"CCubePushScript");
+	_vec.push_back(L"CVideoPlayer");
+	_vec.push_back(L"CEventListener");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -244,16 +240,10 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CStretchUIScript;
 	if (L"CTextUI" == _strScriptName)
 		return new CTextUI;
-	if (L"CWelcomeTutorialEvent" == _strScriptName)
-		return new CWelcomeTutorialEvent;
 	if (L"CCoverArea" == _strScriptName)
 		return new CCoverArea;
 	if (L"CCoverUI" == _strScriptName)
 		return new CCoverUI;
-	if (L"CDashEventListener" == _strScriptName)
-		return new CDashEventListener;
-	if (L"CShootingTutorialEvent" == _strScriptName)
-		return new CShootingTutorialEvent;
 	if (L"CArona" == _strScriptName)
 		return new CArona;
 	if (L"CLevelTransition" == _strScriptName)
@@ -326,8 +316,10 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CBulletLineScript;
 	if (L"CGroundCrackScript" == _strScriptName)
 		return new CGroundCrackScript;
-	if (L"CCubePushScript" == _strScriptName)
-		return new CCubePushScript;
+	if (L"CVideoPlayer" == _strScriptName)
+		return new CVideoPlayer;
+	if (L"CEventListener" == _strScriptName)
+		return new CEventListener;
 	return nullptr;
 }
 
@@ -449,20 +441,11 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::TEXTUI:
 		return new CTextUI;
 		break;
-	case (UINT)SCRIPT_TYPE::WELCOMETUTORIALEVENT:
-		return new CWelcomeTutorialEvent;
-		break;
 	case (UINT)SCRIPT_TYPE::COVERAREA:
 		return new CCoverArea;
 		break;
 	case (UINT)SCRIPT_TYPE::COVERUI:
 		return new CCoverUI;
-		break;
-	case (UINT)SCRIPT_TYPE::DASHEVENTLISTENER:
-		return new CDashEventListener;
-		break;
-	case (UINT)SCRIPT_TYPE::SHOOTINGTUTORIALEVENT:
-		return new CShootingTutorialEvent;
 		break;
 	case (UINT)SCRIPT_TYPE::ARONA:
 		return new CArona;
@@ -572,8 +555,11 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::GROUNDCRACKSCRIPT:
 		return new CGroundCrackScript;
 		break;
-	case (UINT)SCRIPT_TYPE::CUBEPUSHSCRIPT:
-		return new CCubePushScript;
+	case (UINT)SCRIPT_TYPE::VIDEOPLAYER:
+		return new CVideoPlayer;
+		break;
+	case (UINT)SCRIPT_TYPE::EVENTLISTENER:
+		return new CEventListener;
 		break;
 	}
 	return nullptr;
@@ -735,24 +721,12 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CTextUI";
 		break;
 
-	case SCRIPT_TYPE::WELCOMETUTORIALEVENT:
-		return L"CWelcomeTutorialEvent";
-		break;
-
 	case SCRIPT_TYPE::COVERAREA:
 		return L"CCoverArea";
 		break;
 
 	case SCRIPT_TYPE::COVERUI:
 		return L"CCoverUI";
-		break;
-
-	case SCRIPT_TYPE::DASHEVENTLISTENER:
-		return L"CDashEventListener";
-		break;
-
-	case SCRIPT_TYPE::SHOOTINGTUTORIALEVENT:
-		return L"CShootingTutorialEvent";
 		break;
 
 	case SCRIPT_TYPE::ARONA:
@@ -899,8 +873,12 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CGroundCrackScript";
 		break;
 
-	case SCRIPT_TYPE::CUBEPUSHSCRIPT:
-		return L"CCubePushScript";
+	case SCRIPT_TYPE::VIDEOPLAYER:
+		return L"CVideoPlayer";
+		break;
+
+	case SCRIPT_TYPE::EVENTLISTENER:
+		return L"CEventListener";
 		break;
 
 	}

@@ -6,6 +6,7 @@
 #include "CMaterial.h"
 
 #include "CSound.h"
+#include "CVideo.h"
 
 CAssetMgr::CAssetMgr()
 {
@@ -129,6 +130,9 @@ ASSET_TYPE CAssetMgr::GetAssetTypeByExt(const path& _relativePath)
 	if (_relativePath.extension() == L".mesh")
 		return ASSET_TYPE::MESH;
 
+	if (_relativePath.extension() == L".mp4" || _relativePath.extension() == L".mkv")
+		return ASSET_TYPE::VIDEO;
+
 	return ASSET_TYPE::END;
 }
 
@@ -165,6 +169,9 @@ Ptr<CAsset> CAssetMgr::GetAsset(ASSET_TYPE _type, string _key)
 		break;
 	case ASSET_TYPE::FSM:
 		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CFSM>(_key).Get();
+		break;
+	case ASSET_TYPE::VIDEO:
+		pAsset = (CAsset*)CAssetMgr::GetInst()->Load<CVideo>(_key).Get();
 		break;
 	case ASSET_TYPE::END:
 		break;

@@ -3,6 +3,12 @@
 
 class CDamagedDirection;
 
+enum class DamagedDirectionSoundType
+{
+	Damaged,
+	End,
+};
+
 // 피격 방향 UI를 관리하기 위한 스크립트
 class CDamagedDirectionMgr : public CScript
 {
@@ -14,6 +20,8 @@ private:
 
 	// 현재 조종할 피격 방향 UI의 인덱스 (0 ~ 2)
 	UINT m_Idx;
+
+	vector<Ptr<CSound>> m_vecSound;
 
 public:
 	virtual void begin() override;

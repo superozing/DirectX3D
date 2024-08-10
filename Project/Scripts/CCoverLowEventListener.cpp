@@ -18,11 +18,11 @@ CCoverLowEventListener::~CCoverLowEventListener()
 
 void CCoverLowEventListener::Start()
 {
-	if (HasTargets() && m_pGM->IsClear(TutorialState::CoverJump))
-	{
-		m_pArona->Message("Go to the cover high & Press LShift to cover it up", 700.f);
-		tick_func = &CCoverLowEventListener::ClearEvent;
-	}
+	// if (HasTargets() && m_pGM->IsClear(TutorialState::CoverJump))
+	//{
+	//	m_pArona->Message("Go to the cover high & Press LShift to cover it up", 700.f);
+	//	tick_func = &CCoverLowEventListener::ClearEvent;
+	// }
 }
 
 void CCoverLowEventListener::ClearEvent()
@@ -33,7 +33,7 @@ void CCoverLowEventListener::ClearEvent()
 
 	GamePlayStatic::DestroyGameObject(GetOwner());
 	m_pArona->Message("Congratulations!", 340, 3.f);
-	m_pGM->Clear(TutorialState::CoverLow);
+	// m_pGM->Clear(TutorialState::CoverLow);
 }
 
 void CCoverLowEventListener::begin()

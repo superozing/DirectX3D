@@ -1,6 +1,7 @@
 ﻿#include "pch.h"
 #include "CBossMissileScript.h"
 
+#include <Engine\CRenderMgr.h>
 #include <Engine\CRandomMgr.h>
 #include <Engine\CLogMgr.h>
 #include "CPlayerScript.h"
@@ -135,6 +136,10 @@ void CBossMissileScript::BeginOverlap(CPhysX* _Collider, CGameObject* _OtherObj,
 	GamePlayStatic::SpawnGameObject(pObj, layeridx);
 	vPos.y = m_Target->Transform()->GetRelativePos().y;
 	pObj->GetScript<CGroundCrackScript>()->SetDecalPos(vPos);
+
+	m_Target->GetScript<CPlayerScript>()->GetSpringArm()->SetShakeAttribute(0.2f, Vec3(40.f, 30.f, 0.f),
+																			Vec3(0.f, 0.f, 0.f), 10.f, 0.2f);
+	m_Target->GetScript<CPlayerScript>()->GetSpringArm()->SpringArmShake();
 
 	if (IsRedZone())
 		OnHit();

@@ -19,7 +19,12 @@
 CShootingSystemScript::CShootingSystemScript()
 	: CScript((UINT)SCRIPT_TYPE::SHOOTINGSYSTEMSCRIPT)
 	, m_fSpreadRatioSpeed(0.1)
+	, m_iCurAmmo(40)
+	, m_iMaxAmmo(40)
+	, m_bShootAvailable(true)
 {
+	AppendScriptParam("m_RightRatio", SCRIPT_PARAM::FLOAT, &m_RightRatio);
+	AppendScriptParam("m_UpRatio", SCRIPT_PARAM::FLOAT, &m_UpRatio);
 }
 
 CShootingSystemScript::~CShootingSystemScript()
@@ -71,6 +76,7 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 		case LAYER::LAYER_WALL: {
 			m_pBulletMarkDecalSpawner->SpawnBulletMarkDecal(hitInfo, m_pPlayer);
 			m_pBulletHitParticleSpawner->SpawnBulletHitParticle(hitInfo);
+			m_vecSound[(UINT)ShootingSystemSoundType::WallNormalHit]->Play(1, 1.f, true);
 		}
 		break;
 
@@ -89,6 +95,7 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 			}
 			m_pDamageFontSpawner->SpawnDamageFont(hitInfo.vHitPos, 10);
 			m_pBulletHitParticleSpawner->SpawnBulletHitParticle(hitInfo);
+			m_vecSound[(UINT)ShootingSystemSoundType::MonsterNormalHit]->Play(1, 1.f, true);
 		}
 		break;
 
@@ -159,6 +166,12 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 
 	// SpreadRatio 늘리기
 	m_fSpreadRatio += m_fSpreadRatioSpeed * DT;
+
+	// 탄환 감소시키기
+	m_iCurAmmo = RoRMath::ClampInt(m_iCurAmmo - 1, 0);
+
+	if (m_iCurAmmo == 0)
+		m_bShootAvailable = false;
 }
 
 void CShootingSystemScript::ShootMainCamRay()
@@ -172,8 +185,6 @@ void CShootingSystemScript::ShootMainCamRay()
 
 	bool isContact = CPhysXMgr::GetInst()->PerformRaycast(pMainCam->Transform()->GetWorldPos(), FrontDir, hitInfo,
 														  (UINT)LAYER::LAYER_RAYCAST, RayCastDebugFlag::AllInvisible);
-
-	m_bShootAvailable = true;
 
 	if (isContact)
 		// 메인 카메라 ray에 충돌한 오브젝트가 있을 경우
@@ -202,9 +213,25 @@ void CShootingSystemScript::begin()
 	m_pDamageFontSpawner->begin();
 	m_pBulletWarheadSpawner->begin();
 
+
+	m_pBulletShellSpawner->SetShootingSystem(this);
+
 	// 윈도우 좌표 기준이기 떄문에 반동을 주기 위해 y를 -방향으로 세팅
 	m_pShootingRecoil->SetShootingRecoilValue(Vec2(0.f, -0.f)); // 나중에 수치를 조정할 필요가 있음.
 	// 예를 들어 자세에 따라서 다른 반동을 준다던가... 그런 것 들 말이죠.
+
+	// ShootingSystemSound Init
+	m_vecSound.resize((UINT)ShootingSystemSoundType::End);
+
+	Ptr<CSound> pSnd = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Old_Skill_H_Ex_02_Hit);
+	m_vecSound[(UINT)ShootingSystemSoundType::WallNormalHit] = pSnd;
+	
+	pSnd = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Shot_Impact_Hit_01);
+	m_vecSound[(UINT)ShootingSystemSoundType::MonsterNormalHit] = pSnd;
+	
+	pSnd = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Shot_Impact_Hit_02);
+	m_vecSound[(UINT)ShootingSystemSoundType::MonsterCriticalHit] = pSnd;
+
 }
 
 void CShootingSystemScript::tick()

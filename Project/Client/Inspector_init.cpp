@@ -88,6 +88,7 @@ void Inspector::CreateComponentUI()
 #include "ComputeShaderUI.h"
 #include "SoundUI.h"
 #include "FSMUI.h"
+#include "VideoUI.h"
 
 void Inspector::CreateAssetUI()
 {
@@ -117,6 +118,9 @@ void Inspector::CreateAssetUI()
 
 	m_arrAssetUI[(UINT)ASSET_TYPE::FSM] = new FSMUI;
 	AddChildUI(m_arrAssetUI[(UINT)ASSET_TYPE::FSM]);
+
+	m_arrAssetUI[(UINT)ASSET_TYPE::VIDEO] = new VideoUI;
+	AddChildUI(m_arrAssetUI[(UINT)ASSET_TYPE::VIDEO]);
 }
 
 void Inspector::ResizeScriptUI(UINT _Size)
