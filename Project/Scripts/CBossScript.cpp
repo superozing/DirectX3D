@@ -6,7 +6,6 @@
 #include <Engine\CTimeMgr.h>
 #include <Engine\CRandomMgr.h>
 #include <Engine\CAssetMgr.h>
-#include <Engine\CLogMgr.h>
 
 #include "CRoRStateMachine.h"
 #include "CMegaFistScript.h"
@@ -15,6 +14,9 @@
 #include "CBossShieldScript.h"
 #include "CBossSmokeWaveScript.h"
 #include "CBossBulletShellSpawner.h"
+#include "CBossSwordBeamScript.h"
+#include "CBulletLineScript.h"
+#include "CParticleSpawnScript.h"
 
 static string DebugState = "";
 
@@ -23,17 +25,22 @@ CBossScript::CBossScript()
 	, m_BossStatus{}
 	, m_AttDuration(0.f)
 	, m_EXsDuration(0.f)
+	, m_ChaseDir(true)
 	, m_ActiveAttack(false)
 	, m_ActiveEXs(false)
 	, m_EXsType(0)
 	, m_Target(nullptr)
+	, m_TargetPos{}
 	, m_ArrMissile{}
 	, m_ArrShield{}
+	, m_bSwordBeam(false)
 	, m_hitInfo{}
 	, m_BulletInterval(0.f)
+	, m_Raycast(false)
+	, m_RaycastInterval(0.f)
 {
 	AppendScriptParam("CurState    ", SCRIPT_PARAM::STRING, &DebugState);
-	AppendScriptParam("drill", SCRIPT_PARAM::BOOL, &m_Drill);
+	AppendScriptParam("raycast", SCRIPT_PARAM::BOOL, &m_Raycast);
 	InitScriptParamUI();
 
 	InitStateMachine();
@@ -44,13 +51,19 @@ CBossScript::CBossScript(const CBossScript& _Origin)
 	, m_BossStatus(_Origin.m_BossStatus)
 	, m_AttDuration(0.f)
 	, m_EXsDuration(0.f)
+	, m_ChaseDir(true)
 	, m_ActiveAttack(false)
 	, m_ActiveEXs(false)
 	, m_EXsType(0)
 	, m_Target(nullptr)
+	, m_TargetPos{}
 	, m_ArrMissile{}
 	, m_ArrShield{}
+	, m_bSwordBeam(false)
 	, m_hitInfo{}
+	, m_BulletInterval(0.f)
+	, m_Raycast(false)
+	, m_RaycastInterval(0.f)
 {
 	InitScriptParamUI();
 
@@ -64,6 +77,43 @@ CBossScript::~CBossScript()
 		delete m_FSM;
 		m_FSM = nullptr;
 	}
+}
+
+bool CBossScript::IsVital()
+{
+	int State = m_FSM->GetCurState();
+
+	if ((int)BOSS_STATE::VitalGroggy == State || (int)BOSS_STATE::VitalDeath == State ||
+		(int)BOSS_STATE::VitalGroggyDeath == State)
+		return true;
+
+	return false;
+}
+
+bool CBossScript::IsShield()
+{
+	int State = m_FSM->GetCurState();
+
+	if ((int)BOSS_STATE::EXs3 == State)
+		return true;
+
+	return false;
+}
+
+void CBossScript::Hit(float _Dmg)
+{
+	m_BossStatus.CurHP -= _Dmg;
+
+	if (!IsVital())
+	{
+		m_BossStatus.GroggyBar += _Dmg * 0.3f; // 데미지의 30%만큼 그로기 수치 누적
+
+		if (m_BossStatus.GroggyBar >= 100.f)
+			m_BossStatus.GroggyBar = 100.f;
+	}
+
+	if (m_BossStatus.CurHP <= 0.f)
+		m_BossStatus.CurHP = 0.f;
 }
 
 void CBossScript::begin()
@@ -84,8 +134,11 @@ void CBossScript::tick()
 	m_FSM->Update();
 	DebugState = magic_enum::enum_name((BOSS_STATE)m_FSM->GetCurState());
 
-	Vec3 vDir = m_Target->Transform()->GetRelativePos() - Transform()->GetRelativePos();
-	Transform()->SetDir(vDir);
+	if (m_ChaseDir)
+	{
+		Vec3 vDir = m_Target->Transform()->GetRelativePos() - Transform()->GetRelativePos();
+		Transform()->SetDir(vDir);
+	}
 
 	if ((int)BOSS_STATE::NormalIdle == m_FSM->GetCurState())
 	{
@@ -95,31 +148,6 @@ void CBossScript::tick()
 
 	// Vital 상태
 	CheckVital();
-
-	// if (!m_Drill)
-	//{
-	//	Vec3 worldPos  = Transform()->GetWorldPos() + Vec3(0.f, 1000.f, 0.f);
-	//	Vec3 TargetPos = m_Target->Transform()->GetWorldPos() + Vec3(0.f, 50.f, 0.f);
-	//	m_hitInfo	   = {};
-	//	Vec3 dir	   = TargetPos - worldPos;
-	//	dir.Normalize();
-	//	// 일반 Raycast
-	//	int	 mask = RayCastDebugFlag::AllInvisible;
-	//	bool iscontact =
-	//		CPhysXMgr::GetInst()->PerfomRaycast(worldPos, dir, m_hitInfo, (UINT)LAYER::LAYER_BOSS_SKILL, mask);
-
-	//	if (true == iscontact)
-	//	{
-	//		string strobj	  = ToString(m_hitInfo.pOtherObj->GetName());
-	//		Vec3   contactpos = m_hitInfo.vHitPos;
-
-	//		CLogMgr::GetInst()->AddLog(Log_Level::INFO, ToWString(strobj));
-	//	}
-	//	else
-	//	{
-	//		string strobj = "";
-	//	}
-	//}
 }
 
 void CBossScript::CheckDuration()
@@ -179,6 +207,12 @@ void CBossScript::CheckDuration()
 
 void CBossScript::CheckVital()
 {
+	if (!m_BossStatus.IsDead && !m_BossStatus.IsGroggy && m_BossStatus.GroggyBar >= 100.f)
+	{
+		m_BossStatus.IsGroggy  = true;
+		m_BossStatus.GroggyBar = 0.f;
+	}
+
 	if (m_BossStatus.CurHP <= 0.f)
 		m_BossStatus.IsDead = true;
 
@@ -213,6 +247,13 @@ void CBossScript::FireMiniGun()
 	pMinigun->GetScript<CMiniGunScript>()->SetParent(GetOwner());
 
 	int layeridx = pMinigun->GetLayerIdx();
+	GamePlayStatic::SpawnGameObject(pMinigun, layeridx);
+
+	pMinigun = CAssetMgr::GetInst()->Load<CPrefab>(PREFp_BulletLine)->Instantiate();
+	pMinigun->GetScript<CBulletLineScript>()->SetParent(GetOwner());
+	pMinigun->GetScript<CBulletLineScript>()->SetTarget(m_Target);
+
+	layeridx = pMinigun->GetLayerIdx();
 	GamePlayStatic::SpawnGameObject(pMinigun, layeridx);
 }
 
@@ -259,6 +300,11 @@ void CBossScript::FireBossMissile(int _idx)
 
 	int layeridx = Missile->GetLayerIdx();
 	GamePlayStatic::SpawnGameObject(Missile, layeridx);
+
+	CGameObject* effect = CAssetMgr::GetInst()->Load<CPrefab>(PREFp_MissileFire)->Instantiate();
+	layeridx			= effect->GetLayerIdx();
+	GamePlayStatic::SpawnGameObject(effect, layeridx);
+	effect->GetScript<CParticleSpawnScript>()->SetParticleInfo(MissileBonePos, 0.5f);
 }
 
 void CBossScript::ActiveInnerShield()
@@ -292,7 +338,6 @@ void CBossScript::ActiveOutsideShield()
 
 	// SmokeWave 스폰
 	CGameObject* SmokeWave = CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_SmokeWave)->Instantiate();
-	// SmokeWave->GetScript<CBossSmokeWaveScript>()->SetParent(GetOwner());
 
 	layeridx = SmokeWave->GetLayerIdx();
 	GetOwner()->AddChild(SmokeWave, true);
@@ -315,19 +360,80 @@ void CBossScript::ActiveHexShield()
 void CBossScript::DeActiveHexShield()
 {
 	CGameObject* pObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Kaiten_HexShield");
-	GamePlayStatic::DestroyGameObject(pObj);
+
+	if (nullptr != pObj)
+		GamePlayStatic::DestroyGameObject(pObj);
+}
+
+void CBossScript::ActiveSwordTrail()
+{
+	if (nullptr == m_Target)
+		return;
+
+	CGameObject* SwordTrail = CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Slash)->Instantiate();
+	int			 layeridx	= SwordTrail->GetLayerIdx();
+	GetOwner()->AddChild(SwordTrail, true);
+	GamePlayStatic::SpawnGameObject(SwordTrail, layeridx);
+}
+
+void CBossScript::FireSwordBeam()
+{
+	if (nullptr == m_Target)
+		return;
+
+	Vec3 HandBonePos = (Animator3D()->FindBoneMat(L"Bip001 R Hand_01") * Transform()->GetWorldMat()).Translation();
+
+	CGameObject* SwordBeam = CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_SwordBeam)->Instantiate();
+	SwordBeam->GetScript<CBossSwordBeamScript>()->InitSwordBeamInfo(GetOwner(), m_Target, m_TargetPos, HandBonePos,
+																	5000.f, 5000.f, 3.f, 50.f, false, true);
+	int layeridx = SwordBeam->GetLayerIdx();
+	GamePlayStatic::SpawnGameObject(SwordBeam, layeridx);
+}
+
+void CBossScript::ActiveWarningDecal()
+{
+	Vec3 vPos = Transform()->GetWorldPos();
+
+	Vec3 vDir = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+
+	CGameObject* pDecal = CAssetMgr::GetInst()->Load<CPrefab>(PREFSwordBeam_WarningDecal)->Instantiate();
+	pDecal->Transform()->SetDir(-vDir);
+	pDecal->Transform()->SetRelativePos(Vec3(m_TargetPos.x, m_TargetPos.y - 5.f, m_TargetPos.z));
+
+	int layeridx = pDecal->GetLayerIdx();
+	GamePlayStatic::SpawnGameObject(pDecal, layeridx);
 }
 
 void CBossScript::LoadAsset()
 {
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Punch);
-	CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Minigun);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_HexShield);
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Missile);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Punch);
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Shield);
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Shield2);
-	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_HexShield);
-	CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Explode);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Slash);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_SmokeWave);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_SwordBeam);
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFBoss_Bullet_Shell);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFSwordBeam_WarningDecal);
+
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFp_BulletLine);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Electric);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Explode);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Explode_Lite);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Minigun);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFp_MissileFire);
+
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFGroundCrackDecal);
+}
+
+void CBossScript::CheckTargetPos()
+{
+	if (nullptr == m_Target)
+		return;
+
+	m_TargetPos = m_Target->Transform()->GetRelativePos();
 }
 
 void CBossScript::InitStateMachine()
@@ -354,6 +460,7 @@ void CBossScript::InitScriptParamUI()
 {
 	AppendScriptParam("MaxHP       ", SCRIPT_PARAM::FLOAT, &m_BossStatus.MaxHP, 0.f);
 	AppendScriptParam("CurHP       ", SCRIPT_PARAM::FLOAT, &m_BossStatus.CurHP, 0.f);
+	AppendScriptParam("GroggyBar   ", SCRIPT_PARAM::FLOAT, &m_BossStatus.GroggyBar, 0.f);
 	AppendScriptParam("AttackDamage", SCRIPT_PARAM::FLOAT, &m_BossStatus.ATTDamage, 0.f);
 	AppendScriptParam("AttackSpeed ", SCRIPT_PARAM::FLOAT, &m_BossStatus.ATTSpeed, 0.f);
 	AppendScriptParam("EXsCoolTime ", SCRIPT_PARAM::FLOAT, &m_BossStatus.EXsCoolTime, 0.f);

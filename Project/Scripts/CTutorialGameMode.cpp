@@ -42,13 +42,24 @@ void CTutorialGameMode::begin()
 
 	m_pArona = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(AronaName)->GetScript<CArona>();
 	m_pWall	 = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"WALL_SHOOT");
-
-	m_pBGM = CAssetMgr::GetInst()->Load<CSound>(SNDKaiten_Screw_BGM);
-	m_pBGM->Play(0, 1.f);
-
+	
 	m_arrIsClear[0] = true;
 	m_arrIsClear[1] = true;
 	m_arrIsClear[2] = true;
+	
+	// TutorialGameModeSound init
+	m_vecTutorialGameModeSound.resize((UINT)TutorialGameModeSoundType::END);
+
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::TutorialStart] =
+		CAssetMgr::GetInst()->Load<CSound>(SNDUI_START_01);
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::BGM] = CAssetMgr::GetInst()->Load<CSound>(SNDKaiten_Screw_BGM);
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::DoorOpen] = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Door_Open);
+
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::TutorialStart]->Play(1);
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::BGM]->Play(0, .4f);
+
+
+	CKeyMgr::GetInst()->RoRShowCursor(false);
 }
 
 void CTutorialGameMode::tick()
@@ -119,6 +130,9 @@ void CTutorialGameMode::ShootingEnd()
 	Vec3 vScale = m_pWall->Transform()->GetRelativeScale();
 	vPos.x += vScale.z;
 	m_pWall->Transform()->Lerp(vPos, false, Vec3(), false, Vec3(), 2.f);
+
+	// 문 열리는 효과음
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::DoorOpen]->Play(1, 1.f);
 
 	m_pArona->Message("Congratulations!", 340, 3.f);
 }

@@ -44,6 +44,10 @@ void CBtnUIScript::begin()
 {
 	m_CurImg = m_NormalImg;
 	GetOwner()->MeshRender()->GetDynamicMaterial(0);
+
+	// Button Sound Init
+	m_vecSound.resize((UINT)BtnUISoundType::End);
+	m_vecSound[(UINT)BtnUISoundType::Click] = CAssetMgr::GetInst()->Load<CSound>(SNDUI_Button_Touch);
 }
 
 void CBtnUIScript::tick()
@@ -89,6 +93,8 @@ void CBtnUIScript::LBtnUp()
 void CBtnUIScript::LBtnClicked()
 {
 	m_CurImg = m_NormalImg;
+
+	m_vecSound[(UINT)BtnUISoundType::Click]->Play(1);
 
 	if (m_AllowCallFunc)
 	{

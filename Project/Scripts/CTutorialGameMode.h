@@ -12,13 +12,22 @@ enum class TutorialState
 	Ending,
 	END,
 };
+
+enum class TutorialGameModeSoundType
+{
+	TutorialStart,
+	BGM,
+	DoorOpen,
+	END
+};
+
 class CTutorialGameMode : public CGameMode<CTutorialGameMode>
 {
 private:
 	class CArona*	   m_pArona;
 	class CGameObject* m_pWall;
 
-	Ptr<CSound> m_pBGM;
+	vector<Ptr<CSound>> m_vecTutorialGameModeSound;
 
 private:
 	bool m_arrIsClear[(UINT)TutorialState::END];

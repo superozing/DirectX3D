@@ -75,7 +75,11 @@
 #include "CSmokeScript.h"
 #include "CSpawnPhysX.h"
 #include "CTutorialEndingEvent.h"
-#include "CVideoPlayer.h"
+#include "CBossSwordTrailScript.h"
+#include "CBossSwordBeamScript.h"
+#include "CSBSmokeScript.h"
+#include "CBulletLineScript.h"
+#include "CGroundCrackScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -153,7 +157,11 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CSmokeScript");
 	_vec.push_back(L"CSpawnPhysX");
 	_vec.push_back(L"CTutorialEndingEvent");
-	_vec.push_back(L"CVideoPlayer");
+	_vec.push_back(L"CBossSwordTrailScript");
+	_vec.push_back(L"CBossSwordBeamScript");
+	_vec.push_back(L"CSBSmokeScript");
+	_vec.push_back(L"CBulletLineScript");
+	_vec.push_back(L"CGroundCrackScript");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -306,8 +314,16 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CSpawnPhysX;
 	if (L"CTutorialEndingEvent" == _strScriptName)
 		return new CTutorialEndingEvent;
-	if (L"CVideoPlayer" == _strScriptName)
-		return new CVideoPlayer;
+	if (L"CBossSwordTrailScript" == _strScriptName)
+		return new CBossSwordTrailScript;
+	if (L"CBossSwordBeamScript" == _strScriptName)
+		return new CBossSwordBeamScript;
+	if (L"CSBSmokeScript" == _strScriptName)
+		return new CSBSmokeScript;
+	if (L"CBulletLineScript" == _strScriptName)
+		return new CBulletLineScript;
+	if (L"CGroundCrackScript" == _strScriptName)
+		return new CGroundCrackScript;
 	return nullptr;
 }
 
@@ -537,8 +553,20 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::TUTORIALENDINGEVENT:
 		return new CTutorialEndingEvent;
 		break;
-	case (UINT)SCRIPT_TYPE::VIDEOPLAYER:
-		return new CVideoPlayer;
+	case (UINT)SCRIPT_TYPE::BOSSSWORDTRAILSCRIPT:
+		return new CBossSwordTrailScript;
+		break;
+	case (UINT)SCRIPT_TYPE::BOSSSWORDBEAMSCRIPT:
+		return new CBossSwordBeamScript;
+		break;
+	case (UINT)SCRIPT_TYPE::SBSMOKESCRIPT:
+		return new CSBSmokeScript;
+		break;
+	case (UINT)SCRIPT_TYPE::BULLETLINESCRIPT:
+		return new CBulletLineScript;
+		break;
+	case (UINT)SCRIPT_TYPE::GROUNDCRACKSCRIPT:
+		return new CGroundCrackScript;
 		break;
 	}
 	return nullptr;
@@ -844,8 +872,24 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CTutorialEndingEvent";
 		break;
 
-	case SCRIPT_TYPE::VIDEOPLAYER:
-		return L"CVideoPlayer";
+	case SCRIPT_TYPE::BOSSSWORDTRAILSCRIPT:
+		return L"CBossSwordTrailScript";
+		break;
+
+	case SCRIPT_TYPE::BOSSSWORDBEAMSCRIPT:
+		return L"CBossSwordBeamScript";
+		break;
+
+	case SCRIPT_TYPE::SBSMOKESCRIPT:
+		return L"CSBSmokeScript";
+		break;
+
+	case SCRIPT_TYPE::BULLETLINESCRIPT:
+		return L"CBulletLineScript";
+		break;
+
+	case SCRIPT_TYPE::GROUNDCRACKSCRIPT:
+		return L"CGroundCrackScript";
 		break;
 
 	}

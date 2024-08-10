@@ -6,23 +6,21 @@ class CBossHP : public CProgressBar
 private:
 	// 초상화
 	CImageUIScript* m_pPortrait;
-	Ptr<CTexture>	m_PortraitTex;
 
 	// 폰트 텍스쳐
 	CImageUIScript* m_pImgFont;
-	Ptr<CTexture>	m_ImgFontTex;
+
+	// HP Line UI
+	CImageUIScript* m_pHPLineUI;
 
 	// 바 별 체력
 	int m_LineHP;
 
 	int m_CurLerpHP;
 
-	// HP Line UI
-	CImageUIScript* m_pHPLineUI;
-
 	tFontInfo m_HPFont;
-	tFontInfo m_BossName;
-	tFontInfo m_HPLineFont;
+	tFontInfo m_BossNameFont;
+	tFontInfo m_LineCountFont;
 
 
 public:
@@ -35,8 +33,6 @@ public:
 	virtual void LoadFromFile(ifstream& fin) override;
 
 public:
-	void SetPortraitTex(Ptr<CTexture> _PortraitTex);
-	void SetImgFontTex(Ptr<CTexture> _ImgFontTex);
 
 	void SetMaxHP(int _MaxHP) { CProgressBar::SetMaxValue(RoRMath::ClampInt(_MaxHP, 0));
 		m_CurLerpHP = _MaxHP;
@@ -52,6 +48,11 @@ public:
 	// 디버그용 함수
 	void Add100();
 	void Sub100();
+
+	// 음수를 입력할 경우 체력을 회복합니다.
+	void AppendDamage(int _Damage);
+
+	void DbgAppendDamageWrap();
 
 private:
 	virtual void MakeChildObjects() override;

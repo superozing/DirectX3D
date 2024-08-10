@@ -120,7 +120,11 @@ public:
 	{
 		if (m_bDirty)
 			CalWorldMat();
-		return m_WorldQuaternion;
+		XMVECTOR Qurt;
+		XMVECTOR Scale;
+		XMVECTOR Pos;
+		XMMatrixDecompose(&Scale, &Qurt, &Pos, m_matWorld);
+		return Qurt;
 	}
 
 	// Vec4 GetWorldRotQuat() { m_vWorldRotQuat; }

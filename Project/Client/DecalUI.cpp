@@ -375,6 +375,12 @@ void DecalUI::render_update()
 
 		pTarget->Decal()->SetAnimationInsideColor(AnimationInsideColor);
 	}
+
+	bool bShadow = GetTargetObject()->GetRenderComponent()->IsDrawShadow();
+	ImGui::Text("Draw Shadow");
+	ImGui::SameLine();
+	ImGui::Checkbox("##Shadow", &bShadow);
+	GetTargetObject()->GetRenderComponent()->DrawShadow(bShadow);
 }
 
 void DecalUI::MaterialSelect(DWORD_PTR _ptr)

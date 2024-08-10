@@ -1,6 +1,14 @@
 ﻿#pragma once
 #include <Engine/CScript.h>
 
+enum class ShootingSystemSoundType
+{
+	WallNormalHit,
+	MonsterNormalHit,
+	MonsterCriticalHit,
+	End,
+};
+
 class CShootingSystemScript : public CScript
 {
 	// 사격 시스템
@@ -43,12 +51,21 @@ private:
 	Vec3						 m_HitPos;
 	class CBulletWarheadSpawner*		m_pBulletWarheadSpawner;
 
+	vector<Ptr<CSound>> m_vecSound;
+
+private:
+	float m_RightRatio = 3.f;
+	float m_UpRatio = 6.f;
+
+private:
+	void SetShootAvailable(bool _Available) { m_bShootAvailable = _Available; }
+
+
 public:
 	int GetMaxAmmo() { return m_iMaxAmmo; }
 	int GetCurAmmo() { return m_iCurAmmo; }
 
 	void SetSpreadRatioSpeed(float _fSpreadRatioSpeed) { m_fSpreadRatioSpeed = _fSpreadRatioSpeed; }
-	void SetShootAvailable(bool _Available) { m_bShootAvailable = _Available; }
 
 	bool IsShootAvailable() const { return m_bShootAvailable; }
 
@@ -60,6 +77,13 @@ public:
 	// 메인 카메라 광선 쏘기
 	void ShootMainCamRay();
 
+	// 재장전
+	void Reload() 
+	{ 
+		m_iCurAmmo = m_iMaxAmmo; 
+		m_bShootAvailable = true;
+	}
+
 public:
 	virtual void begin() override;
 	virtual void tick() override;
@@ -68,4 +92,6 @@ public:
 	CLONE(CShootingSystemScript);
 	CShootingSystemScript();
 	~CShootingSystemScript();
+
+	friend class CBulletShellSpawner;
 };

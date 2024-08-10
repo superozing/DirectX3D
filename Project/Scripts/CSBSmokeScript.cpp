@@ -1,12 +1,12 @@
 ﻿#include "pch.h"
-#include "CSmokeScript.h"
+#include "CSBSmokeScript.h"
 
 #include <Engine\CLevelMgr.h>
 #include <Engine\CLevel.h>
 #include <Engine\CGameObject.h>
 
-CSmokeScript::CSmokeScript()
-	: CScript((UINT)SCRIPT_TYPE::SMOKESCRIPT)
+CSBSmokeScript::CSBSmokeScript()
+	: CScript((UINT)SCRIPT_TYPE::SBSMOKESCRIPT)
 	, m_Kaiten(nullptr)
 	, m_Child{}
 	, m_Module{}
@@ -15,20 +15,17 @@ CSmokeScript::CSmokeScript()
 {
 }
 
-CSmokeScript::~CSmokeScript()
+CSBSmokeScript::~CSBSmokeScript()
 {
 }
 
-void CSmokeScript::begin()
+void CSBSmokeScript::begin()
 {
 	m_Module = ParticleSystem()->GetParticleModule();
 	ParticleSystem()->SetModule(m_Module);
 
 	// 카이텐져 찾기
-	if (GetOwner()->GetParent() && GetOwner()->GetParent()->GetParent())
-	{
-		m_Kaiten = GetOwner()->GetParent()->GetParent();
-	}
+	m_Kaiten = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Kaiten");
 
 	m_Child = GetOwner()->GetChild();
 	if (!m_Child.empty())
@@ -43,7 +40,7 @@ void CSmokeScript::begin()
 	ParticleSystem()->Play();
 }
 
-void CSmokeScript::tick()
+void CSBSmokeScript::tick()
 {
 	m_vDir = -(m_Kaiten->Transform()->GetWorldDir(DIR_TYPE::FRONT));
 
@@ -57,8 +54,9 @@ void CSmokeScript::tick()
 		m_Child[i]->ParticleSystem()->SetModule(m_vecModule[i]);
 	}
 
-	int idx = m_Kaiten->Animator3D()->GetCurFrameIdx();
+	int finalIdx = m_Kaiten->Animator3D()->GetCurClipLength();
+	int idx		 = m_Kaiten->Animator3D()->GetCurFrameIdx();
 
-	if (idx > 155)
+	if (idx > finalIdx - 10)
 		ParticleSystem()->Stop();
 }
