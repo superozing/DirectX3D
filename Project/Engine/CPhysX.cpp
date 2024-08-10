@@ -75,55 +75,47 @@ void CPhysX::releaseActor()
 		return;
 
 	CPhysXMgr::GetInst()->ReleaseActor(m_Actor);
+	// 자신과 충돌중이던 오브젝트들 endoverlap호출
+	for (auto& e : m_vThisFrameContact)
+	{
+		if (e.Other->PhysX())
+		{
+			e.Other->PhysX()->EndOverlap(GetOwner());
+		}
+	}
+}
 
-	// m_Actor->userData = nullptr;
-	m_Actor	 = nullptr;
-	m_DActor = nullptr;
+Vec3 CPhysX::GetColliderPos()
+{
+	Vec3 ColliderPos;
+
+	auto ObjPos	  = Transform()->GetWorldPos();
+	auto worldrot = Transform()->GetWorldRot();
+
+	auto RotatedOffset = RoRMath::RotateVectorByRotationVector(m_vOffsetPos, worldrot);
+	ColliderPos		   = ObjPos;
+	ColliderPos += RotatedOffset;
+
+	return ColliderPos;
+}
+
+Vec3 CPhysX::ConvertToObjectPos(Vec3 _ColPos)
+{
+	Vec3 ObjectPos;
+
+	auto worldrot = Transform()->GetWorldRot();
+
+	auto RotatedOffset = RoRMath::RotateVectorByRotationVector(m_vOffsetPos, worldrot);
+	ObjectPos		   = _ColPos;
+	ObjectPos -= RotatedOffset;
+
+	return ObjectPos;
 }
 
 void CPhysX::updateFromPhysics()
 {
 	if (nullptr == m_Actor)
 		return;
-
-	PxTransform PhysTrans = getTransform();
-	auto		PhysPos	  = Vec3(PhysTrans.p.x, PhysTrans.p.y, PhysTrans.p.z);
-	auto		FinalPos  = PhysPos - m_vOffsetPos;
-
-	auto tempmat = XMMatrixIdentity();
-
-	auto   ObScale	= Transform()->GetRelativeScale();
-	Matrix matScale = XMMatrixScaling(ObScale.x, ObScale.y, ObScale.z);
-
-	auto q = XMFLOAT4(PhysTrans.q.x, PhysTrans.q.y, PhysTrans.q.z, PhysTrans.q.w);
-
-	Vec3 AxisAngle = RoRMath::QuaternionToEulerAngles(q);
-
-	Matrix matRotX = XMMatrixRotationX(AxisAngle.y);
-	Matrix matRotY = XMMatrixRotationY(AxisAngle.x);
-	Matrix matRotZ = XMMatrixRotationZ(AxisAngle.z);
-
-	Matrix matTranslation = XMMatrixTranslation(FinalPos.x, FinalPos.y, FinalPos.z);
-
-	Transform()->m_matWorld = matScale * matRotX * matRotY * matRotZ * matTranslation;
-
-	// 물체의 방향값을 다시 계산한다.
-	static const Vec3 arrAxis[3] = {Vec3(1.f, 0.f, 0.f), Vec3(0.f, 1.f, 0.f), Vec3(0.f, 0.f, 1.f)};
-
-	// Vec3 를 Vec4 타입으로 확장해서 행렬을 적용시켜야 함
-	// XMVector3TransformCoord	- w 를 1로 확장
-	// XMVector3TransformNormal - w 를 0으로 확장
-	// mul(float4(_in.vPos, 1 or 0), g_matWorld);
-	// 적용 받을 상태행렬의 이동을 적용할지 말지 결정
-	for (int i = 0; i < 3; ++i)
-	{
-		// m_matWorld 행렬에 크기정보가 있을 수 있기 때문에 다시 길이를 1로 정규화 시킨다.
-		Transform()->m_arrLocalDir[i] = XMVector3TransformNormal(arrAxis[i], Transform()->m_matWorld);
-		Transform()->m_arrWorldDir[i] = Transform()->m_arrLocalDir[i].Normalize();
-	}
-
-	Transform()->SetWorldMat(Transform()->m_matWorld);
-	Transform()->m_matWorldInv = XMMatrixInverse(nullptr, Transform()->m_matWorld);
 }
 
 void CPhysX::updateToPhysics()
@@ -131,15 +123,14 @@ void CPhysX::updateToPhysics()
 	if (nullptr == m_Actor)
 		return;
 
-	auto Obj = GetOwner();
-	auto Rot = Obj->Transform()->GetWorldRot();
-	auto Pos = Obj->Transform()->GetWorldPos() + m_vOffsetPos;
+	Quat quaternion = Transform()->GetWorldQuaternion();
 
-	Quat quaternion = Obj->Transform()->GetWorldQuaternion();
-	Pos /= CPhysXMgr::GetInst()->m_PPM;
+	Vec3 ColPos = GetColliderPos();
+	ColPos /= CPhysXMgr::GetInst()->m_PPM;
 
 	// 게임 오브젝트의 위치와 회전 정보
-	PxTransform transform(PxVec3(Pos.x, Pos.y, Pos.z), PxQuat(quaternion.x, quaternion.y, quaternion.z, quaternion.w));
+	PxTransform transform(PxVec3(ColPos.x, ColPos.y, ColPos.z),
+						  PxQuat(quaternion.x, quaternion.y, quaternion.z, quaternion.w));
 
 	m_Actor->setGlobalPose(transform);
 }
@@ -152,41 +143,6 @@ void CPhysX::begin()
 // #include "CLogMgr.h"
 void CPhysX::finaltick()
 {
-	// 콘텍트벡터를 초기화
-	// if (0 != m_vThisFrameContact.size())
-	//{
-	//	m_vThisFrameContact.resize(0);
-	//}
-
-	// static Vec3	 VecCurPos	= Transform()->GetWorldPos();
-	// static Vec3	 VecPrevPos = {};
-	// static Vec3	 Vec3CurVel = {};
-	// static Vec3	 VecPrevVel = {};
-	// static float acctime	= 0.f;
-	// acctime += DT;
-	// if (acctime >= 1.f && PhysBodyType::DYNAMIC == m_bPhysBodyType)
-	//{
-	//	VecPrevPos = VecCurPos;
-	//	VecCurPos  = Transform()->GetWorldPos();
-	//	// 속력계산
-	//	auto diffpos = Vec3::Distance(VecCurPos, VecPrevPos);
-
-	//	// 이전 속도저장,현재 속도계산
-	//	VecPrevVel = Vec3CurVel;
-	//	Vec3CurVel = VecCurPos - VecPrevPos;
-
-	//	// 가속도계산
-	//	auto diffvel	= Vec3::Distance(Vec3CurVel, VecPrevVel);
-	//	auto VecDiffVel = Vec3CurVel - VecPrevVel;
-
-	//	// CLogMgr::GetInst()->AddLog(Log_Level::INFO, "Vel:" + std::to_string(diffpos));
-	//	// CLogMgr::GetInst()->AddLog(Log_Level::INFO, "Acc:" + std::to_string(diffvel));
-	//	CLogMgr::GetInst()->AddLog(Log_Level::INFO, "Acc:" + std::to_string(VecDiffVel.x) + "," +
-	//													std::to_string(VecDiffVel.y) + "," +
-	//													std::to_string(VecDiffVel.z));
-	//	acctime = 0.f;
-	//}
-
 	// imgui가 포커스되어있으면 ,현재프레임에 충돌한 오브젝트정보를 수집
 	if (true == m_bImguiDirtyFlag)
 	{
@@ -209,39 +165,24 @@ void CPhysX::finaltick()
 
 	if (nullptr == m_Actor)
 		return;
-	const auto& trans		= Transform();
-	auto		ObjWorldPos = trans->GetWorldPos();
-	auto		dir			= trans->GetRelativeRotation();
-	auto		Rot			= getTransform().q;
-	dir.Normalize();
-
-	auto norrot = dir;
-	norrot.Normalize();
-	Matrix matRot = Matrix::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), norrot.x) *
-					Matrix::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), norrot.y) *
-					Matrix::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), norrot.z);
-	Matrix OffsetPosMat		 = XMMatrixTranslation(m_vOffsetPos.x, m_vOffsetPos.y, m_vOffsetPos.z);
-	auto   RotatedOffesetPos = matRot * OffsetPosMat;
-	auto   VecROP			 = RotatedOffesetPos.Translation();
-	auto   DebugFinalPos	 = ObjWorldPos + m_vOffsetPos;
+	auto Rot	= Transform()->GetWorldQuaternion();
+	auto ColPos = GetColliderPos();
 
 	if (m_bDrawing)
 	{
 		if (PhysShape::BOX == m_Shape)
 		{
-			GamePlayStatic::DrawDebugCube(DebugFinalPos, m_vScale, Vec4(Rot.x, Rot.y, Rot.z, Rot.w),
-										  Vec3(0.3f, .3f, 0.3f), false);
-
-			// GamePlayStatic::DrawDebugCube(worldmat, Vec3(0.3f, .3f, 0.3f), false);
+			GamePlayStatic::DrawDebugCube(ColPos, m_vScale, Vec4(Rot.x, Rot.y, Rot.z, Rot.w), Vec3(0.3f, .3f, 0.3f),
+										  false);
 		}
 		else if (PhysShape::SPHERE == m_Shape)
 		{
-			GamePlayStatic::DrawDebugSphere(DebugFinalPos, m_vScale.x / 2.f, Vec3(0.3f, .3f, 0.3f), false);
+			GamePlayStatic::DrawDebugSphere(ColPos, m_vScale.x / 2.f, Vec3(0.3f, .3f, 0.3f), false);
 		}
-		else if (PhysShape::SPHERE == m_Shape)
+		else if (PhysShape::CONE == m_Shape)
 		{
-			GamePlayStatic::DrawDebugCone(DebugFinalPos, m_vScale, Vec4(Rot.x, Rot.y, Rot.z, Rot.w),
-										  Vec3(0.3f, .3f, 0.3f), false);
+			GamePlayStatic::DrawDebugCone(ColPos, m_vScale, Vec4(Rot.x, Rot.y, Rot.z, Rot.w), Vec3(0.3f, .3f, 0.3f),
+										  false);
 		}
 	}
 }
