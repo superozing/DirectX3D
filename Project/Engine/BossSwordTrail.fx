@@ -52,14 +52,12 @@ float4 PS_BossSwordTrail(VS_OUT _in) : SV_Target
     float4 vColor = (float4) 0.f;
     
     float2 uv = _in.vUV;
-    
+   
     uv = uv + float2(0.f, g_float_0);
     
     float2 NewUV = clamp(uv, 0.f, 1.f);
     
     float4 TexColor = g_tex_0.Sample(g_sam_0, NewUV);
-    
-    //float4 TexColor = g_tex_0.Sample(g_sam_0, _in.vUV);
     
     // 검기 색상 (푸른 계열)
     float3 BeamColor = float3(0, 0.6, 1);

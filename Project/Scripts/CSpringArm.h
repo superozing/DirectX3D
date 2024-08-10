@@ -58,6 +58,8 @@ public:
 
 	/// @brief 스프링 암에 붙는 카메라를 세팅하는 함수입니다.
 	void SetTargetObject(CGameObject* _pObject);
+
+	CGameObject* GetTargetObject() { return m_pTarget; }
 	/// @brief 스프링 암이 시작하는 지점부터 캠으로 향하는 방향을 세팅하는 함수입니다.
 	void SetDir(Vec3 _dir) { m_tInfo.vDir = _dir; }
 	/// @brief 스프링 암의 최대 길이를 지정하는 함수입니다. 현재 스프링 암의 길이도 같이 변경합니다.
@@ -96,6 +98,33 @@ public:
 		m_tInfo.vDir.ToRadian();
 		Transform()->Lerp(m_tInfo.vOffsetPos, true, m_tInfo.vDir, false, Vec3(), _moveSpeed);
 	}
+
+private:
+	Vec3 m_vOriginPos;
+	Vec3 m_vOriginRot;
+
+	bool  m_bRelease;
+	float m_fReleaseTimer;
+	float m_fReleaseDuration;
+
+	bool  m_bShake;
+	float m_fShakeTimer;
+	float m_fShakeDuration;
+	Vec3  m_vShakePosIntensity;
+	Vec3  m_vShakeRotationIntensity;
+
+	float m_fShakeFrequencyTimer;
+	float m_fShakeFrequency;
+	Vec3  m_vStartPos;
+	Vec3  m_vTargetPos;
+	Vec3  m_vStartRotation;
+	Vec3  m_vTargetRotation;
+
+public:
+	void SpringArmReleasing();
+	void SpringArmShake();
+	void SpringArmShaking();
+	void SetShakeAttribute(float _duration, Vec3 _posScale, Vec3 _rotScale, float _frequency, float _releaseTime);
 
 public:
 	virtual void begin() override;
