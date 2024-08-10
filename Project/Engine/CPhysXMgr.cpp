@@ -400,7 +400,7 @@ void CPhysXMgr::init()
 	// PhysX 초기화
 	gPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *gFoundation, PxTolerancesScale(), true, gPvd);
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
-	sceneDesc.gravity		= PxVec3(0.0f, -9.81f * m_fGravityMul, 0.0f);
+	sceneDesc.gravity		= PxVec3(0.0f, m_fGravity * m_fGravityMul, 0.0f);
 	gDispatcher				= PxDefaultCpuDispatcherCreate(2);
 	sceneDesc.cpuDispatcher = gDispatcher;
 
