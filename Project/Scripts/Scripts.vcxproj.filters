@@ -277,6 +277,9 @@
     <ClInclude Include="CEventListener.h">
       <Filter>Scripts\Event</Filter>
     </ClInclude>
+    <ClInclude Include="CCubePushScript.h">
+      <Filter>Scripts\Phys</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -555,6 +558,9 @@
     <ClCompile Include="CEventListener.cpp">
       <Filter>Scripts\Event</Filter>
     </ClCompile>
+    <ClCompile Include="CCubePushScript.cpp">
+      <Filter>Scripts\Phys</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -760,6 +766,9 @@
     </Filter>
     <Filter Include="Scripts\Render\Video">
       <UniqueIdentifier>{049e4cf4-e10a-4955-92b2-85660b849773}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Phys">
+      <UniqueIdentifier>{bb33054c-aa56-4cc7-9eef-ea724457ddaf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

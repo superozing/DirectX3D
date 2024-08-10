@@ -313,7 +313,9 @@
     <ClInclude Include="resource.h">
       <Filter>Default</Filter>
     </ClInclude>
-    <ClInclude Include="CVideo.h" />
+    <ClInclude Include="CVideo.h">
+      <Filter>06. Asset\Video</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -571,7 +573,9 @@
     <ClCompile Include="CUpScale.cpp">
       <Filter>ShaderCode\03. Compute\Blur</Filter>
     </ClCompile>
-    <ClCompile Include="CVideo.cpp" />
+    <ClCompile Include="CVideo.cpp">
+      <Filter>06. Asset\Video</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -837,6 +841,9 @@
     </Filter>
     <Filter Include="ShaderCode\04. Content\BossSwordTrail">
       <UniqueIdentifier>{bb12dd5b-ccbf-4f22-aa98-e80ff4b0729e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Asset\Video">
+      <UniqueIdentifier>{f8cab871-17ea-460a-a1c6-119217f426ae}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
