@@ -283,6 +283,9 @@
     <ClInclude Include="CGroundCrackScript.h">
       <Filter>Scripts\Boss\BossMissile\GroundDecal</Filter>
     </ClInclude>
+    <ClInclude Include="CBossGroggy.h">
+      <Filter>Scripts\UI\ProgressBar\BossGroggy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -567,6 +570,9 @@
     <ClCompile Include="CGroundCrackScript.cpp">
       <Filter>Scripts\Boss\BossMissile\GroundDecal</Filter>
     </ClCompile>
+    <ClCompile Include="CBossGroggy.cpp">
+      <Filter>Scripts\UI\ProgressBar\BossGroggy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -769,6 +775,9 @@
     </Filter>
     <Filter Include="Scripts\Boss\BossMissile\GroundDecal">
       <UniqueIdentifier>{c98a1cf1-7fa0-4fc0-9092-58f90f05515e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\ProgressBar\BossGroggy">
+      <UniqueIdentifier>{dbe593e1-c751-493b-833e-0ff0e1014f79}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

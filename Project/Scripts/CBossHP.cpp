@@ -188,6 +188,11 @@ void CBossHP::MakeChildObjects()
 			m_pHPLineUI = vecChild[i]->GetScript<CImageUIScript>();
 			continue;
 		}
+		else if (name == L"GroggyGauge")
+		{
+			m_pGroggyGaugeUI = vecChild[i]->GetScript<CImageUIScript>();
+			continue;
+		}
 	}
 
 	// panel texture 설정
@@ -216,6 +221,12 @@ void CBossHP::MakeChildObjects()
 	m_pHPLineUI->MeshRender()->GetDynamicMaterial(0);
 	m_pHPLineUI->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::BOOL_0, true);
 	m_pHPLineUI->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_1, 10);
+	
+	// 그로그 게이지 
+	m_pGroggyGaugeUI->MeshRender()->GetDynamicMaterial(0);
+	m_pGroggyGaugeUI->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::BOOL_1, true);
+	
+
 }
 
 #define TagLineHP "[Line HP]"

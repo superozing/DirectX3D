@@ -152,6 +152,8 @@ public:
 
 	CRoRStateMachine<CBossScript>* GetBossFSM() { return m_FSM; }
 
+	float GetGroggy() const { return m_BossStatus.GroggyBar; }
+
 	CGameObject* GetTarget() { return m_Target; }
 	void		 SetTarget(CGameObject* _Target) { m_Target = _Target; }
 
