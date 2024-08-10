@@ -85,7 +85,7 @@ void CBulletWarheadSpawner::SpawnBulletWarhead(CGameObject* _pPlayer)
 	pBulletWarhead->Transform()->SetDir(_ParentWorldMat.Down().Normalize());
 	pBulletWarhead->Transform()->SetRelativePos(WeaponMat.Translation());
 	pBulletWarhead->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::BOOL_2, true);
-	pBulletWarhead->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, Vec4(0.3f, 0.2f, 0.f, 1.f));
+	pBulletWarhead->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, Vec4(1.f, 1.f, 1.f, 0.7f));
 	GamePlayStatic::SpawnGameObject(pBulletWarhead, 0);
 
 	// 관리를 위해 리스트에 추가
