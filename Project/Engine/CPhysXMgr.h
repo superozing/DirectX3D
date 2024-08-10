@@ -47,6 +47,7 @@ private:
 	vector<FlagActorColInfo>	m_vecTriggerColInfo;
 	float						m_TimeStep		 = 1.f / 120.f;
 	float						m_fGravityMul	 = 10.f;
+	const float					m_fGravity		 = -9.81f;
 	float						m_fContactOffset = 0.02f;
 	float						m_fLestOffset	 = 0.05f;
 	float						m_PPM			 = 100.f;
@@ -54,10 +55,9 @@ private:
 	Vec2						m_fPosTreshold	 = Vec2(0.01f, 0.01f);
 	Vec2						m_fRotTreshold	 = Vec2(0.0f, 0.3f);
 
-	float GetPPM() { return m_PPM; }
-	void  SetPPM(float _PPM) { m_PPM = _PPM; }
-	void  LayerCheck(UINT _left, UINT _right);
-	void  LayerCheckToggle(UINT _left, UINT _right);
+	void SetPPM(float _PPM) { m_PPM = _PPM; }
+	void LayerCheck(UINT _left, UINT _right);
+	void LayerCheckToggle(UINT _left, UINT _right);
 	class MyPhysXErrorCallback : public PxErrorCallback
 	{
 	public:
@@ -69,6 +69,10 @@ private:
 		}
 	};
 	void setFillterData(PxShape* _shape, UINT _Layer);
+
+public:
+	float GetGravity() { return m_fGravityMul * m_fGravity; }
+	float GetPPM() { return m_PPM; }
 
 public:
 #pragma region RayCast CallBack

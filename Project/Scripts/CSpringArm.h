@@ -99,6 +99,33 @@ public:
 		Transform()->Lerp(m_tInfo.vOffsetPos, true, m_tInfo.vDir, false, Vec3(), _moveSpeed);
 	}
 
+private:
+	Vec3 m_vOriginPos;
+	Vec3 m_vOriginRot;
+
+	bool  m_bRelease;
+	float m_fReleaseTimer;
+	float m_fReleaseDuration;
+
+	bool  m_bShake;
+	float m_fShakeTimer;
+	float m_fShakeDuration;
+	Vec3  m_vShakePosIntensity;
+	Vec3  m_vShakeRotationIntensity;
+
+	float m_fShakeFrequencyTimer;
+	float m_fShakeFrequency;
+	Vec3  m_vStartPos;
+	Vec3  m_vTargetPos;
+	Vec3  m_vStartRotation;
+	Vec3  m_vTargetRotation;
+
+public:
+	void SpringArmReleasing();
+	void SpringArmShake();
+	void SpringArmShaking();
+	void SetShakeAttribute(float _duration, Vec3 _posScale, Vec3 _rotScale, float _frequency, float _releaseTime);
+
 public:
 	virtual void begin() override;
 	virtual void tick() override;
