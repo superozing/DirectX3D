@@ -9,6 +9,8 @@ void CAssetMgr::init()
 {
 	InitSound();
 
+	InitVideo();
+
 	CreateDefaultMesh();
 
 	// CreateDefaultGraphicsShader();
@@ -1661,4 +1663,15 @@ void CAssetMgr::InitSound()
 	// 32개 채널 생성
 	CSound::g_pFMOD->init(32, FMOD_DEFAULT, nullptr);
 	CSound::g_pFMOD->getMasterChannelGroup(&CSound::g_pMasterGroup);
+}
+
+#include "CVideo.h"
+void CAssetMgr::InitVideo()
+{
+	HRESULT hr = MFStartup(MF_VERSION);
+	if (FAILED(hr))
+	{
+		// 오류 처리
+		MessageBox(nullptr, L"Media Foundation 초기화 실패!", L"AssetMgr 초기화 실패", 0);
+	}
 }

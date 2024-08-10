@@ -6,6 +6,7 @@
 #include <Engine\CLevel.h>
 #include <Engine\CGameObject.h>
 #include <Engine\CRandomMgr.h>
+#include <Engine\CPhysXMgr.h>
 #include <Engine\CPhysX.h>
 
 #include "CPlayerScript.h"
@@ -20,7 +21,9 @@ CMegaFistScript::CMegaFistScript()
 	, m_Shooter(nullptr)
 	, m_Target(nullptr)
 	, m_TargetPos(0.f, 0.f, 0.f)
-	, m_Gravity(0.f, -981.f * 3.f, 0.f)
+	, m_Gravity(0.f, 0.f, 0.f)
+	, m_bPhysX(false)
+	, m_bHit(false)
 {
 }
 
@@ -33,6 +36,11 @@ void CMegaFistScript::begin()
 	CProjectileScript::begin();
 
 	Transform()->SetRelativePos(m_Pos);
+
+	m_Gravity.y = CPhysXMgr::GetInst()->GetGravity();
+	float PPM	= CPhysXMgr::GetInst()->GetPPM();
+
+	m_Gravity.y /= PPM;
 
 	// 수평거리
 	float dx		   = m_TargetPos.x - m_Pos.x;
@@ -49,11 +57,21 @@ void CMegaFistScript::begin()
 	VelDir.y	= 0.f;
 	VelDir.Normalize();
 	m_CurVelocity = VelDir * v;
+	m_bPhysX	  = false;
+
+	float colTime = d_horizontal / v;
+
+	m_AngleVelocity = Vec3(-90.f, 0.f, 0.f) / colTime;
 }
 
 void CMegaFistScript::tick()
 {
 	CProjectileScript::tick();
+
+	if (m_Shooter->GetScript<CBossScript>()->IsVital())
+	{
+		GamePlayStatic::DestroyGameObject(GetOwner());
+	}
 
 	if (m_IsAlive)
 	{
@@ -65,12 +83,19 @@ void CMegaFistScript::tick()
 	else
 		GamePlayStatic::DestroyGameObject(GetOwner());
 
-	m_CurVelocity += m_Gravity * DT;
-	Transform()->SetDir(m_CurVelocity);
+	if (!m_bPhysX)
+	{
+		PhysX()->setLinearVelocity(m_CurVelocity);
+		PhysX()->setAngularVelocity(m_AngleVelocity);
+		m_bPhysX = true;
+	}
 
-	m_Pos = Transform()->GetRelativePos();
-	m_Pos = m_Pos + m_CurVelocity * DT;
-	Transform()->SetRelativePos(m_Pos);
+	// m_CurVelocity += m_Gravity * DT;
+	// Transform()->SetDir(m_CurVelocity);
+
+	// m_Pos = Transform()->GetRelativePos();
+	// m_Pos = m_Pos + m_CurVelocity * DT;
+	// Transform()->SetRelativePos(m_Pos);
 }
 
 void CMegaFistScript::OnHit()
@@ -92,12 +117,12 @@ void CMegaFistScript::InitMegaFistInfo(CGameObject* _Shooter, CGameObject* _Targ
 
 void CMegaFistScript::BeginOverlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider)
 {
-	if ((int)LAYER::LAYER_PLAYER == _OtherObj->GetLayerIdx())
+	if ((int)LAYER::LAYER_PLAYER == _OtherObj->GetLayerIdx() && !m_bHit)
 	{
 		OnHit();
 	}
-
-	m_IsAlive = false;
+	m_bHit = true;
+	// m_IsAlive = false;
 }
 
 void CMegaFistScript::Overlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider)

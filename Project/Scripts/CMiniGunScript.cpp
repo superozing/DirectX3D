@@ -1,6 +1,9 @@
 ﻿#include "pch.h"
 #include "CMiniGunScript.h"
 
+#include "CBossScript.h"
+#include "CRoRStateMachine.h"
+
 CMiniGunScript::CMiniGunScript()
 	: CScript((UINT)SCRIPT_TYPE::MINIGUNSCRIPT)
 	, m_Parent(nullptr)
@@ -27,6 +30,12 @@ void CMiniGunScript::begin()
 
 void CMiniGunScript::tick()
 {
+	if (m_Parent->GetScript<CBossScript>()->IsVital())
+	{
+		ParticleSystem()->Stop();
+		GamePlayStatic::DestroyGameObject(GetOwner());
+	}
+
 	m_vDir = m_Parent->Transform()->GetWorldDir(DIR_TYPE::FRONT);
 	m_vDir += m_offsetDir;
 	m_Module.FixedDirection = m_vDir;

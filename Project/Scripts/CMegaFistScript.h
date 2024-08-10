@@ -9,7 +9,11 @@ private:
 	Vec3 m_TargetPos; // 투사체가 향하는 객체 초기 위치
 
 	Vec3 m_CurVelocity;
+	Vec3 m_AngleVelocity;
 	Vec3 m_Gravity; // 중력
+
+	bool m_bPhysX;
+	bool m_bHit;
 
 public:
 	virtual void OnHit() override;

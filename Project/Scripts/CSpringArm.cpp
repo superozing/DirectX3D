@@ -2,6 +2,7 @@
 #include "CSpringArm.h"
 
 #include <Engine\CRenderMgr.h>
+#include <Engine\CRandomMgr.h>
 #include <Engine/CPhysXMgr.h>
 
 CSpringArm::CSpringArm()
@@ -78,6 +79,117 @@ void CSpringArm::tick()
 	Vec3 vDirOffset = Vec3(m_vDirOffset.y, m_vDirOffset.x, m_vDirOffset.z);
 	vDirOffset.ToRadian();
 	m_pTarget->Transform()->SetRelativeRotation(vRot + vDirOffset);
+
+	// 카메라 쉐이킹
+	if (m_bShake)
+	{
+		SpringArmShaking();
+	}
+	else if (m_bRelease)
+	{
+		SpringArmReleasing();
+	}
+}
+
+void CSpringArm::SpringArmReleasing()
+{
+	if (m_fReleaseTimer <= 0.f)
+	{
+		m_bRelease = false;
+
+		m_fReleaseTimer = 0.f;
+
+		Transform()->SetRelativePos(m_vOriginPos);
+		Transform()->SetRelativeRotation(m_vOriginRot);
+
+		return;
+	}
+
+	Vec3 vNewPos = RoRMath::Lerp(m_vOriginPos, m_vStartPos, m_fReleaseTimer / m_fReleaseDuration);
+	Vec3 vNewRot = RoRMath::Lerp(m_vOriginRot, m_vStartRotation, m_fReleaseTimer / m_fReleaseDuration);
+
+	Transform()->SetRelativePos(vNewPos);
+	Transform()->SetRelativeRotation(vNewRot);
+
+	m_fReleaseTimer -= DT;
+}
+
+void CSpringArm::SpringArmShake()
+{
+	if (!m_bShake && !m_bRelease)
+	{
+		m_vOriginPos = Transform()->GetRelativePos();
+		m_vOriginRot = Transform()->GetRelativeRotation();
+	}
+
+	m_bShake   = true;
+	m_bRelease = false;
+
+	m_fReleaseTimer		   = m_fReleaseDuration;
+	m_fShakeTimer		   = m_fShakeDuration;
+	m_fShakeFrequencyTimer = 0;
+}
+
+void CSpringArm::SpringArmShaking()
+{
+	if (m_fShakeTimer <= 0)
+	{
+		m_bShake   = false;
+		m_bRelease = true;
+
+		m_vStartPos		 = Transform()->GetRelativePos();
+		m_vStartRotation = Transform()->GetRelativeRotation();
+
+		m_fShakeTimer		   = 0.f;
+		m_fShakeFrequencyTimer = 0.f;
+
+		return;
+	}
+
+	if (m_fShakeFrequencyTimer <= 0)
+	{
+		m_fShakeFrequencyTimer += 1.f / m_fShakeFrequency;
+
+		// Pos 선택
+		m_vStartPos	 = Transform()->GetRelativePos();
+		m_vTargetPos = m_vOriginPos;
+
+		m_vTargetPos += CRandomMgr::GetInst()->GetRandomFloat() * Transform()->GetWorldDir(DIR_TYPE::FRONT) *
+						m_vShakePosIntensity.z;
+		m_vTargetPos += CRandomMgr::GetInst()->GetRandomFloat() * Transform()->GetWorldDir(DIR_TYPE::RIGHT) *
+						m_vShakePosIntensity.x;
+		m_vTargetPos +=
+			CRandomMgr::GetInst()->GetRandomFloat() * Transform()->GetWorldDir(DIR_TYPE::UP) * m_vShakePosIntensity.y;
+
+		// 회전 선택
+		m_vStartRotation  = Transform()->GetRelativeRotation();
+		m_vTargetRotation = m_vOriginRot;
+
+		m_vTargetRotation.x +=
+			CRandomMgr::GetInst()->GetRandomFloat() * XMConvertToRadians(m_vShakeRotationIntensity.x);
+		m_vTargetRotation.y +=
+			CRandomMgr::GetInst()->GetRandomFloat() * XMConvertToRadians(m_vShakeRotationIntensity.y);
+		m_vTargetRotation.z +=
+			CRandomMgr::GetInst()->GetRandomFloat() * XMConvertToRadians(m_vShakeRotationIntensity.z);
+	}
+	Vec3 vNewPos = RoRMath::Lerp(m_vTargetPos, m_vStartPos, m_fShakeFrequencyTimer * m_fShakeFrequency);
+	Vec3 vNewRot = RoRMath::Lerp(m_vTargetRotation, m_vStartRotation, m_fShakeFrequencyTimer * m_fShakeFrequency);
+
+	Transform()->SetRelativePos(vNewPos);
+	Transform()->SetRelativeRotation(vNewRot);
+
+	m_fShakeTimer -= DT;
+	m_fShakeFrequencyTimer -= DT;
+}
+
+void CSpringArm::SetShakeAttribute(float _duration, Vec3 _posScale, Vec3 _rotScale, float _frequency,
+								   float _releaseTime)
+{
+	m_fShakeDuration		  = _duration;
+	m_vShakePosIntensity	  = _posScale;
+	m_vShakeRotationIntensity = _rotScale;
+	m_fShakeFrequency		  = _frequency;
+	m_fReleaseDuration		  = _releaseTime;
 }
 
 #define TagSpringArm "[Info]"

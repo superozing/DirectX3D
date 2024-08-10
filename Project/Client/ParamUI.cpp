@@ -122,6 +122,8 @@ bool ParamUI::Param_STRING(string* _Data, const string& _Desc, float _min, float
 						   const string& _Tooltip)
 {
 	ImGui::Text(_Desc.c_str());
+	if (!_Data)
+		return false;
 	ImGui::SameLine();
 
 	char szID[256] = {};
@@ -632,6 +634,13 @@ bool ParamUI::Param_MGR_PHYSX(void* _pPhysXMgr)
 		}
 	}
 
+	for (const auto& info : pPhysXMgr->m_vecTriggerColInfo)
+	{
+		auto ob1 = static_cast<CGameObject*>(info.Actor1->userData);
+		auto ob2 = static_cast<CGameObject*>(info.Actor2->userData);
+		auto msg = "" + ToString(ob1->GetName()) + " + " + ToString(ob2->GetName());
+		ImGui::Text(msg.c_str());
+	}
 	return true;
 }
 

@@ -221,6 +221,7 @@
     <ClInclude Include="UI.h" />
     <ClInclude Include="RTViewPort.h" />
     <ClInclude Include="CUITempLevel.h" />
+    <ClInclude Include="VideoUI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animator2DUI.cpp" />
@@ -286,6 +287,7 @@
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="RTViewPort.cpp" />
     <ClCompile Include="CUITempLevel.cpp" />
+    <ClCompile Include="VideoUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc" />

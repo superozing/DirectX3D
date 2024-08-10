@@ -429,13 +429,11 @@ void CRenderMgr::CheckEscape()
 				CKeyMgr::GetInst()->SetFocuseState(FOCUS_STATE::OTHER);
 				bPrevCursor = CKeyMgr::GetInst()->IsShowCursor();
 				CKeyMgr::GetInst()->RoRShowCursor(true);
-				ShowCursor(true);
 			}
 			else
 			{
 				CKeyMgr::GetInst()->SetFocuseState(FOCUS_STATE::MAIN);
 				CKeyMgr::GetInst()->RoRShowCursor(bPrevCursor);
-				ShowCursor(bPrevCursor);
 			}
 
 			RePositionDebugCam();

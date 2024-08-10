@@ -144,18 +144,18 @@ void CPlayerScript::InitSpringArmSetting()
 	SpringArmInfo info;
 	info.Type								 = true;
 	info.fMaxDistance						 = 150.f;
-	info.fCamSpeed							 = 40.f;
+	info.fCamSpeed							 = 20.f;
 	info.fCamRotSpeed						 = 20.f;
-	info.vDir								 = Vec3(-20.f, 180.f, 0.f);
-	info.vOffsetPos							 = Vec2(50.f, 50.f);
+	info.vDir								 = Vec3(0.f, 180.f, 0.f);
+	info.vOffsetPos							 = Vec2(50.f, 75.f);
 	m_mSpringInfos[PLAYER_STATE::NormalIdle] = info;
 
-	info.Type										= false;
+	info.Type										= true;
 	info.fMaxDistance								= 70.f;
-	info.fCamSpeed									= 30.f;
+	info.fCamSpeed									= 20.f;
 	info.fCamRotSpeed								= 20.f;
-	info.vDir										= Vec3(-20.f, 180.f, 0.f);
-	info.vOffsetPos									= Vec2(50.f, 50.f);
+	info.vDir										= Vec3(0.f, 180.f, 0.f);
+	info.vOffsetPos									= Vec2(50.f, 75.f);
 	m_mSpringInfos[PLAYER_STATE::NormalAttackStart] = info;
 
 	// info.Type									  = false;
@@ -170,7 +170,7 @@ void CPlayerScript::InitSpringArmSetting()
 	info.fMaxDistance						= 150.f;
 	info.fCamSpeed							= 30.f;
 	info.fCamRotSpeed						= 20.f;
-	info.vDir								= Vec3(-20.f, 180.f, 0.f);
+	info.vDir								= Vec3(0.f, 180.f, 0.f);
 	info.vOffsetPos							= Vec2(100.f, 50.f);
 	m_mSpringInfos[PLAYER_STATE::StandIdle] = info;
 
@@ -178,7 +178,7 @@ void CPlayerScript::InitSpringArmSetting()
 	info.fMaxDistance							   = 70.f;
 	info.fCamSpeed								   = 30.f;
 	info.fCamRotSpeed							   = 20.f;
-	info.vDir									   = Vec3(-20.f, 180.f, 0.f);
+	info.vDir									   = Vec3(0.f, 180.f, 0.f);
 	info.vOffsetPos								   = Vec2(100.f, 50.f);
 	m_mSpringInfos[PLAYER_STATE::StandAttackStart] = info;
 
@@ -186,7 +186,7 @@ void CPlayerScript::InitSpringArmSetting()
 	info.fMaxDistance						= 150.f;
 	info.fCamSpeed							= 30.f;
 	info.fCamRotSpeed						= 20.f;
-	info.vDir								= Vec3(-20.f, 180.f, 0.f);
+	info.vDir								= Vec3(0.f, 180.f, 0.f);
 	info.vOffsetPos							= Vec2(100.f, 50.f);
 	m_mSpringInfos[PLAYER_STATE::KneelIdle] = info;
 
@@ -194,7 +194,7 @@ void CPlayerScript::InitSpringArmSetting()
 	info.fMaxDistance							   = 70.f;
 	info.fCamSpeed								   = 30.f;
 	info.fCamRotSpeed							   = 20.f;
-	info.vDir									   = Vec3(-20.f, 180.f, 0.f);
+	info.vDir									   = Vec3(0.f, 180.f, 0.f);
 	info.vOffsetPos								   = Vec2(100.f, 50.f);
 	m_mSpringInfos[PLAYER_STATE::KneelAttackStart] = info;
 
@@ -202,7 +202,7 @@ void CPlayerScript::InitSpringArmSetting()
 	info.fMaxDistance						= 150.f;
 	info.fCamSpeed							= 20.f;
 	info.fCamRotSpeed						= 20.f;
-	info.vDir								= Vec3(-20.f, 180.f, 0.f);
+	info.vDir								= Vec3(0.f, 180.f, 0.f);
 	info.vOffsetPos							= Vec2(50.f, 50.f);
 	m_mSpringInfos[PLAYER_STATE::SkillDash] = info;
 
@@ -210,7 +210,7 @@ void CPlayerScript::InitSpringArmSetting()
 	info.fMaxDistance						 = 90.f;
 	info.fCamSpeed							 = 30.f;
 	info.fCamRotSpeed						 = 20.f;
-	info.vDir								 = Vec3(-20.f, 180.f, 0.f);
+	info.vDir								 = Vec3(0.f, 180.f, 0.f);
 	info.vOffsetPos							 = Vec2(80.f, 40.f);
 	m_mSpringInfos[PLAYER_STATE::SkillThrow] = info;
 
@@ -218,7 +218,7 @@ void CPlayerScript::InitSpringArmSetting()
 	info.fMaxDistance							= 100.f;
 	info.fCamSpeed								= 50.f;
 	info.fCamRotSpeed							= 20.f;
-	info.vDir									= Vec3(-30.f, 130.f, 0.f);
+	info.vDir									= Vec3(0.f, 130.f, 0.f);
 	info.vOffsetPos								= Vec2(0.f, 50.f);
 	m_mSpringInfos[PLAYER_STATE::SkillCallsign] = info;
 
@@ -226,7 +226,7 @@ void CPlayerScript::InitSpringArmSetting()
 	info.fMaxDistance					  = 150.f;
 	info.fCamSpeed						  = 20.f;
 	info.fCamRotSpeed					  = 20.f;
-	info.vDir							  = Vec3(-20.f, 160.f, 0.f);
+	info.vDir							  = Vec3(0.f, 160.f, 0.f);
 	info.vOffsetPos						  = Vec2(50.f, 50.f);
 	m_mSpringInfos[PLAYER_STATE::SkillEX] = info;
 
@@ -234,7 +234,7 @@ void CPlayerScript::InitSpringArmSetting()
 	info.fMaxDistance					   = 250.f;
 	info.fCamSpeed						   = 10.f;
 	info.fCamRotSpeed					   = 5.f;
-	info.vDir							   = Vec3(-20.f, 180.f, 0.f);
+	info.vDir							   = Vec3(0.f, 180.f, 0.f);
 	info.vOffsetPos						   = Vec2(50.f, 50.f);
 	m_mSpringInfos[PLAYER_STATE::MoveJump] = info;
 
@@ -242,7 +242,7 @@ void CPlayerScript::InitSpringArmSetting()
 	info.fMaxDistance						   = 150.f;
 	info.fCamSpeed							   = 10.f;
 	info.fCamRotSpeed						   = 5.f;
-	info.vDir								   = Vec3(-10.f, 0.f, 0.f);
+	info.vDir								   = Vec3(0.f, 0.f, 0.f);
 	info.vOffsetPos							   = Vec2(0.f, 50.f);
 	m_mSpringInfos[PLAYER_STATE::VictoryStart] = info;
 }
@@ -322,6 +322,31 @@ void CPlayerScript::begin()
 	}
 	else
 		CLogMgr::GetInst()->AddLog(Log_Level::ERR, L"Can't find \"HUD\"Object.");
+
+	// Player Sound Init
+	m_vecSound.resize((UINT)PlayerSoundType::End);
+
+	Ptr<CSound> pSnd					   = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_CH0138_Public_Shot);
+	m_vecSound[(UINT)PlayerSoundType::EX1]	 = pSnd;
+
+	pSnd = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Skill_Azusa_Ex_2);
+	m_vecSound[(UINT)PlayerSoundType::EX2]	 = pSnd;
+
+	pSnd								   = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Common_CH0240_SR_Reload_01);
+	m_vecSound[(UINT)PlayerSoundType::RELOAD]	 = pSnd;
+	
+	pSnd										= CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Field_Movement_03);
+	m_vecSound[(UINT)PlayerSoundType::MOVEMENT] = pSnd;
+
+	pSnd									 = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Grenade_Throw_Up);
+	m_vecSound[(UINT)PlayerSoundType::THROW_UP] = pSnd;
+
+	pSnd									 = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Grenade_Throw_Away);
+	m_vecSound[(UINT)PlayerSoundType::THROW_AWAY] = pSnd;
+
+	pSnd									   = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Skill_Azusa_Ex_Cut_in);
+	m_vecSound[(UINT)PlayerSoundType::SKILLEX] = pSnd;
+
 }
 
 void CPlayerScript::tick()
@@ -384,11 +409,11 @@ void CPlayerScript::tick()
 	// static float autoShoot = 0.f;
 	// autoShoot += DT;
 
-	// if (autoShoot > 0.5f)
+	//if (autoShoot > 0.5f)
 	//{
 	//	m_pShootingSystem->ShootPlayerBulletRay();
 	//	autoShoot = 0.f;
-	// }
+	//}
 }
 
 void CPlayerScript::CameraMove()
@@ -441,20 +466,38 @@ void CPlayerScript::CameraMove()
 					vOffset.y += CPlayerController::Sensitivity * CamRotSpeed * DT;
 				else if (vMouseDiff.y < 0.f)
 					vOffset.y -= CPlayerController::Sensitivity * CamRotSpeed * DT;
-				vOffset.y = clamp(vOffset.y, -20.f, 5.f);
+				vOffset.y = clamp(vOffset.y, -20.f, 20.f);
 			}
 
 			// 마우스 y 이동에 따라 캐릭터 회전 예정 (캐릭터 발을 가리는 줌 상태인 공격 스테이트만 해당됨)
 			{
-				Vec3 vDiff = Vec3(vOffset.y, vOffset.x, vOffset.z);
-				vDiff.ToRadian();
-				vDiff *= 3.f;
-				if (!(state == (int)PLAYER_STATE::NormalAttackIng || state == (int)PLAYER_STATE::NormalAttackDelay ||
-					  state == (int)PLAYER_STATE::NormalAttackStart || state == (int)PLAYER_STATE::StandAttackIng ||
-					  state == (int)PLAYER_STATE::StandAttackDelay || state == (int)PLAYER_STATE::StandAttackStart ||
-					  state == (int)PLAYER_STATE::KneelAttackStart || state == (int)PLAYER_STATE::KneelAttackIng ||
-					  state == (int)PLAYER_STATE::KneelAttackDelay || state == (int)PLAYER_STATE::SkillThrow))
+				Vec3 vDiff = vRot;
+				if ((state == (int)PLAYER_STATE::NormalAttackIng || state == (int)PLAYER_STATE::NormalAttackDelay ||
+					 state == (int)PLAYER_STATE::NormalAttackStart || state == (int)PLAYER_STATE::StandAttackIng ||
+					 state == (int)PLAYER_STATE::StandAttackDelay || state == (int)PLAYER_STATE::StandAttackStart ||
+					 state == (int)PLAYER_STATE::KneelAttackStart || state == (int)PLAYER_STATE::KneelAttackIng ||
+					 state == (int)PLAYER_STATE::KneelAttackDelay || state == (int)PLAYER_STATE::SkillThrow))
+				{
+					auto obj	= m_pSpringArm->GetTargetObject();
+					auto vFront = obj->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+
+					if (vDiff.x == 0.f)
+					{
+						vDiff.x = -vFront.y;
+					}
+
+					CamRotSpeed = 1.f;
+					if (vMouseDiff.y > 0.f)
+						vDiff.x += CPlayerController::Sensitivity * CamRotSpeed * DT;
+					else if (vMouseDiff.y < 0.f)
+						vDiff.x -= CPlayerController::Sensitivity * CamRotSpeed * DT;
+					vDiff.x	  = clamp(vDiff.x, -XM_PIDIV4, XM_PIDIV4);
+					vOffset.y = 0.f;
+				}
+				else
+				{
 					vDiff.x = 0.f;
+				}
 
 				vDiff.y = vRot.y;
 				vDiff.z = vRot.z;

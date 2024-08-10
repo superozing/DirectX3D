@@ -10,10 +10,10 @@
 
 void CTutorialEndingEvent::Start()
 {
-	if (HasTargets() && m_pGM->IsClear(TutorialState::CoverLow))
-	{
-		m_pArona->Message("Congratulations! You All Clear Tutorial", 650, 3.f);
-	}
+	// if (HasTargets() && m_pGM->IsClear(TutorialState::CoverLow))
+	//{
+	//	m_pArona->Message("Congratulations! You All Clear Tutorial", 650, 3.f);
+	// }
 }
 
 void CTutorialEndingEvent::ClearEvent()

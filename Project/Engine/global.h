@@ -23,6 +23,9 @@ using std::vector;
 using std::string;
 using std::wstring;
 
+#include <mutex>
+using std::mutex;
+
 #include <memory>
 using std::make_shared;
 using std::make_unique;
@@ -71,6 +74,23 @@ typedef Quaternion Quat;
 #else
 #pragma comment(lib, "FBXLoader/x64/release/libfbxsdk-md.lib")
 #endif
+
+#include <dshow.h>
+#include <mfapi.h>
+#include <mfobjects.h>
+#include <mfidl.h>
+#include <mferror.h>
+#include <mfreadwrite.h>
+
+#pragma comment(lib, "strmiids.lib")
+#pragma comment(lib, "Mf.lib")
+#pragma comment(lib, "Mfplat.lib")
+#pragma comment(lib, "Mfreadwrite.lib")
+
+#pragma comment(lib, "mf.lib")
+#pragma comment(lib, "mfplat.lib")
+#pragma comment(lib, "mfuuid.lib")
+#pragma comment(lib, "mfreadwrite.lib")
 
 // 엔진 헤더 참조
 #include "singleton.h"

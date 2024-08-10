@@ -313,6 +313,7 @@
     <ClInclude Include="resource.h">
       <Filter>Default</Filter>
     </ClInclude>
+    <ClInclude Include="CVideo.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -570,6 +571,7 @@
     <ClCompile Include="CUpScale.cpp">
       <Filter>ShaderCode\03. Compute\Blur</Filter>
     </ClCompile>
+    <ClCompile Include="CVideo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">

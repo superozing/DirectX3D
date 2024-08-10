@@ -6,6 +6,7 @@
 
 #include "CMemoryPoolMgrScript.h"
 #include "CBulletScript.h"
+#include "CShootingSystemScript.h"
 
 #define Bullet_ShellPath "prefab/ShootingSystem/Bullet_Shell.pref"
 
@@ -66,10 +67,14 @@ void CBulletShellSpawner::SpawnBulletShell(CGameObject* _pPlayer, float _ActiveT
 	// 힘 주기
 	auto pBulletScript = pBulletShell->GetScript<CBulletScript>(); // WeaponMat.Front()
 	auto rDir		   = _ParentWorldMat.Right().Normalize();	   // WeaponMat.Right().Normalize();
-	
+	auto uDir		   = Vec3(0.f, 1.f, 0.f);
+
 	// 속도 조절 수정 이후 조절하기.
 	//  * (CRandomMgr::GetInst()->GetRandomFloat() / 2.f + 1);
-	pBulletScript->SetLinearVelocity(rDir * 300.f);
+	//pBulletScript->SetLinearVelocity(rDir * 3.f + uDir * 6.f);
+	
+	pBulletScript->SetLinearVelocity(rDir * m_pShootingSystem->m_RightRatio * (CRandomMgr::GetInst()->GetRandomFloat() / 2.f + 1) +
+									uDir * m_pShootingSystem->m_UpRatio * (CRandomMgr::GetInst()->GetRandomFloat() / 2.f + 1));
 
 	// 게임 오브젝트 스폰
 	GamePlayStatic::SpawnGameObject(pBulletShell, (UINT)LAYER::LAYER_ETC_OBJECT);
