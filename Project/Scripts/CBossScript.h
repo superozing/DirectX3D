@@ -26,7 +26,7 @@ enum class BOSS_STATE
 
 struct tBossStatus
 {
-	float MaxHP = 1000.f;
+	float MaxHP = 1300.f;
 	float CurHP = MaxHP;
 
 	float GroggyBar = 0.f;
@@ -34,7 +34,7 @@ struct tBossStatus
 	float ATTDamage = 10.f;
 	float ATTSpeed	= 2.f;
 
-	float EXsCoolTime = 5000.f;
+	float EXsCoolTime = 5.f;
 
 	bool IsGroggy = false;
 	bool IsDead	  = false;

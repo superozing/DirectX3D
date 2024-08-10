@@ -410,6 +410,11 @@ void CBossScript::VitalDeathBegin()
 
 int CBossScript::VitalDeathUpdate()
 {
+	int idx = Animator3D()->GetCurFrameIdx();
+
+	if (idx == Animator3D()->GetCurClipLength() - 2)
+		Animator3D()->Pause(true);
+
 	return m_FSM->GetCurState();
 }
 
@@ -479,6 +484,11 @@ void CBossScript::VitalGroggyDeathBegin()
 
 int CBossScript::VitalGroggyDeathUpdate()
 {
+	int idx = Animator3D()->GetCurFrameIdx();
+
+	if (idx == Animator3D()->GetCurClipLength() - 2)
+		Animator3D()->Pause(true);
+
 	return m_FSM->GetCurState();
 }
 
