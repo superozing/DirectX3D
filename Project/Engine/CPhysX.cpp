@@ -163,25 +163,24 @@ void CPhysX::finaltick()
 		// updateFromPhysics();
 	}
 
-	if (nullptr == m_Actor)
-		return;
 	auto Rot	= Transform()->GetWorldQuaternion();
 	auto ColPos = GetColliderPos();
+	auto scale	= m_vScale != Vec3() ? m_vScale : Transform()->GetWorldScale();
 
 	if (m_bDrawing)
 	{
 		if (PhysShape::BOX == m_Shape)
 		{
-			GamePlayStatic::DrawDebugCube(ColPos, m_vScale, Vec4(Rot.x, Rot.y, Rot.z, Rot.w), Vec3(0.3f, .3f, 0.3f),
+			GamePlayStatic::DrawDebugCube(ColPos, scale, Vec4(Rot.x, Rot.y, Rot.z, Rot.w), Vec3(0.3f, .3f, 0.3f),
 										  false);
 		}
 		else if (PhysShape::SPHERE == m_Shape)
 		{
-			GamePlayStatic::DrawDebugSphere(ColPos, m_vScale.x / 2.f, Vec3(0.3f, .3f, 0.3f), false);
+			GamePlayStatic::DrawDebugSphere(ColPos, scale.x / 2.f, Vec3(0.3f, .3f, 0.3f), false);
 		}
 		else if (PhysShape::CONE == m_Shape)
 		{
-			GamePlayStatic::DrawDebugCone(ColPos, m_vScale, Vec4(Rot.x, Rot.y, Rot.z, Rot.w), Vec3(0.3f, .3f, 0.3f),
+			GamePlayStatic::DrawDebugCone(ColPos, scale, Vec4(Rot.x, Rot.y, Rot.z, Rot.w), Vec3(0.3f, .3f, 0.3f),
 										  false);
 		}
 	}
