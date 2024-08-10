@@ -201,7 +201,6 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CDamagedDirectionMgr.h" />
     <ClInclude Include="CDamageFontSpawner.h" />
     <ClInclude Include="CDamageRay.h" />
-    <ClInclude Include="CDashEventListener.h" />
     <ClInclude Include="CDigitUI.h" />
     <ClInclude Include="CDialog.h" />
     <ClInclude Include="CDirectionalLight.h" />
@@ -298,7 +297,6 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CDamagedDirectionMgr.cpp" />
     <ClCompile Include="CDamageFontSpawner.cpp" />
     <ClCompile Include="CDamageRay.cpp" />
-    <ClCompile Include="CDashEventListener.cpp" />
     <ClCompile Include="CDigitUI.cpp" />
     <ClCompile Include="CDialog.cpp" />
     <ClCompile Include="CDirectionalLight.cpp" />

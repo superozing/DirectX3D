@@ -36,7 +36,6 @@
 #include "CCreateTempLevel.h"
 #include "CUITempLevel.h"
 #include "MapTestLevel.h"
-#include "MapTutorial.h"
 #include "CCreatePlayerTestLevel.h"
 
 #include <Engine\CLevelMgr.h>
