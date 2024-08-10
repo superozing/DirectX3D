@@ -49,6 +49,8 @@ void CTutorialGameMode::begin()
 	m_arrIsClear[0] = true;
 	m_arrIsClear[1] = true;
 	m_arrIsClear[2] = true;
+
+	CKeyMgr::GetInst()->RoRShowCursor(false);
 }
 
 void CTutorialGameMode::tick()
