@@ -2,6 +2,7 @@
 #include "CBossSmokeWaveScript.h"
 
 #include <Engine\CGameObject.h>
+#include "CBossScript.h"
 
 CBossSmokeWaveScript::CBossSmokeWaveScript()
 	: CScript((UINT)SCRIPT_TYPE::BOSSSMOKEWAVESCRIPT)
@@ -28,6 +29,11 @@ void CBossSmokeWaveScript::begin()
 
 void CBossSmokeWaveScript::tick()
 {
+	if (m_Parent->GetScript<CBossScript>()->IsVital())
+	{
+		GamePlayStatic::DestroyGameObject(GetOwner());
+	}
+
 	int idx = m_Parent->Animator3D()->GetCurFrameIdx();
 
 	if (idx > 155 && !m_bSmokeWave)

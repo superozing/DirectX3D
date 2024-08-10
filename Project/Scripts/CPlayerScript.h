@@ -270,6 +270,8 @@ public:
 
 	CRoRStateMachine<CPlayerScript>* GetStateMachine() { return m_FSM; }
 
+	CSpringArm* GetSpringArm() { return m_pSpringArm; }
+
 public:
 	virtual void begin() override;
 	virtual void tick() override;

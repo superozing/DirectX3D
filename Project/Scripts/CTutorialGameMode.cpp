@@ -58,6 +58,8 @@ void CTutorialGameMode::begin()
 	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::TutorialStart]->Play(1);
 	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::BGM]->Play(0, .4f);
 
+
+	CKeyMgr::GetInst()->RoRShowCursor(false);
 }
 
 void CTutorialGameMode::tick()

@@ -29,10 +29,12 @@ struct tBossStatus
 	float MaxHP = 1000.f;
 	float CurHP = MaxHP;
 
-	float ATTDamage = 10.f;
-	float ATTSpeed	= 2000.f;
+	float GroggyBar = 0.f;
 
-	float EXsCoolTime = 1.f;
+	float ATTDamage = 10.f;
+	float ATTSpeed	= 2.f;
+
+	float EXsCoolTime = 5000.f;
 
 	bool IsGroggy = false;
 	bool IsDead	  = false;
@@ -46,23 +48,29 @@ private:
 	CRoRStateMachine<CBossScript>* m_FSM;
 	tBossStatus					   m_BossStatus;
 	class CGameObject*			   m_Target;
+	Vec3						   m_TargetPos; // 투사체 전용 위치 (유도탄 X)
 	tRoRHitInfo					   m_hitInfo;
 
 	float m_AttDuration;
 	float m_EXsDuration;
 
+	bool m_ChaseDir; // 플레이어를 바라보는지 결정
+
 	bool m_ActiveAttack;
 	bool m_ActiveEXs;
 
-	bool m_ArrMissile[8]; // 미사일 발사여부
+	bool m_ArrMissile[8]; // 미사일 발사 여부
 	bool m_ArrShield[2];  // 쉴드 전개 여부
+	bool m_bSwordBeam;	  // 검기 발사 여부
 
 	class CBossBulletShellSpawner* m_BulletShell;
-	float						   m_BulletInterval;
+	float						   m_BulletInterval; // 탄피 생성 간격 체크용 (간격을 설정하는 것 X)
+
+	bool  m_Raycast;
+	float m_RaycastInterval;
 
 	// @@디버그용
-	int	 m_EXsType; // 현재 선택된 EX 타입
-	bool m_Drill;
+	int m_EXsType; // 현재 선택된 EX 타입
 
 #pragma region About State
 
@@ -134,13 +142,22 @@ public:
 	void ActiveOutsideShield();
 	void ActiveHexShield();
 	void DeActiveHexShield();
+	void ActiveSwordTrail();
+	void FireSwordBeam();
+
+	void ActiveWarningDecal();
 
 	void LoadAsset();
+	void CheckTargetPos();
 
 	CRoRStateMachine<CBossScript>* GetBossFSM() { return m_FSM; }
 
 	CGameObject* GetTarget() { return m_Target; }
 	void		 SetTarget(CGameObject* _Target) { m_Target = _Target; }
+
+	bool IsVital();
+	bool IsShield();
+	void Hit(float _Dmg);
 
 public:
 	virtual void begin() override;
