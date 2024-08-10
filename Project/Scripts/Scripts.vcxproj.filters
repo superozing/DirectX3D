@@ -292,6 +292,9 @@
     <ClInclude Include="CWarningBGTex.h">
       <Filter>Scripts\Level\Boss\Warning</Filter>
     </ClInclude>
+    <ClInclude Include="CCubePushScript.h">
+      <Filter>Scripts\Phys</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -570,6 +573,9 @@
     <ClCompile Include="CEventListener.cpp">
       <Filter>Scripts\Event</Filter>
     </ClCompile>
+    <ClCompile Include="CCubePushScript.cpp">
+      <Filter>Scripts\Phys</Filter>
+    </ClCompile>
     <ClCompile Include="CBossLV.cpp">
       <Filter>Scripts\Level\Boss</Filter>
     </ClCompile>
@@ -790,6 +796,9 @@
     </Filter>
     <Filter Include="Scripts\Render\Video">
       <UniqueIdentifier>{049e4cf4-e10a-4955-92b2-85660b849773}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Phys">
+      <UniqueIdentifier>{bb33054c-aa56-4cc7-9eef-ea724457ddaf}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Level\Boss">
       <UniqueIdentifier>{40db8202-2a85-403a-b7d5-8cf3282b3c99}</UniqueIdentifier>

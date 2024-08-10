@@ -44,4 +44,6 @@ public:
 	virtual void enter() override {}
 	virtual void exit() override;
 	void		 render();
+
+	friend class CTimeMgrScript;
 };

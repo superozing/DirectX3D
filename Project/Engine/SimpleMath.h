@@ -507,6 +507,13 @@ struct Vector3 : public XMFLOAT3
 						   (z * (axis.z * axis.z * (1 - c) + c)));
 	}
 
+	string ToString()
+	{
+		string ret;
+		ret = "(" + std::to_string(x) + "," + std::to_string(y) + "," + std::to_string(z) + ")";
+		return ret;
+	}
+
 	// Constants
 	static const Vector3 Zero;
 	static const Vector3 One;
