@@ -277,6 +277,21 @@
     <ClInclude Include="CEventListener.h">
       <Filter>Scripts\Event</Filter>
     </ClInclude>
+    <ClInclude Include="CBossLV.h">
+      <Filter>Scripts\Level\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="CStartTex.h">
+      <Filter>Scripts\Level\Boss\Start</Filter>
+    </ClInclude>
+    <ClInclude Include="CStartLightTex.h">
+      <Filter>Scripts\Level\Boss\Start</Filter>
+    </ClInclude>
+    <ClInclude Include="CBossOpeningTex.h">
+      <Filter>Scripts\Level\Boss\Start</Filter>
+    </ClInclude>
+    <ClInclude Include="CWarningBGTex.h">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -555,6 +570,21 @@
     <ClCompile Include="CEventListener.cpp">
       <Filter>Scripts\Event</Filter>
     </ClCompile>
+    <ClCompile Include="CBossLV.cpp">
+      <Filter>Scripts\Level\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="CStartLightTex.cpp">
+      <Filter>Scripts\Level\Boss\Start</Filter>
+    </ClCompile>
+    <ClCompile Include="CStartTex.cpp">
+      <Filter>Scripts\Level\Boss\Start</Filter>
+    </ClCompile>
+    <ClCompile Include="CBossOpeningTex.cpp">
+      <Filter>Scripts\Level\Boss\Start</Filter>
+    </ClCompile>
+    <ClCompile Include="CWarningBGTex.cpp">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -760,6 +790,15 @@
     </Filter>
     <Filter Include="Scripts\Render\Video">
       <UniqueIdentifier>{049e4cf4-e10a-4955-92b2-85660b849773}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Level\Boss">
+      <UniqueIdentifier>{40db8202-2a85-403a-b7d5-8cf3282b3c99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Level\Boss\Start">
+      <UniqueIdentifier>{a66e19c6-027d-40d3-8627-7bb749d391e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Level\Boss\Warning">
+      <UniqueIdentifier>{e1da6493-4a53-4817-a476-da1f9611c3fe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
