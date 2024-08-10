@@ -7,6 +7,8 @@
 #include "CPlayerScript.h"
 #include "CPlayerController.h"
 #include "CEventListener.h"
+#include "CSpawnSpotScript.h"
+#include "CTutorialTarget.h"
 #include "CArona.h"
 
 static string state = "";
@@ -43,6 +45,7 @@ CTutorialGameMode::CTutorialGameMode()
 
 	// 움직임 이벤트 체크
 	AppendSeperateLine();
+	AppendScriptParam("Basic Move", SCRIPT_PARAM::STRING, nullptr);
 	AppendScriptParam("StopTimer", SCRIPT_PARAM::FLOAT, &m_fStopTimeLength);
 	AppendScriptParam("Front", SCRIPT_PARAM::BOOL, &m_bMoveFront);
 	AppendScriptParam("Back", SCRIPT_PARAM::BOOL, &m_bMoveBack);
@@ -52,7 +55,17 @@ CTutorialGameMode::CTutorialGameMode()
 
 	// 대쉬 이벤트 체크
 	AppendSeperateLine();
+	AppendScriptParam("Dash", SCRIPT_PARAM::STRING, nullptr);
 	AppendScriptParam("DashCnt", SCRIPT_PARAM::INT, &m_iDashCnt);
+
+	// 사격 이벤트 체크
+	AppendSeperateLine();
+	AppendScriptParam("Shooting", SCRIPT_PARAM::STRING, nullptr);
+	for (int i = 0; i < SPAWNERCNT; i++)
+	{
+		string msg = "Target" + to_string(i + 1);
+		AppendScriptParam(msg, SCRIPT_PARAM::BOOL, &m_arrIsMonsterDestroy[i]);
+	}
 }
 
 CTutorialGameMode::~CTutorialGameMode()
@@ -76,8 +89,15 @@ void CTutorialGameMode::FirstEnd()
 
 void CTutorialGameMode::begin()
 {
-	CLevel* pLevel	= CLevelMgr::GetInst()->GetCurrentLevel();
-	m_pArona		= pLevel->FindObjectByName(AronaName)->GetScript<CArona>();
+	CLevel* pLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+	m_pArona	   = pLevel->FindObjectByName(AronaName)->GetScript<CArona>();
+	for (int i = 0; i < SPAWNERCNT; i++)
+	{
+		wstring name = L"TargetSpawner" + to_wstring(i + 1);
+		m_vecTargetSpawners.push_back(pLevel->FindObjectByName(name)->GetScript<CSpawnSpotScript>());
+		m_vecTargetSpawners[i]->RegisterObject();
+		m_arrIsMonsterDestroy[i] = false;
+	}
 	m_pWall			= pLevel->FindObjectByName(L"WALL_SHOOT");
 	m_pPlayer		= pLevel->FindObjectByName(PlayerName);
 	m_pPlayerScript = m_pPlayer->GetScript<CPlayerScript>();
@@ -242,6 +262,11 @@ void CTutorialGameMode::ShootingWaitEnd()
 
 void CTutorialGameMode::ShootingBegin()
 {
+	m_pArona->Message("Remove all targets", 360, -1.f);
+	for (size_t i = 0; i < SPAWNERCNT; i++)
+	{
+		m_vecTutorialTargets.push_back(m_vecTargetSpawners[i]->SpawnObject()->GetScript<CTutorialTarget>());
+	}
 }
 
 int CTutorialGameMode::ShootingUpdate()
@@ -251,9 +276,15 @@ int CTutorialGameMode::ShootingUpdate()
 	// 2. 공중 2개 생성
 	// 3. 바닥, 공중 2개 생성
 
-	if (IsClear(TutorialEvents::Shooting))
+	bool bClear = true;
+	for (size_t i = 0; i < SPAWNERCNT; i++)
 	{
-		return m_FSM->GetCurState() + 1;
+		bClear &= m_arrIsMonsterDestroy[i]; //= m_vecTutorialTargets[i]->IsHit();
+	}
+
+	if (bClear)
+	{
+		return (int)TutorialState::CoverHighWait;
 	}
 
 	return m_FSM->GetCurState();
@@ -267,6 +298,7 @@ void CTutorialGameMode::ShootingEnd()
 	m_pWall->Transform()->Lerp(vPos, false, Vec3(), false, Vec3(), 2.f);
 
 	m_pArona->Message("Congratulations!", 340, 3.f);
+	Clear(TutorialEvents::Shooting);
 }
 
 void CTutorialGameMode::CoverHighWaitBegin()
@@ -275,7 +307,12 @@ void CTutorialGameMode::CoverHighWaitBegin()
 
 int CTutorialGameMode::CoverHighWaitUpdate()
 {
-	return 0;
+	if (m_pEvents[(UINT)TutorialEvents::CoverHigh]->HasTargets())
+	{
+		return (int)TutorialState::CoverHigh;
+	}
+
+	return m_FSM->GetCurState();
 }
 
 void CTutorialGameMode::CoverHighWaitEnd()
@@ -284,6 +321,7 @@ void CTutorialGameMode::CoverHighWaitEnd()
 
 void CTutorialGameMode::CoverHighBegin()
 {
+	m_pArona->Message("Terminate Enemy", 350.f);
 }
 
 int CTutorialGameMode::CoverHighUpdate()
@@ -305,7 +343,7 @@ void CTutorialGameMode::CoverJumpWaitBegin()
 
 int CTutorialGameMode::CoverJumpWaitUpdate()
 {
-	return 0;
+	return m_FSM->GetCurState();
 }
 
 void CTutorialGameMode::CoverJumpWaitEnd()
@@ -335,7 +373,7 @@ void CTutorialGameMode::CoverLowWaitBegin()
 
 int CTutorialGameMode::CoverLowWaitUpdate()
 {
-	return 0;
+	return m_FSM->GetCurState();
 }
 
 void CTutorialGameMode::CoverLowWaitEnd()
@@ -365,7 +403,7 @@ void CTutorialGameMode::EndingWaitBegin()
 
 int CTutorialGameMode::EndingWaitUpdate()
 {
-	return 0;
+	return m_FSM->GetCurState();
 }
 
 void CTutorialGameMode::EndingWaitEnd()

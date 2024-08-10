@@ -235,7 +235,6 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CDamagedDirection.h" />
     <ClInclude Include="CShootingRecoil.h" />
     <ClInclude Include="CShootingSystemScript.h" />
-    <ClInclude Include="CShootingTutorialEvent.h" />
     <ClInclude Include="CSkillIcon.h" />
     <ClInclude Include="CSpawnSpotScript.h" />
     <ClInclude Include="CSpringArm.h" />
@@ -325,7 +324,6 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CDamagedDirection.cpp" />
     <ClCompile Include="CShootingRecoil.cpp" />
     <ClCompile Include="CShootingSystemScript.cpp" />
-    <ClCompile Include="CShootingTutorialEvent.cpp" />
     <ClCompile Include="CSkillIcon.cpp" />
     <ClCompile Include="CSpawnSpotScript.cpp" />
     <ClCompile Include="CSpringArm.cpp" />

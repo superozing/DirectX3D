@@ -31,6 +31,8 @@ enum class TutorialEvents
 	Ending,
 	END
 };
+
+#define SPAWNERCNT 5
 class CTutorialGameMode : public CGameMode<CTutorialGameMode>
 {
 	// BasicMoveState
@@ -48,6 +50,16 @@ private:
 	// DashState
 private:
 	int m_iDashCnt;
+
+	// ShootingState
+private:
+	bool							m_arrIsMonsterDestroy[SPAWNERCNT];
+	vector<class CSpawnSpotScript*> m_vecTargetSpawners;
+	vector<class CTutorialTarget*>	m_vecTutorialTargets;
+
+	// CoverHigh
+private:
+	vector<class CGameObject*> m_vecCoverHighMonsters;
 
 private:
 	class CArona*		 m_pArona;

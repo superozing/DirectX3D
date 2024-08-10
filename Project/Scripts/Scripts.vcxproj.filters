@@ -136,9 +136,6 @@
     <ClInclude Include="CCoverUI.h">
       <Filter>Scripts\Event\Cover</Filter>
     </ClInclude>
-    <ClInclude Include="CShootingTutorialEvent.h">
-      <Filter>Scripts\Event\Tutorial</Filter>
-    </ClInclude>
     <ClInclude Include="CArona.h">
       <Filter>Scripts\UI\Image\Arona</Filter>
     </ClInclude>
@@ -401,9 +398,6 @@
     </ClCompile>
     <ClCompile Include="CCoverUI.cpp">
       <Filter>Scripts\Event\Cover</Filter>
-    </ClCompile>
-    <ClCompile Include="CShootingTutorialEvent.cpp">
-      <Filter>Scripts\Event\Tutorial</Filter>
     </ClCompile>
     <ClCompile Include="CArona.cpp">
       <Filter>Scripts\UI\Image\Arona</Filter>

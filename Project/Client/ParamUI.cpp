@@ -122,6 +122,8 @@ bool ParamUI::Param_STRING(string* _Data, const string& _Desc, float _min, float
 						   const string& _Tooltip)
 {
 	ImGui::Text(_Desc.c_str());
+	if (!_Data)
+		return false;
 	ImGui::SameLine();
 
 	char szID[256] = {};

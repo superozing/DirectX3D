@@ -41,7 +41,6 @@
 #include "CTextUI.h"
 #include "CCoverArea.h"
 #include "CCoverUI.h"
-#include "CShootingTutorialEvent.h"
 #include "CArona.h"
 #include "CLevelTransition.h"
 #include "CBloomScript.h"
@@ -117,7 +116,6 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CTextUI");
 	_vec.push_back(L"CCoverArea");
 	_vec.push_back(L"CCoverUI");
-	_vec.push_back(L"CShootingTutorialEvent");
 	_vec.push_back(L"CArona");
 	_vec.push_back(L"CLevelTransition");
 	_vec.push_back(L"CBloomScript");
@@ -234,8 +232,6 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CCoverArea;
 	if (L"CCoverUI" == _strScriptName)
 		return new CCoverUI;
-	if (L"CShootingTutorialEvent" == _strScriptName)
-		return new CShootingTutorialEvent;
 	if (L"CArona" == _strScriptName)
 		return new CArona;
 	if (L"CLevelTransition" == _strScriptName)
@@ -426,9 +422,6 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::COVERUI:
 		return new CCoverUI;
-		break;
-	case (UINT)SCRIPT_TYPE::SHOOTINGTUTORIALEVENT:
-		return new CShootingTutorialEvent;
 		break;
 	case (UINT)SCRIPT_TYPE::ARONA:
 		return new CArona;
@@ -692,10 +685,6 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::COVERUI:
 		return L"CCoverUI";
-		break;
-
-	case SCRIPT_TYPE::SHOOTINGTUTORIALEVENT:
-		return L"CShootingTutorialEvent";
 		break;
 
 	case SCRIPT_TYPE::ARONA:
