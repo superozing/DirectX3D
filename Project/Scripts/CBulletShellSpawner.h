@@ -1,4 +1,5 @@
 ﻿#pragma once
+
 class CBulletShellSpawner
 {
 	// - 탄피 생성기
@@ -14,12 +15,16 @@ private:
 
 	class CMemoryPoolMgrScript* m_PoolMgr;
 
+	class CShootingSystemScript* m_pShootingSystem;
+
 public:
-	virtual void begin() ;
-	virtual void tick() ;
+	virtual void begin();
+	virtual void tick();
 
 public:
 	void SpawnBulletShell(CGameObject* _pObj, float _ActiveTime = 2.f);
+
+	void SetShootingSystem(class CShootingSystemScript* _pShootingSystem) { m_pShootingSystem = _pShootingSystem; }
 
 public:
 	CLONE(CBulletShellSpawner);

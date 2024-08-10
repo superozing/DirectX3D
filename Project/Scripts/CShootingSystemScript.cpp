@@ -22,6 +22,8 @@ CShootingSystemScript::CShootingSystemScript()
 	, m_iMaxAmmo(40)
 	, m_bShootAvailable(true)
 {
+	AppendScriptParam("m_RightRatio", SCRIPT_PARAM::FLOAT, &m_RightRatio);
+	AppendScriptParam("m_UpRatio", SCRIPT_PARAM::FLOAT, &m_UpRatio);
 }
 
 CShootingSystemScript::~CShootingSystemScript()
@@ -188,6 +190,9 @@ void CShootingSystemScript::begin()
 	m_pBulletHitParticleSpawner->begin();
 	m_pDamageFontSpawner->begin();
 	m_pBulletWarheadSpawner->begin();
+
+
+	m_pBulletShellSpawner->SetShootingSystem(this);
 
 	// 윈도우 좌표 기준이기 떄문에 반동을 주기 위해 y를 -방향으로 세팅
 	m_pShootingRecoil->SetShootingRecoilValue(Vec2(0.f, -0.f)); // 나중에 수치를 조정할 필요가 있음.

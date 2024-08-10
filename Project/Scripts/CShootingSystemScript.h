@@ -54,6 +54,10 @@ private:
 	vector<Ptr<CSound>> m_vecSound;
 
 private:
+	float m_RightRatio = 3.f;
+	float m_UpRatio = 6.f;
+
+private:
 	void SetShootAvailable(bool _Available) { m_bShootAvailable = _Available; }
 
 
@@ -88,4 +92,6 @@ public:
 	CLONE(CShootingSystemScript);
 	CShootingSystemScript();
 	~CShootingSystemScript();
+
+	friend class CBulletShellSpawner;
 };
