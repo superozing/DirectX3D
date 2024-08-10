@@ -1,6 +1,8 @@
 ﻿#include "pch.h"
 #include "CSmokeScript.h"
 
+#include <Engine\CLevelMgr.h>
+#include <Engine\CLevel.h>
 #include <Engine\CGameObject.h>
 
 CSmokeScript::CSmokeScript()

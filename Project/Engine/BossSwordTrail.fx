@@ -52,7 +52,7 @@ float4 PS_BossSwordTrail(VS_OUT _in) : SV_Target
     float4 vColor = (float4) 0.f;
     
     float2 uv = _in.vUV;
-    
+   
     uv = uv + float2(0.f, g_float_0);
     
     float2 NewUV = clamp(uv, 0.f, 1.f);

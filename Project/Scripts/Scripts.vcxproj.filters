@@ -130,11 +130,20 @@
     <ClInclude Include="strings.h">
       <Filter>Default</Filter>
     </ClInclude>
+    <ClInclude Include="CWelcomeTutorialEvent.h">
+      <Filter>Scripts\Event\Tutorial</Filter>
+    </ClInclude>
     <ClInclude Include="CCoverArea.h">
       <Filter>Scripts\Event\Cover</Filter>
     </ClInclude>
     <ClInclude Include="CCoverUI.h">
       <Filter>Scripts\Event\Cover</Filter>
+    </ClInclude>
+    <ClInclude Include="CDashEventListener.h">
+      <Filter>Scripts\Event\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="CShootingTutorialEvent.h">
+      <Filter>Scripts\Event\Tutorial</Filter>
     </ClInclude>
     <ClInclude Include="CArona.h">
       <Filter>Scripts\UI\Image\Arona</Filter>
@@ -202,6 +211,9 @@
     <ClInclude Include="CTutorialTarget.h">
       <Filter>Scripts\Level\Object</Filter>
     </ClInclude>
+    <ClInclude Include="CEventListener.h">
+      <Filter>BassClass</Filter>
+    </ClInclude>
     <ClInclude Include="CShootingSystemScript.h">
       <Filter>Scripts\ShootingSystem</Filter>
     </ClInclude>
@@ -256,8 +268,20 @@
     <ClInclude Include="CTutorialEndingEvent.h">
       <Filter>Scripts\Event\Tutorial</Filter>
     </ClInclude>
-    <ClInclude Include="CEventListener.h">
-      <Filter>Scripts\Event</Filter>
+    <ClInclude Include="CBossSwordTrailScript.h">
+      <Filter>Scripts\Boss\BossSwordTrail</Filter>
+    </ClInclude>
+    <ClInclude Include="CBossSwordBeamScript.h">
+      <Filter>Scripts\Boss\BossSwordBeam</Filter>
+    </ClInclude>
+    <ClInclude Include="CSBSmokeScript.h">
+      <Filter>Scripts\Particle\Smoke</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletLineScript.h">
+      <Filter>Scripts\Particle\BulletLine</Filter>
+    </ClInclude>
+    <ClInclude Include="CGroundCrackScript.h">
+      <Filter>Scripts\Boss\BossMissile\GroundDecal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -393,11 +417,20 @@
     <ClCompile Include="CTextUI.cpp">
       <Filter>Scripts\DefaultUI\Text</Filter>
     </ClCompile>
+    <ClCompile Include="CWelcomeTutorialEvent.cpp">
+      <Filter>Scripts\Event\Tutorial</Filter>
+    </ClCompile>
     <ClCompile Include="CCoverArea.cpp">
       <Filter>Scripts\Event\Cover</Filter>
     </ClCompile>
     <ClCompile Include="CCoverUI.cpp">
       <Filter>Scripts\Event\Cover</Filter>
+    </ClCompile>
+    <ClCompile Include="CDashEventListener.cpp">
+      <Filter>Scripts\Event\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="CShootingTutorialEvent.cpp">
+      <Filter>Scripts\Event\Tutorial</Filter>
     </ClCompile>
     <ClCompile Include="CArona.cpp">
       <Filter>Scripts\UI\Image\Arona</Filter>
@@ -462,6 +495,9 @@
     <ClCompile Include="CTutorialTarget.cpp">
       <Filter>Scripts\Level\Object</Filter>
     </ClCompile>
+    <ClCompile Include="CEventListener.cpp">
+      <Filter>BassClass</Filter>
+    </ClCompile>
     <ClCompile Include="CShootingSystemScript.cpp">
       <Filter>Scripts\ShootingSystem</Filter>
     </ClCompile>
@@ -516,19 +552,43 @@
     <ClCompile Include="CTutorialEndingEvent.cpp">
       <Filter>Scripts\Event\Tutorial</Filter>
     </ClCompile>
-    <ClCompile Include="CEventListener.cpp">
-      <Filter>Scripts\Event</Filter>
+    <ClCompile Include="CBossSwordTrailScript.cpp">
+      <Filter>Scripts\Boss\BossSwordTrail</Filter>
+    </ClCompile>
+    <ClCompile Include="CBossSwordBeamScript.cpp">
+      <Filter>Scripts\Boss\BossSwordBeam</Filter>
+    </ClCompile>
+    <ClCompile Include="CSBSmokeScript.cpp">
+      <Filter>Scripts\Particle\Smoke</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletLineScript.cpp">
+      <Filter>Scripts\Particle\BulletLine</Filter>
+    </ClCompile>
+    <ClCompile Include="CGroundCrackScript.cpp">
+      <Filter>Scripts\Boss\BossMissile\GroundDecal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
       <UniqueIdentifier>{4f2f6642-c0f0-494a-9d81-0124398fdb95}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts">
-      <UniqueIdentifier>{af5c3808-4d30-476b-b2ab-d844558017d2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ScriptMgr">
       <UniqueIdentifier>{b42de7fc-e585-40cf-9c65-79e91e2b59d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RoRStateMachine">
+      <UniqueIdentifier>{86892923-b05a-4177-80fe-2f8aebe68887}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BassClass">
+      <UniqueIdentifier>{1a747eb1-b753-4dc8-8cdb-b6d7e92eb4b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{b19b5cc4-3a58-46b1-8df6-1a2f0512312f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShootingSystem">
+      <UniqueIdentifier>{ffaf2495-1187-4ac8-9200-ed4a440ab4c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts">
+      <UniqueIdentifier>{af5c3808-4d30-476b-b2ab-d844558017d2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Lecture">
       <UniqueIdentifier>{4d80f442-9779-4484-a06b-9160bbb02db5}</UniqueIdentifier>
@@ -545,6 +605,15 @@
     <Filter Include="Scripts\Manager\Time">
       <UniqueIdentifier>{9b5c2bf2-2681-42e9-b790-8b4aba881373}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\Manager\PhysXMgr">
+      <UniqueIdentifier>{85af28fd-4fb9-47c5-b0d2-100e2dae1ca2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager\MemoryPool">
+      <UniqueIdentifier>{3ff61ac7-4bc8-4dcf-83a8-b5f5804064c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager\ChildCollider">
+      <UniqueIdentifier>{91f4b420-6a0c-4a29-82e2-ba2cfff80f0b}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Scripts\DefaultUI">
       <UniqueIdentifier>{949d4c11-e4a8-4d1b-8d31-20202e70f9dc}</UniqueIdentifier>
     </Filter>
@@ -557,14 +626,14 @@
     <Filter Include="Scripts\DefaultUI\Panel">
       <UniqueIdentifier>{239cd80d-3287-4e2a-b122-6447aac778ae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\DefaultUI\Digit">
+      <UniqueIdentifier>{a54a44e5-4b4d-449e-a95d-efb9b31d2933}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\DefaultUI\Text">
+      <UniqueIdentifier>{d164c685-bd4d-4505-9170-4423d05d4dfa}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Scripts\UI">
       <UniqueIdentifier>{cb982d5c-819e-4bec-aaf2-577bd2b82280}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="RoRStateMachine">
-      <UniqueIdentifier>{86892923-b05a-4177-80fe-2f8aebe68887}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Manager\PhysXMgr">
-      <UniqueIdentifier>{85af28fd-4fb9-47c5-b0d2-100e2dae1ca2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\UI\Image">
       <UniqueIdentifier>{4c858d1c-f5d2-4b6f-b0de-d26a867f62bb}</UniqueIdentifier>
@@ -584,6 +653,15 @@
     <Filter Include="Scripts\UI\Image\WeaponInfo">
       <UniqueIdentifier>{ed447ae9-d1c6-45b7-92af-d3e4daf01425}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\UI\Image\Dialog">
+      <UniqueIdentifier>{6fcd3b18-efc0-4025-8cec-ebede13f7e18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\Image\DamagedDirection">
+      <UniqueIdentifier>{e273dbd1-bdcc-4219-a846-990944988409}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\Image\Arona">
+      <UniqueIdentifier>{f3178af6-eaa4-40d8-96d6-89bad58dc55d}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Scripts\UI\ProgressBar">
       <UniqueIdentifier>{e8beecff-8dff-41b8-8ccd-cd06f6600281}</UniqueIdentifier>
     </Filter>
@@ -602,14 +680,8 @@
     <Filter Include="Scripts\UI\ProgressBar\SkillIcon">
       <UniqueIdentifier>{904a9997-8eee-4e3b-ab19-3f8341cb7464}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Manager\MemoryPool">
-      <UniqueIdentifier>{3ff61ac7-4bc8-4dcf-83a8-b5f5804064c8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\Player">
       <UniqueIdentifier>{996f1445-7d4f-4fb9-9dd7-21e6a4e6d11b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\UI\Image\Dialog">
-      <UniqueIdentifier>{6fcd3b18-efc0-4025-8cec-ebede13f7e18}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Boss">
       <UniqueIdentifier>{f1743032-7d9a-42a0-8a97-a473347181c1}</UniqueIdentifier>
@@ -617,29 +689,23 @@
     <Filter Include="Scripts\Boss\BossMissile">
       <UniqueIdentifier>{9b1b2bfe-d0f3-48fd-991e-768b8f6a434a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\UI\Image\DamagedDirection">
-      <UniqueIdentifier>{e273dbd1-bdcc-4219-a846-990944988409}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\Boss\MegaFist">
       <UniqueIdentifier>{9c149e25-d8c2-48b9-a482-f90aa4f51703}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Event">
-      <UniqueIdentifier>{1ab1a3c0-46e2-4f9e-ad0a-58265382538b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Level">
-      <UniqueIdentifier>{1666e7d2-5bff-44b3-88d6-1f00319dfd14}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Particle">
-      <UniqueIdentifier>{9d9687ac-349f-4c6b-ad84-3025114fc4f8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Boss\Shield">
       <UniqueIdentifier>{a0052aaa-9034-432e-8844-71c27e389912}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\DefaultUI\Digit">
-      <UniqueIdentifier>{a54a44e5-4b4d-449e-a95d-efb9b31d2933}</UniqueIdentifier>
+    <Filter Include="Scripts\Boss\SmokeWave">
+      <UniqueIdentifier>{0747c7b4-8198-40f8-9524-7430eeae9a83}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\DefaultUI\Text">
-      <UniqueIdentifier>{d164c685-bd4d-4505-9170-4423d05d4dfa}</UniqueIdentifier>
+    <Filter Include="Scripts\Boss\BossSwordTrail">
+      <UniqueIdentifier>{6b0fbec3-e67a-41b0-8c2d-a9dcde3ee120}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Boss\BossSwordBeam">
+      <UniqueIdentifier>{a6a1729c-7876-450a-b8d1-6f7506c31e46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Event">
+      <UniqueIdentifier>{1ab1a3c0-46e2-4f9e-ad0a-58265382538b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Event\Tutorial">
       <UniqueIdentifier>{4ce8883f-5102-4f0f-b612-f2e0a48f6cae}</UniqueIdentifier>
@@ -647,20 +713,23 @@
     <Filter Include="Scripts\Event\Cover">
       <UniqueIdentifier>{b90d22b9-9236-4dc4-88d5-171a281eac75}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\UI\Image\Arona">
-      <UniqueIdentifier>{f3178af6-eaa4-40d8-96d6-89bad58dc55d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Render">
-      <UniqueIdentifier>{0762eb02-039f-4ca1-b175-1cb76811f77f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Render\Bloom">
-      <UniqueIdentifier>{e0650fde-3550-45bd-975b-b391261791ef}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Render\Gray">
-      <UniqueIdentifier>{f85a7339-471c-45d0-a7c2-709588d3012c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\Event\Spawn">
       <UniqueIdentifier>{a7f8c14b-59b7-4999-838e-2b119296a608}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Level">
+      <UniqueIdentifier>{1666e7d2-5bff-44b3-88d6-1f00319dfd14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Level\Title">
+      <UniqueIdentifier>{0fafadc0-1e54-4215-ae3c-380b409a2357}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Level\Tutorial">
+      <UniqueIdentifier>{e70a7466-06a9-4bd2-b0e0-c80b3721b9d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Level\Object">
+      <UniqueIdentifier>{caa1c5dd-0086-4dfb-a00e-f60c6df53e65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Particle">
+      <UniqueIdentifier>{9d9687ac-349f-4c6b-ad84-3025114fc4f8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Particle\Boost">
       <UniqueIdentifier>{1daf374c-fd58-439d-9616-2da40af4cbcf}</UniqueIdentifier>
@@ -671,44 +740,35 @@
     <Filter Include="Scripts\Particle\MuzzleFlash">
       <UniqueIdentifier>{fb4dd360-df15-4e31-9a66-fd2bc62d8289}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\ShootingSystem">
-      <UniqueIdentifier>{564b496f-afda-4920-8547-d025a47b8175}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Level\Title">
-      <UniqueIdentifier>{0fafadc0-1e54-4215-ae3c-380b409a2357}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Level\Tutorial">
-      <UniqueIdentifier>{e70a7466-06a9-4bd2-b0e0-c80b3721b9d6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="BassClass">
-      <UniqueIdentifier>{1a747eb1-b753-4dc8-8cdb-b6d7e92eb4b0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Player">
-      <UniqueIdentifier>{b19b5cc4-3a58-46b1-8df6-1a2f0512312f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Level\Object">
-      <UniqueIdentifier>{caa1c5dd-0086-4dfb-a00e-f60c6df53e65}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Render\AfterImage">
-      <UniqueIdentifier>{99f4cea7-18fd-4509-956c-5c2ef7a671e7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShootingSystem">
-      <UniqueIdentifier>{ffaf2495-1187-4ac8-9200-ed4a440ab4c5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Boss\SmokeWave">
-      <UniqueIdentifier>{0747c7b4-8198-40f8-9524-7430eeae9a83}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Manager\ChildCollider">
-      <UniqueIdentifier>{91f4b420-6a0c-4a29-82e2-ba2cfff80f0b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\Particle\Minigun">
       <UniqueIdentifier>{c31d5188-d6f8-47aa-a12f-42f3cae74a99}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Particle\Smoke">
       <UniqueIdentifier>{4817127e-0f21-4666-9593-f034b78ef244}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\Render">
+      <UniqueIdentifier>{0762eb02-039f-4ca1-b175-1cb76811f77f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Render\Bloom">
+      <UniqueIdentifier>{e0650fde-3550-45bd-975b-b391261791ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Render\Gray">
+      <UniqueIdentifier>{f85a7339-471c-45d0-a7c2-709588d3012c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Render\AfterImage">
+      <UniqueIdentifier>{99f4cea7-18fd-4509-956c-5c2ef7a671e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\ShootingSystem">
+      <UniqueIdentifier>{564b496f-afda-4920-8547-d025a47b8175}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Scripts\Test">
       <UniqueIdentifier>{6c3cc7b2-0f38-43dc-bf8a-c55783846644}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Particle\BulletLine">
+      <UniqueIdentifier>{cc42cb81-78b5-468c-a168-3021c5e7d12c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Boss\BossMissile\GroundDecal">
+      <UniqueIdentifier>{c98a1cf1-7fa0-4fc0-9092-58f90f05515e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

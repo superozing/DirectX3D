@@ -121,7 +121,11 @@ void CEventListener::BeginOverlap(CPhysX* _Collider, CGameObject* _OtherObj, CPh
 		{
 			if (scripts[j]->GetScriptType() == (UINT)m_vecTargets[i])
 			{
-				m_iInternalTargetCnt++;
+				if (m_listInternaltarget.end() ==
+					find(m_listInternaltarget.begin(), m_listInternaltarget.end(), scripts[j]))
+				{
+					m_listInternaltarget.push_back(scripts[j]);
+				}
 				return;
 			}
 		}
@@ -137,7 +141,11 @@ void CEventListener::EndOverlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhys
 		{
 			if (scripts[j]->GetScriptType() == (UINT)m_vecTargets[i])
 			{
-				m_iInternalTargetCnt--;
+				auto iter = find(m_listInternaltarget.begin(), m_listInternaltarget.end(), scripts[j]);
+				if (m_listInternaltarget.end() != iter)
+				{
+					iter = m_listInternaltarget.erase(iter);
+				}
 				return;
 			}
 		}

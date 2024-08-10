@@ -62,7 +62,7 @@ void CBossBulletShellSpawner::SpawnBossBulletShell(CGameObject* _pObj, float _Ac
 	// + 90도 회전이 추가되어야 탄피가 앞쪽을 바라본다.
 	pBulletShell->Transform()->SetRelativeRotation(WeaponMat.Up());
 
-	float random = CRandomMgr::GetInst()->GetRandomFloat(75.f, 155.f);
+	float random = CRandomMgr::GetInst()->GetRandomFloat(15.f, 20.f);
 
 	// 힘 주기
 	auto pBulletScript = pBulletShell->GetScript<CBulletScript>(); // WeaponMat.Front()

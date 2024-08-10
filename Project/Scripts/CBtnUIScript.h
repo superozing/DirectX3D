@@ -4,6 +4,12 @@
 typedef void (*BtnCallBack)(void);
 typedef void (CEntity::*DelegateFunc)(void);
 
+enum class BtnUISoundType
+{
+	Click,
+	End,
+};
+
 enum class ButtonState
 {
 	Normal,
@@ -44,6 +50,8 @@ private:
 	// 델리게이트(맴버함수 포인터, 객체)
 	CEntity*	 m_Inst;
 	DelegateFunc m_Delegate;
+
+	vector<Ptr<CSound>> m_vecSound;
 
 public:
 	ButtonState GetState() { return m_State; }

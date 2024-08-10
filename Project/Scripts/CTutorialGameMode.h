@@ -20,6 +20,15 @@ enum class TutorialState
 	END,
 };
 
+enum class TutorialGameModeSoundType
+{
+	TutorialStart,
+	BGM,
+	DoorOpen,
+	END
+};
+
+
 enum class TutorialEvents
 {
 	BasicMove,
@@ -70,6 +79,7 @@ private:
 	class CEventListener* m_pEvents[(UINT)TutorialEvents::END];
 
 	Ptr<CSound> m_pBGM;
+	vector<Ptr<CSound>> m_vecTutorialGameModeSound;
 
 private:
 	bool m_arrIsClear[(UINT)TutorialEvents::END];

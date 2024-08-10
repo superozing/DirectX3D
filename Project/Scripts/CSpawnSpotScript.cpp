@@ -244,7 +244,7 @@ CGameObject* CSpawnSpotScript::SpawnObject()
 	Prefabidx = CMemoryPoolMgr::GetInst()->GetPrefabLayer(pObj);
 
 	GamePlayStatic::SpawnGameObject(pObj, Prefabidx);
-
+	m_vecSound[(UINT)SpawnSpotSoundType::Spawn]->Play(1, 5.f, false);
 	return pObj;
 }
 
@@ -408,6 +408,10 @@ void CSpawnSpotScript::begin()
 	GetOwner()->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, ModeColor);
 	GetOwner()->MeshRender()->GetMaterial(1)->SetScalarParam(SCALAR_PARAM::VEC4_0, ModeColor);
 	m_vecPrefabKey.resize(1);
+
+	// Spawn Sound Init
+	m_vecSound.resize((UINT)SpawnSpotSoundType::End);
+	m_vecSound[(UINT)SpawnSpotSoundType::Spawn] = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_CH0069_Public_Smoke);
 }
 
 #include <Engine\CKeyMgr.h>

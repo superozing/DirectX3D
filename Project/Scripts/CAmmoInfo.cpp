@@ -14,15 +14,11 @@
 CAmmoInfo::CAmmoInfo()
 	: CTextUI((UINT)SCRIPT_TYPE::AMMOINFO)
 {
-	AppendScriptParam("CurAmmo", SCRIPT_PARAM::INT, &m_iCurAmmo);
-	AppendScriptParam("MaxAmmo", SCRIPT_PARAM::INT, &m_iMaxAmmo);
 }
 
 CAmmoInfo::CAmmoInfo(const CAmmoInfo& _Origin)
 	: CTextUI((UINT)SCRIPT_TYPE::AMMOINFO)
 {
-	AppendScriptParam("CurAmmo", SCRIPT_PARAM::INT, &m_iCurAmmo);
-	AppendScriptParam("MaxAmmo", SCRIPT_PARAM::INT, &m_iMaxAmmo);
 }
 
 CAmmoInfo::~CAmmoInfo()

@@ -78,6 +78,10 @@ void CBtnUIScript::begin()
 	m_vCColor = m_vNColor;
 	m_State	  = ButtonState::Normal;
 	GetOwner()->MeshRender()->GetDynamicMaterial(0);
+
+	// Button Sound Init
+	m_vecSound.resize((UINT)BtnUISoundType::End);
+	m_vecSound[(UINT)BtnUISoundType::Click] = CAssetMgr::GetInst()->Load<CSound>(SNDUI_Button_Touch);
 }
 
 void CBtnUIScript::tick()
@@ -167,6 +171,8 @@ void CBtnUIScript::LBtnClicked()
 	m_vCSz	  = m_vNSz;
 	m_vCColor = m_vNColor;
 	m_State	  = ButtonState::Normal;
+
+	m_vecSound[(UINT)BtnUISoundType::Click]->Play(1);
 
 	if (m_AllowCallFunc)
 	{
