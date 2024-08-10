@@ -283,6 +283,9 @@
     <ClInclude Include="CGroundCrackScript.h">
       <Filter>Scripts\Boss\BossMissile\GroundDecal</Filter>
     </ClInclude>
+    <ClInclude Include="CCubePushScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -566,6 +569,9 @@
     </ClCompile>
     <ClCompile Include="CGroundCrackScript.cpp">
       <Filter>Scripts\Boss\BossMissile\GroundDecal</Filter>
+    </ClCompile>
+    <ClCompile Include="CCubePushScript.cpp">
+      <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

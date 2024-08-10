@@ -198,6 +198,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CCoverLowEventListener.h" />
     <ClInclude Include="CCoverUI.h" />
     <ClInclude Include="CCrosshair.h" />
+    <ClInclude Include="CCubePushScript.h" />
     <ClInclude Include="CDamagedDirectionMgr.h" />
     <ClInclude Include="CDamageFontSpawner.h" />
     <ClInclude Include="CDashEventListener.h" />
@@ -295,6 +296,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CCoverLowEventListener.cpp" />
     <ClCompile Include="CCoverUI.cpp" />
     <ClCompile Include="CCrosshair.cpp" />
+    <ClCompile Include="CCubePushScript.cpp" />
     <ClCompile Include="CDamagedDirectionMgr.cpp" />
     <ClCompile Include="CDamageFontSpawner.cpp" />
     <ClCompile Include="CDashEventListener.cpp" />

@@ -80,6 +80,7 @@
 #include "CSBSmokeScript.h"
 #include "CBulletLineScript.h"
 #include "CGroundCrackScript.h"
+#include "CCubePushScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -162,6 +163,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CSBSmokeScript");
 	_vec.push_back(L"CBulletLineScript");
 	_vec.push_back(L"CGroundCrackScript");
+	_vec.push_back(L"CCubePushScript");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -324,6 +326,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CBulletLineScript;
 	if (L"CGroundCrackScript" == _strScriptName)
 		return new CGroundCrackScript;
+	if (L"CCubePushScript" == _strScriptName)
+		return new CCubePushScript;
 	return nullptr;
 }
 
@@ -567,6 +571,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::GROUNDCRACKSCRIPT:
 		return new CGroundCrackScript;
+		break;
+	case (UINT)SCRIPT_TYPE::CUBEPUSHSCRIPT:
+		return new CCubePushScript;
 		break;
 	}
 	return nullptr;
@@ -890,6 +897,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::GROUNDCRACKSCRIPT:
 		return L"CGroundCrackScript";
+		break;
+
+	case SCRIPT_TYPE::CUBEPUSHSCRIPT:
+		return L"CCubePushScript";
 		break;
 
 	}
