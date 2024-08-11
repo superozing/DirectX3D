@@ -500,6 +500,7 @@ void CPlayerScript::CameraMove()
 				state == (int)PLAYER_STATE::SkillDash)
 			{
 				// 마우스 x 이동에 따라 카메라 y축 회전
+				CamRotSpeed = 10.f;
 				if (vMouseDiff.x > 0.f)
 					vOffset.x += CPlayerController::Sensitivity * CamRotSpeed * DT;
 				else if (vMouseDiff.x < 0.f)
