@@ -67,7 +67,7 @@ private:
 
 	// CoverHigh
 private:
-	vector<class CGameObject*> m_vecCoverHighMonsters;
+	vector<class CGameObject*> m_vecCoverMonsters;
 
 	// Finish
 private:
