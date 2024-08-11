@@ -419,6 +419,7 @@ enum class FONT_TYPE
 	MAIN_BOLD,
 	ARIAL,
 	MAPLE,
+	RSU_BOLD,
 
 	END
 };

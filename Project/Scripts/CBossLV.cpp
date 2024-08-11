@@ -109,7 +109,10 @@ void CBossLV::LoadSoundAsset()
 	pSound							 = CAssetMgr::GetInst()->Load<CSound>(SNDUI_Alarm);
 	m_SFX[(UINT)BossLV_SFX::WARNING] = pSound;
 
-	pSound							 = CAssetMgr::GetInst()->Load<CSound>(SNDUI_Victory_ST_01);
+	pSound								 = CAssetMgr::GetInst()->Load<CSound>(SNDUI_Victory_ST_01);
+	m_SFX[(UINT)BossLV_SFX::VICTORY_BGM] = pSound;
+
+	pSound							 = CAssetMgr::GetInst()->Load<CSound>(SNDAzusa_Tactic_Victory_1);
 	m_SFX[(UINT)BossLV_SFX::VICTORY] = pSound;
 }
 
@@ -273,7 +276,6 @@ void CBossLV::PlayingOutEnd()
 
 void CBossLV::EndingInBegin()
 {
-	m_SFX[(UINT)BossLV_SFX::VICTORY]->Play(1.f, 1.f);
 }
 
 int CBossLV::EndingInUpdate()
@@ -290,6 +292,7 @@ int CBossLV::EndingInUpdate()
 
 void CBossLV::EndingInEnd()
 {
+	m_SFX[(UINT)BossLV_SFX::VICTORY_BGM]->Play(1.f, 1.f);
 	m_Acctime = 0.f;
 }
 
@@ -316,6 +319,7 @@ void CBossLV::EndingDelayEnd()
 
 void CBossLV::EndingOutBegin()
 {
+	m_SFX[(UINT)BossLV_SFX::VICTORY]->Play(1.f, 1.f);
 }
 
 int CBossLV::EndingOutUpdate()
@@ -332,12 +336,13 @@ int CBossLV::EndingOutUpdate()
 
 void CBossLV::EndingOutEnd()
 {
-	m_BGM[(UINT)BossLV_BGM::PARTY_TIME]->Play(1.f, 1.f, true);
 	m_Acctime = 0.f;
 }
 
 void CBossLV::EndingCutInBegin()
 {
+	m_BGM[(UINT)BossLV_BGM::PARTY_TIME]->Play(1.f, 1.f);
+
 	Vec3 vPos = m_Kaiten->Transform()->GetWorldPos();
 	Vec3 vDir = m_Kaiten->Transform()->GetWorldDir(DIR_TYPE::FRONT);
 

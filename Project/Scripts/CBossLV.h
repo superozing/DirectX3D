@@ -28,6 +28,7 @@ enum class BossLV_SFX
 {
 	START,
 	WARNING,
+	VICTORY_BGM,
 	VICTORY,
 	END,
 };
@@ -40,6 +41,7 @@ private:
 	class CGameObject* m_Player;
 	CGameObject*	   m_Kaiten;
 	CGameObject*	   m_HUD;
+	CGameObject*	   m_BossUI;
 
 	float m_OpeningInTime;
 	float m_OpeningDelayTime;
