@@ -123,8 +123,12 @@ private:
 	class CMuzzleFlashScript*	 m_pMuzzleFlash;
 	class CBulletLineSpawner*	 m_pBulletLine;
 
+	bool m_bPlaying;
+
 public:
 	CShootingSystemScript* GetShootingSystem() { return m_pShootingSystem; }
+
+	void SetPlayable(bool _b) { m_bPlaying = _b; }
 
 public:
 #pragma region StatusFunc

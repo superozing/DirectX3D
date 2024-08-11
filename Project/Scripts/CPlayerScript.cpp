@@ -32,6 +32,7 @@ CPlayerScript::CPlayerScript()
 	, m_tStatus{}
 	, m_pSpringArm(nullptr)
 	, m_pMuzzleFlash(nullptr)
+	, m_bPlaying(true)
 {
 	// 디버깅용
 	AppendScriptParam("CurState", SCRIPT_PARAM::STRING, (void*)&state);
@@ -52,6 +53,7 @@ CPlayerScript::CPlayerScript(const CPlayerScript& _origin)
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
 	, m_tStatus(_origin.m_tStatus)
 	, m_mSpringInfos(_origin.m_mSpringInfos)
+	, m_bPlaying(_origin.m_bPlaying)
 {
 	// m_FSM = _origin.m_FSM->Clone(this);
 
@@ -353,6 +355,9 @@ void CPlayerScript::begin()
 
 void CPlayerScript::tick()
 {
+	if (!m_bPlaying)
+		return;
+
 	// FSM Update,
 	m_FSM->Update();
 	state = magic_enum::enum_name((PLAYER_STATE)m_FSM->GetCurState());

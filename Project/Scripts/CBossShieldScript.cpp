@@ -69,7 +69,10 @@ void CBossShieldScript::CheckInnerShield()
 	MeshRender()->GetDynamicMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, m_ShieldTime);
 
 	if (idx > 149 && m_ShieldTime <= 0.f)
+	{
+		m_Parent->GetScript<CBossScript>()->GetSound((UINT)BOSS_SOUND::EX3)->Stop();
 		GamePlayStatic::DestroyGameObject(GetOwner());
+	}
 }
 
 void CBossShieldScript::CheckOutsideShield()

@@ -99,7 +99,7 @@ void CBossMissileScript::OnHit()
 {
 	m_Target->GetScript<CPlayerScript>()->Hit(m_Damage);
 
-	CLogMgr::GetInst()->AddLog(Log_Level::INFO, L"Azusa hit");
+	// CLogMgr::GetInst()->AddLog(Log_Level::INFO, L"Azusa hit");
 }
 
 void CBossMissileScript::InitBossMissileInfo(CGameObject* _Shooter, CGameObject* _Target, Vec3 _Pos, float _InitSpeed,
@@ -143,6 +143,8 @@ void CBossMissileScript::BeginOverlap(CPhysX* _Collider, CGameObject* _OtherObj,
 
 	if (IsRedZone())
 		OnHit();
+
+	m_Shooter->GetScript<CBossScript>()->GetSound((UINT)BOSS_SOUND::EX2_MUZZLE)->Play(1.f, 1.f, true);
 
 	m_IsAlive = false;
 }
