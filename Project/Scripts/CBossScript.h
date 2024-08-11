@@ -69,6 +69,8 @@ private:
 	bool  m_Raycast;
 	float m_RaycastInterval;
 
+	class CBossLV* m_GameMode;
+
 	// @@디버그용
 	int	 m_EXsType; // 현재 선택된 EX 타입
 	bool m_bDebug;

@@ -18,6 +18,8 @@
 #include "CBulletLineScript.h"
 #include "CParticleSpawnScript.h"
 
+#include "CBossLV.h"
+
 static string DebugState = "";
 
 CBossScript::CBossScript()
@@ -130,10 +132,15 @@ void CBossScript::begin()
 
 	m_BulletShell = new CBossBulletShellSpawner;
 	GetOwner()->AddComponent(m_BulletShell);
+
+	m_GameMode = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"GameMode")->GetScript<CBossLV>();
 }
 
 void CBossScript::tick()
 {
+	if ((int)BossLV_STATE::Playing != m_GameMode->GetCurLVState())
+		return;
+
 	m_FSM->Update();
 	DebugState = magic_enum::enum_name((BOSS_STATE)m_FSM->GetCurState());
 

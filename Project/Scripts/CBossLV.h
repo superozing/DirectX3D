@@ -19,6 +19,8 @@ enum class BossLV_STATE
 class CBossLV : public CGameMode<CBossLV>
 {
 private:
+	class CGameObject* m_Player;
+
 	float m_OpeningInTime;
 	float m_OpeningDelayTime;
 	float m_OpeningOutTime;

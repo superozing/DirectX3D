@@ -5,11 +5,13 @@
 #include <Engine\CLevel.h>
 
 #include "CRoRStateMachine.h"
+#include "CPlayerScript.h"
 
 static string state = "";
 
 CBossLV::CBossLV()
 	: CGameMode((UINT)SCRIPT_TYPE::BOSSLV)
+	, m_Player(nullptr)
 	, m_OpeningInTime(0.5f)
 	, m_OpeningDelayTime(1.f)
 	, m_OpeningOutTime(0.5f)
@@ -45,6 +47,9 @@ int CBossLV::GetCurLVState()
 void CBossLV::begin()
 {
 	m_FSM->Begin();
+
+	m_Player = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Azusa");
+	m_Player->GetScript<CPlayerScript>()->SetPlayable(false);
 }
 
 void CBossLV::tick()
@@ -160,6 +165,7 @@ void CBossLV::PlayingDelayEnd()
 
 void CBossLV::PlayingBegin()
 {
+	m_Player->GetScript<CPlayerScript>()->SetPlayable(true);
 }
 
 int CBossLV::PlayingUpdate()
