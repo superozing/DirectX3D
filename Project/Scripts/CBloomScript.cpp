@@ -19,6 +19,18 @@ CBloomScript::CBloomScript()
 	AppendScriptParam("Bloom Threshold", SCRIPT_PARAM::FLOAT, &(m_Info.fThreshold), 0.f, 1.f, false, "", true);
 }
 
+CBloomScript::CBloomScript(const CBloomScript&)
+	: CScript((UINT)SCRIPT_TYPE::BLOOMSCRIPT)
+{
+	m_Buffer		   = CDevice::GetInst()->GetStructuredBuffer(SB_TYPE::BLOOM);
+	m_Info.vBloomColor = Vec4(1.f, 1.f, 1.f, 1.f);
+	m_Info.fThreshold  = 0.8f;
+
+	AppendScriptParam("Bloom Activate", SCRIPT_PARAM::BOOL, &(m_bBloomActive));
+	AppendScriptParam("Bloom Color", SCRIPT_PARAM::COLOR, &(m_Info.vBloomColor));
+	AppendScriptParam("Bloom Threshold", SCRIPT_PARAM::FLOAT, &(m_Info.fThreshold), 0.f, 1.f, false, "", true);
+}
+
 CBloomScript::~CBloomScript()
 {
 }
