@@ -154,7 +154,7 @@ void CPlayerScript::InitSpringArmSetting()
 
 	info.Type										= true;
 	info.fMaxDistance								= 70.f;
-	info.fCamSpeed									= 20.f;
+	info.fCamSpeed									= 30.f;
 	info.fCamRotSpeed								= 20.f;
 	info.vDir										= Vec3(0.f, 180.f, 0.f);
 	info.vOffsetPos									= Vec2(50.f, 75.f);
@@ -205,7 +205,7 @@ void CPlayerScript::InitSpringArmSetting()
 	info.fCamSpeed							= 20.f;
 	info.fCamRotSpeed						= 20.f;
 	info.vDir								= Vec3(0.f, 180.f, 0.f);
-	info.vOffsetPos							= Vec2(50.f, 50.f);
+	info.vOffsetPos							= Vec2(50.f, 75.f);
 	m_mSpringInfos[PLAYER_STATE::SkillDash] = info;
 
 	info.Type								 = false;
@@ -221,7 +221,7 @@ void CPlayerScript::InitSpringArmSetting()
 	info.fCamSpeed								= 50.f;
 	info.fCamRotSpeed							= 20.f;
 	info.vDir									= Vec3(0.f, 130.f, 0.f);
-	info.vOffsetPos								= Vec2(0.f, 50.f);
+	info.vOffsetPos								= Vec2(0.f, 75.f);
 	m_mSpringInfos[PLAYER_STATE::SkillCallsign] = info;
 
 	info.Type							  = true;
@@ -229,7 +229,7 @@ void CPlayerScript::InitSpringArmSetting()
 	info.fCamSpeed						  = 20.f;
 	info.fCamRotSpeed					  = 20.f;
 	info.vDir							  = Vec3(0.f, 160.f, 0.f);
-	info.vOffsetPos						  = Vec2(50.f, 50.f);
+	info.vOffsetPos						  = Vec2(50.f, 75.f);
 	m_mSpringInfos[PLAYER_STATE::SkillEX] = info;
 
 	info.Type							   = false;
@@ -237,7 +237,7 @@ void CPlayerScript::InitSpringArmSetting()
 	info.fCamSpeed						   = 10.f;
 	info.fCamRotSpeed					   = 5.f;
 	info.vDir							   = Vec3(0.f, 180.f, 0.f);
-	info.vOffsetPos						   = Vec2(50.f, 50.f);
+	info.vOffsetPos						   = Vec2(50.f, 75.f);
 	m_mSpringInfos[PLAYER_STATE::MoveJump] = info;
 
 	info.Type								   = false;
@@ -245,7 +245,7 @@ void CPlayerScript::InitSpringArmSetting()
 	info.fCamSpeed							   = 10.f;
 	info.fCamRotSpeed						   = 5.f;
 	info.vDir								   = Vec3(0.f, 0.f, 0.f);
-	info.vOffsetPos							   = Vec2(0.f, 50.f);
+	info.vOffsetPos							   = Vec2(0.f, 75.f);
 	m_mSpringInfos[PLAYER_STATE::VictoryStart] = info;
 }
 
