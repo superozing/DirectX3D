@@ -756,6 +756,7 @@ void CPlayerScript::MoveJumpEnd()
 	Vec3 vPos = Transform()->GetRelativePos();
 	vPos.y	  = m_fJumpY;
 	Transform()->SetRelativePos(vPos);
+	SetCoverType(CoverType::Normal);
 }
 
 #pragma endregion
