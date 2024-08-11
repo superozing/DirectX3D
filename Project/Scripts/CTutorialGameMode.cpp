@@ -222,6 +222,7 @@ int CTutorialGameMode::DashWaitUpdate()
 {
 	if (m_pEvents[(UINT)TutorialEvents::Dash]->HasTargets())
 	{
+		GamePlayStatic::DestroyGameObject(m_pEvents[(UINT)TutorialEvents::Dash]->GetOwner());
 		return (int)TutorialState::Dash;
 	}
 
@@ -267,6 +268,7 @@ int CTutorialGameMode::ShootingWaitUpdate()
 {
 	if (m_pEvents[(UINT)TutorialEvents::Shooting]->HasTargets())
 	{
+		GamePlayStatic::DestroyGameObject(m_pEvents[(UINT)TutorialEvents::Shooting]->GetOwner());
 		return (int)TutorialState::Shooting;
 	}
 
@@ -329,6 +331,7 @@ int CTutorialGameMode::CoverHighWaitUpdate()
 {
 	if (m_pEvents[(UINT)TutorialEvents::CoverHigh]->HasTargets())
 	{
+		GamePlayStatic::DestroyGameObject(m_pEvents[(UINT)TutorialEvents::CoverHigh]->GetOwner());
 		return (int)TutorialState::CoverHigh;
 	}
 
