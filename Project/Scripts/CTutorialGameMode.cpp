@@ -10,6 +10,7 @@
 #include "CSpawnSpotScript.h"
 #include "CTutorialTarget.h"
 #include "CArona.h"
+#include "CFinishBalloon.h"
 
 static string state = "";
 
@@ -98,9 +99,10 @@ void CTutorialGameMode::begin()
 		m_vecTargetSpawners[i]->RegisterObject();
 		m_arrIsMonsterDestroy[i] = false;
 	}
-	m_pWall			= pLevel->FindObjectByName(L"WALL_SHOOT");
-	m_pPlayer		= pLevel->FindObjectByName(PlayerName);
-	m_pPlayerScript = m_pPlayer->GetScript<CPlayerScript>();
+	m_pWall			 = pLevel->FindObjectByName(L"WALL_SHOOT");
+	m_pPlayer		 = pLevel->FindObjectByName(PlayerName);
+	m_pPlayerScript	 = m_pPlayer->GetScript<CPlayerScript>();
+	m_pFinishBalloon = pLevel->FindObjectByName(L"Balloon")->GetScript<CFinishBalloon>();
 
 	m_pBGM = CAssetMgr::GetInst()->Load<CSound>(SNDKaiten_Screw_BGM);
 	m_pBGM->Play(0, 1.f);
@@ -418,6 +420,7 @@ int CTutorialGameMode::CoverLowUpdate()
 
 void CTutorialGameMode::CoverLowEnd()
 {
+	m_pFinishBalloon->Up();
 }
 
 void CTutorialGameMode::EndingWaitBegin()

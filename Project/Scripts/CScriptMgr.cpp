@@ -80,6 +80,7 @@
 #include "CVideoPlayer.h"
 #include "CEventListener.h"
 #include "CCubePushScript.h"
+#include "CFinishBalloon.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -162,6 +163,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CVideoPlayer");
 	_vec.push_back(L"CEventListener");
 	_vec.push_back(L"CCubePushScript");
+	_vec.push_back(L"CFinishBalloon");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -324,6 +326,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CEventListener;
 	if (L"CCubePushScript" == _strScriptName)
 		return new CCubePushScript;
+	if (L"CFinishBalloon" == _strScriptName)
+		return new CFinishBalloon;
 	return nullptr;
 }
 
@@ -567,6 +571,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::CUBEPUSHSCRIPT:
 		return new CCubePushScript;
+		break;
+	case (UINT)SCRIPT_TYPE::FINISHBALLOON:
+		return new CFinishBalloon;
 		break;
 	}
 	return nullptr;
@@ -890,6 +897,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::CUBEPUSHSCRIPT:
 		return L"CCubePushScript";
+		break;
+
+	case SCRIPT_TYPE::FINISHBALLOON:
+		return L"CFinishBalloon";
 		break;
 
 	}

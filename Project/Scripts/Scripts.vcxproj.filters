@@ -280,6 +280,9 @@
     <ClInclude Include="CCubePushScript.h">
       <Filter>Scripts\Phys</Filter>
     </ClInclude>
+    <ClInclude Include="CFinishBalloon.h">
+      <Filter>Scripts\Level</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -560,6 +563,9 @@
     </ClCompile>
     <ClCompile Include="CCubePushScript.cpp">
       <Filter>Scripts\Phys</Filter>
+    </ClCompile>
+    <ClCompile Include="CFinishBalloon.cpp">
+      <Filter>Scripts\Level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
