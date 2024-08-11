@@ -277,9 +277,6 @@
     <ClInclude Include="CEventListener.h">
       <Filter>Scripts\Event</Filter>
     </ClInclude>
-    <ClInclude Include="CTurretScript.h">
-      <Filter>Monster</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -557,9 +554,6 @@
     </ClCompile>
     <ClCompile Include="CEventListener.cpp">
       <Filter>Scripts\Event</Filter>
-    </ClCompile>
-    <ClCompile Include="CTurretScript.cpp">
-      <Filter>Monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
