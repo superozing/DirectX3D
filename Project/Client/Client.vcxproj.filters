@@ -338,9 +338,6 @@
     <ClInclude Include="PhysXUI.h">
       <Filter>02. UI\3. Inspector\ComponentUI\PhysX</Filter>
     </ClInclude>
-    <ClInclude Include="MapTutorial.h">
-      <Filter>01. Manager\03. CreateTempLevel</Filter>
-    </ClInclude>
     <ClInclude Include="ModelUI.h">
       <Filter>02. UI\9. Model</Filter>
     </ClInclude>
@@ -529,9 +526,6 @@
     </ClCompile>
     <ClCompile Include="PhysXUI.cpp">
       <Filter>02. UI\3. Inspector\ComponentUI\PhysX</Filter>
-    </ClCompile>
-    <ClCompile Include="MapTutorial.cpp">
-      <Filter>01. Manager\03. CreateTempLevel</Filter>
     </ClCompile>
     <ClCompile Include="ModelUI.cpp">
       <Filter>02. UI\9. Model</Filter>

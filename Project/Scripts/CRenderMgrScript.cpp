@@ -59,6 +59,13 @@ CRenderMgrScript::CRenderMgrScript()
 	AppendScriptParam("CA::CropOffset", SCRIPT_PARAM::VEC2, &(RENDERMGR->m_CAInfo.CropOffset), 0.01f, 1.f, false, {},
 					  true);
 
+	// Vignette
+	AppendMemberFunction("Vignette::Activate", SCRIPT_PARAM::FUNC_MEMBER, "Switch Vignette",
+						 std::bind(&CRenderMgr::SwitchVignette, RENDERMGR));
+
+	AppendScriptParam("Vignette Active", SCRIPT_PARAM::BOOL, &(RENDERMGR->m_VignetteInfo.bVignetteRender));
+	AppendScriptParam("Vignette Power", SCRIPT_PARAM::INT, &(RENDERMGR->m_VignetteInfo.iVignettePower));
+
 	AppendScriptParam("GRAY::bGrayWeight", SCRIPT_PARAM::BOOL, &(RENDERMGR->m_bGrayWeight));
 }
 
