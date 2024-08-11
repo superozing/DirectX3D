@@ -1,8 +1,8 @@
 ﻿#pragma once
-#include <Engine/CScript.h>
 
-// TODO : 몬스터 스크립트 생기면 상속 바꿔야 함
-class CTutorialTarget : public CScript
+#include "CMonsterScript.h"
+
+class CTutorialTarget : public CMonsterScript
 {
 public:
 	bool m_bGroundType;
