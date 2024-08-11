@@ -45,25 +45,27 @@ void CDamageRay::tick()
 
 			if (pScript != nullptr)
 			{
-				pScript->SetDamagedMove(false);
+				pScript->SetDamagedMove(true);
 				pScript->Hit(RayDamage);
 			}
 		}
 	}
 }
 
-void CDamageRay::SaveToFile(FILE* _File)
-{
-}
-
 void CDamageRay::SaveToFile(ofstream& fout)
 {
 }
 
-void CDamageRay::LoadFromFile(FILE* _File)
+void CDamageRay::LoadFromFile(ifstream& fin)
 {
+	Vec4 tLaserColor;
 }
 
-void CDamageRay::LoadFromFile(ifstream& fin)
+void CDamageRay::UpdateData()
+{
+	
+}
+
+void CDamageRay::Clear()
 {
 }
