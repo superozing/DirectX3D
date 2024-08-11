@@ -634,7 +634,7 @@ void CCamera::Cromatic_Aberration()
 	if (false == RefInfo.Activate)
 		return;
 
-	RefInfo.RemainTime -= DT;
+	RefInfo.RemainTime -= DTd_ENGINE;
 	if (0.f >= RefInfo.RemainTime)
 	{
 		RefInfo.Activate   = false;

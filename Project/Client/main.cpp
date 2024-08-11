@@ -108,6 +108,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	// CUITempLevel::CreateTempLevel();
 	// MapTestLevel::CreateMapTestLevel();
 
+	SetWindowText(CEngine::GetInst()->GetMainWind(), L"RoR BlueArchive");
+
 	string levelPath = CEnvMgr::GetInst()->GetLevelRelativePath();
 	string abPath	 = ToString(CPathMgr::GetContentPath()) + levelPath;
 	if (levelPath == "" || !exists(abPath))

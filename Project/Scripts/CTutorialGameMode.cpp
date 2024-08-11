@@ -10,6 +10,7 @@
 #include "CSpawnSpotScript.h"
 #include "CTutorialTarget.h"
 #include "CArona.h"
+#include "CFinishBalloon.h"
 
 static string state = "";
 
@@ -90,7 +91,7 @@ void CTutorialGameMode::FirstEnd()
 void CTutorialGameMode::begin()
 {
 	CLevel* pLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-	m_pArona = pLevel->FindObjectByName(AronaName)->GetScript<CArona>();
+	m_pArona	   = pLevel->FindObjectByName(AronaName)->GetScript<CArona>();
 	for (int i = 0; i < SPAWNERCNT; i++)
 	{
 		wstring name = L"TargetSpawner" + to_wstring(i + 1);
@@ -98,14 +99,15 @@ void CTutorialGameMode::begin()
 		m_vecTargetSpawners[i]->RegisterObject();
 		m_arrIsMonsterDestroy[i] = false;
 	}
-	m_pWall = pLevel->FindObjectByName(L"WALL_SHOOT");
-	m_pPlayer = pLevel->FindObjectByName(PlayerName);
-	m_pPlayerScript = m_pPlayer->GetScript<CPlayerScript>();
+	m_pWall			 = pLevel->FindObjectByName(L"WALL_SHOOT");
+	m_pPlayer		 = pLevel->FindObjectByName(PlayerName);
+	m_pPlayerScript	 = m_pPlayer->GetScript<CPlayerScript>();
+	m_pFinishBalloon = pLevel->FindObjectByName(L"Balloon")->GetScript<CFinishBalloon>();
 
 	m_pBGM = CAssetMgr::GetInst()->Load<CSound>(SNDKaiten_Screw_BGM);
 	m_pBGM->Play(0, 1.f);
 
-	m_pEvents[(UINT)TutorialEvents::Dash] = pLevel->FindObjectByName(L"DASH EVENT")->GetScript<CEventListener>();
+	m_pEvents[(UINT)TutorialEvents::Dash]	  = pLevel->FindObjectByName(L"DASH EVENT")->GetScript<CEventListener>();
 	m_pEvents[(UINT)TutorialEvents::Shooting] = pLevel->FindObjectByName(L"SHOOT EVENT")->GetScript<CEventListener>();
 	m_pEvents[(UINT)TutorialEvents::CoverHigh] =
 		pLevel->FindObjectByName(L"COVER HIGH EVENT")->GetScript<CEventListener>();
@@ -114,21 +116,18 @@ void CTutorialGameMode::begin()
 	m_pEvents[(UINT)TutorialEvents::CoverLow] =
 		pLevel->FindObjectByName(L"COVER LOW EVENT")->GetScript<CEventListener>();
 
-
 	m_pArona = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(AronaName)->GetScript<CArona>();
-	m_pWall = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"WALL_SHOOT");
-
-	m_arrIsClear[0] = true;
-	m_arrIsClear[1] = true;
-	m_arrIsClear[2] = true;
+	m_pWall	 = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"WALL_SHOOT");
 
 	// TutorialGameModeSound init
 	m_vecTutorialGameModeSound.resize((UINT)TutorialGameModeSoundType::END);
 
 	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::TutorialStart] =
 		CAssetMgr::GetInst()->Load<CSound>(SNDUI_START_01);
-	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::BGM] = CAssetMgr::GetInst()->Load<CSound>(SNDKaiten_Screw_BGM);
-	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::DoorOpen] = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Door_Open);
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::BGM] =
+		CAssetMgr::GetInst()->Load<CSound>(SNDKaiten_Screw_BGM);
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::DoorOpen] =
+		CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Door_Open);
 
 	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::TutorialStart]->Play(1);
 	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::BGM]->Play(0, .4f);
@@ -147,25 +146,25 @@ void CTutorialGameMode::BasicMoveBegin()
 {
 	m_fStopTimer = 0.f;
 	m_bMoveFront = false;
-	m_bMoveLeft = false;
-	m_bMoveBack = false;
+	m_bMoveLeft	 = false;
+	m_bMoveBack	 = false;
 	m_bMoveRight = false;
 
-	m_tPlayerKeyInfo = CPlayerController::GetInfo();
+	m_tPlayerKeyInfo   = CPlayerController::GetInfo();
 	PlayerKeyInfo info = {};
-	info.Front = KEY::KEY_END;
-	info.Right = KEY::KEY_END;
-	info.Back = KEY::KEY_END;
-	info.Left = KEY::KEY_END;
-	info.Dash = KEY::KEY_END;
-	info.Attack = KEY::KEY_END;
-	info.Zoom = KEY::KEY_END;
-	info.Reload = KEY::KEY_END;
-	info.Cover = KEY::KEY_END;
-	info.Skill = KEY::KEY_END;
-	info.Jump = KEY::KEY_END;
-	info.Flip = KEY::KEY_END;
-	info.Sensitivity = 0;
+	info.Front		   = KEY::KEY_END;
+	info.Right		   = KEY::KEY_END;
+	info.Back		   = KEY::KEY_END;
+	info.Left		   = KEY::KEY_END;
+	info.Dash		   = KEY::KEY_END;
+	info.Attack		   = KEY::KEY_END;
+	info.Zoom		   = KEY::KEY_END;
+	info.Reload		   = KEY::KEY_END;
+	info.Cover		   = KEY::KEY_END;
+	info.Skill		   = KEY::KEY_END;
+	info.Jump		   = KEY::KEY_END;
+	info.Flip		   = KEY::KEY_END;
+	info.Sensitivity   = 0;
 
 	PrevPos = m_pPlayer->Transform()->GetRelativePos();
 
@@ -225,6 +224,7 @@ int CTutorialGameMode::DashWaitUpdate()
 {
 	if (m_pEvents[(UINT)TutorialEvents::Dash]->HasTargets())
 	{
+		GamePlayStatic::DestroyGameObject(m_pEvents[(UINT)TutorialEvents::Dash]->GetOwner());
 		return (int)TutorialState::Dash;
 	}
 
@@ -270,6 +270,7 @@ int CTutorialGameMode::ShootingWaitUpdate()
 {
 	if (m_pEvents[(UINT)TutorialEvents::Shooting]->HasTargets())
 	{
+		GamePlayStatic::DestroyGameObject(m_pEvents[(UINT)TutorialEvents::Shooting]->GetOwner());
 		return (int)TutorialState::Shooting;
 	}
 
@@ -312,7 +313,7 @@ int CTutorialGameMode::ShootingUpdate()
 
 void CTutorialGameMode::ShootingEnd()
 {
-	Vec3 vPos = m_pWall->Transform()->GetRelativePos();
+	Vec3 vPos	= m_pWall->Transform()->GetRelativePos();
 	Vec3 vScale = m_pWall->Transform()->GetRelativeScale();
 	vPos.x += vScale.z;
 	m_pWall->Transform()->Lerp(vPos, false, Vec3(), false, Vec3(), 2.f);
@@ -332,6 +333,7 @@ int CTutorialGameMode::CoverHighWaitUpdate()
 {
 	if (m_pEvents[(UINT)TutorialEvents::CoverHigh]->HasTargets())
 	{
+		GamePlayStatic::DestroyGameObject(m_pEvents[(UINT)TutorialEvents::CoverHigh]->GetOwner());
 		return (int)TutorialState::CoverHigh;
 	}
 
@@ -418,6 +420,7 @@ int CTutorialGameMode::CoverLowUpdate()
 
 void CTutorialGameMode::CoverLowEnd()
 {
+	m_pFinishBalloon->Up();
 }
 
 void CTutorialGameMode::EndingWaitBegin()

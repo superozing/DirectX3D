@@ -28,7 +28,7 @@
 void CPlayerScript::NormalIdleBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::NormalIdle);
-	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalIdle]);
+	// m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalIdle]);
 }
 
 int CPlayerScript::NormalIdleUpdate()
@@ -759,6 +759,7 @@ void CPlayerScript::MoveJumpEnd()
 	Vec3 vPos = Transform()->GetRelativePos();
 	vPos.y	  = m_fJumpY;
 	Transform()->SetRelativePos(vPos);
+	SetCoverType(CoverType::Normal);
 }
 
 #pragma endregion

@@ -35,6 +35,8 @@ CRenderMgrScript::CRenderMgrScript()
 	AppendScriptParam("Bloom::Global Bloom", SCRIPT_PARAM::BOOL, &(RENDERMGR->m_GlobalBloomInfo.GlobalBloom));
 	AppendScriptParam("Bloom::Global Threshold", SCRIPT_PARAM::FLOAT,
 					  &(RENDERMGR->m_GlobalBloomInfo.GlbalBloomSetting.fThreshold), 0.f, 1.f, false, "", true);
+	AppendScriptParam("Bloom::Global Original Color", SCRIPT_PARAM::BOOL,
+					  &(RENDERMGR->m_GlobalBloomInfo.GlbalBloomSetting.bUseOriginalColor));
 	AppendScriptParam("Bloom::Global Color", SCRIPT_PARAM::COLOR,
 					  &(RENDERMGR->m_GlobalBloomInfo.GlbalBloomSetting.vBloomColor));
 
@@ -43,14 +45,19 @@ CRenderMgrScript::CRenderMgrScript()
 					  "", true);
 
 	// CromaticAberration
-	AppendMemberFunction("CA::PushEvent", SCRIPT_PARAM::FUNC_MEMBER, "PushEvent",
-						 std::bind(&CRenderMgr::PushCAEvent, RENDERMGR));
+	AppendMemberFunction("CA::TestEvent", SCRIPT_PARAM::FUNC_MEMBER, "TestEvent",
+						 std::bind(&CRenderMgrScript::CATestEvent, this));
+	AppendMemberFunction("CA::ShortEvent", SCRIPT_PARAM::FUNC_MEMBER, "ShortEvent",
+						 std::bind(&CRenderMgrScript::CAShortEvent, this));
+	AppendMemberFunction("CA::LongEvent", SCRIPT_PARAM::FUNC_MEMBER, "LongEvent",
+						 std::bind(&CRenderMgrScript::CALongEvent, this));
 	AppendScriptParam("CA::Activate", SCRIPT_PARAM::BOOL, &(RENDERMGR->m_CAInfo.Activate));
 	AppendScriptParam("CA::Duration", SCRIPT_PARAM::FLOAT, &(RENDERMGR->m_CAInfo.Duration));
 	AppendScriptParam("CA::RedOffset", SCRIPT_PARAM::VEC2, &(RENDERMGR->m_CAInfo.MaxRedOffSet));
 	AppendScriptParam("CA::GreenOffset", SCRIPT_PARAM::VEC2, &(RENDERMGR->m_CAInfo.MaxGreenOffset));
 	AppendScriptParam("CA::BlueOffset", SCRIPT_PARAM::VEC2, &(RENDERMGR->m_CAInfo.MaxBlueOffset));
-	AppendScriptParam("CA::CropOffset", SCRIPT_PARAM::VEC2, &(RENDERMGR->m_CAInfo.CropOffset));
+	AppendScriptParam("CA::CropOffset", SCRIPT_PARAM::VEC2, &(RENDERMGR->m_CAInfo.CropOffset), 0.01f, 1.f, false, {},
+					  true);
 
 	// Vignette
 	AppendMemberFunction("Vignette::Activate", SCRIPT_PARAM::FUNC_MEMBER, "Switch Vignette",
@@ -80,4 +87,19 @@ void CRenderMgrScript::SaveToFile(FILE* _File)
 
 void CRenderMgrScript::LoadFromFile(FILE* _File)
 {
+}
+
+void CRenderMgrScript::CATestEvent()
+{
+	RENDERMGR->PushCAEvent(CA_TEST);
+}
+
+void CRenderMgrScript::CAShortEvent()
+{
+	RENDERMGR->PushCAEvent(CA_SHORT);
+}
+
+void CRenderMgrScript::CALongEvent()
+{
+	RENDERMGR->PushCAEvent(CA_LONG);
 }

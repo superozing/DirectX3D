@@ -277,8 +277,11 @@
     <ClInclude Include="CEventListener.h">
       <Filter>Scripts\Event</Filter>
     </ClInclude>
-    <ClInclude Include="CDamageRay.h">
-      <Filter>Scripts\MapObject</Filter>
+    <ClInclude Include="CCubePushScript.h">
+      <Filter>Scripts\Phys</Filter>
+    </ClInclude>
+    <ClInclude Include="CFinishBalloon.h">
+      <Filter>Scripts\Level</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -558,8 +561,11 @@
     <ClCompile Include="CEventListener.cpp">
       <Filter>Scripts\Event</Filter>
     </ClCompile>
-    <ClCompile Include="CDamageRay.cpp">
-      <Filter>Scripts\MapObject</Filter>
+    <ClCompile Include="CCubePushScript.cpp">
+      <Filter>Scripts\Phys</Filter>
+    </ClCompile>
+    <ClCompile Include="CFinishBalloon.cpp">
+      <Filter>Scripts\Level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -767,8 +773,8 @@
     <Filter Include="Scripts\Render\Video">
       <UniqueIdentifier>{049e4cf4-e10a-4955-92b2-85660b849773}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\MapObject">
-      <UniqueIdentifier>{6b54aa33-108d-4354-baf9-c06a3c3951a5}</UniqueIdentifier>
+    <Filter Include="Scripts\Phys">
+      <UniqueIdentifier>{bb33054c-aa56-4cc7-9eef-ea724457ddaf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

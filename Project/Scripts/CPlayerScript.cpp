@@ -304,7 +304,10 @@ void CPlayerScript::begin()
 
 	// 저장 재시작하면 터져서 임시로 막아둠
 	if (m_pSpringArm)
+	{
 		m_pSpringArm->SetTargetObject(CRenderMgr::GetInst()->GetMainCam()->GetOwner());
+		m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalIdle]);
+	}
 
 	m_FSM->Begin();
 
@@ -515,6 +518,7 @@ void CPlayerScript::CameraMove()
 				state == (int)PLAYER_STATE::SkillDash)
 			{
 				// 마우스 x 이동에 따라 카메라 y축 회전
+				CamRotSpeed = 10.f;
 				if (vMouseDiff.x > 0.f)
 					vOffset.x += CPlayerController::Sensitivity * CamRotSpeed * DT;
 				else if (vMouseDiff.x < 0.f)

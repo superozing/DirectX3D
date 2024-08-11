@@ -27,6 +27,21 @@ void CSpringArm::begin()
 {
 	if (!GetOwner() || !Transform() || !m_pTarget || !m_bActive)
 		return;
+	SetDistance(m_tInfo.fMaxDistance);
+
+	m_tInfo.vDir;
+	Transform()->Lerp(m_tInfo.vOffsetPos, true, m_tInfo.vDir, false, Vec3(), 0.f);
+
+	Matrix worldMat	  = Transform()->GetWorldMat();
+	Vec3   vCenterPos = Transform()->GetWorldPos();
+	Vec3   vTargetPos = m_pTarget->Transform()->GetWorldPos();
+	Vec3   vDir		  = XMVector3TransformNormal(Vec3(0.f, 0.f, 1.f), worldMat);
+
+	Vec3 vNewPos = vCenterPos + vDir * m_tInfo.fDistance;
+	Vec3 vNewDir = vCenterPos - vTargetPos;
+
+	m_pTarget->Transform()->SetRelativePos(vNewPos);
+	m_pTarget->Transform()->SetDir(vNewDir);
 }
 
 void CSpringArm::tick()
