@@ -121,11 +121,15 @@ void CTitle::BAOpenEnd()
 {
 }
 
+#include "Engine\CSound.h"
 void CTitle::BACloseBegin()
 {
 	Vec4 vColor = m_pRemnants->GetColor();
 	vColor.w	= 0.f;
 	m_pRemnants->SetColor(vColor);
+
+	auto sound = CAssetMgr::GetInst()->Load<CSound>(SNDSerika_New_Year_Title);
+	sound->Play(0, 1.f);
 }
 
 int CTitle::BACloseUpdate()
@@ -187,6 +191,9 @@ void CTitle::begin()
 	m_pBlueArchive->Draw(false);
 
 	m_FSM->Begin();
+
+	// 사운드 로드
+	CAssetMgr::GetInst()->Load<CSound>(SNDSerika_New_Year_Title);
 }
 
 void CTitle::tick()
