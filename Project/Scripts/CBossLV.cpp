@@ -18,6 +18,9 @@ CBossLV::CBossLV()
 	, m_OpeningOutTime(0.5f)
 	, m_PlayingInTime(3.f)
 	, m_PlayingDelayTime(0.5f)
+	, m_EndingInTime(0.5f)
+	, m_EndingDelayTime(1.f)
+	, m_EndingOutTime(0.5f)
 	, m_Acctime(0.f)
 	, m_BGM{}
 	, m_SFX{}
@@ -31,7 +34,10 @@ CBossLV::CBossLV()
 	FSMInit(BossLV_STATE, CBossLV, PlayingDelay);
 	FSMInit(BossLV_STATE, CBossLV, Playing);
 	FSMInit(BossLV_STATE, CBossLV, PlayingOut);
-	FSMInit(BossLV_STATE, CBossLV, Ending);
+	FSMInit(BossLV_STATE, CBossLV, EndingIn);
+	FSMInit(BossLV_STATE, CBossLV, EndingDelay);
+	FSMInit(BossLV_STATE, CBossLV, EndingOut);
+	FSMInit(BossLV_STATE, CBossLV, EndingCutIn);
 
 	AppendScriptParam("State", SCRIPT_PARAM::STRING, &state, 0.f, 0.f, true);
 }
@@ -67,6 +73,9 @@ void CBossLV::LoadSoundAsset()
 
 	pSound							 = CAssetMgr::GetInst()->Load<CSound>(SNDUI_Alarm);
 	m_SFX[(UINT)BossLV_SFX::WARNING] = pSound;
+
+	pSound							 = CAssetMgr::GetInst()->Load<CSound>(SNDUI_Victory_ST_01);
+	m_SFX[(UINT)BossLV_SFX::VICTORY] = pSound;
 }
 
 void CBossLV::begin()
@@ -79,6 +88,8 @@ void CBossLV::begin()
 
 	m_HUD = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"HUD");
 	m_HUD->Transform()->SetRelativeScale(Vec3(1.f, 0.f, 1.f));
+
+	m_Kaiten = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Kaiten");
 }
 
 void CBossLV::tick()
@@ -225,17 +236,88 @@ void CBossLV::PlayingOutEnd()
 {
 }
 
-void CBossLV::EndingBegin()
+void CBossLV::EndingInBegin()
 {
-	m_BGM[(UINT)BossLV_BGM::PARTY_TIME]->Play(1.f, 1.f);
+	m_SFX[(UINT)BossLV_SFX::VICTORY]->Play(1.f, 1.f);
 }
 
-int CBossLV::EndingUpdate()
+int CBossLV::EndingInUpdate()
+{
+	m_Acctime += DT;
+
+	if (m_Acctime >= m_EndingInTime)
+	{
+		return (int)BossLV_STATE::EndingDelay;
+	}
+
+	return m_FSM->GetCurState();
+}
+
+void CBossLV::EndingInEnd()
+{
+	m_Acctime = 0.f;
+}
+
+void CBossLV::EndingDelayBegin()
+{
+}
+
+int CBossLV::EndingDelayUpdate()
+{
+	m_Acctime += DT;
+
+	if (m_Acctime >= m_EndingDelayTime)
+	{
+		return (int)BossLV_STATE::EndingOut;
+	}
+
+	return m_FSM->GetCurState();
+}
+
+void CBossLV::EndingDelayEnd()
+{
+	m_Acctime = 0.f;
+}
+
+void CBossLV::EndingOutBegin()
+{
+}
+
+int CBossLV::EndingOutUpdate()
+{
+	m_Acctime += DT;
+
+	if (m_Acctime >= m_EndingOutTime)
+	{
+		return (int)BossLV_STATE::EndingCutIn;
+	}
+
+	return m_FSM->GetCurState();
+}
+
+void CBossLV::EndingOutEnd()
+{
+	m_BGM[(UINT)BossLV_BGM::PARTY_TIME]->Play(1.f, 1.f, true);
+	m_Acctime = 0.f;
+}
+
+void CBossLV::EndingCutInBegin()
+{
+	Vec3 vPos = m_Kaiten->Transform()->GetWorldPos();
+	Vec3 vDir = m_Kaiten->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+
+	Vec3 vNewPos = vPos + (vDir * 500.f);
+
+	m_Player->Transform()->SetRelativePos(vNewPos);
+	m_Player->Transform()->SetDir(vDir);
+	m_Player->GetScript<CPlayerScript>()->GetStateMachine()->SetCurState((int)PLAYER_STATE::VictoryStart);
+}
+
+int CBossLV::EndingCutInUpdate()
 {
 	return m_FSM->GetCurState();
 }
 
-void CBossLV::EndingEnd()
+void CBossLV::EndingCutInEnd()
 {
-	m_BGM[(UINT)BossLV_BGM::PARTY_TIME]->Stop();
 }

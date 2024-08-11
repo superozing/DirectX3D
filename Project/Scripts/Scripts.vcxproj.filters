@@ -310,6 +310,9 @@
     <ClInclude Include="CVictoryBG.h">
       <Filter>Scripts\Level\Boss\Victory</Filter>
     </ClInclude>
+    <ClInclude Include="CVictoryTex.h">
+      <Filter>Scripts\Level\Boss\Victory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -619,6 +622,9 @@
       <Filter>Scripts\Level\Boss\Warning</Filter>
     </ClCompile>
     <ClCompile Include="CVictoryBG.cpp">
+      <Filter>Scripts\Level\Boss\Victory</Filter>
+    </ClCompile>
+    <ClCompile Include="CVictoryTex.cpp">
       <Filter>Scripts\Level\Boss\Victory</Filter>
     </ClCompile>
   </ItemGroup>

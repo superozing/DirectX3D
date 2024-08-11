@@ -831,15 +831,11 @@ void CPlayerScript::VictoryStartEnd()
 
 void CPlayerScript::VictoryEndBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::VictoryEnd, 0);
+	Animator3D()->Play((int)PLAYER_STATE::VictoryEnd);
 }
 
 int CPlayerScript::VictoryEndUpdate()
 {
-	// 애니메이션 종료시 Idle상태로 전환
-	if (!Animator3D()->IsPlayable())
-		return (int)PLAYER_STATE::NormalIdle;
-
 	return m_FSM->GetCurState();
 }
 

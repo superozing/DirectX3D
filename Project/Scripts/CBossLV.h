@@ -10,7 +10,10 @@ enum class BossLV_STATE
 	PlayingDelay,
 	Playing,
 	PlayingOut,
-	Ending,
+	EndingIn,
+	EndingDelay,
+	EndingOut,
+	EndingCutIn,
 	END,
 };
 
@@ -25,6 +28,7 @@ enum class BossLV_SFX
 {
 	START,
 	WARNING,
+	VICTORY,
 	END,
 };
 
@@ -34,6 +38,7 @@ class CBossLV : public CGameMode<CBossLV>
 {
 private:
 	class CGameObject* m_Player;
+	CGameObject*	   m_Kaiten;
 	CGameObject*	   m_HUD;
 
 	float m_OpeningInTime;
@@ -42,6 +47,10 @@ private:
 
 	float m_PlayingInTime;
 	float m_PlayingDelayTime;
+
+	float m_EndingInTime;
+	float m_EndingDelayTime;
+	float m_EndingOutTime;
 
 	float m_Acctime;
 
@@ -57,6 +66,10 @@ public:
 
 	float GetPlayingInTime() { return m_PlayingInTime; }
 	float GetPlayingDelayTime() { return m_PlayingDelayTime; }
+
+	float GetEndingInTime() { return m_EndingInTime; }
+	float GetEndingDelayTime() { return m_EndingDelayTime; }
+	float GetEndingOutTime() { return m_EndingOutTime; }
 
 	float GetAccTime() { return m_Acctime; }
 
@@ -101,9 +114,21 @@ private:
 	int	 PlayingOutUpdate();
 	void PlayingOutEnd();
 
-	void EndingBegin();
-	int	 EndingUpdate();
-	void EndingEnd();
+	void EndingInBegin();
+	int	 EndingInUpdate();
+	void EndingInEnd();
+
+	void EndingDelayBegin();
+	int	 EndingDelayUpdate();
+	void EndingDelayEnd();
+
+	void EndingOutBegin();
+	int	 EndingOutUpdate();
+	void EndingOutEnd();
+
+	void EndingCutInBegin();
+	int	 EndingCutInUpdate();
+	void EndingCutInEnd();
 
 	friend class CBossOpeningTex;
 	friend class CStartTex;

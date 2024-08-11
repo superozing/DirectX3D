@@ -256,6 +256,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CTutorialGameMode.h" />
     <ClInclude Include="CTutorialTarget.h" />
     <ClInclude Include="CVictoryBG.h" />
+    <ClInclude Include="CVictoryTex.h" />
     <ClInclude Include="CVideoPlayer.h" />
     <ClInclude Include="CWallScript.h" />
     <ClInclude Include="CWarningBGTex.h" />
@@ -362,6 +363,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CTutorialGameMode.cpp" />
     <ClCompile Include="CTutorialTarget.cpp" />
     <ClCompile Include="CVictoryBG.cpp" />
+    <ClCompile Include="CVictoryTex.cpp" />
     <ClCompile Include="CVideoPlayer.cpp" />
     <ClCompile Include="CWallScript.cpp" />
     <ClCompile Include="CWarningBGTex.cpp" />
