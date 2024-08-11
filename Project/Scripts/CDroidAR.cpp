@@ -35,27 +35,25 @@ void CDroidAR::begin()
 {
 	LoadAsset();
 
+	// 제일 첫 상태로 들어가게 됨. (다른 설정을 해주지 않으면)
 	m_FSM->Begin();
+	
+	// 첫 상태를 지정
 	m_FSM->SetCurState((int)DROIDAR_STATE::NormalIdle);
 
 	m_Target = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Azusa");
+
+	m_AttackCount =	m_MaxAttackCount;
 }
 
 void CDroidAR::tick()
 {
 	m_FSM->Update();
-	DebugState = magic_enum::enum_name((BOSS_STATE)m_FSM->GetCurState());
-
-	if (m_ChaseDir)
-	{
-		Vec3 vDir = m_Target->Transform()->GetRelativePos() - Transform()->GetRelativePos();
-		Transform()->SetDir(vDir);
-	}
 
 	if ((int)DROIDAR_STATE::NormalIdle == m_FSM->GetCurState())
 	{
-		// 평타, 스킬 쿨타임 체크
-		CheckDuration();
+		// 공격 쿨타임 체크
+		CheckAttackCooldown();
 	}
 
 	// Vital 상태
@@ -67,78 +65,39 @@ void CDroidAR::LoadAsset()
 	//CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Punch);
 }
 
-void CDroidAR::CheckDuration()
+void CDroidAR::CheckAttackCooldown()
 {
-	if (!m_ActiveAttack)
+	// 공격 중이 아닌 경우
+	if (!m_IsActiveAttack)
 	{
-		m_AttDuration += DT;
+		// 공격 대기 시간 누적하기
+		m_AttCooldown += DT;
 
-		if (m_AttDuration >= m_BossStatus.ATTSpeed)
+		// 공격 대기 시간을 넘어갈 경우 공격 state로 전환
+		if (m_AttCooldown >= m_MonsterStatus.AttackMoveSpeed)
 		{
-			m_AttDuration  = 0.f;
-			m_ActiveAttack = true;
-			m_FSM->SetCurState((int)BOSS_STATE::NormalAttackStart);
+			m_AttCooldown	 = 0.f;
+			m_IsActiveAttack = true;
 		}
 	}
-
-	if (!m_ActiveEXs)
+	
+	// 공격 중인 경우
+	if (m_IsActiveAttack)
 	{
-		m_EXsDuration += DT;
-
-		if (m_EXsDuration >= m_BossStatus.EXsCoolTime)
-		{
-			m_EXsDuration = 0.f;
-			m_ActiveEXs	  = true;
-		}
-	}
-
-	if (m_ActiveEXs)
-	{
-		// m_EXsType = CRandomMgr::GetInst()->GetRandomInt(4);
-		// m_EXsType = 0;
-		switch (m_EXsType)
-		{
-		case 0:
-			m_FSM->SetCurState((int)BOSS_STATE::EXs1);
-			break;
-		case 1:
-			m_FSM->SetCurState((int)BOSS_STATE::EXs2);
-			break;
-		case 2:
-			m_FSM->SetCurState((int)BOSS_STATE::EXs3);
-			break;
-		case 3:
-			m_FSM->SetCurState((int)BOSS_STATE::EXs4);
-			break;
-		default:
-			break;
-		}
-		m_ActiveEXs = false;
-	}
-	else if (m_ActiveAttack)
-	{
-		m_FSM->SetCurState((int)BOSS_STATE::NormalAttackStart);
-		m_ActiveAttack = false;
+		m_FSM->SetCurState((int)DROIDAR_STATE::NormalAttackStart);
+		m_IsActiveAttack = false;
 	}
 }
 
 void CDroidAR::CheckVital()
 {
-	if (!m_BossStatus.IsDead && !m_BossStatus.IsGroggy && m_BossStatus.GroggyBar >= 100.f)
+	// 현재 hp가 0보다 적을 경우
+	if (m_MonsterStatus.CurHealth <= 0.f)
 	{
-		m_BossStatus.IsGroggy  = true;
-		m_BossStatus.GroggyBar = 0.f;
-	}
-
-	if (m_BossStatus.CurHP <= 0.f)
-		m_BossStatus.IsDead = true;
-
-	if (m_BossStatus.IsGroggy && !m_BossStatus.IsDead)
-		m_FSM->SetCurState((int)BOSS_STATE::VitalGroggy);
-	else if (!m_BossStatus.IsGroggy && m_BossStatus.IsDead)
+		// dead 상태로 전환
+		m_MonsterStatus.IsDead = true;
 		m_FSM->SetCurState((int)BOSS_STATE::VitalDeath);
-	else if (m_BossStatus.IsGroggy && m_BossStatus.IsDead)
-		m_FSM->SetCurState((int)BOSS_STATE::VitalGroggyDeath);
+	}
 }
 
 void CDroidAR::InitStateMachine()

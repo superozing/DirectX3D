@@ -50,12 +50,22 @@ template <typename T> class CRoRStateMachine;
 
 class CDroidAR : public CMonsterScript
 {
+	// 세 발 동안 탄창을 모두 소모한 이후 장전 모션을 가지면 될 것 같아요.
+	// 플레이어와의 거리가 일정 거리 이상 멀어질 경우,
+	// 플레이어 위치로 AttackRange 안에 들어올 때 까지 이동 시켜주어요.
 private:
 	CRoRStateMachine<CDroidAR>*		m_FSM;
-	MonsterStatus					m_BossStatus;
+	MonsterStatus					m_MonsterStatus;
+
+	// 타겟 오브젝트 (플레이어)
 	class CGameObject*				m_Target;
 	tRoRHitInfo						m_hitInfo;
 
+	int								m_AttackCount;
+	int								m_MaxAttackCount = 3;
+
+	bool							m_IsActiveAttack;
+	float							m_AttCooldown;
 
 #pragma region About State
 
@@ -117,7 +127,7 @@ public:
 
 	void LoadAsset();
 
-	void CheckDuration();
+	void CheckAttackCooldown();
 
 	void CheckVital();
 
