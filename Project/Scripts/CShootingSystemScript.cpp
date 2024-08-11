@@ -15,6 +15,7 @@
 #include "CDamageFontSpawner.h"
 #include "CBulletWarheadSpawner.h"
 #include "CBossScript.h"
+#include "CMonsterScript.h"
 
 CShootingSystemScript::CShootingSystemScript()
 	: CScript((UINT)SCRIPT_TYPE::SHOOTINGSYSTEMSCRIPT)
@@ -93,6 +94,13 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 					PxVec3(ShootDir.x, ShootDir.y, ShootDir.z), 3000.f,
 					PxVec3(hitInfo.vHitPos.x, hitInfo.vHitPos.y, hitInfo.vHitPos.z));
 			}
+
+			// 몬스터에게 데미지 주기
+			auto pScript = hitInfo.pOtherObj->GetScript<CMonsterScript>();
+
+			if (pScript)
+				pScript->TakeDamage(m_pPlayerScript->GetDamage());
+
 			m_pDamageFontSpawner->SpawnDamageFont(hitInfo.vHitPos, 10);
 			m_pBulletHitParticleSpawner->SpawnBulletHitParticle(hitInfo);
 			m_vecSound[(UINT)ShootingSystemSoundType::MonsterNormalHit]->Play(1, 1.f, true);
@@ -213,7 +221,6 @@ void CShootingSystemScript::begin()
 	m_pDamageFontSpawner->begin();
 	m_pBulletWarheadSpawner->begin();
 
-
 	m_pBulletShellSpawner->SetShootingSystem(this);
 
 	// 윈도우 좌표 기준이기 떄문에 반동을 주기 위해 y를 -방향으로 세팅
@@ -225,13 +232,12 @@ void CShootingSystemScript::begin()
 
 	Ptr<CSound> pSnd = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Old_Skill_H_Ex_02_Hit);
 	m_vecSound[(UINT)ShootingSystemSoundType::WallNormalHit] = pSnd;
-	
+
 	pSnd = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Shot_Impact_Hit_01);
 	m_vecSound[(UINT)ShootingSystemSoundType::MonsterNormalHit] = pSnd;
-	
+
 	pSnd = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Shot_Impact_Hit_02);
 	m_vecSound[(UINT)ShootingSystemSoundType::MonsterCriticalHit] = pSnd;
-
 }
 
 void CShootingSystemScript::tick()

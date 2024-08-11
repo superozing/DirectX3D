@@ -9,6 +9,10 @@
 #include "CParticleSpawnScript.h"
 #include "CPlayerScript.h"
 
+#include "CProjectileScript.h"
+
+static float DeathAfterTimer = 0.5f;
+
 void CTurret::InitStateMachine()
 {
 	m_FSM = new CRoRStateMachine<CTurret>(this, (UINT)TURRET_STATE::END);
@@ -63,11 +67,36 @@ void CTurret::VitalPanicEnd()
 
 void CTurret::VitalDeathBegin()
 {
+	Animator3D()->Play((int)TURRET_STATE::VitalDeath, 0);
+
+	Vec3 CurPos = Transform()->GetWorldPos();
+
+	CGameObject* pObj	  = CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Explode_Lite)->Instantiate();
+	int			 layeridx = pObj->GetLayerIdx();
+	GamePlayStatic::SpawnGameObject(pObj, layeridx);
+	pObj->GetScript<CParticleSpawnScript>()->SetParticleInfo(CurPos, 1.5f);
+
+	pObj	 = CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Explode)->Instantiate();
+	layeridx = pObj->GetLayerIdx();
+	GamePlayStatic::SpawnGameObject(pObj, layeridx);
+	pObj->GetScript<CParticleSpawnScript>()->SetParticleInfo(CurPos, 1.f);
 }
 
 int CTurret::VitalDeathUpdate()
 {
-	return 0;
+	int curFrm = Animator3D()->GetCurFrameIdx();
+	int maxFrm = Animator3D()->GetCurClipLength();
+
+	if (curFrm == maxFrm - 2)
+	{
+		Animator3D()->Pause(true);
+		DeathAfterTimer -= DT;
+
+		if (DeathAfterTimer <= 0.f)
+			GamePlayStatic::DestroyGameObject(this->GetOwner());
+	}
+
+	return m_FSM->GetCurState();
 }
 
 void CTurret::VitalDeathEnd()

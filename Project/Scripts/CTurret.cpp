@@ -15,11 +15,16 @@ CTurret::CTurret()
 	SetTurretInfo();
 	InitStateMachine();
 	AppendScriptParam("CurState    ", SCRIPT_PARAM::STRING, &DebugState);
+	AppendScriptParam("CurHP    ", SCRIPT_PARAM::INT, &m_tStatus.CurHealth);
 }
 
 CTurret::CTurret(const CTurret& _Origin)
 	: CMonsterScript((UINT)SCRIPT_TYPE::TURRET)
 {
+	SetTurretInfo();
+	InitStateMachine();
+	AppendScriptParam("CurState    ", SCRIPT_PARAM::STRING, &DebugState);
+	AppendScriptParam("CurHP    ", SCRIPT_PARAM::INT, &m_tStatus.CurHealth);
 }
 
 CTurret::~CTurret()
@@ -107,6 +112,6 @@ float CTurret::CalTargetDistance()
 
 void CTurret::CheckVital()
 {
-	if (this->GetCurHP() < 0.f && this->IsDeadMonster())
+	if (this->GetCurHP() <= 0.f && this->IsDeadMonster() == true)
 		m_FSM->SetCurState((int)TURRET_STATE::VitalDeath);
 }

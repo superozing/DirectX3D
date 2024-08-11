@@ -24,7 +24,7 @@ struct MonsterStatus
 
 class CMonsterScript : public CScript
 {
-private:
+protected:
 	MonsterStatus m_tStatus;
 
 public:
