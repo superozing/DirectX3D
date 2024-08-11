@@ -12,12 +12,15 @@ static string state = "";
 CBossLV::CBossLV()
 	: CGameMode((UINT)SCRIPT_TYPE::BOSSLV)
 	, m_Player(nullptr)
+	, m_HUD(nullptr)
 	, m_OpeningInTime(0.5f)
 	, m_OpeningDelayTime(1.f)
 	, m_OpeningOutTime(0.5f)
 	, m_PlayingInTime(3.f)
 	, m_PlayingDelayTime(0.5f)
 	, m_Acctime(0.f)
+	, m_BGM{}
+	, m_SFX{}
 {
 	m_FSM = new CRoRStateMachine<CBossLV>(this, (UINT)BossLV_STATE::END);
 
@@ -44,12 +47,38 @@ int CBossLV::GetCurLVState()
 	return m_FSM->GetCurState();
 }
 
+void CBossLV::LoadSoundAsset()
+{
+	// BGM 로드
+	m_BGM.resize((UINT)BossLV_BGM::END);
+
+	Ptr<CSound> pSound					  = CAssetMgr::GetInst()->Load<CSound>(SNDKaiten_Screw_BGM);
+	m_BGM[(UINT)BossLV_BGM::KAITEN_SCREW] = pSound;
+
+	pSound								= CAssetMgr::GetInst()->Load<CSound>(SNDBGM_PartyTime);
+	m_BGM[(UINT)BossLV_BGM::PARTY_TIME] = pSound;
+
+	//=========================
+	// SFX 로드
+	m_SFX.resize((UINT)BossLV_SFX::END);
+
+	pSound						   = CAssetMgr::GetInst()->Load<CSound>(SNDUI_START_01);
+	m_SFX[(UINT)BossLV_SFX::START] = pSound;
+
+	pSound							 = CAssetMgr::GetInst()->Load<CSound>(SNDUI_Alarm);
+	m_SFX[(UINT)BossLV_SFX::WARNING] = pSound;
+}
+
 void CBossLV::begin()
 {
+	LoadSoundAsset();
 	m_FSM->Begin();
 
 	m_Player = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Azusa");
 	m_Player->GetScript<CPlayerScript>()->SetPlayable(false);
+
+	m_HUD = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"HUD");
+	m_HUD->Transform()->SetRelativeScale(Vec3(1.f, 0.f, 1.f));
 }
 
 void CBossLV::tick()
@@ -60,6 +89,7 @@ void CBossLV::tick()
 
 void CBossLV::OpeningInBegin()
 {
+	m_SFX[(UINT)BossLV_SFX::START]->Play(1.f, 1.f);
 }
 
 int CBossLV::OpeningInUpdate()
@@ -81,6 +111,7 @@ void CBossLV::OpeningInEnd()
 
 void CBossLV::OpeningDelayBegin()
 {
+	m_SFX[(UINT)BossLV_SFX::WARNING]->Play(1.f, 1.f);
 }
 
 int CBossLV::OpeningDelayUpdate()
@@ -166,6 +197,8 @@ void CBossLV::PlayingDelayEnd()
 void CBossLV::PlayingBegin()
 {
 	m_Player->GetScript<CPlayerScript>()->SetPlayable(true);
+	m_BGM[(UINT)BossLV_BGM::KAITEN_SCREW]->Play(0.f, 1.f);
+	m_HUD->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
 }
 
 int CBossLV::PlayingUpdate()
@@ -175,6 +208,8 @@ int CBossLV::PlayingUpdate()
 
 void CBossLV::PlayingEnd()
 {
+	m_BGM[(UINT)BossLV_BGM::KAITEN_SCREW]->Stop();
+	m_HUD->Transform()->SetRelativeScale(Vec3(1.f, 0.f, 1.f));
 }
 
 void CBossLV::PlayingOutBegin()
@@ -192,6 +227,7 @@ void CBossLV::PlayingOutEnd()
 
 void CBossLV::EndingBegin()
 {
+	m_BGM[(UINT)BossLV_BGM::PARTY_TIME]->Play(1.f, 1.f);
 }
 
 int CBossLV::EndingUpdate()
@@ -201,4 +237,5 @@ int CBossLV::EndingUpdate()
 
 void CBossLV::EndingEnd()
 {
+	m_BGM[(UINT)BossLV_BGM::PARTY_TIME]->Stop();
 }

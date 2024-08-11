@@ -10,6 +10,7 @@
 #include "CBossBulletShellSpawner.h"
 #include "CParticleSpawnScript.h"
 #include "CPlayerScript.h"
+#include "CBossLV.h"
 
 #pragma region Normal
 
@@ -61,6 +62,7 @@ int CBossScript::NormalAttackStartUpdate()
 void CBossScript::NormalAttackStartEnd()
 {
 	FireMegaFist();
+	m_vecSound[(UINT)BOSS_SOUND::NORMAL]->Play(1, 1.f);
 }
 
 void CBossScript::NormalAttackIngBegin()
@@ -124,6 +126,8 @@ void CBossScript::EXs1Begin()
 	FireMiniGun();
 	CheckTargetPos();
 	m_ChaseDir = false;
+
+	m_vecSound[(UINT)BOSS_SOUND::EX1]->Play(1.f, 1.f);
 }
 
 int CBossScript::EXs1Update()
@@ -172,7 +176,7 @@ int CBossScript::EXs1Update()
 				m_Target->GetScript<CPlayerScript>()->Hit(5.f);
 			}
 
-			CLogMgr::GetInst()->AddLog(Log_Level::INFO, strobj);
+			// CLogMgr::GetInst()->AddLog(Log_Level::INFO, strobj);
 		}
 	}
 
@@ -328,6 +332,8 @@ void CBossScript::EXs4Begin()
 	Animator3D()->Play((int)BOSS_STATE::EXs4, 0);
 
 	m_ChaseDir = false;
+	m_vecSound[(UINT)BOSS_SOUND::EX4]->Play(1.f, 1.f, true);
+
 	CheckTargetPos();
 	ActiveWarningDecal();
 	ActiveSwordTrail();
@@ -406,6 +412,9 @@ void CBossScript::VitalDeathBegin()
 	layeridx = pObj->GetLayerIdx();
 	GamePlayStatic::SpawnGameObject(pObj, layeridx);
 	pObj->GetScript<CParticleSpawnScript>()->SetParticleInfo(vPos1, 2.f);
+
+	m_vecSound[(UINT)BOSS_SOUND::DEATHBOOM1]->Play(1.f, 1.f);
+	m_vecSound[(UINT)BOSS_SOUND::DEATHBOOM2]->Play(1.f, 1.f);
 }
 
 int CBossScript::VitalDeathUpdate()
@@ -413,7 +422,12 @@ int CBossScript::VitalDeathUpdate()
 	int idx = Animator3D()->GetCurFrameIdx();
 
 	if (idx == Animator3D()->GetCurClipLength() - 2)
+	{
 		Animator3D()->Pause(true);
+		m_GameMode->m_FSM->SetCurState((int)BossLV_STATE::Ending);
+	}
+
+	m_vecSound[(UINT)BOSS_SOUND::DEATHBOOM2]->Play(1.f, 1.f);
 
 	return m_FSM->GetCurState();
 }
@@ -436,6 +450,8 @@ void CBossScript::VitalGroggyBegin()
 	int			 layeridx = pObj->GetLayerIdx();
 	GamePlayStatic::SpawnGameObject(pObj, layeridx);
 	pObj->GetScript<CParticleSpawnScript>()->SetParticleInfo(vPos, 7.8f);
+
+	m_vecSound[(UINT)BOSS_SOUND::DEATHBOOM1]->Play(1.f, 1.f);
 }
 
 int CBossScript::VitalGroggyUpdate()
@@ -444,6 +460,8 @@ int CBossScript::VitalGroggyUpdate()
 		return (int)BOSS_STATE::NormalIdle;
 	else if (m_BossStatus.IsDead)
 		return (int)BOSS_STATE::VitalGroggyDeath;
+
+	m_vecSound[(UINT)BOSS_SOUND::GROGGY]->Play(1.f, 1.f);
 
 	return m_FSM->GetCurState();
 }
@@ -461,6 +479,8 @@ void CBossScript::VitalGroggyEnd()
 		if (nullptr != pObj)
 			GamePlayStatic::DestroyGameObject(pObj);
 	}
+
+	m_vecSound[(UINT)BOSS_SOUND::GROGGY]->Stop();
 }
 
 void CBossScript::VitalGroggyDeathBegin()
@@ -480,6 +500,9 @@ void CBossScript::VitalGroggyDeathBegin()
 	layeridx = pObj->GetLayerIdx();
 	GamePlayStatic::SpawnGameObject(pObj, layeridx);
 	pObj->GetScript<CParticleSpawnScript>()->SetParticleInfo(vPos, 2.f);
+
+	m_vecSound[(UINT)BOSS_SOUND::DEATHBOOM1]->Play(1.f, 1.f);
+	m_vecSound[(UINT)BOSS_SOUND::DEATHBOOM2]->Play(1.f, 1.f);
 }
 
 int CBossScript::VitalGroggyDeathUpdate()
@@ -488,6 +511,8 @@ int CBossScript::VitalGroggyDeathUpdate()
 
 	if (idx == Animator3D()->GetCurClipLength() - 2)
 		Animator3D()->Pause(true);
+
+	m_vecSound[(UINT)BOSS_SOUND::DEATHBOOM2]->Play(1.f, 1.f);
 
 	return m_FSM->GetCurState();
 }

@@ -31,7 +31,7 @@ CPlayerScript::CPlayerScript()
 	, m_tStatus{}
 	, m_pSpringArm(nullptr)
 	, m_pMuzzleFlash(nullptr)
-	, m_bPlaying(false)
+	, m_bPlaying(true)
 {
 	// 디버깅용
 	AppendScriptParam("CurState", SCRIPT_PARAM::STRING, (void*)&state);

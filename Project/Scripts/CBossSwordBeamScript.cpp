@@ -35,6 +35,8 @@ void CBossSwordBeamScript::begin()
 	m_Target->GetScript<CPlayerScript>()->GetSpringArm()->SetShakeAttribute(1.3f, Vec3(10.f, 20.f, 0.f),
 																			Vec3(0.f, 0.f, 0.f), 25.f, 0.2f);
 	m_Target->GetScript<CPlayerScript>()->GetSpringArm()->SpringArmShake();
+
+	m_Shooter->GetScript<CBossScript>()->GetSound((UINT)BOSS_SOUND::EX4_PROJECTILE)->Play(1.f, 2.f, true);
 }
 
 void CBossSwordBeamScript::tick()

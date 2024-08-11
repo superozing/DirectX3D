@@ -307,6 +307,9 @@
     <ClInclude Include="CWarningIcon.h">
       <Filter>Scripts\Level\Boss\Warning</Filter>
     </ClInclude>
+    <ClInclude Include="CVictoryBG.h">
+      <Filter>Scripts\Level\Boss\Victory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -615,6 +618,9 @@
     <ClCompile Include="CWarningIcon.cpp">
       <Filter>Scripts\Level\Boss\Warning</Filter>
     </ClCompile>
+    <ClCompile Include="CVictoryBG.cpp">
+      <Filter>Scripts\Level\Boss\Victory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -832,6 +838,9 @@
     </Filter>
     <Filter Include="Scripts\Level\Boss\Warning">
       <UniqueIdentifier>{e1da6493-4a53-4817-a476-da1f9611c3fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Level\Boss\Victory">
+      <UniqueIdentifier>{53c0a76c-935e-4fec-9e7e-4df06250f2c7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

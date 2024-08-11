@@ -41,6 +41,7 @@ CBossScript::CBossScript()
 	, m_Raycast(false)
 	, m_RaycastInterval(0.f)
 	, m_bDebug(false)
+	, m_vecSound{}
 {
 	AppendScriptParam("CurState    ", SCRIPT_PARAM::STRING, &DebugState);
 	AppendScriptParam("raycast", SCRIPT_PARAM::BOOL, &m_Raycast);
@@ -69,6 +70,7 @@ CBossScript::CBossScript(const CBossScript& _Origin)
 	, m_Raycast(false)
 	, m_RaycastInterval(0.f)
 	, m_bDebug(false)
+	, m_vecSound{}
 {
 	InitScriptParamUI();
 
@@ -316,6 +318,8 @@ void CBossScript::FireBossMissile(int _idx)
 	layeridx			= effect->GetLayerIdx();
 	GamePlayStatic::SpawnGameObject(effect, layeridx);
 	effect->GetScript<CParticleSpawnScript>()->SetParticleInfo(MissileBonePos, 0.5f);
+
+	m_vecSound[(UINT)BOSS_SOUND::EX2_FIRE]->Play(1.f, 1.f, true);
 }
 
 void CBossScript::ActiveInnerShield()
@@ -331,6 +335,9 @@ void CBossScript::ActiveInnerShield()
 
 	int layeridx = Shield->GetLayerIdx();
 	GamePlayStatic::SpawnGameObject(Shield, layeridx);
+
+	m_vecSound[(UINT)BOSS_SOUND::EX3_SHIELD_START]->Play(1.f, 1.f, true);
+	m_vecSound[(UINT)BOSS_SOUND::EX3]->Play(0.f, 1.f, true);
 }
 
 void CBossScript::ActiveOutsideShield()
@@ -437,6 +444,56 @@ void CBossScript::LoadAsset()
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFp_MissileFire);
 
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFGroundCrackDecal);
+
+	LoadSound();
+}
+
+void CBossScript::LoadSound()
+{
+	// 사운드 로드
+	m_vecSound.resize((UINT)BOSS_SOUND::END);
+
+	Ptr<CSound> pSound					 = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_KaitenFX_MK0_Normal);
+	m_vecSound[(UINT)BOSS_SOUND::NORMAL] = pSound;
+
+	pSound									 = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_KaitenFX_MK0_Normal_Hit);
+	m_vecSound[(UINT)BOSS_SOUND::NORMAL_HIT] = pSound;
+
+	pSound							  = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_KaitenFX_MK0_Ex_01);
+	m_vecSound[(UINT)BOSS_SOUND::EX1] = pSound;
+
+	pSound									 = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_KaitenFX_MK0_Ex_01_Muzzle);
+	m_vecSound[(UINT)BOSS_SOUND::EX1_MUZZLE] = pSound;
+
+	pSound								   = CAssetMgr::GetInst()->Load<CSound>(SNDSE_Boom_02);
+	m_vecSound[(UINT)BOSS_SOUND::EX2_FIRE] = pSound;
+
+	pSound									 = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_KaitenFX_MK0_EX02_Muzzle);
+	m_vecSound[(UINT)BOSS_SOUND::EX2_MUZZLE] = pSound;
+
+	pSound = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_KaitenFX_MK0_EX03_Shield_Start);
+	m_vecSound[(UINT)BOSS_SOUND::EX3_SHIELD_START] = pSound;
+
+	pSound							  = CAssetMgr::GetInst()->Load<CSound>(SNDUI_FX_BG_SandStorm_L);
+	m_vecSound[(UINT)BOSS_SOUND::EX3] = pSound;
+
+	pSound							  = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_KaitenFX_MK0_EX04);
+	m_vecSound[(UINT)BOSS_SOUND::EX4] = pSound;
+
+	pSound									  = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_KaitenFX_MK0_Ex_04_Blading);
+	m_vecSound[(UINT)BOSS_SOUND::EX4_BLADING] = pSound;
+
+	pSound = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_KaitenFX_MK0_EX04_Projectile);
+	m_vecSound[(UINT)BOSS_SOUND::EX4_PROJECTILE] = pSound;
+
+	pSound								 = CAssetMgr::GetInst()->Load<CSound>(SNDSE_Electric_02);
+	m_vecSound[(UINT)BOSS_SOUND::GROGGY] = pSound;
+
+	pSound									 = CAssetMgr::GetInst()->Load<CSound>(SNDSE_Boom_01);
+	m_vecSound[(UINT)BOSS_SOUND::DEATHBOOM1] = pSound;
+
+	pSound									 = CAssetMgr::GetInst()->Load<CSound>(SNDSE_Boom_02);
+	m_vecSound[(UINT)BOSS_SOUND::DEATHBOOM2] = pSound;
 }
 
 void CBossScript::CheckTargetPos()

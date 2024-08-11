@@ -14,12 +14,27 @@ enum class BossLV_STATE
 	END,
 };
 
+enum class BossLV_BGM
+{
+	KAITEN_SCREW,
+	PARTY_TIME,
+	END,
+};
+
+enum class BossLV_SFX
+{
+	START,
+	WARNING,
+	END,
+};
+
 #define GETBOSSLV m_BossLV->GetScript<CBossLV>()
 
 class CBossLV : public CGameMode<CBossLV>
 {
 private:
 	class CGameObject* m_Player;
+	CGameObject*	   m_HUD;
 
 	float m_OpeningInTime;
 	float m_OpeningDelayTime;
@@ -29,6 +44,9 @@ private:
 	float m_PlayingDelayTime;
 
 	float m_Acctime;
+
+	vector<Ptr<CSound>> m_BGM;
+	vector<Ptr<CSound>> m_SFX;
 
 public:
 	int GetCurLVState();
@@ -41,6 +59,9 @@ public:
 	float GetPlayingDelayTime() { return m_PlayingDelayTime; }
 
 	float GetAccTime() { return m_Acctime; }
+
+public:
+	void LoadSoundAsset();
 
 public:
 	virtual void begin() override;
@@ -86,4 +107,5 @@ private:
 
 	friend class CBossOpeningTex;
 	friend class CStartTex;
+	friend class CBossScript;
 };
