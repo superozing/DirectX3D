@@ -34,6 +34,24 @@ int CTurret::GetCurState()
 	return m_FSM->GetCurState();
 }
 
+void CTurret::RotateIdle()
+{
+	if (m_FSM->GetCurState() == (int)TURRET_STATE::NormalIdle && m_Target != nullptr)
+	{
+		Vec3 PlayerPos = m_Target->Transform()->GetWorldPos();
+		Vec3 TurretPos = GetOwner()->Transform()->GetWorldPos();
+
+		Vec3 dir		= (PlayerPos - TurretPos).Normalize();
+		Vec3 currentDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+
+		float t		 = m_tStatus.RotateSpeed * DT; // 회전 속도에 따른 보간 계수
+		Vec3  newDir = RoRMath::Lerp(currentDir, dir, t);
+
+		// 새로운 방향으로 터렛을 회전시킵니다.
+		Transform()->SetDir(newDir);
+	}
+}
+
 void CTurret::AppearBegin()
 {
 	Animator3D()->Play((int)TURRET_STATE::Appear, 0);

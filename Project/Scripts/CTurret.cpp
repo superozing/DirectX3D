@@ -45,6 +45,8 @@ void CTurret::SetTurretInfo()
 	SetCurHP(MaxHP);
 	SetMonsterDamage(Damage);
 
+	m_tStatus.RotateSpeed = 10.f;
+
 	fDetectDistance = AttackDistance;
 	fAttackTimer	= AttackTimer;
 }
@@ -61,6 +63,8 @@ void CTurret::tick()
 {
 	m_FSM->Update();
 	DebugState = magic_enum::enum_name((TURRET_STATE)m_FSM->GetCurState());
+
+	RotateIdle();
 
 	if ((int)TURRET_STATE::NormalIdle == m_FSM->GetCurState())
 	{

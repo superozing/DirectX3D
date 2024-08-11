@@ -97,7 +97,10 @@ public:
 	void SwitchPanic();
 	void SwitchDead();
 
-	int	  GetCurState();
+	int GetCurState();
+
+	void RotateIdle();
+
 	void  CheckAttackable();
 	float CalTargetDistance();
 	void  CheckVital();
