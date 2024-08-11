@@ -280,6 +280,9 @@
     <ClInclude Include="CCubePushScript.h">
       <Filter>Scripts\Phys</Filter>
     </ClInclude>
+    <ClInclude Include="CDroidAR.h">
+      <Filter>Scripts\Monster\DroidAR</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -561,6 +564,12 @@
     <ClCompile Include="CCubePushScript.cpp">
       <Filter>Scripts\Phys</Filter>
     </ClCompile>
+    <ClCompile Include="CDroidAR.cpp">
+      <Filter>Scripts\Monster\DroidAR</Filter>
+    </ClCompile>
+    <ClCompile Include="CDroidAR_State.cpp">
+      <Filter>Scripts\Monster\DroidAR</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -769,6 +778,12 @@
     </Filter>
     <Filter Include="Scripts\Phys">
       <UniqueIdentifier>{bb33054c-aa56-4cc7-9eef-ea724457ddaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Monster">
+      <UniqueIdentifier>{b7827946-6431-4e9d-9818-460873792a9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Monster\DroidAR">
+      <UniqueIdentifier>{587dc1df-d426-44e3-b6c1-00226330ca40}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

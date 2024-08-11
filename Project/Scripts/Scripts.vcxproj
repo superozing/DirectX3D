@@ -204,6 +204,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CDigitUI.h" />
     <ClInclude Include="CDialog.h" />
     <ClInclude Include="CDirectionalLight.h" />
+    <ClInclude Include="CDroidAR.h" />
     <ClInclude Include="CEditorCameraMoveScript.h" />
     <ClInclude Include="CEventListener.h" />
     <ClInclude Include="CGameMode.h" />
@@ -300,6 +301,8 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CDigitUI.cpp" />
     <ClCompile Include="CDialog.cpp" />
     <ClCompile Include="CDirectionalLight.cpp" />
+    <ClCompile Include="CDroidAR.cpp" />
+    <ClCompile Include="CDroidAR_State.cpp" />
     <ClCompile Include="CEditorCameraMoveScript.cpp" />
     <ClCompile Include="CEventListener.cpp" />
     <ClCompile Include="CGroundCrackScript.cpp" />
