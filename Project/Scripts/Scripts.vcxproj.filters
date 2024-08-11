@@ -295,6 +295,18 @@
     <ClInclude Include="CCubePushScript.h">
       <Filter>Scripts\Phys</Filter>
     </ClInclude>
+    <ClInclude Include="CWarningTex.h">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClInclude>
+    <ClInclude Include="CWarningUpDeco.h">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClInclude>
+    <ClInclude Include="CWarningDownDeco.h">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClInclude>
+    <ClInclude Include="CWarningIcon.h">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -589,6 +601,18 @@
       <Filter>Scripts\Level\Boss\Start</Filter>
     </ClCompile>
     <ClCompile Include="CWarningBGTex.cpp">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClCompile>
+    <ClCompile Include="CWarningTex.cpp">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClCompile>
+    <ClCompile Include="CWarningUpDeco.cpp">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClCompile>
+    <ClCompile Include="CWarningDownDeco.cpp">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClCompile>
+    <ClCompile Include="CWarningIcon.cpp">
       <Filter>Scripts\Level\Boss\Warning</Filter>
     </ClCompile>
   </ItemGroup>

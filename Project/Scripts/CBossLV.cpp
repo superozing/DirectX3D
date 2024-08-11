@@ -13,6 +13,8 @@ CBossLV::CBossLV()
 	, m_OpeningInTime(0.5f)
 	, m_OpeningDelayTime(1.f)
 	, m_OpeningOutTime(0.5f)
+	, m_PlayingInTime(3.f)
+	, m_PlayingDelayTime(0.5f)
 	, m_Acctime(0.f)
 {
 	m_FSM = new CRoRStateMachine<CBossLV>(this, (UINT)BossLV_STATE::END);
@@ -20,7 +22,10 @@ CBossLV::CBossLV()
 	FSMInit(BossLV_STATE, CBossLV, OpeningIn);
 	FSMInit(BossLV_STATE, CBossLV, OpeningDelay);
 	FSMInit(BossLV_STATE, CBossLV, OpeningOut);
+	FSMInit(BossLV_STATE, CBossLV, PlayingIn);
+	FSMInit(BossLV_STATE, CBossLV, PlayingDelay);
 	FSMInit(BossLV_STATE, CBossLV, Playing);
+	FSMInit(BossLV_STATE, CBossLV, PlayingOut);
 	FSMInit(BossLV_STATE, CBossLV, Ending);
 
 	AppendScriptParam("State", SCRIPT_PARAM::STRING, &state, 0.f, 0.f, true);
@@ -100,13 +105,55 @@ int CBossLV::OpeningOutUpdate()
 
 	if (m_Acctime >= m_OpeningOutTime)
 	{
-		return (int)BossLV_STATE::Playing;
+		return (int)BossLV_STATE::PlayingIn;
 	}
 
 	return m_FSM->GetCurState();
 }
 
 void CBossLV::OpeningOutEnd()
+{
+	m_Acctime = 0.f;
+}
+
+void CBossLV::PlayingInBegin()
+{
+}
+
+int CBossLV::PlayingInUpdate()
+{
+	m_Acctime += DT;
+
+	if (m_Acctime >= m_PlayingInTime)
+	{
+		return (int)BossLV_STATE::PlayingDelay;
+	}
+
+	return m_FSM->GetCurState();
+}
+
+void CBossLV::PlayingInEnd()
+{
+	m_Acctime = 0.f;
+}
+
+void CBossLV::PlayingDelayBegin()
+{
+}
+
+int CBossLV::PlayingDelayUpdate()
+{
+	m_Acctime += DT;
+
+	if (m_Acctime >= m_PlayingDelayTime)
+	{
+		return (int)BossLV_STATE::Playing;
+	}
+
+	return m_FSM->GetCurState();
+}
+
+void CBossLV::PlayingDelayEnd()
 {
 	m_Acctime = 0.f;
 }
@@ -121,6 +168,19 @@ int CBossLV::PlayingUpdate()
 }
 
 void CBossLV::PlayingEnd()
+{
+}
+
+void CBossLV::PlayingOutBegin()
+{
+}
+
+int CBossLV::PlayingOutUpdate()
+{
+	return m_FSM->GetCurState();
+}
+
+void CBossLV::PlayingOutEnd()
 {
 }
 

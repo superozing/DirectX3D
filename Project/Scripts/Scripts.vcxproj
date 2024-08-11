@@ -258,6 +258,10 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CVideoPlayer.h" />
     <ClInclude Include="CWallScript.h" />
     <ClInclude Include="CWarningBGTex.h" />
+    <ClInclude Include="CWarningDownDeco.h" />
+    <ClInclude Include="CWarningIcon.h" />
+    <ClInclude Include="CWarningTex.h" />
+    <ClInclude Include="CWarningUpDeco.h" />
     <ClInclude Include="CWrapImage.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="CHUD.h" />
@@ -359,6 +363,10 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CVideoPlayer.cpp" />
     <ClCompile Include="CWallScript.cpp" />
     <ClCompile Include="CWarningBGTex.cpp" />
+    <ClCompile Include="CWarningDownDeco.cpp" />
+    <ClCompile Include="CWarningIcon.cpp" />
+    <ClCompile Include="CWarningTex.cpp" />
+    <ClCompile Include="CWarningUpDeco.cpp" />
     <ClCompile Include="CWrapImage.cpp" />
     <ClCompile Include="CHUD.cpp" />
     <ClCompile Include="pch.cpp">

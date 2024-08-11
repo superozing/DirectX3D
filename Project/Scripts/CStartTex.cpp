@@ -38,7 +38,7 @@ void CStartTex::tick()
 {
 	CAtlasImageUIScript::tick();
 
-	m_LVState = m_BossLV->GetScript<CBossLV>()->GetCurLVState();
+	m_LVState = GETBOSSLV->GetCurLVState();
 
 	if ((int)BossLV_STATE::OpeningIn == m_LVState && !m_StartIn)
 	{

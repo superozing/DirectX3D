@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "CAtlasImageUIScript.h"
 
-class CWarningBGTex : public CAtlasImageUIScript
+class CWarningDownDeco : public CAtlasImageUIScript
 {
 private:
 	class CGameObject* m_BossLV;
@@ -12,7 +12,7 @@ public:
 	virtual void tick() override;
 
 public:
-	CLONE(CWarningBGTex);
-	CWarningBGTex();
-	~CWarningBGTex();
+	CLONE(CWarningDownDeco);
+	CWarningDownDeco();
+	~CWarningDownDeco();
 };

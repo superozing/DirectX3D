@@ -6,10 +6,15 @@ enum class BossLV_STATE
 	OpeningIn,
 	OpeningDelay,
 	OpeningOut,
+	PlayingIn,
+	PlayingDelay,
 	Playing,
+	PlayingOut,
 	Ending,
 	END,
 };
+
+#define GETBOSSLV m_BossLV->GetScript<CBossLV>()
 
 class CBossLV : public CGameMode<CBossLV>
 {
@@ -17,6 +22,10 @@ private:
 	float m_OpeningInTime;
 	float m_OpeningDelayTime;
 	float m_OpeningOutTime;
+
+	float m_PlayingInTime;
+	float m_PlayingDelayTime;
+
 	float m_Acctime;
 
 public:
@@ -25,6 +34,10 @@ public:
 	float GetOpeningInTime() { return m_OpeningInTime; }
 	float GetOpeningDelayTime() { return m_OpeningDelayTime; }
 	float GetOpeningOutTime() { return m_OpeningOutTime; }
+
+	float GetPlayingInTime() { return m_PlayingInTime; }
+	float GetPlayingDelayTime() { return m_PlayingDelayTime; }
+
 	float GetAccTime() { return m_Acctime; }
 
 public:
@@ -49,9 +62,21 @@ private:
 	int	 OpeningOutUpdate();
 	void OpeningOutEnd();
 
+	void PlayingInBegin();
+	int	 PlayingInUpdate();
+	void PlayingInEnd();
+
+	void PlayingDelayBegin();
+	int	 PlayingDelayUpdate();
+	void PlayingDelayEnd();
+
 	void PlayingBegin();
 	int	 PlayingUpdate();
 	void PlayingEnd();
+
+	void PlayingOutBegin();
+	int	 PlayingOutUpdate();
+	void PlayingOutEnd();
 
 	void EndingBegin();
 	int	 EndingUpdate();

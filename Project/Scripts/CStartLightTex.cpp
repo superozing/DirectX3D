@@ -32,12 +32,12 @@ void CStartLightTex::tick()
 {
 	CAtlasImageUIScript::tick();
 
-	m_LVState = m_BossLV->GetScript<CBossLV>()->GetCurLVState();
+	m_LVState = GETBOSSLV->GetCurLVState();
 
 	if ((int)BossLV_STATE::OpeningIn == m_LVState)
 	{
-		float duration = m_BossLV->GetScript<CBossLV>()->GetOpeningInTime();
-		float accTime  = m_BossLV->GetScript<CBossLV>()->GetAccTime();
+		float duration = GETBOSSLV->GetOpeningInTime();
+		float accTime  = GETBOSSLV->GetAccTime();
 
 		float fLerp = RoRMath::Lerp(0.f, 1.f, accTime / duration);
 
