@@ -5,8 +5,11 @@
 
 #include "CImageUIScript.h"
 #include "CPanelUIScript.h"
+#include "CBossScript.h"
 #include <Engine/CFontMgr.h>
 #include <Engine/CUIMgr.h>
+#include <Engine/CLevelMgr.h>
+#include <Engine/CLevel.h>
 #include <Engine/CDevice.h>
 
 namespace BOSSHP
@@ -49,10 +52,12 @@ void CBossHP::begin()
 	AppendScriptParam("Damage Value", SCRIPT_PARAM::INT, &tempDamageBuffer);
 	AppendMemberFunction("Append Damage", SCRIPT_PARAM::FUNC_MEMBER, "+ -> Damage, - -> Heal", std::bind(&CBossHP::DbgAppendDamageWrap, this));
 
-	// 임시로 HP 값 세팅
-	SetMaxHP(20000);
-	SetLineHP(1000);
-	SetCurHP(20000);
+	auto tBossStatus = m_pBossScript->GetBossStatus();
+	
+	// HP 값 세팅
+	SetMaxHP(tBossStatus.MaxHP);
+	SetLineHP(tBossStatus.MaxHP / 10);
+	SetCurHP(tBossStatus.CurHP);
 
 	Vec2 resol = CDevice::GetInst()->GetRenderResolution();
 
@@ -81,8 +86,14 @@ void CBossHP::tick()
 {
 	using namespace BOSSHP;
 
-	int CurHP = GetCurHP();
-	int MaxHP = GetMaxHP();
+	if (!m_pBossScript)
+		int i = 0;
+
+	auto tBossStatus = m_pBossScript->GetBossStatus();
+	SetCurHP(tBossStatus.CurHP);
+
+	int CurHP = tBossStatus.CurHP;
+	int MaxHP = tBossStatus.MaxHP;
 
 	m_CurLerpHP = RoRMath::Lerp(m_CurLerpHP, CurHP, DT * 6.f);
 
@@ -128,6 +139,14 @@ void CBossHP::tick()
 		CFontMgr::GetInst()->RegisterFont(m_LineCountFont);
 	}
 
+	// 그로기 게이지 조절
+	float groggyGauge = tBossStatus.GroggyBar;
+
+	if (groggyGauge != 0.f)
+		groggyGauge /= 100.f;
+
+	m_pGroggyGaugeUI->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_1, groggyGauge);
+
 }
 
 void CBossHP::SetLineHP(int _LineHP)
@@ -168,6 +187,13 @@ void CBossHP::DbgAppendDamageWrap()
 
 void CBossHP::MakeChildObjects()
 {
+	// 보스에게서 스크립트 가져오기
+	auto pBoss = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Kaiten");
+	if (!pBoss)
+		int i = 0;
+
+	m_pBossScript = pBoss->GetScript<CBossScript>();
+
 	// Child Object Vector를 가져와 이름에 따라서 멤버로 세팅하기
 	auto& vecChild = GetOwner()->GetChild();
 	for (size_t i = 0; i < vecChild.size(); i++)
@@ -222,11 +248,11 @@ void CBossHP::MakeChildObjects()
 	m_pHPLineUI->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::BOOL_0, true);
 	m_pHPLineUI->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_1, 10);
 	
-	// 그로그 게이지 
+	// 그로기 게이지 
 	m_pGroggyGaugeUI->MeshRender()->GetDynamicMaterial(0);
+	m_pGroggyGaugeUI->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/ColorTex/Yellow.png"));
+	m_pGroggyGaugeUI->AllowBindTexPerFrame();
 	m_pGroggyGaugeUI->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::BOOL_1, true);
-	
-
 }
 
 #define TagLineHP "[Line HP]"
