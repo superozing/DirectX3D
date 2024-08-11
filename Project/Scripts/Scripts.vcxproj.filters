@@ -277,41 +277,11 @@
     <ClInclude Include="CEventListener.h">
       <Filter>Scripts\Event</Filter>
     </ClInclude>
-    <ClInclude Include="CBossLV.h">
-      <Filter>Scripts\Level\Boss</Filter>
-    </ClInclude>
-    <ClInclude Include="CStartTex.h">
-      <Filter>Scripts\Level\Boss\Start</Filter>
-    </ClInclude>
-    <ClInclude Include="CStartLightTex.h">
-      <Filter>Scripts\Level\Boss\Start</Filter>
-    </ClInclude>
-    <ClInclude Include="CBossOpeningTex.h">
-      <Filter>Scripts\Level\Boss\Start</Filter>
-    </ClInclude>
-    <ClInclude Include="CWarningBGTex.h">
-      <Filter>Scripts\Level\Boss\Warning</Filter>
-    </ClInclude>
     <ClInclude Include="CCubePushScript.h">
       <Filter>Scripts\Phys</Filter>
     </ClInclude>
-    <ClInclude Include="CWarningTex.h">
-      <Filter>Scripts\Level\Boss\Warning</Filter>
-    </ClInclude>
-    <ClInclude Include="CWarningUpDeco.h">
-      <Filter>Scripts\Level\Boss\Warning</Filter>
-    </ClInclude>
-    <ClInclude Include="CWarningDownDeco.h">
-      <Filter>Scripts\Level\Boss\Warning</Filter>
-    </ClInclude>
-    <ClInclude Include="CWarningIcon.h">
-      <Filter>Scripts\Level\Boss\Warning</Filter>
-    </ClInclude>
-    <ClInclude Include="CVictoryBG.h">
-      <Filter>Scripts\Level\Boss\Victory</Filter>
-    </ClInclude>
-    <ClInclude Include="CVictoryTex.h">
-      <Filter>Scripts\Level\Boss\Victory</Filter>
+    <ClInclude Include="CFinishBalloon.h">
+      <Filter>Scripts\Level</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -594,38 +564,8 @@
     <ClCompile Include="CCubePushScript.cpp">
       <Filter>Scripts\Phys</Filter>
     </ClCompile>
-    <ClCompile Include="CBossLV.cpp">
-      <Filter>Scripts\Level\Boss</Filter>
-    </ClCompile>
-    <ClCompile Include="CStartLightTex.cpp">
-      <Filter>Scripts\Level\Boss\Start</Filter>
-    </ClCompile>
-    <ClCompile Include="CStartTex.cpp">
-      <Filter>Scripts\Level\Boss\Start</Filter>
-    </ClCompile>
-    <ClCompile Include="CBossOpeningTex.cpp">
-      <Filter>Scripts\Level\Boss\Start</Filter>
-    </ClCompile>
-    <ClCompile Include="CWarningBGTex.cpp">
-      <Filter>Scripts\Level\Boss\Warning</Filter>
-    </ClCompile>
-    <ClCompile Include="CWarningTex.cpp">
-      <Filter>Scripts\Level\Boss\Warning</Filter>
-    </ClCompile>
-    <ClCompile Include="CWarningUpDeco.cpp">
-      <Filter>Scripts\Level\Boss\Warning</Filter>
-    </ClCompile>
-    <ClCompile Include="CWarningDownDeco.cpp">
-      <Filter>Scripts\Level\Boss\Warning</Filter>
-    </ClCompile>
-    <ClCompile Include="CWarningIcon.cpp">
-      <Filter>Scripts\Level\Boss\Warning</Filter>
-    </ClCompile>
-    <ClCompile Include="CVictoryBG.cpp">
-      <Filter>Scripts\Level\Boss\Victory</Filter>
-    </ClCompile>
-    <ClCompile Include="CVictoryTex.cpp">
-      <Filter>Scripts\Level\Boss\Victory</Filter>
+    <ClCompile Include="CFinishBalloon.cpp">
+      <Filter>Scripts\Level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -835,18 +775,6 @@
     </Filter>
     <Filter Include="Scripts\Phys">
       <UniqueIdentifier>{bb33054c-aa56-4cc7-9eef-ea724457ddaf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Level\Boss">
-      <UniqueIdentifier>{40db8202-2a85-403a-b7d5-8cf3282b3c99}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Level\Boss\Start">
-      <UniqueIdentifier>{a66e19c6-027d-40d3-8627-7bb749d391e8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Level\Boss\Warning">
-      <UniqueIdentifier>{e1da6493-4a53-4817-a476-da1f9611c3fe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Level\Boss\Victory">
-      <UniqueIdentifier>{53c0a76c-935e-4fec-9e7e-4df06250f2c7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

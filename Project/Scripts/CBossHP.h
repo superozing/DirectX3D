@@ -4,6 +4,9 @@
 class CBossHP : public CProgressBar
 {
 private:
+
+	class CBossScript* m_pBossScript;
+	
 	// 초상화
 	CImageUIScript* m_pPortrait;
 
@@ -12,6 +15,9 @@ private:
 
 	// HP Line UI
 	CImageUIScript* m_pHPLineUI;
+
+	// Boss Groggy Gauge
+	CImageUIScript* m_pGroggyGaugeUI;
 
 	// 바 별 체력
 	int m_LineHP;
@@ -33,6 +39,8 @@ public:
 	virtual void LoadFromFile(ifstream& fin) override;
 
 public:
+
+	void SetBossScript(CBossScript* _pBossScript) { m_pBossScript = _pBossScript; }
 
 	void SetMaxHP(int _MaxHP) { CProgressBar::SetMaxValue(RoRMath::ClampInt(_MaxHP, 0));
 		m_CurLerpHP = _MaxHP;

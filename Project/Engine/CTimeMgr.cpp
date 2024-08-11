@@ -4,6 +4,7 @@
 #include "CEngine.h"
 #include "CKeyMgr.h"
 #include "CFontMgr.h"
+#include "CRenderMgr.h"
 
 CTimeMgr::CTimeMgr()
 	: m_Frequency{}
@@ -55,6 +56,7 @@ void CTimeMgr::tick()
 	if (1.f <= m_Time)
 	{
 		swprintf_s(m_szText, 70, L"DeltaTime : %f[Scale: %f], FPS : %d", m_DeltaTime, m_DTScale, m_iCall);
+
 		m_iCall = 0;
 		m_Time	= 0.f;
 	}
@@ -82,5 +84,8 @@ void CTimeMgr::exit()
 void CTimeMgr::render()
 {
 	// 폰트 출력
-	CFontMgr::GetInst()->DrawFont(m_szText, 10.f, 30.f, 16, FONT_RGBA(255, 30, 30, 255), FONT_TYPE::ARIAL);
+	if (CRenderMgr::GetInst()->IsDebugPosition())
+	{
+		CFontMgr::GetInst()->DrawFont(m_szText, 10.f, 30.f, 16, FONT_RGBA(255, 30, 30, 255), FONT_TYPE::ARIAL);
+	}
 }

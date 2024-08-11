@@ -499,6 +499,8 @@ void CCamera::render_postprocess()
 
 	Cromatic_Aberration();
 
+	Vignette_Effect();
+
 	GrayFilter_by_Object();
 
 	// for (size_t i = 0; i < m_vecPostProcess.size(); ++i)
@@ -632,7 +634,7 @@ void CCamera::Cromatic_Aberration()
 	if (false == RefInfo.Activate)
 		return;
 
-	RefInfo.RemainTime -= DT;
+	RefInfo.RemainTime -= DTd_ENGINE;
 	if (0.f >= RefInfo.RemainTime)
 	{
 		RefInfo.Activate   = false;
@@ -655,6 +657,48 @@ void CCamera::Cromatic_Aberration()
 	pCAMat->SetScalarParam(SCALAR_PARAM::VEC2_2, RefInfo.MaxBlueOffset * LifeRatio);
 	pCAMat->SetScalarParam(SCALAR_PARAM::VEC2_3, RoRMath::Lerp(Vec2(1.f, 1.f), RefInfo.CropOffset, LifeRatio));
 	pCAMat->UpdateData();
+
+	// 타겟->리소스 복사
+	CRenderMgr::GetInst()->CopyFromTextureToTexture(ColorCopy, RenderTarget);
+	pRectMesh->render(0);
+}
+
+#include "CLogMgr.h"
+void CCamera::Vignette_Effect()
+{
+	if (CRenderMgr::GetInst()->GetRenderVignette() == false)
+		return;
+
+	auto ColorCopy	  = CAssetMgr::GetInst()->FindAsset<CTexture>(L"PostProcessTex");
+	auto RenderTarget = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
+
+	// 매쉬,머터리얼 받아오기
+	static Ptr<CMesh>	  pRectMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect);
+	static Ptr<CMaterial> pVignetteMtrl;
+	pVignetteMtrl = CAssetMgr::GetInst()->Load<CMaterial>(MTRLVignetteMtrl);
+
+	float* fVignetteDuration = CRenderMgr::GetInst()->GetVignetteDuration();
+	float* fVignetteAlpha	 = CRenderMgr::GetInst()->GetVignetteAlpha();
+
+	float fInitialAlpha = CRenderMgr::GetInst()->GetVignetteMaxAlpha();
+
+	// 지속 시간 관련  이벤트가 on이라면 계속 활성화
+	if (*fVignetteDuration >= 0.f)
+	{
+		*fVignetteDuration -= DT;
+
+		// 시간에 따른 알파값 조절
+		float DurationRatio = (*fVignetteDuration / VignetteDuration);
+		*fVignetteAlpha		= fInitialAlpha * DurationRatio;
+
+		//CLogMgr::GetInst()->AddLog(Log_Level::WARN, std::to_string(*fVignetteAlpha));
+	}
+	else
+		CRenderMgr::GetInst()->SwitchVignette();
+
+	pVignetteMtrl->SetScalarParam(SCALAR_PARAM::FLOAT_0, *fVignetteAlpha);
+
+	pVignetteMtrl->UpdateData();
 
 	// 타겟->리소스 복사
 	CRenderMgr::GetInst()->CopyFromTextureToTexture(ColorCopy, RenderTarget);

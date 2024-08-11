@@ -19,6 +19,7 @@
 #include "CSpringArm.h"
 
 #include "CShootingSystemScript.h"
+#include "CPlayerDamagedScript.h"
 
 #include "CCrosshair.h"
 #include "CHUD.h"
@@ -362,6 +363,18 @@ void CPlayerScript::tick()
 	state = magic_enum::enum_name((PLAYER_STATE)m_FSM->GetCurState());
 	cover = magic_enum::enum_name((CoverType)GetCoverType());
 
+	// 전역 무적 판정
+	if (m_tStatus.Invincibility == true)
+	{
+		m_tStatus.fInvincibilityTimer -= DT;
+
+		if (m_tStatus.fInvincibilityTimer <= 0.f)
+		{
+			SetInvincivility(false);
+			m_tStatus.fInvincibilityTimer = InvincivilityTime;
+		}
+	}
+
 	// 카메라 움직임
 	CameraMove();
 
@@ -394,7 +407,12 @@ void CPlayerScript::tick()
 		SetRight(!IsRight());
 	}
 
-	//// 탄피 힘 방향을 확인하기 위한 자동 사격
+	// 데미지 처리
+	if (m_tStatus.IsDamaged == true)
+	{
+		m_FSM->SetCurState((int)PLAYER_STATE::VitalPanic);
+	}
+	// 탄피 힘 방향을 확인하기 위한 자동 사격
 	// static float autoShoot = 0.f;
 	// autoShoot += DT;
 
@@ -505,6 +523,7 @@ void CPlayerScript::CameraMove()
 				state == (int)PLAYER_STATE::SkillDash)
 			{
 				// 마우스 x 이동에 따라 카메라 y축 회전
+				CamRotSpeed = 10.f;
 				if (vMouseDiff.x > 0.f)
 					vOffset.x += CPlayerController::Sensitivity * CamRotSpeed * DT;
 				else if (vMouseDiff.x < 0.f)
@@ -724,4 +743,43 @@ void CPlayerScript::SaveToFile(FILE* _File)
 
 void CPlayerScript::LoadFromFile(FILE* _File)
 {
+}
+
+void CPlayerScript::SetPanicVignette()
+{
+	float fHpRatio	 = m_tStatus.curHealth / m_tStatus.MaxHealth * 100.f;
+	int	  InputPower = 0;
+
+	if (fHpRatio > 50.f)
+		InputPower = 1;
+	else if (fHpRatio < 50.f && fHpRatio > 25.f)
+		InputPower = 2;
+	else
+		InputPower = 3;
+
+	CRenderMgr::GetInst()->SetVignettePower(InputPower);
+}
+
+void CPlayerScript::SetPlayerCromaticAberration()
+{
+	float fHpRatio = m_tStatus.curHealth / m_tStatus.MaxHealth * 100.f;
+
+	tCromatic_AberrationInfo CurEffect = {};
+
+	if (fHpRatio > 50.f)
+	{
+		CurEffect.Duration		 = 0.3f;
+		CurEffect.MaxRedOffSet	 = Vec2(-5.f, -5.f);
+		CurEffect.MaxGreenOffset = Vec2(5.f, 5.f);
+		CurEffect.MaxBlueOffset	 = Vec2(15.f, 15.f);
+	}
+	else
+	{
+		CurEffect.Duration		 = 1.f;
+		CurEffect.MaxRedOffSet	 = Vec2(-15.f, -15.f);
+		CurEffect.MaxGreenOffset = Vec2(15.f, 15.f);
+		CurEffect.MaxBlueOffset	 = Vec2(45.f, 45.f);
+	}
+
+	CRenderMgr::GetInst()->SetPlayerCA(CurEffect);
 }

@@ -130,6 +130,7 @@ public:
 	void Blur();
 	void Bloom();
 	void Cromatic_Aberration();
+	void Vignette_Effect();
 	void GrayFilter_by_Object();
 
 	void SortShadowMapObject();
