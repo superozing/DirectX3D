@@ -10,6 +10,10 @@ class CLight3D;
 class CStructuredBuffer;
 class CMRT;
 
+#define VignetteLv1 40.f / 100.f
+#define VignetteLv2 60.f / 100.f
+#define VignetteLv3 100.f / 100.f
+
 struct tGlobalBloomInfo
 {
 	bool BloomActivate = true;
@@ -21,21 +25,32 @@ struct tGlobalBloomInfo
 	tBloom GlbalBloomSetting{Vec4(1.f, 1.f, 1.f, 1.f), 0.8f};
 };
 
+enum CA_TYPE
+{
+	CA_TEST,
+	CA_SHORT,
+	CA_LONG,
+};
+
 struct tCromatic_AberrationInfo
 {
-	bool  Activate	 = false;
-	float Duration	 = 10.f;
-	float RemainTime = 0.f;
-	// Vec2  MaxRedOffSet	 = Vec2(0.f, 0.f);
-	// Vec2  MaxGreenOffset = Vec2(0.f, 0.f);
-	// Vec2  MaxBlueOffset	 = Vec2(0.f, 0.f);
-	Vec2 MaxRedOffSet	= Vec2(-10.f, -10.f);
-	Vec2 MaxGreenOffset = Vec2(10.f, 10.f);
-	Vec2 MaxBlueOffset	= Vec2(30.f, 30.f);
-	//  Vec2  CurRedOffSet	 = {};
-	//  Vec2  CurGreenOffset = {};
-	//  Vec2  CurBlueOffset	 = {};
-	Vec2 CropOffset = Vec2(0.8f, 0.8f);
+	CA_TYPE Type		   = CA_TEST;
+	bool	Activate	   = false;
+	float	Duration	   = 10.f;
+	float	RemainTime	   = 0.f;
+	Vec2	MaxRedOffSet   = Vec2(-10.f, -10.f);
+	Vec2	MaxGreenOffset = Vec2(10.f, 10.f);
+	Vec2	MaxBlueOffset  = Vec2(30.f, 30.f);
+	Vec2	CropOffset	   = Vec2(0.95f, 0.95f);
+};
+
+struct tVignetteInfo
+{
+	bool  bVignetteRender;
+	float fDuration;
+	float fAlpha;
+	int	  iVignettePower; // 추가 alpha 변동폭
+	float fMaxAlpha;
 };
 
 class CRenderMgr : public CManager<CRenderMgr>
@@ -68,7 +83,7 @@ private:
 
 	// render function pointer
 	typedef void (CRenderMgr::*RENDER_FUNC)(void);
-	RENDER_FUNC	 m_RenderFunc;
+	RENDER_FUNC m_RenderFunc;
 
 	Vec4 m_vClearColor;
 
@@ -143,6 +158,44 @@ public:
 	tCromatic_AberrationInfo m_CAInfo;
 	bool					 m_bGrayWeight = true;
 
+	tVignetteInfo m_VignetteInfo;
+	bool		  GetRenderVignette() { return m_VignetteInfo.bVignetteRender; }
+
+	float* GetVignetteDuration() { return &m_VignetteInfo.fDuration; }
+	float* GetVignetteAlpha() { return &m_VignetteInfo.fAlpha; }
+	int*   GetVignettePower() { return &m_VignetteInfo.iVignettePower; }
+	void   SetVignettePower(int _Power) { m_VignetteInfo.iVignettePower = _Power; }
+	float  GetVignetteMaxAlpha() { return m_VignetteInfo.fMaxAlpha; }
+
+	void SwitchVignette()
+	{
+		m_VignetteInfo.bVignetteRender = m_VignetteInfo.bVignetteRender ? false : true;
+
+		// 최대 비네트 알파를 정해줄 때 쓰는 값
+		int*  iVignettePower = CRenderMgr::GetInst()->GetVignettePower();
+		float fMaxAlpha;
+
+		if (*iVignettePower <= 1)
+			fMaxAlpha = VignetteLv1;
+		else if (*iVignettePower == 2)
+			fMaxAlpha = VignetteLv2;
+		else if (*iVignettePower > 2)
+			fMaxAlpha = VignetteLv3;
+
+		if (m_VignetteInfo.bVignetteRender == true)
+		{
+			m_VignetteInfo.fDuration = VignetteDuration;
+			m_VignetteInfo.fAlpha	 = fMaxAlpha;
+			m_VignetteInfo.fMaxAlpha = fMaxAlpha;
+		}
+
+		if (m_VignetteInfo.bVignetteRender == false)
+		{
+			m_VignetteInfo.fDuration = 0.f;
+			m_VignetteInfo.fAlpha	 = 0.f;
+		}
+	}
+
 public:
 	virtual void init() override;
 	virtual void tick() override;
@@ -173,10 +226,55 @@ private:
 	vector<Ptr<CTexture>> m_vecBlurTwoTex;
 	void				  CreateBlurTex();
 	void				  DeleteBlurTex();
-	void				  PushCAEvent()
+
+private:
+	void PushCAEvent()
 	{
-		m_CAInfo.Activate	= true;
-		m_CAInfo.RemainTime = m_CAInfo.Duration;
+		m_CAInfo.Activate = true;
+		if (CA_TEST == m_CAInfo.Type)
+		{
+			m_CAInfo.RemainTime = m_CAInfo.Duration;
+		}
+		else if (CA_SHORT == m_CAInfo.Type)
+		{
+			m_CAInfo.Duration	= 3.f;
+			m_CAInfo.RemainTime = m_CAInfo.Duration;
+
+			m_CAInfo.MaxRedOffSet	= Vec2(-5.f, -5.f);
+			m_CAInfo.MaxGreenOffset = Vec2(5.f, 5.f);
+			m_CAInfo.MaxBlueOffset	= Vec2(15.f, 15.f);
+			m_CAInfo.CropOffset		= Vec2(0.95f, 0.95f);
+		}
+		else if (CA_LONG)
+		{
+			m_CAInfo.Duration	= 10.f;
+			m_CAInfo.RemainTime = m_CAInfo.Duration;
+
+			m_CAInfo.MaxRedOffSet	= Vec2(-10.f, -10.f);
+			m_CAInfo.MaxGreenOffset = Vec2(10.f, 10.f);
+			m_CAInfo.MaxBlueOffset	= Vec2(30.f, 30.f);
+			m_CAInfo.CropOffset		= Vec2(0.95f, 0.95f);
+		}
+		else
+		{
+		}
+	}
+
+public:
+	void PushCAEvent(CA_TYPE _TYPE)
+	{
+		m_CAInfo.Type = _TYPE;
+		PushCAEvent();
+	}
+
+	void PushCAEvent(tCromatic_AberrationInfo _Info)
+	{
+		m_CAInfo.Activate = true;
+
+		m_CAInfo.RemainTime		= _Info.Duration;
+		m_CAInfo.MaxRedOffSet	= _Info.MaxRedOffSet;
+		m_CAInfo.MaxGreenOffset = _Info.MaxGreenOffset;
+		m_CAInfo.MaxBlueOffset	= _Info.MaxBlueOffset;
 	}
 
 	friend class CRenderMgrScript;

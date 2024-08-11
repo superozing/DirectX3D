@@ -18,8 +18,8 @@ CTimeMgrScript::~CTimeMgrScript()
 
 void CTimeMgrScript::begin()
 {
-	AppendScriptParam("DeltaTime Lock", SCRIPT_PARAM::INT, &m_DTLock);
-	AppendScriptParam("DeltaTime Scale", SCRIPT_PARAM::FLOAT, &m_DTScale);
+	AppendScriptParam("DeltaTime Lock", SCRIPT_PARAM::INT, &(TIMEMGR->m_bLock));
+	AppendScriptParam("DeltaTime Scale", SCRIPT_PARAM::FLOAT, &(TIMEMGR->m_DTScale), 0.f, 100.f, false, {}, true);
 }
 
 void CTimeMgrScript::tick()

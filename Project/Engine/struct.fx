@@ -134,7 +134,8 @@ struct tBloomInfo
 {
     float4 vBloomColor;
     float fThreshold;
-    int3 iBloomPadding;
+    int bUseOriginalColor;
+    int2 iBloomPadding;
 };
 
 struct AfterImageInfo

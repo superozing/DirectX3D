@@ -62,7 +62,8 @@ struct tBloom
 {
 	Vec4  vBloomColor;
 	float fThreshold;
-	int	  iPadding[3];
+	int	  bUseOriginalColor;
+	int	  iPadding[2];
 };
 
 // 광선 구조체

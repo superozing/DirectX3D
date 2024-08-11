@@ -102,6 +102,7 @@ enum class ASSET_TYPE
 	COMPUTE_SHADER,
 	GRAPHICS_SHADER,
 	FSM,
+	VIDEO,
 	END,
 };
 
@@ -462,3 +463,5 @@ enum class DecalType
 #define DecalPriorityMax 20
 #define AfterImageMaxCount 10
 #define AfterImageUpdateKey "AfterImage"
+
+#define VignetteDuration 3.f

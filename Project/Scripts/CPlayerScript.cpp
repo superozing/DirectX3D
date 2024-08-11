@@ -19,6 +19,7 @@
 #include "CSpringArm.h"
 
 #include "CShootingSystemScript.h"
+#include "CPlayerDamagedScript.h"
 
 #include "CCrosshair.h"
 #include "CHUD.h"
@@ -303,7 +304,10 @@ void CPlayerScript::begin()
 
 	// 저장 재시작하면 터져서 임시로 막아둠
 	if (m_pSpringArm)
+	{
 		m_pSpringArm->SetTargetObject(CRenderMgr::GetInst()->GetMainCam()->GetOwner());
+		m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalIdle]);
+	}
 
 	m_FSM->Begin();
 
@@ -321,6 +325,30 @@ void CPlayerScript::begin()
 	}
 	else
 		CLogMgr::GetInst()->AddLog(Log_Level::ERR, L"Can't find \"HUD\"Object.");
+
+	// Player Sound Init
+	m_vecSound.resize((UINT)PlayerSoundType::End);
+
+	Ptr<CSound> pSnd					   = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_CH0138_Public_Shot);
+	m_vecSound[(UINT)PlayerSoundType::EX1] = pSnd;
+
+	pSnd								   = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Skill_Azusa_Ex_2);
+	m_vecSound[(UINT)PlayerSoundType::EX2] = pSnd;
+
+	pSnd									  = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Common_CH0240_SR_Reload_01);
+	m_vecSound[(UINT)PlayerSoundType::RELOAD] = pSnd;
+
+	pSnd										= CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Field_Movement_03);
+	m_vecSound[(UINT)PlayerSoundType::MOVEMENT] = pSnd;
+
+	pSnd										= CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Grenade_Throw_Up);
+	m_vecSound[(UINT)PlayerSoundType::THROW_UP] = pSnd;
+
+	pSnd										  = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Grenade_Throw_Away);
+	m_vecSound[(UINT)PlayerSoundType::THROW_AWAY] = pSnd;
+
+	pSnd									   = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Skill_Azusa_Ex_Cut_in);
+	m_vecSound[(UINT)PlayerSoundType::SKILLEX] = pSnd;
 }
 
 void CPlayerScript::tick()
@@ -329,6 +357,18 @@ void CPlayerScript::tick()
 	m_FSM->Update();
 	state = magic_enum::enum_name((PLAYER_STATE)m_FSM->GetCurState());
 	cover = magic_enum::enum_name((CoverType)GetCoverType());
+
+	// 전역 무적 판정
+	if (m_tStatus.Invincibility == true)
+	{
+		m_tStatus.fInvincibilityTimer -= DT;
+
+		if (m_tStatus.fInvincibilityTimer <= 0.f)
+		{
+			SetInvincivility(false);
+			m_tStatus.fInvincibilityTimer = InvincivilityTime;
+		}
+	}
 
 	// 카메라 움직임
 	CameraMove();
@@ -362,6 +402,11 @@ void CPlayerScript::tick()
 		SetRight(!IsRight());
 	}
 
+	// 데미지 처리
+	if (m_tStatus.IsDamaged == true)
+	{
+		m_FSM->SetCurState((int)PLAYER_STATE::VitalPanic);
+	}
 	// 탄피 힘 방향을 확인하기 위한 자동 사격
 	// static float autoShoot = 0.f;
 	// autoShoot += DT;
@@ -473,6 +518,7 @@ void CPlayerScript::CameraMove()
 				state == (int)PLAYER_STATE::SkillDash)
 			{
 				// 마우스 x 이동에 따라 카메라 y축 회전
+				CamRotSpeed = 10.f;
 				if (vMouseDiff.x > 0.f)
 					vOffset.x += CPlayerController::Sensitivity * CamRotSpeed * DT;
 				else if (vMouseDiff.x < 0.f)
@@ -692,4 +738,43 @@ void CPlayerScript::SaveToFile(FILE* _File)
 
 void CPlayerScript::LoadFromFile(FILE* _File)
 {
+}
+
+void CPlayerScript::SetPanicVignette()
+{
+	float fHpRatio	 = m_tStatus.curHealth / m_tStatus.MaxHealth * 100.f;
+	int	  InputPower = 0;
+
+	if (fHpRatio > 50.f)
+		InputPower = 1;
+	else if (fHpRatio < 50.f && fHpRatio > 25.f)
+		InputPower = 2;
+	else
+		InputPower = 3;
+
+	CRenderMgr::GetInst()->SetVignettePower(InputPower);
+}
+
+void CPlayerScript::SetPlayerCromaticAberration()
+{
+	float fHpRatio = m_tStatus.curHealth / m_tStatus.MaxHealth * 100.f;
+
+	tCromatic_AberrationInfo CurEffect = {};
+
+	if (fHpRatio > 50.f)
+	{
+		CurEffect.Duration		 = 0.3f;
+		CurEffect.MaxRedOffSet	 = Vec2(-5.f, -5.f);
+		CurEffect.MaxGreenOffset = Vec2(5.f, 5.f);
+		CurEffect.MaxBlueOffset	 = Vec2(15.f, 15.f);
+	}
+	else
+	{
+		CurEffect.Duration		 = 1.f;
+		CurEffect.MaxRedOffSet	 = Vec2(-15.f, -15.f);
+		CurEffect.MaxGreenOffset = Vec2(15.f, 15.f);
+		CurEffect.MaxBlueOffset	 = Vec2(45.f, 45.f);
+	}
+
+	CRenderMgr::GetInst()->SetPlayerCA(CurEffect);
 }

@@ -513,6 +513,7 @@ void MenuUI::GameStart()
 	CLevelMgr::GetInst()->ChangeLevelState(LEVEL_STATE::PLAY);
 }
 
+#include "Engine\CKeyMgr.h"
 void MenuUI::GameStop()
 {
 	CLevel* pLoadedLevel = CLevelSaveLoad::LoadLevel(L"Level//temp.lv");
@@ -526,4 +527,6 @@ void MenuUI::GameStop()
 	// Inspector 의 타겟정보를 nullptr 로 되돌리기
 	Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
 	pInspector->SetTargetObject(nullptr);
+
+	CKeyMgr::GetInst()->RoRShowCursor(true);
 }

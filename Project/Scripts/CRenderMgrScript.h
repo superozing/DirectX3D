@@ -26,6 +26,9 @@ public:
 	static void LerpTest() { TestParam.result = RoRMath::Lerp(TestParam.T1, TestParam.T2, TestParam.T3); }
 
 	void m_LerpTest() { m_TestParam.result = RoRMath::Lerp(m_TestParam.T1, m_TestParam.T2, m_TestParam.T3); }
+	void CATestEvent();
+	void CAShortEvent();
+	void CALongEvent();
 
 public:
 	CLONE_DISABLE(CRenderMgrScript);

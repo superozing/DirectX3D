@@ -28,6 +28,11 @@ CRenderMgr::CRenderMgr()
 	, m_bEscape(false)
 {
 	m_RenderFunc = &CRenderMgr::render_play;
+
+	m_VignetteInfo.bVignetteRender = false;
+	m_VignetteInfo.fAlpha		   = 1.f;
+	m_VignetteInfo.fDuration	   = VignetteDuration;
+	m_VignetteInfo.iVignettePower  = 1;
 }
 
 CRenderMgr::~CRenderMgr()
@@ -424,13 +429,11 @@ void CRenderMgr::CheckEscape()
 				CKeyMgr::GetInst()->SetFocuseState(FOCUS_STATE::OTHER);
 				bPrevCursor = CKeyMgr::GetInst()->IsShowCursor();
 				CKeyMgr::GetInst()->RoRShowCursor(true);
-				ShowCursor(true);
 			}
 			else
 			{
 				CKeyMgr::GetInst()->SetFocuseState(FOCUS_STATE::MAIN);
 				CKeyMgr::GetInst()->RoRShowCursor(bPrevCursor);
-				ShowCursor(bPrevCursor);
 			}
 
 			RePositionDebugCam();

@@ -39,10 +39,10 @@ void CReloadUI::begin()
 						->GetAnimLength((int)PLAYER_STATE::NormalReload);
 
 	m_tBlankBullet.LeftTop = Vec2(740, 348);
-	m_tBlankBullet.Size	   = Vec2(20, 55);
+	m_tBlankBullet.Size	   = Vec2(20, 54);
 
 	m_tFillBullet.LeftTop = Vec2(592, 589);
-	m_tFillBullet.Size	  = Vec2(20, 55);
+	m_tFillBullet.Size	  = Vec2(20, 54);
 
 	GetOwner()->GetScript<CAtlasImageUIScript>()->Draw(false);
 }

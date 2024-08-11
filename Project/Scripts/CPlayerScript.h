@@ -2,6 +2,8 @@
 
 #include <Engine/CScript.h>
 
+#define InvincivilityTime 0.3f
+
 enum class PLAYER_STATE
 {
 	NormalIdle,
@@ -52,6 +54,18 @@ enum class CoverType
 	End,
 };
 
+enum class PlayerSoundType
+{
+	EX1,
+	EX2,
+	RELOAD,
+	MOVEMENT,
+	THROW_UP,
+	THROW_AWAY,
+	SKILLEX,
+	End,
+};
+
 struct PlayerStatus
 {
 	float MaxHealth	 = 100.f;
@@ -76,9 +90,12 @@ struct PlayerStatus
 
 	float SpreadRatioSpeed = 0.f;
 
-	bool IsDead = false;
+	bool IsDamaged	   = false;
+	bool IsDamageMoved = false;
+	bool IsDead		   = false;
 
-	bool Invincibility = false;
+	bool  Invincibility		  = false;
+	float fInvincibilityTimer = InvincivilityTime;
 };
 
 template <typename T> class CRoRStateMachine;
@@ -98,6 +115,8 @@ private:
 	class CSpringArm* m_pSpringArm;
 
 	map<PLAYER_STATE, SpringArmInfo> m_mSpringInfos;
+
+	vector<Ptr<CSound>> m_vecSound;
 
 	class CShootingSystemScript* m_pShootingSystem;
 	class CCrosshair*			 m_pCrosshair;
@@ -123,6 +142,9 @@ public:
 			return false;
 
 		m_tStatus.curHealth -= _damage;
+
+		this->SetDamaged(true);
+
 		if (m_tStatus.curHealth <= 0.f)
 			m_tStatus.IsDead = true;
 		return true;
@@ -238,6 +260,14 @@ public:
 	/// @brief 현재 방어도를 반환합니다.
 	float GetDefensive() { return m_tStatus.Defensive; }
 
+	/// @brief 피격 여부를 반환합니다.
+	bool IsDamaged() { return m_tStatus.IsDamaged; }
+
+	/// @brief 밀려나는 공격 유형인지 외부에서 설정가능하도록 만든 함수
+	void SetDamagedMove(bool bMove) { m_tStatus.IsDamageMoved = bMove; }
+
+	void SetDamaged(bool _Damaged) { m_tStatus.IsDamaged = _Damaged; }
+
 	/// @brief 사망 여부를 반환합니다.
 	bool IsDead() { return m_tStatus.IsDead; }
 #pragma endregion
@@ -257,6 +287,9 @@ public:
 	CRoRStateMachine<CPlayerScript>* GetStateMachine() { return m_FSM; }
 
 	CSpringArm* GetSpringArm() { return m_pSpringArm; }
+
+	void SetPanicVignette();
+	void SetPlayerCromaticAberration();
 
 public:
 	virtual void begin() override;

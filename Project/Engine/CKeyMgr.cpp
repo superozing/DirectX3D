@@ -135,7 +135,7 @@ void CKeyMgr::tick()
 			POINT pt = {};
 			GetCursorPos(&pt);
 			ScreenToClient(CEngine::GetInst()->GetMainWind(), &pt);
-			m_vMousePos = Vec2((float)pt.x, (float)pt.y) + m_vMouseOffset;
+			m_vMousePos	   = Vec2((float)pt.x, (float)pt.y) + m_vMouseOffset;
 			m_vMouseOffset = Vec2();
 
 			// 현재 메인 윈도우 가져오기
@@ -166,7 +166,7 @@ void CKeyMgr::tick()
 			POINT pt = {};
 			GetCursorPos(&pt);
 			ScreenToClient(CEngine::GetInst()->GetMainWind(), &pt);
-			m_vMousePos = Vec2((float)pt.x, (float)pt.y) + m_vMouseOffset;
+			m_vMousePos	   = Vec2((float)pt.x, (float)pt.y) + m_vMouseOffset;
 			m_vMouseOffset = Vec2();
 		}
 
@@ -179,12 +179,10 @@ void CKeyMgr::tick()
 			if (m_bShowCursor)
 			{
 				RoRShowCursor(false);
-				ShowCursor(false);
 			}
 			else
 			{
 				RoRShowCursor(true);
-				ShowCursor(true);
 			}
 		}
 	}
@@ -194,6 +192,7 @@ void CKeyMgr::RoRShowCursor(bool _show)
 {
 	m_bHoldMouseCenter = !_show;
 	m_bShowCursor	   = _show;
+	ShowCursor(_show);
 
 	// 마우스 중앙 고정 옵션 시 마우스 숨김.
 	// ShowCursor()를 매 틱 호출하면 안되는 이유:

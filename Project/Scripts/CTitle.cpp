@@ -6,42 +6,32 @@
 #include <Engine\CLevelMgr.h>
 #include <Engine\CLevel.h>
 
+#include "CRoRStateMachine.h"
+
+static string state = "";
 CTitle::CTitle()
-	: CScript((UINT)SCRIPT_TYPE::TITLE)
+	: CGameMode((UINT)SCRIPT_TYPE::TITLE)
+	, m_fAlphaTime(5.f)
 {
+	m_FSM = new CRoRStateMachine<CTitle>(this, (UINT)TitleState::END);
+
+	FSMInit(TitleState, CTitle, RoROpen);
+	FSMInit(TitleState, CTitle, RoRClose);
+	FSMInit(TitleState, CTitle, BAOpen);
+	FSMInit(TitleState, CTitle, BAClose);
+	FSMInit(TitleState, CTitle, MenuSelect);
+
+	AppendScriptParam("State", SCRIPT_PARAM::STRING, &state, 0.f, 0.f, true);
+	AppendScriptParam("Alpha Time", SCRIPT_PARAM::FLOAT, &m_fAlphaTime);
 }
 
 CTitle::~CTitle()
 {
+	if (m_FSM)
+		delete m_FSM;
 }
 
-void CTitle::DrawRemnants()
-{
-	Vec4 vColor = m_pRemnants->GetColor();
-
-	float speed = 5.f;
-
-	if (vColor.w >= 1.f)
-	{
-		vColor.w			 = 1.f;
-		m_bRemnantsDarkStart = true;
-	}
-
-	if (vColor.w < 0.f)
-	{
-		m_pRemnants->Draw(false);
-		m_bRemnantsEnd = true;
-		return;
-	}
-
-	if (m_bRemnantsDarkStart)
-		speed *= -1.f;
-
-	vColor.w += DT / speed;
-	m_pRemnants->SetColor(vColor);
-}
-
-void CTitle::RemnantsBrightStart()
+void CTitle::RoROpenBegin()
 {
 	m_pRemnants->Draw(true);
 	Vec4 vColor = m_pRemnants->GetColor();
@@ -49,93 +39,130 @@ void CTitle::RemnantsBrightStart()
 	m_pRemnants->SetColor(vColor);
 }
 
-void CTitle::RemnantsDarkStart()
+int CTitle::RoROpenUpdate()
 {
-	Vec4 vColor			 = m_pRemnants->GetColor();
-	vColor.w			 = 1.f;
-	m_bRemnantsDarkStart = true;
+	if (KEY_TAP(LBTN))
+	{
+		return (int)TitleState::RoRClose;
+	}
+
+	Vec4 vColor = m_pRemnants->GetColor();
+	vColor.w += DT / m_fAlphaTime;
+	m_pRemnants->SetColor(vColor);
+	if (vColor.w >= 1.f)
+	{
+		return (int)TitleState::RoRClose;
+	}
+
+	return m_FSM->GetCurState();
+}
+
+void CTitle::RoROpenEnd()
+{
+}
+
+void CTitle::RoRCloseBegin()
+{
+	Vec4 vColor = m_pRemnants->GetColor();
+	vColor.w	= 1.f;
 	m_pRemnants->SetColor(vColor);
 }
 
-void CTitle::DrawBlueArchive()
+int CTitle::RoRCloseUpdate()
 {
-	if (!m_bBlueArchiveBrightStart)
+	if (KEY_TAP(LBTN))
 	{
-		BlueArchiveBrightStart();
+		return (int)TitleState::BAOpen;
 	}
 
-	Vec4 vColor = m_pBlueArchive->GetColor();
-
-	float speed = 5.f;
-
-	if (vColor.w >= 1.f)
+	Vec4 vColor = m_pRemnants->GetColor();
+	vColor.w -= DT / m_fAlphaTime;
+	m_pRemnants->SetColor(vColor);
+	if (vColor.w <= 0.f)
 	{
-		vColor.w				= 1.f;
-		m_bBlueArchiveDarkStart = true;
+		return (int)TitleState::BAOpen;
 	}
 
-	if (vColor.w < 0.f)
-	{
-		m_pBlueArchive->Draw(false);
-		m_bBlueArchiveEnd = true;
-		return;
-	}
-
-	if (m_bBlueArchiveDarkStart)
-		speed *= -1.f;
-
-	vColor.w += DT / speed;
-	m_pBlueArchive->SetColor(vColor);
+	return m_FSM->GetCurState();
 }
 
-void CTitle::BlueArchiveBrightStart()
+void CTitle::RoRCloseEnd()
 {
 	m_pRemnants->Draw(false);
-	m_pBlueArchive->Draw(true);
-	m_bRemnantsEnd			  = true;
-	m_bBlueArchiveBrightStart = true;
+}
 
+void CTitle::BAOpenBegin()
+{
+	m_pBlueArchive->Draw(true);
 	Vec4 vColor = m_pBlueArchive->GetColor();
 	vColor.w	= 0.f;
 	m_pBlueArchive->SetColor(vColor);
 }
 
-void CTitle::BlueArchiveDarkStart()
+int CTitle::BAOpenUpdate()
 {
-	m_bBlueArchiveDarkStart = true;
+	if (KEY_TAP(LBTN))
+	{
+		return (int)TitleState::BAClose;
+	}
 
 	Vec4 vColor = m_pBlueArchive->GetColor();
-	vColor.w	= 1.f;
+	vColor.w += DT / m_fAlphaTime;
 	m_pBlueArchive->SetColor(vColor);
+	if (vColor.w >= 1.f)
+	{
+		return (int)TitleState::BAClose;
+	}
+
+	return m_FSM->GetCurState();
 }
 
-void CTitle::SwitchToNextTexture()
+void CTitle::BAOpenEnd()
 {
-	if (!m_bRemnantsDarkStart)
+}
+
+void CTitle::BACloseBegin()
+{
+	Vec4 vColor = m_pRemnants->GetColor();
+	vColor.w	= 0.f;
+	m_pRemnants->SetColor(vColor);
+}
+
+int CTitle::BACloseUpdate()
+{
+	if (KEY_TAP(LBTN))
 	{
-		RemnantsDarkStart();
-		return;
+		return (int)TitleState::MenuSelect;
 	}
 
-	if (!m_bRemnantsEnd)
+	Vec4 vColor = m_pBlueArchive->GetColor();
+	vColor.w -= DT / m_fAlphaTime;
+	m_pBlueArchive->SetColor(vColor);
+	if (vColor.w <= 0.f)
 	{
-		BlueArchiveBrightStart();
-		return;
+		return (int)TitleState::MenuSelect;
 	}
 
-	if (!m_bBlueArchiveDarkStart)
-	{
-		BlueArchiveDarkStart();
-		return;
-	}
+	return m_FSM->GetCurState();
+}
 
-	if (!m_bTitleShow)
-	{
-		m_bTitleShow = true;
-		auto pLevel	 = CLevelMgr::GetInst()->LevelLoadFunc(LEVELSelectMenu);
-		GamePlayStatic::ChangeLevel(pLevel, LEVEL_STATE::PLAY);
-		return;
-	}
+void CTitle::BACloseEnd()
+{
+	m_pBlueArchive->Draw(false);
+	GamePlayStatic::ChangeLevel(CLevelMgr::GetInst()->LevelLoadFunc(LEVELSelectMenu), LEVEL_STATE::PLAY);
+}
+
+void CTitle::MenuSelectBegin()
+{
+}
+
+int CTitle::MenuSelectUpdate()
+{
+	return m_FSM->GetCurState();
+}
+
+void CTitle::MenuSelectEnd()
+{
 }
 
 void CTitle::begin()
@@ -158,26 +185,12 @@ void CTitle::begin()
 	}
 	m_pRemnants->Draw(false);
 	m_pBlueArchive->Draw(false);
-	RemnantsBrightStart();
+
+	m_FSM->Begin();
 }
 
 void CTitle::tick()
 {
-	if (!m_bTitleShow)
-	{
-		if (!m_bRemnantsEnd)
-		{
-			DrawRemnants();
-		}
-
-		if (m_bRemnantsEnd && !m_bBlueArchiveEnd)
-		{
-			DrawBlueArchive();
-		}
-
-		if (KEY_TAP(LBTN))
-		{
-			SwitchToNextTexture();
-		}
-	}
+	m_FSM->Update();
+	state = magic_enum::enum_name((TitleState)m_FSM->GetCurState());
 }

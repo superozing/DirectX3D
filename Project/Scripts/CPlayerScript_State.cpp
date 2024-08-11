@@ -21,16 +21,19 @@
 		(KEY_RELEASED(CPlayerController::Right) || KEY_NONE(CPlayerController::Right)) && \
 		(KEY_RELEASED(CPlayerController::Left) || KEY_NONE(CPlayerController::Left))
 
+#define KnockbackSpeed 500.f;
+
 #pragma region Normal
 
 void CPlayerScript::NormalIdleBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::NormalIdle);
-	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalIdle]);
+	// m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalIdle]);
 }
 
 int CPlayerScript::NormalIdleUpdate()
 {
+
 	// TODO : 재장전 조건 추가 필요 (현재 탄창이 최대 탄창과 같으면 x)
 	// 재장전
 	if (KEY_TAP(CPlayerController::Reload))
@@ -50,6 +53,8 @@ void CPlayerScript::NormalIdleEnd()
 void CPlayerScript::NormalReloadBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::NormalReload, 0);
+	m_vecSound[(UINT)PlayerSoundType::RELOAD]->Play(1, 1);
+	m_pShootingSystem->Reload();
 }
 
 int CPlayerScript::NormalReloadUpdate()
@@ -57,7 +62,6 @@ int CPlayerScript::NormalReloadUpdate()
 	// 애니메이션 종료시 Idle상태로 전환
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::NormalIdle;
-
 	return m_FSM->GetCurState();
 }
 
@@ -86,10 +90,19 @@ void CPlayerScript::NormalAttackStartEnd()
 
 void CPlayerScript::NormalAttackIngBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::NormalAttackIng, 0, 5.f);
-	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalAttackStart]);
-	m_pShootingSystem->ShootPlayerBulletRay();
-	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
+	if (m_pShootingSystem->IsShootAvailable())
+	{
+		Animator3D()->Play((int)PLAYER_STATE::NormalAttackIng, 0, 5.f);
+		m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalAttackStart]);
+		m_pShootingSystem->ShootPlayerBulletRay();
+		m_vecSound[(UINT)PlayerSoundType::EX1]->Play(1, 1.f, true);
+		m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
+	}
+	else
+	{
+		m_FSM->SetCurState(m_FSM->GetPrevState());
+		return;
+	}
 	// m_pBulletLine->GetOwner()->ParticleSystem()->Play();
 }
 
@@ -186,6 +199,8 @@ void CPlayerScript::StandIdleEnd()
 void CPlayerScript::StandReloadBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::StandReload, 0);
+	m_vecSound[(UINT)PlayerSoundType::RELOAD]->Play(1, 1);
+	m_pShootingSystem->Reload();
 }
 
 int CPlayerScript::StandReloadUpdate()
@@ -226,10 +241,19 @@ void CPlayerScript::StandAttackStartEnd()
 
 void CPlayerScript::StandAttackIngBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::StandAttackIng, 0, 5.f);
-	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::StandAttackStart]);
-	m_pShootingSystem->ShootPlayerBulletRay();
-	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
+	if (m_pShootingSystem->IsShootAvailable())
+	{
+		Animator3D()->Play((int)PLAYER_STATE::StandAttackIng, 0, 5.f);
+		m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::StandAttackStart]);
+		m_pShootingSystem->ShootPlayerBulletRay();
+		m_vecSound[(UINT)PlayerSoundType::EX1]->Play(1, 1.f, true);
+		m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
+	}
+	else
+	{
+		m_FSM->SetCurState((int)PLAYER_STATE::StandAttackDelay);
+		return;
+	}
 	// m_pBulletLine->GetOwner()->ParticleSystem()->Play();
 }
 
@@ -343,6 +367,8 @@ void CPlayerScript::KneelIdleEnd()
 void CPlayerScript::KneelReloadBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::KneelReload, 0);
+	m_vecSound[(UINT)PlayerSoundType::RELOAD]->Play(1, 1);
+	m_pShootingSystem->Reload();
 }
 
 int CPlayerScript::KneelReloadUpdate()
@@ -350,7 +376,6 @@ int CPlayerScript::KneelReloadUpdate()
 	// 애니메이션 종료시 Idle상태로 전환
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::KneelIdle;
-
 	return m_FSM->GetCurState();
 }
 
@@ -384,10 +409,19 @@ void CPlayerScript::KneelAttackStartEnd()
 
 void CPlayerScript::KneelAttackIngBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::KneelAttackIng, 0, 5.f);
-	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::KneelAttackStart], 0.1f);
-	m_pShootingSystem->ShootPlayerBulletRay();
-	m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
+	if (m_pShootingSystem->IsShootAvailable())
+	{
+		Animator3D()->Play((int)PLAYER_STATE::KneelAttackIng, 0, 5.f);
+		m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::KneelAttackStart]);
+		m_pShootingSystem->ShootPlayerBulletRay();
+		m_vecSound[(UINT)PlayerSoundType::EX1]->Play(1, 1.f, true);
+		m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
+	}
+	else
+	{
+		m_FSM->SetCurState((int)PLAYER_STATE::KneelAttackDelay);
+		return;
+	}
 	// m_pBulletLine->GetOwner()->ParticleSystem()->Play();
 }
 
@@ -636,8 +670,21 @@ void CPlayerScript::MoveIngBegin()
 
 int CPlayerScript::MoveIngUpdate()
 {
+	static bool IsLeftFoot = true;
+	if (Animator3D()->GetCurFrameIdx() == 0 && IsLeftFoot)
+	{
+		m_vecSound[(UINT)PlayerSoundType::MOVEMENT]->Play(1, 10.f, true);
+		IsLeftFoot = false;
+	}
+	if (Animator3D()->GetCurFrameIdx() == Animator3D()->GetCurClipLength() / 2 && !IsLeftFoot)
+	{
+		m_vecSound[(UINT)PlayerSoundType::MOVEMENT]->Play(1, 10.f, true);
+		IsLeftFoot = true;
+	}
+
 	if (MoveEndCondition)
 	{
+		IsLeftFoot = true;
 		switch (GetCoverType())
 		{
 		case CoverType::Normal:
@@ -654,11 +701,17 @@ int CPlayerScript::MoveIngUpdate()
 
 	// 사격 준비
 	if (KEY_TAP(CPlayerController::Zoom))
+	{
+		IsLeftFoot = true;
 		return (int)PLAYER_STATE::NormalAttackStart;
+	}
 
 	// TODO: Reload 조건
 	if (KEY_TAP(CPlayerController::Reload))
+	{
+		IsLeftFoot = true;
 		return (int)PLAYER_STATE::NormalReload;
+	}
 
 	return m_FSM->GetCurState();
 }
@@ -706,6 +759,7 @@ void CPlayerScript::MoveJumpEnd()
 	Vec3 vPos = Transform()->GetRelativePos();
 	vPos.y	  = m_fJumpY;
 	Transform()->SetRelativePos(vPos);
+	SetCoverType(CoverType::Normal);
 }
 
 #pragma endregion
@@ -728,13 +782,48 @@ void CPlayerScript::VitalDeathEnd()
 
 void CPlayerScript::VitalPanicBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::VitalPanic, 0);
+
+	CCamera* pCamera = CRenderMgr::GetInst()->GetMainCam();
+
+	if (IsInvincivility() == false) // 피격이 처음 되면 무적이 아니므로 피격 상태로 들어간다.
+	{
+		if (m_tStatus.IsDamageMoved == true) // 밀려날때만 재생
+		{
+			Animator3D()->Play((int)PLAYER_STATE::VitalPanic, 0);
+		}
+
+		SetPanicVignette();
+		CRenderMgr::GetInst()->SwitchVignette();
+		SetPlayerCromaticAberration();
+		SetInvincivility(true);
+		this->SetDamaged(false);
+	}
 }
 
+#include <Engine\CLogMgr.h>
 int CPlayerScript::VitalPanicUpdate()
 {
 	// TODO: 패닉이 풀렸는지 검사해야 함
 	// return ispanic ? (int)PLAYER_STATE::NormalIdle : m_FSM->GetCurState();
+
+	// 밀리는 공격이라면 계산해준다.
+	if (m_tStatus.IsDamageMoved == true)
+	{
+		float fCurSpeed = KnockbackSpeed;
+
+		Vec3 vBack = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+		vBack	   = -vBack;
+		vBack.Normalize();
+		Vec3 vPos = Transform()->GetRelativePos();
+		vPos += vBack * fCurSpeed * DT;
+
+		Transform()->SetRelativePos(vPos);
+	}
+
+	if (Animator3D()->GetCurFrameIdx() > 1)
+	{
+		return (int)PLAYER_STATE::NormalIdle;
+	}
 	return m_FSM->GetCurState();
 }
 
@@ -858,6 +947,7 @@ void CPlayerScript::SkillThrowBegin()
 	Animator3D()->Play((int)PLAYER_STATE::SkillThrow, 0);
 	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::SkillThrow]);
 	bThrow = false;
+	m_vecSound[(UINT)PlayerSoundType::THROW_UP]->Play(1, 1.f);
 }
 
 int CPlayerScript::SkillThrowUpdate()
@@ -876,6 +966,7 @@ int CPlayerScript::SkillThrowUpdate()
 		{
 			Animator3D()->Pause(false);
 			bThrow = true;
+			m_vecSound[(UINT)PlayerSoundType::THROW_AWAY]->Play(1, 1.f);
 		}
 	}
 
@@ -916,6 +1007,8 @@ void CPlayerScript::SkillEXBegin()
 	bEXFirst  = false;
 	bEXSecond = false;
 	bEXThird  = false;
+
+	m_vecSound[(UINT)PlayerSoundType::SKILLEX]->Play(1, 1.f);
 }
 
 int CPlayerScript::SkillEXUpdate()
@@ -955,6 +1048,7 @@ int CPlayerScript::SkillEXUpdate()
 		info.fCamSpeed	  = 10.f;
 		info.fCamRotSpeed = 20.f;
 		m_pSpringArm->SetInfo(info);
+		m_vecSound[(UINT)PlayerSoundType::EX2]->Play(1, 1.f);
 	}
 	else if (!bEXThird && curFrm >= 45)
 	{

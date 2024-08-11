@@ -49,6 +49,10 @@ void CDamagedDirectionMgr::begin()
 		GetOwner()->AddChild(pObj);
 		pObj->begin();
 	}
+	// Button Sound Init
+	m_vecSound.resize((UINT)DamagedDirectionSoundType::End);
+	m_vecSound[(UINT)DamagedDirectionSoundType::Damaged] =
+		CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Shot_Impact_Hit_02);
 }
 
 void CDamagedDirectionMgr::tick()
@@ -70,6 +74,7 @@ void CDamagedDirectionMgr::SetParentPanelUI()
 
 void CDamagedDirectionMgr::AddDamagedDirection(Vec3 _EnemyPos, float _RadiusRatio)
 {
+	m_vecSound[(UINT)DamagedDirectionSoundType::Damaged]->Play(1);
 	m_arrDamagedDirectionUI[m_Idx]->SetAlpha(0.5f);
 	m_arrDamagedDirectionUI[m_Idx]->SetDamageRatio(_RadiusRatio);
 	m_arrDamagedDirectionUI[m_Idx]->SetEnemyPos(_EnemyPos);

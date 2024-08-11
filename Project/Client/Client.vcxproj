@@ -180,7 +180,6 @@
     <ClInclude Include="ImGuizmo.h" />
     <ClInclude Include="Light3DUI.h" />
     <ClInclude Include="MapTestLevel.h" />
-    <ClInclude Include="MapTutorial.h" />
     <ClInclude Include="ModelUI.h" />
     <ClInclude Include="ParticleSystemUI.h" />
     <ClInclude Include="LogUI.h" />
@@ -221,6 +220,7 @@
     <ClInclude Include="UI.h" />
     <ClInclude Include="RTViewPort.h" />
     <ClInclude Include="CUITempLevel.h" />
+    <ClInclude Include="VideoUI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animator2DUI.cpp" />
@@ -245,7 +245,6 @@
     <ClCompile Include="Light3DUI.cpp" />
     <ClCompile Include="LogUI.cpp" />
     <ClCompile Include="MapTestLevel.cpp" />
-    <ClCompile Include="MapTutorial.cpp" />
     <ClCompile Include="ModelUI.cpp" />
     <ClCompile Include="ParticleSystemUI.cpp" />
     <ClCompile Include="PhysXUI.cpp" />
@@ -286,6 +285,7 @@
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="RTViewPort.cpp" />
     <ClCompile Include="CUITempLevel.cpp" />
+    <ClCompile Include="VideoUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc" />

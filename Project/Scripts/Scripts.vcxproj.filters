@@ -130,20 +130,11 @@
     <ClInclude Include="strings.h">
       <Filter>Default</Filter>
     </ClInclude>
-    <ClInclude Include="CWelcomeTutorialEvent.h">
-      <Filter>Scripts\Event\Tutorial</Filter>
-    </ClInclude>
     <ClInclude Include="CCoverArea.h">
       <Filter>Scripts\Event\Cover</Filter>
     </ClInclude>
     <ClInclude Include="CCoverUI.h">
       <Filter>Scripts\Event\Cover</Filter>
-    </ClInclude>
-    <ClInclude Include="CDashEventListener.h">
-      <Filter>Scripts\Event\Tutorial</Filter>
-    </ClInclude>
-    <ClInclude Include="CShootingTutorialEvent.h">
-      <Filter>Scripts\Event\Tutorial</Filter>
     </ClInclude>
     <ClInclude Include="CArona.h">
       <Filter>Scripts\UI\Image\Arona</Filter>
@@ -210,9 +201,6 @@
     </ClInclude>
     <ClInclude Include="CTutorialTarget.h">
       <Filter>Scripts\Level\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="CEventListener.h">
-      <Filter>BassClass</Filter>
     </ClInclude>
     <ClInclude Include="CShootingSystemScript.h">
       <Filter>Scripts\ShootingSystem</Filter>
@@ -283,8 +271,17 @@
     <ClInclude Include="CGroundCrackScript.h">
       <Filter>Scripts\Boss\BossMissile\GroundDecal</Filter>
     </ClInclude>
-    <ClInclude Include="CBossGroggy.h">
-      <Filter>Scripts\UI\ProgressBar\BossGroggy</Filter>
+    <ClInclude Include="CVideoPlayer.h">
+      <Filter>Scripts\Render\Video</Filter>
+    </ClInclude>
+    <ClInclude Include="CEventListener.h">
+      <Filter>Scripts\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="CCubePushScript.h">
+      <Filter>Scripts\Phys</Filter>
+    </ClInclude>
+    <ClInclude Include="CFinishBalloon.h">
+      <Filter>Scripts\Level</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -420,20 +417,11 @@
     <ClCompile Include="CTextUI.cpp">
       <Filter>Scripts\DefaultUI\Text</Filter>
     </ClCompile>
-    <ClCompile Include="CWelcomeTutorialEvent.cpp">
-      <Filter>Scripts\Event\Tutorial</Filter>
-    </ClCompile>
     <ClCompile Include="CCoverArea.cpp">
       <Filter>Scripts\Event\Cover</Filter>
     </ClCompile>
     <ClCompile Include="CCoverUI.cpp">
       <Filter>Scripts\Event\Cover</Filter>
-    </ClCompile>
-    <ClCompile Include="CDashEventListener.cpp">
-      <Filter>Scripts\Event\Tutorial</Filter>
-    </ClCompile>
-    <ClCompile Include="CShootingTutorialEvent.cpp">
-      <Filter>Scripts\Event\Tutorial</Filter>
     </ClCompile>
     <ClCompile Include="CArona.cpp">
       <Filter>Scripts\UI\Image\Arona</Filter>
@@ -497,9 +485,6 @@
     </ClCompile>
     <ClCompile Include="CTutorialTarget.cpp">
       <Filter>Scripts\Level\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="CEventListener.cpp">
-      <Filter>BassClass</Filter>
     </ClCompile>
     <ClCompile Include="CShootingSystemScript.cpp">
       <Filter>Scripts\ShootingSystem</Filter>
@@ -570,8 +555,17 @@
     <ClCompile Include="CGroundCrackScript.cpp">
       <Filter>Scripts\Boss\BossMissile\GroundDecal</Filter>
     </ClCompile>
-    <ClCompile Include="CBossGroggy.cpp">
-      <Filter>Scripts\UI\ProgressBar\BossGroggy</Filter>
+    <ClCompile Include="CVideoPlayer.cpp">
+      <Filter>Scripts\Render\Video</Filter>
+    </ClCompile>
+    <ClCompile Include="CEventListener.cpp">
+      <Filter>Scripts\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="CCubePushScript.cpp">
+      <Filter>Scripts\Phys</Filter>
+    </ClCompile>
+    <ClCompile Include="CFinishBalloon.cpp">
+      <Filter>Scripts\Level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -776,8 +770,11 @@
     <Filter Include="Scripts\Boss\BossMissile\GroundDecal">
       <UniqueIdentifier>{c98a1cf1-7fa0-4fc0-9092-58f90f05515e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\UI\ProgressBar\BossGroggy">
-      <UniqueIdentifier>{dbe593e1-c751-493b-833e-0ff0e1014f79}</UniqueIdentifier>
+    <Filter Include="Scripts\Render\Video">
+      <UniqueIdentifier>{049e4cf4-e10a-4955-92b2-85660b849773}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Phys">
+      <UniqueIdentifier>{bb33054c-aa56-4cc7-9eef-ea724457ddaf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
