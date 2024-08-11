@@ -45,8 +45,14 @@ void CBloomScript::tick()
 
 void CBloomScript::UpdateData()
 {
+	// 블룸기능이 꺼져있으면
+	if (false == RENDERMGR->m_GlobalBloomInfo.BloomActivate)
+		return;
+	// 개인블룸과 글로벌블룸이 모두 꺼져있는 경우
 	if (false == m_bBloomActive && false == RENDERMGR->m_GlobalBloomInfo.GlobalBloom)
 		return;
+
+	auto ObjName = GetOwner()->GetName();
 
 	auto vecMat = GetOwner()->GetRenderComponent()->GetVecMtrls();
 	for (auto& e : vecMat)
@@ -54,15 +60,15 @@ void CBloomScript::UpdateData()
 		e.pCurMtrl->SetBloom(true);
 	}
 
-	// 전역 블룸
-	if (true == RENDERMGR->m_GlobalBloomInfo.GlobalBloom)
-	{
-		m_Buffer->SetData(&(RENDERMGR->m_GlobalBloomInfo.GlbalBloomSetting));
-	}
 	// 오브젝트별 블룸
-	else
+	if (true == m_bBloomActive)
 	{
 		m_Buffer->SetData(&m_Info, 1);
+	}
+	// 전역 블룸
+	else
+	{
+		m_Buffer->SetData(&(RENDERMGR->m_GlobalBloomInfo.GlbalBloomSetting), 1);
 	}
 	m_Buffer->UpdateData(REGISTER_NUM_BLOOM);
 }
