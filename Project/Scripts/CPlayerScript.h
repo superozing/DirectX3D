@@ -289,6 +289,7 @@ public:
 	CSpringArm* GetSpringArm() { return m_pSpringArm; }
 
 	void SetPanicVignette();
+	void SetPlayerCromaticAberration();
 
 public:
 	virtual void begin() override;

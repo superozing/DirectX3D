@@ -793,6 +793,7 @@ void CPlayerScript::VitalPanicBegin()
 
 		SetPanicVignette();
 		CRenderMgr::GetInst()->SwitchVignette();
+		SetPlayerCromaticAberration();
 		SetInvincivility(true);
 		this->SetDamaged(false);
 	}

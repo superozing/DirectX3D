@@ -327,26 +327,25 @@ void CPlayerScript::begin()
 	m_vecSound.resize((UINT)PlayerSoundType::End);
 
 	Ptr<CSound> pSnd					   = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_CH0138_Public_Shot);
-	m_vecSound[(UINT)PlayerSoundType::EX1]	 = pSnd;
+	m_vecSound[(UINT)PlayerSoundType::EX1] = pSnd;
 
-	pSnd = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Skill_Azusa_Ex_2);
-	m_vecSound[(UINT)PlayerSoundType::EX2]	 = pSnd;
+	pSnd								   = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Skill_Azusa_Ex_2);
+	m_vecSound[(UINT)PlayerSoundType::EX2] = pSnd;
 
-	pSnd								   = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Common_CH0240_SR_Reload_01);
-	m_vecSound[(UINT)PlayerSoundType::RELOAD]	 = pSnd;
-	
+	pSnd									  = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Common_CH0240_SR_Reload_01);
+	m_vecSound[(UINT)PlayerSoundType::RELOAD] = pSnd;
+
 	pSnd										= CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Field_Movement_03);
 	m_vecSound[(UINT)PlayerSoundType::MOVEMENT] = pSnd;
 
-	pSnd									 = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Grenade_Throw_Up);
+	pSnd										= CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Grenade_Throw_Up);
 	m_vecSound[(UINT)PlayerSoundType::THROW_UP] = pSnd;
 
-	pSnd									 = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Grenade_Throw_Away);
+	pSnd										  = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Grenade_Throw_Away);
 	m_vecSound[(UINT)PlayerSoundType::THROW_AWAY] = pSnd;
 
 	pSnd									   = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Skill_Azusa_Ex_Cut_in);
 	m_vecSound[(UINT)PlayerSoundType::SKILLEX] = pSnd;
-
 }
 
 void CPlayerScript::tick()
@@ -409,11 +408,11 @@ void CPlayerScript::tick()
 	// static float autoShoot = 0.f;
 	// autoShoot += DT;
 
-	//if (autoShoot > 0.5f)
+	// if (autoShoot > 0.5f)
 	//{
 	//	m_pShootingSystem->ShootPlayerBulletRay();
 	//	autoShoot = 0.f;
-	//}
+	// }
 }
 
 void CPlayerScript::CameraMove()
@@ -750,4 +749,28 @@ void CPlayerScript::SetPanicVignette()
 		InputPower = 3;
 
 	CRenderMgr::GetInst()->SetVignettePower(InputPower);
+}
+
+void CPlayerScript::SetPlayerCromaticAberration()
+{
+	float fHpRatio = m_tStatus.curHealth / m_tStatus.MaxHealth * 100.f;
+
+	tCromatic_AberrationInfo CurEffect = {};
+
+	if (fHpRatio > 50.f)
+	{
+		CurEffect.Duration		 = 0.3f;
+		CurEffect.MaxRedOffSet	 = Vec2(-5.f, -5.f);
+		CurEffect.MaxGreenOffset = Vec2(5.f, 5.f);
+		CurEffect.MaxBlueOffset	 = Vec2(15.f, 15.f);
+	}
+	else
+	{
+		CurEffect.Duration		 = 1.f;
+		CurEffect.MaxRedOffSet	 = Vec2(-15.f, -15.f);
+		CurEffect.MaxGreenOffset = Vec2(15.f, 15.f);
+		CurEffect.MaxBlueOffset	 = Vec2(45.f, 45.f);
+	}
+
+	CRenderMgr::GetInst()->SetPlayerCA(CurEffect);
 }

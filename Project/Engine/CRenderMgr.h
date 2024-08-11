@@ -230,6 +230,16 @@ private:
 		m_CAInfo.RemainTime = m_CAInfo.Duration;
 	}
 
+	void PushCAEvent(tCromatic_AberrationInfo _Info)
+	{
+		m_CAInfo.Activate = true;
+
+		m_CAInfo.RemainTime		= _Info.Duration;
+		m_CAInfo.MaxRedOffSet	= _Info.MaxRedOffSet;
+		m_CAInfo.MaxGreenOffset = _Info.MaxGreenOffset;
+		m_CAInfo.MaxBlueOffset	= _Info.MaxBlueOffset;
+	}
+
 	friend class CRenderMgrScript;
 	friend class CDevice;
 	friend class CCamera;

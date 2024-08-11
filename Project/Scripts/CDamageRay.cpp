@@ -45,7 +45,7 @@ void CDamageRay::tick()
 
 			if (pScript != nullptr)
 			{
-				pScript->SetDamagedMove(true);
+				pScript->SetDamagedMove(false);
 				pScript->Hit(RayDamage);
 			}
 		}
