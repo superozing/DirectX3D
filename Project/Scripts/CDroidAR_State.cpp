@@ -9,6 +9,7 @@
 #include "CRoRStateMachine.h"
 
 #include "CParticleSpawnScript.h"
+#include "CShootingSystem_DroidAR.h"
 #include "CPlayerScript.h"
 
 void CDroidAR::AppereBegin()
@@ -107,14 +108,16 @@ int CDroidAR::NormalAttackStartUpdate()
 
 void CDroidAR::NormalAttackStartEnd()
 {
-	// 여기에 사격 추가
-	//CDroidAR::Fire();
+	m_ShootingSystem->SetShootingDirection(m_Target->GetScript<CPlayerScript>());
 }
 
 void CDroidAR::NormalAttackIngBegin()
 {
 	Animator3D()->Play((int)DROIDAR_STATE::NormalAttackIng, 0);
+	
 	--m_AttackCount;
+
+	m_ShootingSystem->ShootDroidARBulletRay();
 }
 
 int CDroidAR::NormalAttackIngUpdate()
@@ -135,6 +138,11 @@ int CDroidAR::NormalAttackIngUpdate()
 
 void CDroidAR::NormalAttackIngEnd()
 {
+	// 여기서 사격 추가
+	// 1. particle
+	// 2. ray
+	// 3. 총구 섬광 -> 일단 후순위
+
 }
 
 void CDroidAR::NormalAttackDelayBegin()

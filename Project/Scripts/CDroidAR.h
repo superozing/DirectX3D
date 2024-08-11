@@ -57,6 +57,8 @@ private:
 	CRoRStateMachine<CDroidAR>*		m_FSM;
 	MonsterStatus					m_MonsterStatus;
 
+	class CShootingSystem_DroidAR* m_ShootingSystem;
+
 	// 타겟 오브젝트 (플레이어)
 	class CGameObject*				m_Target;
 	tRoRHitInfo						m_hitInfo;
@@ -66,6 +68,8 @@ private:
 
 	bool							m_IsActiveAttack;
 	float							m_AttCooldown;
+
+	Vec3							m_LookDirection;
 
 #pragma region About State
 
@@ -130,6 +134,8 @@ public:
 	void CheckAttackCooldown();
 
 	void CheckVital();
+
+	float GetDamageVal() const { return m_MonsterStatus.Damage; }
 
 public:
 	CLONE(CDroidAR);

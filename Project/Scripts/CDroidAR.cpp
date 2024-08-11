@@ -7,6 +7,7 @@
 #include <Engine\CRandomMgr.h>
 #include <Engine\CAssetMgr.h>
 
+#include "CShootingSystem_DroidAR.h"
 #include "CRoRStateMachine.h"
 
 CDroidAR::CDroidAR()
@@ -45,6 +46,8 @@ void CDroidAR::begin()
 	m_Target = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Azusa");
 
 	m_AttackCount =	m_MaxAttackCount;
+
+	m_ShootingSystem = GetOwner()->GetScript<CShootingSystem_DroidAR>();
 }
 
 void CDroidAR::tick()
