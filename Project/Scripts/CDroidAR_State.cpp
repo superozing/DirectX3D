@@ -117,7 +117,6 @@ void CDroidAR::NormalAttackIngBegin()
 	
 	--m_AttackCount;
 
-	m_ShootingSystem->ShootDroidARBulletRay();
 }
 
 int CDroidAR::NormalAttackIngUpdate()
@@ -140,9 +139,8 @@ void CDroidAR::NormalAttackIngEnd()
 {
 	// 여기서 사격 추가
 	// 1. particle
-	// 2. ray
 	// 3. 총구 섬광 -> 일단 후순위
-
+	m_ShootingSystem->ShootDroidARBulletRay();
 }
 
 void CDroidAR::NormalAttackDelayBegin()
@@ -182,12 +180,22 @@ void CDroidAR::NormalAttackEndEnd()
 
 void CDroidAR::MoveIngBegin()
 {
-	Animator3D()->Play((int)DROIDAR_STATE::MoveIng, 0);
+	Animator3D()->Play((int)DROIDAR_STATE::MoveIng);
 }
 
 int CDroidAR::MoveIngUpdate()
 {
-	return 0;
+	if (CheckTargetInRange())
+		return (int)DROIDAR_STATE::MoveEnd;
+	
+	Vec3 PlayerPos = m_Target->Transform()->GetWorldPos();
+	Vec3 DroidPos  = GetOwner()->Transform()->GetWorldPos();
+
+	Vec3 dir = (PlayerPos - DroidPos).Normalize();
+	GetOwner()->Transform()->SetRelativePos(DroidPos + (dir * 200.f * DT));
+	GetOwner()->Transform()->SetDir(dir);
+
+	return m_FSM->GetCurState();
 }
 
 void CDroidAR::MoveIngEnd()
@@ -201,7 +209,10 @@ void CDroidAR::MoveEndBegin()
 
 int CDroidAR::MoveEndUpdate()
 {
-	return 0;
+	if (!Animator3D()->IsPlayable())
+		return (int)DROIDAR_STATE::NormalIdle;
+
+	return m_FSM->GetCurState();
 }
 
 void CDroidAR::MoveEndEnd()

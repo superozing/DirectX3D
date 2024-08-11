@@ -22,6 +22,8 @@ CDroidAR::CDroidAR(const CDroidAR& _Origin)
 {
 	InitScriptParamUI();
 	InitStateMachine();
+
+	// 구현하기
 }
 
 CDroidAR::~CDroidAR()
@@ -41,7 +43,7 @@ void CDroidAR::begin()
 	m_FSM->Begin();
 	
 	// 첫 상태를 지정
-	m_FSM->SetCurState((int)DROIDAR_STATE::NormalIdle);
+	m_FSM->SetCurState((int)DROIDAR_STATE::MoveIng);
 
 	m_Target = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Azusa");
 
@@ -54,10 +56,20 @@ void CDroidAR::tick()
 {
 	m_FSM->Update();
 
+	// 아무 것도 안 하고 있는 상태일 경우
 	if ((int)DROIDAR_STATE::NormalIdle == m_FSM->GetCurState())
 	{
-		// 공격 쿨타임 체크
-		CheckAttackCooldown();
+		// 사격 범위 내에 있는지 체크
+		if (CheckTargetInRange())
+		{ 
+			// 공격 쿨타임 체크
+			CheckAttackCooldown();
+		}
+		else if (m_FSM->GetCurState() != (int)DROIDAR_STATE::MoveIng)
+		{
+			// 너무 멀리 있다면 플레이어의 위치로 이동
+			m_FSM->SetCurState((int)DROIDAR_STATE::MoveIng);
+		}
 	}
 
 	// Vital 상태
@@ -78,7 +90,7 @@ void CDroidAR::CheckAttackCooldown()
 		m_AttCooldown += DT;
 
 		// 공격 대기 시간을 넘어갈 경우 공격 state로 전환
-		if (m_AttCooldown >= 3.f) // m_MonsterStatus.AttackMoveSpeed
+		if (m_AttCooldown >= 1.f) // m_MonsterStatus.AttackMoveSpeed
 		{
 			m_AttCooldown	 = 0.f;
 			m_IsActiveAttack = true;
@@ -102,6 +114,17 @@ void CDroidAR::CheckVital()
 		m_MonsterStatus.IsDead = true;
 		m_FSM->SetCurState((int)DROIDAR_STATE::VitalDeath);
 	}
+}
+
+bool CDroidAR::CheckTargetInRange()
+{
+	//distance가 범위 내에 있는지 체크
+	Vec3 PlayerPos = m_Target->Transform()->GetWorldPos();
+	Vec3 DroidPos = GetOwner()->Transform()->GetWorldPos();
+
+	float dist = Vec3::Distance(DroidPos, PlayerPos);
+
+	return dist < 100.f;
 }
 
 void CDroidAR::InitStateMachine()
