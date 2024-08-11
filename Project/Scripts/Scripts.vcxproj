@@ -233,6 +233,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CProgressBar.h" />
     <ClInclude Include="CProjectileScript.h" />
     <ClInclude Include="CSBSmokeScript.h" />
+    <ClInclude Include="CShootingSystem_DroidAR.h" />
     <ClInclude Include="CSmokeScript.h" />
     <ClInclude Include="CSpawnPhysX.h" />
     <ClInclude Include="CTitleTex.h" />
@@ -331,6 +332,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CProgressBar.cpp" />
     <ClCompile Include="CProjectileScript.cpp" />
     <ClCompile Include="CSBSmokeScript.cpp" />
+    <ClCompile Include="CShootingSystem_DroidAR.cpp" />
     <ClCompile Include="CSmokeScript.cpp" />
     <ClCompile Include="CSpawnPhysX.cpp" />
     <ClCompile Include="CTitleTex.cpp" />

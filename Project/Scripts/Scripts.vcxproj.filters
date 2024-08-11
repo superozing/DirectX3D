@@ -283,6 +283,9 @@
     <ClInclude Include="CDroidAR.h">
       <Filter>Scripts\Monster\DroidAR</Filter>
     </ClInclude>
+    <ClInclude Include="CShootingSystem_DroidAR.h">
+      <Filter>Scripts\ShootingSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -569,6 +572,9 @@
     </ClCompile>
     <ClCompile Include="CDroidAR_State.cpp">
       <Filter>Scripts\Monster\DroidAR</Filter>
+    </ClCompile>
+    <ClCompile Include="CShootingSystem_DroidAR.cpp">
+      <Filter>Scripts\ShootingSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
