@@ -52,6 +52,8 @@ private:
 	float m_EndingDelayTime;
 	float m_EndingOutTime;
 
+	float m_EndingCutInTime;
+
 	float m_Acctime;
 
 	vector<Ptr<CSound>> m_BGM;
@@ -70,6 +72,8 @@ public:
 	float GetEndingInTime() { return m_EndingInTime; }
 	float GetEndingDelayTime() { return m_EndingDelayTime; }
 	float GetEndingOutTime() { return m_EndingOutTime; }
+
+	float GetEndingCutInTime() { return m_EndingCutInTime; }
 
 	float GetAccTime() { return m_Acctime; }
 

@@ -21,6 +21,7 @@ CBossLV::CBossLV()
 	, m_EndingInTime(0.5f)
 	, m_EndingDelayTime(1.f)
 	, m_EndingOutTime(0.5f)
+	, m_EndingCutInTime(10.f)
 	, m_Acctime(0.f)
 	, m_BGM{}
 	, m_SFX{}
@@ -46,14 +47,15 @@ CBossLV::CBossLV(const CBossLV& _Origin)
 	: CGameMode(_Origin.GetScriptType())
 	, m_Player(nullptr)
 	, m_HUD(nullptr)
-	, m_OpeningInTime(0.5f)
-	, m_OpeningDelayTime(1.f)
-	, m_OpeningOutTime(0.5f)
-	, m_PlayingInTime(3.f)
-	, m_PlayingDelayTime(0.5f)
-	, m_EndingInTime(0.5f)
-	, m_EndingDelayTime(1.f)
-	, m_EndingOutTime(0.5f)
+	, m_OpeningInTime(_Origin.m_OpeningInTime)
+	, m_OpeningDelayTime(_Origin.m_OpeningDelayTime)
+	, m_OpeningOutTime(_Origin.m_OpeningOutTime)
+	, m_PlayingInTime(_Origin.m_PlayingInTime)
+	, m_PlayingDelayTime(_Origin.m_PlayingDelayTime)
+	, m_EndingInTime(_Origin.m_EndingInTime)
+	, m_EndingDelayTime(_Origin.m_EndingDelayTime)
+	, m_EndingOutTime(_Origin.m_EndingOutTime)
+	, m_EndingCutInTime(_Origin.m_EndingCutInTime)
 	, m_Acctime(0.f)
 	, m_BGM{}
 	, m_SFX{}
@@ -348,6 +350,13 @@ void CBossLV::EndingCutInBegin()
 
 int CBossLV::EndingCutInUpdate()
 {
+	m_Acctime += DT;
+
+	if (m_Acctime >= m_EndingCutInTime)
+	{
+		GamePlayStatic::ChangeLevel(CLevelMgr::GetInst()->LevelLoadFunc(LEVELTitle), LEVEL_STATE::PLAY);
+	}
+
 	return m_FSM->GetCurState();
 }
 
