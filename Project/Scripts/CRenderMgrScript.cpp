@@ -35,6 +35,8 @@ CRenderMgrScript::CRenderMgrScript()
 	AppendScriptParam("Bloom::Global Bloom", SCRIPT_PARAM::BOOL, &(RENDERMGR->m_GlobalBloomInfo.GlobalBloom));
 	AppendScriptParam("Bloom::Global Threshold", SCRIPT_PARAM::FLOAT,
 					  &(RENDERMGR->m_GlobalBloomInfo.GlbalBloomSetting.fThreshold), 0.f, 1.f, false, "", true);
+	AppendScriptParam("Bloom::Global Original Color", SCRIPT_PARAM::BOOL,
+					  &(RENDERMGR->m_GlobalBloomInfo.GlbalBloomSetting.bUseOriginalColor));
 	AppendScriptParam("Bloom::Global Color", SCRIPT_PARAM::COLOR,
 					  &(RENDERMGR->m_GlobalBloomInfo.GlbalBloomSetting.vBloomColor));
 

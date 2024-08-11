@@ -145,8 +145,15 @@ PS_OUT PS_Std3D_Deferred(VS_OUT _in) : SV_Target
         float brightness = dot(vOutColor.rgb, vRLWeight);
         if (brightness > fThreshold)
         {
-            output.vRelativeLuminance = vBloomColor;
-
+            if (0 != g_BloomInfo[0].bUseOriginalColor)
+            {
+                output.vRelativeLuminance.rgb = vOutColor.rgb;
+                output.vRelativeLuminance.a = 1.f;
+            }
+            else
+            {
+                output.vRelativeLuminance = vBloomColor;
+            }
         }
         else
         {
