@@ -51,8 +51,8 @@ int CDroidAR::NormalIdleUpdate()
 	// 만약 업데이트 중에 다른 곳을 가고싶다면?
 
 	// 예를 들어 노말 아이들 이 끝나자마자 attack으로 가고 싶다면?
-	if (!Animator3D()->IsPlayable()) // -> 애니메이션이 끝난 상태.
-		return (int)DROIDAR_STATE::NormalAttackStart; // 가고싶은 state로 반환하기.
+	//if (!Animator3D()->IsPlayable()) // -> 애니메이션이 끝난 상태.
+	//	return (int)DROIDAR_STATE::NormalAttackStart; // 가고싶은 state로 반환하기.
 	// 또는 SetCurState()를 사용해서 스테이트를 바꿀 수 있다.
 
 	// 시점
@@ -94,7 +94,6 @@ void CDroidAR::NormalReloadEnd()
 void CDroidAR::NormalAttackStartBegin()
 {
 	Animator3D()->Play((int)DROIDAR_STATE::NormalAttackStart, 0);
-	--m_AttackCount;
 }
 
 int CDroidAR::NormalAttackStartUpdate()
@@ -108,12 +107,14 @@ int CDroidAR::NormalAttackStartUpdate()
 
 void CDroidAR::NormalAttackStartEnd()
 {
-	CDroidAR::Fire();
+	// 여기에 사격 추가
+	//CDroidAR::Fire();
 }
 
 void CDroidAR::NormalAttackIngBegin()
 {
-	Animator3D()->Play((int)DROIDAR_STATE::NormalAttackStart, 0);
+	Animator3D()->Play((int)DROIDAR_STATE::NormalAttackIng, 0);
+	--m_AttackCount;
 }
 
 int CDroidAR::NormalAttackIngUpdate()
@@ -145,7 +146,7 @@ int CDroidAR::NormalAttackDelayUpdate()
 {
 	// 일정 시간 대기 후 다시 총 쏘러 가요.
 	if (!Animator3D()->IsPlayable())
-		return (int)DROIDAR_STATE::NormalAttackStart;
+		return (int)DROIDAR_STATE::NormalAttackIng;
 
 	return m_FSM->GetCurState();
 }

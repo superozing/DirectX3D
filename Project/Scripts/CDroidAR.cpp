@@ -8,15 +8,16 @@
 #include <Engine\CAssetMgr.h>
 
 #include "CRoRStateMachine.h"
-#include "CBossScript.h"
 
 CDroidAR::CDroidAR()
+	: CMonsterScript((UINT)SCRIPT_TYPE::DROIDAR)
 {
 	InitScriptParamUI();
 	InitStateMachine();
 }
 
 CDroidAR::CDroidAR(const CDroidAR& _Origin)
+	: CMonsterScript((UINT)SCRIPT_TYPE::DROIDAR)
 {
 	InitScriptParamUI();
 	InitStateMachine();
@@ -74,7 +75,7 @@ void CDroidAR::CheckAttackCooldown()
 		m_AttCooldown += DT;
 
 		// 공격 대기 시간을 넘어갈 경우 공격 state로 전환
-		if (m_AttCooldown >= m_MonsterStatus.AttackMoveSpeed)
+		if (m_AttCooldown >= 3.f) // m_MonsterStatus.AttackMoveSpeed
 		{
 			m_AttCooldown	 = 0.f;
 			m_IsActiveAttack = true;
@@ -96,7 +97,7 @@ void CDroidAR::CheckVital()
 	{
 		// dead 상태로 전환
 		m_MonsterStatus.IsDead = true;
-		m_FSM->SetCurState((int)BOSS_STATE::VitalDeath);
+		m_FSM->SetCurState((int)DROIDAR_STATE::VitalDeath);
 	}
 }
 
