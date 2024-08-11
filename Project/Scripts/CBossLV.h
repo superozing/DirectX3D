@@ -83,6 +83,7 @@ public:
 public:
 	CLONE(CBossLV);
 	CBossLV();
+	CBossLV(const CBossLV& _Origin);
 	~CBossLV();
 
 private:

@@ -42,6 +42,39 @@ CBossLV::CBossLV()
 	AppendScriptParam("State", SCRIPT_PARAM::STRING, &state, 0.f, 0.f, true);
 }
 
+CBossLV::CBossLV(const CBossLV& _Origin)
+	: CGameMode(_Origin.GetScriptType())
+	, m_Player(nullptr)
+	, m_HUD(nullptr)
+	, m_OpeningInTime(0.5f)
+	, m_OpeningDelayTime(1.f)
+	, m_OpeningOutTime(0.5f)
+	, m_PlayingInTime(3.f)
+	, m_PlayingDelayTime(0.5f)
+	, m_EndingInTime(0.5f)
+	, m_EndingDelayTime(1.f)
+	, m_EndingOutTime(0.5f)
+	, m_Acctime(0.f)
+	, m_BGM{}
+	, m_SFX{}
+{
+	m_FSM = new CRoRStateMachine<CBossLV>(this, (UINT)BossLV_STATE::END);
+
+	FSMInit(BossLV_STATE, CBossLV, OpeningIn);
+	FSMInit(BossLV_STATE, CBossLV, OpeningDelay);
+	FSMInit(BossLV_STATE, CBossLV, OpeningOut);
+	FSMInit(BossLV_STATE, CBossLV, PlayingIn);
+	FSMInit(BossLV_STATE, CBossLV, PlayingDelay);
+	FSMInit(BossLV_STATE, CBossLV, Playing);
+	FSMInit(BossLV_STATE, CBossLV, PlayingOut);
+	FSMInit(BossLV_STATE, CBossLV, EndingIn);
+	FSMInit(BossLV_STATE, CBossLV, EndingDelay);
+	FSMInit(BossLV_STATE, CBossLV, EndingOut);
+	FSMInit(BossLV_STATE, CBossLV, EndingCutIn);
+
+	AppendScriptParam("State", SCRIPT_PARAM::STRING, &state, 0.f, 0.f, true);
+}
+
 CBossLV::~CBossLV()
 {
 	if (m_FSM)
