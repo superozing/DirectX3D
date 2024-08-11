@@ -129,7 +129,7 @@ void CTitle::BACloseBegin()
 	m_pRemnants->SetColor(vColor);
 
 	auto sound = CAssetMgr::GetInst()->Load<CSound>(SNDSerika_New_Year_Title);
-	sound->Play(0, 1.f);
+	sound->Play(1, 1.f);
 }
 
 int CTitle::BACloseUpdate()

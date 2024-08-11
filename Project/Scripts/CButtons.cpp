@@ -7,6 +7,7 @@
 #include <Engine\CLevel.h>
 
 #include "CTextUI.h"
+#include "Engine\CSound.h"
 
 void (*CButtons::Setting)() = nullptr;
 
@@ -21,7 +22,9 @@ CButtons::~CButtons()
 
 void CButtons::Play()
 {
-	GamePlayStatic::ChangeLevel(CLevelMgr::GetInst()->LevelLoadFunc(LEVELTutPlace), LEVEL_STATE::PLAY);
+	m_started  = true;
+	auto sound = CAssetMgr::GetInst()->Load<CSound>(SNDMutsukiNew_Year_Battle_In_1);
+	sound->Play(1, 1.f, true);
 }
 
 void CButtons::Settings()
@@ -61,11 +64,24 @@ void CButtons::begin()
 	m_vecButtons[(UINT)TitleButton::Settings]->SetDeletage(this, (DelegateFunc)&CButtons::Settings);
 	m_vecButtons[(UINT)TitleButton::Exit]->SetDeletage(this, (DelegateFunc)&CButtons::Exit);
 
-	m_iIdx = 0;
+	m_iIdx		   = 0;
+	m_started	   = false;
+	m_LevelChanged = false;
+	m_acctime	   = 0.f;
 }
 
 void CButtons::tick()
 {
+	if (true == m_started)
+	{
+		m_acctime += DT;
+	}
+	if (true == m_started && (m_acctime > m_ThresholdTime) && false == m_LevelChanged)
+	{
+		GamePlayStatic::ChangeLevel(CLevelMgr::GetInst()->LevelLoadFunc(LEVELTutPlace), LEVEL_STATE::PLAY);
+		m_LevelChanged = true;
+	}
+
 	// if (KEY_TAP(UP))
 	//{
 	//	SubIdx();
