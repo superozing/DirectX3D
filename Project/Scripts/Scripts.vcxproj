@@ -169,6 +169,8 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CAfterImage.h" />
     <ClInclude Include="CBossBulletShellSpawner.h" />
     <ClInclude Include="CBossGroggy.h" />
+    <ClInclude Include="CBossLV.h" />
+    <ClInclude Include="CBossOpeningTex.h" />
     <ClInclude Include="CBossSmokeWaveScript.h" />
     <ClInclude Include="CBossSwordBeamScript.h" />
     <ClInclude Include="CBossSwordTrailScript.h" />
@@ -236,6 +238,8 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CSBSmokeScript.h" />
     <ClInclude Include="CSmokeScript.h" />
     <ClInclude Include="CSpawnPhysX.h" />
+    <ClInclude Include="CStartLightTex.h" />
+    <ClInclude Include="CStartTex.h" />
     <ClInclude Include="CTitleTex.h" />
     <ClInclude Include="CRenderMgrScript.h" />
     <ClInclude Include="CRoRStateMachine.h" />
@@ -253,8 +257,15 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CTutorialEndingEvent.h" />
     <ClInclude Include="CTutorialGameMode.h" />
     <ClInclude Include="CTutorialTarget.h" />
+    <ClInclude Include="CVictoryBG.h" />
+    <ClInclude Include="CVictoryTex.h" />
     <ClInclude Include="CVideoPlayer.h" />
     <ClInclude Include="CWallScript.h" />
+    <ClInclude Include="CWarningBGTex.h" />
+    <ClInclude Include="CWarningDownDeco.h" />
+    <ClInclude Include="CWarningIcon.h" />
+    <ClInclude Include="CWarningTex.h" />
+    <ClInclude Include="CWarningUpDeco.h" />
     <ClInclude Include="CWrapImage.h" />
     <ClInclude Include="CFinishBalloon.h" />
     <ClInclude Include="framework.h" />
@@ -267,6 +278,8 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CAfterImage.cpp" />
     <ClCompile Include="CBossBulletShellSpawner.cpp" />
     <ClCompile Include="CBossGroggy.cpp" />
+    <ClCompile Include="CBossLV.cpp" />
+    <ClCompile Include="CBossOpeningTex.cpp" />
     <ClCompile Include="CBossSmokeWaveScript.cpp" />
     <ClCompile Include="CBossSwordBeamScript.cpp" />
     <ClCompile Include="CBossSwordTrailScript.cpp" />
@@ -335,6 +348,8 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CSBSmokeScript.cpp" />
     <ClCompile Include="CSmokeScript.cpp" />
     <ClCompile Include="CSpawnPhysX.cpp" />
+    <ClCompile Include="CStartLightTex.cpp" />
+    <ClCompile Include="CStartTex.cpp" />
     <ClCompile Include="CTitleTex.cpp" />
     <ClCompile Include="CRenderMgrScript.cpp" />
     <ClCompile Include="CRoRStateMachine.cpp" />
@@ -352,8 +367,15 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CTutorialEndingEvent.cpp" />
     <ClCompile Include="CTutorialGameMode.cpp" />
     <ClCompile Include="CTutorialTarget.cpp" />
+    <ClCompile Include="CVictoryBG.cpp" />
+    <ClCompile Include="CVictoryTex.cpp" />
     <ClCompile Include="CVideoPlayer.cpp" />
     <ClCompile Include="CWallScript.cpp" />
+    <ClCompile Include="CWarningBGTex.cpp" />
+    <ClCompile Include="CWarningDownDeco.cpp" />
+    <ClCompile Include="CWarningIcon.cpp" />
+    <ClCompile Include="CWarningTex.cpp" />
+    <ClCompile Include="CWarningUpDeco.cpp" />
     <ClCompile Include="CWrapImage.cpp" />
     <ClCompile Include="CHUD.cpp" />
     <ClCompile Include="CFinishBalloon.cpp" />

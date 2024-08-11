@@ -81,6 +81,19 @@
 #include "CEventListener.h"
 #include "CCubePushScript.h"
 #include "CFinishBalloon.h"
+#include "CBossLV.h"
+#include "CBossOpeningTex.h"
+#include "CStartLightTex.h"
+#include "CStartTex.h"
+#include "CVictoryBG.h"
+#include "CVictoryTex.h"
+#include "CDamageRay.h"
+#include "CWarningBGTex.h"
+#include "CWarningDownDeco.h"
+#include "CWarningIcon.h"
+#include "CWarningTex.h"
+#include "CWarningUpDeco.h"
+#include "CBossGroggy.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -164,6 +177,19 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CEventListener");
 	_vec.push_back(L"CCubePushScript");
 	_vec.push_back(L"CFinishBalloon");
+	_vec.push_back(L"CBossLV");
+	_vec.push_back(L"CBossOpeningTex");
+	_vec.push_back(L"CStartLightTex");
+	_vec.push_back(L"CStartTex");
+	_vec.push_back(L"CVictoryBG");
+	_vec.push_back(L"CVictoryTex");
+	_vec.push_back(L"CDamageRay");
+	_vec.push_back(L"CWarningBGTex");
+	_vec.push_back(L"CWarningDownDeco");
+	_vec.push_back(L"CWarningIcon");
+	_vec.push_back(L"CWarningTex");
+	_vec.push_back(L"CWarningUpDeco");
+	_vec.push_back(L"CBossGroggy");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -328,6 +354,32 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CCubePushScript;
 	if (L"CFinishBalloon" == _strScriptName)
 		return new CFinishBalloon;
+	if (L"CBossLV" == _strScriptName)
+		return new CBossLV;
+	if (L"CBossOpeningTex" == _strScriptName)
+		return new CBossOpeningTex;
+	if (L"CStartLightTex" == _strScriptName)
+		return new CStartLightTex;
+	if (L"CStartTex" == _strScriptName)
+		return new CStartTex;
+	if (L"CVictoryBG" == _strScriptName)
+		return new CVictoryBG;
+	if (L"CVictoryTex" == _strScriptName)
+		return new CVictoryTex;
+	if (L"CDamageRay" == _strScriptName)
+		return new CDamageRay;
+	if (L"CWarningBGTex" == _strScriptName)
+		return new CWarningBGTex;
+	if (L"CWarningDownDeco" == _strScriptName)
+		return new CWarningDownDeco;
+	if (L"CWarningIcon" == _strScriptName)
+		return new CWarningIcon;
+	if (L"CWarningTex" == _strScriptName)
+		return new CWarningTex;
+	if (L"CWarningUpDeco" == _strScriptName)
+		return new CWarningUpDeco;
+	if (L"CBossGroggy" == _strScriptName)
+		return new CBossGroggy;
 	return nullptr;
 }
 
@@ -574,6 +626,45 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::FINISHBALLOON:
 		return new CFinishBalloon;
+		break;
+	case (UINT)SCRIPT_TYPE::BOSSLV:
+		return new CBossLV;
+		break;
+	case (UINT)SCRIPT_TYPE::BOSSOPENINGTEX:
+		return new CBossOpeningTex;
+		break;
+	case (UINT)SCRIPT_TYPE::STARTLIGHTTEX:
+		return new CStartLightTex;
+		break;
+	case (UINT)SCRIPT_TYPE::STARTTEX:
+		return new CStartTex;
+		break;
+	case (UINT)SCRIPT_TYPE::VICTORYBG:
+		return new CVictoryBG;
+		break;
+	case (UINT)SCRIPT_TYPE::VICTORYTEX:
+		return new CVictoryTex;
+		break;
+	case (UINT)SCRIPT_TYPE::DAMAGERAY:
+		return new CDamageRay;
+		break;
+	case (UINT)SCRIPT_TYPE::WARNINGBGTEX:
+		return new CWarningBGTex;
+		break;
+	case (UINT)SCRIPT_TYPE::WARNINGDOWNDECO:
+		return new CWarningDownDeco;
+		break;
+	case (UINT)SCRIPT_TYPE::WARNINGICON:
+		return new CWarningIcon;
+		break;
+	case (UINT)SCRIPT_TYPE::WARNINGTEX:
+		return new CWarningTex;
+		break;
+	case (UINT)SCRIPT_TYPE::WARNINGUPDECO:
+		return new CWarningUpDeco;
+		break;
+	case (UINT)SCRIPT_TYPE::BOSSGROGGY:
+		return new CBossGroggy;
 		break;
 	}
 	return nullptr;
@@ -901,6 +992,58 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::FINISHBALLOON:
 		return L"CFinishBalloon";
+		break;
+
+	case SCRIPT_TYPE::BOSSLV:
+		return L"CBossLV";
+		break;
+
+	case SCRIPT_TYPE::BOSSOPENINGTEX:
+		return L"CBossOpeningTex";
+		break;
+
+	case SCRIPT_TYPE::STARTLIGHTTEX:
+		return L"CStartLightTex";
+		break;
+
+	case SCRIPT_TYPE::STARTTEX:
+		return L"CStartTex";
+		break;
+
+	case SCRIPT_TYPE::VICTORYBG:
+		return L"CVictoryBG";
+		break;
+
+	case SCRIPT_TYPE::VICTORYTEX:
+		return L"CVictoryTex";
+		break;
+
+	case SCRIPT_TYPE::DAMAGERAY:
+		return L"CDamageRay";
+		break;
+
+	case SCRIPT_TYPE::WARNINGBGTEX:
+		return L"CWarningBGTex";
+		break;
+
+	case SCRIPT_TYPE::WARNINGDOWNDECO:
+		return L"CWarningDownDeco";
+		break;
+
+	case SCRIPT_TYPE::WARNINGICON:
+		return L"CWarningIcon";
+		break;
+
+	case SCRIPT_TYPE::WARNINGTEX:
+		return L"CWarningTex";
+		break;
+
+	case SCRIPT_TYPE::WARNINGUPDECO:
+		return L"CWarningUpDeco";
+		break;
+
+	case SCRIPT_TYPE::BOSSGROGGY:
+		return L"CBossGroggy";
 		break;
 
 	}

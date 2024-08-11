@@ -768,18 +768,10 @@ void CPlayerScript::SetPlayerCromaticAberration()
 
 	if (fHpRatio > 50.f)
 	{
-		CurEffect.Duration		 = 0.3f;
-		CurEffect.MaxRedOffSet	 = Vec2(-5.f, -5.f);
-		CurEffect.MaxGreenOffset = Vec2(5.f, 5.f);
-		CurEffect.MaxBlueOffset	 = Vec2(15.f, 15.f);
+		CRenderMgr::GetInst()->PushCAEvent(CA_TYPE::CA_SHORT);
 	}
 	else
 	{
-		CurEffect.Duration		 = 1.f;
-		CurEffect.MaxRedOffSet	 = Vec2(-15.f, -15.f);
-		CurEffect.MaxGreenOffset = Vec2(15.f, 15.f);
-		CurEffect.MaxBlueOffset	 = Vec2(45.f, 45.f);
+		CRenderMgr::GetInst()->PushCAEvent(CA_TYPE::CA_LONG);
 	}
-
-	CRenderMgr::GetInst()->SetPlayerCA(CurEffect);
 }
