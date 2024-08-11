@@ -83,6 +83,7 @@ void CBloomScript::Clear()
 #define TagBloomActivate "[BloomActivate]"
 #define TagBloomColor "[BloomColor]"
 #define TagBloomThreshold "[BloomThreshold]"
+#define TagBloombUseOriginalColor "[BloomOriginalColor]"
 void CBloomScript::SaveToFile(ofstream& fout)
 {
 	fout << TagBloomActivate << endl;
@@ -93,6 +94,9 @@ void CBloomScript::SaveToFile(ofstream& fout)
 
 	fout << TagBloomThreshold << endl;
 	fout << m_Info.fThreshold << endl;
+
+	fout << TagBloombUseOriginalColor << endl;
+	fout << m_Info.bUseOriginalColor << endl;
 }
 
 void CBloomScript::LoadFromFile(ifstream& fin)
@@ -105,4 +109,7 @@ void CBloomScript::LoadFromFile(ifstream& fin)
 
 	Utils::GetLineUntilString(fin, TagBloomThreshold);
 	fin >> m_Info.fThreshold;
+
+	Utils::GetLineUntilString(fin, TagBloombUseOriginalColor);
+	fin >> m_Info.bUseOriginalColor;
 }
