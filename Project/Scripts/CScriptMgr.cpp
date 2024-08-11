@@ -79,6 +79,7 @@
 #include "CGroundCrackScript.h"
 #include "CVideoPlayer.h"
 #include "CEventListener.h"
+#include "CTurret.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -160,6 +161,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CGroundCrackScript");
 	_vec.push_back(L"CVideoPlayer");
 	_vec.push_back(L"CEventListener");
+	_vec.push_back(L"CTurret");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -320,6 +322,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CVideoPlayer;
 	if (L"CEventListener" == _strScriptName)
 		return new CEventListener;
+	if (L"CTurret" == _strScriptName)
+		return new CTurret;
 	return nullptr;
 }
 
@@ -560,6 +564,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::EVENTLISTENER:
 		return new CEventListener;
+		break;
+	case (UINT)SCRIPT_TYPE::TURRET:
+		return new CTurret;
 		break;
 	}
 	return nullptr;
@@ -879,6 +886,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::EVENTLISTENER:
 		return L"CEventListener";
+		break;
+
+	case SCRIPT_TYPE::TURRET:
+		return L"CTurret";
 		break;
 
 	}

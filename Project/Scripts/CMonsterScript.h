@@ -3,11 +3,11 @@
 
 struct MonsterStatus
 {
-	int MaxHealth	 = 100.f;
-	int CurHealth	 = MaxHealth;
+	int MaxHealth = 100.f;
+	int CurHealth = MaxHealth;
 
-	float Damage			= 5.f;
-	float Defensive			= 5.f;
+	float Damage	= 5.f;
+	float Defensive = 5.f;
 
 	float MoveSpeed		  = 500.f;
 	float AttackMoveSpeed = MoveSpeed * 0.2f;
@@ -17,9 +17,9 @@ struct MonsterStatus
 	float CriticalPercent = 0.f;
 	float CriticalDamage  = 1.2f;
 
-	bool  IsDead				= false;
+	bool IsDead = false;
 
-	bool  Invincibility		= false;
+	bool Invincibility = false;
 };
 
 class CMonsterScript : public CScript
@@ -39,10 +39,12 @@ public:
 public:
 	void SetCurHP(int _HP) { m_tStatus.CurHealth = RoRMath::ClampInt(_HP, 0); }
 	void SetMaxHP(int _HP) { m_tStatus.MaxHealth = RoRMath::ClampInt(_HP, 0); }
-	
+
 	int GetCurHP() const { return m_tStatus.CurHealth; }
 	int GetMaxHP() const { return m_tStatus.MaxHealth; }
-	
+
+	void SetMonsterDamage(float _Dmg) { m_tStatus.Damage = _Dmg; }
+
 	void TakeDamage(int _Dmg);
 
 	bool IsDeadMonster() const { return m_tStatus.IsDead; }
@@ -53,6 +55,7 @@ private:
 public:
 	CLONE(CMonsterScript);
 	CMonsterScript();
+	CMonsterScript(UINT _Type);
 	CMonsterScript(const CMonsterScript& _Origin);
 	~CMonsterScript();
 };

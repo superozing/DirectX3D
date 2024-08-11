@@ -9,6 +9,11 @@ CMonsterScript::CMonsterScript()
 {
 }
 
+CMonsterScript::CMonsterScript(UINT _Type)
+	: CScript(_Type)
+{
+}
+
 CMonsterScript::CMonsterScript(const CMonsterScript& _Origin)
 	: CScript((UINT)SCRIPT_TYPE::MONSTERSCRIPT)
 {
@@ -47,10 +52,10 @@ void CMonsterScript::tick()
 void CMonsterScript::TakeDamage(int _Dmg)
 {
 	m_tStatus.CurHealth = RoRMath::ClampInt(m_tStatus.CurHealth - _Dmg, 0);
-	
+
 	if (m_tStatus.CurHealth <= 0)
 		m_tStatus.IsDead = true;
-	else 
+	else
 		m_tStatus.IsDead = false;
 }
 
@@ -59,15 +64,14 @@ void CMonsterScript::DbgTakeDamage()
 	TakeDamage(takedamagetemp);
 }
 
-
-#define TagMonsterMaxHP				"[Monster Max HP]"
-#define TagMonsterDamage			"[Monster Damage]"
-#define TagMonsterDefensive			"[Monster Defensive]"
-#define TagMonsterMoveSpeed			"[Monster MoveSpeed]"
-#define TagMonsterRotateSpeed		"[Monster RotateSpeed]"
-#define TagMonsterAvoidPercent		"[Monster AvoidPercent]"
-#define TagMonsterCriticalPercent	"[Monster CriticalPercent]"
-#define TagMonsterCriticalDamage	"[Monster CriticalDamage]"
+#define TagMonsterMaxHP "[Monster Max HP]"
+#define TagMonsterDamage "[Monster Damage]"
+#define TagMonsterDefensive "[Monster Defensive]"
+#define TagMonsterMoveSpeed "[Monster MoveSpeed]"
+#define TagMonsterRotateSpeed "[Monster RotateSpeed]"
+#define TagMonsterAvoidPercent "[Monster AvoidPercent]"
+#define TagMonsterCriticalPercent "[Monster CriticalPercent]"
+#define TagMonsterCriticalDamage "[Monster CriticalDamage]"
 
 void CMonsterScript::SaveToFile(FILE* _File)
 {

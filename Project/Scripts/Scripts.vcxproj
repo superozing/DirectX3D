@@ -247,6 +247,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CTextUI.h" />
     <ClInclude Include="CTimeMgrScript.h" />
     <ClInclude Include="CTitle.h" />
+    <ClInclude Include="CTurret.h" />
     <ClInclude Include="CTutorialEndingEvent.h" />
     <ClInclude Include="CTutorialGameMode.h" />
     <ClInclude Include="CTutorialTarget.h" />
@@ -342,6 +343,8 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CTextUI.cpp" />
     <ClCompile Include="CTimeMgrScript.cpp" />
     <ClCompile Include="CTitle.cpp" />
+    <ClCompile Include="CTurret.cpp" />
+    <ClCompile Include="CTurretScript_State.cpp" />
     <ClCompile Include="CTutorialEndingEvent.cpp" />
     <ClCompile Include="CTutorialGameMode.cpp" />
     <ClCompile Include="CTutorialTarget.cpp" />

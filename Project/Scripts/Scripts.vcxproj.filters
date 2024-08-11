@@ -277,6 +277,9 @@
     <ClInclude Include="CEventListener.h">
       <Filter>Scripts\Event</Filter>
     </ClInclude>
+    <ClInclude Include="CTurret.h">
+      <Filter>Scripts\Monster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -555,6 +558,12 @@
     <ClCompile Include="CEventListener.cpp">
       <Filter>Scripts\Event</Filter>
     </ClCompile>
+    <ClCompile Include="CTurret.cpp">
+      <Filter>Scripts\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CTurretScript_State.cpp">
+      <Filter>Scripts\Monster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -761,7 +770,7 @@
     <Filter Include="Scripts\Render\Video">
       <UniqueIdentifier>{049e4cf4-e10a-4955-92b2-85660b849773}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Monster">
+    <Filter Include="Scripts\Monster">
       <UniqueIdentifier>{9e120e0e-10ed-40fe-b2ca-9c1479ca9293}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
