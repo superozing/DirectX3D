@@ -83,7 +83,7 @@ private:
 
 	// render function pointer
 	typedef void (CRenderMgr::*RENDER_FUNC)(void);
-	RENDER_FUNC m_RenderFunc;
+	RENDER_FUNC	 m_RenderFunc;
 
 	Vec4 m_vClearColor;
 
@@ -237,9 +237,8 @@ private:
 		}
 		else if (CA_SHORT == m_CAInfo.Type)
 		{
-			m_CAInfo.Duration	= 3.f;
-			m_CAInfo.RemainTime = m_CAInfo.Duration;
-
+			m_CAInfo.Duration		= 0.3f;
+			m_CAInfo.RemainTime		= m_CAInfo.Duration;
 			m_CAInfo.MaxRedOffSet	= Vec2(-5.f, -5.f);
 			m_CAInfo.MaxGreenOffset = Vec2(5.f, 5.f);
 			m_CAInfo.MaxBlueOffset	= Vec2(15.f, 15.f);
@@ -247,12 +246,11 @@ private:
 		}
 		else if (CA_LONG)
 		{
-			m_CAInfo.Duration	= 10.f;
-			m_CAInfo.RemainTime = m_CAInfo.Duration;
-
-			m_CAInfo.MaxRedOffSet	= Vec2(-10.f, -10.f);
-			m_CAInfo.MaxGreenOffset = Vec2(10.f, 10.f);
-			m_CAInfo.MaxBlueOffset	= Vec2(30.f, 30.f);
+			m_CAInfo.Duration		= 1.f;
+			m_CAInfo.RemainTime		= m_CAInfo.Duration;
+			m_CAInfo.MaxRedOffSet	= Vec2(-15.f, -15.f);
+			m_CAInfo.MaxGreenOffset = Vec2(15.f, 15.f);
+			m_CAInfo.MaxBlueOffset	= Vec2(45.f, 45.f);
 			m_CAInfo.CropOffset		= Vec2(0.95f, 0.95f);
 		}
 		else
