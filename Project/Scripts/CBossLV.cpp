@@ -354,7 +354,7 @@ int CBossLV::EndingCutInUpdate()
 
 	if (m_Acctime >= m_EndingCutInTime)
 	{
-		GamePlayStatic::ChangeLevel(CLevelMgr::GetInst()->LevelLoadFunc(LEVELTitle), LEVEL_STATE::PLAY);
+		GamePlayStatic::ChangeLevel(CLevelMgr::GetInst()->LevelLoadFunc(LEVELSelectMenu), LEVEL_STATE::PLAY);
 	}
 
 	return m_FSM->GetCurState();
