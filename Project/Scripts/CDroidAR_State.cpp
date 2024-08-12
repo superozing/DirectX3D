@@ -235,6 +235,18 @@ void CDroidAR::VitalDeathBegin()
 
 int CDroidAR::VitalDeathUpdate()
 {
+	int curFrm = Animator3D()->GetCurFrameIdx();
+	int maxFrm = Animator3D()->GetCurClipLength();
+
+	if (curFrm == maxFrm - 2)
+	{
+		Animator3D()->Pause(true);
+		m_DeathAfterTimer -= DT;
+
+		if (m_DeathAfterTimer <= 0.f)
+			GamePlayStatic::DestroyGameObject(this->GetOwner());
+	}
+
 	return m_FSM->GetCurState();
 }
 

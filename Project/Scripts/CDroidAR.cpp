@@ -116,10 +116,8 @@ void CDroidAR::CheckAttackCooldown()
 void CDroidAR::CheckVital()
 {
 	// 현재 hp가 0보다 적을 경우
-	if (m_MonsterStatus.CurHealth <= 0.f)
+	if (IsDeadMonster())
 	{
-		// dead 상태로 전환
-		m_MonsterStatus.IsDead = true;
 		m_FSM->SetCurState((int)DROIDAR_STATE::VitalDeath);
 	}
 }
