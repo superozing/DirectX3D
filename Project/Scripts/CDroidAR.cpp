@@ -124,7 +124,7 @@ bool CDroidAR::CheckTargetInRange()
 
 	float dist = Vec3::Distance(DroidPos, PlayerPos);
 
-	return dist < 100.f;
+	return dist < 1000.f;
 }
 
 void CDroidAR::InitStateMachine()
