@@ -15,7 +15,7 @@ CTextUI::CTextUI()
 
 CTextUI::CTextUI(const CTextUI& _Origin)
 	: CUIScript(_Origin)
-	, m_vColor(Vec4(255.f, 255.f, 255.f, 255.f))
+	, m_vColor(_Origin.m_vColor)
 	, m_bDraw(true)
 	, m_strText(_Origin.m_strText)
 {

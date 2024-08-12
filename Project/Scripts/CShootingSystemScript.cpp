@@ -134,6 +134,7 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 			else
 				m_pDamageFontSpawner->SpawnDamageFont(hitInfo.vHitPos, (int)m_pPlayerScript->GetDamage());
 			m_pBulletHitParticleSpawner->SpawnBulletHitParticle(hitInfo);
+			m_vecSound[(UINT)ShootingSystemSoundType::MonsterNormalHit]->Play(1, 1.f, true);
 			break;
 
 		case LAYER::LAYER_BOSS_SKILL:
@@ -223,7 +224,6 @@ void CShootingSystemScript::begin()
 	m_pDamageFontSpawner->begin();
 	m_pBulletWarheadSpawner->begin();
 
-
 	m_pBulletShellSpawner->SetShootingSystem(this);
 
 	// 윈도우 좌표 기준이기 떄문에 반동을 주기 위해 y를 -방향으로 세팅
@@ -235,13 +235,12 @@ void CShootingSystemScript::begin()
 
 	Ptr<CSound> pSnd = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Old_Skill_H_Ex_02_Hit);
 	m_vecSound[(UINT)ShootingSystemSoundType::WallNormalHit] = pSnd;
-	
+
 	pSnd = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Shot_Impact_Hit_01);
 	m_vecSound[(UINT)ShootingSystemSoundType::MonsterNormalHit] = pSnd;
-	
+
 	pSnd = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Shot_Impact_Hit_02);
 	m_vecSound[(UINT)ShootingSystemSoundType::MonsterCriticalHit] = pSnd;
-
 }
 
 void CShootingSystemScript::tick()

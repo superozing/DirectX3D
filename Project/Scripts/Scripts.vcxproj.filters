@@ -280,14 +280,47 @@
     <ClInclude Include="CCubePushScript.h">
       <Filter>Scripts\Phys</Filter>
     </ClInclude>
-    <ClInclude Include="CDroidAR.h">
-      <Filter>Scripts\Monster\DroidAR</Filter>
+    <ClInclude Include="CFinishBalloon.h">
+      <Filter>Scripts\Level</Filter>
     </ClInclude>
-    <ClInclude Include="CShootingSystem_DroidAR.h">
-      <Filter>Scripts\ShootingSystem</Filter>
+    <ClInclude Include="CBossLV.h">
+      <Filter>Scripts\Level\Boss</Filter>
     </ClInclude>
-    <ClInclude Include="CMuzzleFlash_DroidAR.h">
-      <Filter>Scripts\Particle\MuzzleFlash_DroidAR</Filter>
+    <ClInclude Include="CBossOpeningTex.h">
+      <Filter>Scripts\Level\Boss\Start</Filter>
+    </ClInclude>
+    <ClInclude Include="CStartLightTex.h">
+      <Filter>Scripts\Level\Boss\Start</Filter>
+    </ClInclude>
+    <ClInclude Include="CStartTex.h">
+      <Filter>Scripts\Level\Boss\Start</Filter>
+    </ClInclude>
+    <ClInclude Include="CVictoryBG.h">
+      <Filter>Scripts\Level\Boss\Victory</Filter>
+    </ClInclude>
+    <ClInclude Include="CVictoryTex.h">
+      <Filter>Scripts\Level\Boss\Victory</Filter>
+    </ClInclude>
+    <ClInclude Include="CDamageRay.h">
+      <Filter>Scripts\Level\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="CWarningBGTex.h">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClInclude>
+    <ClInclude Include="CWarningDownDeco.h">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClInclude>
+    <ClInclude Include="CWarningIcon.h">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClInclude>
+    <ClInclude Include="CWarningTex.h">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClInclude>
+    <ClInclude Include="CWarningUpDeco.h">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClInclude>
+    <ClInclude Include="CBossGroggy.h">
+      <Filter>Scripts\Boss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -570,17 +603,47 @@
     <ClCompile Include="CCubePushScript.cpp">
       <Filter>Scripts\Phys</Filter>
     </ClCompile>
-    <ClCompile Include="CDroidAR.cpp">
-      <Filter>Scripts\Monster\DroidAR</Filter>
+    <ClCompile Include="CFinishBalloon.cpp">
+      <Filter>Scripts\Level</Filter>
     </ClCompile>
-    <ClCompile Include="CDroidAR_State.cpp">
-      <Filter>Scripts\Monster\DroidAR</Filter>
+    <ClCompile Include="CBossLV.cpp">
+      <Filter>Scripts\Level\Boss</Filter>
     </ClCompile>
-    <ClCompile Include="CShootingSystem_DroidAR.cpp">
-      <Filter>Scripts\ShootingSystem</Filter>
+    <ClCompile Include="CBossOpeningTex.cpp">
+      <Filter>Scripts\Level\Boss\Start</Filter>
     </ClCompile>
-    <ClCompile Include="CMuzzleFlash_DroidAR.cpp">
-      <Filter>Scripts\Particle\MuzzleFlash_DroidAR</Filter>
+    <ClCompile Include="CStartLightTex.cpp">
+      <Filter>Scripts\Level\Boss\Start</Filter>
+    </ClCompile>
+    <ClCompile Include="CStartTex.cpp">
+      <Filter>Scripts\Level\Boss\Start</Filter>
+    </ClCompile>
+    <ClCompile Include="CVictoryBG.cpp">
+      <Filter>Scripts\Level\Boss\Victory</Filter>
+    </ClCompile>
+    <ClCompile Include="CVictoryTex.cpp">
+      <Filter>Scripts\Level\Boss\Victory</Filter>
+    </ClCompile>
+    <ClCompile Include="CDamageRay.cpp">
+      <Filter>Scripts\Level\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="CWarningBGTex.cpp">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClCompile>
+    <ClCompile Include="CWarningDownDeco.cpp">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClCompile>
+    <ClCompile Include="CWarningIcon.cpp">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClCompile>
+    <ClCompile Include="CWarningTex.cpp">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClCompile>
+    <ClCompile Include="CWarningUpDeco.cpp">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClCompile>
+    <ClCompile Include="CBossGroggy.cpp">
+      <Filter>Scripts\Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -791,14 +854,17 @@
     <Filter Include="Scripts\Phys">
       <UniqueIdentifier>{bb33054c-aa56-4cc7-9eef-ea724457ddaf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Monster">
-      <UniqueIdentifier>{b7827946-6431-4e9d-9818-460873792a9b}</UniqueIdentifier>
+    <Filter Include="Scripts\Level\Boss">
+      <UniqueIdentifier>{b3854f99-f97c-4c6c-9f70-b1fbec117fa8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Monster\DroidAR">
-      <UniqueIdentifier>{587dc1df-d426-44e3-b6c1-00226330ca40}</UniqueIdentifier>
+    <Filter Include="Scripts\Level\Boss\Start">
+      <UniqueIdentifier>{5b2291c8-036e-4e1c-ab78-94aa7525ceb8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Particle\MuzzleFlash_DroidAR">
-      <UniqueIdentifier>{0ee75f8d-e201-4c8a-8bf7-b59b8d2139ad}</UniqueIdentifier>
+    <Filter Include="Scripts\Level\Boss\Warning">
+      <UniqueIdentifier>{7feb3222-fb40-4087-a27e-3627c2d2353d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Level\Boss\Victory">
+      <UniqueIdentifier>{1b6f9b9c-e4f8-4f3c-967e-62f5e75bfec3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

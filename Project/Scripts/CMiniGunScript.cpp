@@ -49,6 +49,7 @@ void CMiniGunScript::tick()
 	{
 		ParticleSystem()->Play();
 		m_bParticle = true;
+		m_Parent->GetScript<CBossScript>()->GetSound((UINT)BOSS_SOUND::EX1_MUZZLE)->Play(1.f, 1.f);
 	}
 	else if (123 <= m_Parent->Animator3D()->GetCurFrameIdx() && m_bParticle)
 	{

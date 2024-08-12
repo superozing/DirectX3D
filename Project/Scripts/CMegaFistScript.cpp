@@ -121,7 +121,12 @@ void CMegaFistScript::BeginOverlap(CPhysX* _Collider, CGameObject* _OtherObj, CP
 	{
 		OnHit();
 	}
+
+	if (!m_bHit)
+		m_Shooter->GetScript<CBossScript>()->GetSound((UINT)BOSS_SOUND::NORMAL_HIT)->Play(1.f, 1.f);
+
 	m_bHit = true;
+
 	// m_IsAlive = false;
 }
 

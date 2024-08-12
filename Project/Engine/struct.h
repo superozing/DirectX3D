@@ -62,7 +62,8 @@ struct tBloom
 {
 	Vec4  vBloomColor;
 	float fThreshold;
-	int	  iPadding[3];
+	int	  bUseOriginalColor;
+	int	  iPadding[2];
 };
 
 // 광선 구조체
@@ -343,7 +344,7 @@ struct tFontInfo
 
 	UINT Color; // 폰트의 색상. FONT_RGBA 매크로 함수를 사용하세요.
 
-	FONT_TYPE FontType = FONT_TYPE::ARIAL; // 폰트 타입. 어떤 폰트를 사용할 것인지
+	FONT_TYPE FontType = FONT_TYPE::RSU_BOLD; // 폰트 타입. 어떤 폰트를 사용할 것인지
 
 	// 텍스트 플래그.
 	// FW1_RESTORESTATE - 폰트를 그린 후 디바이스, 컨텍스트를 원래 상태로 만듦

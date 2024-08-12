@@ -419,6 +419,7 @@ enum class FONT_TYPE
 	MAIN_BOLD,
 	ARIAL,
 	MAPLE,
+	RSU_BOLD,
 
 	END
 };
@@ -463,3 +464,5 @@ enum class DecalType
 #define DecalPriorityMax 20
 #define AfterImageMaxCount 10
 #define AfterImageUpdateKey "AfterImage"
+
+#define VignetteDuration 3.f

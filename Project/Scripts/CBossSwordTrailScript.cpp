@@ -20,6 +20,8 @@ void CBossSwordTrailScript::begin()
 		m_Kaiten = GetOwner()->GetParent();
 
 	MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, m_TrailOffset);
+
+	m_Kaiten->GetScript<CBossScript>()->GetSound((UINT)BOSS_SOUND::EX4_BLADING)->Play(1.f, 2.f, true);
 }
 
 void CBossSwordTrailScript::tick()
