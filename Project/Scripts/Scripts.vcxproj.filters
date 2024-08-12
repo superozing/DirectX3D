@@ -286,6 +286,9 @@
     <ClInclude Include="CShootingSystem_DroidAR.h">
       <Filter>Scripts\ShootingSystem</Filter>
     </ClInclude>
+    <ClInclude Include="CMuzzleFlash_DroidAR.h">
+      <Filter>Scripts\Particle\MuzzleFlash_DroidAR</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -576,6 +579,9 @@
     <ClCompile Include="CShootingSystem_DroidAR.cpp">
       <Filter>Scripts\ShootingSystem</Filter>
     </ClCompile>
+    <ClCompile Include="CMuzzleFlash_DroidAR.cpp">
+      <Filter>Scripts\Particle\MuzzleFlash_DroidAR</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -790,6 +796,9 @@
     </Filter>
     <Filter Include="Scripts\Monster\DroidAR">
       <UniqueIdentifier>{587dc1df-d426-44e3-b6c1-00226330ca40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Particle\MuzzleFlash_DroidAR">
+      <UniqueIdentifier>{0ee75f8d-e201-4c8a-8bf7-b59b8d2139ad}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

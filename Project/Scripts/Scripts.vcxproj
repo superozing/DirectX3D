@@ -220,6 +220,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CMonsterHP.h" />
     <ClInclude Include="CMonsterScript.h" />
     <ClInclude Include="CMuzzleFlashScript.h" />
+    <ClInclude Include="CMuzzleFlash_DroidAR.h" />
     <ClInclude Include="CObjectGrayMaskScript.h" />
     <ClInclude Include="CPanelUIScript.h" />
     <ClInclude Include="CParticleSpawnScript.h" />
@@ -318,6 +319,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CMonsterHP.cpp" />
     <ClCompile Include="CMonsterScript.cpp" />
     <ClCompile Include="CMuzzleFlashScript.cpp" />
+    <ClCompile Include="CMuzzleFlash_DroidAR.cpp" />
     <ClCompile Include="CObjectGrayMaskScript.cpp" />
     <ClCompile Include="CPanelUIScript.cpp" />
     <ClCompile Include="CParticleSpawnScript.cpp" />

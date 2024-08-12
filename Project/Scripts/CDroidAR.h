@@ -63,6 +63,8 @@ private:
 	class CGameObject*				m_Target;
 	tRoRHitInfo						m_hitInfo;
 
+	class CMuzzleFlash_DroidAR*		m_MuzzleFlash;
+
 	int								m_AttackCount;
 	int								m_MaxAttackCount = 3;
 
@@ -146,4 +148,5 @@ public:
 private:
 	void InitStateMachine();
 	void InitScriptParamUI();
+	void RotationDirectionToPlayer();
 };

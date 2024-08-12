@@ -10,6 +10,7 @@
 
 #include "CParticleSpawnScript.h"
 #include "CShootingSystem_DroidAR.h"
+#include "CMuzzleFlash_DroidAR.h"
 #include "CPlayerScript.h"
 
 void CDroidAR::AppereBegin()
@@ -109,6 +110,7 @@ int CDroidAR::NormalAttackStartUpdate()
 void CDroidAR::NormalAttackStartEnd()
 {
 	m_ShootingSystem->SetShootingDirection(m_Target->GetScript<CPlayerScript>());
+	RotationDirectionToPlayer();
 }
 
 void CDroidAR::NormalAttackIngBegin()
@@ -116,6 +118,7 @@ void CDroidAR::NormalAttackIngBegin()
 	Animator3D()->Play((int)DROIDAR_STATE::NormalAttackIng, 0);
 	--m_AttackCount;
 	m_ShootingSystem->ShootDroidARBulletRay();
+	m_MuzzleFlash->ParticleSystem()->Play();
 }
 
 int CDroidAR::NormalAttackIngUpdate()
@@ -136,9 +139,8 @@ int CDroidAR::NormalAttackIngUpdate()
 
 void CDroidAR::NormalAttackIngEnd()
 {
-	// 여기서 사격 추가
+	m_MuzzleFlash->ParticleSystem()->Stop();
 	// 1. particle
-	// 3. 총구 섬광 -> 일단 후순위
 }
 
 void CDroidAR::NormalAttackDelayBegin()
@@ -186,12 +188,7 @@ int CDroidAR::MoveIngUpdate()
 	if (CheckTargetInRange())
 		return (int)DROIDAR_STATE::MoveEnd;
 	
-	Vec3 PlayerPos = m_Target->Transform()->GetWorldPos();
-	Vec3 DroidPos  = GetOwner()->Transform()->GetWorldPos();
-
-	Vec3 dir = (PlayerPos - DroidPos).Normalize();
-	GetOwner()->Transform()->SetRelativePos(DroidPos + (dir * 200.f * DT));
-	GetOwner()->Transform()->SetDir(dir);
+	RotationDirectionToPlayer();
 
 	return m_FSM->GetCurState();
 }

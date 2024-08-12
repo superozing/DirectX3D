@@ -7,6 +7,7 @@
 #include <Engine\CRandomMgr.h>
 #include <Engine\CAssetMgr.h>
 
+#include "CMuzzleFlash_DroidAR.h"
 #include "CShootingSystem_DroidAR.h"
 #include "CRoRStateMachine.h"
 
@@ -48,6 +49,13 @@ void CDroidAR::begin()
 	m_Target = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Azusa");
 
 	m_AttackCount =	m_MaxAttackCount;
+
+	auto pObj	  = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab/Monster/p_MuzzleFlash_DroidAR.pref")->Instantiate();
+	m_MuzzleFlash = pObj->GetScript<CMuzzleFlash_DroidAR>();
+						
+	m_MuzzleFlash->SetDroid(GetOwner());
+
+	GetOwner()->AddChild(pObj, true);
 
 	m_ShootingSystem = GetOwner()->GetScript<CShootingSystem_DroidAR>();
 }
@@ -148,4 +156,15 @@ void CDroidAR::InitStateMachine()
 void CDroidAR::InitScriptParamUI()
 {
 
+}
+
+void CDroidAR::RotationDirectionToPlayer()
+{
+	Vec3 PlayerPos = m_Target->Transform()->GetWorldPos();
+	Vec3 DroidPos  = GetOwner()->Transform()->GetWorldPos();
+
+	Vec3 dir = PlayerPos - DroidPos;
+	GetOwner()->Transform()->SetRelativePos(DroidPos + (dir.Normalize() * 200.f * DT));
+	dir.y = 0.f;
+	GetOwner()->Transform()->SetDir(dir.Normalize());
 }
