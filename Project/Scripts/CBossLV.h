@@ -28,6 +28,7 @@ enum class BossLV_SFX
 {
 	START,
 	WARNING,
+	VICTORY_BGM,
 	VICTORY,
 	END,
 };
@@ -40,6 +41,7 @@ private:
 	class CGameObject* m_Player;
 	CGameObject*	   m_Kaiten;
 	CGameObject*	   m_HUD;
+	CGameObject*	   m_BossUI;
 
 	float m_OpeningInTime;
 	float m_OpeningDelayTime;
@@ -51,6 +53,8 @@ private:
 	float m_EndingInTime;
 	float m_EndingDelayTime;
 	float m_EndingOutTime;
+
+	float m_EndingCutInTime;
 
 	float m_Acctime;
 
@@ -70,6 +74,8 @@ public:
 	float GetEndingInTime() { return m_EndingInTime; }
 	float GetEndingDelayTime() { return m_EndingDelayTime; }
 	float GetEndingOutTime() { return m_EndingOutTime; }
+
+	float GetEndingCutInTime() { return m_EndingCutInTime; }
 
 	float GetAccTime() { return m_Acctime; }
 

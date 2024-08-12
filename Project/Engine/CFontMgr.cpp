@@ -35,19 +35,21 @@ void CFontMgr::init()
 	if (FAILED(m_pFW1Factory->CreateFontWrapper(DEVICE, L"경기천년제목", &m_pFontWrapper[(UINT)FONT_TYPE::MAIN_BOLD])))
 		assert(NULL);
 
+	if (FAILED(m_pFW1Factory->CreateFontWrapper(DEVICE, L"RSU", &m_pFontWrapper[(UINT)FONT_TYPE::RSU_BOLD])))
+		assert(NULL);
 }
 
 void CFontMgr::DrawFont(const wchar_t* _pStr, float _fPosX, float _fPosY, float _fFontSize, UINT _Color,
 						FONT_TYPE _FontType, FW1_TEXT_FLAG _TextFlag)
 {
 	m_pFontWrapper[(UINT)_FontType]->DrawString(
-							   CONTEXT,
-							   _pStr,			// String
-							   _fFontSize,		// Font size
-							   _fPosX,			// X position
-							   _fPosY,			// Y position
-							   _Color,			// Text color, 0xAaBbGgRr
-							   _TextFlag   // Flags (for example FW1_RESTORESTATE to keep context states unchanged)
+		CONTEXT,
+		_pStr,		// String
+		_fFontSize, // Font size
+		_fPosX,		// X position
+		_fPosY,		// Y position
+		_Color,		// Text color, 0xAaBbGgRr
+		_TextFlag	// Flags (for example FW1_RESTORESTATE to keep context states unchanged)
 	);
 }
 
@@ -64,13 +66,9 @@ void CFontMgr::DrawFont(tFontInfo& _FontInfo)
 	);
 }
 
-
 struct Cmp
 {
-	bool operator()(tFontInfo& _l, tFontInfo& _r)
-	{
-		return _l.vPos.z < _r.vPos.z;
-	}
+	bool operator()(tFontInfo& _l, tFontInfo& _r) { return _l.vPos.z < _r.vPos.z; }
 };
 
 void CFontMgr::render()

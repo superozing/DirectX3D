@@ -6,6 +6,8 @@
 #include "CImageUIScript.h"
 #include "CPanelUIScript.h"
 #include "CBossScript.h"
+#include "CBossLV.h"
+#include "CTextUI.h"
 #include <Engine/CFontMgr.h>
 #include <Engine/CUIMgr.h>
 #include <Engine/CLevelMgr.h>
@@ -33,6 +35,7 @@ namespace BOSSHP
 
 CBossHP::CBossHP()
 	: CProgressBar((UINT)SCRIPT_TYPE::BOSSHP)
+	, m_GameMode(nullptr)
 {
 }
 
@@ -50,10 +53,11 @@ void CBossHP::begin()
 	AppendMemberFunction("Add 100 HP", SCRIPT_PARAM::FUNC_MEMBER, "Add 100 HP", std::bind(&CBossHP::Add100, this));
 	AppendMemberFunction("Sub 100 HP", SCRIPT_PARAM::FUNC_MEMBER, "Sub 100 HP", std::bind(&CBossHP::Sub100, this));
 	AppendScriptParam("Damage Value", SCRIPT_PARAM::INT, &tempDamageBuffer);
-	AppendMemberFunction("Append Damage", SCRIPT_PARAM::FUNC_MEMBER, "+ -> Damage, - -> Heal", std::bind(&CBossHP::DbgAppendDamageWrap, this));
+	AppendMemberFunction("Append Damage", SCRIPT_PARAM::FUNC_MEMBER, "+ -> Damage, - -> Heal",
+						 std::bind(&CBossHP::DbgAppendDamageWrap, this));
 
 	auto tBossStatus = m_pBossScript->GetBossStatus();
-	
+
 	// HP 값 세팅
 	SetMaxHP(tBossStatus.MaxHP);
 	SetLineHP(tBossStatus.MaxHP / 10);
@@ -61,30 +65,19 @@ void CBossHP::begin()
 
 	Vec2 resol = CDevice::GetInst()->GetRenderResolution();
 
-	// 기본 폰트 세팅
-	m_BossNameFont.Color	= FONT_RGBA(255, 20, 20, 255);
-	m_BossNameFont.TextFlag	= FW1_TEXT_FLAG::FW1_CENTER;
-	m_BossNameFont.WStr		= BOSS_NAME;
-	m_BossNameFont.FontType	= FONT_TYPE::MAIN_BOLD;
-	m_BossNameFont.fFontSize	= 40.f;
-	m_BossNameFont.vPos		 = Vec2(resol.x / 2 + 60.f, 120.f);
+	m_GameMode = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"GameMode")->GetScript<CBossLV>();
 
-	m_HPFont.Color	= FONT_RGBA(255, 255, 255, 255);
-	m_HPFont.TextFlag	= FW1_TEXT_FLAG::FW1_CENTER;
-	m_HPFont.FontType	= FONT_TYPE::MAIN_BOLD;
-	m_HPFont.fFontSize	= 30.f;
-	m_HPFont.vPos		= Vec2(resol.x / 2 + 60.f, resol.y / 2.f - Transform()->GetWorldPos().y - 105);
-
-	m_LineCountFont.Color	= FONT_RGBA(255, 255, 255, 255);
-	m_LineCountFont.TextFlag	= FW1_TEXT_FLAG::FW1_CENTER;
-	m_LineCountFont.FontType	= FONT_TYPE::MAIN_BOLD;
-	m_LineCountFont.fFontSize	= 45.f;
-	m_LineCountFont.vPos		= Vec2(resol.x / 2 + 500.f, resol.y / 2.f - Transform()->GetWorldPos().y - 113);
+	m_BossHPText = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"BossHP")->GetScript<CTextUI>();
 }
 
 void CBossHP::tick()
 {
 	using namespace BOSSHP;
+
+	if (m_GameMode->GetCurLVState() != (int)BossLV_STATE::Playing)
+		Transform()->SetRelativePos(Vec3(0.f, 1000.f, 100.f));
+	else
+		Transform()->SetRelativePos(Vec3(0.f, 440.f, 100.f));
 
 	if (!m_pBossScript)
 		int i = 0;
@@ -125,19 +118,12 @@ void CBossHP::tick()
 		CurLerpHPRatio = float(m_CurLerpHP - LineCount * m_LineHP) / m_LineHP;
 	}
 
+	wstring hpText = std::to_wstring(CurHP) + L"  /  " + std::to_wstring(MaxHP);
+	m_BossHPText->SetText(hpText);
+
 	m_pHPLineUI->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_0, LineInfo);
 	m_pHPLineUI->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, CurLerpHPRatio);
 	m_pHPLineUI->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_1, HPRatio);
-
-	// UI가 활성화 상태일 경우에만 폰트를 줄력
-	if (CUIMgr::GetInst()->IsActiveUIType(GetPanelUI()->GetUIType()))
-	{
-		m_HPFont.WStr = to_wstring(m_CurLerpHP) + L" / " + to_wstring(GetMaxHP());
-		CFontMgr::GetInst()->RegisterFont(m_HPFont);
-		CFontMgr::GetInst()->RegisterFont(m_BossNameFont);
-		m_LineCountFont.WStr = L"X " + to_wstring(LineCount);
-		CFontMgr::GetInst()->RegisterFont(m_LineCountFont);
-	}
 
 	// 그로기 게이지 조절
 	float groggyGauge = tBossStatus.GroggyBar;
@@ -146,7 +132,6 @@ void CBossHP::tick()
 		groggyGauge /= 100.f;
 
 	m_pGroggyGaugeUI->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_1, groggyGauge);
-
 }
 
 void CBossHP::SetLineHP(int _LineHP)
@@ -208,7 +193,7 @@ void CBossHP::MakeChildObjects()
 		{
 			m_pImgFont = vecChild[i]->GetScript<CImageUIScript>();
 			continue;
-		}		
+		}
 		else if (name == L"HPLine")
 		{
 			m_pHPLineUI = vecChild[i]->GetScript<CImageUIScript>();
@@ -222,22 +207,19 @@ void CBossHP::MakeChildObjects()
 	}
 
 	// panel texture 설정
-	GetPanelUI()->SetPanelTex(
-		CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Boss/Ingame_Raid_Boss_Gauge.png"));
+	GetPanelUI()->SetPanelTex(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Boss/Ingame_Raid_Boss_Gauge.png"));
 	GetPanelUI()->SetUIType(UI_TYPE::BOSSHP);
 
 	CGameObject* pObj = nullptr;
 
 	// m_pPortrait 이미지 세팅
 	m_pPortrait->MeshRender()->GetDynamicMaterial(0);
-	m_pPortrait->SetUIImg(
-		CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/Portrait_Raidboss_KaitenRanger_Insane.png"));
+	m_pPortrait->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(TEXPortrait_Raidboss_KaitenFxMk0));
 	m_pPortrait->AllowBindTexPerFrame();
 
 	// m_pImgFont 이미지 세팅
 	m_pImgFont->MeshRender()->GetDynamicMaterial(0);
-	m_pImgFont->SetUIImg(
-		CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/ImgFont/ImageFont_Raidboss.png"));
+	m_pImgFont->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/ImgFont/ImageFont_Raidboss.png"));
 	m_pImgFont->AllowBindTexPerFrame();
 
 	// m_pHPLineUI 이미지 세팅
@@ -247,8 +229,8 @@ void CBossHP::MakeChildObjects()
 	m_pHPLineUI->MeshRender()->GetDynamicMaterial(0);
 	m_pHPLineUI->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::BOOL_0, true);
 	m_pHPLineUI->MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_1, 10);
-	
-	// 그로기 게이지 
+
+	// 그로기 게이지
 	m_pGroggyGaugeUI->MeshRender()->GetDynamicMaterial(0);
 	m_pGroggyGaugeUI->SetUIImg(CAssetMgr::GetInst()->Load<CTexture>(L"texture/ui/ColorTex/Yellow.png"));
 	m_pGroggyGaugeUI->AllowBindTexPerFrame();
