@@ -137,8 +137,6 @@ public:
 
 	bool CheckTargetInRange();
 
-	float GetDamageVal() const { return m_MonsterStatus.Damage; }
-
 public:
 	CLONE(CDroidAR);
 	CDroidAR();

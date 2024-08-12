@@ -47,6 +47,8 @@ public:
 
 	bool IsDeadMonster() const { return m_tStatus.IsDead; }
 
+	float GetDamageVal() const { return m_tStatus.Damage; }
+
 private:
 	void DbgTakeDamage();
 
