@@ -114,9 +114,8 @@ void CDroidAR::NormalAttackStartEnd()
 void CDroidAR::NormalAttackIngBegin()
 {
 	Animator3D()->Play((int)DROIDAR_STATE::NormalAttackIng, 0);
-	
 	--m_AttackCount;
-
+	m_ShootingSystem->ShootDroidARBulletRay();
 }
 
 int CDroidAR::NormalAttackIngUpdate()
@@ -140,7 +139,6 @@ void CDroidAR::NormalAttackIngEnd()
 	// 여기서 사격 추가
 	// 1. particle
 	// 3. 총구 섬광 -> 일단 후순위
-	m_ShootingSystem->ShootDroidARBulletRay();
 }
 
 void CDroidAR::NormalAttackDelayBegin()
