@@ -322,6 +322,24 @@
     <ClInclude Include="CBossGroggy.h">
       <Filter>Scripts\Boss</Filter>
     </ClInclude>
+    <ClInclude Include="CShootingSystem_DroidAR.h">
+      <Filter>Scripts\Monster\Droid</Filter>
+    </ClInclude>
+    <ClInclude Include="CTurretShootingSystem.h">
+      <Filter>Scripts\Monster\Turret</Filter>
+    </ClInclude>
+    <ClInclude Include="CDroidAR.h">
+      <Filter>Scripts\Monster\Droid</Filter>
+    </ClInclude>
+    <ClInclude Include="CMuzzleFlash_DroidAR.h">
+      <Filter>Scripts\Monster\Droid</Filter>
+    </ClInclude>
+    <ClInclude Include="CTurret.h">
+      <Filter>Scripts\Monster\Turret</Filter>
+    </ClInclude>
+    <ClInclude Include="CTurretBulletLine.h">
+      <Filter>Scripts\Monster\Turret</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -645,6 +663,30 @@
     <ClCompile Include="CBossGroggy.cpp">
       <Filter>Scripts\Boss</Filter>
     </ClCompile>
+    <ClCompile Include="CShootingSystem_DroidAR.cpp">
+      <Filter>Scripts\Monster\Droid</Filter>
+    </ClCompile>
+    <ClCompile Include="CTurretShootingSystem.cpp">
+      <Filter>Scripts\Monster\Turret</Filter>
+    </ClCompile>
+    <ClCompile Include="CDroidAR.cpp">
+      <Filter>Scripts\Monster\Droid</Filter>
+    </ClCompile>
+    <ClCompile Include="CDroidAR_State.cpp">
+      <Filter>Scripts\Monster\Droid</Filter>
+    </ClCompile>
+    <ClCompile Include="CMuzzleFlash_DroidAR.cpp">
+      <Filter>Scripts\Monster\Droid</Filter>
+    </ClCompile>
+    <ClCompile Include="CTurret.cpp">
+      <Filter>Scripts\Monster\Turret</Filter>
+    </ClCompile>
+    <ClCompile Include="CTurretBulletLine.cpp">
+      <Filter>Scripts\Monster\Turret</Filter>
+    </ClCompile>
+    <ClCompile Include="CTurretScript_State.cpp">
+      <Filter>Scripts\Monster\Turret</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -865,6 +907,15 @@
     </Filter>
     <Filter Include="Scripts\Level\Boss\Victory">
       <UniqueIdentifier>{1b6f9b9c-e4f8-4f3c-967e-62f5e75bfec3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Monster">
+      <UniqueIdentifier>{c51ace55-fccf-48c0-a160-d09e8e2ec0e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Monster\Turret">
+      <UniqueIdentifier>{92177c92-6349-4f3f-ad11-754ddc25de01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Monster\Droid">
+      <UniqueIdentifier>{21b68bca-dfdf-479f-a400-1474e6782a7a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
