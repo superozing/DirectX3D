@@ -45,6 +45,7 @@ void CTurretBulletLine::tick()
 		GamePlayStatic::DestroyGameObject(GetOwner());
 	}
 
+	// 가운데 위치 설정
 	Vec3 vPos =
 		(m_Parent->Animator3D()->FindBoneMat(L"bone_robot_gun_L") * m_Parent->Transform()->GetWorldMat()).Translation();
 	vPos += m_offset;
