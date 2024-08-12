@@ -280,6 +280,12 @@
     <ClInclude Include="CTurret.h">
       <Filter>Scripts\Monster</Filter>
     </ClInclude>
+    <ClInclude Include="CTurretShootingSystem.h">
+      <Filter>Scripts\ShootingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CTurretBulletLine.h">
+      <Filter>Scripts\ShootingSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -563,6 +569,12 @@
     </ClCompile>
     <ClCompile Include="CTurretScript_State.cpp">
       <Filter>Scripts\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CTurretShootingSystem.cpp">
+      <Filter>Scripts\ShootingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CTurretBulletLine.cpp">
+      <Filter>Scripts\ShootingSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

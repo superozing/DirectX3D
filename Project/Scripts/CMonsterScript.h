@@ -45,7 +45,8 @@ public:
 
 	void SetMonsterDamage(float _Dmg) { m_tStatus.Damage = _Dmg; }
 
-	void TakeDamage(int _Dmg);
+	void  TakeDamage(int _Dmg);
+	float GetDamageVal() const { return m_tStatus.Damage; }
 
 	bool IsDeadMonster() const { return m_tStatus.IsDead; }
 

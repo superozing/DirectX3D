@@ -5,6 +5,8 @@
 #include <Engine\CLevelMgr.h>
 #include <Engine\CLevel.h>
 
+#include "CTurretShootingSystem.h"
+
 static string DebugState = "";
 
 CTurret::CTurret()
@@ -16,6 +18,7 @@ CTurret::CTurret()
 	InitStateMachine();
 	AppendScriptParam("CurState    ", SCRIPT_PARAM::STRING, &DebugState);
 	AppendScriptParam("CurHP    ", SCRIPT_PARAM::INT, &m_tStatus.CurHealth);
+	ParticleTargetPos = Vec3(0.f, 0.f, 0.f);
 }
 
 CTurret::CTurret(const CTurret& _Origin)
@@ -49,6 +52,7 @@ void CTurret::SetTurretInfo()
 
 	fDetectDistance = AttackDistance;
 	fAttackTimer	= AttackTimer;
+	iLastShootFrm	= -1;
 }
 
 void CTurret::begin()
@@ -57,6 +61,10 @@ void CTurret::begin()
 	m_FSM->SetCurState((int)TURRET_STATE::Appear);
 
 	m_Target = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Azusa");
+
+	m_ShootingSys = GetOwner()->GetScript<CTurretShootingSystem>();
+
+	ParticleSpawnPos = Transform()->GetWorldPos();
 }
 
 void CTurret::tick()
@@ -118,4 +126,17 @@ void CTurret::CheckVital()
 {
 	if (this->GetCurHP() <= 0.f && this->IsDeadMonster() == true)
 		m_FSM->SetCurState((int)TURRET_STATE::VitalDeath);
+}
+
+void CTurret::FireParticle(Vec3 _WorldPos)
+{
+	Ptr<CPrefab> pPrefab = CAssetMgr::GetInst()->Load<CPrefab>(PREFTurretBulletLine);
+	CGameObject* pObj	 = pPrefab->Instantiate();
+
+	int ilayer = pObj->GetLayerIdx();
+
+	pObj->Transform()->SetRelativePos(ParticleSpawnPos);
+
+	GetOwner()->AddChild(pObj, true);
+	GamePlayStatic::SpawnGameObject(pObj, ilayer);
 }

@@ -11,6 +11,8 @@
 
 #include "CProjectileScript.h"
 
+#include "CTurretShootingSystem.h"
+
 static float DeathAfterTimer = 0.5f;
 
 void CTurret::InitStateMachine()
@@ -121,18 +123,6 @@ void CTurret::VitalDeathEnd()
 {
 }
 
-void CTurret::SwitchNormal()
-{
-}
-
-void CTurret::SwitchPanic()
-{
-}
-
-void CTurret::SwitchDead()
-{
-}
-
 void CTurret::NormalIdleBegin()
 {
 	Animator3D()->Play((int)TURRET_STATE::NormalIdle);
@@ -167,6 +157,7 @@ void CTurret::AttackStartBegin()
 
 int CTurret::AttackStartUpdate()
 {
+
 	if (!Animator3D()->IsPlayable())
 		return ((int)TURRET_STATE::Attack);
 
@@ -193,10 +184,36 @@ void CTurret::AttackDelayEnd()
 void CTurret::AttackBegin()
 {
 	Animator3D()->Play((int)TURRET_STATE::Attack, 0);
+	m_ShootingSys->SetShootingDirection(m_Target->GetScript<CPlayerScript>());
+	ParticleTargetPos = m_Target->Transform()->GetRelativePos();
+	FireParticle(ParticleSpawnPos);
 }
 
+#include <Engine\CLogMgr.h>
 int CTurret::AttackUpdate()
 {
+	int curFrm = Animator3D()->GetCurFrameIdx();
+	int maxFrm = Animator3D()->GetCurClipLength();
+
+	int ShootPerFrm = maxFrm / 6;
+
+	for (int i = 0; i < 6; ++i)
+	{
+		if (curFrm == ShootPerFrm * i)
+		{
+
+			if (iLastShootFrm != curFrm)
+			{
+				string s = "shot fire";
+				CLogMgr::GetInst()->AddLog(Log_Level::INFO, s);
+				m_ShootingSys->ShootTurretBulletRay();
+				iLastShootFrm = curFrm;
+			}
+
+			break;
+		}
+	}
+
 	if (!Animator3D()->IsPlayable())
 		return ((int)TURRET_STATE::AttackEnd);
 

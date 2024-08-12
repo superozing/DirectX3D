@@ -22,6 +22,7 @@ enum class TURRET_STATE
 
 template <typename T> class CRoRStateMachine;
 class CGameObject;
+class CTurretShootingSystem;
 
 class CTurret : public CMonsterScript
 {
@@ -29,9 +30,14 @@ private:
 	CRoRStateMachine<CTurret>* m_FSM;
 	CGameObject*			   m_Target;
 	tRoRHitInfo				   m_hitInfo;
+	CTurretShootingSystem*	   m_ShootingSys;
 
 	float fDetectDistance;
 	float fAttackTimer;
+	int	  iLastShootFrm;
+
+	Vec3 ParticleSpawnPos;
+	Vec3 ParticleTargetPos;
 
 private:
 	void		 SetTurretInfo();
@@ -93,10 +99,6 @@ public:
 
 	void InitStateMachine();
 
-	void SwitchNormal();
-	void SwitchPanic();
-	void SwitchDead();
-
 	int GetCurState();
 
 	void RotateIdle();
@@ -104,6 +106,9 @@ public:
 	void  CheckAttackable();
 	float CalTargetDistance();
 	void  CheckVital();
+
+	void FireParticle(Vec3 _WorldPos);
+	Vec3 GetPShootPos() { return ParticleTargetPos; }
 
 public:
 	CLONE(CTurret);

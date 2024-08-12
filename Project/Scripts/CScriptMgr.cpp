@@ -80,6 +80,8 @@
 #include "CVideoPlayer.h"
 #include "CEventListener.h"
 #include "CTurret.h"
+#include "CTurretShootingSystem.h"
+#include "CTurretBulletLine.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -162,6 +164,8 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CVideoPlayer");
 	_vec.push_back(L"CEventListener");
 	_vec.push_back(L"CTurret");
+	_vec.push_back(L"CTurretShootingSystem");
+	_vec.push_back(L"CTurretBulletLine");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -324,6 +328,10 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CEventListener;
 	if (L"CTurret" == _strScriptName)
 		return new CTurret;
+	if (L"CTurretShootingSystem" == _strScriptName)
+		return new CTurretShootingSystem;
+	if (L"CTurretBulletLine" == _strScriptName)
+		return new CTurretBulletLine;
 	return nullptr;
 }
 
@@ -567,6 +575,12 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::TURRET:
 		return new CTurret;
+		break;
+	case (UINT)SCRIPT_TYPE::TURRETSHOOTINGSYSTEM:
+		return new CTurretShootingSystem;
+		break;
+	case (UINT)SCRIPT_TYPE::TURRETBULLETLINE:
+		return new CTurretBulletLine;
 		break;
 	}
 	return nullptr;
@@ -890,6 +904,14 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::TURRET:
 		return L"CTurret";
+		break;
+
+	case SCRIPT_TYPE::TURRETSHOOTINGSYSTEM:
+		return L"CTurretShootingSystem";
+		break;
+
+	case SCRIPT_TYPE::TURRETBULLETLINE:
+		return L"CTurretBulletLine";
 		break;
 
 	}

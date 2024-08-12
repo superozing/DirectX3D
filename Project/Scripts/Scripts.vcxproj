@@ -248,6 +248,8 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CTimeMgrScript.h" />
     <ClInclude Include="CTitle.h" />
     <ClInclude Include="CTurret.h" />
+    <ClInclude Include="CTurretBulletLine.h" />
+    <ClInclude Include="CTurretShootingSystem.h" />
     <ClInclude Include="CTutorialEndingEvent.h" />
     <ClInclude Include="CTutorialGameMode.h" />
     <ClInclude Include="CTutorialTarget.h" />
@@ -344,7 +346,9 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CTimeMgrScript.cpp" />
     <ClCompile Include="CTitle.cpp" />
     <ClCompile Include="CTurret.cpp" />
+    <ClCompile Include="CTurretBulletLine.cpp" />
     <ClCompile Include="CTurretScript_State.cpp" />
+    <ClCompile Include="CTurretShootingSystem.cpp" />
     <ClCompile Include="CTutorialEndingEvent.cpp" />
     <ClCompile Include="CTutorialGameMode.cpp" />
     <ClCompile Include="CTutorialTarget.cpp" />
