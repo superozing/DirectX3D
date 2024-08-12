@@ -24,7 +24,7 @@ struct MonsterStatus
 
 class CMonsterScript : public CScript
 {
-private:
+protected:
 	MonsterStatus m_tStatus;
 
 public:
@@ -46,6 +46,8 @@ public:
 	void TakeDamage(int _Dmg);
 
 	bool IsDeadMonster() const { return m_tStatus.IsDead; }
+
+	float GetDamageVal() const { return m_tStatus.Damage; }
 
 private:
 	void DbgTakeDamage();
