@@ -21,16 +21,19 @@
 		(KEY_RELEASED(CPlayerController::Right) || KEY_NONE(CPlayerController::Right)) && \
 		(KEY_RELEASED(CPlayerController::Left) || KEY_NONE(CPlayerController::Left))
 
+#define KnockbackSpeed 500.f;
+
 #pragma region Normal
 
 void CPlayerScript::NormalIdleBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::NormalIdle);
-	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalIdle]);
+	// m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalIdle]);
 }
 
 int CPlayerScript::NormalIdleUpdate()
 {
+
 	// TODO : 재장전 조건 추가 필요 (현재 탄창이 최대 탄창과 같으면 x)
 	// 재장전
 	if (KEY_TAP(CPlayerController::Reload))
@@ -756,6 +759,7 @@ void CPlayerScript::MoveJumpEnd()
 	Vec3 vPos = Transform()->GetRelativePos();
 	vPos.y	  = m_fJumpY;
 	Transform()->SetRelativePos(vPos);
+	SetCoverType(CoverType::Normal);
 }
 
 #pragma endregion
@@ -778,13 +782,48 @@ void CPlayerScript::VitalDeathEnd()
 
 void CPlayerScript::VitalPanicBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::VitalPanic, 0);
+
+	CCamera* pCamera = CRenderMgr::GetInst()->GetMainCam();
+
+	if (IsInvincivility() == false) // 피격이 처음 되면 무적이 아니므로 피격 상태로 들어간다.
+	{
+		if (m_tStatus.IsDamageMoved == true) // 밀려날때만 재생
+		{
+			Animator3D()->Play((int)PLAYER_STATE::VitalPanic, 0);
+		}
+
+		SetPanicVignette();
+		CRenderMgr::GetInst()->SwitchVignette();
+		SetPlayerCromaticAberration();
+		SetInvincivility(true);
+		this->SetDamaged(false);
+	}
 }
 
+#include <Engine\CLogMgr.h>
 int CPlayerScript::VitalPanicUpdate()
 {
 	// TODO: 패닉이 풀렸는지 검사해야 함
 	// return ispanic ? (int)PLAYER_STATE::NormalIdle : m_FSM->GetCurState();
+
+	// 밀리는 공격이라면 계산해준다.
+	if (m_tStatus.IsDamageMoved == true)
+	{
+		float fCurSpeed = KnockbackSpeed;
+
+		Vec3 vBack = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+		vBack	   = -vBack;
+		vBack.Normalize();
+		Vec3 vPos = Transform()->GetRelativePos();
+		vPos += vBack * fCurSpeed * DT;
+
+		Transform()->SetRelativePos(vPos);
+	}
+
+	if (Animator3D()->GetCurFrameIdx() > 1)
+	{
+		return (int)PLAYER_STATE::NormalIdle;
+	}
 	return m_FSM->GetCurState();
 }
 
@@ -831,15 +870,11 @@ void CPlayerScript::VictoryStartEnd()
 
 void CPlayerScript::VictoryEndBegin()
 {
-	Animator3D()->Play((int)PLAYER_STATE::VictoryEnd, 0);
+	Animator3D()->Play((int)PLAYER_STATE::VictoryEnd);
 }
 
 int CPlayerScript::VictoryEndUpdate()
 {
-	// 애니메이션 종료시 Idle상태로 전환
-	if (!Animator3D()->IsPlayable())
-		return (int)PLAYER_STATE::NormalIdle;
-
 	return m_FSM->GetCurState();
 }
 

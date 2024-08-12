@@ -9,13 +9,13 @@ CMonsterScript::CMonsterScript()
 {
 }
 
-CMonsterScript::CMonsterScript(UINT _Type)
-	: CScript(_Type)
+CMonsterScript::CMonsterScript(UINT _type)
+	: CScript((UINT)_type)
 {
 }
 
 CMonsterScript::CMonsterScript(const CMonsterScript& _Origin)
-	: CScript((UINT)SCRIPT_TYPE::MONSTERSCRIPT)
+	: CScript(_Origin)
 {
 }
 
@@ -110,27 +110,27 @@ void CMonsterScript::LoadFromFile(FILE* _File)
 
 void CMonsterScript::LoadFromFile(ifstream& fin)
 {
-	Utils::GetLineUntilString(fin, TagMonsterMaxHP);
-	fin >> m_tStatus.MaxHealth;
+	//Utils::GetLineUntilString(fin, TagMonsterMaxHP);
+	//fin >> m_tStatus.MaxHealth;
 
-	Utils::GetLineUntilString(fin, TagMonsterDamage);
-	fin >> m_tStatus.Damage;
+	//Utils::GetLineUntilString(fin, TagMonsterDamage);
+	//fin >> m_tStatus.Damage;
 
-	Utils::GetLineUntilString(fin, TagMonsterDefensive);
-	fin >> m_tStatus.Defensive;
+	//Utils::GetLineUntilString(fin, TagMonsterDefensive);
+	//fin >> m_tStatus.Defensive;
 
-	Utils::GetLineUntilString(fin, TagMonsterMoveSpeed);
-	fin >> m_tStatus.MoveSpeed;
+	//Utils::GetLineUntilString(fin, TagMonsterMoveSpeed);
+	//fin >> m_tStatus.MoveSpeed;
 
-	Utils::GetLineUntilString(fin, TagMonsterRotateSpeed);
-	fin >> m_tStatus.RotateSpeed;
+	//Utils::GetLineUntilString(fin, TagMonsterRotateSpeed);
+	//fin >> m_tStatus.RotateSpeed;
 
-	Utils::GetLineUntilString(fin, TagMonsterAvoidPercent);
-	fin >> m_tStatus.AvoidPercent;
+	//Utils::GetLineUntilString(fin, TagMonsterAvoidPercent);
+	//fin >> m_tStatus.AvoidPercent;
 
-	Utils::GetLineUntilString(fin, TagMonsterCriticalPercent);
-	fin >> m_tStatus.CriticalPercent;
+	//Utils::GetLineUntilString(fin, TagMonsterCriticalPercent);
+	//fin >> m_tStatus.CriticalPercent;
 
-	Utils::GetLineUntilString(fin, TagMonsterCriticalDamage);
-	fin >> m_tStatus.CriticalDamage;
+	//Utils::GetLineUntilString(fin, TagMonsterCriticalDamage);
+	//fin >> m_tStatus.CriticalDamage;
 }

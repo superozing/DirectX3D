@@ -24,9 +24,28 @@ enum class BOSS_STATE
 	END,
 };
 
+enum class BOSS_SOUND
+{
+	NORMAL,
+	NORMAL_HIT,
+	EX1,
+	EX1_MUZZLE,
+	EX2_FIRE,
+	EX2_MUZZLE,
+	EX3_SHIELD_START,
+	EX3,
+	EX4,
+	EX4_BLADING,
+	EX4_PROJECTILE,
+	GROGGY,
+	DEATHBOOM1,
+	DEATHBOOM2,
+	END,
+};
+
 struct tBossStatus
 {
-	float MaxHP = 1000.f;
+	float MaxHP = 1300.f;
 	float CurHP = MaxHP;
 
 	float GroggyBar = 0.f;
@@ -34,7 +53,7 @@ struct tBossStatus
 	float ATTDamage = 10.f;
 	float ATTSpeed	= 2.f;
 
-	float EXsCoolTime = 5000.f;
+	float EXsCoolTime = 5.f;
 
 	bool IsGroggy = false;
 	bool IsDead	  = false;
@@ -69,8 +88,13 @@ private:
 	bool  m_Raycast;
 	float m_RaycastInterval;
 
+	class CBossLV* m_GameMode;
+
+	vector<Ptr<CSound>> m_vecSound;
+
 	// @@디버그용
-	int m_EXsType; // 현재 선택된 EX 타입
+	int	 m_EXsType; // 현재 선택된 EX 타입
+	bool m_bDebug;
 
 #pragma region About State
 
@@ -148,12 +172,18 @@ public:
 	void ActiveWarningDecal();
 
 	void LoadAsset();
+	void LoadSound();
 	void CheckTargetPos();
 
 	CRoRStateMachine<CBossScript>* GetBossFSM() { return m_FSM; }
 
+	float GetGroggy() const { return m_BossStatus.GroggyBar; }
+	tBossStatus GetBossStatus() const { return m_BossStatus; }
+
 	CGameObject* GetTarget() { return m_Target; }
 	void		 SetTarget(CGameObject* _Target) { m_Target = _Target; }
+
+	Ptr<CSound> GetSound(UINT _idx) { return m_vecSound[_idx]; }
 
 	bool IsVital();
 	bool IsShield();

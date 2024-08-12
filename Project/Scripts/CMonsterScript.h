@@ -50,13 +50,15 @@ public:
 
 	bool IsDeadMonster() const { return m_tStatus.IsDead; }
 
+	float GetDamageVal() const { return m_tStatus.Damage; }
+
 private:
 	void DbgTakeDamage();
 
 public:
 	CLONE(CMonsterScript);
 	CMonsterScript();
-	CMonsterScript(UINT _Type);
+	CMonsterScript(UINT _type);
 	CMonsterScript(const CMonsterScript& _Origin);
 	~CMonsterScript();
 };

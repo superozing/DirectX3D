@@ -245,9 +245,31 @@ int CDevice::CreateDepthStencilState()
 {
 	HRESULT hr = S_OK;
 
-	m_arrDS[(UINT)DS_TYPE::LESS] = nullptr;
-
 	D3D11_DEPTH_STENCIL_DESC tDesc = {};
+
+	// Less
+	tDesc.DepthEnable	   = true;
+	tDesc.DepthFunc		   = D3D11_COMPARISON_LESS;
+	tDesc.DepthWriteMask   = D3D11_DEPTH_WRITE_MASK_ALL;
+	tDesc.StencilEnable	   = true;
+	tDesc.StencilReadMask  = 0xFF;
+	tDesc.StencilWriteMask = 0xFF;
+
+	tDesc.FrontFace.StencilFunc		   = D3D11_COMPARISON_ALWAYS;
+	tDesc.FrontFace.StencilPassOp	   = D3D11_STENCIL_OP_REPLACE;
+	tDesc.FrontFace.StencilFailOp	   = D3D11_STENCIL_OP_KEEP;
+	tDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+
+	tDesc.BackFace.StencilFunc		  = D3D11_COMPARISON_ALWAYS;
+	tDesc.BackFace.StencilPassOp	  = D3D11_STENCIL_OP_REPLACE;
+	tDesc.BackFace.StencilFailOp	  = D3D11_STENCIL_OP_KEEP;
+	tDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+
+	hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::LESS].GetAddressOf());
+	if (FAILED(hr))
+		return E_FAIL;
+
+	// m_arrDS[(UINT)DS_TYPE::LESS] = nullptr;
 
 	// Less Equal
 	tDesc.DepthEnable	 = true;

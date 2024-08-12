@@ -171,17 +171,16 @@ void CPhysX::finaltick()
 	{
 		if (PhysShape::BOX == m_Shape)
 		{
-			GamePlayStatic::DrawDebugCube(ColPos, scale, Vec4(Rot.x, Rot.y, Rot.z, Rot.w), Vec3(0.3f, .3f, 0.3f),
-										  false);
+			GamePlayStatic::DrawDebugCube(ColPos, scale, Vec4(Rot.x, Rot.y, Rot.z, Rot.w), Vec3(0.3f, .3f, 0.3f), true);
 		}
 		else if (PhysShape::SPHERE == m_Shape)
 		{
-			GamePlayStatic::DrawDebugSphere(ColPos, scale.x / 2.f, Vec3(0.3f, .3f, 0.3f), false);
+			GamePlayStatic::DrawDebugSphere(ColPos, scale.x / 2.f, Vec3(0.3f, .3f, 0.3f), true);
 		}
 		else if (PhysShape::CONE == m_Shape)
 		{
-			GamePlayStatic::DrawDebugCone(ColPos, scale, Vec4(Rot.x, Rot.y, Rot.z, Rot.w), Vec3(0.3f, .3f, 0.3f),
-										  false);
+			// GamePlayStatic::DrawDebugCone(ColPos, scale, Vec4(Rot.x, Rot.y, Rot.z, Rot.w), Vec3(0.3f, .3f, 0.3f),
+			// false);
 		}
 	}
 }

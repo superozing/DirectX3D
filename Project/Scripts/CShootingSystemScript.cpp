@@ -87,7 +87,8 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 		case LAYER::LAYER_PLAYER_SKILL:
 			break;
 
-		case LAYER::LAYER_MONSTER: {
+		case LAYER::LAYER_MONSTER: 
+		{
 			if (hitInfo.pOtherObj->PhysX()->m_bPhysBodyType == PhysBodyType::DYNAMIC)
 			{
 				hitInfo.pOtherObj->PhysX()->applyBulletImpact(
@@ -103,7 +104,15 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 
 			m_pDamageFontSpawner->SpawnDamageFont(hitInfo.vHitPos, 10);
 			m_pBulletHitParticleSpawner->SpawnBulletHitParticle(hitInfo);
+
+			// 피격 사운드 재생
 			m_vecSound[(UINT)ShootingSystemSoundType::MonsterNormalHit]->Play(1, 1.f, true);
+		
+			// 몬스터에게 데미지 주기
+			auto pScript = hitInfo.pOtherObj->GetScript<CMonsterScript>();
+
+			if (pScript)
+				pScript->TakeDamage(m_pPlayerScript->GetDamage());
 		}
 		break;
 
@@ -132,6 +141,7 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 			else
 				m_pDamageFontSpawner->SpawnDamageFont(hitInfo.vHitPos, (int)m_pPlayerScript->GetDamage());
 			m_pBulletHitParticleSpawner->SpawnBulletHitParticle(hitInfo);
+			m_vecSound[(UINT)ShootingSystemSoundType::MonsterNormalHit]->Play(1, 1.f, true);
 			break;
 
 		case LAYER::LAYER_BOSS_SKILL:

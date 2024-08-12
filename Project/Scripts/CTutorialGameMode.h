@@ -28,7 +28,6 @@ enum class TutorialGameModeSoundType
 	END
 };
 
-
 enum class TutorialEvents
 {
 	BasicMove,
@@ -68,7 +67,11 @@ private:
 
 	// CoverHigh
 private:
-	vector<class CGameObject*> m_vecCoverHighMonsters;
+	vector<class CGameObject*> m_vecCoverMonsters;
+
+	// Finish
+private:
+	class CFinishBalloon* m_pFinishBalloon;
 
 private:
 	class CArona*		 m_pArona;
@@ -78,7 +81,7 @@ private:
 
 	class CEventListener* m_pEvents[(UINT)TutorialEvents::END];
 
-	Ptr<CSound> m_pBGM;
+	Ptr<CSound>			m_pBGM;
 	vector<Ptr<CSound>> m_vecTutorialGameModeSound;
 
 private:

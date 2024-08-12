@@ -174,17 +174,17 @@ void CKeyMgr::tick()
 		m_vMouseDrag = m_vMousePos - m_vMousePrevPos;
 
 		// Temp Escape Key
-		// if (KEY_TAP(KEY::ESC))
-		//{
-		//	if (m_bShowCursor)
-		//	{
-		//		RoRShowCursor(false);
-		//	}
-		//	else
-		//	{
-		//		RoRShowCursor(true);
-		//	}
-		//}
+		if (KEY_TAP(KEY::ESC))
+		{
+			if (m_bShowCursor)
+			{
+				RoRShowCursor(false);
+			}
+			else
+			{
+				RoRShowCursor(true);
+			}
+		}
 	}
 }
 

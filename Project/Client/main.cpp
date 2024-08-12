@@ -36,7 +36,6 @@
 #include "CCreateTempLevel.h"
 #include "CUITempLevel.h"
 #include "MapTestLevel.h"
-#include "MapTutorial.h"
 #include "CCreatePlayerTestLevel.h"
 
 #include <Engine\CLevelMgr.h>
@@ -108,6 +107,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	// CUITempLevel::Init();
 	// CUITempLevel::CreateTempLevel();
 	// MapTestLevel::CreateMapTestLevel();
+
+	SetWindowText(CEngine::GetInst()->GetMainWind(), L"RoR BlueArchive");
 
 	string levelPath = CEnvMgr::GetInst()->GetLevelRelativePath();
 	string abPath	 = ToString(CPathMgr::GetContentPath()) + levelPath;

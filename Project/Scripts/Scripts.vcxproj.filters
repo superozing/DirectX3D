@@ -277,14 +277,50 @@
     <ClInclude Include="CEventListener.h">
       <Filter>Scripts\Event</Filter>
     </ClInclude>
-    <ClInclude Include="CTurret.h">
-      <Filter>Scripts\Monster</Filter>
+    <ClInclude Include="CCubePushScript.h">
+      <Filter>Scripts\Phys</Filter>
     </ClInclude>
-    <ClInclude Include="CTurretShootingSystem.h">
-      <Filter>Scripts\ShootingSystem</Filter>
+    <ClInclude Include="CFinishBalloon.h">
+      <Filter>Scripts\Level</Filter>
     </ClInclude>
-    <ClInclude Include="CTurretBulletLine.h">
-      <Filter>Scripts\ShootingSystem</Filter>
+    <ClInclude Include="CBossLV.h">
+      <Filter>Scripts\Level\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="CBossOpeningTex.h">
+      <Filter>Scripts\Level\Boss\Start</Filter>
+    </ClInclude>
+    <ClInclude Include="CStartLightTex.h">
+      <Filter>Scripts\Level\Boss\Start</Filter>
+    </ClInclude>
+    <ClInclude Include="CStartTex.h">
+      <Filter>Scripts\Level\Boss\Start</Filter>
+    </ClInclude>
+    <ClInclude Include="CVictoryBG.h">
+      <Filter>Scripts\Level\Boss\Victory</Filter>
+    </ClInclude>
+    <ClInclude Include="CVictoryTex.h">
+      <Filter>Scripts\Level\Boss\Victory</Filter>
+    </ClInclude>
+    <ClInclude Include="CDamageRay.h">
+      <Filter>Scripts\Level\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="CWarningBGTex.h">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClInclude>
+    <ClInclude Include="CWarningDownDeco.h">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClInclude>
+    <ClInclude Include="CWarningIcon.h">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClInclude>
+    <ClInclude Include="CWarningTex.h">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClInclude>
+    <ClInclude Include="CWarningUpDeco.h">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClInclude>
+    <ClInclude Include="CBossGroggy.h">
+      <Filter>Scripts\Boss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -564,17 +600,50 @@
     <ClCompile Include="CEventListener.cpp">
       <Filter>Scripts\Event</Filter>
     </ClCompile>
-    <ClCompile Include="CTurret.cpp">
-      <Filter>Scripts\Monster</Filter>
+    <ClCompile Include="CCubePushScript.cpp">
+      <Filter>Scripts\Phys</Filter>
     </ClCompile>
-    <ClCompile Include="CTurretScript_State.cpp">
-      <Filter>Scripts\Monster</Filter>
+    <ClCompile Include="CFinishBalloon.cpp">
+      <Filter>Scripts\Level</Filter>
     </ClCompile>
-    <ClCompile Include="CTurretShootingSystem.cpp">
-      <Filter>Scripts\ShootingSystem</Filter>
+    <ClCompile Include="CBossLV.cpp">
+      <Filter>Scripts\Level\Boss</Filter>
     </ClCompile>
-    <ClCompile Include="CTurretBulletLine.cpp">
-      <Filter>Scripts\ShootingSystem</Filter>
+    <ClCompile Include="CBossOpeningTex.cpp">
+      <Filter>Scripts\Level\Boss\Start</Filter>
+    </ClCompile>
+    <ClCompile Include="CStartLightTex.cpp">
+      <Filter>Scripts\Level\Boss\Start</Filter>
+    </ClCompile>
+    <ClCompile Include="CStartTex.cpp">
+      <Filter>Scripts\Level\Boss\Start</Filter>
+    </ClCompile>
+    <ClCompile Include="CVictoryBG.cpp">
+      <Filter>Scripts\Level\Boss\Victory</Filter>
+    </ClCompile>
+    <ClCompile Include="CVictoryTex.cpp">
+      <Filter>Scripts\Level\Boss\Victory</Filter>
+    </ClCompile>
+    <ClCompile Include="CDamageRay.cpp">
+      <Filter>Scripts\Level\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="CWarningBGTex.cpp">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClCompile>
+    <ClCompile Include="CWarningDownDeco.cpp">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClCompile>
+    <ClCompile Include="CWarningIcon.cpp">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClCompile>
+    <ClCompile Include="CWarningTex.cpp">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClCompile>
+    <ClCompile Include="CWarningUpDeco.cpp">
+      <Filter>Scripts\Level\Boss\Warning</Filter>
+    </ClCompile>
+    <ClCompile Include="CBossGroggy.cpp">
+      <Filter>Scripts\Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -782,8 +851,20 @@
     <Filter Include="Scripts\Render\Video">
       <UniqueIdentifier>{049e4cf4-e10a-4955-92b2-85660b849773}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Monster">
-      <UniqueIdentifier>{9e120e0e-10ed-40fe-b2ca-9c1479ca9293}</UniqueIdentifier>
+    <Filter Include="Scripts\Phys">
+      <UniqueIdentifier>{bb33054c-aa56-4cc7-9eef-ea724457ddaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Level\Boss">
+      <UniqueIdentifier>{b3854f99-f97c-4c6c-9f70-b1fbec117fa8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Level\Boss\Start">
+      <UniqueIdentifier>{5b2291c8-036e-4e1c-ab78-94aa7525ceb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Level\Boss\Warning">
+      <UniqueIdentifier>{7feb3222-fb40-4087-a27e-3627c2d2353d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Level\Boss\Victory">
+      <UniqueIdentifier>{1b6f9b9c-e4f8-4f3c-967e-62f5e75bfec3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

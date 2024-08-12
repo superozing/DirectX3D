@@ -19,5 +19,6 @@ public:
 public:
 	CLONE(CBloomScript);
 	CBloomScript();
+	CBloomScript(const CBloomScript&);
 	~CBloomScript();
 };

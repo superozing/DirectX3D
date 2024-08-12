@@ -19,6 +19,7 @@
 #include "CSpringArm.h"
 
 #include "CShootingSystemScript.h"
+#include "CPlayerDamagedScript.h"
 
 #include "CCrosshair.h"
 #include "CHUD.h"
@@ -31,6 +32,7 @@ CPlayerScript::CPlayerScript()
 	, m_tStatus{}
 	, m_pSpringArm(nullptr)
 	, m_pMuzzleFlash(nullptr)
+	, m_bPlaying(true)
 {
 	// 디버깅용
 	AppendScriptParam("CurState", SCRIPT_PARAM::STRING, (void*)&state);
@@ -51,6 +53,7 @@ CPlayerScript::CPlayerScript(const CPlayerScript& _origin)
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
 	, m_tStatus(_origin.m_tStatus)
 	, m_mSpringInfos(_origin.m_mSpringInfos)
+	, m_bPlaying(_origin.m_bPlaying)
 {
 	// m_FSM = _origin.m_FSM->Clone(this);
 
@@ -151,7 +154,7 @@ void CPlayerScript::InitSpringArmSetting()
 
 	info.Type										= true;
 	info.fMaxDistance								= 70.f;
-	info.fCamSpeed									= 20.f;
+	info.fCamSpeed									= 30.f;
 	info.fCamRotSpeed								= 20.f;
 	info.vDir										= Vec3(0.f, 180.f, 0.f);
 	info.vOffsetPos									= Vec2(50.f, 75.f);
@@ -202,7 +205,7 @@ void CPlayerScript::InitSpringArmSetting()
 	info.fCamSpeed							= 20.f;
 	info.fCamRotSpeed						= 20.f;
 	info.vDir								= Vec3(0.f, 180.f, 0.f);
-	info.vOffsetPos							= Vec2(50.f, 50.f);
+	info.vOffsetPos							= Vec2(50.f, 75.f);
 	m_mSpringInfos[PLAYER_STATE::SkillDash] = info;
 
 	info.Type								 = false;
@@ -218,7 +221,7 @@ void CPlayerScript::InitSpringArmSetting()
 	info.fCamSpeed								= 50.f;
 	info.fCamRotSpeed							= 20.f;
 	info.vDir									= Vec3(0.f, 130.f, 0.f);
-	info.vOffsetPos								= Vec2(0.f, 50.f);
+	info.vOffsetPos								= Vec2(0.f, 75.f);
 	m_mSpringInfos[PLAYER_STATE::SkillCallsign] = info;
 
 	info.Type							  = true;
@@ -226,7 +229,7 @@ void CPlayerScript::InitSpringArmSetting()
 	info.fCamSpeed						  = 20.f;
 	info.fCamRotSpeed					  = 20.f;
 	info.vDir							  = Vec3(0.f, 160.f, 0.f);
-	info.vOffsetPos						  = Vec2(50.f, 50.f);
+	info.vOffsetPos						  = Vec2(50.f, 75.f);
 	m_mSpringInfos[PLAYER_STATE::SkillEX] = info;
 
 	info.Type							   = false;
@@ -234,7 +237,7 @@ void CPlayerScript::InitSpringArmSetting()
 	info.fCamSpeed						   = 10.f;
 	info.fCamRotSpeed					   = 5.f;
 	info.vDir							   = Vec3(0.f, 180.f, 0.f);
-	info.vOffsetPos						   = Vec2(50.f, 50.f);
+	info.vOffsetPos						   = Vec2(50.f, 75.f);
 	m_mSpringInfos[PLAYER_STATE::MoveJump] = info;
 
 	info.Type								   = false;
@@ -242,7 +245,7 @@ void CPlayerScript::InitSpringArmSetting()
 	info.fCamSpeed							   = 10.f;
 	info.fCamRotSpeed						   = 5.f;
 	info.vDir								   = Vec3(0.f, 0.f, 0.f);
-	info.vOffsetPos							   = Vec2(0.f, 50.f);
+	info.vOffsetPos							   = Vec2(0.f, 75.f);
 	m_mSpringInfos[PLAYER_STATE::VictoryStart] = info;
 }
 
@@ -303,7 +306,10 @@ void CPlayerScript::begin()
 
 	// 저장 재시작하면 터져서 임시로 막아둠
 	if (m_pSpringArm)
+	{
 		m_pSpringArm->SetTargetObject(CRenderMgr::GetInst()->GetMainCam()->GetOwner());
+		m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::NormalIdle]);
+	}
 
 	m_FSM->Begin();
 
@@ -326,34 +332,48 @@ void CPlayerScript::begin()
 	m_vecSound.resize((UINT)PlayerSoundType::End);
 
 	Ptr<CSound> pSnd					   = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_CH0138_Public_Shot);
-	m_vecSound[(UINT)PlayerSoundType::EX1]	 = pSnd;
+	m_vecSound[(UINT)PlayerSoundType::EX1] = pSnd;
 
-	pSnd = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Skill_Azusa_Ex_2);
-	m_vecSound[(UINT)PlayerSoundType::EX2]	 = pSnd;
+	pSnd								   = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Skill_Azusa_Ex_2);
+	m_vecSound[(UINT)PlayerSoundType::EX2] = pSnd;
 
-	pSnd								   = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Common_CH0240_SR_Reload_01);
-	m_vecSound[(UINT)PlayerSoundType::RELOAD]	 = pSnd;
-	
+	pSnd									  = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Common_CH0240_SR_Reload_01);
+	m_vecSound[(UINT)PlayerSoundType::RELOAD] = pSnd;
+
 	pSnd										= CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Field_Movement_03);
 	m_vecSound[(UINT)PlayerSoundType::MOVEMENT] = pSnd;
 
-	pSnd									 = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Grenade_Throw_Up);
+	pSnd										= CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Grenade_Throw_Up);
 	m_vecSound[(UINT)PlayerSoundType::THROW_UP] = pSnd;
 
-	pSnd									 = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Grenade_Throw_Away);
+	pSnd										  = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Grenade_Throw_Away);
 	m_vecSound[(UINT)PlayerSoundType::THROW_AWAY] = pSnd;
 
 	pSnd									   = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Skill_Azusa_Ex_Cut_in);
 	m_vecSound[(UINT)PlayerSoundType::SKILLEX] = pSnd;
-
 }
 
 void CPlayerScript::tick()
 {
+	if (!m_bPlaying)
+		return;
+
 	// FSM Update,
 	m_FSM->Update();
 	state = magic_enum::enum_name((PLAYER_STATE)m_FSM->GetCurState());
 	cover = magic_enum::enum_name((CoverType)GetCoverType());
+
+	// 전역 무적 판정
+	if (m_tStatus.Invincibility == true)
+	{
+		m_tStatus.fInvincibilityTimer -= DT;
+
+		if (m_tStatus.fInvincibilityTimer <= 0.f)
+		{
+			SetInvincivility(false);
+			m_tStatus.fInvincibilityTimer = InvincivilityTime;
+		}
+	}
 
 	// 카메라 움직임
 	CameraMove();
@@ -387,15 +407,20 @@ void CPlayerScript::tick()
 		SetRight(!IsRight());
 	}
 
-	//// 탄피 힘 방향을 확인하기 위한 자동 사격
+	// 데미지 처리
+	if (m_tStatus.IsDamaged == true)
+	{
+		m_FSM->SetCurState((int)PLAYER_STATE::VitalPanic);
+	}
+	// 탄피 힘 방향을 확인하기 위한 자동 사격
 	// static float autoShoot = 0.f;
 	// autoShoot += DT;
 
-	//if (autoShoot > 0.5f)
+	// if (autoShoot > 0.5f)
 	//{
 	//	m_pShootingSystem->ShootPlayerBulletRay();
 	//	autoShoot = 0.f;
-	//}
+	// }
 }
 
 void CPlayerScript::CameraMove()
@@ -498,6 +523,7 @@ void CPlayerScript::CameraMove()
 				state == (int)PLAYER_STATE::SkillDash)
 			{
 				// 마우스 x 이동에 따라 카메라 y축 회전
+				CamRotSpeed = 10.f;
 				if (vMouseDiff.x > 0.f)
 					vOffset.x += CPlayerController::Sensitivity * CamRotSpeed * DT;
 				else if (vMouseDiff.x < 0.f)
@@ -717,4 +743,35 @@ void CPlayerScript::SaveToFile(FILE* _File)
 
 void CPlayerScript::LoadFromFile(FILE* _File)
 {
+}
+
+void CPlayerScript::SetPanicVignette()
+{
+	float fHpRatio	 = m_tStatus.curHealth / m_tStatus.MaxHealth * 100.f;
+	int	  InputPower = 0;
+
+	if (fHpRatio > 50.f)
+		InputPower = 1;
+	else if (fHpRatio < 50.f && fHpRatio > 25.f)
+		InputPower = 2;
+	else
+		InputPower = 3;
+
+	CRenderMgr::GetInst()->SetVignettePower(InputPower);
+}
+
+void CPlayerScript::SetPlayerCromaticAberration()
+{
+	float fHpRatio = m_tStatus.curHealth / m_tStatus.MaxHealth * 100.f;
+
+	tCromatic_AberrationInfo CurEffect = {};
+
+	if (fHpRatio > 50.f)
+	{
+		CRenderMgr::GetInst()->PushCAEvent(CA_TYPE::CA_SHORT);
+	}
+	else
+	{
+		CRenderMgr::GetInst()->PushCAEvent(CA_TYPE::CA_LONG);
+	}
 }
