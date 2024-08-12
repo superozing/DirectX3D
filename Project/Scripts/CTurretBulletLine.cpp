@@ -50,7 +50,7 @@ void CTurretBulletLine::tick()
 		(m_Parent->Animator3D()->FindBoneMat(L"bone_robot_gun_L") * m_Parent->Transform()->GetWorldMat()).Translation();
 	vPos += m_offset;
 	vPos.z += 100.f;
-	vPos.y -= 200.f;
+	vPos.y += 80.f;
 	vPos.x -= 50.f;
 
 	m_TargetPos.y = vPos.y;
