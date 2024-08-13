@@ -402,10 +402,10 @@ void CPlayerScript::tick()
 		m_tStatus.MoveSpeed = 5 * originSpeed;
 	}
 
-	if (KEY_TAP(CPlayerController::Flip))
-	{
-		SetRight(!IsRight());
-	}
+	// if (KEY_TAP(CPlayerController::Flip))
+	//{
+	//	SetRight(!IsRight());
+	// }
 
 	// 데미지 처리
 	if (m_tStatus.IsDamaged == true)

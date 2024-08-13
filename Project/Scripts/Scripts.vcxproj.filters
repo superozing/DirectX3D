@@ -340,6 +340,21 @@
     <ClInclude Include="CTurretBulletLine.h">
       <Filter>Scripts\Monster\Turret</Filter>
     </ClInclude>
+    <ClInclude Include="CTutStartTex.h">
+      <Filter>Scripts\Level\Tutorial\Start</Filter>
+    </ClInclude>
+    <ClInclude Include="CTutStartLightTex.h">
+      <Filter>Scripts\Level\Tutorial\Start</Filter>
+    </ClInclude>
+    <ClInclude Include="CTutOpeningTex.h">
+      <Filter>Scripts\Level\Tutorial\Start</Filter>
+    </ClInclude>
+    <ClInclude Include="CTutVictoryBG.h">
+      <Filter>Scripts\Level\Tutorial\Victory</Filter>
+    </ClInclude>
+    <ClInclude Include="CTutVictoryTex.h">
+      <Filter>Scripts\Level\Tutorial\Victory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -687,6 +702,21 @@
     <ClCompile Include="CTurretScript_State.cpp">
       <Filter>Scripts\Monster\Turret</Filter>
     </ClCompile>
+    <ClCompile Include="CTutStartTex.cpp">
+      <Filter>Scripts\Level\Tutorial\Start</Filter>
+    </ClCompile>
+    <ClCompile Include="CTutStartLightTex.cpp">
+      <Filter>Scripts\Level\Tutorial\Start</Filter>
+    </ClCompile>
+    <ClCompile Include="CTutOpeningTex.cpp">
+      <Filter>Scripts\Level\Tutorial\Start</Filter>
+    </ClCompile>
+    <ClCompile Include="CTutVictoryBG.cpp">
+      <Filter>Scripts\Level\Tutorial\Victory</Filter>
+    </ClCompile>
+    <ClCompile Include="CTutVictoryTex.cpp">
+      <Filter>Scripts\Level\Tutorial\Victory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -916,6 +946,12 @@
     </Filter>
     <Filter Include="Scripts\Monster\Droid">
       <UniqueIdentifier>{21b68bca-dfdf-479f-a400-1474e6782a7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Level\Tutorial\Start">
+      <UniqueIdentifier>{bfb5c5c0-29e7-47cf-a165-7523802b4f57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Level\Tutorial\Victory">
+      <UniqueIdentifier>{0fe6d46f-bd82-4344-b54c-706b13f477f9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
