@@ -105,6 +105,7 @@
 #include "CTutOpeningTex.h"
 #include "CTutVictoryBG.h"
 #include "CTutVictoryTex.h"
+#include "CFadeUIScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -212,6 +213,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CTutOpeningTex");
 	_vec.push_back(L"CTutVictoryBG");
 	_vec.push_back(L"CTutVictoryTex");
+	_vec.push_back(L"CFadeUIScript");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -424,6 +426,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CTutVictoryBG;
 	if (L"CTutVictoryTex" == _strScriptName)
 		return new CTutVictoryTex;
+	if (L"CFadeUIScript" == _strScriptName)
+		return new CFadeUIScript;
 	return nullptr;
 }
 
@@ -742,6 +746,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::TUTVICTORYTEX:
 		return new CTutVictoryTex;
+		break;
+	case (UINT)SCRIPT_TYPE::FADEUISCRIPT:
+		return new CFadeUIScript;
 		break;
 	}
 	return nullptr;
@@ -1165,6 +1172,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::TUTVICTORYTEX:
 		return L"CTutVictoryTex";
+		break;
+
+	case SCRIPT_TYPE::FADEUISCRIPT:
+		return L"CFadeUIScript";
 		break;
 
 	}

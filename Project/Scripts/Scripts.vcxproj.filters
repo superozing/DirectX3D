@@ -355,6 +355,9 @@
     <ClInclude Include="CTutVictoryTex.h">
       <Filter>Scripts\Level\Tutorial\Victory</Filter>
     </ClInclude>
+    <ClInclude Include="CFadeUIScript.h">
+      <Filter>Scripts\UI\Image\Fade</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -717,6 +720,9 @@
     <ClCompile Include="CTutVictoryTex.cpp">
       <Filter>Scripts\Level\Tutorial\Victory</Filter>
     </ClCompile>
+    <ClCompile Include="CFadeUIScript.cpp">
+      <Filter>Scripts\UI\Image\Fade</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -952,6 +958,9 @@
     </Filter>
     <Filter Include="Scripts\Level\Tutorial\Victory">
       <UniqueIdentifier>{0fe6d46f-bd82-4344-b54c-706b13f477f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\Image\Fade">
+      <UniqueIdentifier>{c6312b9f-2b3a-4ac0-82cd-2c1907f01ad2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
