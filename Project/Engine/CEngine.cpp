@@ -144,7 +144,7 @@ void CEngine::ResizeScreenResolution(Vec2 NewResolution, bool bWindowMode)
 
 void CEngine::DebugFunctionCheck()
 {
-	if (KEY_TAP(KEY::O))
+	if (KEY_TAP_ANY(KEY::O))
 	{
 		CRenderMgr::GetInst()->IsDebugPosition() ? CRenderMgr::GetInst()->SetDebugPosition(false)
 												 : CRenderMgr::GetInst()->SetDebugPosition(true);
