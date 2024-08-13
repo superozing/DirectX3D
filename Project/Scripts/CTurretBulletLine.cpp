@@ -45,7 +45,7 @@ void CTurretBulletLine::begin()
 
 	// 원하는 월드 위치를 부모 기준의 로컬 위치로 변환
 	Vec3 localPos = XMVector3Transform(desiredWorldPos, parentWorldInv);
-	localPos.y += 0.3f;
+	localPos.y += 0.5f;
 
 	// 자식(this)의 상대적 위치 설정
 	this->Transform()->SetRelativePos(localPos);
