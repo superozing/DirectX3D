@@ -132,7 +132,8 @@ public:
 	void Cromatic_Aberration();
 	void Vignette_Effect();
 	void GrayFilter_by_Object();
-	void render_FadeEvent();
+	// Fade Script& 프리펩으로 기능 이관3
+	// void render_FadeEvent();
 
 	void SortShadowMapObject();
 	void render_shadowmap();

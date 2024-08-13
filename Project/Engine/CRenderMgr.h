@@ -53,19 +53,20 @@ struct tVignetteInfo
 	float fMaxAlpha;
 };
 
-enum class FADE_TYPE
-{
-	FADE_IN,
-	FADE_OUT,
-	FADE_STAY,
-};
+// Fade Script& 프리펩으로 기능 이관1
+// enum class FADE_TYPE
+//{
+//	FADE_IN,
+//	FADE_OUT,
+//	FADE_STAY,
+// };
 
-struct tFadeEvent
-{
-	FADE_TYPE Type;
-	float	  AccTime;
-	float	  Duration;
-};
+// struct tFadeEvent
+//{
+//	FADE_TYPE Type;
+//	float	  AccTime;
+//	float	  Duration;
+// };
 
 class CRenderMgr : public CManager<CRenderMgr>
 {
@@ -271,16 +272,17 @@ private:
 		{
 		}
 	}
-	list<tFadeEvent> m_FadeEventList;
+	// Fade Script& 프리펩으로 기능 이관2
+	// list<tFadeEvent> m_FadeEventList;
 
 public:
-	void PushFadeEvent(FADE_TYPE _Type, float _Duration)
-	{
-		tFadeEvent Event = {};
-		Event.Type		 = _Type;
-		Event.Duration	 = _Duration;
-		m_FadeEventList.push_back(Event);
-	}
+	// void PushFadeEvent(FADE_TYPE _Type, float _Duration)
+	//{
+	//	tFadeEvent Event = {};
+	//	Event.Type		 = _Type;
+	//	Event.Duration	 = _Duration;
+	//	m_FadeEventList.push_back(Event);
+	// }
 
 	void PushCAEvent(CA_TYPE _TYPE)
 	{
