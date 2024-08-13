@@ -34,7 +34,7 @@ bool CPhysXMgr::PerformRaycast(Vec3 _OriginPos, Vec3 _Dir, tRoRHitInfo& _HitInfo
 	// 시작지점출력
 	if (0 != (_DebugFlagMask & RayCastDebugFlag::StartPointVisible))
 	{
-		GamePlayStatic::DrawDebugSphere(_OriginPos, 50.f, Vec4(1.f, 0.8f, 0.f, 1.f), false, _LAYER);
+		GamePlayStatic::DrawDebugSphere(_OriginPos, 50.f, Vec4(1.f, 0.8f, 0.f, 1.f), true, _LAYER);
 	}
 
 	if (true == status)
@@ -54,11 +54,11 @@ bool CPhysXMgr::PerformRaycast(Vec3 _OriginPos, Vec3 _Dir, tRoRHitInfo& _HitInfo
 		// 예: 충돌 지점 출력
 		if (0 != (_DebugFlagMask & RayCastDebugFlag::RayLineVisible))
 		{
-			GamePlayStatic::DrawDebugCylinder(_OriginPos, _HitInfo.vHitPos, 5.f, Vec3(0.f, .8f, 0.f), false, _LAYER);
+			GamePlayStatic::DrawDebugCylinder(_OriginPos, _HitInfo.vHitPos, 5.f, Vec3(0.f, .8f, 0.f), true, _LAYER);
 		}
 		if (0 != (_DebugFlagMask & RayCastDebugFlag::EndPointVisible))
 		{
-			GamePlayStatic::DrawDebugSphere(_HitInfo.vHitPos, 50.f, Vec4(0.f, 0.8f, 0.f, 1.f), false, _LAYER);
+			GamePlayStatic::DrawDebugSphere(_HitInfo.vHitPos, 50.f, Vec4(0.f, 0.8f, 0.f, 1.f), true, _LAYER);
 		}
 		return true;
 	}
@@ -66,7 +66,7 @@ bool CPhysXMgr::PerformRaycast(Vec3 _OriginPos, Vec3 _Dir, tRoRHitInfo& _HitInfo
 	{
 		if (0 != (_DebugFlagMask & RayCastDebugFlag::RayLineVisible))
 		{
-			GamePlayStatic::DrawDebugCylinder(_OriginPos, _OriginPos + _Dir * 1000.f, 5.f, Vec3(0.f, .8f, 0.f), false,
+			GamePlayStatic::DrawDebugCylinder(_OriginPos, _OriginPos + _Dir * 1000.f, 5.f, Vec3(0.f, .8f, 0.f), true,
 											  _LAYER);
 		}
 		return false;

@@ -21,6 +21,7 @@ CBossLV::CBossLV()
 	, m_EndingInTime(0.5f)
 	, m_EndingDelayTime(1.f)
 	, m_EndingOutTime(0.5f)
+	, m_EndingCutInTime(10.f)
 	, m_Acctime(0.f)
 	, m_BGM{}
 	, m_SFX{}
@@ -46,14 +47,15 @@ CBossLV::CBossLV(const CBossLV& _Origin)
 	: CGameMode(_Origin.GetScriptType())
 	, m_Player(nullptr)
 	, m_HUD(nullptr)
-	, m_OpeningInTime(0.5f)
-	, m_OpeningDelayTime(1.f)
-	, m_OpeningOutTime(0.5f)
-	, m_PlayingInTime(3.f)
-	, m_PlayingDelayTime(0.5f)
-	, m_EndingInTime(0.5f)
-	, m_EndingDelayTime(1.f)
-	, m_EndingOutTime(0.5f)
+	, m_OpeningInTime(_Origin.m_OpeningInTime)
+	, m_OpeningDelayTime(_Origin.m_OpeningDelayTime)
+	, m_OpeningOutTime(_Origin.m_OpeningOutTime)
+	, m_PlayingInTime(_Origin.m_PlayingInTime)
+	, m_PlayingDelayTime(_Origin.m_PlayingDelayTime)
+	, m_EndingInTime(_Origin.m_EndingInTime)
+	, m_EndingDelayTime(_Origin.m_EndingDelayTime)
+	, m_EndingOutTime(_Origin.m_EndingOutTime)
+	, m_EndingCutInTime(_Origin.m_EndingCutInTime)
 	, m_Acctime(0.f)
 	, m_BGM{}
 	, m_SFX{}
@@ -107,7 +109,10 @@ void CBossLV::LoadSoundAsset()
 	pSound							 = CAssetMgr::GetInst()->Load<CSound>(SNDUI_Alarm);
 	m_SFX[(UINT)BossLV_SFX::WARNING] = pSound;
 
-	pSound							 = CAssetMgr::GetInst()->Load<CSound>(SNDUI_Victory_ST_01);
+	pSound								 = CAssetMgr::GetInst()->Load<CSound>(SNDUI_Victory_ST_01);
+	m_SFX[(UINT)BossLV_SFX::VICTORY_BGM] = pSound;
+
+	pSound							 = CAssetMgr::GetInst()->Load<CSound>(SNDAzusa_Tactic_Victory_1);
 	m_SFX[(UINT)BossLV_SFX::VICTORY] = pSound;
 }
 
@@ -120,7 +125,7 @@ void CBossLV::begin()
 	m_Player->GetScript<CPlayerScript>()->SetPlayable(false);
 
 	m_HUD = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"HUD");
-	m_HUD->Transform()->SetRelativeScale(Vec3(1.f, 0.f, 1.f));
+	m_HUD->Transform()->SetRelativePos(Vec3(0.f, 20000.f, 100.f));
 
 	m_Kaiten = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Kaiten");
 }
@@ -242,7 +247,7 @@ void CBossLV::PlayingBegin()
 {
 	m_Player->GetScript<CPlayerScript>()->SetPlayable(true);
 	m_BGM[(UINT)BossLV_BGM::KAITEN_SCREW]->Play(0.f, 1.f);
-	m_HUD->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
+	m_HUD->Transform()->SetRelativePos(Vec3(0.f, 0.f, 100.f));
 }
 
 int CBossLV::PlayingUpdate()
@@ -271,7 +276,6 @@ void CBossLV::PlayingOutEnd()
 
 void CBossLV::EndingInBegin()
 {
-	m_SFX[(UINT)BossLV_SFX::VICTORY]->Play(1.f, 1.f);
 }
 
 int CBossLV::EndingInUpdate()
@@ -288,6 +292,7 @@ int CBossLV::EndingInUpdate()
 
 void CBossLV::EndingInEnd()
 {
+	m_SFX[(UINT)BossLV_SFX::VICTORY_BGM]->Play(1.f, 1.f);
 	m_Acctime = 0.f;
 }
 
@@ -314,6 +319,7 @@ void CBossLV::EndingDelayEnd()
 
 void CBossLV::EndingOutBegin()
 {
+	m_SFX[(UINT)BossLV_SFX::VICTORY]->Play(1.f, 1.f);
 }
 
 int CBossLV::EndingOutUpdate()
@@ -330,12 +336,13 @@ int CBossLV::EndingOutUpdate()
 
 void CBossLV::EndingOutEnd()
 {
-	m_BGM[(UINT)BossLV_BGM::PARTY_TIME]->Play(1.f, 1.f, true);
 	m_Acctime = 0.f;
 }
 
 void CBossLV::EndingCutInBegin()
 {
+	m_BGM[(UINT)BossLV_BGM::PARTY_TIME]->Play(1.f, 1.f);
+
 	Vec3 vPos = m_Kaiten->Transform()->GetWorldPos();
 	Vec3 vDir = m_Kaiten->Transform()->GetWorldDir(DIR_TYPE::FRONT);
 
@@ -348,6 +355,13 @@ void CBossLV::EndingCutInBegin()
 
 int CBossLV::EndingCutInUpdate()
 {
+	m_Acctime += DT;
+
+	if (m_Acctime >= m_EndingCutInTime)
+	{
+		GamePlayStatic::ChangeLevel(CLevelMgr::GetInst()->LevelLoadFunc(LEVELSelectMenu), LEVEL_STATE::PLAY);
+	}
+
 	return m_FSM->GetCurState();
 }
 

@@ -208,6 +208,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CDigitUI.h" />
     <ClInclude Include="CDialog.h" />
     <ClInclude Include="CDirectionalLight.h" />
+    <ClInclude Include="CDroidAR.h" />
     <ClInclude Include="CEditorCameraMoveScript.h" />
     <ClInclude Include="CEventListener.h" />
     <ClInclude Include="CFadeUIScript.h">
@@ -229,6 +230,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CMonsterHP.h" />
     <ClInclude Include="CMonsterScript.h" />
     <ClInclude Include="CMuzzleFlashScript.h" />
+    <ClInclude Include="CMuzzleFlash_DroidAR.h" />
     <ClInclude Include="CObjectGrayMaskScript.h" />
     <ClInclude Include="CPanelUIScript.h" />
     <ClInclude Include="CParticleSpawnScript.h" />
@@ -242,6 +244,7 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CProgressBar.h" />
     <ClInclude Include="CProjectileScript.h" />
     <ClInclude Include="CSBSmokeScript.h" />
+    <ClInclude Include="CShootingSystem_DroidAR.h" />
     <ClInclude Include="CSmokeScript.h" />
     <ClInclude Include="CSpawnPhysX.h" />
     <ClInclude Include="CStartLightTex.h" />
@@ -260,9 +263,17 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CTextUI.h" />
     <ClInclude Include="CTimeMgrScript.h" />
     <ClInclude Include="CTitle.h" />
+    <ClInclude Include="CTurret.h" />
+    <ClInclude Include="CTurretBulletLine.h" />
+    <ClInclude Include="CTurretShootingSystem.h" />
+    <ClInclude Include="CTutOpeningTex.h" />
     <ClInclude Include="CTutorialEndingEvent.h" />
     <ClInclude Include="CTutorialGameMode.h" />
     <ClInclude Include="CTutorialTarget.h" />
+    <ClInclude Include="CTutStartLightTex.h" />
+    <ClInclude Include="CTutStartTex.h" />
+    <ClInclude Include="CTutVictoryBG.h" />
+    <ClInclude Include="CTutVictoryTex.h" />
     <ClInclude Include="CVictoryBG.h" />
     <ClInclude Include="CVictoryTex.h" />
     <ClInclude Include="CVideoPlayer.h" />
@@ -324,6 +335,8 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CDigitUI.cpp" />
     <ClCompile Include="CDialog.cpp" />
     <ClCompile Include="CDirectionalLight.cpp" />
+    <ClCompile Include="CDroidAR.cpp" />
+    <ClCompile Include="CDroidAR_State.cpp" />
     <ClCompile Include="CEditorCameraMoveScript.cpp" />
     <ClCompile Include="CEventListener.cpp" />
     <ClCompile Include="CFadeUIScript.cpp">
@@ -344,6 +357,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CMonsterHP.cpp" />
     <ClCompile Include="CMonsterScript.cpp" />
     <ClCompile Include="CMuzzleFlashScript.cpp" />
+    <ClCompile Include="CMuzzleFlash_DroidAR.cpp" />
     <ClCompile Include="CObjectGrayMaskScript.cpp" />
     <ClCompile Include="CPanelUIScript.cpp" />
     <ClCompile Include="CParticleSpawnScript.cpp" />
@@ -358,6 +372,7 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CProgressBar.cpp" />
     <ClCompile Include="CProjectileScript.cpp" />
     <ClCompile Include="CSBSmokeScript.cpp" />
+    <ClCompile Include="CShootingSystem_DroidAR.cpp" />
     <ClCompile Include="CSmokeScript.cpp" />
     <ClCompile Include="CSpawnPhysX.cpp" />
     <ClCompile Include="CStartLightTex.cpp" />
@@ -376,9 +391,18 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CTextUI.cpp" />
     <ClCompile Include="CTimeMgrScript.cpp" />
     <ClCompile Include="CTitle.cpp" />
+    <ClCompile Include="CTurret.cpp" />
+    <ClCompile Include="CTurretBulletLine.cpp" />
+    <ClCompile Include="CTurretScript_State.cpp" />
+    <ClCompile Include="CTurretShootingSystem.cpp" />
+    <ClCompile Include="CTutOpeningTex.cpp" />
     <ClCompile Include="CTutorialEndingEvent.cpp" />
     <ClCompile Include="CTutorialGameMode.cpp" />
     <ClCompile Include="CTutorialTarget.cpp" />
+    <ClCompile Include="CTutStartLightTex.cpp" />
+    <ClCompile Include="CTutStartTex.cpp" />
+    <ClCompile Include="CTutVictoryBG.cpp" />
+    <ClCompile Include="CTutVictoryTex.cpp" />
     <ClCompile Include="CVictoryBG.cpp" />
     <ClCompile Include="CVictoryTex.cpp" />
     <ClCompile Include="CVideoPlayer.cpp" />

@@ -424,7 +424,9 @@ int CBossScript::VitalDeathUpdate()
 	if (idx == Animator3D()->GetCurClipLength() - 2)
 	{
 		Animator3D()->Pause(true);
-		m_GameMode->m_FSM->SetCurState((int)BossLV_STATE::EndingIn);
+
+		if (nullptr != m_GameMode)
+			m_GameMode->m_FSM->SetCurState((int)BossLV_STATE::EndingIn);
 	}
 
 	m_vecSound[(UINT)BOSS_SOUND::DEATHBOOM2]->Play(1.f, 1.f);
@@ -512,7 +514,9 @@ int CBossScript::VitalGroggyDeathUpdate()
 	if (idx == Animator3D()->GetCurClipLength() - 2)
 	{
 		Animator3D()->Pause(true);
-		m_GameMode->m_FSM->SetCurState((int)BossLV_STATE::EndingIn);
+
+		if (nullptr != m_GameMode)
+			m_GameMode->m_FSM->SetCurState((int)BossLV_STATE::EndingIn);
 	}
 
 	m_vecSound[(UINT)BOSS_SOUND::DEATHBOOM2]->Play(1.f, 1.f);

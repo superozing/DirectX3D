@@ -94,7 +94,17 @@
 #include "CWarningTex.h"
 #include "CWarningUpDeco.h"
 #include "CBossGroggy.h"
-#include "CFadeUIScript.h"
+#include "CShootingSystem_DroidAR.h"
+#include "CTurretShootingSystem.h"
+#include "CDroidAR.h"
+#include "CMuzzleFlash_DroidAR.h"
+#include "CTurret.h"
+#include "CTurretBulletLine.h"
+#include "CTutStartTex.h"
+#include "CTutStartLightTex.h"
+#include "CTutOpeningTex.h"
+#include "CTutVictoryBG.h"
+#include "CTutVictoryTex.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -191,7 +201,17 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CWarningTex");
 	_vec.push_back(L"CWarningUpDeco");
 	_vec.push_back(L"CBossGroggy");
-	_vec.push_back(L"CFadeUIScript");
+	_vec.push_back(L"CShootingSystem_DroidAR");
+	_vec.push_back(L"CTurretShootingSystem");
+	_vec.push_back(L"CDroidAR");
+	_vec.push_back(L"CMuzzleFlash_DroidAR");
+	_vec.push_back(L"CTurret");
+	_vec.push_back(L"CTurretBulletLine");
+	_vec.push_back(L"CTutStartTex");
+	_vec.push_back(L"CTutStartLightTex");
+	_vec.push_back(L"CTutOpeningTex");
+	_vec.push_back(L"CTutVictoryBG");
+	_vec.push_back(L"CTutVictoryTex");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -382,8 +402,28 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CWarningUpDeco;
 	if (L"CBossGroggy" == _strScriptName)
 		return new CBossGroggy;
-	if (L"CFadeUIScript" == _strScriptName)
-		return new CFadeUIScript;
+	if (L"CShootingSystem_DroidAR" == _strScriptName)
+		return new CShootingSystem_DroidAR;
+	if (L"CTurretShootingSystem" == _strScriptName)
+		return new CTurretShootingSystem;
+	if (L"CDroidAR" == _strScriptName)
+		return new CDroidAR;
+	if (L"CMuzzleFlash_DroidAR" == _strScriptName)
+		return new CMuzzleFlash_DroidAR;
+	if (L"CTurret" == _strScriptName)
+		return new CTurret;
+	if (L"CTurretBulletLine" == _strScriptName)
+		return new CTurretBulletLine;
+	if (L"CTutStartTex" == _strScriptName)
+		return new CTutStartTex;
+	if (L"CTutStartLightTex" == _strScriptName)
+		return new CTutStartLightTex;
+	if (L"CTutOpeningTex" == _strScriptName)
+		return new CTutOpeningTex;
+	if (L"CTutVictoryBG" == _strScriptName)
+		return new CTutVictoryBG;
+	if (L"CTutVictoryTex" == _strScriptName)
+		return new CTutVictoryTex;
 	return nullptr;
 }
 
@@ -670,8 +710,38 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::BOSSGROGGY:
 		return new CBossGroggy;
 		break;
-	case (UINT)SCRIPT_TYPE::FADEUISCRIPT:
-		return new CFadeUIScript;
+	case (UINT)SCRIPT_TYPE::SHOOTINGSYSTEM_DROIDAR:
+		return new CShootingSystem_DroidAR;
+		break;
+	case (UINT)SCRIPT_TYPE::TURRETSHOOTINGSYSTEM:
+		return new CTurretShootingSystem;
+		break;
+	case (UINT)SCRIPT_TYPE::DROIDAR:
+		return new CDroidAR;
+		break;
+	case (UINT)SCRIPT_TYPE::MUZZLEFLASH_DROIDAR:
+		return new CMuzzleFlash_DroidAR;
+		break;
+	case (UINT)SCRIPT_TYPE::TURRET:
+		return new CTurret;
+		break;
+	case (UINT)SCRIPT_TYPE::TURRETBULLETLINE:
+		return new CTurretBulletLine;
+		break;
+	case (UINT)SCRIPT_TYPE::TUTSTARTTEX:
+		return new CTutStartTex;
+		break;
+	case (UINT)SCRIPT_TYPE::TUTSTARTLIGHTTEX:
+		return new CTutStartLightTex;
+		break;
+	case (UINT)SCRIPT_TYPE::TUTOPENINGTEX:
+		return new CTutOpeningTex;
+		break;
+	case (UINT)SCRIPT_TYPE::TUTVICTORYBG:
+		return new CTutVictoryBG;
+		break;
+	case (UINT)SCRIPT_TYPE::TUTVICTORYTEX:
+		return new CTutVictoryTex;
 		break;
 	}
 	return nullptr;
@@ -1053,8 +1123,48 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CBossGroggy";
 		break;
 
-	case SCRIPT_TYPE::FADEUISCRIPT:
-		return L"CFadeUIScript";
+	case SCRIPT_TYPE::SHOOTINGSYSTEM_DROIDAR:
+		return L"CShootingSystem_DroidAR";
+		break;
+
+	case SCRIPT_TYPE::TURRETSHOOTINGSYSTEM:
+		return L"CTurretShootingSystem";
+		break;
+
+	case SCRIPT_TYPE::DROIDAR:
+		return L"CDroidAR";
+		break;
+
+	case SCRIPT_TYPE::MUZZLEFLASH_DROIDAR:
+		return L"CMuzzleFlash_DroidAR";
+		break;
+
+	case SCRIPT_TYPE::TURRET:
+		return L"CTurret";
+		break;
+
+	case SCRIPT_TYPE::TURRETBULLETLINE:
+		return L"CTurretBulletLine";
+		break;
+
+	case SCRIPT_TYPE::TUTSTARTTEX:
+		return L"CTutStartTex";
+		break;
+
+	case SCRIPT_TYPE::TUTSTARTLIGHTTEX:
+		return L"CTutStartLightTex";
+		break;
+
+	case SCRIPT_TYPE::TUTOPENINGTEX:
+		return L"CTutOpeningTex";
+		break;
+
+	case SCRIPT_TYPE::TUTVICTORYBG:
+		return L"CTutVictoryBG";
+		break;
+
+	case SCRIPT_TYPE::TUTVICTORYTEX:
+		return L"CTutVictoryTex";
 		break;
 
 	}

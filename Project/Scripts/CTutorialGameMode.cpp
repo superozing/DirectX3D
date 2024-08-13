@@ -12,6 +12,9 @@
 #include "CArona.h"
 #include "CFinishBalloon.h"
 
+#include "CHUD.h"
+#include "CCrosshair.h"
+
 static string state = "";
 
 CTutorialGameMode::CTutorialGameMode()
@@ -19,10 +22,19 @@ CTutorialGameMode::CTutorialGameMode()
 	, m_fStopTimeLength(0.5f)
 	, m_fTargetDistance(3000.f)
 	, m_iDashCnt(1)
+	, m_OpeningInTime(0.5f)
+	, m_OpeningDelayTime(1.f)
+	, m_OpeningOutTime(0.5f)
+	, m_EndingInTime(0.5f)
+	, m_EndingDelayTime(1.f)
+	, m_EndingOutTime(0.5f)
+	, m_EndingCutInTime(3.f)
 {
 	m_FSM = new CRoRStateMachine<CTutorialGameMode>(this, (UINT)TutorialState::END);
 
-	FSMInit(TutorialState, CTutorialGameMode, First);
+	FSMInit(TutorialState, CTutorialGameMode, OpeningIn);
+	FSMInit(TutorialState, CTutorialGameMode, OpeningDelay);
+	FSMInit(TutorialState, CTutorialGameMode, OpeningOut);
 	FSMInit(TutorialState, CTutorialGameMode, BasicMove);
 	FSMInit(TutorialState, CTutorialGameMode, DashWait);
 	FSMInit(TutorialState, CTutorialGameMode, Dash);
@@ -35,7 +47,10 @@ CTutorialGameMode::CTutorialGameMode()
 	FSMInit(TutorialState, CTutorialGameMode, CoverLowWait);
 	FSMInit(TutorialState, CTutorialGameMode, CoverLow);
 	FSMInit(TutorialState, CTutorialGameMode, EndingWait);
-	FSMInit(TutorialState, CTutorialGameMode, Ending);
+	FSMInit(TutorialState, CTutorialGameMode, EndingIn);
+	FSMInit(TutorialState, CTutorialGameMode, EndingDelay);
+	FSMInit(TutorialState, CTutorialGameMode, EndingOut);
+	FSMInit(TutorialState, CTutorialGameMode, EndingCutIn);
 
 	AppendScriptParam("State", SCRIPT_PARAM::STRING, &state, 0.f, 0.f, true);
 
@@ -75,16 +90,65 @@ CTutorialGameMode::~CTutorialGameMode()
 		delete m_FSM;
 }
 
-void CTutorialGameMode::FirstBegin()
+void CTutorialGameMode::OpeningInBegin()
 {
 }
 
-int CTutorialGameMode::FirstUpdate()
+int CTutorialGameMode::OpeningInUpdate()
 {
-	return (int)TutorialState::BasicMove;
+	m_Acctime += DT;
+
+	if (m_Acctime >= m_OpeningInTime)
+	{
+		return (int)TutorialState::OpeningDelay;
+	}
+
+	return m_FSM->GetCurState();
 }
 
-void CTutorialGameMode::FirstEnd()
+void CTutorialGameMode::OpeningInEnd()
+{
+	m_Acctime = 0.f;
+}
+
+void CTutorialGameMode::OpeningDelayBegin()
+{
+}
+
+int CTutorialGameMode::OpeningDelayUpdate()
+{
+	m_Acctime += DT;
+
+	if (m_Acctime >= m_OpeningDelayTime)
+	{
+		return (int)TutorialState::OpeningOut;
+	}
+
+	return m_FSM->GetCurState();
+}
+
+void CTutorialGameMode::OpeningDelayEnd()
+{
+	m_Acctime = 0.f;
+}
+
+void CTutorialGameMode::OpeningOutBegin()
+{
+}
+
+int CTutorialGameMode::OpeningOutUpdate()
+{
+	m_Acctime += DT;
+
+	if (m_Acctime >= m_OpeningDelayTime)
+	{
+		return (int)TutorialState::BasicMove;
+	}
+
+	return m_FSM->GetCurState();
+}
+
+void CTutorialGameMode::OpeningOutEnd()
 {
 }
 
@@ -115,9 +179,19 @@ void CTutorialGameMode::begin()
 		pLevel->FindObjectByName(L"COVER JUMP EVENT")->GetScript<CEventListener>();
 	m_pEvents[(UINT)TutorialEvents::CoverLow] =
 		pLevel->FindObjectByName(L"COVER LOW EVENT")->GetScript<CEventListener>();
+	m_pEvents[(UINT)TutorialEvents::Ending] =
+		pLevel->FindObjectByName(L"COVER CLEAR EVENT")->GetScript<CEventListener>();
 
 	m_pArona = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(AronaName)->GetScript<CArona>();
 	m_pWall	 = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"WALL_SHOOT");
+	m_pHUD	 = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"HUD")->GetScript<CHUD>();
+
+	for (int i = 0; i < 4; i++)
+	{
+		wstring name   = L"Enemy" + to_wstring(i + 1);
+		auto	pEnemy = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(name);
+		m_vecCoverMonsters.push_back(pEnemy);
+	}
 
 	// TutorialGameModeSound init
 	m_vecTutorialGameModeSound.resize((UINT)TutorialGameModeSoundType::END);
@@ -134,6 +208,7 @@ void CTutorialGameMode::begin()
 
 	m_FSM->Begin();
 	CKeyMgr::GetInst()->RoRShowCursor(false);
+	m_FSM->SetCurState((int)TutorialState::EndingWait);
 }
 
 void CTutorialGameMode::tick()
@@ -237,7 +312,7 @@ void CTutorialGameMode::DashWaitEnd()
 
 void CTutorialGameMode::DashBegin()
 {
-	m_pArona->Message("Press Space to Dash And JumpUp The Rayzer", 480, -1.f);
+	m_pArona->Message("Press Space to Dash And JumpUp The Rayzer", 750, -1.f);
 }
 
 int CTutorialGameMode::DashUpdate()
@@ -346,20 +421,22 @@ void CTutorialGameMode::CoverHighWaitEnd()
 
 void CTutorialGameMode::CoverHighBegin()
 {
-	m_pArona->Message("Terminate Enemy", 350.f);
+	m_pArona->Message("Go to the Cover And Press LShift to Cover", 680.f);
 }
 
 int CTutorialGameMode::CoverHighUpdate()
 {
-	if (IsClear(TutorialEvents::CoverHigh))
+	if (m_vecCoverMonsters[0]->IsDead() && m_vecCoverMonsters[1]->IsDead())
 	{
-		return m_FSM->GetCurState() + 1;
+		return (int)TutorialState::CoverJumpWait;
 	}
+
 	return m_FSM->GetCurState();
 }
 
 void CTutorialGameMode::CoverHighEnd()
 {
+	Clear(TutorialEvents::CoverHigh);
 }
 
 void CTutorialGameMode::CoverJumpWaitBegin()
@@ -368,6 +445,11 @@ void CTutorialGameMode::CoverJumpWaitBegin()
 
 int CTutorialGameMode::CoverJumpWaitUpdate()
 {
+	if (m_pEvents[(UINT)TutorialEvents::CoverJump]->HasTargets())
+	{
+		GamePlayStatic::DestroyGameObject(m_pEvents[(UINT)TutorialEvents::CoverJump]->GetOwner());
+		return (int)TutorialState::CoverJump;
+	}
 	return m_FSM->GetCurState();
 }
 
@@ -377,19 +459,21 @@ void CTutorialGameMode::CoverJumpWaitEnd()
 
 void CTutorialGameMode::CoverJumpBegin()
 {
+	m_pArona->Message("Go to Cover And Press Space to Jump", 650.f);
 }
 
 int CTutorialGameMode::CoverJumpUpdate()
 {
 	if (IsClear(TutorialEvents::CoverJump))
 	{
-		return m_FSM->GetCurState() + 1;
+		return (int)TutorialState::CoverJumpWait;
 	}
 	return m_FSM->GetCurState();
 }
 
 void CTutorialGameMode::CoverJumpEnd()
 {
+	Clear(TutorialEvents::CoverJump);
 }
 
 void CTutorialGameMode::CoverLowWaitBegin()
@@ -398,6 +482,11 @@ void CTutorialGameMode::CoverLowWaitBegin()
 
 int CTutorialGameMode::CoverLowWaitUpdate()
 {
+	if (m_pEvents[(UINT)TutorialEvents::CoverLow]->HasTargets())
+	{
+		GamePlayStatic::DestroyGameObject(m_pEvents[(UINT)TutorialEvents::CoverLow]->GetOwner());
+		return (int)TutorialState::CoverLow;
+	}
 	return m_FSM->GetCurState();
 }
 
@@ -407,51 +496,130 @@ void CTutorialGameMode::CoverLowWaitEnd()
 
 void CTutorialGameMode::CoverLowBegin()
 {
+	m_pArona->Message("Terminate Enemy", 350.f);
 }
 
 int CTutorialGameMode::CoverLowUpdate()
 {
-	if (IsClear(TutorialEvents::CoverJump))
-	{
-		return m_FSM->GetCurState() + 1;
-	}
 	return m_FSM->GetCurState();
 }
 
 void CTutorialGameMode::CoverLowEnd()
 {
-	m_pFinishBalloon->Up();
+	Clear(TutorialEvents::CoverLow);
 }
 
 void CTutorialGameMode::EndingWaitBegin()
 {
+	m_pFinishBalloon->Up();
 }
 
 int CTutorialGameMode::EndingWaitUpdate()
 {
+	if (m_pEvents[(UINT)TutorialEvents::Ending]->HasTargets())
+	{
+		GamePlayStatic::DestroyGameObject(m_pEvents[(UINT)TutorialEvents::Ending]->GetOwner());
+		return (int)TutorialState::EndingIn;
+	}
 	return m_FSM->GetCurState();
 }
 
 void CTutorialGameMode::EndingWaitEnd()
 {
+	m_pArona->Message("All Complete! You Finish!!!", 450.f);
 }
 
-void CTutorialGameMode::EndingBegin()
+void CTutorialGameMode::EndingInBegin()
 {
+	m_Acctime = 0.f;
 }
 
-int CTutorialGameMode::EndingUpdate()
+int CTutorialGameMode::EndingInUpdate()
 {
-	if (IsClear(TutorialEvents::Ending))
+	m_Acctime += DT;
+
+	if (m_Acctime >= m_EndingInTime)
 	{
-		return m_FSM->GetCurState() + 1;
+		return (int)TutorialState::EndingDelay;
+	}
+
+	return m_FSM->GetCurState();
+}
+
+void CTutorialGameMode::EndingInEnd()
+{
+}
+
+void CTutorialGameMode::EndingDelayBegin()
+{
+	m_Acctime = 0.f;
+}
+
+int CTutorialGameMode::EndingDelayUpdate()
+{
+	m_Acctime += DT;
+
+	if (m_Acctime >= m_EndingDelayTime)
+	{
+		return (int)TutorialState::EndingOut;
+	}
+
+	return m_FSM->GetCurState();
+}
+
+void CTutorialGameMode::EndingDelayEnd()
+{
+}
+
+void CTutorialGameMode::EndingOutBegin()
+{
+	m_Acctime = 0.f;
+}
+
+int CTutorialGameMode::EndingOutUpdate()
+{
+	m_Acctime += DT;
+
+	if (m_Acctime >= m_EndingOutTime)
+	{
+		return (int)TutorialState::EndingCutIn;
 	}
 	return m_FSM->GetCurState();
 }
 
-void CTutorialGameMode::EndingEnd()
+void CTutorialGameMode::EndingOutEnd()
 {
-	GamePlayStatic::ChangeLevel(CLevelMgr::GetInst()->LevelLoadFunc(LEVELTitle), LEVEL_STATE::PLAY);
+}
+void CTutorialGameMode::EndingCutInBegin()
+{
+	Vec3 vPos		= m_pFinishBalloon->Transform()->GetWorldPos();
+	Vec3 vDir		= m_pFinishBalloon->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+	Vec3 vPlayerPos = m_pPlayer->Transform()->GetRelativePos();
+
+	Vec3 vNewPos = vPos + (vDir * 1000.f);
+	vNewPos.y	 = vPlayerPos.y;
+
+	m_pPlayer->Transform()->SetRelativePos(vNewPos);
+	m_pPlayer->Transform()->SetDir(-vDir);
+	m_pPlayerScript->GetStateMachine()->SetCurState((int)PLAYER_STATE::VictoryStart);
+
+	m_pHUD->GetHUD<CCrosshair>()->SetCrosshairColor(Vec4(0.f, 0.f, 0.f, 0.f));
+}
+
+int CTutorialGameMode::EndingCutInUpdate()
+{
+	m_Acctime += DT;
+
+	if (m_Acctime >= m_EndingCutInTime)
+	{
+		GamePlayStatic::ChangeLevel(CLevelMgr::GetInst()->LevelLoadFunc(LEVELBoss), LEVEL_STATE::PLAY);
+	}
+
+	return m_FSM->GetCurState();
+}
+
+void CTutorialGameMode::EndingCutInEnd()
+{
 }
 
 void CTutorialGameMode::Clear(TutorialEvents _state)

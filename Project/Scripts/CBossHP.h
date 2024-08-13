@@ -4,9 +4,8 @@
 class CBossHP : public CProgressBar
 {
 private:
-
 	class CBossScript* m_pBossScript;
-	
+
 	// 초상화
 	CImageUIScript* m_pPortrait;
 
@@ -28,6 +27,8 @@ private:
 	tFontInfo m_BossNameFont;
 	tFontInfo m_LineCountFont;
 
+	class CBossLV* m_GameMode;
+	class CTextUI* m_BossHPText;
 
 public:
 	virtual void begin() override;
@@ -39,10 +40,11 @@ public:
 	virtual void LoadFromFile(ifstream& fin) override;
 
 public:
-
 	void SetBossScript(CBossScript* _pBossScript) { m_pBossScript = _pBossScript; }
 
-	void SetMaxHP(int _MaxHP) { CProgressBar::SetMaxValue(RoRMath::ClampInt(_MaxHP, 0));
+	void SetMaxHP(int _MaxHP)
+	{
+		CProgressBar::SetMaxValue(RoRMath::ClampInt(_MaxHP, 0));
 		m_CurLerpHP = _MaxHP;
 	}
 	void SetLineHP(int _LineHP);

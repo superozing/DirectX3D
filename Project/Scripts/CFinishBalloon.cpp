@@ -22,7 +22,7 @@ void CFinishBalloon::Up()
 {
 	m_bUp		   = true;
 	m_fAccTime	   = 0.f;
-	m_fWaveAccTime = 0.f;
+	m_fWaveAccTime = m_fWaveTime;
 	Vec3 vPos	   = Transform()->GetRelativePos();
 	vPos.y += m_fUpLength;
 	Transform()->Lerp(vPos, false, Vec3(), false, Vec3(), m_fUpTime);

@@ -20,6 +20,7 @@ public:
 private:
 	void GameStart();
 	void GameStop();
+	void GamePause();
 
 private:
 	void ContentSaveAll();

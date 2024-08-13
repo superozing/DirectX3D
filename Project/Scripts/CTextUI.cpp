@@ -3,6 +3,7 @@
 
 #include <Engine\CFontMgr.h>
 #include <Engine\CDevice.h>
+#include <Engine\CRenderMgr.h>
 
 CTextUI::CTextUI()
 	: CUIScript((UINT)SCRIPT_TYPE::TEXTUI)
@@ -15,7 +16,7 @@ CTextUI::CTextUI()
 
 CTextUI::CTextUI(const CTextUI& _Origin)
 	: CUIScript(_Origin)
-	, m_vColor(Vec4(255.f, 255.f, 255.f, 255.f))
+	, m_vColor(_Origin.m_vColor)
 	, m_bDraw(true)
 	, m_strText(_Origin.m_strText)
 {
@@ -55,7 +56,7 @@ void CTextUI::begin()
 void CTextUI::tick()
 {
 	// UI가 활성화 상태일 경우에만 폰트 등록
-	if (IsDraw())
+	if (IsDraw() && !CRenderMgr::GetInst()->IsEscape())
 	{
 		// 폰트의 색상 설정
 		m_tInfo.Color = FONT_RGBA(m_vColor.x, m_vColor.y, m_vColor.z, m_vColor.w);

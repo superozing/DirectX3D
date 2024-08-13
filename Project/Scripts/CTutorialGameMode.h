@@ -3,7 +3,9 @@
 #include "CPlayerController.h"
 enum class TutorialState
 {
-	First,
+	OpeningIn,
+	OpeningDelay,
+	OpeningOut,
 	BasicMove,
 	DashWait,
 	Dash,
@@ -16,7 +18,10 @@ enum class TutorialState
 	CoverLowWait,
 	CoverLow,
 	EndingWait,
-	Ending,
+	EndingIn,
+	EndingDelay,
+	EndingOut,
+	EndingCutIn,
 	END,
 };
 
@@ -43,6 +48,18 @@ enum class TutorialEvents
 #define SPAWNERCNT 5
 class CTutorialGameMode : public CGameMode<CTutorialGameMode>
 {
+	// Opening
+private:
+	float m_Acctime;
+	float m_OpeningInTime;
+	float m_OpeningDelayTime;
+	float m_OpeningOutTime;
+
+public:
+	float GetOpeningInTime() { return m_OpeningInTime; }
+	float GetAccTime() { return m_Acctime; }
+	float GetOpeningOutTime() { return m_OpeningOutTime; }
+
 	// BasicMoveState
 private:
 	float		  m_fStopTimeLength;
@@ -67,17 +84,26 @@ private:
 
 	// CoverHigh
 private:
-	vector<class CGameObject*> m_vecCoverHighMonsters;
+	vector<class CGameObject*> m_vecCoverMonsters;
 
-	// Finish
+	// Ending
 private:
 	class CFinishBalloon* m_pFinishBalloon;
+	float				  m_EndingInTime;
+	float				  m_EndingDelayTime;
+	float				  m_EndingOutTime;
+	float				  m_EndingCutInTime;
+
+public:
+	float GetEndingInTime() { return m_EndingInTime; }
+	float GetEndingOutTime() { return m_EndingOutTime; }
 
 private:
 	class CArona*		 m_pArona;
 	class CGameObject*	 m_pWall;
 	class CPlayerScript* m_pPlayerScript;
 	class CGameObject*	 m_pPlayer;
+	class CHUD*			 m_pHUD;
 
 	class CEventListener* m_pEvents[(UINT)TutorialEvents::END];
 
@@ -91,6 +117,8 @@ public:
 	void Clear(TutorialEvents _state);
 	bool IsClear(TutorialEvents _state);
 
+	int GetCurState() { return m_FSM->GetCurState(); }
+
 public:
 	virtual void begin() override;
 	virtual void tick() override;
@@ -100,9 +128,18 @@ public:
 	~CTutorialGameMode();
 
 #pragma region FSM
-	void FirstBegin();
-	int	 FirstUpdate();
-	void FirstEnd();
+
+	void OpeningInBegin();
+	int	 OpeningInUpdate();
+	void OpeningInEnd();
+
+	void OpeningDelayBegin();
+	int	 OpeningDelayUpdate();
+	void OpeningDelayEnd();
+
+	void OpeningOutBegin();
+	int	 OpeningOutUpdate();
+	void OpeningOutEnd();
 
 	void BasicMoveBegin();
 	int	 BasicMoveUpdate();
@@ -152,8 +189,20 @@ public:
 	int	 EndingWaitUpdate();
 	void EndingWaitEnd();
 
-	void EndingBegin();
-	int	 EndingUpdate();
-	void EndingEnd();
+	void EndingInBegin();
+	int	 EndingInUpdate();
+	void EndingInEnd();
+
+	void EndingDelayBegin();
+	int	 EndingDelayUpdate();
+	void EndingDelayEnd();
+
+	void EndingOutBegin();
+	int	 EndingOutUpdate();
+	void EndingOutEnd();
+
+	void EndingCutInBegin();
+	int	 EndingCutInUpdate();
+	void EndingCutInEnd();
 #pragma endregion
 };

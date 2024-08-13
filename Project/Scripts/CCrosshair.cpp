@@ -44,18 +44,18 @@ void CCrosshair::tick()
 	MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, nullptr);
 
 	// switch 사용 고려할 필요 있어요.
-	LAYER _layer = m_pShootingSystem->GetMainCamAimLayer();
-	if (_layer == LAYER::LAYER_WALL)
-	{
-		if (m_pPlayerScript->GetCoverType() != CoverType::Normal)
-		{
-			SetCrosshairColor(Vec4(255.f, 0.f, 0.f, 255.f));
-		}
-	}
-	else
-	{
-		SetCrosshairColor(Vec4(255.f, 255.f, 255.f, 255.f));
-	}
+	// LAYER _layer = m_pShootingSystem->GetMainCamAimLayer();
+	// if (_layer == LAYER::LAYER_WALL)
+	//{
+	//	if (m_pPlayerScript->GetCoverType() != CoverType::Normal)
+	//	{
+	//		SetCrosshairColor(Vec4(255.f, 0.f, 0.f, 255.f));
+	//	}
+	//}
+	// else
+	//{
+	//	SetCrosshairColor(Vec4(255.f, 255.f, 255.f, 255.f));
+	//}
 }
 
 #define TagBarThikness "[Bar Thikness]"

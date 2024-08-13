@@ -24,7 +24,7 @@ struct MonsterStatus
 
 class CMonsterScript : public CScript
 {
-private:
+protected:
 	MonsterStatus m_tStatus;
 
 public:
@@ -43,7 +43,10 @@ public:
 	int GetCurHP() const { return m_tStatus.CurHealth; }
 	int GetMaxHP() const { return m_tStatus.MaxHealth; }
 
-	void TakeDamage(int _Dmg);
+	void SetMonsterDamage(float _Dmg) { m_tStatus.Damage = _Dmg; }
+
+	void  TakeDamage(int _Dmg);
+	float GetDamageVal() const { return m_tStatus.Damage; }
 
 	bool IsDeadMonster() const { return m_tStatus.IsDead; }
 
