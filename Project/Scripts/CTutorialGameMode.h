@@ -42,6 +42,7 @@ enum class TutorialEvents
 
 #define SPAWNERCNT 5
 #define TURRETSPAWNCNT 2
+#define DroidARPath "prefab\\Monster\\DroidAR.pref"
 class CTutorialGameMode : public CGameMode<CTutorialGameMode>
 {
 	// BasicMoveState
@@ -69,6 +70,10 @@ private:
 	// CoverHigh
 private:
 	vector<class CGameObject*> m_vecCoverMonsters;
+
+	// CoverLow
+private:
+	vector<class CGameObject*> m_vecCoverLowMonsters;
 
 	// Finish
 private:

@@ -3,6 +3,7 @@
 
 #include <Engine\CLevelMgr.h>
 #include <Engine\CLevel.h>
+#include <Engine\CMemoryPoolMgr.h>
 
 #include "CPlayerScript.h"
 #include "CPlayerController.h"
@@ -12,6 +13,8 @@
 #include "CArona.h"
 #include "CFinishBalloon.h"
 #include "CTurret.h"
+#include "CDroidAR.h"
+#include "CMemoryPoolMgrScript.h"
 
 static string state = "";
 
@@ -145,7 +148,7 @@ void CTutorialGameMode::begin()
 
 	m_FSM->Begin();
 	CKeyMgr::GetInst()->RoRShowCursor(false);
-	m_FSM->SetCurState((int)TutorialState::CoverHighWait);
+	m_FSM->SetCurState((int)TutorialState::CoverLowWait);
 }
 
 void CTutorialGameMode::tick()
@@ -451,10 +454,30 @@ void CTutorialGameMode::CoverLowWaitEnd()
 void CTutorialGameMode::CoverLowBegin()
 {
 	m_pArona->Message("Terminate Enemy", 350.f);
+
+	CGameObject* pObj	  = CAssetMgr::GetInst()->Load<CPrefab>(PREFDroidAR)->Instantiate();
+	int			 LayerIdx = pObj->GetLayerIdx();
+
+	pObj->Transform()->SetRelativePos(Vec3(-28.f, -109.f, 16105.f));
+	pObj->SetName("DroidAR1");
+	GamePlayStatic::SpawnGameObject(pObj, LayerIdx, true);
+
+	m_vecCoverLowMonsters.push_back(pObj);
+
+	pObj = CAssetMgr::GetInst()->Load<CPrefab>(PREFDroidAR)->Instantiate();
+
+	pObj->Transform()->SetRelativePos(Vec3(198.f, -109.f, 17443.f));
+	pObj->SetName("DroidAR2");
+	GamePlayStatic::SpawnGameObject(pObj, LayerIdx, true);
+
+	m_vecCoverLowMonsters.push_back(pObj);
 }
 
 int CTutorialGameMode::CoverLowUpdate()
 {
+	if (m_vecCoverLowMonsters[0]->IsDead() && m_vecCoverLowMonsters[1]->IsDead())
+		return (int)TutorialState::EndingWait;
+
 	return m_FSM->GetCurState();
 }
 
