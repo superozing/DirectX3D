@@ -70,7 +70,7 @@ private:
 
 	bool							m_IsActiveAttack;
 	float							m_AttCooldown;
-	float							m_DeathAfterTimer = 5.f;
+	float							m_DeathAfterTimer = 2.f;
 
 	Vec3							m_LookDirection;
 
