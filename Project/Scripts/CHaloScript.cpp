@@ -22,7 +22,7 @@ CHaloScript::~CHaloScript()
 
 void CHaloScript::begin()
 {
-	if (nullptr == GetOwner()->GetParent() || nullptr == GetOwner()->GetParent()->GetScript<CPlayerScript>())
+	if (nullptr == GetOwner()->GetParent())
 		return;
 
 	m_Parent = GetOwner()->GetParent();

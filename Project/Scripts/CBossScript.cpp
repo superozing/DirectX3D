@@ -127,6 +127,8 @@ void CBossScript::begin()
 {
 	LoadAsset();
 
+	m_BossStatus.CurHP = m_BossStatus.MaxHP;
+
 	m_FSM->Begin();
 	m_FSM->SetCurState((int)BOSS_STATE::NormalIdle);
 
