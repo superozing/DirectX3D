@@ -20,11 +20,13 @@ CButtons::~CButtons()
 {
 }
 
+#include "Engine\CRenderMgr.h"
 void CButtons::Play()
 {
 	m_started  = true;
 	auto sound = CAssetMgr::GetInst()->Load<CSound>(SNDMutsukiNew_Year_Battle_In_1);
 	sound->Play(1, 1.f, true);
+	CRenderMgr::GetInst()->PushFadeEvent(FADE_TYPE::FADE_OUT, 3.f);
 }
 
 void CButtons::Settings()

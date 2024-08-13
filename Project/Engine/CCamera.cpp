@@ -503,6 +503,8 @@ void CCamera::render_postprocess()
 
 	GrayFilter_by_Object();
 
+	render_FadeEvent();
+
 	// for (size_t i = 0; i < m_vecPostProcess.size(); ++i)
 	//{
 	//	// 최종 렌더링 이미지를 후처리 타겟에 복사
@@ -691,7 +693,7 @@ void CCamera::Vignette_Effect()
 		float DurationRatio = (*fVignetteDuration / VignetteDuration);
 		*fVignetteAlpha		= fInitialAlpha * DurationRatio;
 
-		//CLogMgr::GetInst()->AddLog(Log_Level::WARN, std::to_string(*fVignetteAlpha));
+		// CLogMgr::GetInst()->AddLog(Log_Level::WARN, std::to_string(*fVignetteAlpha));
 	}
 	else
 		CRenderMgr::GetInst()->SwitchVignette();
@@ -724,6 +726,56 @@ void CCamera::GrayFilter_by_Object()
 	pGrayMtrl->SetScalarParam(SCALAR_PARAM::BOOL_0, bGrayWieght);
 	pGrayMtrl->UpdateData();
 	CONTEXT->OMSetDepthStencilState(CDevice::GetInst()->GetDSState(DS_TYPE::STENCIL_GRAY_TEST).Get(), 1);
+
+	// 타겟->리소스 복사
+	CRenderMgr::GetInst()->CopyFromTextureToTexture(PPTEX1, RTTEX);
+	pRectMesh->render(0);
+}
+
+void CCamera::render_FadeEvent()
+{
+	auto& EventList = CRenderMgr::GetInst()->m_FadeEventList;
+	if (EventList.empty())
+		return;
+
+	// Type,LifeTime에 따른 알파값주기
+	auto&	  front = EventList.front();
+	float	  alpha = 1.f;
+	FADE_TYPE type	= front.Type;
+	float	  ratio = front.AccTime / front.Duration;
+	if (FADE_TYPE::FADE_IN == type)
+	{
+		alpha = ratio;
+	}
+	else if (FADE_TYPE::FADE_OUT == type)
+	{
+		alpha = 1.f - ratio;
+	}
+
+	// Pop처리
+	front.AccTime += DT;
+	if (front.Duration < front.AccTime)
+	{
+		EventList.pop_front();
+	}
+
+	// 랜더하기
+	if (FADE_TYPE::FADE_STAY == type)
+		return;
+
+	// 리소스,타겟 얻어오기
+	auto PPTEX1 = CAssetMgr::GetInst()->FindAsset<CTexture>(L"PostProcessTex");
+	auto RTTEX	= CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
+
+	// 매쉬,머터리얼 받아오기
+	static Ptr<CMesh>	  pRectMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MESHrect);
+	static Ptr<CMaterial> pGrayMtrl;
+	pGrayMtrl = CAssetMgr::GetInst()->Load<CMaterial>(MTRLFadeMaterial);
+
+	// 텍스쳐, 블랜드비율 바인딩
+	pGrayMtrl->SetTexParam(TEX_PARAM::TEX_0, PPTEX1);
+	pGrayMtrl->SetScalarParam(SCALAR_PARAM::FLOAT_0, alpha);
+	pGrayMtrl->UpdateData();
 
 	// 타겟->리소스 복사
 	CRenderMgr::GetInst()->CopyFromTextureToTexture(PPTEX1, RTTEX);

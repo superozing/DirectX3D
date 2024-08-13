@@ -20,7 +20,7 @@ public:
 	bool		m_started		= false;
 	bool		m_LevelChanged	= false;
 	float		m_acctime		= 0.f;
-	const float m_ThresholdTime = 2.f;
+	const float m_ThresholdTime = 3.f;
 
 	static void (*Setting)();
 

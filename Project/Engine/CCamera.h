@@ -132,6 +132,7 @@ public:
 	void Cromatic_Aberration();
 	void Vignette_Effect();
 	void GrayFilter_by_Object();
+	void render_FadeEvent();
 
 	void SortShadowMapObject();
 	void render_shadowmap();
