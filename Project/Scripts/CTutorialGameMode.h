@@ -41,7 +41,7 @@ enum class TutorialEvents
 };
 
 #define SPAWNERCNT 5
-#define TurretSpawnCNT 2
+#define TURRETSPAWNCNT 2
 class CTutorialGameMode : public CGameMode<CTutorialGameMode>
 {
 	// BasicMoveState
@@ -68,7 +68,7 @@ private:
 
 	// CoverHigh
 private:
-	vector<class CTurret*> m_vecCoverMonsters;
+	vector<class CGameObject*> m_vecCoverMonsters;
 
 	// Finish
 private:

@@ -101,13 +101,6 @@ void CTutorialGameMode::begin()
 		m_arrIsMonsterDestroy[i] = false;
 	}
 
-	for (int j = 0; j < TurretSpawnCNT; ++j)
-	{
-		wstring name = L"TurretSpawner" + to_wstring(j + 1);
-		m_vecTargetSpawners.push_back(pLevel->FindObjectByName(name)->GetScript<CSpawnSpotScript>());
-		m_vecTargetSpawners[SPAWNERCNT + j]->RegisterObject();
-	}
-
 	m_pWall			 = pLevel->FindObjectByName(L"WALL_SHOOT");
 	m_pPlayer		 = pLevel->FindObjectByName(PlayerName);
 	m_pPlayerScript	 = m_pPlayer->GetScript<CPlayerScript>();
@@ -367,15 +360,27 @@ void CTutorialGameMode::CoverHighBegin()
 {
 	m_pArona->Message("Go to the Cover And Press LShift to Cover", 680.f);
 
-	for (size_t i = SPAWNERCNT; i < SPAWNERCNT + TurretSpawnCNT; i++)
-	{
-		m_vecCoverMonsters.push_back(m_vecTargetSpawners[i]->SpawnObject()->GetScript<CTurret>());
-	}
+	CGameObject* pObj	  = CAssetMgr::GetInst()->Load<CPrefab>(PREFTurret)->Instantiate();
+	int			 LayerIdx = pObj->GetLayerIdx();
+
+	pObj->Transform()->SetRelativePos(Vec3(-28.f, -109.f, 12930.f));
+	pObj->SetName("Enemy1");
+	GamePlayStatic::SpawnGameObject(pObj, LayerIdx, true);
+
+	m_vecCoverMonsters.push_back(pObj);
+
+	pObj = CAssetMgr::GetInst()->Load<CPrefab>(PREFTurret)->Instantiate();
+
+	pObj->Transform()->SetRelativePos(Vec3(-28.f, -109.f, 14254.f));
+	pObj->SetName("Enemy2");
+	GamePlayStatic::SpawnGameObject(pObj, LayerIdx, true);
+
+	m_vecCoverMonsters.push_back(pObj);
 }
 
 int CTutorialGameMode::CoverHighUpdate()
 {
-	if (m_vecCoverMonsters[0]->IsDeadMonster() && m_vecCoverMonsters[1]->IsDeadMonster())
+	if (m_vecCoverMonsters[0]->IsDead() && m_vecCoverMonsters[1]->IsDead())
 	{
 		return (int)TutorialState::CoverJumpWait;
 	}
