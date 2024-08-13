@@ -14,6 +14,7 @@
 
 #include "CHUD.h"
 #include "CCrosshair.h"
+#include "CFadeUIScript.h"
 
 static string state = "";
 
@@ -32,6 +33,7 @@ CTutorialGameMode::CTutorialGameMode()
 {
 	m_FSM = new CRoRStateMachine<CTutorialGameMode>(this, (UINT)TutorialState::END);
 
+	FSMInit(TutorialState, CTutorialGameMode, FadeIn);
 	FSMInit(TutorialState, CTutorialGameMode, OpeningIn);
 	FSMInit(TutorialState, CTutorialGameMode, OpeningDelay);
 	FSMInit(TutorialState, CTutorialGameMode, OpeningOut);
@@ -51,6 +53,7 @@ CTutorialGameMode::CTutorialGameMode()
 	FSMInit(TutorialState, CTutorialGameMode, EndingDelay);
 	FSMInit(TutorialState, CTutorialGameMode, EndingOut);
 	FSMInit(TutorialState, CTutorialGameMode, EndingCutIn);
+	FSMInit(TutorialState, CTutorialGameMode, FadeOut);
 
 	AppendScriptParam("State", SCRIPT_PARAM::STRING, &state, 0.f, 0.f, true);
 
@@ -82,6 +85,12 @@ CTutorialGameMode::CTutorialGameMode()
 		string msg = "Target" + to_string(i + 1);
 		AppendScriptParam(msg, SCRIPT_PARAM::BOOL, &m_arrIsMonsterDestroy[i]);
 	}
+
+	// Fade Time
+	AppendSeperateLine();
+	AppendScriptParam("FadeInTime", SCRIPT_PARAM::FLOAT, &m_FadeInTime);
+	AppendSeperateLine();
+	AppendScriptParam("FadeInTime", SCRIPT_PARAM::FLOAT, &m_FadeOutTime);
 }
 
 CTutorialGameMode::~CTutorialGameMode()
@@ -90,8 +99,29 @@ CTutorialGameMode::~CTutorialGameMode()
 		delete m_FSM;
 }
 
+void CTutorialGameMode::FadeInBegin()
+{
+	m_Acctime = 0.f;
+	m_FadeScript->Push_FadeEvent(FADE_TYPE::FADE_IN, m_FadeInTime);
+}
+
+int CTutorialGameMode::FadeInUpdate()
+{
+	m_Acctime += DT;
+	if (m_Acctime >= m_FadeInTime)
+	{
+		return (UINT)TutorialState::OpeningIn;
+	}
+	return (UINT)TutorialState::FadeIn;
+}
+
+void CTutorialGameMode::FadeInEnd()
+{
+}
+
 void CTutorialGameMode::OpeningInBegin()
 {
+	m_Acctime = 0.f;
 }
 
 int CTutorialGameMode::OpeningInUpdate()
@@ -205,6 +235,8 @@ void CTutorialGameMode::begin()
 
 	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::TutorialStart]->Play(1);
 	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::BGM]->Play(0, .4f);
+
+	m_FadeScript = pLevel->FindObjectByName(L"FadeObject")->GetScript<CFadeUIScript>();
 
 	m_FSM->Begin();
 	CKeyMgr::GetInst()->RoRShowCursor(false);
@@ -612,13 +644,33 @@ int CTutorialGameMode::EndingCutInUpdate()
 
 	if (m_Acctime >= m_EndingCutInTime)
 	{
-		GamePlayStatic::ChangeLevel(CLevelMgr::GetInst()->LevelLoadFunc(LEVELBoss), LEVEL_STATE::PLAY);
+		return (UINT)TutorialState::FadeOut;
 	}
 
 	return m_FSM->GetCurState();
 }
 
 void CTutorialGameMode::EndingCutInEnd()
+{
+}
+
+void CTutorialGameMode::FadeOutBegin()
+{
+	m_Acctime = 0.f;
+	m_FadeScript->Push_FadeEvent(FADE_TYPE::FADE_OUT, m_FadeOutTime);
+}
+
+int CTutorialGameMode::FadeOutUpdate()
+{
+	m_Acctime += DT;
+	if (m_Acctime >= m_FadeOutTime)
+	{
+		GamePlayStatic::ChangeLevel(CLevelMgr::GetInst()->LevelLoadFunc(LEVELBoss), LEVEL_STATE::PLAY);
+	}
+	return (UINT)TutorialState::FadeOut;
+}
+
+void CTutorialGameMode::FadeOutEnd()
 {
 }
 

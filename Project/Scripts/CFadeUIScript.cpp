@@ -1,6 +1,14 @@
 ﻿#include "pch.h"
 #include "CFadeUIScript.h"
 
+CFadeUIScript::CFadeUIScript()
+	: CAtlasImageUIScript((UINT)SCRIPT_TYPE::FADEUISCRIPT)
+{
+	AppendScriptParam("FadeDuration", SCRIPT_PARAM::FLOAT, &m_FadeDuration, 0.1f);
+	AppendMemberFunction("FadeIn", SCRIPT_PARAM::FUNC_MEMBER, "", std::bind(&CFadeUIScript::Push_FadeIn, this));
+	AppendMemberFunction("FadeOut", SCRIPT_PARAM::FUNC_MEMBER, "", std::bind(&CFadeUIScript::Push_FadeOut, this));
+}
+
 void CFadeUIScript::begin()
 {
 	CAtlasImageUIScript::begin();
@@ -57,11 +65,6 @@ void CFadeUIScript::Push_FadeEvent(FADE_TYPE _Type, float _Duration)
 	auto RelPos = Transform()->GetRelativePos();
 	RelPos.x	= 0.f;
 	Transform()->SetRelativePos(RelPos);
-}
-
-CFadeUIScript::CFadeUIScript()
-	: CAtlasImageUIScript((UINT)SCRIPT_TYPE::FADEUISCRIPT)
-{
 }
 
 CFadeUIScript::~CFadeUIScript()

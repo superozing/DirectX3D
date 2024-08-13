@@ -3,6 +3,7 @@
 #include "CPlayerController.h"
 enum class TutorialState
 {
+	FadeIn,
 	OpeningIn,
 	OpeningDelay,
 	OpeningOut,
@@ -22,6 +23,7 @@ enum class TutorialState
 	EndingDelay,
 	EndingOut,
 	EndingCutIn,
+	FadeOut,
 	END,
 };
 
@@ -50,6 +52,8 @@ class CTutorialGameMode : public CGameMode<CTutorialGameMode>
 {
 	// Opening
 private:
+	float m_FadeInTime	= 3.f;
+	float m_FadeOutTime = 3.f;
 	float m_Acctime;
 	float m_OpeningInTime;
 	float m_OpeningDelayTime;
@@ -104,6 +108,7 @@ private:
 	class CPlayerScript* m_pPlayerScript;
 	class CGameObject*	 m_pPlayer;
 	class CHUD*			 m_pHUD;
+	class CFadeUIScript* m_FadeScript;
 
 	class CEventListener* m_pEvents[(UINT)TutorialEvents::END];
 
@@ -128,6 +133,9 @@ public:
 	~CTutorialGameMode();
 
 #pragma region FSM
+	void FadeInBegin();
+	int	 FadeInUpdate();
+	void FadeInEnd();
 
 	void OpeningInBegin();
 	int	 OpeningInUpdate();
@@ -204,5 +212,10 @@ public:
 	void EndingCutInBegin();
 	int	 EndingCutInUpdate();
 	void EndingCutInEnd();
+
+	void FadeOutBegin();
+	int	 FadeOutUpdate();
+	void FadeOutEnd();
+
 #pragma endregion
 };
