@@ -125,7 +125,7 @@ void CBossLV::begin()
 	m_Player->GetScript<CPlayerScript>()->SetPlayable(false);
 
 	m_HUD = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"HUD");
-	m_HUD->Transform()->SetRelativeScale(Vec3(1.f, 0.f, 1.f));
+	m_HUD->Transform()->SetRelativePos(Vec3(0.f, 20000.f, 100.f));
 
 	m_Kaiten = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Kaiten");
 }
@@ -247,7 +247,7 @@ void CBossLV::PlayingBegin()
 {
 	m_Player->GetScript<CPlayerScript>()->SetPlayable(true);
 	m_BGM[(UINT)BossLV_BGM::KAITEN_SCREW]->Play(0.f, 1.f);
-	m_HUD->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
+	m_HUD->Transform()->SetRelativePos(Vec3(0.f, 0.f, 100.f));
 }
 
 int CBossLV::PlayingUpdate()

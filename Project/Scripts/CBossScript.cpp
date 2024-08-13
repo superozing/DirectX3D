@@ -46,6 +46,7 @@ CBossScript::CBossScript()
 	AppendScriptParam("CurState    ", SCRIPT_PARAM::STRING, &DebugState);
 	AppendScriptParam("raycast", SCRIPT_PARAM::BOOL, &m_Raycast);
 	AppendScriptParam("Debug", SCRIPT_PARAM::BOOL, &m_bDebug);
+	AppendScriptParam("Resurrection", SCRIPT_PARAM::BOOL, &m_Resurrection);
 	InitScriptParamUI();
 
 	InitStateMachine();
@@ -137,12 +138,21 @@ void CBossScript::begin()
 	m_BulletShell = new CBossBulletShellSpawner;
 	GetOwner()->AddComponent(m_BulletShell);
 
-	m_GameMode = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"GameMode")->GetScript<CBossLV>();
+	if (nullptr != CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"GameMode"))
+		m_GameMode = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"GameMode")->GetScript<CBossLV>();
 }
 
 void CBossScript::tick()
 {
-	if ((int)BossLV_STATE::Playing != m_GameMode->GetCurLVState())
+	if (m_Resurrection)
+	{
+		m_FSM->SetCurState((int)BOSS_STATE::NormalIdle);
+		m_Resurrection		  = false;
+		m_BossStatus.IsDead	  = false;
+		m_BossStatus.IsGroggy = false;
+	}
+
+	if (nullptr != m_GameMode && (int)BossLV_STATE::Playing != m_GameMode->GetCurLVState())
 		return;
 
 	m_FSM->Update();

@@ -51,7 +51,7 @@ struct tBossStatus
 	float GroggyBar = 0.f;
 
 	float ATTDamage = 10.f;
-	float ATTSpeed	= 2.f;
+	float ATTSpeed	= 1.5f;
 
 	float EXsCoolTime = 4.f;
 
@@ -95,6 +95,7 @@ private:
 	// @@디버그용
 	int	 m_EXsType; // 현재 선택된 EX 타입
 	bool m_bDebug;
+	bool m_Resurrection;
 
 #pragma region About State
 
