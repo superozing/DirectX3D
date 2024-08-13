@@ -4,6 +4,8 @@
 #include <Engine\CLevelMgr.h>
 #include <Engine\CLevel.h>
 #include "CTurret.h"
+#include "CTurretShootingSystem.h"
+// #include <Engine\CGameObject.h>
 
 CTurretBulletLine::CTurretBulletLine()
 	: CScript((UINT)SCRIPT_TYPE::TURRETBULLETLINE)
@@ -13,7 +15,7 @@ CTurretBulletLine::CTurretBulletLine()
 	, m_Module{}
 	, m_bParticle(false)
 	, m_offset(0.f, 0.f, 0.f)
-	, m_offsetDir(0.f, 0.f, 0.f)
+	, m_offsetDir(0.f, 500.f, 0.f)
 	, m_CurFrame(0)
 	, m_PrevFrame(0)
 	, fParticleTimer(2.f)
@@ -28,13 +30,35 @@ CTurretBulletLine::~CTurretBulletLine()
 
 void CTurretBulletLine::begin()
 {
-	m_Module = ParticleSystem()->GetParticleModule();
-	ParticleSystem()->SetModule(m_Module);
-	ParticleSystem()->Play();
-
 	m_Parent	  = GetOwner()->GetParent();
 	Vec3 ShootPos = m_Parent->GetScript<CTurret>()->GetPShootPos();
 	m_TargetPos	  = ShootPos;
+
+	this->Transform()->SetAbsolute(false);
+
+	// 원하는 월드 위치 계산
+	Vec3 desiredWorldPos = m_Parent->Transform()->GetWorldPos();
+	desiredWorldPos += m_offset;
+
+	// 부모의 월드 변환의 역변환을 계산
+	Matrix parentWorldInv = m_Parent->Transform()->GetWorldInvMat();
+
+	// 원하는 월드 위치를 부모 기준의 로컬 위치로 변환
+	Vec3 localPos = XMVector3Transform(desiredWorldPos, parentWorldInv);
+	localPos.y += 0.3f;
+
+	// 자식(this)의 상대적 위치 설정
+	this->Transform()->SetRelativePos(localPos);
+
+	auto shootingsys = m_Parent->GetScript<CTurretShootingSystem>();
+
+	m_Module				 = ParticleSystem()->GetParticleModule();
+	m_Module.AddVelocityType = 2;
+	m_Module.FixedDirection	 = m_Parent->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+	m_Module.SpawnRate		 = 3;
+
+	ParticleSystem()->SetModule(m_Module);
+	ParticleSystem()->Play();
 }
 
 void CTurretBulletLine::tick()
@@ -46,20 +70,9 @@ void CTurretBulletLine::tick()
 	}
 
 	// 가운데 위치 설정
-	Vec3 vPos =
-		(m_Parent->Animator3D()->FindBoneMat(L"bone_robot_gun_L") * m_Parent->Transform()->GetWorldMat()).Translation();
-	vPos += m_offset;
-	vPos.z += 100.f;
-	vPos.y += 80.f;
-	vPos.x -= 50.f;
+	// Matrix vMat = m_Parent->Animator3D()->FindBoneMat(L"bone_robot_gun_L");
+	// Transform()->SetFrameMat(vMat);
 
-	m_TargetPos.y = vPos.y;
-	Transform()->SetRelativePos(vPos);
-
-	m_Module.AddVelocityType = 2;
-	m_vDir					 = (m_TargetPos - vPos).Normalize();
-	m_Module.FixedDirection	 = m_vDir;
-	m_Module.SpawnRate		 = 3;
 	fParticleTimer -= DT;
 
 	if (fParticleTimer < 0.f)

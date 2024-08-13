@@ -107,8 +107,10 @@ public:
 	float CalTargetDistance();
 	void  CheckVital();
 
-	void FireParticle(Vec3 _WorldPos);
+	void FireParticle();
 	Vec3 GetPShootPos() { return ParticleTargetPos; }
+
+	CGameObject* GetTarget() { return m_Target; }
 
 public:
 	CLONE(CTurret);

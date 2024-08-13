@@ -15,18 +15,18 @@ CTurretShootingSystem::~CTurretShootingSystem()
 {
 }
 
-void CTurretShootingSystem::SetShootingDirection(CPlayerScript* _pPlayer)
-{
-	m_ShootingDirection = (_pPlayer->Transform()->GetWorldPos() - m_pTurretObj->Transform()->GetWorldPos()).Normalize();
-}
-
 void CTurretShootingSystem::ShootTurretBulletRay()
 {
 	tRoRHitInfo hitInfo = {};
 
-	bool isBulletHit =
-		CPhysXMgr::GetInst()->PerformRaycast(m_pTurretObj->Transform()->GetWorldPos(), m_ShootingDirection, hitInfo,
-											 (UINT)LAYER::LAYER_MONSTER_SKILL, RayCastDebugFlag::AllVisible);
+	Vec3 vFrontDir	 = m_pTurretObj->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+	Vec3 LayStartPos = m_pTurretObj->Transform()->GetWorldPos();
+	LayStartPos.y += 50.f;
+
+	m_ShootingDirection = vFrontDir;
+
+	bool isBulletHit = CPhysXMgr::GetInst()->PerformRaycast(
+		LayStartPos, vFrontDir, hitInfo, (UINT)LAYER::LAYER_MONSTER_SKILL, RayCastDebugFlag::AllVisible);
 
 	if (isBulletHit)
 	{
