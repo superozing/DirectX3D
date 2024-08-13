@@ -148,6 +148,7 @@ void CBossScript::tick()
 	{
 		m_FSM->SetCurState((int)BOSS_STATE::NormalIdle);
 		m_Resurrection		  = false;
+		m_BossStatus.CurHP	  = m_BossStatus.MaxHP;
 		m_BossStatus.IsDead	  = false;
 		m_BossStatus.IsGroggy = false;
 	}
