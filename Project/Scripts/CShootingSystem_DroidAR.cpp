@@ -48,7 +48,7 @@ void CShootingSystem_DroidAR::ShootDroidARBulletRay()
 		{
 			// 플레이어에게 데미지 넣어주기.
 			auto pPlayer = hitInfo.pOtherObj->GetScript<CPlayerScript>();
-			pPlayer->AddDamage(m_pDroidARScript->GetDamageVal());
+			pPlayer->Hit(m_pDroidARScript->GetDamageVal());
 			
 			// 피격 사운드 재생
 			m_vecSound[(UINT)ShootingSystemDroidARSoundType::HitPlayer]->Play(1, 1.f, true);
