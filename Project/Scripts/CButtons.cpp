@@ -20,13 +20,32 @@ CButtons::~CButtons()
 {
 }
 
-#include "Engine\CRenderMgr.h"
+#include "Engine\CLevelMgr.h"
+#include "CFadeUIScript.h"
 void CButtons::Play()
 {
-	m_started  = true;
+	m_started = true;
+	// 사운드 플레이
 	auto sound = CAssetMgr::GetInst()->Load<CSound>(SNDMutsukiNew_Year_Battle_In_1);
 	sound->Play(1, 1.f, true);
-	CRenderMgr::GetInst()->PushFadeEvent(FADE_TYPE::FADE_OUT, 3.f);
+
+	// 페이드 아웃 이벤트 Push
+	auto		   FadeObject	= CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"FadeObject");
+	CFadeUIScript* TargetScript = nullptr;
+	if (nullptr != FadeObject)
+	{
+		TargetScript = FadeObject->GetScript<CFadeUIScript>();
+	}
+
+	if (nullptr != TargetScript)
+	{
+		TargetScript->Push_FadeEvent(FADE_TYPE::FADE_OUT, 3.f);
+
+		for (size_t i = 0; i < (UINT)TitleButton::END; i++)
+		{
+			m_vecButtons[i]->GetOwner()->GetChild()[0]->GetScript<CTextUI>()->Draw(false);
+		}
+	}
 }
 
 void CButtons::Settings()
@@ -80,8 +99,8 @@ void CButtons::tick()
 	}
 	if (true == m_started && (m_acctime > m_ThresholdTime) && false == m_LevelChanged)
 	{
-		GamePlayStatic::ChangeLevel(CLevelMgr::GetInst()->LevelLoadFunc(LEVELTutPlace), LEVEL_STATE::PLAY);
 		m_LevelChanged = true;
+		GamePlayStatic::ChangeLevel(CLevelMgr::GetInst()->LevelLoadFunc(LEVELTutPlace), LEVEL_STATE::PLAY);
 	}
 
 	// if (KEY_TAP(UP))

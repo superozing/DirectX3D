@@ -94,6 +94,7 @@
 #include "CWarningTex.h"
 #include "CWarningUpDeco.h"
 #include "CBossGroggy.h"
+#include "CFadeUIScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -190,6 +191,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CWarningTex");
 	_vec.push_back(L"CWarningUpDeco");
 	_vec.push_back(L"CBossGroggy");
+	_vec.push_back(L"CFadeUIScript");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -380,6 +382,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CWarningUpDeco;
 	if (L"CBossGroggy" == _strScriptName)
 		return new CBossGroggy;
+	if (L"CFadeUIScript" == _strScriptName)
+		return new CFadeUIScript;
 	return nullptr;
 }
 
@@ -665,6 +669,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::BOSSGROGGY:
 		return new CBossGroggy;
+		break;
+	case (UINT)SCRIPT_TYPE::FADEUISCRIPT:
+		return new CFadeUIScript;
 		break;
 	}
 	return nullptr;
@@ -1044,6 +1051,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::BOSSGROGGY:
 		return L"CBossGroggy";
+		break;
+
+	case SCRIPT_TYPE::FADEUISCRIPT:
+		return L"CFadeUIScript";
 		break;
 
 	}

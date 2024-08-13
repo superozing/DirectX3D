@@ -322,6 +322,9 @@
     <ClInclude Include="CBossGroggy.h">
       <Filter>Scripts\Boss</Filter>
     </ClInclude>
+    <ClInclude Include="CFadeUIScript.h">
+      <Filter>Scripts\UI\Image</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -644,6 +647,9 @@
     </ClCompile>
     <ClCompile Include="CBossGroggy.cpp">
       <Filter>Scripts\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="CFadeUIScript.cpp">
+      <Filter>Scripts\UI\Image</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
