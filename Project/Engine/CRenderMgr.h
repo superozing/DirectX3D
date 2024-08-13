@@ -53,6 +53,21 @@ struct tVignetteInfo
 	float fMaxAlpha;
 };
 
+// Fade Script& 프리펩으로 기능 이관1
+// enum class FADE_TYPE
+//{
+//	FADE_IN,
+//	FADE_OUT,
+//	FADE_STAY,
+// };
+
+// struct tFadeEvent
+//{
+//	FADE_TYPE Type;
+//	float	  AccTime;
+//	float	  Duration;
+// };
+
 class CRenderMgr : public CManager<CRenderMgr>
 {
 	SINGLE(CRenderMgr);
@@ -83,7 +98,7 @@ private:
 
 	// render function pointer
 	typedef void (CRenderMgr::*RENDER_FUNC)(void);
-	RENDER_FUNC	 m_RenderFunc;
+	RENDER_FUNC m_RenderFunc;
 
 	Vec4 m_vClearColor;
 
@@ -257,8 +272,18 @@ private:
 		{
 		}
 	}
+	// Fade Script& 프리펩으로 기능 이관2
+	// list<tFadeEvent> m_FadeEventList;
 
 public:
+	// void PushFadeEvent(FADE_TYPE _Type, float _Duration)
+	//{
+	//	tFadeEvent Event = {};
+	//	Event.Type		 = _Type;
+	//	Event.Duration	 = _Duration;
+	//	m_FadeEventList.push_back(Event);
+	// }
+
 	void PushCAEvent(CA_TYPE _TYPE)
 	{
 		m_CAInfo.Type = _TYPE;
