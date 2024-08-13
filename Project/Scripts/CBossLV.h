@@ -3,6 +3,7 @@
 
 enum class BossLV_STATE
 {
+	FadeIn,
 	OpeningIn,
 	OpeningDelay,
 	OpeningOut,
@@ -14,6 +15,7 @@ enum class BossLV_STATE
 	EndingDelay,
 	EndingOut,
 	EndingCutIn,
+	FadeOut,
 	END,
 };
 
@@ -38,10 +40,13 @@ enum class BossLV_SFX
 class CBossLV : public CGameMode<CBossLV>
 {
 private:
-	class CGameObject* m_Player;
-	CGameObject*	   m_Kaiten;
-	CGameObject*	   m_HUD;
-	CGameObject*	   m_BossUI;
+	class CGameObject*	 m_Player;
+	CGameObject*		 m_Kaiten;
+	CGameObject*		 m_HUD;
+	CGameObject*		 m_BossUI;
+	class CFadeUIScript* m_FadeScript;
+	float				 m_FadeOutTime = 3.f;
+	float				 m_FadeInTime  = 3.f;
 
 	float m_OpeningInTime;
 	float m_OpeningDelayTime;
@@ -93,6 +98,10 @@ public:
 	~CBossLV();
 
 private:
+	void FadeInBegin();
+	int	 FadeInUpdate();
+	void FadeInEnd();
+
 	void OpeningInBegin();
 	int	 OpeningInUpdate();
 	void OpeningInEnd();
@@ -136,6 +145,10 @@ private:
 	void EndingCutInBegin();
 	int	 EndingCutInUpdate();
 	void EndingCutInEnd();
+
+	void FadeOutBegin();
+	int	 FadeOutUpdate();
+	void FadeOutEnd();
 
 	friend class CBossOpeningTex;
 	friend class CStartTex;
