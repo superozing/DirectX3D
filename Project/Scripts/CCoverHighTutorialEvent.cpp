@@ -19,11 +19,11 @@ CCoverHIghTutorialEvent::~CCoverHIghTutorialEvent()
 
 void CCoverHIghTutorialEvent::Start()
 {
-	// if (HasTargets() && m_pGM->IsClear(TutorialState::Shooting))
+	// if (HasTargets() && m_pGM->IsClear(TutorialEvents::Shooting))
 	//{
 	//	m_pArona->Message("Go to the cover & Press LShift to cover it up", 700.f);
 	//	tick_func = &CCoverHIghTutorialEvent::Cover;
-	// }
+	//  }
 }
 
 void CCoverHIghTutorialEvent::Cover()

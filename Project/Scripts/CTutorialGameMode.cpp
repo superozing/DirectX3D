@@ -11,6 +11,7 @@
 #include "CTutorialTarget.h"
 #include "CArona.h"
 #include "CFinishBalloon.h"
+#include "CTurret.h"
 
 static string state = "";
 
@@ -99,6 +100,14 @@ void CTutorialGameMode::begin()
 		m_vecTargetSpawners[i]->RegisterObject();
 		m_arrIsMonsterDestroy[i] = false;
 	}
+
+	for (int j = 0; j < TurretSpawnCNT; ++j)
+	{
+		wstring name = L"TurretSpawner" + to_wstring(j + 1);
+		m_vecTargetSpawners.push_back(pLevel->FindObjectByName(name)->GetScript<CSpawnSpotScript>());
+		m_vecTargetSpawners[SPAWNERCNT + j]->RegisterObject();
+	}
+
 	m_pWall			 = pLevel->FindObjectByName(L"WALL_SHOOT");
 	m_pPlayer		 = pLevel->FindObjectByName(PlayerName);
 	m_pPlayerScript	 = m_pPlayer->GetScript<CPlayerScript>();
@@ -121,12 +130,12 @@ void CTutorialGameMode::begin()
 	m_pArona = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(AronaName)->GetScript<CArona>();
 	m_pWall	 = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"WALL_SHOOT");
 
-	for (int i = 0; i < 4; i++)
-	{
-		wstring name   = L"Enemy" + to_wstring(i + 1);
-		auto	pEnemy = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(name);
-		m_vecCoverMonsters.push_back(pEnemy);
-	}
+	// for (int i = 0; i < 4; i++)
+	//{
+	//	wstring name   = L"Enemy" + to_wstring(i + 1);
+	//	auto	pEnemy = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(name);
+	//	m_vecCoverMonsters.push_back(pEnemy);
+	// }
 
 	// TutorialGameModeSound init
 	m_vecTutorialGameModeSound.resize((UINT)TutorialGameModeSoundType::END);
@@ -143,7 +152,7 @@ void CTutorialGameMode::begin()
 
 	m_FSM->Begin();
 	CKeyMgr::GetInst()->RoRShowCursor(false);
-	m_FSM->SetCurState((int)TutorialState::EndingWait);
+	m_FSM->SetCurState((int)TutorialState::CoverHighWait);
 }
 
 void CTutorialGameMode::tick()
@@ -357,11 +366,16 @@ void CTutorialGameMode::CoverHighWaitEnd()
 void CTutorialGameMode::CoverHighBegin()
 {
 	m_pArona->Message("Go to the Cover And Press LShift to Cover", 680.f);
+
+	for (size_t i = SPAWNERCNT; i < SPAWNERCNT + TurretSpawnCNT; i++)
+	{
+		m_vecCoverMonsters.push_back(m_vecTargetSpawners[i]->SpawnObject()->GetScript<CTurret>());
+	}
 }
 
 int CTutorialGameMode::CoverHighUpdate()
 {
-	if (m_vecCoverMonsters[0]->IsDead() && m_vecCoverMonsters[1]->IsDead())
+	if (m_vecCoverMonsters[0]->IsDeadMonster() && m_vecCoverMonsters[1]->IsDeadMonster())
 	{
 		return (int)TutorialState::CoverJumpWait;
 	}
