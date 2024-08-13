@@ -73,6 +73,11 @@ void MenuUI::render_update()
 	{
 		GameStop();
 	}
+
+	if (KEY_TAP_ANY(F7))
+	{
+		GamePause();
+	}
 }
 // #include <Engine/CLevel.h>
 
@@ -529,4 +534,10 @@ void MenuUI::GameStop()
 	pInspector->SetTargetObject(nullptr);
 
 	CKeyMgr::GetInst()->RoRShowCursor(true);
+}
+
+void MenuUI::GamePause()
+{
+	auto pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+	CLevelMgr::GetInst()->ChangeLevelState(LEVEL_STATE::PAUSE);
 }
