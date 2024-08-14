@@ -358,6 +358,9 @@
     <ClInclude Include="CFadeUIScript.h">
       <Filter>Scripts\UI\Image\Fade</Filter>
     </ClInclude>
+    <ClInclude Include="CBladeAfterImage.h">
+      <Filter>Scripts\Boss\BladeAfterImage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -723,6 +726,9 @@
     <ClCompile Include="CFadeUIScript.cpp">
       <Filter>Scripts\UI\Image\Fade</Filter>
     </ClCompile>
+    <ClCompile Include="CBladeAfterImage.cpp">
+      <Filter>Scripts\Boss\BladeAfterImage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -961,6 +967,9 @@
     </Filter>
     <Filter Include="Scripts\UI\Image\Fade">
       <UniqueIdentifier>{c6312b9f-2b3a-4ac0-82cd-2c1907f01ad2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Boss\BladeAfterImage">
+      <UniqueIdentifier>{5a6eb473-387d-4257-af35-fc2ec9556e0d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

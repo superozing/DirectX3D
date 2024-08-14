@@ -148,7 +148,9 @@ struct AfterImageInfo
     float fMaxLifeTime;
     int iColorMode;
     float4 AfterImageColor;
-    int Padding;
+    int bRenderFlags[10]; //∞¢ ¿‹ªÛµÈ¿« ∑ª¥ı ø©∫Œ
+    float iThreshold;
+    int Padding[2];
 };
 
 #endif

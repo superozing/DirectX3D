@@ -340,6 +340,7 @@ void CBossScript::EXs4Begin()
 	CheckTargetPos();
 	ActiveWarningDecal();
 	ActiveSwordTrail();
+	ActiveBladeAfterImage();
 }
 
 int CBossScript::EXs4Update()

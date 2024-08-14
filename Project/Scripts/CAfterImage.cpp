@@ -21,10 +21,9 @@ CAfterImage::CAfterImage()
 	m_info.TimeStep		= 0.1f;
 	m_info.fMaxLifeTime = 0.1f;
 	m_info.iColorMode	= (int)ColorMode::Original;
-	fUpdateTimer		= 0.1f;
-	bDisplay			= true;
-
-	fSetLifeTime = m_info.fMaxLifeTime;
+	std::fill(std::begin(m_info.bRenderFlags), std::end(m_info.bRenderFlags), 1);
+	fUpdateTimer = 0.1f;
+	bDisplay	 = true;
 
 	strDisplayColorMode = ToString(magic_enum::enum_name((ColorMode)m_info.iColorMode));
 
@@ -41,6 +40,40 @@ CAfterImage::CAfterImage()
 	AppendScriptParam("AfterImageColor", SCRIPT_PARAM::COLOR, &m_info.AfterImageColor);
 
 	AppendScriptParam("View Node", SCRIPT_PARAM::BOOL, &bDisplay);
+
+	AppendScriptParam("AfterImage Threshold", SCRIPT_PARAM::FLOAT, &m_info.iThreshold);
+
+	m_info.fMaxLifeTime = fSetLifeTime;
+}
+
+CAfterImage::CAfterImage(const CAfterImage& _Origin)
+	: CScript((UINT)_Origin.GetScriptType())
+{
+	m_info.NodeCount	= _Origin.m_info.NodeCount;
+	bDisplay			= _Origin.bDisplay;
+	m_info.TimeStep		= _Origin.m_info.TimeStep;
+	m_info.fMaxLifeTime = _Origin.m_info.fMaxLifeTime;
+	m_info.iColorMode	= _Origin.m_info.iColorMode;
+	m_info.iThreshold	= _Origin.m_info.iThreshold;
+
+	strDisplayColorMode = magic_enum::enum_name(ColorMode(m_info.iColorMode));
+
+	m_info.AfterImageColor = _Origin.m_info.AfterImageColor;
+	fSetLifeTime		   = m_info.fMaxLifeTime;
+
+	AppendScriptParam("Node Count", SCRIPT_PARAM::INT, &m_info.NodeCount, 0, 10, false, "Afterimage Node count");
+	AppendScriptParam("Time Interval", SCRIPT_PARAM::FLOAT, &m_info.TimeStep);
+	AppendScriptParam("Max Life Time", SCRIPT_PARAM::FLOAT, &fSetLifeTime);
+
+	AppendScriptParam("Color Mode", SCRIPT_PARAM::STRING, &strDisplayColorMode);
+	SameLine();
+	AppendMemberFunction("Change", SCRIPT_PARAM::FUNC_MEMBER, "", std::bind(&CAfterImage::ChangeColorMode, this));
+
+	AppendScriptParam("AfterImageColor", SCRIPT_PARAM::COLOR, &m_info.AfterImageColor);
+
+	AppendScriptParam("View Node", SCRIPT_PARAM::BOOL, &bDisplay);
+
+	AppendScriptParam("AfterImage Threshold", SCRIPT_PARAM::FLOAT, &m_info.iThreshold);
 }
 
 CAfterImage::~CAfterImage()
@@ -63,6 +96,16 @@ void CAfterImage::begin()
 			m_BoneArr[i] = pBuffer;
 		}
 	}
+	else
+	{
+		for (int i = 0; i < AfterImageMaxCount; ++i)
+		{
+			CStructuredBuffer* pBuffer = new CStructuredBuffer;
+			pBuffer->Create(sizeof(Matrix), 1, SB_READ_TYPE::READ_WRITE, true);
+
+			m_BoneArr[i] = pBuffer;
+		}
+	}
 }
 
 void CAfterImage::tick()
@@ -76,6 +119,10 @@ void CAfterImage::tick()
 
 		fUpdateTimer = m_info.TimeStep;
 
+		Matrix CurrentWolrdMat = GetOwner()->GetParent()->Transform()->GetWorldMat();
+
+		Vec3 CurPos = Vec3((float)CurrentWolrdMat._41, (float)CurrentWolrdMat._42, (float)CurrentWolrdMat._43);
+
 		if (m_info.NodeCount > 1)
 		{
 			for (int i = 1; m_info.NodeCount > i; ++i)
@@ -85,8 +132,6 @@ void CAfterImage::tick()
 			}
 		}
 
-		Matrix CurrentWolrdMat = GetOwner()->GetParent()->Transform()->GetWorldMat();
-
 		m_info.WorldTransform[m_info.NodeCount - 1] = CurrentWolrdMat;
 		m_info.fLifeTime[m_info.NodeCount - 1]		= m_info.fMaxLifeTime;
 
@@ -94,6 +139,8 @@ void CAfterImage::tick()
 		{
 			UpdateBoneMatrix();
 		}
+
+		CalNodeRender();
 	}
 
 	CalLifeTime(DT);
@@ -106,7 +153,7 @@ void CAfterImage::tick()
 		pMainCam->RegisterAfterImage(this->GetOwner()->GetParent(), m_info);
 }
 
-void CAfterImage::UpdateBoneMatrix() // 본은 hlsl에서 거꾸로 사용한다. 구조화 버퍼의 뭔가모를 에러가 있어서
+void CAfterImage::UpdateBoneMatrix() // 본은 hlsl에서 거꾸로 사용한다. 구조화 버퍼 에러
 {
 	CAnimator3D* pAnimator = GetOwner()->GetParent()->Animator3D();
 	int			 boneCount = pAnimator->GetBoneCount();
@@ -132,6 +179,26 @@ void CAfterImage::CalLifeTime(float _Time)
 	{
 		if (m_info.fLifeTime[i] > 0.f)
 			m_info.fLifeTime[i] -= _Time;
+	}
+}
+
+void CAfterImage::CalNodeRender()
+{
+	Matrix CurrentWolrdMat = GetOwner()->GetParent()->Transform()->GetWorldMat();
+
+	Vec3 CurPos = Vec3((float)CurrentWolrdMat._41, (float)CurrentWolrdMat._42, (float)CurrentWolrdMat._43);
+
+	for (int i = 0; i < AfterImageMaxCount; ++i)
+	{
+		Vec3 AfterImagePos = Vec3((float)m_info.WorldTransform[i]._41, (float)m_info.WorldTransform[i]._42,
+								  (float)m_info.WorldTransform[i]._43);
+
+		float RenderDistance = Vec3::Distance(CurPos, AfterImagePos);
+
+		if (RenderDistance < m_info.iThreshold)
+			m_info.bRenderFlags[i] = 0;
+		else
+			m_info.bRenderFlags[i] = 1;
 	}
 }
 
@@ -184,23 +251,29 @@ void CAfterImage::ChangeColorMode()
 	}
 }
 
+void CAfterImage::SetAlpha(float _Alpha)
+{
+	m_info.AfterImageColor.w = _Alpha;
+}
+
 #define TagAfterImageCount "[AfterImage Node Count]"
 #define TagAfterImageTimeStep "[After Image TimeStep]"
 #define TagRenderNode "[Node bRender]"
 #define TagMaxLifeTime "[AfterImage Max Life Time]"
 #define TagColorType "[AfterImage Color Type]"
 #define TagCustomColor "[AfterImage Custom Color]"
+#define TagThreshold "[AfterImage Threshold]"
 
 void CAfterImage::SaveToFile(ofstream& fout)
 {
 	fout << TagAfterImageCount << endl;
 	fout << m_info.NodeCount << endl;
 
-	fout << TagAfterImageTimeStep << endl;
-	fout << m_info.TimeStep << endl;
-
 	fout << TagRenderNode << endl;
 	fout << (int)bDisplay << endl;
+
+	fout << TagAfterImageTimeStep << endl;
+	fout << m_info.TimeStep << endl;
 
 	fout << TagMaxLifeTime << endl;
 	fout << m_info.fMaxLifeTime << endl;
@@ -211,6 +284,9 @@ void CAfterImage::SaveToFile(ofstream& fout)
 	fout << TagCustomColor << endl;
 	fout << m_info.AfterImageColor.x << " " << m_info.AfterImageColor.y << " " << m_info.AfterImageColor.z << " "
 		 << m_info.AfterImageColor.w << endl;
+
+	fout << TagThreshold << endl;
+	fout << m_info.iThreshold << endl;
 }
 
 void CAfterImage::LoadFromFile(ifstream& fin)
@@ -218,11 +294,11 @@ void CAfterImage::LoadFromFile(ifstream& fin)
 	Utils::GetLineUntilString(fin, TagAfterImageCount);
 	fin >> m_info.NodeCount;
 
-	Utils::GetLineUntilString(fin, TagAfterImageTimeStep);
-	fin >> m_info.TimeStep;
-
 	Utils::GetLineUntilString(fin, TagRenderNode);
 	fin >> bDisplay;
+
+	Utils::GetLineUntilString(fin, TagAfterImageTimeStep);
+	fin >> m_info.TimeStep;
 
 	Utils::GetLineUntilString(fin, TagMaxLifeTime);
 	fin >> m_info.fMaxLifeTime;
@@ -240,4 +316,7 @@ void CAfterImage::LoadFromFile(ifstream& fin)
 	fin >> vColor.x >> vColor.y >> vColor.z >> vColor.w;
 
 	m_info.AfterImageColor = vColor;
+
+	Utils::GetLineUntilString(fin, TagThreshold);
+	fin >> m_info.iThreshold;
 }

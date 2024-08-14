@@ -167,6 +167,11 @@ PS_OUT PS_AfterImageRender(VS_OUT _in) : SV_Target
     
     AfterImageInfo data = g_AfterImage[0];
     
+    if (data.bRenderFlags[_in.instanceID] == 0)
+    {
+        discard;
+    }
+    
     float4 vOutColor = float4(1.f, 0.f, 1.f, _in.fAlpha);
     
     if (data.iColorMode == 0)
