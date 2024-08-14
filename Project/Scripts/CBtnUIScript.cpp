@@ -82,6 +82,7 @@ void CBtnUIScript::begin()
 	// Button Sound Init
 	m_vecSound.resize((UINT)BtnUISoundType::End);
 	m_vecSound[(UINT)BtnUISoundType::Click] = CAssetMgr::GetInst()->Load<CSound>(SNDUI_Button_Touch);
+	m_vecSound[(UINT)BtnUISoundType::Hover] = CAssetMgr::GetInst()->Load<CSound>(SND09CuteSoundEffect);
 }
 
 void CBtnUIScript::tick()
@@ -131,6 +132,7 @@ void CBtnUIScript::OnHovered()
 	m_vCSz	  = m_vHSz;
 	m_vCColor = m_vHColor;
 	m_State	  = ButtonState::Hovered;
+	m_vecSound[(UINT)BtnUISoundType::Hover]->Play(1, 1.f, true);
 }
 
 void CBtnUIScript::OnUnHovered()
@@ -172,7 +174,7 @@ void CBtnUIScript::LBtnClicked()
 	m_vCColor = m_vNColor;
 	m_State	  = ButtonState::Normal;
 
-	m_vecSound[(UINT)BtnUISoundType::Click]->Play(1);
+	m_vecSound[(UINT)BtnUISoundType::Click]->Play(1, 1.f);
 
 	if (m_AllowCallFunc)
 	{

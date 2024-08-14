@@ -6,6 +6,7 @@
 
 #include "CRoRStateMachine.h"
 #include "CPlayerScript.h"
+#include "CFadeUIScript.h"
 
 static string state = "";
 
@@ -21,13 +22,14 @@ CBossLV::CBossLV()
 	, m_EndingInTime(0.5f)
 	, m_EndingDelayTime(1.f)
 	, m_EndingOutTime(0.5f)
-	, m_EndingCutInTime(10.f)
+	, m_EndingCutInTime(5.f)
 	, m_Acctime(0.f)
 	, m_BGM{}
 	, m_SFX{}
 {
 	m_FSM = new CRoRStateMachine<CBossLV>(this, (UINT)BossLV_STATE::END);
 
+	FSMInit(BossLV_STATE, CBossLV, FadeIn);
 	FSMInit(BossLV_STATE, CBossLV, OpeningIn);
 	FSMInit(BossLV_STATE, CBossLV, OpeningDelay);
 	FSMInit(BossLV_STATE, CBossLV, OpeningOut);
@@ -39,6 +41,7 @@ CBossLV::CBossLV()
 	FSMInit(BossLV_STATE, CBossLV, EndingDelay);
 	FSMInit(BossLV_STATE, CBossLV, EndingOut);
 	FSMInit(BossLV_STATE, CBossLV, EndingCutIn);
+	FSMInit(BossLV_STATE, CBossLV, FadeOut);
 
 	AppendScriptParam("State", SCRIPT_PARAM::STRING, &state, 0.f, 0.f, true);
 }
@@ -83,6 +86,27 @@ CBossLV::~CBossLV()
 		delete m_FSM;
 }
 
+void CBossLV::FadeInBegin()
+{
+	m_Acctime = 0.f;
+	m_FadeScript->Push_FadeEvent(FADE_TYPE::FADE_IN, m_FadeInTime);
+}
+
+int CBossLV::FadeInUpdate()
+{
+	m_Acctime += DT;
+
+	if (m_Acctime >= m_FadeInTime)
+	{
+		return (UINT)BossLV_STATE::OpeningIn;
+	}
+	return (UINT)BossLV_STATE::FadeIn;
+}
+
+void CBossLV::FadeInEnd()
+{
+}
+
 int CBossLV::GetCurLVState()
 {
 	return m_FSM->GetCurState();
@@ -119,13 +143,14 @@ void CBossLV::LoadSoundAsset()
 void CBossLV::begin()
 {
 	LoadSoundAsset();
+	m_FadeScript = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"FadeObject")->GetScript<CFadeUIScript>();
 	m_FSM->Begin();
 
 	m_Player = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Azusa");
 	m_Player->GetScript<CPlayerScript>()->SetPlayable(false);
 
 	m_HUD = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"HUD");
-	m_HUD->Transform()->SetRelativeScale(Vec3(1.f, 0.f, 1.f));
+	m_HUD->Transform()->SetRelativePos(Vec3(0.f, 20000.f, 100.f));
 
 	m_Kaiten = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Kaiten");
 }
@@ -138,6 +163,7 @@ void CBossLV::tick()
 
 void CBossLV::OpeningInBegin()
 {
+	m_Acctime = 0.f;
 	m_SFX[(UINT)BossLV_SFX::START]->Play(1.f, 1.f);
 }
 
@@ -247,7 +273,7 @@ void CBossLV::PlayingBegin()
 {
 	m_Player->GetScript<CPlayerScript>()->SetPlayable(true);
 	m_BGM[(UINT)BossLV_BGM::KAITEN_SCREW]->Play(0.f, 1.f);
-	m_HUD->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
+	m_HUD->Transform()->SetRelativePos(Vec3(0.f, 0.f, 100.f));
 }
 
 int CBossLV::PlayingUpdate()
@@ -359,12 +385,32 @@ int CBossLV::EndingCutInUpdate()
 
 	if (m_Acctime >= m_EndingCutInTime)
 	{
-		GamePlayStatic::ChangeLevel(CLevelMgr::GetInst()->LevelLoadFunc(LEVELSelectMenu), LEVEL_STATE::PLAY);
+		return (UINT)BossLV_STATE::FadeOut;
 	}
 
 	return m_FSM->GetCurState();
 }
 
 void CBossLV::EndingCutInEnd()
+{
+}
+
+void CBossLV::FadeOutBegin()
+{
+	m_Acctime = 0.f;
+	m_FadeScript->Push_FadeEvent(FADE_TYPE::FADE_OUT, m_FadeOutTime);
+}
+
+int CBossLV::FadeOutUpdate()
+{
+	m_Acctime += DT;
+	if (m_Acctime >= m_FadeOutTime)
+	{
+		GamePlayStatic::ChangeLevel(CLevelMgr::GetInst()->LevelLoadFunc(LEVELSelectMenu), LEVEL_STATE::PLAY);
+	}
+	return (UINT)BossLV_STATE::FadeOut;
+}
+
+void CBossLV::FadeOutEnd()
 {
 }

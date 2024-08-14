@@ -100,7 +100,7 @@ void CPlayerScript::NormalAttackIngBegin()
 	}
 	else
 	{
-		m_FSM->SetCurState(m_FSM->GetPrevState());
+		m_FSM->SetCurState((int)PLAYER_STATE::NormalReload);
 		return;
 	}
 	// m_pBulletLine->GetOwner()->ParticleSystem()->Play();
@@ -251,7 +251,7 @@ void CPlayerScript::StandAttackIngBegin()
 	}
 	else
 	{
-		m_FSM->SetCurState((int)PLAYER_STATE::StandAttackDelay);
+		m_FSM->SetCurState((int)PLAYER_STATE::StandReload);
 		return;
 	}
 	// m_pBulletLine->GetOwner()->ParticleSystem()->Play();
@@ -419,7 +419,7 @@ void CPlayerScript::KneelAttackIngBegin()
 	}
 	else
 	{
-		m_FSM->SetCurState((int)PLAYER_STATE::KneelAttackDelay);
+		m_FSM->SetCurState((int)PLAYER_STATE::KneelReload);
 		return;
 	}
 	// m_pBulletLine->GetOwner()->ParticleSystem()->Play();
@@ -853,6 +853,7 @@ void CPlayerScript::VictoryStartBegin()
 {
 	Animator3D()->Play((int)PLAYER_STATE::VictoryStart, 0);
 	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::VictoryStart]);
+	m_pSpringArm->SetDirOffset(Vec3(0.f, 0.f, 0.f));
 }
 
 int CPlayerScript::VictoryStartUpdate()

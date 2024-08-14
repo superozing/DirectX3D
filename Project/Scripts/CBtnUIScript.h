@@ -7,6 +7,7 @@ typedef void (CEntity::*DelegateFunc)(void);
 enum class BtnUISoundType
 {
 	Click,
+	Hover,
 	End,
 };
 

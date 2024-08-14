@@ -100,6 +100,12 @@
 #include "CMuzzleFlash_DroidAR.h"
 #include "CTurret.h"
 #include "CTurretBulletLine.h"
+#include "CTutStartTex.h"
+#include "CTutStartLightTex.h"
+#include "CTutOpeningTex.h"
+#include "CTutVictoryBG.h"
+#include "CTutVictoryTex.h"
+#include "CFadeUIScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -202,6 +208,12 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CMuzzleFlash_DroidAR");
 	_vec.push_back(L"CTurret");
 	_vec.push_back(L"CTurretBulletLine");
+	_vec.push_back(L"CTutStartTex");
+	_vec.push_back(L"CTutStartLightTex");
+	_vec.push_back(L"CTutOpeningTex");
+	_vec.push_back(L"CTutVictoryBG");
+	_vec.push_back(L"CTutVictoryTex");
+	_vec.push_back(L"CFadeUIScript");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -404,6 +416,18 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CTurret;
 	if (L"CTurretBulletLine" == _strScriptName)
 		return new CTurretBulletLine;
+	if (L"CTutStartTex" == _strScriptName)
+		return new CTutStartTex;
+	if (L"CTutStartLightTex" == _strScriptName)
+		return new CTutStartLightTex;
+	if (L"CTutOpeningTex" == _strScriptName)
+		return new CTutOpeningTex;
+	if (L"CTutVictoryBG" == _strScriptName)
+		return new CTutVictoryBG;
+	if (L"CTutVictoryTex" == _strScriptName)
+		return new CTutVictoryTex;
+	if (L"CFadeUIScript" == _strScriptName)
+		return new CFadeUIScript;
 	return nullptr;
 }
 
@@ -707,6 +731,24 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::TURRETBULLETLINE:
 		return new CTurretBulletLine;
+		break;
+	case (UINT)SCRIPT_TYPE::TUTSTARTTEX:
+		return new CTutStartTex;
+		break;
+	case (UINT)SCRIPT_TYPE::TUTSTARTLIGHTTEX:
+		return new CTutStartLightTex;
+		break;
+	case (UINT)SCRIPT_TYPE::TUTOPENINGTEX:
+		return new CTutOpeningTex;
+		break;
+	case (UINT)SCRIPT_TYPE::TUTVICTORYBG:
+		return new CTutVictoryBG;
+		break;
+	case (UINT)SCRIPT_TYPE::TUTVICTORYTEX:
+		return new CTutVictoryTex;
+		break;
+	case (UINT)SCRIPT_TYPE::FADEUISCRIPT:
+		return new CFadeUIScript;
 		break;
 	}
 	return nullptr;
@@ -1110,6 +1152,30 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::TURRETBULLETLINE:
 		return L"CTurretBulletLine";
+		break;
+
+	case SCRIPT_TYPE::TUTSTARTTEX:
+		return L"CTutStartTex";
+		break;
+
+	case SCRIPT_TYPE::TUTSTARTLIGHTTEX:
+		return L"CTutStartLightTex";
+		break;
+
+	case SCRIPT_TYPE::TUTOPENINGTEX:
+		return L"CTutOpeningTex";
+		break;
+
+	case SCRIPT_TYPE::TUTVICTORYBG:
+		return L"CTutVictoryBG";
+		break;
+
+	case SCRIPT_TYPE::TUTVICTORYTEX:
+		return L"CTutVictoryTex";
+		break;
+
+	case SCRIPT_TYPE::FADEUISCRIPT:
+		return L"CFadeUIScript";
 		break;
 
 	}

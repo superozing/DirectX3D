@@ -16,6 +16,10 @@
 #include "CDroidAR.h"
 #include "CMemoryPoolMgrScript.h"
 
+#include "CHUD.h"
+#include "CCrosshair.h"
+#include "CFadeUIScript.h"
+
 static string state = "";
 
 CTutorialGameMode::CTutorialGameMode()
@@ -23,10 +27,20 @@ CTutorialGameMode::CTutorialGameMode()
 	, m_fStopTimeLength(0.5f)
 	, m_fTargetDistance(3000.f)
 	, m_iDashCnt(1)
+	, m_OpeningInTime(0.5f)
+	, m_OpeningDelayTime(1.f)
+	, m_OpeningOutTime(0.5f)
+	, m_EndingInTime(0.5f)
+	, m_EndingDelayTime(1.f)
+	, m_EndingOutTime(0.5f)
+	, m_EndingCutInTime(3.f)
 {
 	m_FSM = new CRoRStateMachine<CTutorialGameMode>(this, (UINT)TutorialState::END);
 
-	FSMInit(TutorialState, CTutorialGameMode, First);
+	FSMInit(TutorialState, CTutorialGameMode, FadeIn);
+	FSMInit(TutorialState, CTutorialGameMode, OpeningIn);
+	FSMInit(TutorialState, CTutorialGameMode, OpeningDelay);
+	FSMInit(TutorialState, CTutorialGameMode, OpeningOut);
 	FSMInit(TutorialState, CTutorialGameMode, BasicMove);
 	FSMInit(TutorialState, CTutorialGameMode, DashWait);
 	FSMInit(TutorialState, CTutorialGameMode, Dash);
@@ -39,7 +53,11 @@ CTutorialGameMode::CTutorialGameMode()
 	FSMInit(TutorialState, CTutorialGameMode, CoverLowWait);
 	FSMInit(TutorialState, CTutorialGameMode, CoverLow);
 	FSMInit(TutorialState, CTutorialGameMode, EndingWait);
-	FSMInit(TutorialState, CTutorialGameMode, Ending);
+	FSMInit(TutorialState, CTutorialGameMode, EndingIn);
+	FSMInit(TutorialState, CTutorialGameMode, EndingDelay);
+	FSMInit(TutorialState, CTutorialGameMode, EndingOut);
+	FSMInit(TutorialState, CTutorialGameMode, EndingCutIn);
+	FSMInit(TutorialState, CTutorialGameMode, FadeOut);
 
 	AppendScriptParam("State", SCRIPT_PARAM::STRING, &state, 0.f, 0.f, true);
 
@@ -71,6 +89,12 @@ CTutorialGameMode::CTutorialGameMode()
 		string msg = "Target" + to_string(i + 1);
 		AppendScriptParam(msg, SCRIPT_PARAM::BOOL, &m_arrIsMonsterDestroy[i]);
 	}
+
+	// Fade Time
+	AppendSeperateLine();
+	AppendScriptParam("FadeInTime", SCRIPT_PARAM::FLOAT, &m_FadeInTime);
+	AppendSeperateLine();
+	AppendScriptParam("FadeInTime", SCRIPT_PARAM::FLOAT, &m_FadeOutTime);
 }
 
 CTutorialGameMode::~CTutorialGameMode()
@@ -79,16 +103,86 @@ CTutorialGameMode::~CTutorialGameMode()
 		delete m_FSM;
 }
 
-void CTutorialGameMode::FirstBegin()
+void CTutorialGameMode::FadeInBegin()
+{
+	m_Acctime = 0.f;
+	m_FadeScript->Push_FadeEvent(FADE_TYPE::FADE_IN, m_FadeInTime);
+}
+
+int CTutorialGameMode::FadeInUpdate()
+{
+	m_Acctime += DT;
+	if (m_Acctime >= m_FadeInTime)
+	{
+		return (UINT)TutorialState::OpeningIn;
+	}
+	return (UINT)TutorialState::FadeIn;
+}
+
+void CTutorialGameMode::FadeInEnd()
 {
 }
 
-int CTutorialGameMode::FirstUpdate()
+void CTutorialGameMode::OpeningInBegin()
 {
-	return (int)TutorialState::BasicMove;
+	m_Acctime = 0.f;
 }
 
-void CTutorialGameMode::FirstEnd()
+int CTutorialGameMode::OpeningInUpdate()
+{
+	m_Acctime += DT;
+
+	if (m_Acctime >= m_OpeningInTime)
+	{
+		return (int)TutorialState::OpeningDelay;
+	}
+
+	return m_FSM->GetCurState();
+}
+
+void CTutorialGameMode::OpeningInEnd()
+{
+	m_Acctime = 0.f;
+}
+
+void CTutorialGameMode::OpeningDelayBegin()
+{
+}
+
+int CTutorialGameMode::OpeningDelayUpdate()
+{
+	m_Acctime += DT;
+
+	if (m_Acctime >= m_OpeningDelayTime)
+	{
+		return (int)TutorialState::OpeningOut;
+	}
+
+	return m_FSM->GetCurState();
+}
+
+void CTutorialGameMode::OpeningDelayEnd()
+{
+	m_Acctime = 0.f;
+}
+
+void CTutorialGameMode::OpeningOutBegin()
+{
+}
+
+int CTutorialGameMode::OpeningOutUpdate()
+{
+	m_Acctime += DT;
+
+	if (m_Acctime >= m_OpeningDelayTime)
+	{
+		return (int)TutorialState::BasicMove;
+	}
+
+	return m_FSM->GetCurState();
+}
+
+void CTutorialGameMode::OpeningOutEnd()
 {
 }
 
@@ -125,6 +219,7 @@ void CTutorialGameMode::begin()
 
 	m_pArona = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(AronaName)->GetScript<CArona>();
 	m_pWall	 = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"WALL_SHOOT");
+	m_pHUD	 = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"HUD")->GetScript<CHUD>();
 
 	// for (int i = 0; i < 4; i++)
 	//{
@@ -146,9 +241,11 @@ void CTutorialGameMode::begin()
 	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::TutorialStart]->Play(1);
 	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::BGM]->Play(0, .4f);
 
+	m_FadeScript = pLevel->FindObjectByName(L"FadeObject")->GetScript<CFadeUIScript>();
+
 	m_FSM->Begin();
 	CKeyMgr::GetInst()->RoRShowCursor(false);
-	m_FSM->SetCurState((int)TutorialState::CoverLowWait);
+	// m_FSM->SetCurState((int)TutorialState::EndingWait);
 }
 
 void CTutorialGameMode::tick()
@@ -497,32 +594,127 @@ int CTutorialGameMode::EndingWaitUpdate()
 	if (m_pEvents[(UINT)TutorialEvents::Ending]->HasTargets())
 	{
 		GamePlayStatic::DestroyGameObject(m_pEvents[(UINT)TutorialEvents::Ending]->GetOwner());
-		return (int)TutorialState::Ending;
+		return (int)TutorialState::EndingIn;
 	}
 	return m_FSM->GetCurState();
 }
 
 void CTutorialGameMode::EndingWaitEnd()
 {
-}
-
-void CTutorialGameMode::EndingBegin()
-{
 	m_pArona->Message("All Complete! You Finish!!!", 450.f);
 }
 
-int CTutorialGameMode::EndingUpdate()
+void CTutorialGameMode::EndingInBegin()
 {
-	if (IsClear(TutorialEvents::Ending))
+	m_Acctime = 0.f;
+}
+
+int CTutorialGameMode::EndingInUpdate()
+{
+	m_Acctime += DT;
+
+	if (m_Acctime >= m_EndingInTime)
 	{
-		return m_FSM->GetCurState() + 1;
+		return (int)TutorialState::EndingDelay;
+	}
+
+	return m_FSM->GetCurState();
+}
+
+void CTutorialGameMode::EndingInEnd()
+{
+}
+
+void CTutorialGameMode::EndingDelayBegin()
+{
+	m_Acctime = 0.f;
+}
+
+int CTutorialGameMode::EndingDelayUpdate()
+{
+	m_Acctime += DT;
+
+	if (m_Acctime >= m_EndingDelayTime)
+	{
+		return (int)TutorialState::EndingOut;
+	}
+
+	return m_FSM->GetCurState();
+}
+
+void CTutorialGameMode::EndingDelayEnd()
+{
+}
+
+void CTutorialGameMode::EndingOutBegin()
+{
+	m_Acctime = 0.f;
+}
+
+int CTutorialGameMode::EndingOutUpdate()
+{
+	m_Acctime += DT;
+
+	if (m_Acctime >= m_EndingOutTime)
+	{
+		return (int)TutorialState::EndingCutIn;
 	}
 	return m_FSM->GetCurState();
 }
 
-void CTutorialGameMode::EndingEnd()
+void CTutorialGameMode::EndingOutEnd()
 {
-	GamePlayStatic::ChangeLevel(CLevelMgr::GetInst()->LevelLoadFunc(LEVELTitle), LEVEL_STATE::PLAY);
+}
+void CTutorialGameMode::EndingCutInBegin()
+{
+	Vec3 vPos		= m_pFinishBalloon->Transform()->GetWorldPos();
+	Vec3 vDir		= m_pFinishBalloon->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+	Vec3 vPlayerPos = m_pPlayer->Transform()->GetRelativePos();
+
+	Vec3 vNewPos = vPos + (vDir * 1000.f);
+	vNewPos.y	 = vPlayerPos.y;
+
+	m_pPlayer->Transform()->SetRelativePos(vNewPos);
+	m_pPlayer->Transform()->SetDir(-vDir);
+	m_pPlayerScript->GetStateMachine()->SetCurState((int)PLAYER_STATE::VictoryStart);
+
+	m_pHUD->GetHUD<CCrosshair>()->SetCrosshairColor(Vec4(0.f, 0.f, 0.f, 0.f));
+}
+
+int CTutorialGameMode::EndingCutInUpdate()
+{
+	m_Acctime += DT;
+
+	if (m_Acctime >= m_EndingCutInTime)
+	{
+		return (UINT)TutorialState::FadeOut;
+	}
+
+	return m_FSM->GetCurState();
+}
+
+void CTutorialGameMode::EndingCutInEnd()
+{
+}
+
+void CTutorialGameMode::FadeOutBegin()
+{
+	m_Acctime = 0.f;
+	m_FadeScript->Push_FadeEvent(FADE_TYPE::FADE_OUT, m_FadeOutTime);
+}
+
+int CTutorialGameMode::FadeOutUpdate()
+{
+	m_Acctime += DT;
+	if (m_Acctime >= m_FadeOutTime)
+	{
+		GamePlayStatic::ChangeLevel(CLevelMgr::GetInst()->LevelLoadFunc(LEVELBoss), LEVEL_STATE::PLAY);
+	}
+	return (UINT)TutorialState::FadeOut;
+}
+
+void CTutorialGameMode::FadeOutEnd()
+{
 }
 
 void CTutorialGameMode::Clear(TutorialEvents _state)

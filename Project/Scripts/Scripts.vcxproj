@@ -211,6 +211,12 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CDroidAR.h" />
     <ClInclude Include="CEditorCameraMoveScript.h" />
     <ClInclude Include="CEventListener.h" />
+    <ClInclude Include="CFadeUIScript.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="CGameMode.h" />
     <ClInclude Include="CGroundCrackScript.h" />
     <ClInclude Include="CHaloScript.h" />
@@ -260,9 +266,14 @@ call ScriptsCopy.bat</Command>
     <ClInclude Include="CTurret.h" />
     <ClInclude Include="CTurretBulletLine.h" />
     <ClInclude Include="CTurretShootingSystem.h" />
+    <ClInclude Include="CTutOpeningTex.h" />
     <ClInclude Include="CTutorialEndingEvent.h" />
     <ClInclude Include="CTutorialGameMode.h" />
     <ClInclude Include="CTutorialTarget.h" />
+    <ClInclude Include="CTutStartLightTex.h" />
+    <ClInclude Include="CTutStartTex.h" />
+    <ClInclude Include="CTutVictoryBG.h" />
+    <ClInclude Include="CTutVictoryTex.h" />
     <ClInclude Include="CVictoryBG.h" />
     <ClInclude Include="CVictoryTex.h" />
     <ClInclude Include="CVideoPlayer.h" />
@@ -328,6 +339,12 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CDroidAR_State.cpp" />
     <ClCompile Include="CEditorCameraMoveScript.cpp" />
     <ClCompile Include="CEventListener.cpp" />
+    <ClCompile Include="CFadeUIScript.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="CGroundCrackScript.cpp" />
     <ClCompile Include="CHaloScript.cpp" />
     <ClCompile Include="CImageUIScript.cpp" />
@@ -378,9 +395,14 @@ call ScriptsCopy.bat</Command>
     <ClCompile Include="CTurretBulletLine.cpp" />
     <ClCompile Include="CTurretScript_State.cpp" />
     <ClCompile Include="CTurretShootingSystem.cpp" />
+    <ClCompile Include="CTutOpeningTex.cpp" />
     <ClCompile Include="CTutorialEndingEvent.cpp" />
     <ClCompile Include="CTutorialGameMode.cpp" />
     <ClCompile Include="CTutorialTarget.cpp" />
+    <ClCompile Include="CTutStartLightTex.cpp" />
+    <ClCompile Include="CTutStartTex.cpp" />
+    <ClCompile Include="CTutVictoryBG.cpp" />
+    <ClCompile Include="CTutVictoryTex.cpp" />
     <ClCompile Include="CVictoryBG.cpp" />
     <ClCompile Include="CVictoryTex.cpp" />
     <ClCompile Include="CVideoPlayer.cpp" />

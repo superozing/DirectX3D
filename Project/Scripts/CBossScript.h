@@ -45,15 +45,15 @@ enum class BOSS_SOUND
 
 struct tBossStatus
 {
-	float MaxHP = 1300.f;
+	float MaxHP = 3000.f;
 	float CurHP = MaxHP;
 
 	float GroggyBar = 0.f;
 
 	float ATTDamage = 10.f;
-	float ATTSpeed	= 2.f;
+	float ATTSpeed	= 1.5f;
 
-	float EXsCoolTime = 5.f;
+	float EXsCoolTime = 4.f;
 
 	bool IsGroggy = false;
 	bool IsDead	  = false;
@@ -95,6 +95,7 @@ private:
 	// @@디버그용
 	int	 m_EXsType; // 현재 선택된 EX 타입
 	bool m_bDebug;
+	bool m_Resurrection;
 
 #pragma region About State
 
@@ -177,7 +178,7 @@ public:
 
 	CRoRStateMachine<CBossScript>* GetBossFSM() { return m_FSM; }
 
-	float GetGroggy() const { return m_BossStatus.GroggyBar; }
+	float		GetGroggy() const { return m_BossStatus.GroggyBar; }
 	tBossStatus GetBossStatus() const { return m_BossStatus; }
 
 	CGameObject* GetTarget() { return m_Target; }

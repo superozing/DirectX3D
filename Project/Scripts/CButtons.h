@@ -15,8 +15,12 @@ private:
 	vector<class CBtnUIScript*> m_vecButtons;
 
 public:
-	void AddIdx();
-	void SubIdx();
+	void		AddIdx();
+	void		SubIdx();
+	bool		m_started		= false;
+	bool		m_LevelChanged	= false;
+	float		m_acctime		= 0.f;
+	const float m_ThresholdTime = 3.f;
 
 	static void (*Setting)();
 

@@ -65,16 +65,18 @@ void CBossHP::begin()
 
 	Vec2 resol = CDevice::GetInst()->GetRenderResolution();
 
-	m_GameMode = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"GameMode")->GetScript<CBossLV>();
+	if (nullptr != CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"GameMode"))
+		m_GameMode = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"GameMode")->GetScript<CBossLV>();
 
-	m_BossHPText = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"BossHP")->GetScript<CTextUI>();
+	if (nullptr != CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"BossHP"))
+		m_BossHPText = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"BossHP")->GetScript<CTextUI>();
 }
 
 void CBossHP::tick()
 {
 	using namespace BOSSHP;
 
-	if (m_GameMode->GetCurLVState() != (int)BossLV_STATE::Playing)
+	if (nullptr != m_GameMode && m_GameMode->GetCurLVState() != (int)BossLV_STATE::Playing)
 		Transform()->SetRelativePos(Vec3(0.f, 1000.f, 100.f));
 	else
 		Transform()->SetRelativePos(Vec3(0.f, 440.f, 100.f));
