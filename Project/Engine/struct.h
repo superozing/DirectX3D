@@ -363,5 +363,6 @@ struct AfterImageInfo
 	float  fMaxLifeTime;
 	int	   iColorMode;
 	Vec4   AfterImageColor;
-	int	   Padding;
+	int	   bRenderFlags[10]; // 각 잔상들의 렌더 여부
+	int	   Padding[3];
 };

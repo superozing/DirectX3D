@@ -21,8 +21,9 @@ CAfterImage::CAfterImage()
 	m_info.TimeStep		= 0.1f;
 	m_info.fMaxLifeTime = 0.1f;
 	m_info.iColorMode	= (int)ColorMode::Original;
-	fUpdateTimer		= 0.1f;
-	bDisplay			= true;
+	std::fill(std::begin(m_info.bRenderFlags), std::end(m_info.bRenderFlags), 1);
+	fUpdateTimer = 0.1f;
+	bDisplay	 = true;
 
 	fSetLifeTime = m_info.fMaxLifeTime;
 
