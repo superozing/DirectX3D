@@ -22,7 +22,7 @@ CBossLV::CBossLV()
 	, m_EndingInTime(0.5f)
 	, m_EndingDelayTime(1.f)
 	, m_EndingOutTime(0.5f)
-	, m_EndingCutInTime(10.f)
+	, m_EndingCutInTime(5.f)
 	, m_Acctime(0.f)
 	, m_BGM{}
 	, m_SFX{}
@@ -163,6 +163,7 @@ void CBossLV::tick()
 
 void CBossLV::OpeningInBegin()
 {
+	m_Acctime = 0.f;
 	m_SFX[(UINT)BossLV_SFX::START]->Play(1.f, 1.f);
 }
 

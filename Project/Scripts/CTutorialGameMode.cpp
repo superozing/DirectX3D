@@ -240,7 +240,7 @@ void CTutorialGameMode::begin()
 
 	m_FSM->Begin();
 	CKeyMgr::GetInst()->RoRShowCursor(false);
-	m_FSM->SetCurState((int)TutorialState::EndingWait);
+	// m_FSM->SetCurState((int)TutorialState::EndingWait);
 }
 
 void CTutorialGameMode::tick()

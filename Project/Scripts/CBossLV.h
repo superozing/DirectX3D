@@ -45,8 +45,8 @@ private:
 	CGameObject*		 m_HUD;
 	CGameObject*		 m_BossUI;
 	class CFadeUIScript* m_FadeScript;
-	float				 m_FadeOutTime = 3.f;
-	float				 m_FadeInTime  = 3.f;
+	float				 m_FadeOutTime = 1.5f;
+	float				 m_FadeInTime  = 1.5f;
 
 	float m_OpeningInTime;
 	float m_OpeningDelayTime;
