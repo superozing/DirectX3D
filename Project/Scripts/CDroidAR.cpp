@@ -11,11 +11,14 @@
 #include "CShootingSystem_DroidAR.h"
 #include "CRoRStateMachine.h"
 
+static string state = "";
+
 CDroidAR::CDroidAR()
 	: CMonsterScript((UINT)SCRIPT_TYPE::DROIDAR)
 {
 	InitScriptParamUI();
 	InitStateMachine();
+	AppendScriptParam("State", SCRIPT_PARAM::STRING, &state);
 }
 
 CDroidAR::CDroidAR(const CDroidAR& _Origin)
@@ -23,6 +26,7 @@ CDroidAR::CDroidAR(const CDroidAR& _Origin)
 {
 	InitScriptParamUI();
 	InitStateMachine();
+	AppendScriptParam("State", SCRIPT_PARAM::STRING, &state);
 
 	// 구현하기
 }
@@ -42,17 +46,17 @@ void CDroidAR::begin()
 
 	// 제일 첫 상태로 들어가게 됨. (다른 설정을 해주지 않으면)
 	m_FSM->Begin();
-	
+
 	// 첫 상태를 지정
 	m_FSM->SetCurState((int)DROIDAR_STATE::MoveIng);
 
 	m_Target = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Azusa");
 
-	m_AttackCount =	m_MaxAttackCount;
+	m_AttackCount = m_MaxAttackCount;
 
 	auto pObj	  = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab/Monster/p_MuzzleFlash_DroidAR.pref")->Instantiate();
 	m_MuzzleFlash = pObj->GetScript<CMuzzleFlash_DroidAR>();
-						
+
 	m_MuzzleFlash->SetDroid(GetOwner());
 
 	GetOwner()->AddChild(pObj, true);
@@ -63,13 +67,14 @@ void CDroidAR::begin()
 void CDroidAR::tick()
 {
 	m_FSM->Update();
+	state = magic_enum::enum_name((DROIDAR_STATE)m_FSM->GetCurState());
 
 	// 아무 것도 안 하고 있는 상태일 경우
 	if ((int)DROIDAR_STATE::NormalIdle == m_FSM->GetCurState())
 	{
 		// 사격 범위 내에 있는지 체크
 		if (CheckTargetInRange())
-		{ 
+		{
 			// 공격 쿨타임 체크
 			CheckAttackCooldown();
 		}
@@ -86,7 +91,7 @@ void CDroidAR::tick()
 
 void CDroidAR::LoadAsset()
 {
-	//CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Punch);
+	// CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Punch);
 }
 
 void CDroidAR::CheckAttackCooldown()
@@ -104,7 +109,7 @@ void CDroidAR::CheckAttackCooldown()
 			m_IsActiveAttack = true;
 		}
 	}
-	
+
 	// 공격 중인 경우
 	if (m_IsActiveAttack)
 	{
@@ -124,9 +129,9 @@ void CDroidAR::CheckVital()
 
 bool CDroidAR::CheckTargetInRange()
 {
-	//distance가 범위 내에 있는지 체크
+	// distance가 범위 내에 있는지 체크
 	Vec3 PlayerPos = m_Target->Transform()->GetWorldPos();
-	Vec3 DroidPos = GetOwner()->Transform()->GetWorldPos();
+	Vec3 DroidPos  = GetOwner()->Transform()->GetWorldPos();
 
 	float dist = Vec3::Distance(DroidPos, PlayerPos);
 
@@ -153,7 +158,6 @@ void CDroidAR::InitStateMachine()
 
 void CDroidAR::InitScriptParamUI()
 {
-
 }
 
 void CDroidAR::RotationDirectionToPlayer()
@@ -162,7 +166,8 @@ void CDroidAR::RotationDirectionToPlayer()
 	Vec3 DroidPos  = GetOwner()->Transform()->GetWorldPos();
 
 	Vec3 dir = PlayerPos - DroidPos;
-	GetOwner()->Transform()->SetRelativePos(DroidPos + (dir.Normalize() * 200.f * DT));
+
 	dir.y = 0.f;
+	GetOwner()->Transform()->SetRelativePos(DroidPos + (dir.Normalize() * 200.f * DT));
 	GetOwner()->Transform()->SetDir(dir.Normalize());
 }

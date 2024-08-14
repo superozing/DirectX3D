@@ -402,10 +402,10 @@ void CPlayerScript::tick()
 		m_tStatus.MoveSpeed = 5 * originSpeed;
 	}
 
-	// if (KEY_TAP(CPlayerController::Flip))
-	//{
-	//	SetRight(!IsRight());
-	// }
+	if (KEY_TAP(CPlayerController::Flip) && m_iCorverType != CoverType::Normal)
+	{
+		SetRight(!IsRight());
+	}
 
 	// 데미지 처리
 	if (m_tStatus.IsDamaged == true)
@@ -530,8 +530,9 @@ void CPlayerScript::CameraMove()
 					vOffset.x -= CPlayerController::Sensitivity * CamRotSpeed * DT;
 
 				// 대시 스킬과 그 외 상태들의 각도 범위 제한
-				vOffset.x =
-					state == (int)PLAYER_STATE::SkillDash ? clamp(vOffset.x, -45.f, 45.f) : clamp(vOffset.x, 0.f, 45.f);
+				vOffset.x = state == (int)PLAYER_STATE::SkillDash ? clamp(vOffset.x, -45.f, 45.f)
+							: IsRight()							  ? clamp(vOffset.x, -5.f, 35.f)
+																  : clamp(vOffset.x, -35.f, 5.f);
 			}
 			else
 			{

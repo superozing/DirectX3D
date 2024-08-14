@@ -245,7 +245,7 @@ void CTutorialGameMode::begin()
 
 	m_FSM->Begin();
 	CKeyMgr::GetInst()->RoRShowCursor(false);
-	// m_FSM->SetCurState((int)TutorialState::EndingWait);
+	m_FSM->SetCurState((int)TutorialState::CoverLowWait);
 }
 
 void CTutorialGameMode::tick()
@@ -354,7 +354,6 @@ void CTutorialGameMode::DashBegin()
 
 int CTutorialGameMode::DashUpdate()
 {
-	// TODO : 끝에 도달하면 수고했다는 메시지랑 다음 길 안내정도 스크립트 띄워주면 좋을듯
 	auto pPlayerFSM = m_pPlayerScript->GetStateMachine();
 	if (pPlayerFSM->StateBegin((int)PLAYER_STATE::SkillDash))
 	{
@@ -491,6 +490,7 @@ int CTutorialGameMode::CoverHighUpdate()
 
 void CTutorialGameMode::CoverHighEnd()
 {
+	m_pArona->Message("Congratulations!", 340, 3.f);
 	Clear(TutorialEvents::CoverHigh);
 }
 
@@ -519,9 +519,10 @@ void CTutorialGameMode::CoverJumpBegin()
 
 int CTutorialGameMode::CoverJumpUpdate()
 {
-	if (IsClear(TutorialEvents::CoverJump))
+	auto pPlayerFSM = m_pPlayerScript->GetStateMachine();
+	if (pPlayerFSM->StateBegin((int)PLAYER_STATE::MoveJump))
 	{
-		return (int)TutorialState::CoverJumpWait;
+		return (int)TutorialState::CoverLowWait;
 	}
 	return m_FSM->GetCurState();
 }
@@ -556,7 +557,7 @@ void CTutorialGameMode::CoverLowBegin()
 	CGameObject* pObj	  = CAssetMgr::GetInst()->Load<CPrefab>(PREFDroidAR)->Instantiate();
 	int			 LayerIdx = pObj->GetLayerIdx();
 
-	pObj->Transform()->SetRelativePos(Vec3(-28.f, -109.f, 16105.f));
+	pObj->Transform()->SetRelativePos(Vec3(-28.f, -125.f, 16105.f));
 	pObj->SetName("DroidAR1");
 	GamePlayStatic::SpawnGameObject(pObj, LayerIdx, true);
 
@@ -564,7 +565,7 @@ void CTutorialGameMode::CoverLowBegin()
 
 	pObj = CAssetMgr::GetInst()->Load<CPrefab>(PREFDroidAR)->Instantiate();
 
-	pObj->Transform()->SetRelativePos(Vec3(198.f, -109.f, 17443.f));
+	pObj->Transform()->SetRelativePos(Vec3(198.f, -125.f, 17443.f));
 	pObj->SetName("DroidAR2");
 	GamePlayStatic::SpawnGameObject(pObj, LayerIdx, true);
 
@@ -581,6 +582,7 @@ int CTutorialGameMode::CoverLowUpdate()
 
 void CTutorialGameMode::CoverLowEnd()
 {
+	m_pArona->Message("Congratulations!", 340, 3.f);
 	Clear(TutorialEvents::CoverLow);
 }
 

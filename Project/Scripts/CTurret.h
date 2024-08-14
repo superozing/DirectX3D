@@ -2,7 +2,7 @@
 #include "CMonsterScript.h"
 #include <Engine\CPhysXMgr.h>
 
-#define AttackTimer 5.f
+#define AttackTimer 1.f
 #define AttackDistance 2500.f
 
 enum class TURRET_STATE

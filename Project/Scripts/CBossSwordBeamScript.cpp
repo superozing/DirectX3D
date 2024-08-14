@@ -65,6 +65,7 @@ void CBossSwordBeamScript::tick()
 
 void CBossSwordBeamScript::OnHit()
 {
+	m_Target->GetScript<CPlayerScript>()->SetDamagedMove(true);
 	m_Target->GetScript<CPlayerScript>()->Hit(m_Damage);
 }
 

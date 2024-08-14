@@ -100,6 +100,7 @@ void CMegaFistScript::tick()
 
 void CMegaFistScript::OnHit()
 {
+	m_Target->GetScript<CPlayerScript>()->SetDamagedMove(true);
 	m_Target->GetScript<CPlayerScript>()->Hit(m_Damage);
 }
 

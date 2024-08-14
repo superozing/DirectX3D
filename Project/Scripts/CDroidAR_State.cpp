@@ -53,7 +53,7 @@ int CDroidAR::NormalIdleUpdate()
 	// 만약 업데이트 중에 다른 곳을 가고싶다면?
 
 	// 예를 들어 노말 아이들 이 끝나자마자 attack으로 가고 싶다면?
-	//if (!Animator3D()->IsPlayable()) // -> 애니메이션이 끝난 상태.
+	// if (!Animator3D()->IsPlayable()) // -> 애니메이션이 끝난 상태.
 	//	return (int)DROIDAR_STATE::NormalAttackStart; // 가고싶은 state로 반환하기.
 	// 또는 SetCurState()를 사용해서 스테이트를 바꿀 수 있다.
 
@@ -78,7 +78,6 @@ void CDroidAR::NormalReloadBegin()
 	m_AttackCount = m_MaxAttackCount;
 	Animator3D()->Play((int)DROIDAR_STATE::NormalReload, 0);
 }
-
 
 int CDroidAR::NormalReloadUpdate()
 {
@@ -154,6 +153,13 @@ int CDroidAR::NormalAttackDelayUpdate()
 	if (!Animator3D()->IsPlayable())
 		return (int)DROIDAR_STATE::NormalAttackIng;
 
+	Vec3 PlayerPos = m_Target->Transform()->GetWorldPos();
+	Vec3 DroidPos  = GetOwner()->Transform()->GetWorldPos();
+
+	Vec3 dir = PlayerPos - DroidPos;
+	dir.y	 = 0.f;
+	GetOwner()->Transform()->SetDir(dir.Normalize());
+
 	return m_FSM->GetCurState();
 }
 
@@ -187,7 +193,7 @@ int CDroidAR::MoveIngUpdate()
 {
 	if (CheckTargetInRange())
 		return (int)DROIDAR_STATE::MoveEnd;
-	
+
 	RotationDirectionToPlayer();
 
 	return m_FSM->GetCurState();
@@ -231,6 +237,8 @@ void CDroidAR::VitalPanicEnd()
 void CDroidAR::VitalDeathBegin()
 {
 	Animator3D()->Play((int)DROIDAR_STATE::VitalDeath, 0);
+	if (PhysX())
+		GetOwner()->DeleteComponent(COMPONENT_TYPE::PHYSX);
 }
 
 int CDroidAR::VitalDeathUpdate()
@@ -253,4 +261,3 @@ int CDroidAR::VitalDeathUpdate()
 void CDroidAR::VitalDeathEnd()
 {
 }
-

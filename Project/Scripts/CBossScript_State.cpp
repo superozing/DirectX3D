@@ -173,6 +173,7 @@ int CBossScript::EXs1Update()
 
 			if (L"Azusa" == strobj)
 			{
+				m_Target->GetScript<CPlayerScript>()->SetDamagedMove(true);
 				m_Target->GetScript<CPlayerScript>()->Hit(5.f);
 			}
 

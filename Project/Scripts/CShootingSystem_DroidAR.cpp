@@ -25,14 +25,12 @@ void CShootingSystem_DroidAR::SetShootingDirection(CPlayerScript* _pPlayer)
 
 void CShootingSystem_DroidAR::ShootDroidARBulletRay()
 {
-	tRoRHitInfo hitInfo	  = {};
+	tRoRHitInfo hitInfo = {};
 
-	bool isBulletHit =
-		CPhysXMgr::GetInst()->PerformRaycast(
-			m_pDroidAR->Transform()->GetWorldPos(), 
-			m_ShootingDirection, hitInfo, 
-			(UINT)LAYER::LAYER_MONSTER_SKILL, 
-			RayCastDebugFlag::AllVisible);
+	Vec3 vStartPos = m_pDroidAR->Transform()->GetWorldPos();
+	vStartPos.y += m_pDroidAR->Transform()->GetRelativeScale().y / 2.f;
+	bool isBulletHit = CPhysXMgr::GetInst()->PerformRaycast(
+		vStartPos, m_ShootingDirection, hitInfo, (UINT)LAYER::LAYER_MONSTER_SKILL, RayCastDebugFlag::AllVisible);
 
 	if (isBulletHit)
 	{
@@ -41,25 +39,24 @@ void CShootingSystem_DroidAR::ShootDroidARBulletRay()
 		{
 		case LAYER::LAYER_PLANE:
 		case LAYER::LAYER_CEIL:
-		case LAYER::LAYER_WALL: 
-		{
+		case LAYER::LAYER_WALL: {
 			// 피격 사운드 재생
 			m_vecSound[(UINT)ShootingSystemDroidARSoundType::HitWall]->Play(1, 1.f, true);
 		}
-			break;
+		break;
 
-		case LAYER::LAYER_PLAYER:
-		{
+		case LAYER::LAYER_PLAYER: {
 			// 플레이어에게 데미지 넣어주기.
 			auto pPlayer = hitInfo.pOtherObj->GetScript<CPlayerScript>();
+			pPlayer->SetDamagedMove(true);
 			pPlayer->Hit(m_pDroidARScript->GetDamageVal());
-			
+
 			// 피격 사운드 재생
 			m_vecSound[(UINT)ShootingSystemDroidARSoundType::HitPlayer]->Play(1, 1.f, true);
 
 			m_DamagedDirectionMgr->AddDamagedDirection(Transform()->GetWorldPos(), 0.1f);
 		}
-			break;
+		break;
 
 		default:
 			break;
@@ -75,11 +72,10 @@ void CShootingSystem_DroidAR::begin()
 	m_vecSound[(UINT)ShootingSystemDroidARSoundType::HitPlayer] =
 		CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Shot_Impact_Hit_02);
 
-	m_pDroidAR = GetOwner();
+	m_pDroidAR		 = GetOwner();
 	m_pDroidARScript = GetOwner()->GetScript<CDroidAR>();
 
-
-	auto& HUDChild	 = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"HUD")->GetChild();
+	auto& HUDChild = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"HUD")->GetChild();
 
 	for (int i = 0; i < HUDChild.size(); ++i)
 	{

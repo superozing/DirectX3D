@@ -175,7 +175,6 @@ void CPlayerScript::StandIdleBegin()
 
 int CPlayerScript::StandIdleUpdate()
 {
-	// TODO : 재장전 조건 추가 필요 (현재 탄창이 최대 탄창과 같으면 x)
 	// 재장전
 	if (KEY_TAP(CPlayerController::Reload))
 		return (int)PLAYER_STATE::StandReload;
@@ -185,8 +184,7 @@ int CPlayerScript::StandIdleUpdate()
 		return (int)PLAYER_STATE::StandAttackStart;
 
 	// 사격
-	if ((KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack)) &&
-		m_pShootingSystem->IsShootAvailable())
+	if ((KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack)))
 		return (int)PLAYER_STATE::StandAttackIng;
 
 	return m_FSM->GetCurState();
@@ -311,6 +309,9 @@ int CPlayerScript::StandAttackEndUpdate()
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::StandIdle;
 
+	if (KEY_TAP(CPlayerController::Reload))
+		return (int)PLAYER_STATE::StandReload;
+
 	// 사격 준비
 	if (KEY_TAP(CPlayerController::Zoom))
 		return (int)PLAYER_STATE::StandAttackStart;
@@ -353,8 +354,7 @@ int CPlayerScript::KneelIdleUpdate()
 		return (int)PLAYER_STATE::MoveJump;
 
 	// 사격
-	if ((KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack)) &&
-		m_pShootingSystem->IsShootAvailable())
+	if ((KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack)))
 		return (int)PLAYER_STATE::KneelAttackIng;
 
 	return m_FSM->GetCurState();
@@ -479,6 +479,9 @@ int CPlayerScript::KneelAttackEndUpdate()
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::KneelIdle;
 
+	if (KEY_TAP(CPlayerController::Reload))
+		return (int)PLAYER_STATE::KneelReload;
+
 	// 사격 준비
 	if (KEY_TAP(CPlayerController::Zoom))
 		return (int)PLAYER_STATE::KneelAttackStart;
@@ -580,6 +583,9 @@ int CPlayerScript::MoveEndNormalUpdate()
 	if (!Animator3D()->IsPlayable())
 		return (int)PLAYER_STATE::NormalIdle;
 
+	if (KEY_TAP(CPlayerController::Reload))
+		return (int)PLAYER_STATE::NormalReload;
+
 	// 움직임종료상태 움직임 속도 조절 - 좌우 움직일때 어색함으로 삭제
 	//{
 	//	int maxFrm = Animator3D()->GetCurClipLength();
@@ -627,6 +633,9 @@ int CPlayerScript::MoveEndStandUpdate()
 		m_pShootingSystem->IsShootAvailable())
 		return (int)PLAYER_STATE::StandAttackIng;
 
+	if (KEY_TAP(CPlayerController::Reload))
+		return (int)PLAYER_STATE::StandReload;
+
 	return m_FSM->GetCurState();
 }
 
@@ -654,6 +663,9 @@ int CPlayerScript::MoveEndKneelUpdate()
 	if ((KEY_TAP(CPlayerController::Attack) || KEY_PRESSED(CPlayerController::Attack)) &&
 		m_pShootingSystem->IsShootAvailable())
 		return (int)PLAYER_STATE::KneelAttackIng;
+
+	if (KEY_TAP(CPlayerController::Reload))
+		return (int)PLAYER_STATE::KneelReload;
 
 	return m_FSM->GetCurState();
 }

@@ -100,6 +100,9 @@ void CTurret::VitalDeathBegin()
 	layeridx = pObj->GetLayerIdx();
 	GamePlayStatic::SpawnGameObject(pObj, layeridx);
 	pObj->GetScript<CParticleSpawnScript>()->SetParticleInfo(CurPos, 1.f);
+
+	if (PhysX())
+		GetOwner()->DeleteComponent(COMPONENT_TYPE::PHYSX);
 }
 
 int CTurret::VitalDeathUpdate()

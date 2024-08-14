@@ -104,6 +104,8 @@ void CCoverArea::tick()
 	if (KEY_TAP(CPlayerController::Cover) && m_bPlayerCover)
 	{
 		m_pScript->SetCoverType(CoverType::Normal);
+		m_bRight = true;
+		m_pScript->SetRight(m_bRight);
 		m_bPlayerCover = false;
 
 		// Area들 UI 그리기

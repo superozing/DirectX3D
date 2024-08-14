@@ -97,6 +97,7 @@ void CBossMissileScript::tick()
 
 void CBossMissileScript::OnHit()
 {
+	m_Target->GetScript<CPlayerScript>()->SetDamagedMove(true);
 	m_Target->GetScript<CPlayerScript>()->Hit(m_Damage);
 
 	// CLogMgr::GetInst()->AddLog(Log_Level::INFO, L"Azusa hit");

@@ -48,11 +48,12 @@ void CTurretShootingSystem::ShootTurretBulletRay()
 		case LAYER::LAYER_PLAYER: {
 			// 플레이어에게 데미지 넣어주기.
 			auto pPlayer = hitInfo.pOtherObj->GetScript<CPlayerScript>();
+			pPlayer->SetDamagedMove(true);
 			pPlayer->Hit(m_pTurretObj->GetDamageVal());
 
 			// 피격 사운드 재생
 			m_vecSound[(UINT)ShootingSystemTurretSoundType::HitPlayer]->Play(1, 1.f, true);
-			
+
 			m_DamagedDirectionMgr->AddDamagedDirection(Transform()->GetWorldPos(), 0.1f);
 		}
 		break;
@@ -72,7 +73,6 @@ void CTurretShootingSystem::begin()
 		CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Shot_Impact_Hit_02);
 
 	m_pTurretObj = GetOwner()->GetScript<CTurret>();
-
 
 	auto& HUDChild = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"HUD")->GetChild();
 
