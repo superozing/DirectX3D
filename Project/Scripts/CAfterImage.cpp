@@ -206,14 +206,14 @@ void CAfterImage::SaveToFile(ofstream& fout)
 	fout << TagAfterImageCount << endl;
 	fout << m_info.NodeCount << endl;
 
-	fout << TagAfterImageTimeStep << endl;
-	fout << m_info.TimeStep << endl;
-
 	fout << TagRenderNode << endl;
 	fout << (int)bDisplay << endl;
 
+	fout << TagAfterImageTimeStep << endl;
+	fout << m_info.TimeStep << endl;
+
 	fout << TagMaxLifeTime << endl;
-	fout << m_info.fMaxLifeTime << endl;
+	fout << fSetLifeTime << endl;
 
 	fout << TagColorType << endl;
 	fout << m_info.iColorMode << endl;
@@ -228,11 +228,11 @@ void CAfterImage::LoadFromFile(ifstream& fin)
 	Utils::GetLineUntilString(fin, TagAfterImageCount);
 	fin >> m_info.NodeCount;
 
-	Utils::GetLineUntilString(fin, TagAfterImageTimeStep);
-	fin >> m_info.TimeStep;
-
 	Utils::GetLineUntilString(fin, TagRenderNode);
 	fin >> bDisplay;
+
+	Utils::GetLineUntilString(fin, TagAfterImageTimeStep);
+	fin >> m_info.TimeStep;
 
 	Utils::GetLineUntilString(fin, TagMaxLifeTime);
 	fin >> m_info.fMaxLifeTime;
