@@ -4,7 +4,8 @@ class CMegaFistScript : public CProjectileScript
 {
 private:
 	class CGameObject* m_Shooter; // 투사체를 발사하는 객체
-	CGameObject*	   m_Target;  // 투사체가 향하는 객체
+	class CBossScript* m_BossScript;
+	CGameObject*	   m_Target; // 투사체가 향하는 객체
 
 	Vec3 m_TargetPos; // 투사체가 향하는 객체 초기 위치
 

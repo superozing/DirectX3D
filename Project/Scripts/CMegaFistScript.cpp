@@ -12,6 +12,7 @@
 #include "CPlayerScript.h"
 #include "CBossScript.h"
 #include "CRoRStateMachine.h"
+#include "CDamagedDirectionMgr.h"
 
 static string shooter = "";
 static string target  = "";
@@ -102,6 +103,7 @@ void CMegaFistScript::OnHit()
 {
 	m_Target->GetScript<CPlayerScript>()->SetDamagedMove(true);
 	m_Target->GetScript<CPlayerScript>()->Hit(m_Damage);
+	m_BossScript->GetDmgDirMgr()->AddDamagedDirection(m_Shooter->Transform()->GetWorldPos(), 0.2f);
 }
 
 void CMegaFistScript::InitMegaFistInfo(CGameObject* _Shooter, CGameObject* _Target, Vec3 _Pos, float _InitSpeed,
@@ -109,6 +111,7 @@ void CMegaFistScript::InitMegaFistInfo(CGameObject* _Shooter, CGameObject* _Targ
 {
 	m_Shooter = _Shooter;
 	m_Target  = _Target;
+	m_BossScript = _Shooter->GetScript<CBossScript>();
 	CProjectileScript::InitProjectileInfo(_Pos, _InitSpeed, _MaxSpeed, _LifeSpan, _Damage, _Explode, _Alive);
 
 	// 타겟 위치 기준 바닥보다 조금 더 위를 노리도록 설정

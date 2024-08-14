@@ -85,6 +85,8 @@ private:
 	class CBossBulletShellSpawner* m_BulletShell;
 	float						   m_BulletInterval; // 탄피 생성 간격 체크용 (간격을 설정하는 것 X)
 
+	class CDamagedDirectionMgr* m_DamagedDirectionMgr; // 피격 UI
+
 	bool  m_Raycast;
 	float m_RaycastInterval;
 
@@ -176,6 +178,8 @@ public:
 	void LoadSound();
 	void CheckTargetPos();
 
+	CDamagedDirectionMgr* GetDmgDirMgr() { return m_DamagedDirectionMgr; }
+	
 	CRoRStateMachine<CBossScript>* GetBossFSM() { return m_FSM; }
 
 	float		GetGroggy() const { return m_BossStatus.GroggyBar; }

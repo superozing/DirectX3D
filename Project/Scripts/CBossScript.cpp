@@ -17,6 +17,7 @@
 #include "CBossSwordBeamScript.h"
 #include "CBulletLineScript.h"
 #include "CParticleSpawnScript.h"
+#include "CDamagedDirectionMgr.h"
 
 #include "CBossLV.h"
 
@@ -137,6 +138,14 @@ void CBossScript::begin()
 
 	m_BulletShell = new CBossBulletShellSpawner;
 	GetOwner()->AddComponent(m_BulletShell);
+
+	auto& HUDChild = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"HUD")->GetChild();
+
+	for (int i = 0; i < HUDChild.size(); ++i)
+	{
+		if (HUDChild[i]->GetName() == L"DmgDir")
+			m_DamagedDirectionMgr = HUDChild[i]->GetScript<CDamagedDirectionMgr>();
+	}
 
 	if (nullptr != CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"GameMode"))
 		m_GameMode = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"GameMode")->GetScript<CBossLV>();

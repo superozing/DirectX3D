@@ -3,6 +3,7 @@
 
 #include "CBossScript.h"
 #include "CPlayerScript.h"
+#include "CDamagedDirectionMgr.h"
 
 CBossSwordBeamScript::CBossSwordBeamScript()
 	: CProjectileScript((UINT)SCRIPT_TYPE::BOSSSWORDBEAMSCRIPT)
@@ -67,6 +68,7 @@ void CBossSwordBeamScript::OnHit()
 {
 	m_Target->GetScript<CPlayerScript>()->SetDamagedMove(true);
 	m_Target->GetScript<CPlayerScript>()->Hit(m_Damage);
+	m_BossScript->GetDmgDirMgr()->AddDamagedDirection(m_Shooter->Transform()->GetWorldPos(), 0.3f);
 }
 
 void CBossSwordBeamScript::BeginOverlap(CPhysX* _Collider, CGameObject* _OtherObj, CPhysX* _OtherCollider)
@@ -91,6 +93,7 @@ void CBossSwordBeamScript::InitSwordBeamInfo(CGameObject* _Shooter, CGameObject*
 {
 	m_Shooter	  = _Shooter;
 	m_Target	  = _Target;
+	m_BossScript  = _Shooter->GetScript<CBossScript>();
 	m_TargetPos	  = _TargetPos;
 	m_TargetPos.y = m_Shooter->Transform()->GetRelativePos().y;
 	CProjectileScript::InitProjectileInfo(_Pos, _InitSpeed, _MaxSpeed, _LifeSpan, _Damage, _Explode, _Alive);
