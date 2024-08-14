@@ -32,7 +32,11 @@ enum class TutorialGameModeSoundType
 	TutorialStart,
 	BGM,
 	DoorOpen,
-	END
+	MissionStart1,
+	MissionStart2,
+	MissionClear,
+	VICTORY_BGM,
+	END,
 };
 
 enum class TutorialEvents

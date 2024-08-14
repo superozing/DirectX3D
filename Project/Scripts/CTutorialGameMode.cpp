@@ -5,6 +5,7 @@
 #include <Engine\CLevel.h>
 #include <Engine\CMemoryPoolMgr.h>
 #include <Engine\CRenderMgr.h>
+#include <Engine\CRandomMgr.h>
 
 #include "CPlayerScript.h"
 #include "CPlayerController.h"
@@ -152,8 +153,16 @@ void CTutorialGameMode::begin()
 		CAssetMgr::GetInst()->Load<CSound>(SNDStep_by_Step);
 	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::DoorOpen] =
 		CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Door_Open);
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::MissionStart1] =
+		CAssetMgr::GetInst()->Load<CSound>(SNDArona_Academy_Talk_2);
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::MissionStart2] =
+		CAssetMgr::GetInst()->Load<CSound>(SNDArona_Academy_Talk_4);
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::MissionClear] =
+		CAssetMgr::GetInst()->Load<CSound>(SNDArona_Work_In_1);
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::VICTORY_BGM] =
+		CAssetMgr::GetInst()->Load<CSound>(SNDUI_Victory_ST_01);
 
-	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::TutorialStart]->Play(1);
+	// m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::TutorialStart]->Play(1);
 	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::BGM]->Play(0, 1.f);
 
 	m_FadeScript = pLevel->FindObjectByName(L"FadeObject")->GetScript<CFadeUIScript>();
@@ -283,6 +292,9 @@ void CTutorialGameMode::BasicMoveBegin()
 	PrevPos = m_pPlayer->Transform()->GetRelativePos();
 
 	m_pArona->Message("Press W, A, S, D to Move", 490, -1.f);
+
+	int rndm = CRandomMgr::GetInst()->GetRandomInt(2);
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::MissionStart1 + rndm]->Play(1.f);
 }
 
 int CTutorialGameMode::BasicMoveUpdate()
@@ -327,6 +339,8 @@ int CTutorialGameMode::BasicMoveUpdate()
 void CTutorialGameMode::BasicMoveEnd()
 {
 	m_pArona->Message("Congratulations!", 340, 3.f);
+
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::MissionClear]->Play(1.f);
 	Clear(TutorialEvents::BasicMove);
 	m_fTargetDistance = 0.f;
 }
@@ -353,6 +367,9 @@ void CTutorialGameMode::DashWaitEnd()
 void CTutorialGameMode::DashBegin()
 {
 	m_pArona->Message("Press Space to Dash And JumpUp The Rayzer", 800, -1.f);
+
+	int rndm = CRandomMgr::GetInst()->GetRandomInt(2);
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::MissionStart1 + rndm]->Play(1.f);
 }
 
 int CTutorialGameMode::DashUpdate()
@@ -374,6 +391,7 @@ void CTutorialGameMode::DashEnd()
 {
 	m_pArona->Message("Congratulations!", 340, 3.f);
 	Clear(TutorialEvents::Dash);
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::MissionClear]->Play(1.f);
 }
 
 void CTutorialGameMode::ShootingWaitBegin()
@@ -398,6 +416,9 @@ void CTutorialGameMode::ShootingWaitEnd()
 void CTutorialGameMode::ShootingBegin()
 {
 	m_pArona->Message("Hit all targets", 290, -1.f);
+
+	int rndm = CRandomMgr::GetInst()->GetRandomInt(2);
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::MissionStart1 + rndm]->Play(1.f);
 	for (size_t i = 0; i < SPAWNERCNT; i++)
 	{
 		m_vecTutorialTargets.push_back(m_vecTargetSpawners[i]->SpawnObject()->GetScript<CTutorialTarget>());
@@ -444,6 +465,7 @@ void CTutorialGameMode::ShootingEnd()
 
 	m_pArona->Message("Congratulations!", 340, 3.f);
 	Clear(TutorialEvents::Shooting);
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::MissionClear]->Play(1.f);
 }
 
 void CTutorialGameMode::CoverHighWaitBegin()
@@ -468,6 +490,8 @@ void CTutorialGameMode::CoverHighWaitEnd()
 void CTutorialGameMode::CoverHighBegin()
 {
 	m_pArona->Message("Go to the Cover And Press LShift to Cover", 750.f);
+	int rndm = CRandomMgr::GetInst()->GetRandomInt(2);
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::MissionStart1 + rndm]->Play(1.f);
 
 	CGameObject* pObj	  = CAssetMgr::GetInst()->Load<CPrefab>(PREFTurret)->Instantiate();
 	int			 LayerIdx = pObj->GetLayerIdx();
@@ -502,6 +526,7 @@ void CTutorialGameMode::CoverHighEnd()
 {
 	m_pArona->Message("Congratulations!", 340, 3.f);
 	Clear(TutorialEvents::CoverHigh);
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::MissionClear]->Play(1.f);
 }
 
 void CTutorialGameMode::CoverJumpWaitBegin()
@@ -525,6 +550,9 @@ void CTutorialGameMode::CoverJumpWaitEnd()
 void CTutorialGameMode::CoverJumpBegin()
 {
 	m_pArona->Message("Go to Cover And Press Space to Jump", 700.f);
+
+	int rndm = CRandomMgr::GetInst()->GetRandomInt(2);
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::MissionStart1 + rndm]->Play(1.f);
 }
 
 int CTutorialGameMode::CoverJumpUpdate()
@@ -541,6 +569,7 @@ void CTutorialGameMode::CoverJumpEnd()
 {
 	m_pArona->Message("Congratulations!", 340, 3.f);
 	Clear(TutorialEvents::CoverJump);
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::MissionClear]->Play(1.f);
 }
 
 void CTutorialGameMode::CoverLowWaitBegin()
@@ -564,6 +593,9 @@ void CTutorialGameMode::CoverLowWaitEnd()
 void CTutorialGameMode::CoverLowBegin()
 {
 	m_pArona->Message("Terminate Enemy", 350.f);
+
+	int rndm = CRandomMgr::GetInst()->GetRandomInt(2);
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::MissionStart1 + rndm]->Play(1.f);
 
 	CGameObject* pObj	  = CAssetMgr::GetInst()->Load<CPrefab>(PREFDroidAR)->Instantiate();
 	int			 LayerIdx = pObj->GetLayerIdx();
@@ -595,6 +627,7 @@ void CTutorialGameMode::CoverLowEnd()
 {
 	m_pArona->Message("Congratulations!", 340, 3.f);
 	Clear(TutorialEvents::CoverLow);
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::MissionClear]->Play(1.f);
 }
 
 void CTutorialGameMode::EndingWaitBegin()
@@ -615,6 +648,7 @@ int CTutorialGameMode::EndingWaitUpdate()
 void CTutorialGameMode::EndingWaitEnd()
 {
 	m_pArona->Message("All Complete! You Finish!!!", 470.f);
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::MissionClear]->Play(1.f);
 }
 
 void CTutorialGameMode::EndingInBegin()

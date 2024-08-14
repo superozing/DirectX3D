@@ -63,6 +63,10 @@ enum class PlayerSoundType
 	THROW_UP,
 	THROW_AWAY,
 	SKILLEX,
+	HIT1,
+	HIT2,
+	HIT3,
+	VICTORY,
 	End,
 };
 
@@ -140,19 +144,8 @@ public:
 
 	/// @brief 플레이어 캐릭터에 파라미터 만큼 데미지를 줍니다. 현재 체력이 0 이하로 떨어지면 Dead상태로 만듭니다.
 	/// 아직은 회피율을 계산하지 않습니다.
-	bool Hit(float _damage)
-	{
-		if (IsInvincivility())
-			return false;
+	bool Hit(float _damage);
 
-		m_tStatus.curHealth -= _damage;
-
-		this->SetDamaged(true);
-
-		if (m_tStatus.curHealth <= 0.f)
-			m_tStatus.IsDead = true;
-		return true;
-	}
 	/// @brief 플레이어 캐릭터에게 파라미터 만큼 회복을 합니다. 최대체력 캡이 보장됩니다.
 	void Recursive(float _heal)
 	{

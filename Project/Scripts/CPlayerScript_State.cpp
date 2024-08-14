@@ -868,6 +868,7 @@ void CPlayerScript::VictoryStartBegin()
 	Animator3D()->Play((int)PLAYER_STATE::VictoryStart, 0);
 	m_pSpringArm->SetInfo(m_mSpringInfos[PLAYER_STATE::VictoryStart]);
 	m_pSpringArm->SetDirOffset(Vec3(0.f, 0.f, 0.f));
+	m_vecSound[(UINT)PlayerSoundType::VICTORY]->Play(1.f);
 }
 
 int CPlayerScript::VictoryStartUpdate()

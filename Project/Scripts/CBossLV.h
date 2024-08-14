@@ -29,9 +29,9 @@ enum class BossLV_BGM
 enum class BossLV_SFX
 {
 	START,
+	START_ARONA,
 	WARNING,
 	VICTORY_BGM,
-	VICTORY,
 	END,
 };
 
@@ -45,6 +45,7 @@ private:
 	CGameObject*		 m_HUD;
 	CGameObject*		 m_BossUI;
 	class CFadeUIScript* m_FadeScript;
+	class CArona*		 m_pArona;
 	float				 m_FadeOutTime = 1.5f;
 	float				 m_FadeInTime  = 1.5f;
 

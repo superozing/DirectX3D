@@ -7,6 +7,7 @@
 #include "CRoRStateMachine.h"
 #include "CPlayerScript.h"
 #include "CFadeUIScript.h"
+#include "CArona.h"
 
 static string state = "";
 
@@ -130,14 +131,14 @@ void CBossLV::LoadSoundAsset()
 	pSound						   = CAssetMgr::GetInst()->Load<CSound>(SNDUI_START_01);
 	m_SFX[(UINT)BossLV_SFX::START] = pSound;
 
+	pSound								 = CAssetMgr::GetInst()->Load<CSound>(SNDArona_R53_2_Battle_Warning_2_1);
+	m_SFX[(UINT)BossLV_SFX::START_ARONA] = pSound;
+
 	pSound							 = CAssetMgr::GetInst()->Load<CSound>(SNDUI_Alarm);
 	m_SFX[(UINT)BossLV_SFX::WARNING] = pSound;
 
 	pSound								 = CAssetMgr::GetInst()->Load<CSound>(SNDUI_Victory_ST_01);
 	m_SFX[(UINT)BossLV_SFX::VICTORY_BGM] = pSound;
-
-	pSound							 = CAssetMgr::GetInst()->Load<CSound>(SNDAzusa_Tactic_Victory_1);
-	m_SFX[(UINT)BossLV_SFX::VICTORY] = pSound;
 }
 
 void CBossLV::begin()
@@ -153,6 +154,8 @@ void CBossLV::begin()
 	m_HUD->Transform()->SetRelativePos(Vec3(0.f, 20000.f, 100.f));
 
 	m_Kaiten = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Kaiten");
+
+	m_pArona = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Arona")->GetScript<CArona>();
 }
 
 void CBossLV::tick()
@@ -187,6 +190,8 @@ void CBossLV::OpeningInEnd()
 void CBossLV::OpeningDelayBegin()
 {
 	m_SFX[(UINT)BossLV_SFX::WARNING]->Play(1.f, 1.f);
+	m_SFX[(UINT)BossLV_SFX::START_ARONA]->Play(1);
+	m_pArona->Message("Boss Is Coming!", 350.f, 3.f);
 }
 
 int CBossLV::OpeningDelayUpdate()
@@ -345,7 +350,6 @@ void CBossLV::EndingDelayEnd()
 
 void CBossLV::EndingOutBegin()
 {
-	m_SFX[(UINT)BossLV_SFX::VICTORY]->Play(1.f, 1.f);
 }
 
 int CBossLV::EndingOutUpdate()

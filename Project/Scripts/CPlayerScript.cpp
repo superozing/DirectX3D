@@ -250,6 +250,25 @@ void CPlayerScript::InitSpringArmSetting()
 }
 
 #include <Engine/CRenderMgr.h>
+#include <Engine\CRandomMgr.h>
+
+bool CPlayerScript::Hit(float _damage)
+{
+	if (IsInvincivility())
+		return false;
+
+	m_tStatus.curHealth -= _damage;
+
+	this->SetDamaged(true);
+
+	if (m_tStatus.curHealth <= 0.f)
+		m_tStatus.IsDead = true;
+
+	int rndm = CRandomMgr::GetInst()->GetRandomInt(3);
+	m_vecSound[(UINT)PlayerSoundType::HIT1 + rndm]->Play(1.f);
+
+	return true;
+}
 
 int CPlayerScript::GetCurState()
 {
@@ -351,6 +370,18 @@ void CPlayerScript::begin()
 
 	pSnd									   = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Skill_Azusa_Ex_Cut_in);
 	m_vecSound[(UINT)PlayerSoundType::SKILLEX] = pSnd;
+
+	pSnd									= CAssetMgr::GetInst()->Load<CSound>(SNDAzusa_Battle_Damage_1);
+	m_vecSound[(UINT)PlayerSoundType::HIT1] = pSnd;
+
+	pSnd									= CAssetMgr::GetInst()->Load<CSound>(SNDAzusa_Battle_Damage_2);
+	m_vecSound[(UINT)PlayerSoundType::HIT2] = pSnd;
+
+	pSnd									= CAssetMgr::GetInst()->Load<CSound>(SNDAzusa_Battle_Damage_3);
+	m_vecSound[(UINT)PlayerSoundType::HIT3] = pSnd;
+
+	pSnd									   = CAssetMgr::GetInst()->Load<CSound>(SNDAzusa_Tactic_Victory_1);
+	m_vecSound[(UINT)PlayerSoundType::VICTORY] = pSnd;
 }
 
 void CPlayerScript::tick()
