@@ -364,5 +364,6 @@ struct AfterImageInfo
 	int	   iColorMode;
 	Vec4   AfterImageColor;
 	int	   bRenderFlags[10]; // 각 잔상들의 렌더 여부
-	int	   Padding[3];
+	float  iThreshold;
+	int	   Padding[2];
 };

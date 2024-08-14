@@ -22,7 +22,11 @@ private:
 private:
 	void UpdateBoneMatrix();
 	void CalLifeTime(float _Time);
-	void CalNodeRender(Vec3 CurPos);
+	void CalNodeRender();
+
+public:
+	void ChangeColorMode();
+	void SetAlpha(float _Alpha);
 
 public:
 	virtual void begin() override;
@@ -31,13 +35,12 @@ public:
 	virtual void ParticularUpdateData(string _Key) override;
 	virtual void ParticularClear(string _Key) override;
 
-	void ChangeColorMode();
-
 	virtual void SaveToFile(ofstream& fout) override;
 	virtual void LoadFromFile(ifstream& fin) override;
 
 public:
 	CLONE(CAfterImage);
 	CAfterImage();
+	CAfterImage(const CAfterImage& _Origin);
 	~CAfterImage();
 };

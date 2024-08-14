@@ -25,8 +25,6 @@ CAfterImage::CAfterImage()
 	fUpdateTimer = 0.1f;
 	bDisplay	 = true;
 
-	fSetLifeTime = m_info.fMaxLifeTime;
-
 	strDisplayColorMode = ToString(magic_enum::enum_name((ColorMode)m_info.iColorMode));
 
 	m_info.AfterImageColor = Vec4(0.f, 0.f, 0.f, 0.f);
@@ -42,6 +40,40 @@ CAfterImage::CAfterImage()
 	AppendScriptParam("AfterImageColor", SCRIPT_PARAM::COLOR, &m_info.AfterImageColor);
 
 	AppendScriptParam("View Node", SCRIPT_PARAM::BOOL, &bDisplay);
+
+	AppendScriptParam("AfterImage Threshold", SCRIPT_PARAM::FLOAT, &m_info.iThreshold);
+
+	m_info.fMaxLifeTime = fSetLifeTime;
+}
+
+CAfterImage::CAfterImage(const CAfterImage& _Origin)
+	: CScript((UINT)_Origin.GetScriptType())
+{
+	m_info.NodeCount	= _Origin.m_info.NodeCount;
+	bDisplay			= _Origin.bDisplay;
+	m_info.TimeStep		= _Origin.m_info.TimeStep;
+	m_info.fMaxLifeTime = _Origin.m_info.fMaxLifeTime;
+	m_info.iColorMode	= _Origin.m_info.iColorMode;
+	m_info.iThreshold	= _Origin.m_info.iThreshold;
+
+	strDisplayColorMode = magic_enum::enum_name(ColorMode(m_info.iColorMode));
+
+	m_info.AfterImageColor = _Origin.m_info.AfterImageColor;
+	fSetLifeTime		   = m_info.fMaxLifeTime;
+
+	AppendScriptParam("Node Count", SCRIPT_PARAM::INT, &m_info.NodeCount, 0, 10, false, "Afterimage Node count");
+	AppendScriptParam("Time Interval", SCRIPT_PARAM::FLOAT, &m_info.TimeStep);
+	AppendScriptParam("Max Life Time", SCRIPT_PARAM::FLOAT, &fSetLifeTime);
+
+	AppendScriptParam("Color Mode", SCRIPT_PARAM::STRING, &strDisplayColorMode);
+	SameLine();
+	AppendMemberFunction("Change", SCRIPT_PARAM::FUNC_MEMBER, "", std::bind(&CAfterImage::ChangeColorMode, this));
+
+	AppendScriptParam("AfterImageColor", SCRIPT_PARAM::COLOR, &m_info.AfterImageColor);
+
+	AppendScriptParam("View Node", SCRIPT_PARAM::BOOL, &bDisplay);
+
+	AppendScriptParam("AfterImage Threshold", SCRIPT_PARAM::FLOAT, &m_info.iThreshold);
 }
 
 CAfterImage::~CAfterImage()
@@ -108,7 +140,7 @@ void CAfterImage::tick()
 			UpdateBoneMatrix();
 		}
 
-		CalNodeRender(CurPos);
+		CalNodeRender();
 	}
 
 	CalLifeTime(DT);
@@ -150,15 +182,20 @@ void CAfterImage::CalLifeTime(float _Time)
 	}
 }
 
-void CAfterImage::CalNodeRender(Vec3 CurPos)
+void CAfterImage::CalNodeRender()
 {
+	Matrix CurrentWolrdMat = GetOwner()->GetParent()->Transform()->GetWorldMat();
+
+	Vec3 CurPos = Vec3((float)CurrentWolrdMat._41, (float)CurrentWolrdMat._42, (float)CurrentWolrdMat._43);
+
 	for (int i = 0; i < AfterImageMaxCount; ++i)
 	{
-		Vec3  AfterImagePos = Vec3((float)m_info.WorldTransform[i]._41, (float)m_info.WorldTransform[i]._42,
-								   (float)m_info.WorldTransform[i]._43);
-		float threshold		= 0.01f;
+		Vec3 AfterImagePos = Vec3((float)m_info.WorldTransform[i]._41, (float)m_info.WorldTransform[i]._42,
+								  (float)m_info.WorldTransform[i]._43);
 
-		if (Vec3::Distance(CurPos, AfterImagePos) < threshold)
+		float RenderDistance = Vec3::Distance(CurPos, AfterImagePos);
+
+		if (RenderDistance < m_info.iThreshold)
 			m_info.bRenderFlags[i] = 0;
 		else
 			m_info.bRenderFlags[i] = 1;
@@ -214,12 +251,18 @@ void CAfterImage::ChangeColorMode()
 	}
 }
 
+void CAfterImage::SetAlpha(float _Alpha)
+{
+	m_info.AfterImageColor.w = _Alpha;
+}
+
 #define TagAfterImageCount "[AfterImage Node Count]"
 #define TagAfterImageTimeStep "[After Image TimeStep]"
 #define TagRenderNode "[Node bRender]"
 #define TagMaxLifeTime "[AfterImage Max Life Time]"
 #define TagColorType "[AfterImage Color Type]"
 #define TagCustomColor "[AfterImage Custom Color]"
+#define TagThreshold "[AfterImage Threshold]"
 
 void CAfterImage::SaveToFile(ofstream& fout)
 {
@@ -233,7 +276,7 @@ void CAfterImage::SaveToFile(ofstream& fout)
 	fout << m_info.TimeStep << endl;
 
 	fout << TagMaxLifeTime << endl;
-	fout << fSetLifeTime << endl;
+	fout << m_info.fMaxLifeTime << endl;
 
 	fout << TagColorType << endl;
 	fout << m_info.iColorMode << endl;
@@ -241,6 +284,9 @@ void CAfterImage::SaveToFile(ofstream& fout)
 	fout << TagCustomColor << endl;
 	fout << m_info.AfterImageColor.x << " " << m_info.AfterImageColor.y << " " << m_info.AfterImageColor.z << " "
 		 << m_info.AfterImageColor.w << endl;
+
+	fout << TagThreshold << endl;
+	fout << m_info.iThreshold << endl;
 }
 
 void CAfterImage::LoadFromFile(ifstream& fin)
@@ -270,4 +316,7 @@ void CAfterImage::LoadFromFile(ifstream& fin)
 	fin >> vColor.x >> vColor.y >> vColor.z >> vColor.w;
 
 	m_info.AfterImageColor = vColor;
+
+	Utils::GetLineUntilString(fin, TagThreshold);
+	fin >> m_info.iThreshold;
 }
