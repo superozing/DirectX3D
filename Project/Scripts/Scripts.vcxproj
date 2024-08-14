@@ -167,6 +167,7 @@ call ScriptsCopy.bat</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CAfterImage.h" />
+    <ClInclude Include="CBladeAfterImage.h" />
     <ClInclude Include="CBossBulletShellSpawner.h" />
     <ClInclude Include="CBossGroggy.h" />
     <ClInclude Include="CBossLV.h" />
@@ -293,6 +294,7 @@ call ScriptsCopy.bat</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAfterImage.cpp" />
+    <ClCompile Include="CBladeAfterImage.cpp" />
     <ClCompile Include="CBossBulletShellSpawner.cpp" />
     <ClCompile Include="CBossGroggy.cpp" />
     <ClCompile Include="CBossLV.cpp" />

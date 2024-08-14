@@ -172,6 +172,8 @@ public:
 
 	void ActiveWarningDecal();
 
+	void ActiveBladeAfterImage();
+
 	void LoadAsset();
 	void LoadSound();
 	void CheckTargetPos();

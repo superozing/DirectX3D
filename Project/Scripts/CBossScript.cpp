@@ -435,6 +435,15 @@ void CBossScript::ActiveWarningDecal()
 	GamePlayStatic::SpawnGameObject(pDecal, layeridx);
 }
 
+void CBossScript::ActiveBladeAfterImage()
+{
+	CGameObject* pObj = CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Blade)->Instantiate();
+
+	int layeridx = pObj->GetLayerIdx();
+	GetOwner()->AddChild(pObj, true);
+	GamePlayStatic::SpawnGameObject(pObj, layeridx);
+}
+
 void CBossScript::LoadAsset()
 {
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Punch);
@@ -448,6 +457,7 @@ void CBossScript::LoadAsset()
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_SwordBeam);
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFBoss_Bullet_Shell);
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFSwordBeam_WarningDecal);
+	CAssetMgr::GetInst()->Load<CPrefab>(PREFKaiten_Blade);
 
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFp_BulletLine);
 	CAssetMgr::GetInst()->Load<CPrefab>(PREFp_Electric);
