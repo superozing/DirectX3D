@@ -2,9 +2,13 @@
 #include "CTurretShootingSystem.h"
 
 #include <Engine/CPhysXMgr.h>
+#include <Engine/CLevelMgr.h>
+#include <Engine/CLevel.h>
 
 #include "CPlayerScript.h"
 #include "CTurret.h"
+
+#include "CDamagedDirectionMgr.h"
 
 CTurretShootingSystem::CTurretShootingSystem()
 	: CScript((UINT)SCRIPT_TYPE::TURRETSHOOTINGSYSTEM)
@@ -48,6 +52,8 @@ void CTurretShootingSystem::ShootTurretBulletRay()
 
 			// 피격 사운드 재생
 			m_vecSound[(UINT)ShootingSystemTurretSoundType::HitPlayer]->Play(1, 1.f, true);
+			
+			m_DamagedDirectionMgr->AddDamagedDirection(Transform()->GetWorldPos(), 0.1f);
 		}
 		break;
 
@@ -66,6 +72,15 @@ void CTurretShootingSystem::begin()
 		CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Shot_Impact_Hit_02);
 
 	m_pTurretObj = GetOwner()->GetScript<CTurret>();
+
+
+	auto& HUDChild = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"HUD")->GetChild();
+
+	for (int i = 0; i < HUDChild.size(); ++i)
+	{
+		if (HUDChild[i]->GetName() == L"DmgDir")
+			m_DamagedDirectionMgr = HUDChild[i]->GetScript<CDamagedDirectionMgr>();
+	}
 }
 
 void CTurretShootingSystem::tick()
