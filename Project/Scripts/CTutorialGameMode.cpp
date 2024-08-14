@@ -366,6 +366,7 @@ void CTutorialGameMode::CoverHighBegin()
 	CGameObject* pObj	  = CAssetMgr::GetInst()->Load<CPrefab>(PREFTurret)->Instantiate();
 	int			 LayerIdx = pObj->GetLayerIdx();
 
+	// 터렛 2개 생성
 	pObj->Transform()->SetRelativePos(Vec3(-28.f, -109.f, 12930.f));
 	pObj->SetName("Enemy1");
 	GamePlayStatic::SpawnGameObject(pObj, LayerIdx, true);
