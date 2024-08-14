@@ -128,14 +128,12 @@ void CTurret::CheckVital()
 		m_FSM->SetCurState((int)TURRET_STATE::VitalDeath);
 }
 
-void CTurret::FireParticle(Vec3 _WorldPos)
+void CTurret::FireParticle()
 {
 	Ptr<CPrefab> pPrefab = CAssetMgr::GetInst()->Load<CPrefab>(PREFTurretBulletLine);
 	CGameObject* pObj	 = pPrefab->Instantiate();
 
 	int ilayer = pObj->GetLayerIdx();
-
-	pObj->Transform()->SetRelativePos(ParticleSpawnPos);
 
 	GetOwner()->AddChild(pObj, true);
 	GamePlayStatic::SpawnGameObject(pObj, ilayer);

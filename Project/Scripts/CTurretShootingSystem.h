@@ -22,9 +22,11 @@ private:
 
 	vector<Ptr<CSound>> m_vecSound;
 
+	class CDamagedDirectionMgr* m_DamagedDirectionMgr;
+
 public:
 	// 사격 방향 맞추기
-	void SetShootingDirection(class CPlayerScript* _pPlayer);
+	Vec3 GetShootDir() { return m_ShootingDirection; }
 
 	// 총알 광선 쏘기
 	void ShootTurretBulletRay();

@@ -184,9 +184,8 @@ void CTurret::AttackDelayEnd()
 void CTurret::AttackBegin()
 {
 	Animator3D()->Play((int)TURRET_STATE::Attack, 0);
-	m_ShootingSys->SetShootingDirection(m_Target->GetScript<CPlayerScript>());
-	ParticleTargetPos = m_Target->Transform()->GetRelativePos();
-	FireParticle(ParticleSpawnPos);
+	ParticleTargetPos = m_Target->Transform()->GetWorldPos();
+	FireParticle();
 }
 
 #include <Engine\CLogMgr.h>

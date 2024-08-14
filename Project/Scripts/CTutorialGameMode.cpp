@@ -3,6 +3,7 @@
 
 #include <Engine\CLevelMgr.h>
 #include <Engine\CLevel.h>
+#include <Engine\CMemoryPoolMgr.h>
 
 #include "CPlayerScript.h"
 #include "CPlayerController.h"
@@ -11,6 +12,9 @@
 #include "CTutorialTarget.h"
 #include "CArona.h"
 #include "CFinishBalloon.h"
+#include "CTurret.h"
+#include "CDroidAR.h"
+#include "CMemoryPoolMgrScript.h"
 
 #include "CHUD.h"
 #include "CCrosshair.h"
@@ -193,6 +197,7 @@ void CTutorialGameMode::begin()
 		m_vecTargetSpawners[i]->RegisterObject();
 		m_arrIsMonsterDestroy[i] = false;
 	}
+
 	m_pWall			 = pLevel->FindObjectByName(L"WALL_SHOOT");
 	m_pPlayer		 = pLevel->FindObjectByName(PlayerName);
 	m_pPlayerScript	 = m_pPlayer->GetScript<CPlayerScript>();
@@ -216,12 +221,12 @@ void CTutorialGameMode::begin()
 	m_pWall	 = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"WALL_SHOOT");
 	m_pHUD	 = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"HUD")->GetScript<CHUD>();
 
-	for (int i = 0; i < 4; i++)
-	{
-		wstring name   = L"Enemy" + to_wstring(i + 1);
-		auto	pEnemy = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(name);
-		m_vecCoverMonsters.push_back(pEnemy);
-	}
+	// for (int i = 0; i < 4; i++)
+	//{
+	//	wstring name   = L"Enemy" + to_wstring(i + 1);
+	//	auto	pEnemy = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(name);
+	//	m_vecCoverMonsters.push_back(pEnemy);
+	// }
 
 	// TutorialGameModeSound init
 	m_vecTutorialGameModeSound.resize((UINT)TutorialGameModeSoundType::END);
@@ -454,6 +459,24 @@ void CTutorialGameMode::CoverHighWaitEnd()
 void CTutorialGameMode::CoverHighBegin()
 {
 	m_pArona->Message("Go to the Cover And Press LShift to Cover", 680.f);
+
+	CGameObject* pObj	  = CAssetMgr::GetInst()->Load<CPrefab>(PREFTurret)->Instantiate();
+	int			 LayerIdx = pObj->GetLayerIdx();
+
+	// 터렛 2개 생성
+	pObj->Transform()->SetRelativePos(Vec3(-28.f, -109.f, 12930.f));
+	pObj->SetName("Enemy1");
+	GamePlayStatic::SpawnGameObject(pObj, LayerIdx, true);
+
+	m_vecCoverMonsters.push_back(pObj);
+
+	pObj = CAssetMgr::GetInst()->Load<CPrefab>(PREFTurret)->Instantiate();
+
+	pObj->Transform()->SetRelativePos(Vec3(-28.f, -109.f, 14254.f));
+	pObj->SetName("Enemy2");
+	GamePlayStatic::SpawnGameObject(pObj, LayerIdx, true);
+
+	m_vecCoverMonsters.push_back(pObj);
 }
 
 int CTutorialGameMode::CoverHighUpdate()
@@ -529,10 +552,30 @@ void CTutorialGameMode::CoverLowWaitEnd()
 void CTutorialGameMode::CoverLowBegin()
 {
 	m_pArona->Message("Terminate Enemy", 350.f);
+
+	CGameObject* pObj	  = CAssetMgr::GetInst()->Load<CPrefab>(PREFDroidAR)->Instantiate();
+	int			 LayerIdx = pObj->GetLayerIdx();
+
+	pObj->Transform()->SetRelativePos(Vec3(-28.f, -109.f, 16105.f));
+	pObj->SetName("DroidAR1");
+	GamePlayStatic::SpawnGameObject(pObj, LayerIdx, true);
+
+	m_vecCoverLowMonsters.push_back(pObj);
+
+	pObj = CAssetMgr::GetInst()->Load<CPrefab>(PREFDroidAR)->Instantiate();
+
+	pObj->Transform()->SetRelativePos(Vec3(198.f, -109.f, 17443.f));
+	pObj->SetName("DroidAR2");
+	GamePlayStatic::SpawnGameObject(pObj, LayerIdx, true);
+
+	m_vecCoverLowMonsters.push_back(pObj);
 }
 
 int CTutorialGameMode::CoverLowUpdate()
 {
+	if (m_vecCoverLowMonsters[0]->IsDead() && m_vecCoverLowMonsters[1]->IsDead())
+		return (int)TutorialState::EndingWait;
+
 	return m_FSM->GetCurState();
 }
 

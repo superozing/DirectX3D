@@ -21,6 +21,8 @@ private:
 
 	vector<Ptr<CSound>>				m_vecSound;
 
+	class CDamagedDirectionMgr*		m_DamagedDirectionMgr;
+
 public:
 
 	// 사격 방향 맞추기

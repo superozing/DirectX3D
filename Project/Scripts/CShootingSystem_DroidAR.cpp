@@ -1,9 +1,13 @@
 ﻿#include "pch.h"
 #include "CShootingSystem_DroidAR.h"
 #include <Engine/CPhysXMgr.h>
+#include <Engine/CLevelMgr.h>
+#include <Engine/CLevel.h>
 
 #include "CPlayerScript.h"
 #include "CDroidAR.h"
+
+#include "CDamagedDirectionMgr.h"
 
 CShootingSystem_DroidAR::CShootingSystem_DroidAR()
 	: CScript((UINT)SCRIPT_TYPE::SHOOTINGSYSTEM_DROIDAR)
@@ -48,10 +52,12 @@ void CShootingSystem_DroidAR::ShootDroidARBulletRay()
 		{
 			// 플레이어에게 데미지 넣어주기.
 			auto pPlayer = hitInfo.pOtherObj->GetScript<CPlayerScript>();
-			pPlayer->AddDamage(m_pDroidARScript->GetDamageVal());
+			pPlayer->Hit(m_pDroidARScript->GetDamageVal());
 			
 			// 피격 사운드 재생
 			m_vecSound[(UINT)ShootingSystemDroidARSoundType::HitPlayer]->Play(1, 1.f, true);
+
+			m_DamagedDirectionMgr->AddDamagedDirection(Transform()->GetWorldPos(), 0.1f);
 		}
 			break;
 
@@ -71,6 +77,15 @@ void CShootingSystem_DroidAR::begin()
 
 	m_pDroidAR = GetOwner();
 	m_pDroidARScript = GetOwner()->GetScript<CDroidAR>();
+
+
+	auto& HUDChild	 = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"HUD")->GetChild();
+
+	for (int i = 0; i < HUDChild.size(); ++i)
+	{
+		if (HUDChild[i]->GetName() == L"DmgDir")
+			m_DamagedDirectionMgr = HUDChild[i]->GetScript<CDamagedDirectionMgr>();
+	}
 }
 
 void CShootingSystem_DroidAR::tick()

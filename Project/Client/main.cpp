@@ -125,7 +125,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	// ImGui 초기화
 	CImGuiMgr::GetInst()->init(hWnd, DEVICE, CONTEXT);
 	CEnvMgr::GetInst()->ImguiInit();
-	// EditorObjectManager 초기화
+	//  EditorObjectManager 초기화
 	CEditorObjMgr::GetInst()->init();
 
 	CKeyMgr::GetInst()->m_FocusCallback = &CImGuiMgr::GetFocus_debug;
