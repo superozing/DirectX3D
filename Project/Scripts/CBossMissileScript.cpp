@@ -8,6 +8,7 @@
 #include "CBossScript.h"
 #include "CParticleSpawnScript.h"
 #include "CGroundCrackScript.h"
+#include "CDamagedDirectionMgr.h"
 
 CBossMissileScript::CBossMissileScript()
 	: CProjectileScript((UINT)SCRIPT_TYPE::BOSSMISSILESCRIPT)
@@ -99,7 +100,7 @@ void CBossMissileScript::OnHit()
 {
 	m_Target->GetScript<CPlayerScript>()->SetDamagedMove(true);
 	m_Target->GetScript<CPlayerScript>()->Hit(m_Damage);
-
+	m_BossScript->GetDmgDirMgr()->AddDamagedDirection(m_Shooter->Transform()->GetWorldPos(), 0.1f);
 	// CLogMgr::GetInst()->AddLog(Log_Level::INFO, L"Azusa hit");
 }
 
@@ -109,6 +110,7 @@ void CBossMissileScript::InitBossMissileInfo(CGameObject* _Shooter, CGameObject*
 {
 	m_Shooter = _Shooter;
 	m_Target  = _Target;
+	m_BossScript = _Shooter->GetScript<CBossScript>();
 	CProjectileScript::InitProjectileInfo(_Pos, _InitSpeed, _MaxSpeed, _LifeSpan, _Damage, _Explode, _Alive);
 
 	m_TargetPos = m_Target->Transform()->GetRelativePos();

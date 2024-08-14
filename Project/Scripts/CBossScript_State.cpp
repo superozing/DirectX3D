@@ -11,6 +11,7 @@
 #include "CParticleSpawnScript.h"
 #include "CPlayerScript.h"
 #include "CBossLV.h"
+#include "CDamagedDirectionMgr.h"
 
 #pragma region Normal
 
@@ -175,6 +176,7 @@ int CBossScript::EXs1Update()
 			{
 				m_Target->GetScript<CPlayerScript>()->SetDamagedMove(true);
 				m_Target->GetScript<CPlayerScript>()->Hit(5.f);
+				m_DamagedDirectionMgr->AddDamagedDirection(Transform()->GetWorldPos(), 0.1f);
 			}
 
 			// CLogMgr::GetInst()->AddLog(Log_Level::INFO, strobj);
