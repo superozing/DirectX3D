@@ -4,6 +4,7 @@
 #include <Engine\CLevelMgr.h>
 #include <Engine\CLevel.h>
 #include <Engine\CMemoryPoolMgr.h>
+#include <Engine\CRenderMgr.h>
 
 #include "CPlayerScript.h"
 #include "CPlayerController.h"
@@ -103,10 +104,95 @@ CTutorialGameMode::~CTutorialGameMode()
 		delete m_FSM;
 }
 
+void CTutorialGameMode::begin()
+{
+	CLevel* pLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+	m_pArona	   = pLevel->FindObjectByName(AronaName)->GetScript<CArona>();
+	for (int i = 0; i < SPAWNERCNT; i++)
+	{
+		wstring name = L"TargetSpawner" + to_wstring(i + 1);
+		m_vecTargetSpawners.push_back(pLevel->FindObjectByName(name)->GetScript<CSpawnSpotScript>());
+		m_vecTargetSpawners[i]->RegisterObject();
+		m_arrIsMonsterDestroy[i] = false;
+	}
+
+	m_pWall			 = pLevel->FindObjectByName(L"WALL_SHOOT");
+	m_pPlayer		 = pLevel->FindObjectByName(PlayerName);
+	m_pPlayerScript	 = m_pPlayer->GetScript<CPlayerScript>();
+	m_pFinishBalloon = pLevel->FindObjectByName(L"Balloon")->GetScript<CFinishBalloon>();
+
+	m_pEvents[(UINT)TutorialEvents::Dash]	  = pLevel->FindObjectByName(L"DASH EVENT")->GetScript<CEventListener>();
+	m_pEvents[(UINT)TutorialEvents::Shooting] = pLevel->FindObjectByName(L"SHOOT EVENT")->GetScript<CEventListener>();
+	m_pEvents[(UINT)TutorialEvents::CoverHigh] =
+		pLevel->FindObjectByName(L"COVER HIGH EVENT")->GetScript<CEventListener>();
+	m_pEvents[(UINT)TutorialEvents::CoverJump] =
+		pLevel->FindObjectByName(L"COVER JUMP EVENT")->GetScript<CEventListener>();
+	m_pEvents[(UINT)TutorialEvents::CoverLow] =
+		pLevel->FindObjectByName(L"COVER LOW EVENT")->GetScript<CEventListener>();
+	m_pEvents[(UINT)TutorialEvents::Ending] =
+		pLevel->FindObjectByName(L"COVER CLEAR EVENT")->GetScript<CEventListener>();
+
+	m_pArona = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(AronaName)->GetScript<CArona>();
+	m_pWall	 = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"WALL_SHOOT");
+	m_pHUD	 = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"HUD")->GetScript<CHUD>();
+
+	// for (int i = 0; i < 4; i++)
+	//{
+	//	wstring name   = L"Enemy" + to_wstring(i + 1);
+	//	auto	pEnemy = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(name);
+	//	m_vecCoverMonsters.push_back(pEnemy);
+	// }
+
+	// TutorialGameModeSound init
+	m_vecTutorialGameModeSound.resize((UINT)TutorialGameModeSoundType::END);
+
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::TutorialStart] =
+		CAssetMgr::GetInst()->Load<CSound>(SNDUI_START_01);
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::BGM] =
+		CAssetMgr::GetInst()->Load<CSound>(SNDStep_by_Step);
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::DoorOpen] =
+		CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Door_Open);
+
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::TutorialStart]->Play(1);
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::BGM]->Play(0, 1.f);
+
+	m_FadeScript = pLevel->FindObjectByName(L"FadeObject")->GetScript<CFadeUIScript>();
+
+	// m_FSM->Begin();
+	// m_pHUD->Transform()->SetRelativePos(Vec3(6000.f, 0.f, 0.f));
+	m_FSM->SetCurState((int)TutorialState::EndingWait);
+	CKeyMgr::GetInst()->RoRShowCursor(false);
+	CRenderMgr::GetInst()->SetDebugPosition(false);
+}
+
+void CTutorialGameMode::tick()
+{
+	m_FSM->Update();
+	state = magic_enum::enum_name((TutorialState)m_FSM->GetCurState());
+}
+
 void CTutorialGameMode::FadeInBegin()
 {
 	m_Acctime = 0.f;
 	m_FadeScript->Push_FadeEvent(FADE_TYPE::FADE_IN, m_FadeInTime);
+
+	m_tPlayerKeyInfo   = CPlayerController::GetInfo();
+	PlayerKeyInfo info = {};
+	info.Front		   = KEY::KEY_END;
+	info.Right		   = KEY::KEY_END;
+	info.Back		   = KEY::KEY_END;
+	info.Left		   = KEY::KEY_END;
+	info.Dash		   = KEY::KEY_END;
+	info.Attack		   = KEY::KEY_END;
+	info.Zoom		   = KEY::KEY_END;
+	info.Reload		   = KEY::KEY_END;
+	info.Cover		   = KEY::KEY_END;
+	info.Skill		   = KEY::KEY_END;
+	info.Jump		   = KEY::KEY_END;
+	info.Flip		   = KEY::KEY_END;
+	info.Sensitivity   = 0;
+
+	CPlayerController::SetInfo(info);
 }
 
 int CTutorialGameMode::FadeInUpdate()
@@ -186,74 +272,6 @@ void CTutorialGameMode::OpeningOutEnd()
 {
 }
 
-void CTutorialGameMode::begin()
-{
-	CLevel* pLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-	m_pArona	   = pLevel->FindObjectByName(AronaName)->GetScript<CArona>();
-	for (int i = 0; i < SPAWNERCNT; i++)
-	{
-		wstring name = L"TargetSpawner" + to_wstring(i + 1);
-		m_vecTargetSpawners.push_back(pLevel->FindObjectByName(name)->GetScript<CSpawnSpotScript>());
-		m_vecTargetSpawners[i]->RegisterObject();
-		m_arrIsMonsterDestroy[i] = false;
-	}
-
-	m_pWall			 = pLevel->FindObjectByName(L"WALL_SHOOT");
-	m_pPlayer		 = pLevel->FindObjectByName(PlayerName);
-	m_pPlayerScript	 = m_pPlayer->GetScript<CPlayerScript>();
-	m_pFinishBalloon = pLevel->FindObjectByName(L"Balloon")->GetScript<CFinishBalloon>();
-
-	m_pBGM = CAssetMgr::GetInst()->Load<CSound>(SNDKaiten_Screw_BGM);
-	m_pBGM->Play(0, 1.f);
-
-	m_pEvents[(UINT)TutorialEvents::Dash]	  = pLevel->FindObjectByName(L"DASH EVENT")->GetScript<CEventListener>();
-	m_pEvents[(UINT)TutorialEvents::Shooting] = pLevel->FindObjectByName(L"SHOOT EVENT")->GetScript<CEventListener>();
-	m_pEvents[(UINT)TutorialEvents::CoverHigh] =
-		pLevel->FindObjectByName(L"COVER HIGH EVENT")->GetScript<CEventListener>();
-	m_pEvents[(UINT)TutorialEvents::CoverJump] =
-		pLevel->FindObjectByName(L"COVER JUMP EVENT")->GetScript<CEventListener>();
-	m_pEvents[(UINT)TutorialEvents::CoverLow] =
-		pLevel->FindObjectByName(L"COVER LOW EVENT")->GetScript<CEventListener>();
-	m_pEvents[(UINT)TutorialEvents::Ending] =
-		pLevel->FindObjectByName(L"COVER CLEAR EVENT")->GetScript<CEventListener>();
-
-	m_pArona = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(AronaName)->GetScript<CArona>();
-	m_pWall	 = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"WALL_SHOOT");
-	m_pHUD	 = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"HUD")->GetScript<CHUD>();
-
-	// for (int i = 0; i < 4; i++)
-	//{
-	//	wstring name   = L"Enemy" + to_wstring(i + 1);
-	//	auto	pEnemy = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(name);
-	//	m_vecCoverMonsters.push_back(pEnemy);
-	// }
-
-	// TutorialGameModeSound init
-	m_vecTutorialGameModeSound.resize((UINT)TutorialGameModeSoundType::END);
-
-	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::TutorialStart] =
-		CAssetMgr::GetInst()->Load<CSound>(SNDUI_START_01);
-	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::BGM] =
-		CAssetMgr::GetInst()->Load<CSound>(SNDKaiten_Screw_BGM);
-	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::DoorOpen] =
-		CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Door_Open);
-
-	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::TutorialStart]->Play(1);
-	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::BGM]->Play(0, .4f);
-
-	m_FadeScript = pLevel->FindObjectByName(L"FadeObject")->GetScript<CFadeUIScript>();
-
-	m_FSM->Begin();
-	CKeyMgr::GetInst()->RoRShowCursor(false);
-	m_FSM->SetCurState((int)TutorialState::CoverLowWait);
-}
-
-void CTutorialGameMode::tick()
-{
-	m_FSM->Update();
-	state = magic_enum::enum_name((TutorialState)m_FSM->GetCurState());
-}
-
 void CTutorialGameMode::BasicMoveBegin()
 {
 	m_fStopTimer = 0.f;
@@ -262,27 +280,9 @@ void CTutorialGameMode::BasicMoveBegin()
 	m_bMoveBack	 = false;
 	m_bMoveRight = false;
 
-	m_tPlayerKeyInfo   = CPlayerController::GetInfo();
-	PlayerKeyInfo info = {};
-	info.Front		   = KEY::KEY_END;
-	info.Right		   = KEY::KEY_END;
-	info.Back		   = KEY::KEY_END;
-	info.Left		   = KEY::KEY_END;
-	info.Dash		   = KEY::KEY_END;
-	info.Attack		   = KEY::KEY_END;
-	info.Zoom		   = KEY::KEY_END;
-	info.Reload		   = KEY::KEY_END;
-	info.Cover		   = KEY::KEY_END;
-	info.Skill		   = KEY::KEY_END;
-	info.Jump		   = KEY::KEY_END;
-	info.Flip		   = KEY::KEY_END;
-	info.Sensitivity   = 0;
-
 	PrevPos = m_pPlayer->Transform()->GetRelativePos();
 
-	CPlayerController::SetInfo(info);
-
-	m_pArona->Message("Press W, A, S, D to Move", 440, -1.f);
+	m_pArona->Message("Press W, A, S, D to Move", 490, -1.f);
 }
 
 int CTutorialGameMode::BasicMoveUpdate()
@@ -292,7 +292,10 @@ int CTutorialGameMode::BasicMoveUpdate()
 	// 일정 시간 후 움직임
 	m_fStopTimer += DT;
 	if (m_fStopTimer >= m_fStopTimeLength)
+	{
 		CPlayerController::SetInfo(m_tPlayerKeyInfo);
+		m_pHUD->Transform()->SetRelativePos(Vec3(0.f, 0.f, 100.f));
+	}
 	else
 	{
 		return m_FSM->GetCurState();
@@ -349,7 +352,7 @@ void CTutorialGameMode::DashWaitEnd()
 
 void CTutorialGameMode::DashBegin()
 {
-	m_pArona->Message("Press Space to Dash And JumpUp The Rayzer", 750, -1.f);
+	m_pArona->Message("Press Space to Dash And JumpUp The Rayzer", 800, -1.f);
 }
 
 int CTutorialGameMode::DashUpdate()
@@ -394,7 +397,7 @@ void CTutorialGameMode::ShootingWaitEnd()
 
 void CTutorialGameMode::ShootingBegin()
 {
-	m_pArona->Message("Remove all targets", 360, -1.f);
+	m_pArona->Message("Hit all targets", 290, -1.f);
 	for (size_t i = 0; i < SPAWNERCNT; i++)
 	{
 		m_vecTutorialTargets.push_back(m_vecTargetSpawners[i]->SpawnObject()->GetScript<CTutorialTarget>());
@@ -411,7 +414,14 @@ int CTutorialGameMode::ShootingUpdate()
 	bool bClear = true;
 	for (size_t i = 0; i < SPAWNERCNT; i++)
 	{
-		bClear &= m_arrIsMonsterDestroy[i]; //= m_vecTutorialTargets[i]->IsHit();
+		int maxHP = m_vecTutorialTargets[i]->GetMaxHP();
+		int curHP = m_vecTutorialTargets[i]->GetCurHP();
+		if (maxHP != curHP)
+		{
+			m_arrIsMonsterDestroy[i] = true;
+		}
+
+		bClear &= m_arrIsMonsterDestroy[i];
 	}
 
 	if (bClear)
@@ -457,13 +467,13 @@ void CTutorialGameMode::CoverHighWaitEnd()
 
 void CTutorialGameMode::CoverHighBegin()
 {
-	m_pArona->Message("Go to the Cover And Press LShift to Cover", 680.f);
+	m_pArona->Message("Go to the Cover And Press LShift to Cover", 750.f);
 
 	CGameObject* pObj	  = CAssetMgr::GetInst()->Load<CPrefab>(PREFTurret)->Instantiate();
 	int			 LayerIdx = pObj->GetLayerIdx();
 
 	// 터렛 2개 생성
-	pObj->Transform()->SetRelativePos(Vec3(-28.f, -109.f, 12930.f));
+	pObj->Transform()->SetRelativePos(Vec3(-28.f, -135.f, 12930.f));
 	pObj->SetName("Enemy1");
 	GamePlayStatic::SpawnGameObject(pObj, LayerIdx, true);
 
@@ -471,7 +481,7 @@ void CTutorialGameMode::CoverHighBegin()
 
 	pObj = CAssetMgr::GetInst()->Load<CPrefab>(PREFTurret)->Instantiate();
 
-	pObj->Transform()->SetRelativePos(Vec3(-28.f, -109.f, 14254.f));
+	pObj->Transform()->SetRelativePos(Vec3(-28.f, -135.f, 14254.f));
 	pObj->SetName("Enemy2");
 	GamePlayStatic::SpawnGameObject(pObj, LayerIdx, true);
 
@@ -514,7 +524,7 @@ void CTutorialGameMode::CoverJumpWaitEnd()
 
 void CTutorialGameMode::CoverJumpBegin()
 {
-	m_pArona->Message("Go to Cover And Press Space to Jump", 650.f);
+	m_pArona->Message("Go to Cover And Press Space to Jump", 700.f);
 }
 
 int CTutorialGameMode::CoverJumpUpdate()
@@ -529,6 +539,7 @@ int CTutorialGameMode::CoverJumpUpdate()
 
 void CTutorialGameMode::CoverJumpEnd()
 {
+	m_pArona->Message("Congratulations!", 340, 3.f);
 	Clear(TutorialEvents::CoverJump);
 }
 
@@ -603,7 +614,7 @@ int CTutorialGameMode::EndingWaitUpdate()
 
 void CTutorialGameMode::EndingWaitEnd()
 {
-	m_pArona->Message("All Complete! You Finish!!!", 450.f);
+	m_pArona->Message("All Complete! You Finish!!!", 470.f);
 }
 
 void CTutorialGameMode::EndingInBegin()
@@ -680,7 +691,9 @@ void CTutorialGameMode::EndingCutInBegin()
 	m_pPlayer->Transform()->SetDir(-vDir);
 	m_pPlayerScript->GetStateMachine()->SetCurState((int)PLAYER_STATE::VictoryStart);
 
-	m_pHUD->GetHUD<CCrosshair>()->SetCrosshairColor(Vec4(0.f, 0.f, 0.f, 0.f));
+	m_pHUD->Transform()->SetRelativePos(Vec3(6000.f, 0.f, 0.f));
+
+	m_pArona->Disappear();
 }
 
 int CTutorialGameMode::EndingCutInUpdate()

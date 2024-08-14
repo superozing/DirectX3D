@@ -89,6 +89,10 @@ void CButtons::begin()
 	m_started	   = false;
 	m_LevelChanged = false;
 	m_acctime	   = 0.f;
+
+	// BGM 플레이
+	auto sound = CAssetMgr::GetInst()->Load<CSound>(SNDConstant_Moderato);
+	sound->Play(1, 1.f, true);
 }
 
 void CButtons::tick()

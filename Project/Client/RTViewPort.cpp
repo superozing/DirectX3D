@@ -179,6 +179,10 @@ void EditTransform(float* cameraView, float* cameraProjection, float* matrix, bo
 
 void RTViewPort::Gizmo()
 {
+	LEVEL_STATE lvState = CLevelMgr::GetInst()->GetCurrentLevel()->GetState();
+	if (lvState == LEVEL_STATE::PLAY && !CRenderMgr::GetInst()->IsEscape())
+		return;
+
 	ImGuiIO& io = ImGui::GetIO();
 
 	ImGuizmo::SetDrawlist();

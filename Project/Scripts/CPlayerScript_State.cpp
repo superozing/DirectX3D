@@ -802,6 +802,8 @@ void CPlayerScript::VitalPanicBegin()
 		if (m_tStatus.IsDamageMoved == true) // 밀려날때만 재생
 		{
 			Animator3D()->Play((int)PLAYER_STATE::VitalPanic, 0);
+			SetCoverType(CoverType::Normal);
+			SetRight(true);
 		}
 
 		SetPanicVignette();

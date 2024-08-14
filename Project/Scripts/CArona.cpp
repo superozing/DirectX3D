@@ -73,6 +73,11 @@ void CArona::Message(const string& _content, float _size, float _time)
 	m_fTimer = _time;
 }
 
+void CArona::Disappear()
+{
+	MoveToViewportSide();
+}
+
 void CArona::MoveToViewportSide(float _size)
 {
 	Vec3 bubbleScale = m_pBubble->Transform()->GetRelativeScale();

@@ -169,35 +169,35 @@ void CPlayerScript::InitSpringArmSetting()
 	// m_mSpringInfos[PLAYER_STATE::NormalAttackEnd] = info;
 
 	info.Type								= false;
-	info.fMaxDistance						= 150.f;
+	info.fMaxDistance						= 200.f;
 	info.fCamSpeed							= 30.f;
 	info.fCamRotSpeed						= 20.f;
 	info.vDir								= Vec3(0.f, 180.f, 0.f);
-	info.vOffsetPos							= Vec2(100.f, 50.f);
+	info.vOffsetPos							= Vec2(100.f, 75.f);
 	m_mSpringInfos[PLAYER_STATE::StandIdle] = info;
 
 	info.Type									   = false;
-	info.fMaxDistance							   = 70.f;
+	info.fMaxDistance							   = 120.f;
 	info.fCamSpeed								   = 30.f;
 	info.fCamRotSpeed							   = 20.f;
 	info.vDir									   = Vec3(0.f, 180.f, 0.f);
-	info.vOffsetPos								   = Vec2(100.f, 50.f);
+	info.vOffsetPos								   = Vec2(100.f, 75.f);
 	m_mSpringInfos[PLAYER_STATE::StandAttackStart] = info;
 
 	info.Type								= true;
-	info.fMaxDistance						= 150.f;
+	info.fMaxDistance						= 200.f;
 	info.fCamSpeed							= 30.f;
 	info.fCamRotSpeed						= 20.f;
 	info.vDir								= Vec3(0.f, 180.f, 0.f);
-	info.vOffsetPos							= Vec2(100.f, 50.f);
+	info.vOffsetPos							= Vec2(100.f, 75.f);
 	m_mSpringInfos[PLAYER_STATE::KneelIdle] = info;
 
 	info.Type									   = false;
-	info.fMaxDistance							   = 70.f;
+	info.fMaxDistance							   = 120.f;
 	info.fCamSpeed								   = 30.f;
 	info.fCamRotSpeed							   = 20.f;
 	info.vDir									   = Vec3(0.f, 180.f, 0.f);
-	info.vOffsetPos								   = Vec2(100.f, 50.f);
+	info.vOffsetPos								   = Vec2(100.f, 75.f);
 	m_mSpringInfos[PLAYER_STATE::KneelAttackStart] = info;
 
 	info.Type								= true;

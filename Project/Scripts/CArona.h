@@ -15,6 +15,7 @@ private:
 
 public:
 	void Message(const string& _content, float _size, float _time = -1.f);
+	void Disappear();
 
 public:
 	virtual void begin() override;
