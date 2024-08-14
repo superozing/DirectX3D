@@ -87,6 +87,10 @@ void CAfterImage::tick()
 
 		fUpdateTimer = m_info.TimeStep;
 
+		Matrix CurrentWolrdMat = GetOwner()->GetParent()->Transform()->GetWorldMat();
+
+		Vec3 CurPos = Vec3((float)CurrentWolrdMat._41, (float)CurrentWolrdMat._42, (float)CurrentWolrdMat._43);
+
 		if (m_info.NodeCount > 1)
 		{
 			for (int i = 1; m_info.NodeCount > i; ++i)
@@ -96,8 +100,6 @@ void CAfterImage::tick()
 			}
 		}
 
-		Matrix CurrentWolrdMat = GetOwner()->GetParent()->Transform()->GetWorldMat();
-
 		m_info.WorldTransform[m_info.NodeCount - 1] = CurrentWolrdMat;
 		m_info.fLifeTime[m_info.NodeCount - 1]		= m_info.fMaxLifeTime;
 
@@ -105,6 +107,8 @@ void CAfterImage::tick()
 		{
 			UpdateBoneMatrix();
 		}
+
+		CalNodeRender(CurPos);
 	}
 
 	CalLifeTime(DT);
@@ -143,6 +147,21 @@ void CAfterImage::CalLifeTime(float _Time)
 	{
 		if (m_info.fLifeTime[i] > 0.f)
 			m_info.fLifeTime[i] -= _Time;
+	}
+}
+
+void CAfterImage::CalNodeRender(Vec3 CurPos)
+{
+	for (int i = 0; i < AfterImageMaxCount; ++i)
+	{
+		Vec3  AfterImagePos = Vec3((float)m_info.WorldTransform[i]._41, (float)m_info.WorldTransform[i]._42,
+								   (float)m_info.WorldTransform[i]._43);
+		float threshold		= 0.01f;
+
+		if (Vec3::Distance(CurPos, AfterImagePos) < threshold)
+			m_info.bRenderFlags[i] = 0;
+		else
+			m_info.bRenderFlags[i] = 1;
 	}
 }
 

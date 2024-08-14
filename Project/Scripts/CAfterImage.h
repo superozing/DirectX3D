@@ -22,6 +22,7 @@ private:
 private:
 	void UpdateBoneMatrix();
 	void CalLifeTime(float _Time);
+	void CalNodeRender(Vec3 CurPos);
 
 public:
 	virtual void begin() override;
