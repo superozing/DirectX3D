@@ -39,6 +39,9 @@ private:
 	Vec3 ParticleSpawnPos;
 	Vec3 ParticleTargetPos;
 
+	Ptr<CSound> sTurretSpawn;
+	Ptr<CSound> sTurretDead;
+
 private:
 	void		 SetTurretInfo();
 	TURRET_STATE m_TurretState;

@@ -57,6 +57,9 @@ void CTurret::SetTurretInfo()
 
 void CTurret::begin()
 {
+	sTurretSpawn = CAssetMgr::GetInst()->Load<CSound>(SNDTurret_Spawn);
+	sTurretDead	 = CAssetMgr::GetInst()->Load<CSound>(SNDTurret_Dead);
+
 	m_FSM->Begin();
 	m_FSM->SetCurState((int)TURRET_STATE::Appear);
 

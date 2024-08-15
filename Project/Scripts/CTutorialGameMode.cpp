@@ -169,7 +169,7 @@ void CTutorialGameMode::begin()
 
 	// m_FSM->Begin();
 	// m_pHUD->Transform()->SetRelativePos(Vec3(6000.f, 0.f, 0.f));
-	m_FSM->SetCurState((int)TutorialState::EndingWait);
+	m_FSM->SetCurState((int)TutorialState::CoverHighWait);
 	CKeyMgr::GetInst()->RoRShowCursor(false);
 	CRenderMgr::GetInst()->SetDebugPosition(false);
 }
