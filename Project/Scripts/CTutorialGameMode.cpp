@@ -167,9 +167,9 @@ void CTutorialGameMode::begin()
 
 	m_FadeScript = pLevel->FindObjectByName(L"FadeObject")->GetScript<CFadeUIScript>();
 
-	// m_FSM->Begin();
-	// m_pHUD->Transform()->SetRelativePos(Vec3(6000.f, 0.f, 0.f));
-	m_FSM->SetCurState((int)TutorialState::EndingWait);
+	m_FSM->Begin();
+	m_pHUD->Transform()->SetRelativePos(Vec3(6000.f, 0.f, 0.f));
+	// m_FSM->SetCurState((int)TutorialState::EndingWait);
 	CKeyMgr::GetInst()->RoRShowCursor(false);
 	CRenderMgr::GetInst()->SetDebugPosition(false);
 }
@@ -654,6 +654,8 @@ void CTutorialGameMode::EndingWaitEnd()
 void CTutorialGameMode::EndingInBegin()
 {
 	m_Acctime = 0.f;
+
+	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::VICTORY_BGM]->Play(1);
 }
 
 int CTutorialGameMode::EndingInUpdate()

@@ -5,6 +5,7 @@
 
 #include <Engine\CLevelMgr.h>
 #include <Engine\CLevel.h>
+#include <Engine\CKeyMgr.h>
 
 #include "CTextUI.h"
 #include "Engine\CSound.h"
@@ -89,6 +90,8 @@ void CButtons::begin()
 	m_started	   = false;
 	m_LevelChanged = false;
 	m_acctime	   = 0.f;
+
+	CKeyMgr::GetInst()->RoRShowCursor(true);
 
 	// BGM 플레이
 	auto sound = CAssetMgr::GetInst()->Load<CSound>(SNDConstant_Moderato);
