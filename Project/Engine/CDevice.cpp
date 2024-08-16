@@ -588,29 +588,29 @@ void CDevice::DeleteTexturesForResolutionChange()
 
 void CDevice::RematchMtrlTexParam()
 {
-	Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(MTRL_dirlight);
-	pMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
-	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex"));
-	pMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"ShadowDepthTargetTex"));
+	Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->Load<CMaterial>(MTRL_dirlight);
+	pMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"PositionTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->Load<CTexture>(L"NormalTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->Load<CTexture>(L"ShadowDepthTargetTex"));
 
-	pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(MTRL_pointlight);
-	pMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
-	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex"));
-	pMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"ShadowDepthTargetTex"));
+	pMtrl = CAssetMgr::GetInst()->Load<CMaterial>(MTRL_pointlight);
+	pMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"PositionTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->Load<CTexture>(L"NormalTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->Load<CTexture>(L"ShadowDepthTargetTex"));
 
-	pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(MTRL_spotlight);
-	pMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
-	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex"));
+	pMtrl = CAssetMgr::GetInst()->Load<CMaterial>(MTRL_spotlight);
+	pMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"PositionTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->Load<CTexture>(L"NormalTargetTex"));
 
-	pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(MTRLOutLineMerge);
-	pMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"ColorTargetTex"));
-	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"DiffuseTargetTex"));
-	pMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"SpecularTargetTex"));
-	pMtrl->SetTexParam(TEX_PARAM::TEX_3, CAssetMgr::GetInst()->FindAsset<CTexture>(L"EmissiveTargetTex"));
-	pMtrl->SetTexParam(TEX_PARAM::TEX_4, CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex"));
+	pMtrl = CAssetMgr::GetInst()->Load<CMaterial>(MTRLOutLineMerge);
+	pMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"ColorTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->Load<CTexture>(L"DiffuseTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->Load<CTexture>(L"SpecularTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_3, CAssetMgr::GetInst()->Load<CTexture>(L"EmissiveTargetTex"));
+	pMtrl->SetTexParam(TEX_PARAM::TEX_4, CAssetMgr::GetInst()->Load<CTexture>(L"NormalTargetTex"));
 
-	pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(MTRL_decal);
-	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
+	pMtrl = CAssetMgr::GetInst()->Load<CMaterial>(MTRL_decal);
+	pMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->Load<CTexture>(L"PositionTargetTex"));
 }
 
 #include <dxgidebug.h>

@@ -123,6 +123,8 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 
 				if (hitInfo.pOtherObj->GetScript<CBossScript>()->IsShield())
 					Dmg = 1.f;
+				else if (hitInfo.pOtherObj->GetScript<CBossScript>()->IsVital())
+					Dmg = m_pPlayerScript->GetDamage() * 2.f;
 				else
 					Dmg = m_pPlayerScript->GetDamage();
 
@@ -131,6 +133,8 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 
 			if (hitInfo.pOtherObj->GetScript<CBossScript>()->IsShield())
 				m_pDamageFontSpawner->SpawnDamageFont(hitInfo.vHitPos, 1);
+			else if (hitInfo.pOtherObj->GetScript<CBossScript>()->IsVital())
+				m_pDamageFontSpawner->SpawnDamageFont(hitInfo.vHitPos, (int)m_pPlayerScript->GetDamage() * 2.f);
 			else
 				m_pDamageFontSpawner->SpawnDamageFont(hitInfo.vHitPos, (int)m_pPlayerScript->GetDamage());
 			m_pBulletHitParticleSpawner->SpawnBulletHitParticle(hitInfo);
