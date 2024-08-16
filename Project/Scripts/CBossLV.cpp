@@ -3,6 +3,7 @@
 
 #include <Engine\CLevelMgr.h>
 #include <Engine\CLevel.h>
+#include <Engine\CKeyMgr.h>
 
 #include "CRoRStateMachine.h"
 #include "CPlayerScript.h"
@@ -156,6 +157,8 @@ void CBossLV::begin()
 	m_Kaiten = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Kaiten");
 
 	m_pArona = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Arona")->GetScript<CArona>();
+
+	CKeyMgr::GetInst()->RoRShowCursor(false);
 }
 
 void CBossLV::tick()

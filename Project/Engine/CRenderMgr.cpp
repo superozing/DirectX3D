@@ -174,7 +174,8 @@ void CRenderMgr::render_editor()
 		return;
 
 	// 광원 시점에서 ShadowDepthMap 생성
-	CreateDynamicShadowDepth();
+	if (m_bGlobalShadowRender)
+		CreateDynamicShadowDepth();
 
 	// 도메인에 따른 물체 분류
 	m_EditorCam->SortObject();

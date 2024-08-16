@@ -5,6 +5,7 @@
 
 #include <Engine\CLevelMgr.h>
 #include <Engine\CLevel.h>
+#include <Engine\CKeyMgr.h>
 
 #include "CRoRStateMachine.h"
 
@@ -194,6 +195,7 @@ void CTitle::begin()
 
 	// 사운드 로드
 	CAssetMgr::GetInst()->Load<CSound>(SNDSerika_New_Year_Title);
+	CKeyMgr::GetInst()->RoRShowCursor(false);
 }
 
 void CTitle::tick()
