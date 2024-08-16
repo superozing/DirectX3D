@@ -57,6 +57,7 @@ void CTurret::RotateIdle()
 void CTurret::AppearBegin()
 {
 	Animator3D()->Play((int)TURRET_STATE::Appear, 0);
+	sTurretSpawn->Play(1, 1.f, true);
 }
 
 int CTurret::AppearUpdate()
@@ -100,6 +101,8 @@ void CTurret::VitalDeathBegin()
 	layeridx = pObj->GetLayerIdx();
 	GamePlayStatic::SpawnGameObject(pObj, layeridx);
 	pObj->GetScript<CParticleSpawnScript>()->SetParticleInfo(CurPos, 1.f);
+
+	sTurretDead->Play(1, 1.f, true);
 
 	if (PhysX())
 		GetOwner()->DeleteComponent(COMPONENT_TYPE::PHYSX);
