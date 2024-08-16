@@ -23,6 +23,15 @@ enum class DROIDAR_STATE
 	END,
 };
 
+enum class DroidARSoundType
+{
+	Spawn,
+	Attack,
+	Move,
+	Death,
+	End
+};
+
 /*
 struct MonsterStatus
 {
@@ -73,6 +82,9 @@ private:
 	float							m_DeathAfterTimer = 2.f;
 
 	Vec3							m_LookDirection;
+
+	vector<Ptr<CSound>>				m_vecSound;
+	bool							m_IsLeftFootSound;
 
 #pragma region About State
 
