@@ -170,7 +170,7 @@ void CShootingSystemScript::ShootPlayerBulletRay()
 	m_pBulletShellSpawner->SpawnBulletShell(m_pPlayer);
 
 	// 무기 총구 위치에 탄두 오브젝트
-	m_pBulletWarheadSpawner->SpawnBulletWarhead(m_pPlayer);
+	// m_pBulletWarheadSpawner->SpawnBulletWarhead(m_pPlayer);
 
 	// 반동 적용
 	m_pShootingRecoil->ApplyShootingRecoil();
@@ -222,7 +222,7 @@ void CShootingSystemScript::begin()
 	m_pBulletShellSpawner->begin();
 	m_pBulletHitParticleSpawner->begin();
 	m_pDamageFontSpawner->begin();
-	m_pBulletWarheadSpawner->begin();
+	// m_pBulletWarheadSpawner->begin();
 
 	m_pBulletShellSpawner->SetShootingSystem(this);
 
@@ -251,7 +251,7 @@ void CShootingSystemScript::tick()
 	m_pBulletShellSpawner->tick();
 	m_pBulletHitParticleSpawner->tick();
 	m_pDamageFontSpawner->tick();
-	m_pBulletWarheadSpawner->tick();
+	// m_pBulletWarheadSpawner->tick();
 
 	m_fSpreadRatio = RoRMath::ClampFloat(m_fSpreadRatio - DT, 0.1f);
 }
