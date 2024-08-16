@@ -163,19 +163,20 @@ void CPhysX::finaltick()
 		// updateFromPhysics();
 	}
 
-	auto Rot	= Transform()->GetWorldQuaternion();
-	auto ColPos = GetColliderPos();
-	auto scale	= m_vScale != Vec3() ? m_vScale : Transform()->GetWorldScale();
+	auto Rot		 = Transform()->GetWorldQuaternion();
+	auto ColPos		 = GetColliderPos();
+	auto scale		 = m_vScale != Vec3() ? m_vScale : Transform()->GetWorldScale();
+	auto vDebugColor = m_CollisionCount > 0 ? Vec4(1.f, 0.f, 0.f, 1.f) : Vec4(0.f, 1.f, 0.f, 1.f);
 
 	if (m_bDrawing)
 	{
 		if (PhysShape::BOX == m_Shape)
 		{
-			GamePlayStatic::DrawDebugCube(ColPos, scale, Vec4(Rot.x, Rot.y, Rot.z, Rot.w), Vec3(0.3f, .3f, 0.3f), true);
+			GamePlayStatic::DrawDebugCube(ColPos, scale, Vec4(Rot.x, Rot.y, Rot.z, Rot.w), vDebugColor, true);
 		}
 		else if (PhysShape::SPHERE == m_Shape)
 		{
-			GamePlayStatic::DrawDebugSphere(ColPos, scale.x / 2.f, Vec3(0.3f, .3f, 0.3f), true);
+			GamePlayStatic::DrawDebugSphere(ColPos, scale.x / 2.f, vDebugColor, true);
 		}
 		else if (PhysShape::CONE == m_Shape)
 		{
