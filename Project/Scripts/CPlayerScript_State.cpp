@@ -97,6 +97,7 @@ void CPlayerScript::NormalAttackIngBegin()
 		m_pShootingSystem->ShootPlayerBulletRay();
 		m_vecSound[(UINT)PlayerSoundType::EX1]->Play(1, 1.f, true);
 		m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
+		m_pCrosshair->Fire();
 	}
 	else
 	{
@@ -246,6 +247,7 @@ void CPlayerScript::StandAttackIngBegin()
 		m_pShootingSystem->ShootPlayerBulletRay();
 		m_vecSound[(UINT)PlayerSoundType::EX1]->Play(1, 1.f, true);
 		m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
+		m_pCrosshair->Fire();
 	}
 	else
 	{
@@ -416,6 +418,7 @@ void CPlayerScript::KneelAttackIngBegin()
 		m_pShootingSystem->ShootPlayerBulletRay();
 		m_vecSound[(UINT)PlayerSoundType::EX1]->Play(1, 1.f, true);
 		m_pMuzzleFlash->GetOwner()->ParticleSystem()->Play();
+		m_pCrosshair->Fire();
 	}
 	else
 	{

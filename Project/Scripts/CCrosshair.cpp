@@ -37,6 +37,7 @@ void CCrosshair::begin()
 
 void CCrosshair::tick()
 {
+	m_fSpreadRatio = RoRMath::ClampFloat(m_fSpreadRatio - DT * 2, 0.2);
 	MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, m_fSpreadRatio);
 	MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_1, m_fBarThikness);
 	MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_2, m_fLength);
