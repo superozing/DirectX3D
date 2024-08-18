@@ -172,11 +172,12 @@ void CPhysX::finaltick()
 	{
 		if (PhysShape::BOX == m_Shape)
 		{
-			GamePlayStatic::DrawDebugCube(ColPos, scale * 1.1, Vec4(Rot.x, Rot.y, Rot.z, Rot.w), vDebugColor, true);
+			GamePlayStatic::DrawDebugCube(ColPos, scale + Vec3(5.f, 5.f, 5.f), Vec4(Rot.x, Rot.y, Rot.z, Rot.w),
+										  vDebugColor, true);
 		}
 		else if (PhysShape::SPHERE == m_Shape)
 		{
-			GamePlayStatic::DrawDebugSphere(ColPos, scale.x / 1.8f, vDebugColor, true);
+			GamePlayStatic::DrawDebugSphere(ColPos, scale.x / 2.f + 5.f, vDebugColor, true);
 		}
 		else if (PhysShape::CONE == m_Shape)
 		{
