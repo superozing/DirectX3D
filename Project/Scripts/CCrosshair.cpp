@@ -41,6 +41,14 @@ void CCrosshair::tick()
 	MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, m_fSpreadRatio);
 	MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_1, m_fBarThikness);
 	MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_2, m_fLength);
+
+	LAYER aimLayer = m_pShootingSystem->GetMainCamAimLayer();
+
+	if (aimLayer == LAYER::LAYER_BOSS || aimLayer == LAYER::LAYER_MONSTER)
+		m_CrosshairColor = Vec4(255.f, 0.f, 0.f, 255.f);
+	else
+		m_CrosshairColor = Vec4(255.f, 255.f, 255.f, 255.f);
+
 	MeshRender()->GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_0, m_CrosshairColor);
 	MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, nullptr);
 
