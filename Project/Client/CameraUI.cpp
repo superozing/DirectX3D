@@ -227,6 +227,11 @@ void CameraUI::ShakeUI()
 	if (!TitleCollapse("CameraShake"))
 		return;
 
+	if (ImGui::Button("Shake"))
+	{
+		shake->Shake();
+	}
+
 	ImGui::Text("ShakeDuration");
 	ImGui::SameLine();
 	ImGui::DragFloat("##ShakeDuration", &shake->m_fShakeDuration, 0.1f, 0.1f);

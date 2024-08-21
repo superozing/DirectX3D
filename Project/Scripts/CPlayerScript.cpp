@@ -443,15 +443,24 @@ void CPlayerScript::tick()
 	{
 		m_FSM->SetCurState((int)PLAYER_STATE::VitalPanic);
 	}
-	// 탄피 힘 방향을 확인하기 위한 자동 사격
-	// static float autoShoot = 0.f;
-	// autoShoot += DT;
 
-	// if (autoShoot > 0.5f)
-	//{
-	//	m_pShootingSystem->ShootPlayerBulletRay();
-	//	autoShoot = 0.f;
-	// }
+	if (KEY_PRESSED(LCTRL))
+	{
+		Vec3 vPos	= Transform()->GetRelativePos();
+		Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+
+		if (KEY_TAP(F))
+		{
+			vPos += vFront * 50.f;
+		}
+
+		if (KEY_TAP(G))
+		{
+			vPos -= vFront * 50.f;
+		}
+
+		Transform()->SetRelativePos(vPos);
+	}
 }
 
 void CPlayerScript::CameraMove()
@@ -713,15 +722,15 @@ void CPlayerScript::ChangeToVictory()
 	{
 		m_FSM->SetCurState((int)PLAYER_STATE::VictoryStart);
 	}
-	if (KEY_TAP(X))
-	{
-		m_FSM->SetCurState((int)PLAYER_STATE::SkillCallsign);
-	}
+	// if (KEY_TAP(X))
+	//{
+	//	m_FSM->SetCurState((int)PLAYER_STATE::SkillCallsign);
+	// }
 
-	if (KEY_TAP(C))
-	{
-		m_FSM->SetCurState((int)PLAYER_STATE::SkillEX);
-	}
+	// if (KEY_TAP(C))
+	//{
+	//	m_FSM->SetCurState((int)PLAYER_STATE::SkillEX);
+	// }
 }
 
 void CPlayerScript::ChangeToDash()
