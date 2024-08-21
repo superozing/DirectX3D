@@ -187,7 +187,7 @@ PS_OUT PS_Decal(VS_OUT _in)
     {
         if (g_btex_0)
         {
-            output.vColor = g_tex_0.Sample(g_sam_0, vLocal.xz);
+            output.vColor = g_tex_0.Sample(g_sam_1, vLocal.xz);
         
             if (bCustomAlpha)
             {
@@ -198,14 +198,14 @@ PS_OUT PS_Decal(VS_OUT _in)
             {
                 if (g_btex_1)
                 {
-                    output.vEmissive.rgb = g_tex_1.Sample(g_sam_0, vLocal.xz);
+                   // 이미시브 텍스처가 있는 경우, 그대로 사용
+                    output.vEmissive.rgb = g_tex_1.Sample(g_sam_0, vLocal.xz).rgb;
                 }
                 else
                 {
-                    if (bCustomAlpha)
-                        output.vEmissive.rgb = output.vColor.rgb * CustomAlpha;
-                    else
-                        output.vEmissive.rgb = output.vColor.rgb * output.vColor.a;
+                    // 이미시브 텍스처가 없는 경우, 기본 컬러를 사용하고 밝기를 높임
+                    float emissiveIntensity = 1.5;
+                    output.vEmissive.rgb = output.vColor.rgb * emissiveIntensity;
                 }
             }
         }

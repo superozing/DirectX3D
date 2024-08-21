@@ -33,6 +33,7 @@ public:
 	virtual void tick() override;
 
 	//void SetSpreadRatio(float _fSpreadRatio) { m_fSpreadRatio = RoRMath::ClampFloat(_fSpreadRatio, 0.f, 1.f); }
+	void Fire() { m_fSpreadRatio = RoRMath::ClampFloat(m_fSpreadRatio + 0.2f, 0.2f, 0.7f); }
 	void SetCrosshairColor(Vec4 _CrosshairColor) { m_CrosshairColor = _CrosshairColor; }
 
 	//float GetSpreadRatio() const { return m_fSpreadRatio; }
