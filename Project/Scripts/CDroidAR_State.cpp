@@ -16,12 +16,13 @@
 void CDroidAR::AppereBegin()
 {
 	Animator3D()->Play((int)DROIDAR_STATE::Appere);
+	m_vecSound[(UINT)DroidARSoundType::Spawn]->Play(1, 4.f, false);
 }
 
 int CDroidAR::AppereUpdate()
 {
 	if (!Animator3D()->IsPlayable())
-		return (int)DROIDAR_STATE::NormalIdle;
+		return (int)DROIDAR_STATE::MoveIng;
 }
 
 void CDroidAR::AppereEnd()
@@ -118,6 +119,7 @@ void CDroidAR::NormalAttackIngBegin()
 	--m_AttackCount;
 	m_ShootingSystem->ShootDroidARBulletRay();
 	m_MuzzleFlash->ParticleSystem()->Play();
+	m_vecSound[(UINT)DroidARSoundType::Attack]->Play(1, 0.6f, true);
 }
 
 int CDroidAR::NormalAttackIngUpdate()
@@ -191,6 +193,17 @@ void CDroidAR::MoveIngBegin()
 
 int CDroidAR::MoveIngUpdate()
 {
+	if (Animator3D()->GetCurFrameIdx() == 0 && m_IsLeftFootSound)
+	{
+		m_vecSound[(UINT)PlayerSoundType::MOVEMENT]->Play(1, 3.f, true);
+		m_IsLeftFootSound = false;
+	}
+	if (Animator3D()->GetCurFrameIdx() == Animator3D()->GetCurClipLength() / 2 && !m_IsLeftFootSound)
+	{
+		m_vecSound[(UINT)PlayerSoundType::MOVEMENT]->Play(1, 3.f, true);
+		m_IsLeftFootSound = true;
+	}
+
 	if (CheckTargetInRange())
 		return (int)DROIDAR_STATE::MoveEnd;
 
@@ -237,6 +250,7 @@ void CDroidAR::VitalPanicEnd()
 void CDroidAR::VitalDeathBegin()
 {
 	Animator3D()->Play((int)DROIDAR_STATE::VitalDeath, 0);
+	m_vecSound[(UINT)DroidARSoundType::Death]->Play(1, 1.f, true);
 	if (PhysX())
 		GetOwner()->DeleteComponent(COMPONENT_TYPE::PHYSX);
 }
