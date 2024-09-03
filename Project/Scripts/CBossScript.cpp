@@ -168,6 +168,21 @@ void CBossScript::tick()
 	m_FSM->Update();
 	DebugState = magic_enum::enum_name((BOSS_STATE)m_FSM->GetCurState());
 
+	if (KEY_TAP(KEY::P))
+		m_bDebug = !m_bDebug;
+
+	if (m_bDebug)
+	{
+		if (KEY_TAP(KEY::NUM1))
+			m_EXsType = 0;
+		else if (KEY_TAP(KEY::NUM2))
+			m_EXsType = 1;
+		else if (KEY_TAP(KEY::NUM3))
+			m_EXsType = 2;
+		else if (KEY_TAP(KEY::NUM4))
+			m_EXsType = 3;
+	}
+
 	if (m_ChaseDir)
 	{
 		Vec3 vDir = m_Target->Transform()->GetRelativePos() - Transform()->GetRelativePos();
