@@ -128,6 +128,8 @@ private:
 private:
 	bool m_arrIsClear[(UINT)TutorialEvents::END];
 
+	void DebugFunc();
+
 public:
 	void Clear(TutorialEvents _state);
 	bool IsClear(TutorialEvents _state);

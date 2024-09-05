@@ -31,7 +31,7 @@ void CDroidAR::AppereEnd()
 
 void CDroidAR::EXsBegin()
 {
-	Animator3D()->Play((int)DROIDAR_STATE::EXs);
+	Animator3D()->Play((int)DROIDAR_STATE::EXs, 0);
 }
 
 int CDroidAR::EXsUpdate()

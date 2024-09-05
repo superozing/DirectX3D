@@ -178,6 +178,8 @@ void CTutorialGameMode::tick()
 {
 	m_FSM->Update();
 	state = magic_enum::enum_name((TutorialState)m_FSM->GetCurState());
+
+	DebugFunc();
 }
 
 void CTutorialGameMode::FadeInBegin()
@@ -366,7 +368,7 @@ void CTutorialGameMode::DashWaitEnd()
 
 void CTutorialGameMode::DashBegin()
 {
-	m_pArona->Message("Press Space to Dash And JumpUp The Rayzer", 800, -1.f);
+	m_pArona->Message("Press Space to Dash And JumpUp The Laser", 800, -1.f);
 
 	int rndm = CRandomMgr::GetInst()->GetRandomInt(2);
 	m_vecTutorialGameModeSound[(UINT)TutorialGameModeSoundType::MissionStart1 + rndm]->Play(1.f);
@@ -766,6 +768,23 @@ int CTutorialGameMode::FadeOutUpdate()
 
 void CTutorialGameMode::FadeOutEnd()
 {
+}
+
+void CTutorialGameMode::DebugFunc()
+{
+	if (KEY_PRESSED(LCTRL) && KEY_TAP(_1))
+	{
+		m_FSM->SetCurState((int)TutorialState::CoverHighWait);
+		m_pPlayer->Transform()->SetRelativePos(Vec3(-90, -150, 11370));
+		m_pPlayer->Transform()->SetRelativeRotation(Vec3(0, 0, 0));
+	}
+
+	if (KEY_PRESSED(LCTRL) && KEY_TAP(_2))
+	{
+		m_FSM->SetCurState((int)TutorialState::CoverLowWait);
+		m_pPlayer->Transform()->SetRelativePos(Vec3(-90, -150, 14600));
+		m_pPlayer->Transform()->SetRelativeRotation(Vec3(0, 0, 0));
+	}
 }
 
 void CTutorialGameMode::Clear(TutorialEvents _state)
