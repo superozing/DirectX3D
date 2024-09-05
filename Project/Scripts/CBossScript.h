@@ -51,9 +51,9 @@ struct tBossStatus
 	float GroggyBar = 0.f;
 
 	float ATTDamage = 10.f;
-	float ATTSpeed	= 1.5f;
+	float ATTSpeed	= 1.8f;
 
-	float EXsCoolTime = 4.f;
+	float EXsCoolTime = 2.f;
 
 	bool IsGroggy = false;
 	bool IsDead	  = false;
@@ -181,7 +181,7 @@ public:
 	void CheckTargetPos();
 
 	CDamagedDirectionMgr* GetDmgDirMgr() { return m_DamagedDirectionMgr; }
-	
+
 	CRoRStateMachine<CBossScript>* GetBossFSM() { return m_FSM; }
 
 	float		GetGroggy() const { return m_BossStatus.GroggyBar; }

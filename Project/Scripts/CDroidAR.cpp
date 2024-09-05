@@ -14,7 +14,8 @@
 static string state = "";
 
 CDroidAR::CDroidAR()
-	: CMonsterScript((UINT)SCRIPT_TYPE::DROIDAR)
+	: CMonsterScript((UINT)SCRIPT_TYPE::DROIDAR) 
+	, m_IsLeftFootSound(true)
 {
 	InitScriptParamUI();
 	InitStateMachine();
@@ -23,6 +24,7 @@ CDroidAR::CDroidAR()
 
 CDroidAR::CDroidAR(const CDroidAR& _Origin)
 	: CMonsterScript((UINT)SCRIPT_TYPE::DROIDAR)
+	, m_IsLeftFootSound(true)
 {
 	InitScriptParamUI();
 	InitStateMachine();
@@ -47,8 +49,8 @@ void CDroidAR::begin()
 	// 제일 첫 상태로 들어가게 됨. (다른 설정을 해주지 않으면)
 	m_FSM->Begin();
 
-	// 첫 상태를 지정
-	m_FSM->SetCurState((int)DROIDAR_STATE::MoveIng);
+	//// 첫 상태를 지정
+	//m_FSM->SetCurState((int)DROIDAR_STATE::MoveIng);
 
 	m_Target = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Azusa");
 
@@ -62,6 +64,15 @@ void CDroidAR::begin()
 	GetOwner()->AddChild(pObj, true);
 
 	m_ShootingSystem = GetOwner()->GetScript<CShootingSystem_DroidAR>();
+
+
+	// sound load
+	m_vecSound.resize((UINT)DroidARSoundType::End);
+	m_vecSound[(UINT)DroidARSoundType::Attack] = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_CH0138_Public_Shot);
+	m_vecSound[(UINT)DroidARSoundType::Death]  = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Common_Death);
+	m_vecSound[(UINT)DroidARSoundType::Move]   = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_Field_Movement_03);
+	m_vecSound[(UINT)DroidARSoundType::Spawn]  = CAssetMgr::GetInst()->Load<CSound>(SNDSFX_CH0069_Public_Smoke);
+
 }
 
 void CDroidAR::tick()
