@@ -603,6 +603,7 @@ void CTutorialGameMode::CoverLowBegin()
 	int			 LayerIdx = pObj->GetLayerIdx();
 
 	pObj->Transform()->SetRelativePos(Vec3(-28.f, -125.f, 16105.f));
+	pObj->Transform()->SetRelativeRotation(Vec3(0, XM_PI, 0));
 	pObj->SetName("DroidAR1");
 	GamePlayStatic::SpawnGameObject(pObj, LayerIdx, true);
 
@@ -611,6 +612,7 @@ void CTutorialGameMode::CoverLowBegin()
 	pObj = CAssetMgr::GetInst()->Load<CPrefab>(PREFDroidAR)->Instantiate();
 
 	pObj->Transform()->SetRelativePos(Vec3(198.f, -125.f, 17443.f));
+	pObj->Transform()->SetRelativeRotation(Vec3(0, XM_PI, 0));
 	pObj->SetName("DroidAR2");
 	GamePlayStatic::SpawnGameObject(pObj, LayerIdx, true);
 

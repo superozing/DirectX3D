@@ -15,7 +15,7 @@
 
 void CDroidAR::AppereBegin()
 {
-	Animator3D()->Play((int)DROIDAR_STATE::Appere);
+	Animator3D()->Play((int)DROIDAR_STATE::Appere, 0);
 	m_vecSound[(UINT)DroidARSoundType::Spawn]->Play(1, 4.f, false);
 }
 
@@ -23,6 +23,8 @@ int CDroidAR::AppereUpdate()
 {
 	if (!Animator3D()->IsPlayable())
 		return (int)DROIDAR_STATE::MoveIng;
+
+	return m_FSM->GetCurState();
 }
 
 void CDroidAR::AppereEnd()
@@ -38,6 +40,8 @@ int CDroidAR::EXsUpdate()
 {
 	if (!Animator3D()->IsPlayable())
 		return (int)DROIDAR_STATE::NormalIdle;
+
+	return m_FSM->GetCurState();
 }
 
 void CDroidAR::EXsEnd()
