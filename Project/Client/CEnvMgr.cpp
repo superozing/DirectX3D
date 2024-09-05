@@ -167,8 +167,7 @@ void CEnvMgr::exit()
 
 void CEnvMgr::tick()
 {
-	if (KEY_PRESSED(KEY::LSHIFT) && KEY_TAP(KEY::F5) &&
-		CLevelMgr::GetInst()->GetCurrentLevel()->GetState() == LEVEL_STATE::PLAY)
+	if (KEY_TAP(KEY::F4) && CLevelMgr::GetInst()->GetCurrentLevel()->GetState() == LEVEL_STATE::PLAY)
 	{
 		tTask task;
 		task.Type = TASK_TYPE::CHANGE_LEVEL;
@@ -180,14 +179,14 @@ void CEnvMgr::tick()
 		CTaskMgr::GetInst()->AddTask(task);
 	}
 
-	if (KEY_PRESSED(KEY::LSHIFT) && KEY_TAP(KEY::F6))
-	{
-		CLevel* Curlevel = CLevelMgr::GetInst()->GetCurrentLevel();
+	// if (KEY_PRESSED(KEY::LSHIFT) && KEY_TAP(KEY::F3))
+	//{
+	//	CLevel* Curlevel = CLevelMgr::GetInst()->GetCurrentLevel();
 
-		tTask task;
-		task.Type	 = TASK_TYPE::SAVE_CHECKPOINT;
-		task.Param_1 = (UINT_PTR)Curlevel;
+	//	tTask task;
+	//	task.Type	 = TASK_TYPE::SAVE_CHECKPOINT;
+	//	task.Param_1 = (UINT_PTR)Curlevel;
 
-		CTaskMgr::GetInst()->AddTask(task);
-	}
+	//	CTaskMgr::GetInst()->AddTask(task);
+	//}
 }
